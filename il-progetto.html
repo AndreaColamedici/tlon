@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Progetto — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bianco);
+            color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+            border-bottom: 1px solid var(--grigio-chiaro);
+            transition: transform 0.4s ease;
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* MAIN */
+        main {
+            padding-top: 80px;
+        }
+
+        /* HERO CINEMATIC */
+        .hero-cinematic {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        .hero-cinematic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 30% 70%, rgba(42, 107, 107, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(42, 107, 107, 0.1) 0%, transparent 40%);
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero-origin {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.5s;
+            color: var(--ottanio);
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            line-height: 0.9;
+            margin: 1rem 0 2rem;
+            opacity: 0;
+            animation: revealTitle 1.5s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+        @keyframes revealTitle {
+            0% { opacity: 0; letter-spacing: 0.5em; }
+            100% { opacity: 1; letter-spacing: -0.03em; }
+        }
+
+        .hero-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-style: italic;
+            font-weight: 400;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 1.5s;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 2s;
+        }
+
+        .hero-scroll span {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--ottanio), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.5); opacity: 0.5; }
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* BORGES QUOTE */
+        .borges-section {
+            padding: 10rem 3rem;
+            background: var(--bianco);
+            position: relative;
+        }
+
+        .borges-quote {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .borges-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--nero);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s ease;
+        }
+
+        .borges-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .borges-author {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            opacity: 0;
+            transition: opacity 1s ease 0.5s;
+        }
+
+        .borges-text.visible + .borges-author {
+            opacity: 1;
+        }
+
+        /* MISSION SPLIT */
+        .mission-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+        }
+
+        .mission-left {
+            background: var(--nero);
+            color: var(--bianco);
+            padding: 6rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-left::before {
+            content: '?';
+            position: absolute;
+            font-family: 'Instrument Serif', serif;
+            font-size: 40vw;
+            opacity: 0.03;
+            right: -10%;
+            top: 50%;
+            transform: translateY(-50%);
+            line-height: 1;
+        }
+
+        .mission-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+        }
+
+        .mission-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .mission-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .mission-text {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            opacity: 0.8;
+            max-width: 500px;
+        }
+
+        .mission-right {
+            background: var(--bianco);
+            padding: 6rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mission-pillars {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .pillar {
+            padding: 2rem;
+            border: 1px solid var(--grigio-chiaro);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pillar::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: var(--ottanio);
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 0;
+        }
+
+        .pillar:hover::before {
+            width: 100%;
+        }
+
+        .pillar:hover {
+            color: var(--bianco);
+            border-color: var(--ottanio);
+        }
+
+        .pillar-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .pillar-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3rem;
+            font-style: italic;
+            line-height: 1;
+            transition: color 0.5s ease;
+        }
+
+        .pillar:hover .pillar-num {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .pillar-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .pillar-desc {
+            font-size: 0.9rem;
+            color: var(--grigio);
+            transition: color 0.5s ease;
+        }
+
+        .pillar:hover .pillar-desc {
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* TIMELINE */
+        .timeline-section {
+            padding: 8rem 3rem;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .timeline-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+        }
+
+        .timeline-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--grigio-chiaro);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 1fr 80px 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            grid-column: 1;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-empty {
+            grid-column: 3;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            grid-column: 3;
+            text-align: left;
+        }
+
+        .timeline-item:nth-child(even) .timeline-empty {
+            grid-column: 1;
+        }
+
+        .timeline-year {
+            grid-column: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .year-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--bianco);
+            border: 2px solid var(--ottanio);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Instrument Serif', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--ottanio);
+            transition: all 0.4s ease;
+        }
+
+        .timeline-item:hover .year-circle {
+            background: var(--ottanio);
+            color: var(--bianco);
+            transform: scale(1.1);
+        }
+
+        .timeline-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-desc {
+            font-size: 0.95rem;
+            color: var(--grigio);
+            line-height: 1.7;
+        }
+
+        /* NUMBERS */
+        .numbers-section {
+            padding: 8rem 3rem;
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        .numbers-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .numbers-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+        }
+
+        .numbers-header p {
+            margin-top: 1rem;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .number-item {
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .number-item:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-5px);
+        }
+
+        .number-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 400;
+            color: var(--ottanio);
+            line-height: 1;
+        }
+
+        .number-suffix {
+            font-size: 0.5em;
+            opacity: 0.7;
+        }
+
+        .number-label {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+
+        /* TEAM */
+        .team-section {
+            padding: 8rem 3rem;
+            background: var(--bianco);
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .team-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+        }
+
+        .team-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .founders-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto 5rem;
+        }
+
+        .founder-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .founder-card a {
+            display: block;
+            padding: 3rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .founder-card a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            background: linear-gradient(to top, var(--ottanio), transparent);
+            opacity: 0.1;
+            transition: height 0.5s ease;
+        }
+
+        .founder-card:hover a {
+            border-color: var(--ottanio);
+        }
+
+        .founder-card:hover a::before {
+            height: 100%;
+        }
+
+        .founder-role {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1rem;
+        }
+
+        .founder-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .founder-name em {
+            font-style: italic;
+        }
+
+        .founder-bio {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        .founder-cta {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .founder-cta::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .founder-card:hover .founder-cta::after {
+            transform: translateX(5px);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .team-member-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .team-member-role {
+            font-size: 0.8rem;
+            color: var(--grigio);
+        }
+
+        /* PARTNERS MARQUEE */
+        .partners-section {
+            padding: 4rem 0;
+            background: #fafafa;
+            overflow: hidden;
+        }
+
+        .partners-label {
+            text-align: center;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            margin-bottom: 2rem;
+        }
+
+        .partners-marquee {
+            display: flex;
+            overflow: hidden;
+        }
+
+        .partners-track {
+            display: flex;
+            animation: scrollPartners 40s linear infinite;
+        }
+
+        .partners-track span {
+            padding: 0 3rem;
+            font-size: 1.1rem;
+            color: var(--grigio);
+            white-space: nowrap;
+            opacity: 0.6;
+        }
+
+        @keyframes scrollPartners {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 10rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.05) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .cta-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        .cta-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1rem 2.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: 1px solid var(--nero);
+            transition: all 0.4s ease;
+        }
+
+        .cta-btn.primary {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        .cta-btn.primary:hover {
+            background: var(--ottanio);
+            border-color: var(--ottanio);
+        }
+
+        .cta-btn.secondary:hover {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 3rem;
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-back {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-back:hover {
+            color: var(--nero);
+        }
+
+        .footer-back::before {
+            content: '←';
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--nero);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                gap: 1.5rem;
+            }
+
+            .mission-section {
+                grid-template-columns: 1fr;
+            }
+
+            .mission-left, .mission-right {
+                padding: 4rem 2rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 50px 1fr;
+                gap: 1rem;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                grid-column: 2;
+                text-align: left;
+            }
+
+            .timeline-year {
+                grid-column: 1;
+            }
+
+            .timeline-empty {
+                display: none;
+            }
+
+            .year-circle {
+                width: 50px;
+                height: 50px;
+                font-size: 0.85rem;
+            }
+
+            .numbers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .founders-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .borges-section {
+                padding: 6rem 2rem;
+            }
+
+            .cta-section {
+                padding: 6rem 2rem;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-nav {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                display: none;
+            }
+
+            .numbers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./andrea-colamedici/">Colamedici</a> 
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="https://shop.tlon.it">Edizioni</a>
+            <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
+            <a href="https://shop.tlon.it">Shop</a>
+            <a href="./contatti/">Contatti</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO CINEMATIC -->
+        <section class="hero-cinematic">
+            <div class="hero-content">
+                <span class="hero-origin">Dal racconto di Borges</span>
+                <h1 class="hero-title">Tlon</h1>
+                <p class="hero-subtitle">Un pianeta immaginario. Che esiste.</p>
+            </div>
+            <div class="hero-scroll">
+                <span>Scorri</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- BORGES QUOTE -->
+        <section class="borges-section">
+            <div class="borges-quote">
+                <p class="borges-text">«Tlön sarà un labirinto, ma è un labirinto ordito dagli uomini, un labirinto destinato a essere decifrato dagli uomini.»</p>
+                <p class="borges-author">Jorge Luis Borges, Tlön, Uqbar, Orbis Tertius</p>
+            </div>
+        </section>
+
+        <!-- MISSION SPLIT -->
+        <section class="mission-section">
+            <div class="mission-left">
+                <span class="mission-label">La missione</span>
+                <h2 class="mission-title">Recuperare il modo <em>originario</em> di fare filosofia</h2>
+                <p class="mission-text">Attraverso il dialogo e l'incontro umano, mescolando cultura alta e cultura pop, analizzando bisogni e significati del nostro tempo e mettendo in connessione l'ambiente accademico con il mondo popolare. La filosofia è la chiave per salvare il meglio del sapere che abbiamo alle spalle e portare alla luce limiti e slanci del futuro che già ci circonda.</p>
+            </div>
+            <div class="mission-right">
+                <div class="mission-pillars">
+                    <div class="pillar">
+                        <div class="pillar-content">
+                            <span class="pillar-num">I</span>
+                            <h3 class="pillar-title">Scuola di Filosofia</h3>
+                            <p class="pillar-desc">Corsi, seminari, podcast. Dal vivo e online.</p>
+                        </div>
+                    </div>
+                    <div class="pillar">
+                        <div class="pillar-content">
+                            <span class="pillar-num">II</span>
+                            <h3 class="pillar-title">Casa Editrice</h3>
+                            <p class="pillar-desc">Filosofia, studi di genere, scienze sociali, poesia.</p>
+                        </div>
+                    </div>
+                    <div class="pillar">
+                        <div class="pillar-content">
+                            <span class="pillar-num">III</span>
+                            <h3 class="pillar-title">Librerie e Bookshop</h3>
+                            <p class="pillar-desc">Roma Ostiense, Galleria Nazionale, Villa Medici, Venezia.</p>
+                        </div>
+                    </div>
+                    <div class="pillar">
+                        <div class="pillar-content">
+                            <span class="pillar-num">IV</span>
+                            <h3 class="pillar-title">Festival ed Eventi</h3>
+                            <p class="pillar-desc">Direzione artistica, curatela, ideazione.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIMELINE -->
+        <section class="timeline-section">
+            <div class="timeline-header">
+                <h2>Una storia di <em>meraviglia</em></h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">L'inizio</h3>
+                        <p class="timeline-desc">Nasce Tlon con una serie di eventi culturali. Il nome viene dal racconto di Borges: un pianeta immaginario che diventa reale.</p>
+                    </div>
+                    <div class="timeline-year">
+                        <div class="year-circle">2015</div>
+                    </div>
+                    <div class="timeline-empty"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-empty"></div>
+                    <div class="timeline-year">
+                        <div class="year-circle">2016</div>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Edizioni e Libreria</h3>
+                        <p class="timeline-desc">A febbraio nasce Edizioni Tlon. Il 2 ottobre inaugura la Libreria Teatro nel quartiere Ostiense di Roma.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Liberati della brava bambina</h3>
+                        <p class="timeline-desc">Il libro con HarperCollins diventa un caso editoriale. Inizia la collaborazione con i grandi editori.</p>
+                    </div>
+                    <div class="timeline-year">
+                        <div class="year-circle">2019</div>
+                    </div>
+                    <div class="timeline-empty"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-empty"></div>
+                    <div class="timeline-year">
+                        <div class="year-circle">2020</div>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Prendiamola con Filosofia</h3>
+                        <p class="timeline-desc">Durante il lockdown, la maratona online raggiunge 2 milioni di spettatori. La filosofia entra nelle case.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Tlon Aleph</h3>
+                        <p class="timeline-desc">Apre il bookshop alla Galleria Nazionale d'Arte Moderna e Contemporanea di Roma.</p>
+                    </div>
+                    <div class="timeline-year">
+                        <div class="year-circle">2021</div>
+                    </div>
+                    <div class="timeline-empty"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-empty"></div>
+                    <div class="timeline-year">
+                        <div class="year-circle">2022</div>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Il Pod e Premio Rapallo</h3>
+                        <p class="timeline-desc">Nasce Il Pod, il premio per i migliori podcast italiani. Maura vince il Premio Rapallo con Specchio delle mie brame.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Piacenza</h3>
+                        <p class="timeline-desc">Inizia la direzione filosofica del Festival del Pensare Contemporaneo. Tlon diventa un progetto nazionale.</p>
+                    </div>
+                    <div class="timeline-year">
+                        <div class="year-circle">2023</div>
+                    </div>
+                    <div class="timeline-empty"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-empty"></div>
+                    <div class="timeline-year">
+                        <div class="year-circle">2024</div>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Ipnocrazia</h3>
+                        <p class="timeline-desc">Il libro di Andrea diventa un caso internazionale. Una performance narrativa che svela i meccanismi della realtà.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Botanica della meraviglia</h3>
+                        <p class="timeline-desc">Il nuovo libro insieme. Coltivare lo stupore alla fine del mondo.</p>
+                    </div>
+                    <div class="timeline-year">
+                        <div class="year-circle">2025</div>
+                    </div>
+                    <div class="timeline-empty"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NUMBERS -->
+        <section class="numbers-section">
+            <div class="numbers-header">
+                <h2>In numeri</h2>
+                <p>Dati dal biennio 2024-2025</p>
+            </div>
+            <div class="numbers-grid">
+                <div class="number-item">
+                    <div class="number-value" data-target="2468">0</div>
+                    <div class="number-label">Eventi</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value" data-target="200">0</div>
+                    <div class="number-label">Partner</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value" data-target="35">0</div>
+                    <div class="number-label">Festival</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value" data-target="20">0</div>
+                    <div class="number-label">Università</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEAM -->
+        <section class="team-section">
+            <div class="team-header">
+                <h2>Chi <em>siamo</em></h2>
+            </div>
+            <div class="founders-grid">
+                <div class="founder-card">
+                    <a href="./maura-gancitano/">
+                        <span class="founder-role">Fondatrice</span>
+                        <h3 class="founder-name">Maura <em>Gancitano</em></h3>
+                        <p class="founder-bio">Filosofa, scrittrice, editorialista di Repubblica. Si occupa di femminismo filosofico, educazione sentimentale, bellezza e corpo. Premio Rapallo 2022.</p>
+                        <span class="founder-cta">Scopri di più</span>
+                    </a>
+                </div>
+                <div class="founder-card">
+                    <a href="./andrea-colamedici/">
+                        <span class="founder-role">Fondatore</span>
+                        <h3 class="founder-name">Andrea <em>Colamedici</em></h3>
+                        <p class="founder-bio">Filosofo, editore, formatore, regista. Docente IED e IULM. Si occupa di AI, tecnologia, leadership. Autore di Ipnocrazia, caso internazionale.</p>
+                        <span class="founder-cta">Scopri di più</span>
+                    </a>
+                </div>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <h4 class="team-member-name">Nicola Bonimelli</h4>
+                    <p class="team-member-role">Co-fondatore, Direzione commerciale</p>
+                </div>
+                <div class="team-member">
+                    <h4 class="team-member-name">Michele Trionfera</h4>
+                    <p class="team-member-role">Direttore Librerie</p>
+                </div>
+                <div class="team-member">
+                    <h4 class="team-member-name">Caterina Di Paolo</h4>
+                    <p class="team-member-role">Coordinatrice editoriale</p>
+                </div>
+                <div class="team-member">
+                    <h4 class="team-member-name">Marco Carassai</h4>
+                    <p class="team-member-role">Editor</p>
+                </div>
+                <div class="team-member">
+                    <h4 class="team-member-name">Lorenzo Gasparrini</h4>
+                    <p class="team-member-role">Responsabile ecommerce</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTNERS MARQUEE -->
+        <section class="partners-section">
+            <p class="partners-label">Hanno lavorato con noi</p>
+            <div class="partners-marquee">
+                <div class="partners-track">
+                    <span>RAI</span>
+                    <span>La7</span>
+                    <span>Sky</span>
+                    <span>La Repubblica</span>
+                    <span>Vanity Fair</span>
+                    <span>Audible</span>
+                    <span>HarperCollins</span>
+                    <span>Einaudi</span>
+                    <span>Mondadori</span>
+                    <span>IED</span>
+                    <span>IULM</span>
+                    <span>LUISS</span>
+                    <span>Generali</span>
+                    <span>UniCredit</span>
+                    <span>Intesa Sanpaolo</span>
+                    <span>Salone del Libro</span>
+                    <span>Triennale Milano</span>
+                    <span>Parlamento Europeo</span>
+                    <span>RAI</span>
+                    <span>La7</span>
+                    <span>Sky</span>
+                    <span>La Repubblica</span>
+                    <span>Vanity Fair</span>
+                    <span>Audible</span>
+                    <span>HarperCollins</span>
+                    <span>Einaudi</span>
+                    <span>Mondadori</span>
+                    <span>IED</span>
+                    <span>IULM</span>
+                    <span>LUISS</span>
+                    <span>Generali</span>
+                    <span>UniCredit</span>
+                    <span>Intesa Sanpaolo</span>
+                    <span>Salone del Libro</span>
+                    <span>Triennale Milano</span>
+                    <span>Parlamento Europeo</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <h2 class="cta-title">Vuoi fare qualcosa <em>insieme</em>?</h2>
+            <div class="cta-buttons">
+                <a href="./formazione.html" class="cta-btn primary">Formazione</a>
+                <a href="./eventi-festival.html" class="cta-btn secondary">Eventi</a>
+                <a href="./contatti/" class="cta-btn secondary">Contatti</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-nav">
+            <a href="./" class="footer-back">Home</a>
+            <div class="footer-links">
+                <a href="https://shop.tlon.it/edizioni-tlon/">Edizioni</a>
+                <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
+                <a href="https://www.tlonletter.it">Newsletter</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header hide on scroll
+        let lastScroll = 0;
+        const header = document.querySelector('header');
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                header.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Reveal on scroll
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Borges quote
+        document.querySelectorAll('.borges-text').forEach(el => revealObserver.observe(el));
+
+        // Timeline items
+        document.querySelectorAll('.timeline-item').forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.1}s`;
+            revealObserver.observe(item);
+        });
+
+        // Number counter animation
+        const numberObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.getAttribute('data-target'));
+                    const duration = 2000;
+                    const step = target / (duration / 16);
+                    let current = 0;
+
+                    const counter = setInterval(() => {
+                        current += step;
+                        if (current >= target) {
+                            el.textContent = target.toLocaleString();
+                            clearInterval(counter);
+                        } else {
+                            el.textContent = Math.floor(current).toLocaleString();
+                        }
+                    }, 16);
+
+                    numberObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.number-value').forEach(el => numberObserver.observe(el));
+
+        // Smooth parallax for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-cinematic');
+            
+            if (hero && scrolled < window.innerHeight) {
+                const content = hero.querySelector('.hero-content');
+                content.style.transform = `translateY(${scrolled * 0.4}px)`;
+                content.style.opacity = 1 - (scrolled / window.innerHeight);
+            }
+        });
+    </script>
+
+</body>
+</html>
