@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formazione — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bianco);
+            color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* MAIN */
+        main {
+            padding-top: 80px;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 6rem 3rem 5rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--nero) 0%, #1a1a1a 100%);
+            color: var(--bianco);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 70% 30%, rgba(42, 107, 107, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.4s;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            opacity: 0.8;
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* INTRO */
+        .intro-section {
+            padding: 6rem 3rem;
+            background: var(--bianco);
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .intro-text h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-text h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .intro-text p {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: var(--grigio);
+            margin-bottom: 1rem;
+        }
+
+        .intro-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-card {
+            padding: 2rem;
+            background: #fafafa;
+            border: 1px solid var(--grigio-chiaro);
+            transition: all 0.4s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3.5rem;
+            color: var(--ottanio);
+            line-height: 1;
+        }
+
+        .stat-label {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--grigio);
+        }
+
+        /* TEMI */
+        .temi-section {
+            padding: 6rem 3rem;
+            background: #fafafa;
+        }
+
+        .section-header {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+        }
+
+        .section-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .temi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tema-card {
+            padding: 2.5rem;
+            background: var(--bianco);
+            border: 1px solid var(--grigio-chiaro);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tema-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--ottanio);
+            transition: height 0.5s ease;
+        }
+
+        .tema-card:hover::before {
+            height: 100%;
+        }
+
+        .tema-card:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .tema-icon {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-style: italic;
+            color: var(--ottanio);
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        .tema-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tema-desc {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--grigio);
+        }
+
+        /* FORMATI */
+        .formati-section {
+            padding: 6rem 3rem;
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        .formati-section .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .formati-section .section-header h2 {
+            color: var(--bianco);
+        }
+
+        .formati-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .formato-card {
+            padding: 3rem 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-right: none;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .formato-card:last-child {
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .formato-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            background: var(--ottanio);
+            transition: height 0.4s ease;
+            z-index: 0;
+        }
+
+        .formato-card:hover::before {
+            height: 100%;
+        }
+
+        .formato-card:hover {
+            border-color: var(--ottanio);
+        }
+
+        .formato-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .formato-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 4rem;
+            font-style: italic;
+            line-height: 1;
+            opacity: 0.2;
+            margin-bottom: 1rem;
+            transition: opacity 0.4s ease;
+        }
+
+        .formato-card:hover .formato-num {
+            opacity: 0.4;
+        }
+
+        .formato-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .formato-desc {
+            font-size: 0.85rem;
+            opacity: 0.6;
+        }
+
+        /* CLIENTI */
+        .clienti-section {
+            padding: 6rem 3rem;
+            background: var(--bianco);
+        }
+
+        .clienti-intro {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            text-align: center;
+        }
+
+        .clienti-intro h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .clienti-intro h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .clienti-intro p {
+            font-size: 1rem;
+            color: var(--grigio);
+        }
+
+        .clienti-categories {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .clienti-category {
+            margin-bottom: 4rem;
+        }
+
+        .clienti-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .category-title {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .clienti-logos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .cliente-tag {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--grigio-chiaro);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .cliente-tag:hover {
+            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.05);
+        }
+
+        /* UNIVERSITÀ */
+        .universita-section {
+            padding: 6rem 3rem;
+            background: #fafafa;
+        }
+
+        .universita-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .universita-intro h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .universita-intro h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .universita-intro p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        .universita-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .universita-item {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .universita-item::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .universita-name {
+            font-size: 1rem;
+        }
+
+        .universita-note {
+            font-size: 0.8rem;
+            color: var(--grigio);
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 8rem 3rem;
+            background: var(--bianco);
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.05) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .cta-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .cta-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .cta-subtitle {
+            font-size: 1.1rem;
+            color: var(--grigio);
+            margin-bottom: 2rem;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 1.25rem 3rem;
+            background: var(--nero);
+            color: var(--bianco);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+        }
+
+        .cta-btn:hover {
+            background: var(--ottanio);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 3rem;
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-back {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-back:hover {
+            color: var(--nero);
+        }
+
+        .footer-back::before {
+            content: '←';
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--nero);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1000px) {
+            .temi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .formati-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .formato-card:nth-child(2) {
+                border-right: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .universita-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                gap: 1.5rem;
+            }
+
+            .hero {
+                padding: 5rem 1.5rem 4rem;
+            }
+
+            .intro-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .intro-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .universita-list {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-nav {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                display: none;
+            }
+
+            .temi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .formati-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .formato-card {
+                border-right: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .intro-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* REVEAL ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./andrea-colamedici/">Colamedici</a> 
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="https://shop.tlon.it">Edizioni</a>
+            <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
+            <a href="https://shop.tlon.it">Shop</a>
+            <a href="./contatti/">Contatti</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-content">
+                <span class="hero-label">Per aziende, istituzioni, università</span>
+                <h1 class="hero-title">La filosofia come <em>strumento</em></h1>
+                <p class="hero-desc">Percorsi formativi che trasformano il pensiero critico in competenza organizzativa. Per chi vuole andare oltre le soluzioni preconfezionate.</p>
+            </div>
+        </section>
+
+        <!-- INTRO -->
+        <section class="intro-section">
+            <div class="intro-grid">
+                <div class="intro-text reveal">
+                    <h2>Pensare insieme, <em>trasformare</em> insieme</h2>
+                    <p>La formazione Tlon nasce dall'idea che la filosofia non sia un sapere astratto ma uno strumento concreto per orientarsi nella complessità. Lavoriamo con aziende, istituzioni e università per costruire percorsi su misura che affrontano le grandi questioni del nostro tempo: il senso del lavoro, la trasformazione digitale, la leadership consapevole, l'inclusione.</p>
+                    <p>Non offriamo risposte pronte, ma metodi per costruire le proprie domande. E le proprie risposte.</p>
+                </div>
+                <div class="intro-stats reveal">
+                    <div class="stat-card">
+                        <div class="stat-value">120+</div>
+                        <div class="stat-label">Eventi formativi nel biennio</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">25</div>
+                        <div class="stat-label">Aziende e istituzioni</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">20</div>
+                        <div class="stat-label">Università partner</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">51</div>
+                        <div class="stat-label">Lezioni solo allo IED</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEMI -->
+        <section class="temi-section">
+            <div class="section-header">
+                <h2>I temi che <em>affrontiamo</em></h2>
+            </div>
+            <div class="temi-grid">
+                <div class="tema-card reveal">
+                    <div class="tema-icon">α</div>
+                    <h3 class="tema-title">Filosofia e pensiero critico</h3>
+                    <p class="tema-desc">Strumenti per navigare la complessità, porre le domande giuste, costruire visione. Dal metodo socratico alla filosofia contemporanea.</p>
+                </div>
+                <div class="tema-card reveal">
+                    <div class="tema-icon">β</div>
+                    <h3 class="tema-title">AI e trasformazione digitale</h3>
+                    <p class="tema-desc">Comprendere l'intelligenza artificiale oltre la tecnologia. Prompt thinking, etica dell'AI, impatto sociale e organizzativo.</p>
+                </div>
+                <div class="tema-card reveal">
+                    <div class="tema-icon">γ</div>
+                    <h3 class="tema-title">Diversity & Inclusion</h3>
+                    <p class="tema-desc">Percorsi su genere, inclusione, linguaggio. Una formazione che parte dalla filosofia per arrivare alla pratica quotidiana.</p>
+                </div>
+                <div class="tema-card reveal">
+                    <div class="tema-icon">δ</div>
+                    <h3 class="tema-title">Educazione sentimentale</h3>
+                    <p class="tema-desc">Emozioni, relazioni, comunicazione. Per costruire ambienti di lavoro più consapevoli e comunità più sane.</p>
+                </div>
+                <div class="tema-card reveal">
+                    <div class="tema-icon">ε</div>
+                    <h3 class="tema-title">Senso del lavoro</h3>
+                    <p class="tema-desc">Perché lavoriamo? Come lavoriamo? Dal libro "Ma chi me lo fa fare?" a percorsi per ripensare cultura aziendale e motivazione.</p>
+                </div>
+                <div class="tema-card reveal">
+                    <div class="tema-icon">ζ</div>
+                    <h3 class="tema-title">Comunicazione culturale</h3>
+                    <p class="tema-desc">Storytelling, social media, divulgazione. Come raccontare idee complesse in modo accessibile senza banalizzarle.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FORMATI -->
+        <section class="formati-section">
+            <div class="section-header">
+                <h2>I <em>formati</em></h2>
+            </div>
+            <div class="formati-grid">
+                <div class="formato-card">
+                    <div class="formato-content">
+                        <div class="formato-num">01</div>
+                        <h3 class="formato-title">Speech</h3>
+                        <p class="formato-desc">Interventi singoli per eventi, convention, kick-off</p>
+                    </div>
+                </div>
+                <div class="formato-card">
+                    <div class="formato-content">
+                        <div class="formato-num">02</div>
+                        <h3 class="formato-title">Workshop</h3>
+                        <p class="formato-desc">Sessioni interattive per piccoli gruppi</p>
+                    </div>
+                </div>
+                <div class="formato-card">
+                    <div class="formato-content">
+                        <div class="formato-num">03</div>
+                        <h3 class="formato-title">Percorsi</h3>
+                        <p class="formato-desc">Programmi strutturati su più incontri</p>
+                    </div>
+                </div>
+                <div class="formato-card">
+                    <div class="formato-content">
+                        <div class="formato-num">04</div>
+                        <h3 class="formato-title">Docenza</h3>
+                        <p class="formato-desc">Collaborazioni accademiche continuative</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CLIENTI -->
+        <section class="clienti-section">
+            <div class="clienti-intro reveal">
+                <h2>Chi ha scelto <em>Tlon</em></h2>
+                <p>Alcune delle realtà con cui abbiamo lavorato nel biennio 2024-2025</p>
+            </div>
+            <div class="clienti-categories">
+                <div class="clienti-category reveal">
+                    <h3 class="category-title">Banche e Assicurazioni</h3>
+                    <div class="clienti-logos">
+                        <span class="cliente-tag">Generali</span>
+                        <span class="cliente-tag">UniCredit</span>
+                        <span class="cliente-tag">Intesa Sanpaolo</span>
+                        <span class="cliente-tag">Reale Mutua</span>
+                        <span class="cliente-tag">BPER</span>
+                        <span class="cliente-tag">BNL</span>
+                    </div>
+                </div>
+                <div class="clienti-category reveal">
+                    <h3 class="category-title">Corporate e Consulting</h3>
+                    <div class="clienti-logos">
+                        <span class="cliente-tag">Ambrosetti / TEHA</span>
+                        <span class="cliente-tag">Bloom</span>
+                        <span class="cliente-tag">Google</span>
+                        <span class="cliente-tag">Amazon / Audible</span>
+                        <span class="cliente-tag">Ferrero</span>
+                        <span class="cliente-tag">Sanofi</span>
+                        <span class="cliente-tag">WINDTRE</span>
+                        <span class="cliente-tag">Veralab</span>
+                    </div>
+                </div>
+                <div class="clienti-category reveal">
+                    <h3 class="category-title">Istituzioni e Terzo Settore</h3>
+                    <div class="clienti-logos">
+                        <span class="cliente-tag">FabLab ENEA</span>
+                        <span class="cliente-tag">Camera dei Deputati</span>
+                        <span class="cliente-tag">Parlamento Europeo</span>
+                        <span class="cliente-tag">Save the Children</span>
+                        <span class="cliente-tag">Oxfam</span>
+                        <span class="cliente-tag">Valore D</span>
+                        <span class="cliente-tag">CGIL</span>
+                        <span class="cliente-tag">Legacoop</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UNIVERSITÀ -->
+        <section class="universita-section">
+            <div class="universita-grid">
+                <div class="universita-intro reveal">
+                    <h2>Il mondo <em>accademico</em></h2>
+                    <p>Andrea insegna Social Media Theory alla IULM e Comunicazione Multimediale allo IED. Insieme a Maura collabora con numerose università italiane e internazionali per lectio magistralis, seminari e percorsi strutturati.</p>
+                </div>
+                <div class="universita-list reveal">
+                    <div class="universita-item">
+                        <span class="universita-name">IED</span>
+                        <span class="universita-note">Docenza strutturata</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">IULM</span>
+                        <span class="universita-note">Docenza strutturata</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">Sapienza</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">San Raffaele</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">LUISS</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">Politecnico di Milano</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">Columbia University</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">Università di Bologna</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">Università di Torino</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">Università di Foggia</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">Università Federico II</span>
+                    </div>
+                    <div class="universita-item">
+                        <span class="universita-name">Università argentine</span>
+                        <span class="universita-note">9 eventi</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <h2 class="cta-title">Costruiamo qualcosa <em>insieme</em></h2>
+            <p class="cta-subtitle">Raccontaci il tuo progetto. Costruiremo un percorso su misura.</p>
+            <a href="mailto:formazione@tlon.it" class="cta-btn">Scrivici</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-nav">
+            <a href="./" class="footer-back">Home</a>
+            <div class="footer-links">
+                <a href="./il-progetto.html">Il progetto</a>
+                <a href="./eventi-festival.html">Eventi</a>
+                <a href="./contatti/">Contatti</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Reveal on scroll
+        const reveals = document.querySelectorAll('.reveal');
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                }
+            });
+        }, observerOptions);
+
+        reveals.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
