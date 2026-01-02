@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maura Gancitano – Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bianco);
+            color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .logo {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            padding-top: 80px;
+        }
+
+        /* HERO BIO */
+        .bio-hero {
+            min-height: 70vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            padding: 6rem 3rem;
+            align-items: center;
+        }
+
+        .bio-photo {
+            position: relative;
+        }
+
+        .bio-photo-frame {
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, rgba(42, 107, 107, 0.08) 0%, rgba(42, 107, 107, 0.02) 100%);
+            border: 1px solid var(--grigio-chiaro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bio-photo-frame::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            right: 2rem;
+            bottom: 2rem;
+            border: 1px solid var(--ottanio);
+            opacity: 0.3;
+        }
+
+        .bio-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .bio-intro {
+            max-width: 600px;
+        }
+
+        .bio-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .bio-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .bio-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+        }
+
+        .bio-name em {
+            font-style: italic;
+        }
+
+        .bio-tagline {
+            font-size: 1.25rem;
+            line-height: 1.7;
+            color: var(--grigio);
+            margin-bottom: 2.5rem;
+        }
+
+        .bio-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--grigio);
+        }
+
+        .bio-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .bio-meta span::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--ottanio);
+            border-radius: 50%;
+        }
+
+        /* BIO CONTENT */
+        .bio-content {
+            padding: 6rem 3rem;
+            background: var(--bianco);
+        }
+
+        .bio-section {
+            max-width: 900px;
+            margin: 0 auto 6rem;
+        }
+
+        .bio-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        .section-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .bio-text {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--nero);
+        }
+
+        .bio-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .bio-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* LIBRI */
+        .libro-categoria {
+            margin-bottom: 3rem;
+        }
+
+        .libro-categoria:last-child {
+            margin-bottom: 0;
+        }
+
+        .categoria-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .categoria-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--grigio-chiaro);
+        }
+
+        .libro {
+            display: grid;
+            grid-template-columns: 60px 1fr auto;
+            gap: 1.5rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--grigio-chiaro);
+            align-items: baseline;
+        }
+
+        .libro:last-child {
+            border-bottom: none;
+        }
+
+        .libro-anno {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .libro-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .libro-titolo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+        }
+
+        .libro-sottotitolo {
+            font-size: 0.9rem;
+            color: var(--grigio);
+        }
+
+        .libro-editore {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            text-align: right;
+        }
+
+        .libro-premio {
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--ottanio);
+        }
+
+        /* TRADUZIONI */
+        .traduzioni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .traduzione-item {
+            padding: 1.5rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: border-color 0.3s ease;
+        }
+
+        .traduzione-item:hover {
+            border-color: var(--ottanio);
+        }
+
+        .traduzione-titolo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .traduzione-lingue {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            line-height: 1.6;
+        }
+
+        /* PODCAST */
+        .podcast-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .podcast-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: border-color 0.3s ease;
+        }
+
+        .podcast-item:hover {
+            border-color: var(--ottanio);
+        }
+
+        .podcast-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+
+        .podcast-meta {
+            font-size: 0.85rem;
+            color: var(--ottanio);
+            margin-top: 0.5rem;
+        }
+
+        .podcast-desc {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        /* ATTIVITÀ */
+        .attivita-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+        }
+
+        .attivita-item h4 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .attivita-item p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 3rem;
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-back {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-back:hover {
+            color: var(--nero);
+        }
+
+        .footer-back::before {
+            content: '←';
+        }
+
+        .footer-other {
+            text-align: right;
+        }
+
+        .footer-other-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-other-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+        }
+
+        .footer-other-name a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-other-name a:hover {
+            color: var(--ottanio);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .bio-hero {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .bio-photo {
+                order: -1;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .attivita-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .podcast-item {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .libro {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .libro-anno {
+                font-size: 0.85rem;
+            }
+
+            .libro-editore {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                gap: 1.5rem;
+            }
+
+            .bio-hero,
+            .bio-content {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-nav {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .footer-other {
+                text-align: center;
+            }
+        }
+
+        /* REVEAL ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo">Tlon</a>
+        <nav>
+            <a href="/andrea-colamedici">Andrea</a>
+            <a href="/edizioni">Edizioni</a>
+            <a href="/librerie">Librerie</a>
+            <a href="/contatti">Contatti</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="bio-hero">
+            <div class="bio-photo">
+                <div class="bio-photo-frame">
+                    <img src="../assets/images/maura-gancitano.jpg" alt="Maura Gancitano">
+                </div>
+            </div>
+            <div class="bio-intro">
+                <span class="bio-label">Fondatrice</span>
+                <h1 class="bio-name">Maura <em>Gancitano</em></h1>
+                <p class="bio-tagline">Filosofa, scrittrice e divulgatrice. Co-fondatrice di Tlon, si occupa di parità di genere, educazione sentimentale, spazi pubblici digitali e comunicazione culturale.</p>
+                <div class="bio-meta">
+                    <span>Mazara del Vallo, 1985</span>
+                    <span>Editorialista di Repubblica</span>
+                    <span>Premio Rapallo 2022</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="bio-content">
+            <!-- BIOGRAFIA -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Biografia</h2>
+                    <span class="section-num">I</span>
+                </div>
+                <div class="bio-text">
+                    <p>Maura Gancitano è filosofa, saggista e divulgatrice. Ha studiato filosofia all'Università Vita-Salute San Raffaele di Milano e ha fondato Tlon insieme ad Andrea Colamedici: un progetto culturale che si manifesta attraverso l'organizzazione di festival ed eventi, una casa editrice, due librerie e un'attività di divulgazione online e dal vivo, mescolando cultura alta e bassa, analizzando bisogni e significati del nostro tempo e mettendo in connessione l'ambiente accademico con la cultura popolare.</p>
+                    <p>Collabora con diverse testate tra cui la Repubblica, Vanity Fair, linus e Radio 1. È stata inserita da Vanity Fair Italia, Francia e Spagna nella lista «Generazione futuro», tra gli artisti, attivisti e pionieri che stanno disegnando il futuro dell'Europa, e nella lista Unstoppable Women di StartUpItalia, le 150 donne da seguire nel mondo dell'innovazione in Italia.</p>
+                    <p>Insieme ad Andrea Colamedici è direttrice filosofica del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. Con Tlon organizza il Tlon Fest a Roma e il premio Il Pod per i migliori podcast italiani. Insegna Prompt Thinking presso lo IED Roma e ha collaborato con numerose università italiane e internazionali, tra cui Politecnico di Milano, IED Milano, Università Cattolica, Bicocca, Roma Tre, San Raffaele, LUISS, Università di Trento, Perugia, Foggia e Columbia University.</p>
+                    <p>Ha tenuto speech per TEDxRoma, TEDxGenova, TEDxLeverano e TEDxBarletta. Con il saggio <em>Specchio delle mie brame. La prigione della bellezza</em> (Einaudi 2022) ha vinto il Premio Rapallo, ex aequo con Bianca Pitzorno.</p>
+                </div>
+            </section>
+
+            <!-- LIBRI -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Libri</h2>
+                    <span class="section-num">II</span>
+                </div>
+
+                <div class="libro-categoria">
+                    <div class="categoria-title">Opere individuali</div>
+                    
+                    <div class="libro">
+                        <span class="libro-anno">2024</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Erotica dei sentimenti</span>
+                            <span class="libro-sottotitolo">Per una nuova educazione sentimentale</span>
+                        </div>
+                        <span class="libro-editore">Einaudi</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2024</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Perché studiare filosofia (non) è noioso</span>
+                            <span class="libro-sottotitolo">Ora buca</span>
+                        </div>
+                        <span class="libro-editore">Mondadori</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2022</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Specchio delle mie brame</span>
+                            <span class="libro-sottotitolo">La prigione della bellezza</span>
+                            <span class="libro-premio">Premio Rapallo 2022</span>
+                        </div>
+                        <span class="libro-editore">Einaudi</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2015</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Malefica</span>
+                            <span class="libro-sottotitolo">Trasformare la rabbia femminile</span>
+                        </div>
+                        <span class="libro-editore">Tlon</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2013</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Igiene e cosmesi naturali</span>
+                            <span class="libro-sottotitolo">Idee e ricette per il bambino, la famiglia e la casa</span>
+                        </div>
+                        <span class="libro-editore">Il Leone Verde</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2007</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">I lacci bianchi</span>
+                            <span class="libro-sottotitolo">Poesie</span>
+                        </div>
+                        <span class="libro-editore">Armando Siciliano</span>
+                    </div>
+                </div>
+
+                <div class="libro-categoria">
+                    <div class="categoria-title">Con Andrea Colamedici</div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2025</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Botanica della meraviglia</span>
+                        </div>
+                        <span class="libro-editore">HarperCollins</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2023</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Ma chi me lo fa fare?</span>
+                            <span class="libro-sottotitolo">Come il lavoro ci ha illuso: la fine dell'incantesimo</span>
+                        </div>
+                        <span class="libro-editore">HarperCollins</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2022</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Il gioco del pensiero</span>
+                        </div>
+                        <span class="libro-editore">Zanichelli</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2021</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">L'alba dei nuovi dèi</span>
+                            <span class="libro-sottotitolo">Da Platone ai big data</span>
+                        </div>
+                        <span class="libro-editore">Mondadori</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2021</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Prendila con filosofia</span>
+                            <span class="libro-sottotitolo">Manuale di fioritura personale</span>
+                        </div>
+                        <span class="libro-editore">HarperCollins</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2019</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Liberati della brava bambina</span>
+                            <span class="libro-sottotitolo">Otto storie per fiorire</span>
+                        </div>
+                        <span class="libro-editore">HarperCollins</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2018</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">La società della performance</span>
+                            <span class="libro-sottotitolo">Come uscire dalla caverna</span>
+                        </div>
+                        <span class="libro-editore">Tlon</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2017</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Lezioni di meraviglia</span>
+                            <span class="libro-sottotitolo">Viaggi tra filosofia e immaginazione</span>
+                        </div>
+                        <span class="libro-editore">Tlon</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2016</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Tu non sei Dio</span>
+                            <span class="libro-sottotitolo">Fenomenologia della spiritualità contemporanea</span>
+                        </div>
+                        <span class="libro-editore">Tlon</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TRADUZIONI -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Traduzioni</h2>
+                    <span class="section-num">III</span>
+                </div>
+                <div class="traduzioni-grid">
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">Specchio delle mie brame</div>
+                        <div class="traduzione-lingue">Spagnolo, Cinese, Portoghese, Coreano, Romeno</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">Liberati della brava bambina</div>
+                        <div class="traduzione-lingue">Cinese, Coreano</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">Prendila con filosofia</div>
+                        <div class="traduzione-lingue">Cinese, Spagnolo, Polacco, Coreano</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">Perché studiare filosofia (non) è noioso</div>
+                        <div class="traduzione-lingue">Spagnolo</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">La società della performance</div>
+                        <div class="traduzione-lingue">Cinese (in corso)</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">Ma chi me lo fa fare?</div>
+                        <div class="traduzione-lingue">Cinese (in corso)</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PODCAST -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Podcast</h2>
+                    <span class="section-num">IV</span>
+                </div>
+                <div class="podcast-grid">
+                    <div class="podcast-item">
+                        <div>
+                            <div class="podcast-title">Scuola di Filosofie</div>
+                            <div class="podcast-meta">Audible · con Andrea Colamedici</div>
+                        </div>
+                        <div class="podcast-desc">Un percorso in due stagioni attraverso i grandi pensatori del Novecento, dalla fenomenologia all'esistenzialismo, dalla filosofia della mente alla teoria critica, per applicare le loro intuizioni alla vita quotidiana.</div>
+                    </div>
+                    <div class="podcast-item">
+                        <div>
+                            <div class="podcast-title">Pensare Europeo</div>
+                            <div class="podcast-meta">Parlamento Europeo · con Andrea Colamedici</div>
+                        </div>
+                        <div class="podcast-desc">Un ciclo di incontri per potenziare il senso di appartenenza alla comunità europea, mettendo in connessione eurodeputati con filosofi, attivisti, storici e artisti italiani.</div>
+                    </div>
+                    <div class="podcast-item">
+                        <div>
+                            <div class="podcast-title">Meno per meno</div>
+                            <div class="podcast-meta">RaiPlaySound · con Niccolò Fabi</div>
+                        </div>
+                        <div class="podcast-desc">Dieci incontri che partono dalle canzoni scelte da Niccolò Fabi per celebrare i suoi 25 anni di carriera, trasformando i testi in scintille per affrontare tematiche disparate.</div>
+                    </div>
+                    <div class="podcast-item">
+                        <div>
+                            <div class="podcast-title">Tlon – Il podcast</div>
+                            <div class="podcast-meta">Tutte le piattaforme</div>
+                        </div>
+                        <div class="podcast-desc">Interviste, conversazioni e contributi dagli eventi e dai festival Tlon, per restare aggiornati sulle iniziative del progetto e scoprire i temi della divulgazione filosofica.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ATTIVITÀ -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Attività</h2>
+                    <span class="section-num">V</span>
+                </div>
+                <div class="attivita-grid">
+                    <div class="attivita-item">
+                        <h4>Direzione artistica</h4>
+                        <p>Direttrice filosofica del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. Ideatrice della Festa della Filosofia presso le Triennali di Milano e Roma e del premio ilPod – Italian Podcast Awards.</p>
+                    </div>
+                    <div class="attivita-item">
+                        <h4>Insegnamento</h4>
+                        <p>Docente di Prompt Thinking allo IED Roma. Ha collaborato con Politecnico di Milano, Università Cattolica, Bicocca, Roma Tre, San Raffaele, LUISS, Università di Trento, Perugia, Foggia e Columbia University.</p>
+                    </div>
+                    <div class="attivita-item">
+                        <h4>Giornalismo</h4>
+                        <p>Editorialista di Repubblica. Collabora con Vanity Fair, linus e Radio 1. Con Andrea Colamedici cura la rubrica "Prendila con filosofia" su Vanity Fair e partecipa al programma "Matteo Caccia racconta" su Radio24.</p>
+                    </div>
+                    <div class="attivita-item">
+                        <h4>Formazione</h4>
+                        <p>Propone percorsi formativi su filosofia, diversity & inclusion, educazione di genere, comunicazione culturale e spazi pubblici digitali, per aziende, istituzioni e associazioni.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-nav">
+            <a href="/" class="footer-back">Torna alla home</a>
+            <div class="footer-other">
+                <div class="footer-other-label">L'altro fondatore</div>
+                <div class="footer-other-name"><a href="/andrea-colamedici">Andrea Colamedici</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
