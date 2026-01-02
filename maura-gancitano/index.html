@@ -63,11 +63,13 @@
         }
 
         .logo {
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
         }
 
         nav {
@@ -562,12 +564,14 @@
 <body>
 
     <header>
-        <a href="/" class="logo">Tlon</a>
+        <a href="/" class="logo"><img src="/assets/images/tlon-logo.png" alt="Tlon"></a>
         <nav>
-            <a href="/andrea-colamedici">Andrea</a>
-            <a href="/edizioni">Edizioni</a>
-            <a href="/librerie">Librerie</a>
-            <a href="/contatti">Contatti</a>
+            <a href="/#dimensioni">Progetto</a>
+            <a href="/#dim-edizioni">Edizioni</a>
+            <a href="/#dim-podcast">Podcast</a>
+            <a href="/#contatti">Librerie</a>
+            <a href="https://shop.tlon.it">Shop</a>
+            <a href="/#contatti">Contatti</a>
         </nav>
     </header>
 
@@ -576,7 +580,7 @@
         <section class="bio-hero">
             <div class="bio-photo">
                 <div class="bio-photo-frame">
-                    <img src="../assets/images/maura-gancitano.jpg" alt="Maura Gancitano">
+                    <img src="/assets/images/maura-gancitano.jpg" alt="Maura Gancitano">
                 </div>
             </div>
             <div class="bio-intro">
@@ -862,7 +866,7 @@
             <a href="/" class="footer-back">Torna alla home</a>
             <div class="footer-other">
                 <div class="footer-other-label">L'altro fondatore</div>
-                <div class="footer-other-name"><a href="/andrea-colamedici">Andrea Colamedici</a></div>
+                <div class="footer-other-name"><a href="/andrea-colamedici/">Andrea Colamedici</a></div>
             </div>
         </div>
     </footer>
