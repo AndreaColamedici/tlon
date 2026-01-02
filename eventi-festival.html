@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventi e Festival — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bianco);
+            color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 8rem 3rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(42, 107, 107, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(42, 107, 107, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .hero-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            max-width: 900px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.4s;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--grigio);
+            max-width: 600px;
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* EVENTI SECTION */
+        .eventi {
+            padding: 6rem 3rem;
+        }
+
+        .eventi-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .evento {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            padding: 4rem 0;
+            border-bottom: 1px solid var(--grigio-chiaro);
+            position: relative;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .evento.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .evento:first-child {
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .evento::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: linear-gradient(90deg, rgba(42, 107, 107, 0.03) 0%, transparent 100%);
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .evento:hover::before {
+            width: 100%;
+        }
+
+        .evento-header {
+            position: relative;
+        }
+
+        .evento-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 4rem;
+            color: var(--grigio-chiaro);
+            line-height: 1;
+            transition: color 0.4s ease;
+        }
+
+        .evento:hover .evento-num {
+            color: var(--ottanio);
+        }
+
+        .evento-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-top: 1rem;
+            line-height: 1.2;
+            transition: transform 0.4s ease;
+        }
+
+        .evento:hover .evento-title {
+            transform: translateX(10px);
+        }
+
+        .evento-title em {
+            font-style: italic;
+        }
+
+        .evento-location {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .evento-location::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        .evento-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .evento-desc {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: var(--grigio);
+            max-width: 600px;
+        }
+
+        .evento-role {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--grigio-chiaro);
+            font-size: 0.9rem;
+            color: var(--nero);
+        }
+
+        .evento-role strong {
+            font-weight: 600;
+        }
+
+        .evento-highlights {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .highlight {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .highlight-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            color: var(--ottanio);
+        }
+
+        .highlight-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grigio);
+        }
+
+        /* OSPITI MARQUEE */
+        .ospiti-section {
+            padding: 4rem 0;
+            background: var(--nero);
+            color: var(--bianco);
+            overflow: hidden;
+        }
+
+        .ospiti-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-align: center;
+            opacity: 0.5;
+            margin-bottom: 2rem;
+        }
+
+        .marquee {
+            display: flex;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-content {
+            display: flex;
+            animation: marquee 30s linear infinite;
+        }
+
+        .marquee-content span {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3rem;
+            font-style: italic;
+            padding: 0 2rem;
+            opacity: 0.7;
+        }
+
+        .marquee-content span::after {
+            content: '·';
+            margin-left: 2rem;
+            opacity: 0.3;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* CTA SECTION */
+        .cta-section {
+            padding: 8rem 3rem;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        .cta-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            border: 1px solid var(--nero);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+        }
+
+        .cta-btn:hover {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--nero);
+            color: var(--bianco);
+            padding: 4rem 3rem 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-brand {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-tagline {
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-col h4 {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.4;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.75rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-social a {
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            opacity: 1;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                gap: 1.5rem;
+            }
+
+            .hero {
+                padding: 7rem 1.5rem 3rem;
+            }
+
+            .eventi {
+                padding: 3rem 1.5rem;
+            }
+
+            .evento {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 3rem 0;
+            }
+
+            .evento-num {
+                font-size: 2.5rem;
+            }
+
+            .evento-title {
+                font-size: 1.5rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .footer-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">TLON</a>
+        <nav>
+            <a href="index.html#dimensioni">Dimensioni</a>
+            <a href="eventi-festival.html">Eventi</a>
+            <a href="index.html#contatti">Luoghi</a>
+            <a href="index.html#newsletter">Newsletter</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <span class="hero-label">Dal 2016</span>
+            <h1 class="hero-title">Eventi e <em>festival</em></h1>
+            <p class="hero-desc">Direzione filosofica, curatela, ideazione. Portiamo il pensiero nei luoghi dove può accadere qualcosa di imprevisto.</p>
+        </section>
+
+        <section class="eventi">
+            <div class="eventi-list">
+
+                <article class="evento">
+                    <div class="evento-header">
+                        <span class="evento-num">01</span>
+                        <h2 class="evento-title">Festival del Pensare <em>Contemporaneo</em></h2>
+                        <span class="evento-location">Piacenza</span>
+                    </div>
+                    <div class="evento-body">
+                        <p class="evento-desc">Dal 2023 la città di Piacenza lavora all'ideazione e alla realizzazione di un Festival di caratura nazionale e richiamo internazionale con il quale, anno dopo anno, ispirare un futuro più consapevole di ciò che possiamo essere e realizzare insieme. Uno spazio, fisico e intellettuale, per stimolare il dialogo e la cooperazione tra personalità e pubblici diversi per età, interessi, storie e provenienze.</p>
+                        <p class="evento-role"><strong>Direzione filosofica</strong> di Tlon · Curatela di Alessandro Fusacchia</p>
+                    </div>
+                </article>
+
+                <article class="evento">
+                    <div class="evento-header">
+                        <span class="evento-num">02</span>
+                        <h2 class="evento-title">Carnevale di <em>Putignano</em></h2>
+                        <span class="evento-location">Putignano</span>
+                    </div>
+                    <div class="evento-body">
+                        <p class="evento-desc">Andrea è il direttore filosofico del Carnevale di Putignano. Ha scelto per le sfilate dei carri il tema della Sovversione nell'edizione 2024 e del Paradosso in quella del 2025. Il suo lavoro è incentrato sul recupero delle radici filosofiche del Carnevale e al contempo sull'attualizzazione dei temi su cui lavorano i maestri cartapestai negli straordinari carri.</p>
+                        <div class="evento-highlights">
+                            <div class="highlight">
+                                <span class="highlight-value">2024</span>
+                                <span class="highlight-label">Sovversione</span>
+                            </div>
+                            <div class="highlight">
+                                <span class="highlight-value">2025</span>
+                                <span class="highlight-label">Paradosso</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="evento">
+                    <div class="evento-header">
+                        <span class="evento-num">03</span>
+                        <h2 class="evento-title">IlPod — Italian <em>Podcast</em> Awards</h2>
+                        <span class="evento-location">Italia</span>
+                    </div>
+                    <div class="evento-body">
+                        <p class="evento-desc">Siamo i fondatori de ilPod, il premio per i migliori podcast italiani, giunto alla sua quarta edizione. Il mondo del podcasting è un motore culturale che ha un potenziale enorme. Creando i primi premi per i migliori podcast italiani abbiamo voluto mettere in luce i tanti progetti di qualità che sono fioriti durante l'anno, e rafforzare la comunità di chi ascolta i podcast ogni giorno.</p>
+                        <p class="evento-role"><strong>Fondatori</strong> · Quarta edizione</p>
+                    </div>
+                </article>
+
+                <article class="evento">
+                    <div class="evento-header">
+                        <span class="evento-num">04</span>
+                        <h2 class="evento-title"><em>GenIA</em>LAB</h2>
+                        <span class="evento-location">Roma · AANT</span>
+                    </div>
+                    <div class="evento-body">
+                        <p class="evento-desc">Hub di ricerca transdisciplinare dell'Accademia di Arti e Nuove Tecnologie. La missione è fungere da osservatorio permanente interdisciplinare, aperto al dialogo con esperti esterni, per co-creare progetti innovativi. Un laboratorio di eccellenza che unisce la tradizione italiana dell'arte, della filosofia, della comunicazione e dei media con l'innovazione tecnologica.</p>
+                        <p class="evento-role"><strong>Andrea Colamedici</strong> · Presidente</p>
+                    </div>
+                </article>
+
+                <article class="evento">
+                    <div class="evento-header">
+                        <span class="evento-num">05</span>
+                        <h2 class="evento-title">BariDiversa — Festival del <em>Pensare Queer</em></h2>
+                        <span class="evento-location">Bari</span>
+                    </div>
+                    <div class="evento-body">
+                        <p class="evento-desc">Un invito provocatorio a riconoscere e onorare la diversità che abita la nostra città e ciascuno di noi, a non avere paura di essere se stessi. Pensare in maniera queer significa sforzarsi di superare i binarismi e le etichette, facendo proprio l'insegnamento poetico di Emily Dickinson: «Dì tutta la verità ma dilla obliqua».</p>
+                        <p class="evento-role">Organizzato per il <strong>Comune di Bari</strong></p>
+                    </div>
+                </article>
+
+                <article class="evento">
+                    <div class="evento-header">
+                        <span class="evento-num">06</span>
+                        <h2 class="evento-title">Festa della <em>Filosofia</em></h2>
+                        <span class="evento-location">Milano · Roma</span>
+                    </div>
+                    <div class="evento-body">
+                        <p class="evento-desc">Vivere la filosofia come facevano anche gli antichi: Socrate incontrava allievi e amici in forma conviviale, i libri di Platone sono conversazioni, e Aristotele "passeggiava" con i discepoli. Non un convegno tradizionale con lezioni frontali, ma un evento con esercizi ginnici e mentali, passeggiate filosofiche e conversazioni per stuzzicare l'amore per la sapienza.</p>
+                        <div class="evento-highlights">
+                            <div class="highlight">
+                                <span class="highlight-value">Triennale</span>
+                                <span class="highlight-label">Milano</span>
+                            </div>
+                            <div class="highlight">
+                                <span class="highlight-value">Monk</span>
+                                <span class="highlight-label">Roma · 3 edizioni</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="evento">
+                    <div class="evento-header">
+                        <span class="evento-num">07</span>
+                        <h2 class="evento-title">Prendiamola con <em>Filosofia</em></h2>
+                        <span class="evento-location">Streaming internazionale</span>
+                    </div>
+                    <div class="evento-body">
+                        <p class="evento-desc">Dopo la prima edizione che ha raggiunto due milioni di spettatori, riuniti con l'intento di usare la filosofia come strumento per affrontare il particolare momento che il Covid-19 ci ha fatto vivere, è tornata Prendiamola con Filosofia in una nuova veste internazionale. Dalle 11 del mattino fino alle 23, una staffetta in streaming con grandi nomi del panorama culturale mondiale.</p>
+                        <div class="evento-highlights">
+                            <div class="highlight">
+                                <span class="highlight-value">2M</span>
+                                <span class="highlight-label">Spettatori</span>
+                            </div>
+                            <div class="highlight">
+                                <span class="highlight-value">12h</span>
+                                <span class="highlight-label">Di diretta</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="ospiti-section">
+            <p class="ospiti-label">Alcuni ospiti delle nostre edizioni</p>
+            <div class="marquee">
+                <div class="marquee-content">
+                    <span>Vandana Shiva</span>
+                    <span>Noam Chomsky</span>
+                    <span>David Quammen</span>
+                    <span>Alain de Botton</span>
+                    <span>Vandana Shiva</span>
+                    <span>Noam Chomsky</span>
+                    <span>David Quammen</span>
+                    <span>Alain de Botton</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2 class="cta-title">Vuoi organizzare un evento <em>con noi</em>?</h2>
+            <a href="mailto:info@tlon.it" class="cta-btn">Scrivici</a>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">TLON</div>
+                <p class="footer-tagline">Un pianeta immaginario. Che esiste.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Progetto</h4>
+                    <a href="/chi-siamo">Chi siamo</a>
+                    <a href="/contatti">Contatti</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Edizioni</h4>
+                    <a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a>
+                    <a href="https://shop.tlon.it/autori/">Autori</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Attività</h4>
+                    <a href="eventi-festival.html">Eventi</a>
+                    <a href="#">Formazione</a>
+                    <a href="#">Podcast</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Tlon Srl</p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
+                <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
+                <a href="https://www.tlonletter.it" target="_blank">Substack</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal per gli eventi
+        const eventi = document.querySelectorAll('.evento');
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        eventi.forEach(evento => observer.observe(evento));
+
+        // Parallax sottile sull'hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+                hero.style.opacity = 1 - (scrolled / window.innerHeight) * 0.5;
+            }
+        });
+    </script>
+
+</body>
+</html>
