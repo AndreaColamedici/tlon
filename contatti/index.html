@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatti — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bianco);
+            color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+            transition: filter 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            padding-top: 120px;
+        }
+
+        /* PAGE HERO */
+        .page-hero {
+            padding: 4rem 3rem 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .page-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+        }
+
+        .page-title em {
+            font-style: italic;
+        }
+
+        .page-intro {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: var(--grigio);
+            max-width: 680px;
+        }
+
+        /* CONTATTI SECTION */
+        .contatti-section {
+            padding: 0 3rem 8rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .contatti-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+        }
+
+        /* COLONNA EMAIL */
+        .contatti-email {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .contatto-gruppo {
+            padding: 2rem 0;
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .contatto-gruppo:first-child {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .contatto-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 0.75rem;
+        }
+
+        .contatto-email {
+            font-size: 1.1rem;
+            color: var(--nero);
+            transition: color 0.3s ease;
+        }
+
+        .contatto-email:hover {
+            color: var(--ottanio);
+        }
+
+        .contatto-desc {
+            font-size: 0.9rem;
+            color: var(--grigio);
+            margin-top: 0.5rem;
+            line-height: 1.6;
+        }
+
+        /* COLONNA SEDE */
+        .contatti-sede {
+            background: linear-gradient(135deg, rgba(42, 107, 107, 0.03) 0%, rgba(42, 107, 107, 0.08) 100%);
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sede-principale {
+            margin-bottom: 3rem;
+        }
+
+        .sede-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+        }
+
+        .sede-nome {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .sede-indirizzo {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        .sede-telefono {
+            margin-top: 1.5rem;
+        }
+
+        .sede-telefono a {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--nero);
+            transition: color 0.3s ease;
+        }
+
+        .sede-telefono a:hover {
+            color: var(--ottanio);
+        }
+
+        .sede-mappa {
+            margin-top: auto;
+        }
+
+        .mappa-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            padding: 1rem 1.5rem;
+            border: 1px solid var(--ottanio);
+            transition: all 0.3s ease;
+        }
+
+        .mappa-link:hover {
+            background: var(--ottanio);
+            color: var(--bianco);
+        }
+
+        .mappa-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* NEWSLETTER SECTION */
+        .newsletter {
+            background: var(--nero);
+            padding: 6rem 3rem;
+        }
+
+        .newsletter-inner {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .newsletter-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            color: var(--bianco);
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-desc {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+        }
+
+        .newsletter-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--bianco);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background: var(--bianco);
+            color: var(--nero);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--nero);
+            color: var(--bianco);
+            padding: 4rem 3rem 2rem;
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+
+        .footer-brand {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-tagline {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 5rem;
+        }
+
+        .footer-col h4 {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--bianco);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-social a {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            color: var(--bianco);
+        }
+
+        /* REVEAL ANIMATION */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .contatti-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .contatti-sede {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                gap: 1.5rem;
+            }
+
+            nav a {
+                font-size: 0.65rem;
+            }
+
+            .page-hero {
+                padding: 3rem 1.5rem 4rem;
+            }
+
+            .contatti-section {
+                padding: 0 1.5rem 5rem;
+            }
+
+            .contatti-sede {
+                padding: 2rem;
+            }
+
+            .footer-links {
+                gap: 3rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                display: none;
+            }
+
+            .footer-grid {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+
+            .footer-social {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../" class="logo"><img src="../assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="../andrea-colamedici/">Colamedici</a>
+            <a href="../maura-gancitano/">Gancitano</a>
+            <a href="https://shop.tlon.it">Edizioni</a>
+            <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
+            <a href="https://shop.tlon.it">Shop</a>
+            <a href="../contatti/">Contatti</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <span class="page-label reveal">Scrivici</span>
+            <h1 class="page-title reveal">Entra in <em>contatto</em></h1>
+            <p class="page-intro reveal">Tlon è un organismo con molte anime: una casa editrice, una rete di librerie, un centro di formazione, un laboratorio di ricerca. Ogni anima ha il proprio indirizzo: scegli quello giusto per la tua richiesta, e ti risponderemo con cura.</p>
+        </section>
+
+        <section class="contatti-section">
+            <div class="contatti-grid">
+                <div class="contatti-email">
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Informazioni generali</span>
+                        <a href="mailto:info@tlon.it" class="contatto-email">info@tlon.it</a>
+                        <p class="contatto-desc">Per domande sulle attività di Tlon, collaborazioni, proposte e tutto ciò che non rientra nelle altre categorie.</p>
+                    </div>
+
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Edizioni Tlon — Redazione</span>
+                        <a href="mailto:redazione@tlon.it" class="contatto-email">redazione@tlon.it</a>
+                        <p class="contatto-desc">Per inviare manoscritti, proposte editoriali e richieste relative ai nostri libri.</p>
+                    </div>
+
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Edizioni Tlon — Ufficio stampa</span>
+                        <a href="mailto:ufficiostampa@tlon.it" class="contatto-email">ufficiostampa@tlon.it</a>
+                        <p class="contatto-desc">Per giornalisti, recensori e richieste di copie stampa.</p>
+                    </div>
+
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Libreria Teatro Tlon</span>
+                        <a href="mailto:libreriateatro@tlon.it" class="contatto-email">libreriateatro@tlon.it</a>
+                        <p class="contatto-desc">Per informazioni sugli eventi in libreria, presentazioni e attività a Roma Ostiense.</p>
+                    </div>
+
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Acquisti e distribuzione</span>
+                        <a href="mailto:commerciale@tlon.it" class="contatto-email">commerciale@tlon.it</a>
+                        <p class="contatto-desc">Per ordini online, librerie che desiderano rifornirsi e questioni commerciali.</p>
+                    </div>
+                </div>
+
+                <div class="contatti-sede reveal">
+                    <div class="sede-principale">
+                        <span class="sede-label">Sede principale</span>
+                        <h2 class="sede-nome">Libreria Teatro Tlon</h2>
+                        <p class="sede-indirizzo">
+                            Via Federico Nansen 14/16<br>
+                            00154 Roma<br>
+                            Quartiere Ostiense
+                        </p>
+                        <div class="sede-telefono">
+                            <a href="tel:+390645653446">06 4565 3446</a>
+                        </div>
+                    </div>
+                    <div class="sede-mappa">
+                        <a href="https://maps.google.com/?q=Via+Federico+Nansen+14,+00154+Roma" target="_blank" class="mappa-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            Apri in Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter">
+            <div class="newsletter-inner reveal">
+                <h2 class="newsletter-title">Tlonletter</h2>
+                <p class="newsletter-desc">La nostra newsletter settimanale, su Substack.</p>
+                <a href="https://www.tlonletter.it" class="newsletter-btn" target="_blank">Iscriviti</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">TLON</div>
+                <p class="footer-tagline">Un pianeta immaginario. Che esiste.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Progetto</h4>
+                    <a href="../">Chi siamo</a>
+                    <a href="../contatti/">Contatti</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Edizioni</h4>
+                    <a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a>
+                    <a href="https://shop.tlon.it/autori/">Autori</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Attività</h4>
+                    <a href="#">Eventi</a>
+                    <a href="#">Formazione</a>
+                    <a href="#">Podcast</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Tlon Srl</p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
+                <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
+                <a href="https://www.tlonletter.it" target="_blank">Substack</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
