@@ -179,6 +179,15 @@
             color: rgba(255,255,255,0.8);
         }
 
+        .hero-author-name a {
+            color: var(--ottanio);
+            transition: opacity 0.3s ease;
+        }
+
+        .hero-author-name a:hover {
+            opacity: 0.7;
+        }
+
         .hero-meta {
             font-size: 0.85rem;
             color: var(--grigio);
@@ -429,6 +438,78 @@
             text-align: left;
         }
 
+        /* COPERTINE */
+        .copertine {
+            padding: 8rem 3rem;
+            background: #f5f5f5;
+            color: var(--nero);
+        }
+
+        .copertine-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .copertine-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+        }
+
+        .copertine-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .copertine-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .copertina {
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .copertina:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        .copertina img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .copertina-lang {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--bianco);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(100%);
+            transition: all 0.4s ease;
+        }
+
+        .copertina:hover .copertina-lang {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* CONCETTI */
         .concetti {
             padding: 10rem 3rem;
@@ -573,58 +654,77 @@
             color: var(--ottanio);
         }
 
-        /* STAMPA INTERNAZIONALE */
-        .stampa {
-            padding: 8rem 3rem;
+        /* RASSEGNA STAMPA */
+        .rassegna {
+            padding: 10rem 3rem;
             background: var(--bianco);
             color: var(--nero);
         }
 
-        .stampa-header {
+        .rassegna-header {
             text-align: center;
             margin-bottom: 4rem;
         }
 
-        .stampa-header h2 {
+        .rassegna-header h2 {
             font-family: 'Instrument Serif', serif;
             font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 400;
+            margin-bottom: 1rem;
         }
 
-        .stampa-header h2 em {
+        .rassegna-header h2 em {
             font-style: italic;
             color: var(--ottanio);
         }
 
-        .stampa-marquee {
-            overflow: hidden;
-            padding: 2rem 0;
-            border-top: 1px solid var(--grigio-chiaro);
-            border-bottom: 1px solid var(--grigio-chiaro);
-        }
-
-        .stampa-track {
-            display: flex;
-            animation: marquee 30s linear infinite;
-        }
-
-        .stampa-track span {
-            padding: 0 4rem;
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.8rem;
-            font-style: italic;
+        .rassegna-header p {
+            font-size: 1rem;
             color: var(--grigio);
-            white-space: nowrap;
+        }
+
+        .rassegna-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--grigio-chiaro);
+            border: 1px solid var(--grigio-chiaro);
+        }
+
+        .rassegna-item {
+            padding: 1.5rem 2rem;
+            background: var(--bianco);
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .rassegna-item:hover {
+            background: #fafafa;
+        }
+
+        .rassegna-testata {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+        }
+
+        .rassegna-titolo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.05rem;
+            font-style: italic;
+            line-height: 1.4;
+            color: var(--nero);
             transition: color 0.3s ease;
         }
 
-        .stampa-track span:hover {
+        .rassegna-item:hover .rassegna-titolo {
             color: var(--ottanio);
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
         }
 
         /* TRADUZIONI */
@@ -688,34 +788,10 @@
             position: relative;
         }
 
-        .libro-cover-frame {
-            aspect-ratio: 3/4;
-            background: linear-gradient(135deg, var(--nero) 0%, #1a1a1a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+        .libro-cover img {
+            width: 100%;
+            height: auto;
             box-shadow: 30px 30px 60px rgba(0,0,0,0.15);
-        }
-
-        .libro-cover-title {
-            font-family: 'Instrument Serif', serif;
-            font-size: 3.5rem;
-            color: var(--bianco);
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .libro-cover-author {
-            position: absolute;
-            bottom: 2rem;
-            left: 0;
-            right: 0;
-            font-size: 0.85rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            text-align: center;
         }
 
         .libro-content {
@@ -922,12 +998,20 @@
                 gap: 4rem;
             }
 
-            .libro-cover-frame {
+            .libro-cover {
                 max-width: 400px;
                 margin: 0 auto;
             }
 
             .concetti-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .copertine-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .rassegna-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -972,9 +1056,10 @@
             .operazione,
             .concetti,
             .citazione,
-            .stampa,
+            .rassegna,
             .traduzioni,
             .libro,
+            .copertine,
             .cta {
                 padding-left: 1.5rem;
                 padding-right: 1.5rem;
@@ -986,6 +1071,11 @@
 
             .traduzione {
                 padding: 0.75rem 1.25rem;
+            }
+
+            .copertine-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
             }
 
             footer {
@@ -1023,7 +1113,7 @@
                 <p class="hero-subtitle">Trump, Musk e la nuova architettura della realtà</p>
                 <div class="hero-author">
                     <span class="hero-author-line"></span>
-                    <span class="hero-author-name">Jianwei Xun / Andrea Colamedici</span>
+                    <span class="hero-author-name"><a href="https://www.jianweixun.com" target="_blank">Jianwei Xun</a> / Andrea Colamedici</span>
                     <span class="hero-author-line"></span>
                 </div>
                 <p class="hero-meta">Un libro. Una performance. Una dimostrazione.</p>
@@ -1040,10 +1130,10 @@
                 <span class="operazione-label">L'operazione</span>
                 <h2 class="operazione-title">Un libro che <em>dimostra</em> ciò che racconta</h2>
                 <p class="operazione-text">
-                    Nel gennaio 2024 Edizioni Tlon pubblica un saggio filosofico firmato da <strong>Jianwei Xun</strong>, presentato come un giovane pensatore cinese già considerato da alcuni l'erede di Jean Baudrillard e da altri quello di Byung-Chul Han. Il libro analizza i meccanismi attraverso cui il potere contemporaneo manipola la percezione della realtà, coniando il termine «Ipnocrazia» per descrivere questo nuovo regime che opera direttamente sulla coscienza collettiva.
+                    Nel gennaio 2024 Edizioni Tlon pubblica un saggio filosofico firmato da <strong><a href="https://www.jianweixun.com" target="_blank" style="color: var(--ottanio);">Jianwei Xun</a></strong>, presentato come un giovane pensatore cinese già considerato da alcuni l'erede di Jean Baudrillard e da altri quello di Byung-Chul Han. Il libro analizza i meccanismi attraverso cui il potere contemporaneo manipola la percezione della realtà, coniando il termine «Ipnocrazia» per descrivere questo nuovo regime che opera direttamente sulla coscienza collettiva.
                 </p>
                 <p class="operazione-text">
-                    Il volume viene tradotto dall'inglese da Andrea Colamedici, che nella nota del traduttore scrive di aver avuto «la sensazione immediata di trovarmi di fronte a qualcosa di raro: un testo che non si limita a fotografare il presente ma che riesce a mostrarne il funzionamento interno». Il libro ottiene attenzione immediata dalla stampa internazionale: <strong>Le Figaro</strong>, <strong>Le Grand Continent</strong>, <strong>Le Monde</strong>, <strong>El País</strong>, <strong>Wired</strong> e studiosi dell'HEC Paris ne discutono le tesi.
+                    Il volume viene tradotto dall'inglese da Andrea Colamedici, che nella nota del traduttore scrive di aver avuto «la sensazione immediata di trovarmi di fronte a qualcosa di raro: un testo che non si limita a fotografare il presente ma che riesce a mostrarne il funzionamento interno». Il libro ottiene attenzione immediata dalla stampa internazionale: <strong>The New York Times</strong>, <strong>Le Monde</strong>, <strong>Wired USA</strong>, <strong>El Clarín</strong> e decine di altre testate ne discutono le tesi.
                 </p>
                 <p class="operazione-text">
                     Nell'aprile 2025, <strong>L'Espresso</strong> rivela che Jianwei Xun non esiste. Il filosofo cinese è un'invenzione, e il libro è stato scritto da Andrea Colamedici in collaborazione con l'intelligenza artificiale. L'operazione, definita dall'autore una «performance narrativa», ha dimostrato <em>performativamente</em> i meccanismi di manipolazione della realtà che il libro stesso analizza: la facilità con cui un'identità fittizia può acquisire autorevolezza, il modo in cui i sistemi di validazione culturale funzionano, la natura costruita della percezione collettiva.
@@ -1075,14 +1165,14 @@
                     </div>
                     <div class="timeline-op-content">
                         <h3 class="timeline-op-title">L'eco <em>internazionale</em></h3>
-                        <p class="timeline-op-desc">Il libro viene discusso su Le Figaro, Le Grand Continent, Le Monde, El País, Wired. Studiosi dell'HEC Paris citano le tesi di Xun. Iniziano le traduzioni in francese, spagnolo, inglese.</p>
+                        <p class="timeline-op-desc">Il libro viene discusso su The New York Times, Le Monde, Wired USA, El Clarín, La Nación e decine di altre testate. Iniziano le traduzioni in francese, spagnolo, inglese.</p>
                     </div>
                 </div>
 
                 <div class="timeline-op-item reveal">
                     <div class="timeline-op-content">
                         <h3 class="timeline-op-title">La <em>rivelazione</em></h3>
-                        <p class="timeline-op-desc">L'Espresso rivela che Jianwei Xun non esiste: è una creazione di Andrea Colamedici realizzata con l'intelligenza artificiale. L'operazione diventa essa stessa oggetto di dibattito culturale.</p>
+                        <p class="timeline-op-desc">L'Espresso rivela che Jianwei Xun non esiste: è una creazione di Andrea Colamedici realizzata con l'intelligenza artificiale. L'operazione diventa essa stessa oggetto di dibattito culturale globale.</p>
                     </div>
                     <div class="timeline-op-date">
                         <div class="timeline-op-date-inner">
@@ -1109,6 +1199,31 @@
             </div>
         </section>
 
+        <!-- COPERTINE -->
+        <section class="copertine">
+            <div class="copertine-header reveal">
+                <h2>Le <em>edizioni</em></h2>
+            </div>
+            <div class="copertine-grid">
+                <div class="copertina reveal">
+                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia - Edizione italiana">
+                    <span class="copertina-lang">Italiano</span>
+                </div>
+                <div class="copertina reveal">
+                    <img src="./assets/images/ipnocrazia-en.jpg" alt="Hypnocracy - English edition">
+                    <span class="copertina-lang">English</span>
+                </div>
+                <div class="copertina reveal">
+                    <img src="./assets/images/ipnocrazia-es.jpg" alt="Hipnocracia - Edición española">
+                    <span class="copertina-lang">Español</span>
+                </div>
+                <div class="copertina reveal">
+                    <img src="./assets/images/ipnocrazia-fr.jpg" alt="Hypnocratie - Édition française">
+                    <span class="copertina-lang">Français</span>
+                </div>
+            </div>
+        </section>
+
         <!-- CITAZIONE -->
         <section class="citazione">
             <div class="citazione-content reveal">
@@ -1127,7 +1242,7 @@
             <div class="concetti-grid">
                 <div class="concetto reveal">
                     <div class="concetto-num">01</div>
-                    <h3 class="concetto-title">Trance <em>algoritmIca</em></h3>
+                    <h3 class="concetto-title">Trance <em>algoritmica</em></h3>
                     <p class="concetto-desc">Il flusso continuo di contenuti digitali induce uno stato di coscienza alterata permanente, in cui l'attenzione viene modulata come un'onda e gli stati emotivi vengono costantemente indotti e manipolati.</p>
                 </div>
                 <div class="concetto reveal">
@@ -1158,30 +1273,101 @@
             </div>
         </section>
 
-        <!-- STAMPA -->
-        <section class="stampa">
-            <div class="stampa-header reveal">
-                <h2>Sulla stampa <em>internazionale</em></h2>
+        <!-- RASSEGNA STAMPA -->
+        <section class="rassegna">
+            <div class="rassegna-header reveal">
+                <h2>Rassegna <em>stampa</em></h2>
+                <p>Copertura internazionale dell'operazione Ipnocrazia</p>
             </div>
-            <div class="stampa-marquee">
-                <div class="stampa-track">
-                    <span>Le Figaro</span>
-                    <span>Le Monde</span>
-                    <span>Le Grand Continent</span>
-                    <span>El País</span>
-                    <span>La Vanguardia</span>
-                    <span>Wired</span>
-                    <span>L'Espresso</span>
-                    <span>HEC Paris</span>
-                    <span>Le Figaro</span>
-                    <span>Le Monde</span>
-                    <span>Le Grand Continent</span>
-                    <span>El País</span>
-                    <span>La Vanguardia</span>
-                    <span>Wired</span>
-                    <span>L'Espresso</span>
-                    <span>HEC Paris</span>
-                </div>
+            <div class="rassegna-grid reveal">
+                <a href="https://www.nytimes.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">The New York Times</span>
+                    <span class="rassegna-titolo">A.I. Can Trick You, Warns Book That Hid A.I.'s Help Writing It</span>
+                </a>
+                <a href="https://www.lemonde.fr" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Le Monde</span>
+                    <span class="rassegna-titolo">Le philosophe Jianwei Xun n'existe pas, mais son concept d'« hypnocratie » entre dans notre réalité</span>
+                </a>
+                <a href="https://www.clarin.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">El Clarín</span>
+                    <span class="rassegna-titolo">Hipnocracia, el libro del año</span>
+                </a>
+                <a href="https://www.lanacion.com.ar" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">La Nación</span>
+                    <span class="rassegna-titolo">El filósofo inventado con IA que fue un éxito editorial</span>
+                </a>
+                <a href="https://www.wired.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Wired USA</span>
+                    <span class="rassegna-titolo">A Philosopher Released an Acclaimed Book About Digital Manipulation. The Author Ended Up Being AI</span>
+                </a>
+                <a href="https://www.telerama.fr" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Télérama</span>
+                    <span class="rassegna-titolo">La vertigineuse histoire d'"Hypnocratie", le percutant essai d'un philosophe hongkongais qui n'existe pas</span>
+                </a>
+                <a href="https://www.franceinter.fr" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">France Inter</span>
+                    <span class="rassegna-titolo">L'IA peut-elle inventer des concepts ?</span>
+                </a>
+                <a href="https://www.wired.es" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Wired ES</span>
+                    <span class="rassegna-titolo">Andrea Colamedici, la mente detrás de Hipnocracia</span>
+                </a>
+                <a href="https://www.corriere.it/style" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Style Corriere della Sera</span>
+                    <span class="rassegna-titolo">La verità su "Ipnocrazia", il libro esperimento di Jianwei Xun (che non esiste) raccontato dal suo creatore</span>
+                </a>
+                <a href="https://www.rollingstone.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Rolling Stone</span>
+                    <span class="rassegna-titolo">El libro del año del autor inexistente: Una advertencia sobre la inteligencia artificial</span>
+                </a>
+                <a href="https://www.nationalgeographic.es" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">National Geographic ES</span>
+                    <span class="rassegna-titolo">Este es el "libro del año", pero su aclamado autor no existe: es una IA</span>
+                </a>
+                <a href="https://www.infobae.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Infobae</span>
+                    <span class="rassegna-titolo">El autor chino que escribió el libro del año no existe: "Lo hicimos la IA y yo"</span>
+                </a>
+                <a href="https://www.infobae.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Infobae</span>
+                    <span class="rassegna-titolo">¿Pasó el libro "Hipnocracia" el desafío de Turing?</span>
+                </a>
+                <a href="https://www.philomag.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Philosophie Magazine FR</span>
+                    <span class="rassegna-titolo">"L'IA est un outil d'une puissance extraordinaire pour construire des concepts"</span>
+                </a>
+                <a href="https://www.philomag.de" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Philosophie Magazine DE</span>
+                    <span class="rassegna-titolo">Der Xun-Test</span>
+                </a>
+                <a href="https://www.lavanguardia.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">La Vanguardia</span>
+                    <span class="rassegna-titolo">El aclamado filósofo chino Jianwei Xun no existe, es en realidad una IA</span>
+                </a>
+                <a href="https://www.perfil.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Perfil</span>
+                    <span class="rassegna-titolo">El filósofo que explica la hipnocracia de Trump a Milei</span>
+                </a>
+                <a href="https://www.lepoint.fr" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Le Point</span>
+                    <span class="rassegna-titolo">« Hypnocratie » : peut-on prendre au sérieux un concept inventé par un philosophe qui n'existe pas ?</span>
+                </a>
+                <a href="https://www.eluniversal.com.mx" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">El Universal</span>
+                    <span class="rassegna-titolo">La hipnocracia y el nuevo arte de fingir realidades</span>
+                </a>
+                <a href="https://www.newsweek.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Newsweek AR</span>
+                    <span class="rassegna-titolo">Cuando la mentira es la verdad: «Hipnocracia» y otros nuevos desafíos de la inteligencia artificial</span>
+                </a>
+                <a href="https://www.elcolombiano.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">El Colombiano</span>
+                    <span class="rassegna-titolo">Jianwei Xun: esta es la historia del primer fake literario escrito con Chat GPT</span>
+                </a>
+                <a href="https://www.haarf.com" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Haarf</span>
+                    <span class="rassegna-titolo">أندريا كولاميديتشى: نعيش عصر «خصخصة الخيال» والكتاب وصف لمشروع التنويم المغناطيسى</span>
+                </a>
             </div>
         </section>
 
@@ -1205,10 +1391,7 @@
         <section class="libro">
             <div class="libro-grid">
                 <div class="libro-cover reveal">
-                    <div class="libro-cover-frame">
-                        <h3 class="libro-cover-title">Ipnocrazia</h3>
-                        <p class="libro-cover-author">Jianwei Xun</p>
-                    </div>
+                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia - Copertina">
                 </div>
                 <div class="libro-content reveal">
                     <span class="libro-label">Il libro</span>
@@ -1241,8 +1424,8 @@
                 <h2 class="cta-title">Scopri di più su <em>Andrea Colamedici</em></h2>
                 <div class="cta-buttons">
                     <a href="./andrea-colamedici/" class="cta-btn primary">Biografia</a>
+                    <a href="https://www.jianweixun.com" target="_blank" class="cta-btn">jianweixun.com</a>
                     <a href="./il-progetto.html" class="cta-btn">Il progetto Tlon</a>
-                    <a href="./formazione.html" class="cta-btn">Formazione</a>
                 </div>
             </div>
         </section>
@@ -1252,8 +1435,8 @@
         <div class="footer-nav">
             <a href="./" class="footer-back">Home</a>
             <div class="footer-links">
+                <a href="https://www.jianweixun.com" target="_blank">jianweixun.com</a>
                 <a href="https://shop.tlon.it/edizioni-tlon/">Edizioni</a>
-                <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
                 <a href="https://www.tlonletter.it">Newsletter</a>
             </div>
         </div>
