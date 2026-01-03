@@ -182,6 +182,11 @@
             margin-bottom: 2.5rem;
         }
 
+        .bio-tagline strong {
+            color: var(--nero);
+            font-weight: 600;
+        }
+
         .bio-meta {
             display: flex;
             flex-direction: column;
@@ -202,6 +207,249 @@
             height: 6px;
             background: var(--ottanio);
             border-radius: 50%;
+        }
+
+        .bio-meta strong {
+            color: var(--nero);
+            font-weight: 600;
+        }
+
+        /* SPECCHIO FEATURE */
+        .specchio-feature {
+            background: var(--nero);
+            color: var(--bianco);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .specchio-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        .specchio-bg-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Instrument Serif', serif;
+            font-size: 25vw;
+            font-style: italic;
+            color: rgba(42, 107, 107, 0.06);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .specchio-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.15) 0%, transparent 70%);
+            animation: specchioFloat 12s ease-in-out infinite;
+        }
+
+        .specchio-glow:nth-child(2) {
+            top: -200px;
+            right: -100px;
+        }
+
+        .specchio-glow:nth-child(3) {
+            bottom: -300px;
+            left: -100px;
+            animation-delay: -6s;
+        }
+
+        @keyframes specchioFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            50% { transform: translate(20px, -20px) scale(1.1); opacity: 1; }
+        }
+
+        .specchio-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            padding: 8rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .specchio-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .specchio-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .specchio-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .specchio-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .specchio-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .specchio-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 2rem;
+        }
+
+        .specchio-desc {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2rem;
+        }
+
+        .specchio-desc strong {
+            color: var(--bianco);
+            font-weight: 500;
+        }
+
+        .specchio-premio {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border: 1px solid var(--ottanio);
+            background: rgba(42, 107, 107, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .specchio-premio-icon {
+            font-size: 1.25rem;
+        }
+
+        .specchio-premio-text {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+        }
+
+        .specchio-right {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .specchio-quote {
+            padding: 3rem;
+            border-left: 3px solid var(--ottanio);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .specchio-quote p {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 1.5rem;
+        }
+
+        .specchio-quote cite {
+            font-size: 0.85rem;
+            font-style: normal;
+            color: var(--ottanio);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .specchio-traduzioni {
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .specchio-traduzioni-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1rem;
+        }
+
+        .specchio-traduzioni-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .specchio-traduzioni-list span {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .specchio-traduzioni-list span:hover {
+            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.1);
+        }
+
+        .specchio-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--bianco);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.4s ease;
+            align-self: flex-start;
+        }
+
+        .specchio-cta:hover {
+            background: var(--ottanio);
+            border-color: var(--ottanio);
+        }
+
+        .specchio-cta svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .specchio-cta:hover svg {
+            transform: translateX(4px);
         }
 
         /* BIO CONTENT */
@@ -254,6 +502,10 @@
 
         .bio-text p:last-child {
             margin-bottom: 0;
+        }
+
+        .bio-text strong {
+            font-weight: 600;
         }
 
         /* LIBRI */
@@ -425,6 +677,11 @@
             color: var(--grigio);
         }
 
+        .attivita-item strong {
+            color: var(--nero);
+            font-weight: 600;
+        }
+
         /* FOOTER */
         footer {
             padding: 4rem 3rem;
@@ -483,6 +740,13 @@
         }
 
         /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .specchio-content {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+        }
+
         @media (max-width: 900px) {
             .bio-hero {
                 grid-template-columns: 1fr;
@@ -516,6 +780,10 @@
             .libro-editore {
                 text-align: left;
             }
+
+            .specchio-content {
+                padding: 5rem 1.5rem;
+            }
         }
 
         @media (max-width: 600px) {
@@ -524,7 +792,7 @@
             }
 
             nav {
-                gap: 1.5rem;
+                display: none;
             }
 
             .bio-hero,
@@ -566,15 +834,15 @@
     <header>
         <a href="../" class="logo"><img src="../assets/images/tlon-logo.png" alt="Tlon"></a>
         <nav>
-    <a href="../il-progetto.html">Il Progetto</a>
-    <a href="../andrea-colamedici/">Colamedici</a>
-    <a href="../maura-gancitano/">Gancitano</a>
-    <a href="../edizioni.html">Edizioni</a>
-    <a href="../librerie.html">Librerie</a>
-    <a href="../formazione.html">Formazione</a>
-    <a href="../eventi-festival.html">Eventi</a>
-    <a href="../contatti/">Contatti</a>
-</nav>
+            <a href="../il-progetto.html">Il Progetto</a>
+            <a href="../andrea-colamedici/">Colamedici</a>
+            <a href="../maura-gancitano/">Gancitano</a>
+            <a href="../edizioni.html">Edizioni</a>
+            <a href="../librerie.html">Librerie</a>
+            <a href="../formazione.html">Formazione</a>
+            <a href="../eventi-festival.html">Eventi</a>
+            <a href="../contatti/">Contatti</a>
+        </nav>
     </header>
 
     <main>
@@ -588,11 +856,55 @@
             <div class="bio-intro">
                 <span class="bio-label">Fondatrice</span>
                 <h1 class="bio-name">Maura <em>Gancitano</em></h1>
-                <p class="bio-tagline">Filosofa, scrittrice e divulgatrice. Co-fondatrice di Tlon, si occupa di parità di genere, educazione sentimentale, spazi pubblici digitali e comunicazione culturale.</p>
+                <p class="bio-tagline"><strong>Filosofa</strong>, scrittrice e divulgatrice. Co-fondatrice di <em>Tlon</em>, si occupa di parità di genere, educazione sentimentale, spazi pubblici digitali e comunicazione culturale.</p>
                 <div class="bio-meta">
                     <span>Mazara del Vallo, 1985</span>
-                    <span>Editorialista di Repubblica</span>
-                    <span>Premio Rapallo 2022</span>
+                    <span>Editorialista di <strong>Repubblica</strong></span>
+                    <span><strong>Premio Rapallo 2022</strong></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPECCHIO DELLE MIE BRAME FEATURE -->
+        <section class="specchio-feature reveal">
+            <div class="specchio-bg">
+                <span class="specchio-bg-text">Specchio</span>
+                <div class="specchio-glow"></div>
+                <div class="specchio-glow"></div>
+            </div>
+            <div class="specchio-content">
+                <div class="specchio-left">
+                    <span class="specchio-label">Premio Rapallo 2022</span>
+                    <h2 class="specchio-title">Specchio delle <em>mie brame</em></h2>
+                    <p class="specchio-subtitle">La prigione della bellezza</p>
+                    <p class="specchio-desc">Un'indagine filosofica sulla <strong>dittatura della bellezza</strong> e sul rapporto tra corpo, identità e potere. Un libro che ha attraversato i confini italiani, tradotto in cinque lingue, e che ha vinto il <strong>Premio Rapallo 2022</strong> ex aequo con Bianca Pitzorno.</p>
+                    <p class="specchio-desc">Perché ci sentiamo <em>mai abbastanza</em>? Perché il corpo delle donne è diventato un campo di battaglia? Maura Gancitano esplora le radici culturali e filosofiche di un'ossessione contemporanea, offrendo strumenti per liberarsene.</p>
+                    <div class="specchio-premio">
+                        <span class="specchio-premio-icon">✦</span>
+                        <span class="specchio-premio-text">Premio Rapallo 2022</span>
+                    </div>
+                    <a href="https://shop.tlon.it" target="_blank" class="specchio-cta">
+                        <span>Acquista il libro</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="specchio-right">
+                    <div class="specchio-quote">
+                        <p>«Il corpo femminile è diventato il luogo in cui si gioca una partita che non riguarda mai davvero le donne, ma il potere di chi le guarda.»</p>
+                        <cite>— Specchio delle mie brame</cite>
+                    </div>
+                    <div class="specchio-traduzioni">
+                        <div class="specchio-traduzioni-label">Traduzioni internazionali</div>
+                        <div class="specchio-traduzioni-list">
+                            <span>Spagnolo</span>
+                            <span>Cinese</span>
+                            <span>Portoghese</span>
+                            <span>Coreano</span>
+                            <span>Romeno</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -605,10 +917,10 @@
                     <span class="section-num">I</span>
                 </div>
                 <div class="bio-text">
-                    <p>Maura Gancitano è filosofa, saggista e divulgatrice. Ha studiato filosofia all'Università Vita-Salute San Raffaele di Milano e ha fondato Tlon insieme ad Andrea Colamedici: un progetto culturale che si manifesta attraverso l'organizzazione di festival ed eventi, una casa editrice, due librerie e un'attività di divulgazione online e dal vivo, mescolando cultura alta e bassa, analizzando bisogni e significati del nostro tempo e mettendo in connessione l'ambiente accademico con la cultura popolare.</p>
-                    <p>Collabora con diverse testate tra cui la Repubblica, Vanity Fair, linus e Radio 1. È stata inserita da Vanity Fair Italia, Francia e Spagna nella lista «Generazione futuro», tra gli artisti, attivisti e pionieri che stanno disegnando il futuro dell'Europa, e nella lista Unstoppable Women di StartUpItalia, le 150 donne da seguire nel mondo dell'innovazione in Italia.</p>
-                    <p>Insieme ad Andrea Colamedici è direttrice filosofica del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. Con Tlon organizza il Tlon Fest a Roma e il premio Il Pod per i migliori podcast italiani. Insegna Prompt Thinking presso lo IED Roma e ha collaborato con numerose università italiane e internazionali, tra cui Politecnico di Milano, IED Milano, Università Cattolica, Bicocca, Roma Tre, San Raffaele, LUISS, Università di Trento, Perugia, Foggia e Columbia University.</p>
-                    <p>Ha tenuto speech per TEDxRoma, TEDxGenova, TEDxLeverano e TEDxBarletta. Con il saggio <em>Specchio delle mie brame. La prigione della bellezza</em> (Einaudi 2022) ha vinto il Premio Rapallo, ex aequo con Bianca Pitzorno.</p>
+                    <p>Maura Gancitano è <strong>filosofa, saggista e divulgatrice</strong>. Ha studiato filosofia all'Università Vita-Salute San Raffaele di Milano e ha fondato <em>Tlon</em> insieme ad Andrea Colamedici: un progetto culturale che si manifesta attraverso l'organizzazione di festival ed eventi, una casa editrice, due librerie e un'attività di divulgazione online e dal vivo, mescolando cultura alta e bassa, analizzando bisogni e significati del nostro tempo e mettendo in connessione l'ambiente accademico con la cultura popolare.</p>
+                    <p>Collabora con diverse testate tra cui <strong>la Repubblica</strong>, <em>Vanity Fair</em>, <em>linus</em> e <strong>Radio 1</strong>. È stata inserita da Vanity Fair Italia, Francia e Spagna nella lista «Generazione futuro», tra gli artisti, attivisti e pionieri che stanno disegnando il futuro dell'Europa, e nella lista <strong>Unstoppable Women</strong> di StartUpItalia, le 150 donne da seguire nel mondo dell'innovazione in Italia.</p>
+                    <p>Insieme ad Andrea Colamedici è <strong>direttrice filosofica</strong> del <em>Festival del Pensare Contemporaneo</em> di Piacenza e del <em>Carnevale di Putignano</em>. Con Tlon organizza il <strong>Tlon Fest</strong> a Roma e il premio <em>Il Pod</em> per i migliori podcast italiani. Insegna <strong>Prompt Thinking</strong> presso lo IED Roma e ha collaborato con numerose università italiane e internazionali, tra cui Politecnico di Milano, IED Milano, Università Cattolica, Bicocca, Roma Tre, San Raffaele, LUISS, Università di Trento, Perugia, Foggia e <strong>Columbia University</strong>.</p>
+                    <p>Ha tenuto speech per <strong>TEDxRoma</strong>, TEDxGenova, TEDxLeverano e TEDxBarletta. Con il saggio <em>Specchio delle mie brame. La prigione della bellezza</em> (Einaudi 2022) ha vinto il <strong>Premio Rapallo</strong>, ex aequo con Bianca Pitzorno.</p>
                 </div>
             </section>
 
@@ -843,19 +1155,19 @@
                 <div class="attivita-grid">
                     <div class="attivita-item">
                         <h4>Direzione artistica</h4>
-                        <p>Direttrice filosofica del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. Ideatrice della Festa della Filosofia presso le Triennali di Milano e Roma e del premio ilPod — Italian Podcast Awards.</p>
+                        <p><strong>Direttrice filosofica</strong> del <em>Festival del Pensare Contemporaneo</em> di Piacenza e del <em>Carnevale di Putignano</em>. Ideatrice della <strong>Festa della Filosofia</strong> presso le Triennali di Milano e Roma e del premio <em>ilPod — Italian Podcast Awards</em>.</p>
                     </div>
                     <div class="attivita-item">
                         <h4>Insegnamento</h4>
-                        <p>Docente di Prompt Thinking allo IED Roma. Ha collaborato con Politecnico di Milano, Università Cattolica, Bicocca, Roma Tre, San Raffaele, LUISS, Università di Trento, Perugia, Foggia e Columbia University.</p>
+                        <p>Docente di <strong>Prompt Thinking</strong> allo IED Roma. Ha collaborato con <em>Politecnico di Milano</em>, Università Cattolica, Bicocca, Roma Tre, San Raffaele, LUISS, Università di Trento, Perugia, Foggia e <strong>Columbia University</strong>.</p>
                     </div>
                     <div class="attivita-item">
                         <h4>Giornalismo</h4>
-                        <p>Editorialista di Repubblica. Collabora con Vanity Fair, linus e Radio 1. Con Andrea Colamedici cura la rubrica "Prendila con filosofia" su Vanity Fair e partecipa al programma "Matteo Caccia racconta" su Radio24.</p>
+                        <p><strong>Editorialista di Repubblica</strong>. Collabora con <em>Vanity Fair</em>, <em>linus</em> e Radio 1. Con Andrea Colamedici cura la rubrica «Prendila con filosofia» su Vanity Fair e partecipa al programma <em>Matteo Caccia racconta</em> su Radio24.</p>
                     </div>
                     <div class="attivita-item">
                         <h4>Formazione</h4>
-                        <p>Propone percorsi formativi su filosofia, diversity & inclusion, educazione di genere, comunicazione culturale e spazi pubblici digitali, per aziende, istituzioni e associazioni.</p>
+                        <p>Propone percorsi formativi su <strong>filosofia</strong>, <em>diversity & inclusion</em>, educazione di genere, comunicazione culturale e spazi pubblici digitali, per aziende, istituzioni e associazioni.</p>
                     </div>
                 </div>
             </section>
