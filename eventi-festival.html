@@ -881,47 +881,84 @@
 
         /* FOOTER */
         footer {
-            padding: 4rem 3rem;
-            border-top: 1px solid var(--grigio-chiaro);
+            background: var(--nero);
+            color: var(--bianco);
+            padding: 4rem 3rem 2rem;
         }
 
-        .footer-nav {
+        .footer-grid {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            gap: 3rem;
         }
 
-        .footer-back {
+        .footer-brand {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-tagline {
             font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--grigio);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .footer-back:hover {
-            color: var(--nero);
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .footer-links {
             display: flex;
-            gap: 3rem;
+            gap: 5rem;
         }
 
-        .footer-links a {
-            font-size: 0.85rem;
-            color: var(--grigio);
+        .footer-col h4 {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
             transition: color 0.3s ease;
         }
 
-        .footer-links a:hover {
-            color: var(--nero);
+        .footer-col a:hover {
+            color: var(--bianco);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-social a {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            color: var(--bianco);
         }
 
         /* RESPONSIVE */
@@ -999,17 +1036,38 @@
             }
 
             footer {
-                padding: 2rem 1.5rem;
+                padding: 3rem 1.5rem 2rem;
             }
 
-            .footer-nav {
+            .footer-links {
+                gap: 3rem;
+            }
+
+            .footer-bottom {
                 flex-direction: column;
-                gap: 2rem;
+                gap: 1.5rem;
                 text-align: center;
             }
 
             .cursor {
                 display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-grid {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+
+            .footer-social {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
             }
         }
     </style>
@@ -1347,12 +1405,36 @@
     </main>
 
     <footer>
-        <div class="footer-nav">
-            <a href="./" class="footer-back">← Torna alla home</a>
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">TLON</div>
+                <p class="footer-tagline">Un pianeta immaginario. Che esiste.</p>
+            </div>
             <div class="footer-links">
-                <a href="./ilpod.html">IlPod</a>
-                <a href="./ipnocrazia.html">Ipnocrazia</a>
-                <a href="./esplora.html">Mappa del sito</a>
+                <div class="footer-col">
+                    <h4>Progetto</h4>
+                    <a href="./il-progetto.html">Chi siamo</a>
+                    <a href="./contatti.html">Contatti</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Edizioni</h4>
+                    <a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a>
+                    <a href="https://shop.tlon.it/autori/">Autori</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Attività</h4>
+                    <a href="./eventi-festival.html">Eventi</a>
+                    <a href="./formazione.html">Formazione</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Tlon Srl</p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
+                <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
+                <a href="https://www.tlonletter.it" target="_blank">Substack</a>
             </div>
         </div>
     </footer>
