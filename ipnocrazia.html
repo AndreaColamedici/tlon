@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ipnocrazia — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--nero);
+            color: var(--bianco);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--ottanio);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            mix-blend-mode: difference;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+            filter: invert(1);
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--bianco);
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 3rem;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(42, 107, 107, 0.15) 0%, transparent 70%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+        }
+
+        .hero-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1s ease 0.3s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(5rem, 18vw, 14rem);
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            line-height: 0.9;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeUp 1.2s ease 0.5s forwards;
+        }
+
+        .hero-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-style: italic;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.8s forwards;
+        }
+
+        .hero-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 1s forwards;
+        }
+
+        .hero-author-line {
+            width: 60px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .hero-author-name {
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .hero-meta {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            opacity: 0;
+            animation: fadeUp 1s ease 1.2s forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 1.5s forwards;
+        }
+
+        .hero-scroll-text {
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.4;
+        }
+
+        .hero-scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--ottanio), transparent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-scroll-line::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bianco);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+            0% { top: -100%; }
+            50% { top: 100%; }
+            100% { top: 100%; }
+        }
+
+        /* OPERAZIONE */
+        .operazione {
+            padding: 10rem 3rem;
+            background: var(--bianco);
+            color: var(--nero);
+            position: relative;
+        }
+
+        .operazione-intro {
+            max-width: 900px;
+            margin: 0 auto 8rem;
+        }
+
+        .operazione-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .operazione-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .operazione-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 2.5rem;
+        }
+
+        .operazione-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .operazione-text {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: var(--grigio);
+            margin-bottom: 2rem;
+        }
+
+        .operazione-text strong {
+            color: var(--nero);
+            font-weight: 500;
+        }
+
+        /* TIMELINE OPERAZIONE */
+        .timeline-op {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline-op::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--grigio-chiaro);
+            transform: translateX(-50%);
+        }
+
+        .timeline-op-item {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 3rem;
+            margin-bottom: 5rem;
+            position: relative;
+        }
+
+        .timeline-op-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-op-date {
+            display: flex;
+            justify-content: center;
+        }
+
+        .timeline-op-date-inner {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--bianco);
+            border: 2px solid var(--grigio-chiaro);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        .timeline-op-item:hover .timeline-op-date-inner {
+            border-color: var(--ottanio);
+            background: var(--ottanio);
+        }
+
+        .timeline-op-month {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            transition: color 0.3s ease;
+        }
+
+        .timeline-op-year {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--ottanio);
+            transition: color 0.3s ease;
+        }
+
+        .timeline-op-item:hover .timeline-op-month,
+        .timeline-op-item:hover .timeline-op-year {
+            color: var(--bianco);
+        }
+
+        .timeline-op-content {
+            padding: 2rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: all 0.5s ease;
+        }
+
+        .timeline-op-item:hover .timeline-op-content {
+            border-color: var(--ottanio);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .timeline-op-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-op-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .timeline-op-desc {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        .timeline-op-empty {
+            /* placeholder per griglia */
+        }
+
+        .timeline-op-item:nth-child(odd) .timeline-op-content {
+            grid-column: 1;
+            text-align: right;
+        }
+
+        .timeline-op-item:nth-child(odd) .timeline-op-date {
+            grid-column: 2;
+        }
+
+        .timeline-op-item:nth-child(odd) .timeline-op-empty {
+            grid-column: 3;
+        }
+
+        .timeline-op-item:nth-child(even) .timeline-op-empty {
+            grid-column: 1;
+        }
+
+        .timeline-op-item:nth-child(even) .timeline-op-date {
+            grid-column: 2;
+        }
+
+        .timeline-op-item:nth-child(even) .timeline-op-content {
+            grid-column: 3;
+            text-align: left;
+        }
+
+        /* CONCETTI */
+        .concetti {
+            padding: 10rem 3rem;
+            background: var(--nero);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concetti-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Instrument Serif', serif;
+            font-size: 40vw;
+            font-style: italic;
+            color: rgba(42, 107, 107, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .concetti-header {
+            text-align: center;
+            margin-bottom: 6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .concetti-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+        }
+
+        .concetti-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .concetti-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .concetto {
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concetto::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--ottanio);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .concetto:hover::before {
+            transform: scaleX(1);
+        }
+
+        .concetto:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-10px);
+            background: rgba(42, 107, 107, 0.05);
+        }
+
+        .concetto-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3rem;
+            font-style: italic;
+            color: var(--ottanio);
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .concetto-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .concetto-title em {
+            font-style: italic;
+        }
+
+        .concetto-desc {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* CITAZIONE */
+        .citazione {
+            padding: 10rem 3rem;
+            background: #fafafa;
+            color: var(--nero);
+            position: relative;
+        }
+
+        .citazione-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .citazione-mark {
+            font-family: 'Instrument Serif', serif;
+            font-size: 8rem;
+            color: var(--ottanio);
+            opacity: 0.2;
+            line-height: 0.5;
+            margin-bottom: 2rem;
+        }
+
+        .citazione-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .citazione-source {
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+        }
+
+        /* STAMPA INTERNAZIONALE */
+        .stampa {
+            padding: 8rem 3rem;
+            background: var(--bianco);
+            color: var(--nero);
+        }
+
+        .stampa-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .stampa-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+        }
+
+        .stampa-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .stampa-marquee {
+            overflow: hidden;
+            padding: 2rem 0;
+            border-top: 1px solid var(--grigio-chiaro);
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .stampa-track {
+            display: flex;
+            animation: marquee 30s linear infinite;
+        }
+
+        .stampa-track span {
+            padding: 0 4rem;
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--grigio);
+            white-space: nowrap;
+            transition: color 0.3s ease;
+        }
+
+        .stampa-track span:hover {
+            color: var(--ottanio);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* TRADUZIONI */
+        .traduzioni {
+            padding: 6rem 3rem;
+            background: var(--nero);
+            text-align: center;
+        }
+
+        .traduzioni-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 2rem;
+        }
+
+        .traduzioni-list {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .traduzione {
+            padding: 1rem 2rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .traduzione:hover {
+            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.1);
+        }
+
+        .traduzione-lang {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+
+        /* LIBRO */
+        .libro {
+            padding: 10rem 3rem;
+            background: var(--bianco);
+            color: var(--nero);
+        }
+
+        .libro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .libro-cover {
+            position: relative;
+        }
+
+        .libro-cover-frame {
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, var(--nero) 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 30px 30px 60px rgba(0,0,0,0.15);
+        }
+
+        .libro-cover-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3.5rem;
+            color: var(--bianco);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .libro-cover-author {
+            position: absolute;
+            bottom: 2rem;
+            left: 0;
+            right: 0;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            text-align: center;
+        }
+
+        .libro-content {
+            max-width: 550px;
+        }
+
+        .libro-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+        }
+
+        .libro-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        .libro-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .libro-desc {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--grigio);
+            margin-bottom: 2rem;
+        }
+
+        .libro-meta {
+            display: flex;
+            gap: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .libro-meta-item {
+            text-align: left;
+        }
+
+        .libro-meta-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            margin-bottom: 0.25rem;
+        }
+
+        .libro-meta-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--nero);
+        }
+
+        .libro-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2.5rem;
+            background: var(--nero);
+            color: var(--bianco);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .libro-cta:hover {
+            background: var(--ottanio);
+        }
+
+        /* CTA */
+        .cta {
+            padding: 10rem 3rem;
+            background: var(--nero);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 400;
+            margin-bottom: 3rem;
+        }
+
+        .cta-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1.25rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.4s ease;
+        }
+
+        .cta-btn:hover {
+            border-color: var(--ottanio);
+            background: var(--ottanio);
+        }
+
+        .cta-btn.primary {
+            background: var(--bianco);
+            color: var(--nero);
+            border-color: var(--bianco);
+        }
+
+        .cta-btn.primary:hover {
+            background: var(--ottanio);
+            color: var(--bianco);
+            border-color: var(--ottanio);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 3rem;
+            background: var(--nero);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-back {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-back:hover {
+            color: var(--bianco);
+        }
+
+        .footer-back::before {
+            content: '←';
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--bianco);
+        }
+
+        /* REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1000px) {
+            .libro-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .libro-cover-frame {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .concetti-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-op::before {
+                left: 50px;
+            }
+
+            .timeline-op-item {
+                grid-template-columns: 100px 1fr;
+                gap: 2rem;
+            }
+
+            .timeline-op-item:nth-child(odd) .timeline-op-content,
+            .timeline-op-item:nth-child(even) .timeline-op-content {
+                grid-column: 2;
+                text-align: left;
+            }
+
+            .timeline-op-item:nth-child(odd) .timeline-op-date,
+            .timeline-op-item:nth-child(even) .timeline-op-date {
+                grid-column: 1;
+            }
+
+            .timeline-op-empty {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 8rem 1.5rem 4rem;
+            }
+
+            .operazione,
+            .concetti,
+            .citazione,
+            .stampa,
+            .traduzioni,
+            .libro,
+            .cta {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .traduzioni-list {
+                gap: 1rem;
+            }
+
+            .traduzione {
+                padding: 0.75rem 1.25rem;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-nav {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./andrea-colamedici/">Colamedici</a>
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="https://shop.tlon.it">Edizioni</a>
+            <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
+            <a href="https://shop.tlon.it">Shop</a>
+            <a href="./contatti/">Contatti</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <p class="hero-label">Edizioni Tlon — 2024</p>
+                <h1 class="hero-title">Ipnocrazia</h1>
+                <p class="hero-subtitle">Trump, Musk e la nuova architettura della realtà</p>
+                <div class="hero-author">
+                    <span class="hero-author-line"></span>
+                    <span class="hero-author-name">Jianwei Xun / Andrea Colamedici</span>
+                    <span class="hero-author-line"></span>
+                </div>
+                <p class="hero-meta">Un libro. Una performance. Una dimostrazione.</p>
+            </div>
+            <div class="hero-scroll">
+                <span class="hero-scroll-text">Scopri</span>
+                <div class="hero-scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- OPERAZIONE -->
+        <section class="operazione">
+            <div class="operazione-intro reveal">
+                <span class="operazione-label">L'operazione</span>
+                <h2 class="operazione-title">Un libro che <em>dimostra</em> ciò che racconta</h2>
+                <p class="operazione-text">
+                    Nel gennaio 2024 Edizioni Tlon pubblica un saggio filosofico firmato da <strong>Jianwei Xun</strong>, presentato come un giovane pensatore cinese già considerato da alcuni l'erede di Jean Baudrillard e da altri quello di Byung-Chul Han. Il libro analizza i meccanismi attraverso cui il potere contemporaneo manipola la percezione della realtà, coniando il termine «Ipnocrazia» per descrivere questo nuovo regime che opera direttamente sulla coscienza collettiva.
+                </p>
+                <p class="operazione-text">
+                    Il volume viene tradotto dall'inglese da Andrea Colamedici, che nella nota del traduttore scrive di aver avuto «la sensazione immediata di trovarmi di fronte a qualcosa di raro: un testo che non si limita a fotografare il presente ma che riesce a mostrarne il funzionamento interno». Il libro ottiene attenzione immediata dalla stampa internazionale: <strong>Le Figaro</strong>, <strong>Le Grand Continent</strong>, <strong>Le Monde</strong>, <strong>El País</strong>, <strong>Wired</strong> e studiosi dell'HEC Paris ne discutono le tesi.
+                </p>
+                <p class="operazione-text">
+                    Nell'aprile 2025, <strong>L'Espresso</strong> rivela che Jianwei Xun non esiste. Il filosofo cinese è un'invenzione, e il libro è stato scritto da Andrea Colamedici in collaborazione con l'intelligenza artificiale. L'operazione, definita dall'autore una «performance narrativa», ha dimostrato <em>performativamente</em> i meccanismi di manipolazione della realtà che il libro stesso analizza: la facilità con cui un'identità fittizia può acquisire autorevolezza, il modo in cui i sistemi di validazione culturale funzionano, la natura costruita della percezione collettiva.
+                </p>
+            </div>
+
+            <div class="timeline-op">
+                <div class="timeline-op-item reveal">
+                    <div class="timeline-op-content">
+                        <h3 class="timeline-op-title">La <em>pubblicazione</em></h3>
+                        <p class="timeline-op-desc">Esce Ipnocrazia, firmato dal filosofo cinese Jianwei Xun e tradotto da Andrea Colamedici. Il libro viene accolto come un contributo originale all'analisi della contemporaneità digitale.</p>
+                    </div>
+                    <div class="timeline-op-date">
+                        <div class="timeline-op-date-inner">
+                            <span class="timeline-op-month">Gennaio</span>
+                            <span class="timeline-op-year">2024</span>
+                        </div>
+                    </div>
+                    <div class="timeline-op-empty"></div>
+                </div>
+
+                <div class="timeline-op-item reveal">
+                    <div class="timeline-op-empty"></div>
+                    <div class="timeline-op-date">
+                        <div class="timeline-op-date-inner">
+                            <span class="timeline-op-month">Primavera</span>
+                            <span class="timeline-op-year">2024</span>
+                        </div>
+                    </div>
+                    <div class="timeline-op-content">
+                        <h3 class="timeline-op-title">L'eco <em>internazionale</em></h3>
+                        <p class="timeline-op-desc">Il libro viene discusso su Le Figaro, Le Grand Continent, Le Monde, El País, Wired. Studiosi dell'HEC Paris citano le tesi di Xun. Iniziano le traduzioni in francese, spagnolo, inglese.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-op-item reveal">
+                    <div class="timeline-op-content">
+                        <h3 class="timeline-op-title">La <em>rivelazione</em></h3>
+                        <p class="timeline-op-desc">L'Espresso rivela che Jianwei Xun non esiste: è una creazione di Andrea Colamedici realizzata con l'intelligenza artificiale. L'operazione diventa essa stessa oggetto di dibattito culturale.</p>
+                    </div>
+                    <div class="timeline-op-date">
+                        <div class="timeline-op-date-inner">
+                            <span class="timeline-op-month">Aprile</span>
+                            <span class="timeline-op-year">2025</span>
+                        </div>
+                    </div>
+                    <div class="timeline-op-empty"></div>
+                </div>
+
+                <div class="timeline-op-item reveal">
+                    <div class="timeline-op-empty"></div>
+                    <div class="timeline-op-date">
+                        <div class="timeline-op-date-inner">
+                            <span class="timeline-op-month">Oggi</span>
+                            <span class="timeline-op-year">2025</span>
+                        </div>
+                    </div>
+                    <div class="timeline-op-content">
+                        <h3 class="timeline-op-title">Il <em>significato</em></h3>
+                        <p class="timeline-op-desc">Ipnocrazia rimane come caso di studio: un libro che ha dimostrato le proprie tesi attraverso la propria esistenza, rendendo visibili i meccanismi di costruzione della realtà che teorizzava.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CITAZIONE -->
+        <section class="citazione">
+            <div class="citazione-content reveal">
+                <div class="citazione-mark">«</div>
+                <p class="citazione-text">L'Ipnocrazia è il primo regime che opera direttamente sulla coscienza. Non controlla i corpi. Non reprime i pensieri. Induce, piuttosto, uno stato alterato di coscienza permanente. Un sonno lucido. Una trance funzionale.</p>
+                <p class="citazione-source">Ipnocrazia, Introduzione</p>
+            </div>
+        </section>
+
+        <!-- CONCETTI -->
+        <section class="concetti">
+            <div class="concetti-bg">Trance</div>
+            <div class="concetti-header reveal">
+                <h2>I concetti <em>chiave</em></h2>
+            </div>
+            <div class="concetti-grid">
+                <div class="concetto reveal">
+                    <div class="concetto-num">01</div>
+                    <h3 class="concetto-title">Trance <em>algoritmIca</em></h3>
+                    <p class="concetto-desc">Il flusso continuo di contenuti digitali induce uno stato di coscienza alterata permanente, in cui l'attenzione viene modulata come un'onda e gli stati emotivi vengono costantemente indotti e manipolati.</p>
+                </div>
+                <div class="concetto reveal">
+                    <div class="concetto-num">02</div>
+                    <h3 class="concetto-title">Sovranità <em>percettiva</em></h3>
+                    <p class="concetto-desc">La capacità di mantenere un nucleo di autonomia nella percezione della realtà, resistendo alla dissoluzione del confine tra vero e falso che l'Ipnocrazia produce.</p>
+                </div>
+                <div class="concetto reveal">
+                    <div class="concetto-num">03</div>
+                    <h3 class="concetto-title">Edging <em>algoritmico</em></h3>
+                    <p class="concetto-desc">La tecnica attraverso cui le piattaforme mantengono gli utenti in uno stato di anticipazione perpetua, promettendo soddisfazioni che vengono costantemente rimandate.</p>
+                </div>
+                <div class="concetto reveal">
+                    <div class="concetto-num">04</div>
+                    <h3 class="concetto-title">Resistenza <em>oscura</em></h3>
+                    <p class="concetto-desc">Forme di resistenza invisibile che non si oppongono frontalmente al sistema ma lo abitano nelle sue crepe, coltivando spazi di opacità al regime della trasparenza totale.</p>
+                </div>
+                <div class="concetto reveal">
+                    <div class="concetto-num">05</div>
+                    <h3 class="concetto-title">Realtà <em>gassosa</em></h3>
+                    <p class="concetto-desc">La condizione contemporanea in cui la realtà è diventata interamente fluida: non è più questione di separare il vero dal falso, la distinzione stessa ha perso significato.</p>
+                </div>
+                <div class="concetto reveal">
+                    <div class="concetto-num">06</div>
+                    <h3 class="concetto-title">Il Piano <em>Altro</em></h3>
+                    <p class="concetto-desc">L'intuizione che il digitale possa essere non solo strumento di controllo ma interfaccia verso nuove dimensioni dell'esperienza, dove le distinzioni tradizionali iniziano a dissolversi.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- STAMPA -->
+        <section class="stampa">
+            <div class="stampa-header reveal">
+                <h2>Sulla stampa <em>internazionale</em></h2>
+            </div>
+            <div class="stampa-marquee">
+                <div class="stampa-track">
+                    <span>Le Figaro</span>
+                    <span>Le Monde</span>
+                    <span>Le Grand Continent</span>
+                    <span>El País</span>
+                    <span>La Vanguardia</span>
+                    <span>Wired</span>
+                    <span>L'Espresso</span>
+                    <span>HEC Paris</span>
+                    <span>Le Figaro</span>
+                    <span>Le Monde</span>
+                    <span>Le Grand Continent</span>
+                    <span>El País</span>
+                    <span>La Vanguardia</span>
+                    <span>Wired</span>
+                    <span>L'Espresso</span>
+                    <span>HEC Paris</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRADUZIONI -->
+        <section class="traduzioni">
+            <p class="traduzioni-label reveal">Tradotto in</p>
+            <div class="traduzioni-list reveal">
+                <div class="traduzione">
+                    <span class="traduzione-lang">Français</span>
+                </div>
+                <div class="traduzione">
+                    <span class="traduzione-lang">Español</span>
+                </div>
+                <div class="traduzione">
+                    <span class="traduzione-lang">English</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIBRO -->
+        <section class="libro">
+            <div class="libro-grid">
+                <div class="libro-cover reveal">
+                    <div class="libro-cover-frame">
+                        <h3 class="libro-cover-title">Ipnocrazia</h3>
+                        <p class="libro-cover-author">Jianwei Xun</p>
+                    </div>
+                </div>
+                <div class="libro-content reveal">
+                    <span class="libro-label">Il libro</span>
+                    <h2 class="libro-title">Trump, Musk e la nuova architettura della <em>realtà</em></h2>
+                    <p class="libro-desc">
+                        Un saggio che analizza come il potere contemporaneo operi attraverso la manipolazione della percezione, costruendo regimi di verità multipli e incompatibili tra loro. Attraverso i casi di Donald Trump ed Elon Musk, il libro mostra i meccanismi dell'Ipnocrazia: lo svuotamento del linguaggio, l'inondazione dell'immaginazione con promesse destinate a non realizzarsi, la modulazione degli stati di coscienza collettivi.
+                    </p>
+                    <div class="libro-meta">
+                        <div class="libro-meta-item">
+                            <p class="libro-meta-label">Editore</p>
+                            <p class="libro-meta-value">Edizioni Tlon</p>
+                        </div>
+                        <div class="libro-meta-item">
+                            <p class="libro-meta-label">Anno</p>
+                            <p class="libro-meta-value">2024</p>
+                        </div>
+                        <div class="libro-meta-item">
+                            <p class="libro-meta-label">Collana</p>
+                            <p class="libro-meta-value">Hrönir</p>
+                        </div>
+                    </div>
+                    <a href="https://shop.tlon.it/prodotto/ipnocrazia-trump-musk-e-la-nuova-architettura-della-realta-janwei-xun/" class="libro-cta">Acquista il libro</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta">
+            <div class="cta-content reveal">
+                <h2 class="cta-title">Scopri di più su <em>Andrea Colamedici</em></h2>
+                <div class="cta-buttons">
+                    <a href="./andrea-colamedici/" class="cta-btn primary">Biografia</a>
+                    <a href="./il-progetto.html" class="cta-btn">Il progetto Tlon</a>
+                    <a href="./formazione.html" class="cta-btn">Formazione</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-nav">
+            <a href="./" class="footer-back">Home</a>
+            <div class="footer-links">
+                <a href="https://shop.tlon.it/edizioni-tlon/">Edizioni</a>
+                <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
+                <a href="https://www.tlonletter.it">Newsletter</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        reveals.forEach(el => observer.observe(el));
+
+        // Parallax hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+
+            if (hero && scrolled < window.innerHeight) {
+                const content = hero.querySelector('.hero-content');
+                content.style.transform = `translateY(${scrolled * 0.3}px)`;
+                content.style.opacity = 1 - (scrolled / window.innerHeight * 0.8);
+            }
+        });
+    </script>
+
+</body>
+</html>
