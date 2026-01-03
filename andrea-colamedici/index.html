@@ -263,6 +263,197 @@
             margin-bottom: 0;
         }
 
+        /* IPNOCRAZIA FEATURED */
+        .ipnocrazia-featured {
+            min-height: 100vh;
+            background: var(--nero);
+            color: var(--bianco);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ipnocrazia-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .ipnocrazia-bg-text {
+            font-size: 60vw;
+            color: rgba(42, 107, 107, 0.05);
+            user-select: none;
+            line-height: 1;
+        }
+
+        .ipnocrazia-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.2) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: glowPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        .ipnocrazia-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 900px;
+            padding: 6rem 3rem;
+        }
+
+        .ipnocrazia-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 3rem;
+            padding: 0.75rem 2rem;
+            border: 1px solid rgba(42, 107, 107, 0.5);
+            position: relative;
+        }
+
+        .ipnocrazia-label::before,
+        .ipnocrazia-label::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 1px;
+            background: rgba(42, 107, 107, 0.3);
+            top: 50%;
+        }
+
+        .ipnocrazia-label::before {
+            right: 100%;
+            margin-right: 1.5rem;
+        }
+
+        .ipnocrazia-label::after {
+            left: 100%;
+            margin-left: 1.5rem;
+        }
+
+        .ipnocrazia-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(5rem, 15vw, 12rem);
+            font-weight: 400;
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+        }
+
+        .ipnocrazia-title em {
+            font-style: italic;
+        }
+
+        .ipnocrazia-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+            font-style: italic;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 4rem;
+        }
+
+        .ipnocrazia-desc {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ipnocrazia-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--bianco);
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ipnocrazia-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--ottanio);
+            transform: translateX(-100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+
+        .ipnocrazia-cta:hover::before {
+            transform: translateX(0);
+        }
+
+        .ipnocrazia-cta:hover {
+            border-color: var(--ottanio);
+        }
+
+        .ipnocrazia-cta svg {
+            transition: transform 0.4s ease;
+        }
+
+        .ipnocrazia-cta:hover svg {
+            transform: translateX(5px);
+        }
+
+        .ipnocrazia-press {
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .ipnocrazia-press-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 1.5rem;
+        }
+
+        .ipnocrazia-press-logos {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.25);
+        }
+
         /* LIBRI */
         .libro-categoria {
             margin-bottom: 3rem;
@@ -464,6 +655,21 @@
             content: '←';
         }
 
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--nero);
+        }
+
         .footer-other {
             text-align: right;
         }
@@ -523,6 +729,15 @@
             .libro-editore {
                 text-align: left;
             }
+
+            nav {
+                display: none;
+            }
+
+            .ipnocrazia-label::before,
+            .ipnocrazia-label::after {
+                display: none;
+            }
         }
 
         @media (max-width: 600px) {
@@ -538,6 +753,10 @@
             .bio-content {
                 padding-left: 1.5rem;
                 padding-right: 1.5rem;
+            }
+
+            .ipnocrazia-content {
+                padding: 4rem 1.5rem;
             }
 
             footer {
@@ -573,15 +792,15 @@
     <header>
         <a href="../" class="logo"><img src="../assets/images/tlon-logo.png" alt="Tlon"></a>
         <nav>
-    <a href="../il-progetto.html">Il Progetto</a>
-    <a href="../andrea-colamedici/">Colamedici</a>
-    <a href="../maura-gancitano/">Gancitano</a>
-    <a href="../edizioni.html">Edizioni</a>
-    <a href="../librerie.html">Librerie</a>
-    <a href="../formazione.html">Formazione</a>
-    <a href="../eventi-festival.html">Eventi</a>
-    <a href="../contatti/">Contatti</a>
-</nav>
+            <a href="../il-progetto.html">Il Progetto</a>
+            <a href="../andrea-colamedici/">Colamedici</a>
+            <a href="../maura-gancitano/">Gancitano</a>
+            <a href="../edizioni.html">Edizioni</a>
+            <a href="../librerie.html">Librerie</a>
+            <a href="../formazione.html">Formazione</a>
+            <a href="../eventi-festival.html">Eventi</a>
+            <a href="../contatti/">Contatti</a>
+        </nav>
     </header>
 
     <main>
@@ -618,7 +837,39 @@
                     <p>Insieme a Maura Gancitano è <strong>direttore filosofico</strong> del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. È l'ideatore della <em>Festa della Filosofia</em> presso le Triennali di Milano e Roma, della maratona online <em>Prendiamola con Filosofia</em> (nata su sollecitazione del Ministero della Salute) e degli <em>Italian Podcast Awards</em>. Ha tenuto speech per TEDxRoma sulla filosofia dell'intelligenza artificiale e per TEDxBarletta sul rapporto tra arte e IA.</p>
                 </div>
             </section>
+        </div>
 
+        <!-- IPNOCRAZIA FEATURED -->
+        <section class="ipnocrazia-featured">
+            <div class="ipnocrazia-bg">
+                <span class="ipnocrazia-bg-text">眠</span>
+            </div>
+            <div class="ipnocrazia-glow"></div>
+            <div class="ipnocrazia-content">
+                <span class="ipnocrazia-label">Il caso editoriale internazionale</span>
+                <h2 class="ipnocrazia-title"><em>Ipnocrazia</em></h2>
+                <p class="ipnocrazia-subtitle">Trump, Musk e la nuova architettura della realtà</p>
+                <p class="ipnocrazia-desc">Un libro firmato da un filosofo cinese che non esiste. Una performance narrativa che ha attraversato i confini tra finzione e verità, diventando oggetto di dibattito sulla stampa internazionale. Il primo esperimento filosofico dell'era dell'intelligenza artificiale.</p>
+                <a href="../ipnocrazia.html" class="ipnocrazia-cta">
+                    <span>Scopri l'esperimento</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <div class="ipnocrazia-press">
+                    <p class="ipnocrazia-press-label">Ne hanno scritto</p>
+                    <div class="ipnocrazia-press-logos">
+                        <span>El País</span>
+                        <span>Le Monde</span>
+                        <span>Libération</span>
+                        <span>Corriere della Sera</span>
+                        <span>La Stampa</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="bio-content">
             <!-- LIBRI -->
             <section class="bio-section reveal">
                 <div class="section-header">
@@ -856,9 +1107,10 @@
     <footer>
         <div class="footer-nav">
             <a href="../" class="footer-back">Torna alla home</a>
-            <div class="footer-other">
-                <div class="footer-other-label">L'altra fondatrice</div>
-                <div class="footer-other-name"><a href="../maura-gancitano/">Maura Gancitano</a></div>
+            <div class="footer-links">
+                <a href="../ilpod.html">IlPod</a>
+                <a href="../ipnocrazia.html">Ipnocrazia</a>
+                <a href="../esplora.html">Mappa del sito</a>
             </div>
         </div>
     </footer>
