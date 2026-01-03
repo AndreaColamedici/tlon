@@ -28,14 +28,14 @@
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bianco);
-            color: var(--nero);
+            background: var(--nero);
+            color: var(--bianco);
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
         ::selection {
-            background: var(--nero);
+            background: var(--ottanio);
             color: var(--bianco);
         }
 
@@ -44,22 +44,72 @@
             text-decoration: none;
         }
 
+        /* LOADER */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--nero);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 4rem;
+            font-style: italic;
+            color: var(--ottanio);
+            opacity: 0;
+            animation: loaderPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loaderPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
         /* CURSOR */
         .cursor {
-            width: 20px;
-            height: 20px;
-            border: 1px solid var(--ottanio);
+            width: 12px;
+            height: 12px;
+            background: var(--ottanio);
             border-radius: 50%;
             position: fixed;
             pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s ease, opacity 0.15s ease;
+            z-index: 9998;
             mix-blend-mode: difference;
+            transition: transform 0.2s ease;
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(42, 107, 107, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9997;
+            transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
         }
 
         .cursor.hover {
             transform: scale(3);
-            background: rgba(42, 107, 107, 0.1);
+        }
+
+        .cursor-follower.hover {
+            width: 80px;
+            height: 80px;
+            border-color: var(--ottanio);
         }
 
         /* HEADER */
@@ -73,21 +123,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: transparent;
-            transition: all 0.5s ease;
-        }
-
-        header.scrolled {
-            background: var(--bianco);
-            border-bottom: 1px solid var(--grigio-chiaro);
-        }
-
-        header.scrolled .logo img {
-            filter: none;
-        }
-
-        header.scrolled nav a {
-            color: var(--nero);
+            mix-blend-mode: difference;
         }
 
         .logo {
@@ -99,7 +135,6 @@
             height: 28px;
             width: auto;
             filter: invert(1);
-            transition: filter 0.5s ease;
         }
 
         nav {
@@ -113,131 +148,73 @@
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--bianco);
-            opacity: 0.7;
-            transition: all 0.3s ease;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
         }
 
         nav a:hover {
             opacity: 1;
         }
 
-        /* HERO IMMERSIVE */
-        .hero-immersive {
+        /* CANVAS BG */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* HERO */
+        .hero {
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            background: var(--nero);
-            color: var(--bianco);
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overflow: hidden;
-        }
-
-        .hero-bg-circle {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(42, 107, 107, 0.3) 0%, transparent 70%);
-            animation: float 20s ease-in-out infinite;
-        }
-
-        .hero-bg-circle:nth-child(1) {
-            width: 800px;
-            height: 800px;
-            top: -200px;
-            right: -200px;
-            animation-delay: 0s;
-        }
-
-        .hero-bg-circle:nth-child(2) {
-            width: 600px;
-            height: 600px;
-            bottom: -150px;
-            left: -150px;
-            animation-delay: -5s;
-        }
-
-        .hero-bg-circle:nth-child(3) {
-            width: 400px;
-            height: 400px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(30px, -30px) scale(1.05); }
-            50% { transform: translate(-20px, 20px) scale(0.95); }
-            75% { transform: translate(20px, 10px) scale(1.02); }
         }
 
         .hero-content {
             text-align: center;
             z-index: 1;
-            padding: 2rem;
         }
 
-        .hero-origin {
+        .hero-label {
             font-size: 0.8rem;
             font-weight: 500;
-            letter-spacing: 0.4em;
+            letter-spacing: 0.5em;
             text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
             opacity: 0;
             transform: translateY(30px);
-            animation: fadeUp 1s ease forwards;
-            animation-delay: 0.3s;
-            color: var(--ottanio);
         }
 
         .hero-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(5rem, 20vw, 15rem);
+            font-size: clamp(6rem, 20vw, 18rem);
             font-weight: 400;
             letter-spacing: -0.05em;
             line-height: 0.85;
-            margin: 1rem 0 2rem;
-            opacity: 0;
+            margin-bottom: 2rem;
         }
 
         .hero-title .char {
             display: inline-block;
             opacity: 0;
-            transform: translateY(100px) rotateX(-90deg);
-            animation: charReveal 1s ease forwards;
-        }
-
-        .hero-title .char:nth-child(1) { animation-delay: 0.5s; }
-        .hero-title .char:nth-child(2) { animation-delay: 0.6s; }
-        .hero-title .char:nth-child(3) { animation-delay: 0.7s; }
-        .hero-title .char:nth-child(4) { animation-delay: 0.8s; }
-
-        @keyframes charReveal {
-            to {
-                opacity: 1;
-                transform: translateY(0) rotateX(0);
-            }
+            transform: translateY(100%) rotateX(-90deg);
         }
 
         .hero-subtitle {
             font-family: 'Instrument Serif', serif;
             font-size: clamp(1.2rem, 3vw, 2rem);
             font-style: italic;
-            font-weight: 400;
+            color: rgba(255,255,255,0.5);
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeUp 1s ease forwards;
-            animation-delay: 1.2s;
-            color: rgba(255,255,255,0.6);
         }
 
         .hero-scroll {
@@ -250,105 +227,102 @@
             align-items: center;
             gap: 1rem;
             opacity: 0;
-            animation: fadeUp 1s ease forwards;
-            animation-delay: 1.8s;
         }
 
-        .hero-scroll span {
+        .hero-scroll-text {
             font-size: 0.7rem;
             letter-spacing: 0.3em;
             text-transform: uppercase;
             opacity: 0.4;
         }
 
-        .scroll-indicator {
-            width: 24px;
-            height: 40px;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 12px;
+        .hero-scroll-line {
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(to bottom, var(--ottanio), transparent);
             position: relative;
+            overflow: hidden;
         }
 
-        .scroll-indicator::before {
+        .hero-scroll-line::before {
             content: '';
             position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 8px;
-            background: var(--ottanio);
-            border-radius: 2px;
-            animation: scrollDown 2s ease-in-out infinite;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bianco);
+            animation: scrollLine 2s ease-in-out infinite;
         }
 
-        @keyframes scrollDown {
-            0%, 100% { top: 8px; opacity: 1; }
-            50% { top: 20px; opacity: 0.3; }
+        @keyframes scrollLine {
+            0% { top: -100%; }
+            50% { top: 100%; }
+            100% { top: 100%; }
         }
 
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* BORGES CINEMATIC */
-        .borges-section {
+        /* BORGES SECTION */
+        .borges {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 6rem 3rem;
             background: var(--bianco);
+            color: var(--nero);
             position: relative;
             overflow: hidden;
         }
 
-        .borges-bg-text {
+        .borges-bg {
             position: absolute;
-            font-family: 'Instrument Serif', serif;
-            font-size: 30vw;
-            font-style: italic;
-            color: rgba(42, 107, 107, 0.03);
-            white-space: nowrap;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             pointer-events: none;
         }
 
-        .borges-quote {
-            max-width: 1000px;
+        .borges-bg-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 50vw;
+            font-style: italic;
+            color: rgba(42, 107, 107, 0.03);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .borges-content {
+            max-width: 1100px;
             text-align: center;
             position: relative;
             z-index: 1;
         }
 
-        .borges-text {
+        .borges-quote {
             font-family: 'Instrument Serif', serif;
             font-size: clamp(1.8rem, 5vw, 3.5rem);
             font-style: italic;
             line-height: 1.4;
-            color: var(--nero);
+            margin-bottom: 3rem;
         }
 
-        .borges-text .word {
+        .borges-quote .word {
             display: inline-block;
             opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(50px) rotateX(-45deg);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .borges-text .word.visible {
+        .borges-quote .word.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) rotateX(0);
         }
 
         .borges-author {
-            margin-top: 3rem;
-            font-size: 0.9rem;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: var(--ottanio);
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.8s ease 0.5s;
@@ -359,28 +333,31 @@
             transform: translateY(0);
         }
 
-        .borges-source {
-            display: block;
-            margin-top: 0.5rem;
-            font-size: 0.75rem;
-            font-style: italic;
-            letter-spacing: 0.1em;
-            text-transform: none;
-            opacity: 0.6;
+        .borges-author-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--ottanio);
         }
 
-        /* ORIGIN STORY */
-        .origin-section {
-            padding: 10rem 3rem;
+        .borges-author-work {
+            font-size: 0.8rem;
+            font-style: italic;
+            color: var(--grigio);
+            margin-top: 0.5rem;
+        }
+
+        /* ORIGIN */
+        .origin {
+            padding: 12rem 3rem;
             background: var(--nero);
-            color: var(--bianco);
             position: relative;
-            overflow: hidden;
         }
 
         .origin-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1.2fr;
             gap: 8rem;
             max-width: 1400px;
             margin: 0 auto;
@@ -389,50 +366,36 @@
 
         .origin-visual {
             position: relative;
-            height: 600px;
+            height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .origin-planet {
-            position: absolute;
             width: 400px;
             height: 400px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, rgba(42, 107, 107, 0.4) 0%, rgba(42, 107, 107, 0.1) 50%, transparent 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: planetPulse 8s ease-in-out infinite;
+            position: relative;
+            animation: planetFloat 10s ease-in-out infinite;
+        }
+
+        @keyframes planetFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.02); }
         }
 
         .origin-planet::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 1px solid rgba(42, 107, 107, 0.3);
-            animation: planetRing 20s linear infinite;
-        }
-
-        .origin-planet::after {
             content: 'T';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Instrument Serif', serif;
-            font-size: 8rem;
-            color: rgba(255,255,255,0.1);
-        }
-
-        @keyframes planetPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.05); }
-        }
-
-        @keyframes planetRing {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            font-size: 10rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.08);
         }
 
         .origin-orbit {
@@ -444,43 +407,65 @@
         }
 
         .origin-orbit:nth-child(2) {
-            width: 500px;
-            height: 500px;
+            width: 520px;
+            height: 520px;
             transform: translate(-50%, -50%);
-            animation: orbitSpin 30s linear infinite;
+            animation: orbitRotate 40s linear infinite;
         }
 
         .origin-orbit:nth-child(3) {
-            width: 600px;
-            height: 600px;
+            width: 620px;
+            height: 620px;
             transform: translate(-50%, -50%);
-            animation: orbitSpin 40s linear infinite reverse;
+            animation: orbitRotate 60s linear infinite reverse;
         }
 
-        @keyframes orbitSpin {
+        .origin-orbit:nth-child(4) {
+            width: 720px;
+            height: 720px;
+            transform: translate(-50%, -50%);
+            animation: orbitRotate 80s linear infinite;
+        }
+
+        @keyframes orbitRotate {
             from { transform: translate(-50%, -50%) rotate(0deg); }
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
+        .origin-orbit-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
         .origin-content {
-            max-width: 550px;
+            max-width: 600px;
         }
 
         .origin-label {
             font-size: 0.75rem;
             font-weight: 500;
-            letter-spacing: 0.3em;
+            letter-spacing: 0.4em;
             text-transform: uppercase;
             color: var(--ottanio);
             margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateX(-30px);
         }
 
         .origin-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
             font-weight: 400;
             line-height: 1.1;
             margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
         }
 
         .origin-title em {
@@ -491,24 +476,33 @@
         .origin-text {
             font-size: 1.1rem;
             line-height: 2;
-            opacity: 0.8;
+            opacity: 0.7;
             margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .origin-date {
             display: inline-flex;
             align-items: center;
-            gap: 1rem;
+            gap: 2rem;
+            padding: 1.5rem 2.5rem;
+            border: 1px solid rgba(255,255,255,0.15);
             margin-top: 2rem;
-            padding: 1rem 2rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .origin-date-item {
+            text-align: center;
         }
 
         .origin-date-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            opacity: 0.5;
+            opacity: 0.4;
+            margin-bottom: 0.25rem;
         }
 
         .origin-date-value {
@@ -518,74 +512,64 @@
             color: var(--ottanio);
         }
 
-        /* MISSION HORIZONTAL SCROLL */
-        .mission-section {
+        /* MISSION HORIZONTAL */
+        .mission {
+            height: 500vh;
             position: relative;
-            height: 400vh;
         }
 
         .mission-sticky {
             position: sticky;
             top: 0;
             height: 100vh;
-            display: flex;
-            align-items: center;
             overflow: hidden;
-            background: var(--bianco);
         }
 
         .mission-track {
             display: flex;
-            gap: 0;
+            height: 100%;
             will-change: transform;
         }
 
         .mission-panel {
             min-width: 100vw;
-            height: 100vh;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 3rem;
+            position: relative;
         }
 
-        .mission-panel:nth-child(1) {
-            background: var(--bianco);
-        }
-
-        .mission-panel:nth-child(2) {
-            background: #fafafa;
-        }
-
-        .mission-panel:nth-child(3) {
-            background: var(--nero);
-            color: var(--bianco);
-        }
-
-        .mission-panel:nth-child(4) {
-            background: var(--ottanio);
-            color: var(--bianco);
-        }
+        .mission-panel:nth-child(1) { background: var(--bianco); color: var(--nero); }
+        .mission-panel:nth-child(2) { background: #f5f5f5; color: var(--nero); }
+        .mission-panel:nth-child(3) { background: var(--nero); color: var(--bianco); }
+        .mission-panel:nth-child(4) { background: var(--ottanio); color: var(--bianco); }
+        .mission-panel:nth-child(5) { background: #1a1a1a; color: var(--bianco); }
 
         .mission-panel-content {
-            max-width: 800px;
+            max-width: 900px;
             text-align: center;
         }
 
         .mission-panel-num {
             font-family: 'Instrument Serif', serif;
-            font-size: 8rem;
+            font-size: 12rem;
             font-style: italic;
             line-height: 1;
-            opacity: 0.1;
-            margin-bottom: -2rem;
+            opacity: 0.08;
+            margin-bottom: -4rem;
+            position: relative;
+            z-index: 0;
         }
 
         .mission-panel-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
             font-weight: 400;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .mission-panel-title em {
@@ -593,18 +577,77 @@
         }
 
         .mission-panel-text {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             line-height: 1.9;
-            opacity: 0.8;
-            max-width: 600px;
+            opacity: 0.75;
+            max-width: 700px;
             margin: 0 auto;
         }
 
-        /* TIMELINE VERTICAL */
-        .timeline-section {
-            padding: 10rem 3rem;
+        .mission-panel-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .mission-panel-stat {
+            text-align: center;
+        }
+
+        .mission-panel-stat-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3rem;
+            font-style: italic;
+        }
+
+        .mission-panel-stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-top: 0.25rem;
+        }
+
+        /* PROGRESS INDICATOR */
+        .mission-progress {
+            position: fixed;
+            right: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .mission-progress.visible {
+            opacity: 1;
+        }
+
+        .mission-progress-dot {
+            width: 10px;
+            height: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .mission-progress-dot.active {
+            background: var(--ottanio);
+            border-color: var(--ottanio);
+            transform: scale(1.3);
+        }
+
+        /* TIMELINE */
+        .timeline {
+            padding: 12rem 3rem;
             background: var(--bianco);
+            color: var(--nero);
             position: relative;
+            overflow: hidden;
         }
 
         .timeline-header {
@@ -614,7 +657,7 @@
 
         .timeline-header h2 {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-size: clamp(3rem, 7vw, 6rem);
             font-weight: 400;
         }
 
@@ -623,8 +666,8 @@
             color: var(--ottanio);
         }
 
-        .timeline {
-            max-width: 1200px;
+        .timeline-container {
+            max-width: 1300px;
             margin: 0 auto;
             position: relative;
         }
@@ -641,19 +684,18 @@
 
         .timeline-progress {
             position: absolute;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 0;
             background: var(--ottanio);
-            transition: height 0.1s linear;
         }
 
         .timeline-item {
             display: grid;
-            grid-template-columns: 1fr 100px 1fr;
+            grid-template-columns: 1fr 120px 1fr;
             gap: 3rem;
-            margin-bottom: 6rem;
+            margin-bottom: 8rem;
             position: relative;
         }
 
@@ -686,43 +728,49 @@
             display: flex;
             align-items: flex-start;
             justify-content: center;
-            padding-top: 0.5rem;
         }
 
-        .year-marker {
-            width: 80px;
-            height: 80px;
+        .timeline-year-circle {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: var(--bianco);
             border: 2px solid var(--grigio-chiaro);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.1rem;
-            font-style: italic;
-            color: var(--grigio);
             position: relative;
             z-index: 2;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .timeline-item.active .year-marker {
+        .timeline-year-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--grigio);
+            transition: color 0.3s ease;
+        }
+
+        .timeline-item.active .timeline-year-circle {
             background: var(--ottanio);
             border-color: var(--ottanio);
+            transform: scale(1.15);
+            box-shadow: 0 0 0 15px rgba(42, 107, 107, 0.1);
+        }
+
+        .timeline-item.active .timeline-year-text {
             color: var(--bianco);
-            transform: scale(1.2);
-            box-shadow: 0 0 0 10px rgba(42, 107, 107, 0.1);
         }
 
         .timeline-content {
             opacity: 0;
-            transform: translateX(30px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(50px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .timeline-item:nth-child(odd) .timeline-content {
-            transform: translateX(-30px);
+            transform: translateX(-50px);
         }
 
         .timeline-item.active .timeline-content {
@@ -732,8 +780,8 @@
 
         .timeline-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.75rem;
-            margin-bottom: 0.75rem;
+            font-size: 2rem;
+            margin-bottom: 1rem;
         }
 
         .timeline-title em {
@@ -743,42 +791,48 @@
 
         .timeline-desc {
             font-size: 1rem;
-            color: var(--grigio);
             line-height: 1.8;
+            color: var(--grigio);
             margin-bottom: 1rem;
         }
 
-        .timeline-highlight {
-            display: inline-block;
-            padding: 0.5rem 1rem;
+        .timeline-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .timeline-item:nth-child(even) .timeline-tags {
+            justify-content: flex-start;
+        }
+
+        .timeline-tag {
+            padding: 0.4rem 1rem;
             background: rgba(42, 107, 107, 0.1);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 500;
-            letter-spacing: 0.1em;
             color: var(--ottanio);
         }
 
-        /* NUMBERS IMPACT */
-        .numbers-section {
-            padding: 10rem 3rem;
+        /* NUMBERS */
+        .numbers {
+            padding: 12rem 3rem;
             background: var(--nero);
-            color: var(--bianco);
             position: relative;
             overflow: hidden;
         }
 
         .numbers-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            opacity: 0.03;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             font-family: 'Instrument Serif', serif;
-            font-size: 40vw;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 50vw;
+            font-style: italic;
+            color: rgba(255,255,255,0.02);
+            white-space: nowrap;
             pointer-events: none;
         }
 
@@ -791,13 +845,13 @@
 
         .numbers-header h2 {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 400;
             margin-bottom: 1rem;
         }
 
         .numbers-header p {
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.4);
             font-size: 0.9rem;
         }
 
@@ -811,37 +865,42 @@
             z-index: 1;
         }
 
-        .number-item {
-            padding: 3rem 2rem;
-            border: 1px solid rgba(255,255,255,0.1);
+        .number-card {
+            padding: 4rem 2rem;
+            border: 1px solid rgba(255,255,255,0.08);
             border-right: none;
             text-align: center;
             position: relative;
             overflow: hidden;
+            transition: all 0.5s ease;
         }
 
-        .number-item:last-child {
-            border-right: 1px solid rgba(255,255,255,0.1);
+        .number-card:last-child {
+            border-right: 1px solid rgba(255,255,255,0.08);
         }
 
-        .number-item::before {
+        .number-card::before {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
             height: 0;
-            background: rgba(42, 107, 107, 0.2);
-            transition: height 1s ease;
+            background: linear-gradient(to top, rgba(42, 107, 107, 0.2), transparent);
+            transition: height 1.5s ease;
         }
 
-        .number-item.counted::before {
+        .number-card.counted::before {
             height: 100%;
+        }
+
+        .number-card:hover {
+            background: rgba(42, 107, 107, 0.05);
         }
 
         .number-value {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(3rem, 7vw, 5rem);
+            font-size: clamp(3.5rem, 8vw, 6rem);
             font-weight: 400;
             color: var(--ottanio);
             line-height: 1;
@@ -852,66 +911,320 @@
         .number-label {
             margin-top: 1rem;
             font-size: 0.8rem;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            opacity: 0.5;
+            opacity: 0.4;
             position: relative;
             z-index: 1;
         }
 
         .numbers-secondary {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(8, 1fr);
             gap: 2rem;
             max-width: 1400px;
-            margin: 0 auto;
+            margin: 0 auto 6rem;
             position: relative;
             z-index: 1;
         }
 
         .number-small {
             text-align: center;
-            padding: 1.5rem;
+            padding: 1.5rem 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .number-small.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .number-small-value {
             font-family: 'Instrument Serif', serif;
-            font-size: 2rem;
+            font-size: 2.5rem;
+            font-style: italic;
             color: var(--bianco);
-            opacity: 0.8;
         }
 
         .number-small-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            opacity: 0.4;
+            opacity: 0.35;
             margin-top: 0.5rem;
         }
 
-        /* TRADUZIONI */
-        .traduzioni-section {
+        /* TREND SECTION */
+        .trends {
             padding: 8rem 3rem;
-            background: #fafafa;
+            background: #111;
+            position: relative;
         }
 
-        .traduzioni-header {
-            text-align: center;
-            margin-bottom: 4rem;
+        .trends-header {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
         }
 
-        .traduzioni-header h2 {
+        .trends-header h3 {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .trends-header p {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.85rem;
+        }
+
+        .trends-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .trend-item {
+            padding: 2rem 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trend-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--ottanio);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .trend-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .trend-item:hover {
+            border-color: rgba(42, 107, 107, 0.3);
+            background: rgba(42, 107, 107, 0.05);
+        }
+
+        .trend-count {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-style: italic;
+            color: var(--ottanio);
+            line-height: 1;
+        }
+
+        .trend-name {
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-top: 0.75rem;
+        }
+
+        .trend-change {
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            display: inline-block;
+        }
+
+        .trend-change.up {
+            color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .trend-change.down {
+            color: #f87171;
+            background: rgba(248, 113, 113, 0.1);
+        }
+
+        /* GEOGRAPHY */
+        .geography {
+            padding: 8rem 3rem;
+            background: var(--nero);
+        }
+
+        .geography-header {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+        }
+
+        .geography-header h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .geography-header p {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.85rem;
+        }
+
+        .geography-grid {
+            display: flex;
+            gap: 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .geography-item {
+            flex: 1;
+            padding: 2.5rem 1.5rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-right: none;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .geography-item:last-child {
+            border-right: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .geography-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--bar-height, 0%);
+            background: linear-gradient(to top, var(--ottanio), transparent);
+            opacity: 0.15;
+            transition: height 1s ease;
+        }
+
+        .geography-city {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .geography-count {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--ottanio);
+            position: relative;
+            z-index: 1;
+        }
+
+        .geography-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.3;
+            margin-top: 0.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* BOOKS SECTION */
+        .books {
+            padding: 10rem 3rem;
+            background: var(--bianco);
+            color: var(--nero);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .books-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .books-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 400;
         }
 
-        .traduzioni-header h2 em {
+        .books-header h2 em {
             font-style: italic;
             color: var(--ottanio);
         }
 
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .book-item {
+            text-align: center;
+            padding: 2rem 1rem;
+            border: 1px solid transparent;
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .book-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .book-item:hover {
+            border-color: var(--grigio-chiaro);
+            background: #fafafa;
+        }
+
+        .book-year {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3rem;
+            font-style: italic;
+            color: var(--ottanio);
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .book-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-publisher {
+            font-size: 0.75rem;
+            color: var(--grigio);
+        }
+
+        /* TRADUZIONI */
+        .traduzioni {
+            padding: 6rem 0;
+            background: #fafafa;
+            overflow: hidden;
+        }
+
+        .traduzioni-label {
+            text-align: center;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            margin-bottom: 2rem;
+        }
+
         .traduzioni-marquee {
+            display: flex;
             overflow: hidden;
             padding: 2rem 0;
             border-top: 1px solid var(--grigio-chiaro);
@@ -920,25 +1233,33 @@
 
         .traduzioni-track {
             display: flex;
-            animation: marqueeScroll 30s linear infinite;
+            animation: marquee 25s linear infinite;
         }
 
         .traduzioni-track span {
-            padding: 0 3rem;
-            font-size: 1.5rem;
+            padding: 0 4rem;
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-style: italic;
             color: var(--grigio);
             white-space: nowrap;
+            transition: color 0.3s ease;
         }
 
-        @keyframes marqueeScroll {
+        .traduzioni-track span:hover {
+            color: var(--ottanio);
+        }
+
+        @keyframes marquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
         /* TEAM */
-        .team-section {
+        .team {
             padding: 10rem 3rem;
             background: var(--bianco);
+            color: var(--nero);
         }
 
         .team-header {
@@ -957,7 +1278,7 @@
             color: var(--ottanio);
         }
 
-        .founders-container {
+        .founders {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
@@ -965,26 +1286,14 @@
             margin: 0 auto 6rem;
         }
 
-        .founder-card {
-            position: relative;
-            overflow: hidden;
-            background: var(--bianco);
+        .founder {
             border: 1px solid var(--grigio-chiaro);
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .founder-card:hover {
-            border-color: var(--ottanio);
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
-        }
-
-        .founder-card a {
-            display: block;
-            padding: 3rem;
-        }
-
-        .founder-card::before {
+        .founder::before {
             content: '';
             position: absolute;
             top: 0;
@@ -997,12 +1306,24 @@
             transition: transform 0.6s ease;
         }
 
-        .founder-card:hover::before {
+        .founder:hover::before {
             transform: scaleX(1);
         }
 
+        .founder:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+        }
+
+        .founder a {
+            display: block;
+            padding: 3rem;
+        }
+
         .founder-role {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 500;
             letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--ottanio);
@@ -1013,8 +1334,8 @@
             font-family: 'Instrument Serif', serif;
             font-size: 2.5rem;
             font-weight: 400;
-            margin-bottom: 1.5rem;
             line-height: 1.1;
+            margin-bottom: 1.5rem;
         }
 
         .founder-name em {
@@ -1028,17 +1349,28 @@
             margin-bottom: 1.5rem;
         }
 
-        .founder-highlights {
+        .founder-specialties {
+            margin-bottom: 1.5rem;
+        }
+
+        .founder-specialty-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            margin-bottom: 0.5rem;
+        }
+
+        .founder-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-bottom: 1.5rem;
         }
 
         .founder-tag {
             padding: 0.4rem 0.8rem;
-            background: rgba(42, 107, 107, 0.1);
-            font-size: 0.75rem;
+            background: rgba(42, 107, 107, 0.08);
+            font-size: 0.7rem;
             color: var(--ottanio);
         }
 
@@ -1054,7 +1386,7 @@
             transition: color 0.3s ease;
         }
 
-        .founder-card:hover .founder-cta {
+        .founder:hover .founder-cta {
             color: var(--ottanio);
         }
 
@@ -1063,7 +1395,7 @@
             transition: transform 0.3s ease;
         }
 
-        .founder-card:hover .founder-cta::after {
+        .founder:hover .founder-cta::after {
             transform: translateX(5px);
         }
 
@@ -1094,56 +1426,53 @@
         }
 
         .team-member-role {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--grigio);
+            line-height: 1.4;
         }
 
         /* PARTNERS */
-        .partners-section {
+        .partners {
             padding: 6rem 0;
             background: var(--nero);
-            color: var(--bianco);
             overflow: hidden;
         }
 
         .partners-label {
             text-align: center;
-            font-size: 0.75rem;
-            letter-spacing: 0.3em;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
             text-transform: uppercase;
-            opacity: 0.4;
+            color: rgba(255,255,255,0.3);
             margin-bottom: 3rem;
         }
 
         .partners-row {
             display: flex;
             overflow: hidden;
-            margin-bottom: 1rem;
-        }
-
-        .partners-row:last-child {
-            margin-bottom: 0;
+            margin-bottom: 0.5rem;
         }
 
         .partners-track {
             display: flex;
-            animation: partnerScroll 40s linear infinite;
+            animation: partnerScroll 50s linear infinite;
         }
 
-        .partners-row:nth-child(even) .partners-track {
+        .partners-row:nth-child(odd) .partners-track {
             animation-direction: reverse;
         }
 
         .partners-track span {
-            padding: 1rem 3rem;
-            font-size: 1rem;
-            opacity: 0.5;
+            padding: 1rem 2.5rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.25);
             white-space: nowrap;
-            transition: opacity 0.3s ease;
+            transition: color 0.3s ease;
         }
 
         .partners-track span:hover {
-            opacity: 1;
+            color: var(--ottanio);
         }
 
         @keyframes partnerScroll {
@@ -1152,34 +1481,53 @@
         }
 
         /* CTA */
-        .cta-section {
-            padding: 12rem 3rem;
+        .cta {
+            padding: 14rem 3rem;
+            background: var(--bianco);
             text-align: center;
             position: relative;
             overflow: hidden;
-            background: var(--bianco);
         }
 
-        .cta-bg-shape {
+        .cta-circles {
             position: absolute;
-            width: 800px;
-            height: 800px;
-            border-radius: 50%;
-            border: 1px solid var(--grigio-chiaro);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
         }
 
-        .cta-bg-shape:nth-child(2) {
-            width: 600px;
-            height: 600px;
+        .cta-circle {
+            position: absolute;
+            border: 1px solid var(--grigio-chiaro);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: ctaPulse 4s ease-in-out infinite;
         }
 
-        .cta-bg-shape:nth-child(3) {
-            width: 400px;
-            height: 400px;
+        .cta-circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            animation-delay: 0s;
+        }
+
+        .cta-circle:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            animation-delay: 0.5s;
+        }
+
+        .cta-circle:nth-child(3) {
+            width: 700px;
+            height: 700px;
+            animation-delay: 1s;
+        }
+
+        @keyframes ctaPulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.05); }
         }
 
         .cta-content {
@@ -1189,9 +1537,10 @@
 
         .cta-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-size: clamp(3rem, 7vw, 6rem);
             font-weight: 400;
-            margin-bottom: 2rem;
+            color: var(--nero);
+            margin-bottom: 3rem;
         }
 
         .cta-title em {
@@ -1213,9 +1562,9 @@
             letter-spacing: 0.15em;
             text-transform: uppercase;
             border: 1px solid var(--nero);
-            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            transition: color 0.4s ease;
         }
 
         .cta-btn::before {
@@ -1250,8 +1599,8 @@
         /* FOOTER */
         footer {
             padding: 4rem 3rem;
-            border-top: 1px solid var(--grigio-chiaro);
             background: var(--bianco);
+            border-top: 1px solid var(--grigio-chiaro);
         }
 
         .footer-nav {
@@ -1296,7 +1645,41 @@
         }
 
         /* RESPONSIVE */
-        @media (max-width: 1000px) {
+        @media (max-width: 1200px) {
+            .numbers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .number-card:nth-child(2) {
+                border-right: 1px solid rgba(255,255,255,0.08);
+            }
+
+            .numbers-secondary {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .trends-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .cursor, .cursor-follower {
+                display: none;
+            }
+
             .origin-grid {
                 grid-template-columns: 1fr;
                 gap: 4rem;
@@ -1306,47 +1689,13 @@
                 height: 400px;
             }
 
-            .numbers-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .number-item:nth-child(2) {
-                border-right: 1px solid rgba(255,255,255,0.1);
-            }
-
-            .numbers-secondary {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .founders-container {
-                grid-template-columns: 1fr;
-            }
-
-            .team-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .cursor {
-                display: none;
-            }
-
-            header {
-                padding: 1rem 1.5rem;
-            }
-
-            nav {
-                display: none;
-            }
-
             .timeline-item {
-                grid-template-columns: 60px 1fr;
-                gap: 1.5rem;
+                grid-template-columns: 80px 1fr;
+                gap: 2rem;
             }
 
             .timeline-line {
-                left: 30px;
+                left: 40px;
             }
 
             .timeline-item:nth-child(odd) .timeline-content,
@@ -1364,17 +1713,33 @@
                 display: none;
             }
 
-            .year-marker {
-                width: 60px;
-                height: 60px;
-                font-size: 0.9rem;
+            .timeline-year-circle {
+                width: 70px;
+                height: 70px;
             }
 
-            .numbers-secondary {
-                grid-template-columns: repeat(2, 1fr);
+            .timeline-tags {
+                justify-content: flex-start !important;
+            }
+
+            .founders {
+                grid-template-columns: 1fr;
             }
 
             .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .geography-grid {
+                flex-wrap: wrap;
+            }
+
+            .geography-item {
+                flex: 0 0 33.333%;
+                border-right: 1px solid rgba(255,255,255,0.08);
+            }
+
+            .trends-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
@@ -1388,25 +1753,51 @@
             }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
             .numbers-grid {
                 grid-template-columns: 1fr;
             }
 
-            .number-item {
-                border-right: 1px solid rgba(255,255,255,0.1);
+            .number-card {
+                border-right: 1px solid rgba(255,255,255,0.08);
+            }
+
+            .numbers-secondary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .geography-item {
+                flex: 0 0 50%;
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="cursor"></div>
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <span class="loader-text">Tlon</span>
+    </div>
+
+    <!-- CURSOR -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
+    <!-- CANVAS -->
+    <canvas id="canvas-bg"></canvas>
 
     <header>
         <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
         <nav>
-            <a href="./andrea-colamedici/">Colamedici</a> 
+            <a href="./andrea-colamedici/">Colamedici</a>
             <a href="./maura-gancitano/">Gancitano</a>
             <a href="https://shop.tlon.it">Edizioni</a>
             <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
@@ -1415,92 +1806,162 @@
         </nav>
     </header>
 
+    <!-- MISSION PROGRESS -->
+    <div class="mission-progress" id="mission-progress">
+        <div class="mission-progress-dot" data-panel="0"></div>
+        <div class="mission-progress-dot" data-panel="1"></div>
+        <div class="mission-progress-dot" data-panel="2"></div>
+        <div class="mission-progress-dot" data-panel="3"></div>
+        <div class="mission-progress-dot" data-panel="4"></div>
+    </div>
+
     <main>
-        <!-- HERO IMMERSIVE -->
-        <section class="hero-immersive">
-            <div class="hero-bg">
-                <div class="hero-bg-circle"></div>
-                <div class="hero-bg-circle"></div>
-                <div class="hero-bg-circle"></div>
-            </div>
+        <!-- HERO -->
+        <section class="hero">
             <div class="hero-content">
-                <span class="hero-origin">Dal racconto di Jorge Luis Borges</span>
-                <h1 class="hero-title">
-                    <span class="char">T</span><span class="char">l</span><span class="char">o</span><span class="char">n</span>
-                </h1>
+                <p class="hero-label">Dal racconto di Jorge Luis Borges</p>
+                <h1 class="hero-title" id="hero-title">Tlon</h1>
                 <p class="hero-subtitle">Un pianeta immaginario. Che esiste.</p>
             </div>
             <div class="hero-scroll">
-                <span>Esplora</span>
-                <div class="scroll-indicator"></div>
+                <span class="hero-scroll-text">Esplora</span>
+                <div class="hero-scroll-line"></div>
             </div>
         </section>
 
         <!-- BORGES -->
-        <section class="borges-section">
-            <div class="borges-bg-text">Tlön</div>
-            <div class="borges-quote">
-                <p class="borges-text" id="borges-text">
-                    «Tlön sarà un labirinto, ma è un labirinto ordito dagli uomini, un labirinto destinato a essere decifrato dagli uomini.»
-                </p>
-                <p class="borges-author" id="borges-author">
-                    Jorge Luis Borges
-                    <span class="borges-source">Tlön, Uqbar, Orbis Tertius — Finzioni, 1944</span>
-                </p>
+        <section class="borges">
+            <div class="borges-bg">
+                <span class="borges-bg-text">Tlön</span>
+            </div>
+            <div class="borges-content">
+                <p class="borges-quote" id="borges-quote">«Tlön sarà un labirinto, ma è un labirinto ordito dagli uomini, un labirinto destinato a essere decifrato dagli uomini.»</p>
+                <div class="borges-author" id="borges-author">
+                    <p class="borges-author-name">Jorge Luis Borges</p>
+                    <p class="borges-author-work">Tlön, Uqbar, Orbis Tertius — Finzioni, 1944</p>
+                </div>
             </div>
         </section>
 
         <!-- ORIGIN -->
-        <section class="origin-section">
+        <section class="origin">
             <div class="origin-grid">
                 <div class="origin-visual">
                     <div class="origin-planet"></div>
-                    <div class="origin-orbit"></div>
-                    <div class="origin-orbit"></div>
+                    <div class="origin-orbit"><div class="origin-orbit-dot"></div></div>
+                    <div class="origin-orbit"><div class="origin-orbit-dot"></div></div>
+                    <div class="origin-orbit"><div class="origin-orbit-dot"></div></div>
                 </div>
-                <div class="origin-content">
+                <div class="origin-content" id="origin-content">
                     <span class="origin-label">L'origine</span>
                     <h2 class="origin-title">Un progetto di <em>ricerca</em> e divulgazione</h2>
                     <p class="origin-text">Tlon è un progetto di ricerca e divulgazione culturale e filosofica ideato da Maura Gancitano e Andrea Colamedici. Il nome deriva dal pianeta immaginario creato da Borges nel racconto contenuto in Finzioni: un mondo fittizio che, a forza di essere pensato, diventa reale.</p>
                     <p class="origin-text">La missione è recuperare il modo originario di fare filosofia — attraverso il dialogo e l'incontro umano — mescolando cultura alta e cultura pop, mettendo in connessione l'ambiente accademico con il mondo popolare.</p>
                     <div class="origin-date">
-                        <span class="origin-date-label">Fondazione</span>
-                        <span class="origin-date-value">Maggio 2015</span>
+                        <div class="origin-date-item">
+                            <p class="origin-date-label">Fondazione</p>
+                            <p class="origin-date-value">Maggio 2015</p>
+                        </div>
+                        <div class="origin-date-item">
+                            <p class="origin-date-label">Libreria</p>
+                            <p class="origin-date-value">Ottobre 2016</p>
+                        </div>
+                        <div class="origin-date-item">
+                            <p class="origin-date-label">Sede</p>
+                            <p class="origin-date-value">Roma</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- MISSION HORIZONTAL -->
-        <section class="mission-section">
+        <section class="mission" id="mission-section">
             <div class="mission-sticky">
                 <div class="mission-track" id="mission-track">
                     <div class="mission-panel">
                         <div class="mission-panel-content">
                             <div class="mission-panel-num">I</div>
                             <h2 class="mission-panel-title">Scuola di <em>Filosofia</em></h2>
-                            <p class="mission-panel-text">Corsi, seminari, podcast. La filosofia come strumento per vivere meglio e pensare criticamente la contemporaneità. Dal formato Lezioni di Meraviglia al podcast Scuola di Filosofie, il più ascoltato su Audible Italia.</p>
+                            <p class="mission-panel-text">Corsi, seminari, podcast. La filosofia come strumento per vivere meglio e pensare criticamente la contemporaneità. Il podcast Scuola di Filosofie è il più ascoltato su Audible Italia. Pensare Europeo nasce in collaborazione con il Parlamento Europeo, Meno per Meno con Niccolò Fabi su RaiPlaySound.</p>
+                            <div class="mission-panel-stats">
+                                <div class="mission-panel-stat">
+                                    <div class="mission-panel-stat-value">5</div>
+                                    <div class="mission-panel-stat-label">Podcast attivi</div>
+                                </div>
+                                <div class="mission-panel-stat">
+                                    <div class="mission-panel-stat-value">#1</div>
+                                    <div class="mission-panel-stat-label">Su Audible Italia</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="mission-panel">
                         <div class="mission-panel-content">
                             <div class="mission-panel-num">II</div>
                             <h2 class="mission-panel-title">Casa <em>Editrice</em></h2>
-                            <p class="mission-panel-text">Edizioni Tlon nasce nel febbraio 2016. Pubblichiamo filosofia, studi di genere, scienze sociali, poesia. Libri che costruiscono ponti tra le idee e le azioni, trasmettendo l'urgenza e il piacere di porsi domande.</p>
+                            <p class="mission-panel-text">Edizioni Tlon nasce nel febbraio 2016. Pubblichiamo filosofia (Planetari Big), studi di genere (Numeri Primi), attualità (Soglie, Urano), pamphlet (Dardi), pratiche spirituali (Radici), romanzi (Finzioni), poesia (Controcielo). Tra i titoli di punta, Storia dell'amore materno di Élisabeth Badinter.</p>
+                            <div class="mission-panel-stats">
+                                <div class="mission-panel-stat">
+                                    <div class="mission-panel-stat-value">7</div>
+                                    <div class="mission-panel-stat-label">Collane</div>
+                                </div>
+                                <div class="mission-panel-stat">
+                                    <div class="mission-panel-stat-value">12</div>
+                                    <div class="mission-panel-stat-label">Libri insieme</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="mission-panel">
                         <div class="mission-panel-content">
                             <div class="mission-panel-num">III</div>
                             <h2 class="mission-panel-title">Librerie e <em>Bookshop</em></h2>
-                            <p class="mission-panel-text">Il 2 ottobre 2016 apre la Libreria Teatro Tlon nel quartiere Ostiense di Roma. Dal 2021 gestiamo Tlon Aleph alla Galleria Nazionale d'Arte Moderna e il bookshop di Villa Medici. E a Venezia, la Libreria Giovanni alla Querini Stampalia.</p>
+                            <p class="mission-panel-text">Il 2 ottobre 2016 apre la Libreria Teatro Tlon in Via Federico Nansen 14, quartiere Ostiense di Roma. Dal 2021 gestiamo Tlon Aleph alla Galleria Nazionale d'Arte Moderna e Contemporanea e il bookshop di Villa Medici. A Venezia, la Libreria Giovanni alla Fondazione Querini Stampalia.</p>
+                            <div class="mission-panel-stats">
+                                <div class="mission-panel-stat">
+                                    <div class="mission-panel-stat-value">4</div>
+                                    <div class="mission-panel-stat-label">Librerie</div>
+                                </div>
+                                <div class="mission-panel-stat">
+                                    <div class="mission-panel-stat-value">3</div>
+                                    <div class="mission-panel-stat-label">Città</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="mission-panel">
                         <div class="mission-panel-content">
                             <div class="mission-panel-num">IV</div>
                             <h2 class="mission-panel-title">Festival ed <em>Eventi</em></h2>
-                            <p class="mission-panel-text">Direzione filosofica del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. Ideatori de Il Pod, della Festa della Filosofia, di Prendiamola con Filosofia. Portiamo il pensiero dove può accadere l'imprevisto.</p>
+                            <p class="mission-panel-text">Direzione filosofica del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. Ideatori de Il Pod — Italian Podcast Awards (864 podcast iscritti, 136 finalisti, 18 categorie), della Festa della Filosofia, di Prendiamola con Filosofia (2 milioni di spettatori).</p>
+                            <div class="mission-panel-stats">
+                                <div class="mission-panel-stat">
+                                    <div class="mission-panel-stat-value">35+</div>
+                                    <div class="mission-panel-stat-label">Festival</div>
+                                </div>
+                                <div class="mission-panel-stat">
+                                    <div class="mission-panel-stat-value">864</div>
+                                    <div class="mission-panel-stat-label">Podcast iscritti</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mission-panel">
+                        <div class="mission-panel-content">
+                            <div class="mission-panel-num">V</div>
+                            <h2 class="mission-panel-title">Formazione <em>Corporate</em></h2>
+                            <p class="mission-panel-text">Percorsi formativi su filosofia, AI, diversity & inclusion, educazione sentimentale, senso del lavoro. Andrea insegna Social Media Theory alla IULM e Comunicazione Multimediale allo IED. Collaboriamo con oltre 25 aziende e 20 università italiane e internazionali.</p>
+                            <div class="mission-panel-stats">
+                                <div class="mission-panel-stat">
+                                    <div class="mission-panel-stat-value">120+</div>
+                                    <div class="mission-panel-stat-label">Eventi formativi</div>
+                                </div>
+                                <div class="mission-panel-stat">
+                                    <div class="mission-panel-stat-value">51</div>
+                                    <div class="mission-panel-stat-label">Solo allo IED</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1508,11 +1969,11 @@
         </section>
 
         <!-- TIMELINE -->
-        <section class="timeline-section">
+        <section class="timeline">
             <div class="timeline-header">
                 <h2>Una storia di <em>meraviglia</em></h2>
             </div>
-            <div class="timeline">
+            <div class="timeline-container">
                 <div class="timeline-line">
                     <div class="timeline-progress" id="timeline-progress"></div>
                 </div>
@@ -1523,7 +1984,9 @@
                         <p class="timeline-desc">Nasce Tlon con una serie di eventi culturali a Roma. Il nome viene dal racconto di Borges: un pianeta immaginario che diventa reale a forza di essere pensato.</p>
                     </div>
                     <div class="timeline-year">
-                        <div class="year-marker">2015</div>
+                        <div class="timeline-year-circle">
+                            <span class="timeline-year-text">2015</span>
+                        </div>
                     </div>
                     <div class="timeline-empty"></div>
                 </div>
@@ -1531,22 +1994,32 @@
                 <div class="timeline-item">
                     <div class="timeline-empty"></div>
                     <div class="timeline-year">
-                        <div class="year-marker">2016</div>
+                        <div class="timeline-year-circle">
+                            <span class="timeline-year-text">2016</span>
+                        </div>
                     </div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">Edizioni e <em>Libreria</em></h3>
-                        <p class="timeline-desc">A febbraio nasce Edizioni Tlon. Il 2 ottobre inaugura la Libreria Teatro nel quartiere Ostiense di Roma, in Via Federico Nansen 14.</p>
-                        <span class="timeline-highlight">Tu non sei Dio — primo libro</span>
+                        <p class="timeline-desc">A febbraio nasce Edizioni Tlon. Il 2 ottobre inaugura la Libreria Teatro in Via Federico Nansen 14, quartiere Ostiense di Roma. Esce Tu non sei Dio, primo libro insieme.</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">Edizioni Tlon</span>
+                            <span class="timeline-tag">Libreria Teatro</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="timeline-item">
                     <div class="timeline-content">
                         <h3 class="timeline-title">La società della <em>performance</em></h3>
-                        <p class="timeline-desc">Il saggio che prosegue la linea di Guy Debord e Byung-Chul Han. La filosofia di Tlon inizia a prendere forma come critica della contemporaneità.</p>
+                        <p class="timeline-desc">Il saggio che prosegue la linea di Guy Debord e Byung-Chul Han. La filosofia di Tlon inizia a prendere forma come critica della contemporaneità. Esce anche Lezioni di meraviglia.</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">Critica culturale</span>
+                        </div>
                     </div>
                     <div class="timeline-year">
-                        <div class="year-marker">2018</div>
+                        <div class="timeline-year-circle">
+                            <span class="timeline-year-text">2018</span>
+                        </div>
                     </div>
                     <div class="timeline-empty"></div>
                 </div>
@@ -1554,23 +2027,34 @@
                 <div class="timeline-item">
                     <div class="timeline-empty"></div>
                     <div class="timeline-year">
-                        <div class="year-marker">2019</div>
+                        <div class="timeline-year-circle">
+                            <span class="timeline-year-text">2019</span>
+                        </div>
                     </div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">Liberati della <em>brava bambina</em></h3>
-                        <p class="timeline-desc">Il libro con HarperCollins diventa un caso editoriale. Inizia la collaborazione con i grandi editori. I libri vengono tradotti in cinese, coreano, spagnolo.</p>
-                        <span class="timeline-highlight">Caso editoriale</span>
+                        <p class="timeline-desc">Il libro con HarperCollins diventa un caso editoriale. Inizia la collaborazione con i grandi editori. I libri vengono tradotti in cinese, coreano, spagnolo, portoghese, polacco.</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">HarperCollins</span>
+                            <span class="timeline-tag">Caso editoriale</span>
+                            <span class="timeline-tag">5 traduzioni</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="timeline-item">
                     <div class="timeline-content">
                         <h3 class="timeline-title">Prendiamola con <em>Filosofia</em></h3>
-                        <p class="timeline-desc">Durante il lockdown, su sollecitazione del Ministero della Salute, organizziamo la maratona online più vista d'Italia. 14 ore di diretta, centinaia di ospiti tra filosofi, artisti e musicisti.</p>
-                        <span class="timeline-highlight">2 milioni di spettatori</span>
+                        <p class="timeline-desc">Durante il lockdown, su sollecitazione del Ministero della Salute, organizziamo la maratona online più vista d'Italia. 14 ore di diretta, centinaia di ospiti tra filosofi, artisti, musicisti. Nasce anche la Festa della Filosofia alla Triennale di Milano.</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">2 milioni di spettatori</span>
+                            <span class="timeline-tag">14 ore live</span>
+                        </div>
                     </div>
                     <div class="timeline-year">
-                        <div class="year-marker">2020</div>
+                        <div class="timeline-year-circle">
+                            <span class="timeline-year-text">2020</span>
+                        </div>
                     </div>
                     <div class="timeline-empty"></div>
                 </div>
@@ -1578,22 +2062,35 @@
                 <div class="timeline-item">
                     <div class="timeline-empty"></div>
                     <div class="timeline-year">
-                        <div class="year-marker">2021</div>
+                        <div class="timeline-year-circle">
+                            <span class="timeline-year-text">2021</span>
+                        </div>
                     </div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">Tlon <em>Aleph</em></h3>
-                        <p class="timeline-desc">Apre il bookshop alla Galleria Nazionale d'Arte Moderna e Contemporanea di Roma. Esce L'alba dei nuovi dei con Mondadori e Scuola di Filosofie diventa il podcast più ascoltato su Audible Italia.</p>
+                        <p class="timeline-desc">Apre il bookshop alla Galleria Nazionale d'Arte Moderna e Contemporanea di Roma. Esce L'alba dei nuovi dei con Mondadori. Scuola di Filosofie diventa il podcast più ascoltato su Audible Italia.</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">GNAM Roma</span>
+                            <span class="timeline-tag">Mondadori</span>
+                            <span class="timeline-tag">#1 Audible</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <h3 class="timeline-title">Il Pod e <em>Premio Rapallo</em></h3>
-                        <p class="timeline-desc">Nasce Il Pod, il primo premio per i migliori podcast italiani. Maura vince il Premio Rapallo con Specchio delle mie brame (Einaudi), ex aequo con Bianca Pitzorno.</p>
-                        <span class="timeline-highlight">Premio Rapallo 2022</span>
+                        <h3 class="timeline-title">Il Pod e Premio <em>Rapallo</em></h3>
+                        <p class="timeline-desc">Nasce Il Pod — Italian Podcast Awards, il primo premio per i migliori podcast italiani. Maura vince il Premio Rapallo con Specchio delle mie brame (Einaudi), ex aequo con Bianca Pitzorno.</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">Il Pod</span>
+                            <span class="timeline-tag">Premio Rapallo 2022</span>
+                            <span class="timeline-tag">Einaudi</span>
+                        </div>
                     </div>
                     <div class="timeline-year">
-                        <div class="year-marker">2022</div>
+                        <div class="timeline-year-circle">
+                            <span class="timeline-year-text">2022</span>
+                        </div>
                     </div>
                     <div class="timeline-empty"></div>
                 </div>
@@ -1601,22 +2098,33 @@
                 <div class="timeline-item">
                     <div class="timeline-empty"></div>
                     <div class="timeline-year">
-                        <div class="year-marker">2023</div>
+                        <div class="timeline-year-circle">
+                            <span class="timeline-year-text">2023</span>
+                        </div>
                     </div>
                     <div class="timeline-content">
-                        <h3 class="timeline-title">Festival del Pensare <em>Contemporaneo</em></h3>
-                        <p class="timeline-desc">Inizia la direzione filosofica del Festival di Piacenza. Tlon diventa un progetto nazionale. Esce Ma chi me lo fa fare? sul senso del lavoro.</p>
+                        <h3 class="timeline-title">Festival del <em>Pensare</em></h3>
+                        <p class="timeline-desc">Inizia la direzione filosofica del Festival del Pensare Contemporaneo di Piacenza. Tlon diventa un progetto nazionale. Esce Ma chi me lo fa fare? sul senso del lavoro.</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">Piacenza</span>
+                            <span class="timeline-tag">Direzione artistica</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="timeline-item">
                     <div class="timeline-content">
                         <h3 class="timeline-title"><em>Ipnocrazia</em></h3>
-                        <p class="timeline-desc">Il libro di Andrea, firmato inizialmente dal filosofo cinese Jianwei Xun, viene rivelato come performance narrativa. Discusso su Le Figaro, Le Monde, El País, Wired, HEC Paris. Tradotto in francese, spagnolo, inglese.</p>
-                        <span class="timeline-highlight">Caso internazionale</span>
+                        <p class="timeline-desc">Il libro di Andrea, firmato inizialmente dal filosofo cinese Jianwei Xun, viene rivelato come performance narrativa. Discusso su Le Figaro, Le Monde, El País, La Vanguardia, Le Grand Continent, Wired, HEC Paris. Tradotto in francese, spagnolo, inglese.</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">Caso internazionale</span>
+                            <span class="timeline-tag">3 traduzioni</span>
+                        </div>
                     </div>
                     <div class="timeline-year">
-                        <div class="year-marker">2024</div>
+                        <div class="timeline-year-circle">
+                            <span class="timeline-year-text">2024</span>
+                        </div>
                     </div>
                     <div class="timeline-empty"></div>
                 </div>
@@ -1624,37 +2132,42 @@
                 <div class="timeline-item">
                     <div class="timeline-empty"></div>
                     <div class="timeline-year">
-                        <div class="year-marker">2025</div>
+                        <div class="timeline-year-circle">
+                            <span class="timeline-year-text">2025</span>
+                        </div>
                     </div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">Botanica della <em>meraviglia</em></h3>
                         <p class="timeline-desc">Il nuovo libro insieme. Coltivare lo stupore alla fine del mondo. Un'indagine sullo spirito umano che documenta le pratiche di resistenza culturale tra le crepe dell'apocalisse.</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">Nuovo libro</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- NUMBERS -->
-        <section class="numbers-section">
-            <div class="numbers-bg">∞</div>
+        <section class="numbers">
+            <div class="numbers-bg">2468</div>
             <div class="numbers-header">
                 <h2>In numeri</h2>
-                <p>Dati dal biennio 2024-2025</p>
+                <p>Dati dal biennio 2024-2025 — Analisi di 3.332 eventi registrati</p>
             </div>
             <div class="numbers-grid">
-                <div class="number-item">
+                <div class="number-card">
                     <div class="number-value" data-target="2468">0</div>
                     <div class="number-label">Eventi business</div>
                 </div>
-                <div class="number-item">
+                <div class="number-card">
                     <div class="number-value" data-target="200">0</div>
-                    <div class="number-label">Partner</div>
+                    <div class="number-label">Partner unici</div>
                 </div>
-                <div class="number-item">
+                <div class="number-card">
                     <div class="number-value" data-target="103">0</div>
                     <div class="number-label">Eventi al mese</div>
                 </div>
-                <div class="number-item">
+                <div class="number-card">
                     <div class="number-value" data-target="864">0</div>
                     <div class="number-label">Podcast iscritti al Pod</div>
                 </div>
@@ -1673,8 +2186,16 @@
                     <div class="number-small-label">Eventi RAI</div>
                 </div>
                 <div class="number-small">
+                    <div class="number-small-value">13</div>
+                    <div class="number-small-label">Eventi La7</div>
+                </div>
+                <div class="number-small">
                     <div class="number-small-value">12</div>
-                    <div class="number-small-label">Libri insieme</div>
+                    <div class="number-small-label">Auditorium Roma</div>
+                </div>
+                <div class="number-small">
+                    <div class="number-small-value">7</div>
+                    <div class="number-small-label">Teatro Carcano</div>
                 </div>
                 <div class="number-small">
                     <div class="number-small-value">9</div>
@@ -1685,13 +2206,150 @@
                     <div class="number-small-label">Librerie</div>
                 </div>
             </div>
+
+            <!-- TRENDS -->
+            <div class="trends">
+                <div class="trends-header">
+                    <h3>I temi</h3>
+                    <p>Analisi semantica del corpus eventi</p>
+                </div>
+                <div class="trends-grid">
+                    <div class="trend-item">
+                        <div class="trend-count">134</div>
+                        <div class="trend-name">Letteratura e Libri</div>
+                    </div>
+                    <div class="trend-item">
+                        <div class="trend-count">91</div>
+                        <div class="trend-name">AI e Tecnologia</div>
+                        <span class="trend-change up">+159%</span>
+                    </div>
+                    <div class="trend-item">
+                        <div class="trend-count">54</div>
+                        <div class="trend-name">Filosofia</div>
+                    </div>
+                    <div class="trend-item">
+                        <div class="trend-count">47</div>
+                        <div class="trend-name">Educazione</div>
+                    </div>
+                    <div class="trend-item">
+                        <div class="trend-count">33</div>
+                        <div class="trend-name">Femminismo</div>
+                        <span class="trend-change down">-87%</span>
+                    </div>
+                    <div class="trend-item">
+                        <div class="trend-count">33</div>
+                        <div class="trend-name">Lavoro</div>
+                    </div>
+                    <div class="trend-item">
+                        <div class="trend-count">28</div>
+                        <div class="trend-name">Media</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GEOGRAPHY -->
+            <div class="geography">
+                <div class="geography-header">
+                    <h3>Le città</h3>
+                    <p>Distribuzione geografica degli eventi</p>
+                </div>
+                <div class="geography-grid">
+                    <div class="geography-item" style="--bar-height: 100%">
+                        <div class="geography-city">Roma</div>
+                        <div class="geography-count">235</div>
+                        <div class="geography-label">eventi</div>
+                    </div>
+                    <div class="geography-item" style="--bar-height: 67%">
+                        <div class="geography-city">Milano</div>
+                        <div class="geography-count">158</div>
+                        <div class="geography-label">eventi</div>
+                    </div>
+                    <div class="geography-item" style="--bar-height: 30%">
+                        <div class="geography-city">Bologna</div>
+                        <div class="geography-count">71</div>
+                        <div class="geography-label">eventi</div>
+                    </div>
+                    <div class="geography-item" style="--bar-height: 20%">
+                        <div class="geography-city">Torino</div>
+                        <div class="geography-count">47</div>
+                        <div class="geography-label">eventi</div>
+                    </div>
+                    <div class="geography-item" style="--bar-height: 17%">
+                        <div class="geography-city">Piacenza</div>
+                        <div class="geography-count">41</div>
+                        <div class="geography-label">eventi</div>
+                    </div>
+                    <div class="geography-item" style="--bar-height: 17%">
+                        <div class="geography-city">Foggia</div>
+                        <div class="geography-count">41</div>
+                        <div class="geography-label">eventi</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOOKS -->
+        <section class="books">
+            <div class="books-header">
+                <h2>I libri <em>insieme</em></h2>
+            </div>
+            <div class="books-grid">
+                <div class="book-item">
+                    <div class="book-year">2016</div>
+                    <h3 class="book-title">Tu non sei Dio</h3>
+                    <p class="book-publisher">Tlon</p>
+                </div>
+                <div class="book-item">
+                    <div class="book-year">2017</div>
+                    <h3 class="book-title">Lezioni di meraviglia</h3>
+                    <p class="book-publisher">Tlon</p>
+                </div>
+                <div class="book-item">
+                    <div class="book-year">2018</div>
+                    <h3 class="book-title">La società della performance</h3>
+                    <p class="book-publisher">Tlon</p>
+                </div>
+                <div class="book-item">
+                    <div class="book-year">2019</div>
+                    <h3 class="book-title">Liberati della brava bambina</h3>
+                    <p class="book-publisher">HarperCollins</p>
+                </div>
+                <div class="book-item">
+                    <div class="book-year">2021</div>
+                    <h3 class="book-title">Prendila con filosofia</h3>
+                    <p class="book-publisher">HarperCollins</p>
+                </div>
+                <div class="book-item">
+                    <div class="book-year">2021</div>
+                    <h3 class="book-title">L'alba dei nuovi dei</h3>
+                    <p class="book-publisher">Mondadori</p>
+                </div>
+                <div class="book-item">
+                    <div class="book-year">2022</div>
+                    <h3 class="book-title">Il gioco del pensiero</h3>
+                    <p class="book-publisher">Tlon</p>
+                </div>
+                <div class="book-item">
+                    <div class="book-year">2023</div>
+                    <h3 class="book-title">Ma chi me lo fa fare?</h3>
+                    <p class="book-publisher">HarperCollins</p>
+                </div>
+                <div class="book-item">
+                    <div class="book-year">2024</div>
+                    <h3 class="book-title">Filosofia (non) è noioso</h3>
+                    <p class="book-publisher">Zanichelli</p>
+                </div>
+                <div class="book-item">
+                    <div class="book-year">2025</div>
+                    <h3 class="book-title">Botanica della meraviglia</h3>
+                    <p class="book-publisher">HarperCollins</p>
+                </div>
+            </div>
         </section>
 
         <!-- TRADUZIONI -->
-        <section class="traduzioni-section">
-            <div class="traduzioni-header">
-                <h2>Tradotti nel <em>mondo</em></h2>
-            </div>
+        <section class="traduzioni">
+            <p class="traduzioni-label">Tradotti nel mondo</p>
             <div class="traduzioni-marquee">
                 <div class="traduzioni-track">
                     <span>Cinese</span>
@@ -1717,33 +2375,54 @@
         </section>
 
         <!-- TEAM -->
-        <section class="team-section">
+        <section class="team">
             <div class="team-header">
                 <h2>Chi <em>siamo</em></h2>
             </div>
-            <div class="founders-container">
-                <div class="founder-card">
+            <div class="founders">
+                <div class="founder">
                     <a href="./maura-gancitano/">
                         <span class="founder-role">Fondatrice</span>
                         <h3 class="founder-name">Maura <em>Gancitano</em></h3>
-                        <p class="founder-bio">Filosofa, scrittrice, editorialista di Repubblica. Si occupa di femminismo filosofico, educazione sentimentale, bellezza e corpo. Collabora con Vanity Fair, linus, Donna Moderna, Radio 1.</p>
-                        <div class="founder-highlights">
-                            <span class="founder-tag">Premio Rapallo 2022</span>
-                            <span class="founder-tag">Einaudi</span>
-                            <span class="founder-tag">Mondadori</span>
+                        <p class="founder-bio">Filosofa, scrittrice, editrice, opinionista. Volto mediatico principale di Tlon. Collabora con La Repubblica, Vanity Fair, linus, Donna Moderna. Ratio mediatico 11.5x rispetto ad Andrea su TV, 46 eventi televisivi nel biennio.</p>
+                        <div class="founder-specialties">
+                            <p class="founder-specialty-label">Specializzazioni</p>
+                            <div class="founder-tags">
+                                <span class="founder-tag">Femminismo filosofico</span>
+                                <span class="founder-tag">Educazione sentimentale</span>
+                                <span class="founder-tag">Bellezza e corpo</span>
+                                <span class="founder-tag">Letteratura</span>
+                            </div>
+                        </div>
+                        <div class="founder-specialties">
+                            <p class="founder-specialty-label">Libri propri</p>
+                            <div class="founder-tags">
+                                <span class="founder-tag">Specchio delle mie brame — Einaudi 2022</span>
+                                <span class="founder-tag">Erotica dei sentimenti — Einaudi 2024</span>
+                            </div>
                         </div>
                         <span class="founder-cta">Scopri di più</span>
                     </a>
                 </div>
-                <div class="founder-card">
+                <div class="founder">
                     <a href="./andrea-colamedici/">
                         <span class="founder-role">Fondatore</span>
                         <h3 class="founder-name">Andrea <em>Colamedici</em></h3>
-                        <p class="founder-bio">Filosofo, editore, formatore, regista. Docente IED e IULM. Si occupa di AI, tecnologia, leadership. Presidente di GenIALAB. Autore di Ipnocrazia, caso editoriale internazionale.</p>
-                        <div class="founder-highlights">
-                            <span class="founder-tag">Ipnocrazia</span>
-                            <span class="founder-tag">IED</span>
-                            <span class="founder-tag">GenIALAB</span>
+                        <p class="founder-bio">Filosofo, editore, formatore, regista, attore teatrale. Polo formativo e tecnologico di Tlon. Docente IED (Comunicazione Multimediale, 51 eventi) e IULM (Social Media Theory). Ratio 6.5x su temi AI. Presidente GenIALAB.</p>
+                        <div class="founder-specialties">
+                            <p class="founder-specialty-label">Specializzazioni</p>
+                            <div class="founder-tags">
+                                <span class="founder-tag">AI e trasformazione digitale</span>
+                                <span class="founder-tag">Leadership</span>
+                                <span class="founder-tag">Social Media Theory</span>
+                                <span class="founder-tag">Educazione</span>
+                            </div>
+                        </div>
+                        <div class="founder-specialties">
+                            <p class="founder-specialty-label">Libro proprio</p>
+                            <div class="founder-tags">
+                                <span class="founder-tag">Ipnocrazia — Tlon 2024 — Caso internazionale</span>
+                            </div>
                         </div>
                         <span class="founder-cta">Scopri di più</span>
                     </a>
@@ -1752,11 +2431,11 @@
             <div class="team-grid">
                 <div class="team-member">
                     <h4 class="team-member-name">Nicola Bonimelli</h4>
-                    <p class="team-member-role">Co-fondatore, Direzione commerciale</p>
+                    <p class="team-member-role">Co-fondatore, Direzione commerciale, Attore, Traduttore</p>
                 </div>
                 <div class="team-member">
                     <h4 class="team-member-name">Michele Trionfera</h4>
-                    <p class="team-member-role">Direttore Librerie</p>
+                    <p class="team-member-role">Direttore Librerie, Libraio, Traduttore</p>
                 </div>
                 <div class="team-member">
                     <h4 class="team-member-name">Caterina Di Paolo</h4>
@@ -1774,33 +2453,53 @@
         </section>
 
         <!-- PARTNERS -->
-        <section class="partners-section">
-            <p class="partners-label">Hanno lavorato con noi</p>
+        <section class="partners">
+            <p class="partners-label">Hanno lavorato con noi — oltre 200 partner</p>
             <div class="partners-row">
                 <div class="partners-track">
-                    <span>RAI</span><span>La7</span><span>Sky</span><span>La Repubblica</span><span>Vanity Fair</span><span>Audible</span><span>HarperCollins</span><span>Einaudi</span><span>Mondadori</span><span>Zanichelli</span><span>Treccani</span><span>Feltrinelli</span>
-                    <span>RAI</span><span>La7</span><span>Sky</span><span>La Repubblica</span><span>Vanity Fair</span><span>Audible</span><span>HarperCollins</span><span>Einaudi</span><span>Mondadori</span><span>Zanichelli</span><span>Treccani</span><span>Feltrinelli</span>
+                    <span>RAI</span><span>La7</span><span>Sky</span><span>RSI Svizzera</span><span>Radio24</span><span>Radio Capital</span><span>Radio Rock</span><span>France Culture</span><span>La Repubblica</span><span>Vanity Fair</span><span>linus</span><span>Donna Moderna</span><span>Elle</span><span>Harper's Bazaar</span><span>Corriere della Sera</span><span>La Stampa</span><span>El País</span><span>La Vanguardia</span><span>Le Monde</span><span>Le Figaro</span>
+                    <span>RAI</span><span>La7</span><span>Sky</span><span>RSI Svizzera</span><span>Radio24</span><span>Radio Capital</span><span>Radio Rock</span><span>France Culture</span><span>La Repubblica</span><span>Vanity Fair</span><span>linus</span><span>Donna Moderna</span><span>Elle</span><span>Harper's Bazaar</span><span>Corriere della Sera</span><span>La Stampa</span><span>El País</span><span>La Vanguardia</span><span>Le Monde</span><span>Le Figaro</span>
                 </div>
             </div>
             <div class="partners-row">
                 <div class="partners-track">
-                    <span>IED</span><span>IULM</span><span>Sapienza</span><span>LUISS</span><span>San Raffaele</span><span>Politecnico Milano</span><span>Columbia University</span><span>Generali</span><span>UniCredit</span><span>Intesa Sanpaolo</span><span>Ambrosetti</span>
-                    <span>IED</span><span>IULM</span><span>Sapienza</span><span>LUISS</span><span>San Raffaele</span><span>Politecnico Milano</span><span>Columbia University</span><span>Generali</span><span>UniCredit</span><span>Intesa Sanpaolo</span><span>Ambrosetti</span>
+                    <span>IED</span><span>IULM</span><span>Sapienza</span><span>LUISS</span><span>San Raffaele</span><span>Politecnico Milano</span><span>Columbia University</span><span>Università di Bologna</span><span>Federico II Napoli</span><span>Università argentine</span><span>Treccani Academy</span><span>Master Giornalismo Bologna</span>
+                    <span>IED</span><span>IULM</span><span>Sapienza</span><span>LUISS</span><span>San Raffaele</span><span>Politecnico Milano</span><span>Columbia University</span><span>Università di Bologna</span><span>Federico II Napoli</span><span>Università argentine</span><span>Treccani Academy</span><span>Master Giornalismo Bologna</span>
                 </div>
             </div>
             <div class="partners-row">
                 <div class="partners-track">
-                    <span>Salone del Libro</span><span>Triennale Milano</span><span>Parlamento Europeo</span><span>Galleria Nazionale</span><span>Villa Medici</span><span>Auditorium Roma</span><span>Teatro Carcano</span><span>Festival Gavoi</span><span>Pordenonelegge</span>
-                    <span>Salone del Libro</span><span>Triennale Milano</span><span>Parlamento Europeo</span><span>Galleria Nazionale</span><span>Villa Medici</span><span>Auditorium Roma</span><span>Teatro Carcano</span><span>Festival Gavoi</span><span>Pordenonelegge</span>
+                    <span>Generali</span><span>UniCredit</span><span>Intesa Sanpaolo</span><span>Reale Mutua</span><span>BPER</span><span>BNL</span><span>Ambrosetti/TEHA</span><span>Google</span><span>Amazon</span><span>Audible</span><span>Ferrero</span><span>Sanofi</span><span>Veralab</span><span>WINDTRE</span><span>Lamborghini</span><span>Ducati</span><span>Mercedes</span>
+                    <span>Generali</span><span>UniCredit</span><span>Intesa Sanpaolo</span><span>Reale Mutua</span><span>BPER</span><span>BNL</span><span>Ambrosetti/TEHA</span><span>Google</span><span>Amazon</span><span>Audible</span><span>Ferrero</span><span>Sanofi</span><span>Veralab</span><span>WINDTRE</span><span>Lamborghini</span><span>Ducati</span><span>Mercedes</span>
+                </div>
+            </div>
+            <div class="partners-row">
+                <div class="partners-track">
+                    <span>HarperCollins</span><span>Einaudi</span><span>Mondadori</span><span>Feltrinelli</span><span>Treccani</span><span>Rizzoli</span><span>Laterza</span><span>Solferino</span><span>Sperling & Kupfer</span><span>Zanichelli</span><span>Electa</span><span>Aboca</span>
+                    <span>HarperCollins</span><span>Einaudi</span><span>Mondadori</span><span>Feltrinelli</span><span>Treccani</span><span>Rizzoli</span><span>Laterza</span><span>Solferino</span><span>Sperling & Kupfer</span><span>Zanichelli</span><span>Electa</span><span>Aboca</span>
+                </div>
+            </div>
+            <div class="partners-row">
+                <div class="partners-track">
+                    <span>Salone del Libro Torino</span><span>Festival Gavoi</span><span>Pordenonelegge</span><span>Book Pride</span><span>Voices Firenze</span><span>WeWorld Festival</span><span>inQuiete</span><span>Repubblica delle Idee</span><span>Festival Filosofia Modena</span><span>Taobuk</span><span>Mare di Libri</span><span>Bookcity</span>
+                    <span>Salone del Libro Torino</span><span>Festival Gavoi</span><span>Pordenonelegge</span><span>Book Pride</span><span>Voices Firenze</span><span>WeWorld Festival</span><span>inQuiete</span><span>Repubblica delle Idee</span><span>Festival Filosofia Modena</span><span>Taobuk</span><span>Mare di Libri</span><span>Bookcity</span>
+                </div>
+            </div>
+            <div class="partners-row">
+                <div class="partners-track">
+                    <span>Auditorium Parco della Musica</span><span>Teatro Carcano</span><span>Triennale Milano</span><span>MAXXI</span><span>Galleria Nazionale</span><span>Villa Medici</span><span>Teatro Argentina</span><span>XNL Piacenza</span><span>Monk Roma</span><span>Circolo dei Lettori Torino</span><span>Fondazione Feltrinelli</span>
+                    <span>Auditorium Parco della Musica</span><span>Teatro Carcano</span><span>Triennale Milano</span><span>MAXXI</span><span>Galleria Nazionale</span><span>Villa Medici</span><span>Teatro Argentina</span><span>XNL Piacenza</span><span>Monk Roma</span><span>Circolo dei Lettori Torino</span><span>Fondazione Feltrinelli</span>
                 </div>
             </div>
         </section>
 
         <!-- CTA -->
-        <section class="cta-section">
-            <div class="cta-bg-shape"></div>
-            <div class="cta-bg-shape"></div>
-            <div class="cta-bg-shape"></div>
+        <section class="cta">
+            <div class="cta-circles">
+                <div class="cta-circle"></div>
+                <div class="cta-circle"></div>
+                <div class="cta-circle"></div>
+            </div>
             <div class="cta-content">
                 <h2 class="cta-title">Facciamo qualcosa <em>insieme</em></h2>
                 <div class="cta-buttons">
@@ -1824,10 +2523,20 @@
     </footer>
 
     <script>
-        // Custom cursor
-        const cursor = document.querySelector('.cursor');
+        // LOADER
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+                initAnimations();
+            }, 1000);
+        });
+
+        // CURSOR
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
         let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
+        let followerX = 0, followerY = 0;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
@@ -1835,71 +2544,216 @@
         });
 
         function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.1;
-            cursorY += (mouseY - cursorY) * 0.1;
-            cursor.style.left = cursorX + 'px';
-            cursor.style.top = cursorY + 'px';
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+            followerX += (mouseX - followerX) * 0.1;
+            followerY += (mouseY - followerY) * 0.1;
+
+            cursor.style.left = cursorX - 6 + 'px';
+            cursor.style.top = cursorY - 6 + 'px';
+            follower.style.left = followerX - 20 + 'px';
+            follower.style.top = followerY - 20 + 'px';
+
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
 
-        document.querySelectorAll('a, button, .founder-card, .team-member').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        document.querySelectorAll('a, button, .founder, .book-item, .team-member').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                follower.classList.add('hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+                follower.classList.remove('hover');
+            });
         });
 
-        // Header scroll
-        const header = document.querySelector('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+        // CANVAS PARTICLES
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
             }
-        });
 
-        // Borges text animation
-        const borgesText = document.getElementById('borges-text');
-        const borgesAuthor = document.getElementById('borges-author');
-        const originalText = borgesText.textContent;
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
+                this.radius = Math.random() * 2 + 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(42, 107, 107, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 80; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Draw connections
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(42, 107, 107, ${0.1 * (1 - dist / 150)})`;
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // INIT ANIMATIONS
+        function initAnimations() {
+            // Hero title character animation
+            const heroTitle = document.getElementById('hero-title');
+            const text = heroTitle.textContent;
+            heroTitle.innerHTML = text.split('').map(char => `<span class="char">${char}</span>`).join('');
+
+            const chars = heroTitle.querySelectorAll('.char');
+            chars.forEach((char, i) => {
+                setTimeout(() => {
+                    char.style.animation = `charReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards`;
+                }, 300 + i * 100);
+            });
+
+            // Hero label and subtitle
+            setTimeout(() => {
+                document.querySelector('.hero-label').style.cssText = 'opacity: 1; transform: translateY(0); transition: all 1s ease;';
+            }, 800);
+
+            setTimeout(() => {
+                document.querySelector('.hero-subtitle').style.cssText = 'opacity: 1; transform: translateY(0); transition: all 1s ease;';
+            }, 1200);
+
+            setTimeout(() => {
+                document.querySelector('.hero-scroll').style.cssText = 'opacity: 1; transition: opacity 1s ease;';
+            }, 1800);
+        }
+
+        // Add charReveal keyframe
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes charReveal {
+                to {
+                    opacity: 1;
+                    transform: translateY(0) rotateX(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // BORGES QUOTE ANIMATION
+        const borgesQuote = document.getElementById('borges-quote');
+        const originalText = borgesQuote.textContent;
         const words = originalText.split(' ');
-        borgesText.innerHTML = words.map(word => `<span class="word">${word}</span>`).join(' ');
+        borgesQuote.innerHTML = words.map(word => `<span class="word">${word}</span>`).join(' ');
 
         const borgesObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const wordEls = borgesText.querySelectorAll('.word');
+                    const wordEls = borgesQuote.querySelectorAll('.word');
                     wordEls.forEach((word, i) => {
-                        setTimeout(() => word.classList.add('visible'), i * 80);
+                        setTimeout(() => word.classList.add('visible'), i * 60);
                     });
-                    setTimeout(() => borgesAuthor.classList.add('visible'), words.length * 80);
+                    setTimeout(() => {
+                        document.getElementById('borges-author').classList.add('visible');
+                    }, words.length * 60 + 300);
                 }
             });
         }, { threshold: 0.5 });
-        borgesObserver.observe(borgesText);
+        borgesObserver.observe(borgesQuote);
 
-        // Horizontal scroll for mission
-        const missionSection = document.querySelector('.mission-section');
+        // ORIGIN CONTENT ANIMATION
+        const originContent = document.getElementById('origin-content');
+        const originObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const elements = originContent.children;
+                    Array.from(elements).forEach((el, i) => {
+                        setTimeout(() => {
+                            el.style.cssText = 'opacity: 1; transform: translateY(0) translateX(0); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);';
+                        }, i * 150);
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+        originObserver.observe(originContent);
+
+        // MISSION HORIZONTAL SCROLL
+        const missionSection = document.getElementById('mission-section');
         const missionTrack = document.getElementById('mission-track');
+        const missionProgress = document.getElementById('mission-progress');
         const panels = document.querySelectorAll('.mission-panel');
+        const progressDots = document.querySelectorAll('.mission-progress-dot');
 
         window.addEventListener('scroll', () => {
             const rect = missionSection.getBoundingClientRect();
             const sectionHeight = missionSection.offsetHeight;
             const viewportHeight = window.innerHeight;
-            
+
             if (rect.top <= 0 && rect.bottom >= viewportHeight) {
+                missionProgress.classList.add('visible');
                 const scrollProgress = -rect.top / (sectionHeight - viewportHeight);
                 const maxTranslate = (panels.length - 1) * 100;
-                const translateX = Math.min(scrollProgress * maxTranslate, maxTranslate);
+                const translateX = Math.min(Math.max(scrollProgress * maxTranslate, 0), maxTranslate);
                 missionTrack.style.transform = `translateX(-${translateX}vw)`;
+
+                // Update progress dots
+                const currentPanel = Math.round(translateX / 100);
+                progressDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentPanel);
+                });
+            } else {
+                missionProgress.classList.remove('visible');
             }
         });
 
-        // Timeline animation
+        // TIMELINE ANIMATION
         const timelineItems = document.querySelectorAll('.timeline-item');
         const timelineProgress = document.getElementById('timeline-progress');
-        const timelineSection = document.querySelector('.timeline-section');
+        const timelineSection = document.querySelector('.timeline');
 
         const timelineObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1917,14 +2771,14 @@
             const sectionTop = rect.top;
             const sectionHeight = rect.height;
             const viewportHeight = window.innerHeight;
-            
+
             if (sectionTop < viewportHeight && rect.bottom > 0) {
-                const progress = Math.min(Math.max((viewportHeight - sectionTop) / (sectionHeight + viewportHeight), 0), 1);
+                const progress = Math.min(Math.max((viewportHeight - sectionTop) / (sectionHeight + viewportHeight * 0.5), 0), 1);
                 timelineProgress.style.height = (progress * 100) + '%';
             }
         });
 
-        // Number counter
+        // NUMBER COUNTER
         const numberObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1932,24 +2786,28 @@
                     const target = parseInt(el.getAttribute('data-target'));
                     const duration = 2500;
                     const startTime = performance.now();
-                    
-                    el.closest('.number-item').classList.add('counted');
+
+                    el.closest('.number-card').classList.add('counted');
+
+                    function easeOutExpo(t) {
+                        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+                    }
 
                     function updateCounter(currentTime) {
                         const elapsed = currentTime - startTime;
                         const progress = Math.min(elapsed / duration, 1);
-                        const easeOut = 1 - Math.pow(1 - progress, 3);
-                        const current = Math.floor(easeOut * target);
-                        
+                        const easedProgress = easeOutExpo(progress);
+                        const current = Math.floor(easedProgress * target);
+
                         el.textContent = current.toLocaleString();
-                        
+
                         if (progress < 1) {
                             requestAnimationFrame(updateCounter);
                         } else {
                             el.textContent = target.toLocaleString();
                         }
                     }
-                    
+
                     requestAnimationFrame(updateCounter);
                     numberObserver.unobserve(el);
                 }
@@ -1958,29 +2816,42 @@
 
         document.querySelectorAll('.number-value[data-target]').forEach(el => numberObserver.observe(el));
 
-        // Parallax for hero
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero-immersive');
-            
-            if (hero && scrolled < window.innerHeight) {
-                const content = hero.querySelector('.hero-content');
-                const bg = hero.querySelector('.hero-bg');
-                content.style.transform = `translateY(${scrolled * 0.5}px)`;
-                content.style.opacity = 1 - (scrolled / window.innerHeight);
-                bg.style.transform = `translateY(${scrolled * 0.3}px)`;
-            }
-        });
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+        // SECONDARY NUMBERS
+        const smallNumberObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
                 }
             });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.number-small').forEach(el => smallNumberObserver.observe(el));
+
+        // BOOKS ANIMATION
+        const bookObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 80);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.book-item').forEach(el => bookObserver.observe(el));
+
+        // PARALLAX
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+
+            if (hero && scrolled < window.innerHeight) {
+                const content = hero.querySelector('.hero-content');
+                content.style.transform = `translateY(${scrolled * 0.4}px)`;
+                content.style.opacity = 1 - (scrolled / window.innerHeight);
+            }
         });
     </script>
 
