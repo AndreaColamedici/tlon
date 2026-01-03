@@ -151,19 +151,12 @@
             50% { transform: translate(30px, -30px) scale(1.1); }
         }
 
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 6rem;
-            max-width: 1400px;
+        .hero-content {
+            max-width: 900px;
             margin: 0 auto;
-            align-items: center;
+            text-align: center;
             position: relative;
             z-index: 1;
-        }
-
-        .hero-content {
-            max-width: 700px;
         }
 
         .hero-label {
@@ -175,6 +168,7 @@
             margin-bottom: 2rem;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 1rem;
             opacity: 0;
             transform: translateY(20px);
@@ -182,7 +176,8 @@
             animation-delay: 0.2s;
         }
 
-        .hero-label::before {
+        .hero-label::before,
+        .hero-label::after {
             content: '';
             width: 50px;
             height: 1px;
@@ -211,49 +206,12 @@
             font-size: 1.2rem;
             line-height: 1.8;
             opacity: 0.7;
-            max-width: 550px;
+            max-width: 700px;
+            margin: 0 auto;
             opacity: 0;
             transform: translateY(20px);
             animation: fadeUp 0.8s ease forwards;
             animation-delay: 0.6s;
-        }
-
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 0.8s ease forwards;
-            animation-delay: 0.8s;
-        }
-
-        .hero-stat {
-            padding: 2rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.02);
-            transition: all 0.4s ease;
-        }
-
-        .hero-stat:hover {
-            border-color: var(--ottanio);
-            background: rgba(42, 107, 107, 0.1);
-        }
-
-        .hero-stat-value {
-            font-family: 'Instrument Serif', serif;
-            font-size: 4rem;
-            font-style: italic;
-            color: var(--ottanio);
-            line-height: 1;
-        }
-
-        .hero-stat-label {
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            opacity: 0.5;
-            margin-top: 0.5rem;
         }
 
         @keyframes fadeUp {
@@ -314,55 +272,51 @@
             color: var(--nero);
         }
 
-        .intro-numbers {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-
-        .intro-number {
-            padding: 2.5rem;
-            border: 1px solid var(--grigio-chiaro);
-            text-align: center;
-            transition: all 0.5s ease;
+        .intro-visual {
             position: relative;
-            overflow: hidden;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .intro-number::before {
-            content: '';
+        .intro-visual-circle {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--ottanio);
-            transform: scaleX(0);
-            transition: transform 0.5s ease;
+            border: 1px solid var(--grigio-chiaro);
+            border-radius: 50%;
+            animation: circleFloat 8s ease-in-out infinite;
         }
 
-        .intro-number:hover::before {
-            transform: scaleX(1);
+        .intro-visual-circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
         }
 
-        .intro-number:hover {
-            border-color: var(--ottanio);
-            transform: translateY(-5px);
+        .intro-visual-circle:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            animation-delay: -2s;
         }
 
-        .intro-number-value {
+        .intro-visual-circle:nth-child(3) {
+            width: 500px;
+            height: 500px;
+            animation-delay: -4s;
+        }
+
+        @keyframes circleFloat {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        .intro-visual-text {
             font-family: 'Instrument Serif', serif;
-            font-size: 4rem;
+            font-size: 8rem;
             font-style: italic;
             color: var(--ottanio);
-            line-height: 1;
-        }
-
-        .intro-number-label {
-            font-size: 0.8rem;
-            color: var(--grigio);
-            margin-top: 0.5rem;
-            line-height: 1.4;
+            opacity: 0.1;
+            position: relative;
+            z-index: 1;
         }
 
         /* TEMI */
@@ -491,38 +445,6 @@
             font-size: 0.95rem;
             line-height: 1.8;
             opacity: 0.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .tema-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .tema-tag {
-            padding: 0.4rem 0.8rem;
-            background: rgba(42, 107, 107, 0.2);
-            font-size: 0.7rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-        }
-
-        .tema-trend {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            margin-top: 1rem;
-            font-size: 0.75rem;
-        }
-
-        .tema-trend.up {
-            color: #4ade80;
-        }
-
-        .tema-trend.down {
-            color: #f87171;
         }
 
         /* FORMATI */
@@ -691,11 +613,6 @@
             color: var(--ottanio);
         }
 
-        .clienti-section-count {
-            font-size: 0.75rem;
-            color: var(--grigio);
-        }
-
         .clienti-grid {
             display: flex;
             flex-wrap: wrap;
@@ -733,22 +650,6 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
 
-        .cliente-main {
-            font-weight: 500;
-        }
-
-        .cliente-count {
-            font-size: 0.75rem;
-            color: var(--ottanio);
-            margin-left: 0.5rem;
-        }
-
-        .cliente-note {
-            font-size: 0.7rem;
-            color: var(--grigio);
-            margin-top: 0.25rem;
-        }
-
         /* UNIVERSITÀ */
         .universita {
             padding: 10rem 3rem;
@@ -784,26 +685,6 @@
             margin-bottom: 1rem;
         }
 
-        .universita-highlight {
-            padding: 1.5rem 2rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-top: 2rem;
-        }
-
-        .universita-highlight-title {
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 0.5rem;
-        }
-
-        .universita-highlight-text {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.25rem;
-            font-style: italic;
-        }
-
         .universita-list {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -811,9 +692,6 @@
         }
 
         .uni-item {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
             padding: 1rem 0;
             border-bottom: 1px solid rgba(255,255,255,0.08);
             transition: all 0.3s ease;
@@ -828,68 +706,10 @@
             font-size: 1rem;
         }
 
-        .uni-detail {
-            font-size: 0.75rem;
-            color: var(--ottanio);
-        }
-
-        /* COLLABORAZIONI */
-        .collab {
-            padding: 6rem 3rem;
-            background: #111;
-        }
-
-        .collab-header {
-            max-width: 1400px;
-            margin: 0 auto 3rem;
-        }
-
-        .collab-header h3 {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.75rem;
-            font-weight: 400;
-            color: var(--bianco);
-            margin-bottom: 0.5rem;
-        }
-
-        .collab-header p {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.4);
-        }
-
-        .collab-marquee {
-            overflow: hidden;
-            padding: 2rem 0;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .collab-track {
-            display: flex;
-            animation: collabScroll 40s linear infinite;
-        }
-
-        .collab-track span {
-            padding: 0 2.5rem;
-            font-size: 1rem;
-            color: rgba(255,255,255,0.3);
-            white-space: nowrap;
-            transition: color 0.3s ease;
-        }
-
-        .collab-track span:hover {
-            color: var(--ottanio);
-        }
-
-        @keyframes collabScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
         /* DOCENZA */
         .docenza {
             padding: 8rem 3rem;
-            background: var(--nero);
+            background: #111;
             color: var(--bianco);
         }
 
@@ -930,25 +750,6 @@
             font-size: 0.95rem;
             line-height: 1.8;
             opacity: 0.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .docenza-stat {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
-        }
-
-        .docenza-stat-value {
-            font-family: 'Instrument Serif', serif;
-            font-size: 3rem;
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        .docenza-stat-label {
-            font-size: 0.75rem;
-            opacity: 0.5;
         }
 
         /* GUEST */
@@ -1212,14 +1013,13 @@
                 display: none;
             }
 
-            .hero-grid {
+            .intro-grid {
                 grid-template-columns: 1fr;
                 gap: 4rem;
             }
 
-            .intro-grid {
-                grid-template-columns: 1fr;
-                gap: 4rem;
+            .intro-visual {
+                display: none;
             }
 
             .formati-header {
@@ -1251,14 +1051,6 @@
         }
 
         @media (max-width: 600px) {
-            .hero-stats {
-                grid-template-columns: 1fr;
-            }
-
-            .intro-numbers {
-                grid-template-columns: 1fr;
-            }
-
             .temi-grid {
                 grid-template-columns: 1fr;
             }
@@ -1300,30 +1092,10 @@
                 <div class="hero-bg-gradient"></div>
                 <div class="hero-bg-gradient"></div>
             </div>
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <span class="hero-label">Per aziende, istituzioni, università</span>
-                    <h1 class="hero-title">La filosofia come <em>strumento</em></h1>
-                    <p class="hero-desc">Percorsi formativi che trasformano il pensiero critico in competenza organizzativa. Per chi vuole andare oltre le soluzioni preconfezionate, costruendo le proprie domande. E le proprie risposte.</p>
-                </div>
-                <div class="hero-stats">
-                    <div class="hero-stat">
-                        <div class="hero-stat-value">120+</div>
-                        <div class="hero-stat-label">Eventi formativi</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-value">25+</div>
-                        <div class="hero-stat-label">Aziende partner</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-value">20+</div>
-                        <div class="hero-stat-label">Università</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-value">51</div>
-                        <div class="hero-stat-label">Solo allo IED</div>
-                    </div>
-                </div>
+            <div class="hero-content">
+                <span class="hero-label">Per aziende, istituzioni, università</span>
+                <h1 class="hero-title">La filosofia come <em>strumento</em></h1>
+                <p class="hero-desc">Percorsi formativi che trasformano il pensiero critico in competenza organizzativa. Per chi vuole andare oltre le soluzioni preconfezionate, costruendo le proprie domande. E le proprie risposte.</p>
             </div>
         </section>
 
@@ -1338,23 +1110,11 @@
                         <p>«La filosofia è la chiave per salvare il meglio del sapere che abbiamo alle spalle e portare alla luce limiti e slanci del futuro che già ci circonda.»</p>
                     </div>
                 </div>
-                <div class="intro-numbers reveal">
-                    <div class="intro-number">
-                        <div class="intro-number-value">10.7%</div>
-                        <div class="intro-number-label">Revenue da formazione corporate sul totale attività</div>
-                    </div>
-                    <div class="intro-number">
-                        <div class="intro-number-value">103</div>
-                        <div class="intro-number-label">Eventi business al mese in media</div>
-                    </div>
-                    <div class="intro-number">
-                        <div class="intro-number-value">+159%</div>
-                        <div class="intro-number-label">Crescita tema AI tra 2024 e 2025</div>
-                    </div>
-                    <div class="intro-number">
-                        <div class="intro-number-value">6.5x</div>
-                        <div class="intro-number-label">Ratio Andrea su temi AI rispetto a Maura</div>
-                    </div>
+                <div class="intro-visual reveal">
+                    <div class="intro-visual-circle"></div>
+                    <div class="intro-visual-circle"></div>
+                    <div class="intro-visual-circle"></div>
+                    <span class="intro-visual-text">φ</span>
                 </div>
             </div>
         </section>
@@ -1364,20 +1124,14 @@
             <div class="temi-bg">Filosofia</div>
             <div class="temi-header reveal">
                 <h2>I temi che <em>affrontiamo</em></h2>
-                <p>Ogni percorso è costruito su misura, ma questi sono i territori che esploriamo più spesso. I dati vengono dall'analisi semantica di 2.468 eventi nel biennio 2024-2025.</p>
+                <p>Ogni percorso è costruito su misura, ma questi sono i territori che esploriamo più spesso.</p>
             </div>
             <div class="temi-grid">
                 <div class="tema-card reveal">
                     <div class="tema-content">
                         <div class="tema-icon">α</div>
                         <h3 class="tema-title">AI e trasformazione digitale</h3>
-                        <p class="tema-desc">Comprendere l'intelligenza artificiale oltre la tecnologia. Prompt thinking, etica dell'AI, impatto sociale e organizzativo. Da Ipnocrazia ai laboratori FabLab ENEA, GenIALAB e TOCC.</p>
-                        <div class="tema-tags">
-                            <span class="tema-tag">91 occorrenze</span>
-                            <span class="tema-tag">Ipnocrazia</span>
-                            <span class="tema-tag">GenIALAB</span>
-                        </div>
-                        <p class="tema-trend up">↑ +159% tra 2024 e 2025</p>
+                        <p class="tema-desc">Comprendere l'intelligenza artificiale oltre la tecnologia. Prompt thinking, etica dell'AI, impatto sociale e organizzativo. Da Ipnocrazia ai laboratori di innovazione.</p>
                     </div>
                 </div>
                 <div class="tema-card reveal">
@@ -1385,10 +1139,6 @@
                         <div class="tema-icon">β</div>
                         <h3 class="tema-title">Filosofia e pensiero critico</h3>
                         <p class="tema-desc">Strumenti per navigare la complessità, porre le domande giuste, costruire visione. Dal metodo socratico alla filosofia contemporanea. Il cuore dell'identità Tlon.</p>
-                        <div class="tema-tags">
-                            <span class="tema-tag">54 occorrenze</span>
-                            <span class="tema-tag">Lezioni di Meraviglia</span>
-                        </div>
                     </div>
                 </div>
                 <div class="tema-card reveal">
@@ -1396,46 +1146,27 @@
                         <div class="tema-icon">γ</div>
                         <h3 class="tema-title">Educazione e formazione</h3>
                         <p class="tema-desc">Pedagogia, didattica, formazione dei formatori. Come si trasmette il sapere, come si costruisce pensiero critico nelle nuove generazioni.</p>
-                        <div class="tema-tags">
-                            <span class="tema-tag">47 occorrenze</span>
-                            <span class="tema-tag">Scuole</span>
-                            <span class="tema-tag">Università</span>
-                        </div>
                     </div>
                 </div>
                 <div class="tema-card reveal">
                     <div class="tema-content">
                         <div class="tema-icon">δ</div>
                         <h3 class="tema-title">Diversity & Inclusion</h3>
-                        <p class="tema-desc">Percorsi su genere, inclusione, linguaggio. Una formazione che parte dalla filosofia per arrivare alla pratica quotidiana. Collaborazioni con Valore D, WeWorld, inQuiete.</p>
-                        <div class="tema-tags">
-                            <span class="tema-tag">33 occorrenze</span>
-                            <span class="tema-tag">Femminismo filosofico</span>
-                        </div>
-                        <p class="tema-trend down">↓ -87% tra 2024 e 2025</p>
+                        <p class="tema-desc">Percorsi su genere, inclusione, linguaggio. Una formazione che parte dalla filosofia per arrivare alla pratica quotidiana.</p>
                     </div>
                 </div>
                 <div class="tema-card reveal">
                     <div class="tema-content">
                         <div class="tema-icon">ε</div>
                         <h3 class="tema-title">Senso del lavoro</h3>
-                        <p class="tema-desc">Perché lavoriamo? Come lavoriamo? Dal libro "Ma chi me lo fa fare?" a percorsi per ripensare cultura aziendale, motivazione, purpose. Great resignation e quiet quitting.</p>
-                        <div class="tema-tags">
-                            <span class="tema-tag">33 occorrenze</span>
-                            <span class="tema-tag">Ma chi me lo fa fare?</span>
-                        </div>
+                        <p class="tema-desc">Perché lavoriamo? Come lavoriamo? Percorsi per ripensare cultura aziendale, motivazione, purpose. Dal libro "Ma chi me lo fa fare?" alla pratica quotidiana.</p>
                     </div>
                 </div>
                 <div class="tema-card reveal">
                     <div class="tema-content">
                         <div class="tema-icon">ζ</div>
                         <h3 class="tema-title">Comunicazione e media</h3>
-                        <p class="tema-desc">Storytelling, social media, divulgazione. Come raccontare idee complesse in modo accessibile senza banalizzarle. Social Media Theory (IULM), Comunicazione Multimediale (IED).</p>
-                        <div class="tema-tags">
-                            <span class="tema-tag">28 occorrenze</span>
-                            <span class="tema-tag">Docenza IULM</span>
-                            <span class="tema-tag">IED</span>
-                        </div>
+                        <p class="tema-desc">Storytelling, social media, divulgazione. Come raccontare idee complesse in modo accessibile senza banalizzarle.</p>
                     </div>
                 </div>
             </div>
@@ -1454,28 +1185,28 @@
                     <div class="formato-content">
                         <div class="formato-num">01</div>
                         <h3 class="formato-title">Speech</h3>
-                        <p class="formato-desc">Interventi singoli per eventi, convention, kick-off. Da 30 minuti a 2 ore. Ispirazione e visione.</p>
+                        <p class="formato-desc">Interventi singoli per eventi, convention, kick-off. Ispirazione e visione.</p>
                     </div>
                 </div>
                 <div class="formato reveal">
                     <div class="formato-content">
                         <div class="formato-num">02</div>
                         <h3 class="formato-title">Workshop</h3>
-                        <p class="formato-desc">Sessioni interattive per piccoli gruppi. Mezza giornata o giornata intera. Pratica e confronto.</p>
+                        <p class="formato-desc">Sessioni interattive per piccoli gruppi. Pratica e confronto.</p>
                     </div>
                 </div>
                 <div class="formato reveal">
                     <div class="formato-content">
                         <div class="formato-num">03</div>
                         <h3 class="formato-title">Percorsi</h3>
-                        <p class="formato-desc">Programmi strutturati su più incontri. Da 3 a 12 sessioni. Trasformazione profonda.</p>
+                        <p class="formato-desc">Programmi strutturati su più incontri. Trasformazione profonda.</p>
                     </div>
                 </div>
                 <div class="formato reveal">
                     <div class="formato-content">
                         <div class="formato-num">04</div>
                         <h3 class="formato-title">Docenza</h3>
-                        <p class="formato-desc">Collaborazioni accademiche continuative. Corsi universitari, master, academy aziendali.</p>
+                        <p class="formato-desc">Collaborazioni accademiche continuative. Corsi universitari, master, academy.</p>
                     </div>
                 </div>
             </div>
@@ -1485,68 +1216,23 @@
         <section class="clienti">
             <div class="clienti-header reveal">
                 <h2>Chi ha scelto <em>Tlon</em></h2>
-                <p>Alcune delle realtà con cui abbiamo lavorato nel biennio 2024-2025. Dati estratti dall'analisi di 2.468 eventi business.</p>
+                <p>Alcune delle realtà con cui abbiamo lavorato.</p>
             </div>
             <div class="clienti-container">
-                <div class="clienti-section reveal">
-                    <div class="clienti-section-header">
-                        <h3 class="clienti-section-title">Clienti strutturati</h3>
-                        <span class="clienti-section-count">Collaborazioni continuative</span>
-                    </div>
-                    <div class="clienti-grid">
-                        <div class="cliente">
-                            <span class="cliente-main">IED</span>
-                            <span class="cliente-count">51 eventi</span>
-                            <p class="cliente-note">Cliente principale. Docenza regolare, commissioni di laurea, eventi speciali.</p>
-                        </div>
-                        <div class="cliente">
-                            <span class="cliente-main">FabLab ENEA</span>
-                            <span class="cliente-count">18 eventi</span>
-                            <p class="cliente-note">Laboratori di innovazione, concentrati nel 2024.</p>
-                        </div>
-                        <div class="cliente">
-                            <span class="cliente-main">Generali</span>
-                            <span class="cliente-count">12 eventi</span>
-                            <p class="cliente-note">Formazione, lezioni, riunioni, podcast corporate.</p>
-                        </div>
-                        <div class="cliente">
-                            <span class="cliente-main">Bloom</span>
-                            <span class="cliente-count">11 eventi</span>
-                            <p class="cliente-note">Formazione corporate, workshop sviluppo personale.</p>
-                        </div>
-                        <div class="cliente">
-                            <span class="cliente-main">UniCredit</span>
-                            <span class="cliente-count">7 eventi</span>
-                            <p class="cliente-note">ESG Day, Conversazioni sul denaro, eventi corporate.</p>
-                        </div>
-                        <div class="cliente">
-                            <span class="cliente-main">Ambrosetti/TEHA</span>
-                            <span class="cliente-count">6 eventi</span>
-                            <p class="cliente-note">Advisory board, eventi, Pickwick.</p>
-                        </div>
-                        <div class="cliente">
-                            <span class="cliente-main">Reale Mutua</span>
-                            <span class="cliente-count">5 eventi</span>
-                            <p class="cliente-note">Speech e formazione. Presenza Maura e Andrea.</p>
-                        </div>
-                        <div class="cliente">
-                            <span class="cliente-main">Intesa Sanpaolo</span>
-                            <span class="cliente-count">5 eventi</span>
-                            <p class="cliente-note">Interventi formativi, call di allineamento.</p>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="clienti-section reveal">
                     <div class="clienti-section-header">
                         <h3 class="clienti-section-title">Banche e assicurazioni</h3>
                     </div>
                     <div class="clienti-grid">
-                        <div class="cliente"><span class="cliente-main">BPER</span></div>
-                        <div class="cliente"><span class="cliente-main">BNL</span></div>
-                        <div class="cliente"><span class="cliente-main">BNP Paribas</span></div>
-                        <div class="cliente"><span class="cliente-main">Findomestic</span></div>
-                        <div class="cliente"><span class="cliente-main">Banca Etica</span></div>
+                        <div class="cliente">Generali</div>
+                        <div class="cliente">UniCredit</div>
+                        <div class="cliente">Intesa Sanpaolo</div>
+                        <div class="cliente">Reale Mutua</div>
+                        <div class="cliente">BPER</div>
+                        <div class="cliente">BNL</div>
+                        <div class="cliente">BNP Paribas</div>
+                        <div class="cliente">Findomestic</div>
+                        <div class="cliente">Banca Etica</div>
                     </div>
                 </div>
 
@@ -1555,21 +1241,17 @@
                         <h3 class="clienti-section-title">Corporate e consulting</h3>
                     </div>
                     <div class="clienti-grid">
-                        <div class="cliente"><span class="cliente-main">Google</span></div>
-                        <div class="cliente"><span class="cliente-main">Amazon / Audible</span></div>
-                        <div class="cliente"><span class="cliente-main">Ferrero</span></div>
-                        <div class="cliente"><span class="cliente-main">Sanofi</span></div>
-                        <div class="cliente"><span class="cliente-main">WINDTRE</span></div>
-                        <div class="cliente"><span class="cliente-main">Veralab</span></div>
-                        <div class="cliente"><span class="cliente-main">Angelini</span></div>
-                        <div class="cliente"><span class="cliente-main">Clivet</span></div>
-                        <div class="cliente"><span class="cliente-main">Lamborghini</span></div>
-                        <div class="cliente"><span class="cliente-main">Ducati</span></div>
-                        <div class="cliente"><span class="cliente-main">Mercedes</span></div>
-                        <div class="cliente"><span class="cliente-main">Dassault</span></div>
-                        <div class="cliente"><span class="cliente-main">eFM</span></div>
-                        <div class="cliente"><span class="cliente-main">Atlantis Company</span></div>
-                        <div class="cliente"><span class="cliente-main">Depro</span></div>
+                        <div class="cliente">Ambrosetti/TEHA</div>
+                        <div class="cliente">Google</div>
+                        <div class="cliente">Amazon / Audible</div>
+                        <div class="cliente">Ferrero</div>
+                        <div class="cliente">Sanofi</div>
+                        <div class="cliente">WINDTRE</div>
+                        <div class="cliente">Veralab</div>
+                        <div class="cliente">Lamborghini</div>
+                        <div class="cliente">Ducati</div>
+                        <div class="cliente">Mercedes</div>
+                        <div class="cliente">Bloom</div>
                     </div>
                 </div>
 
@@ -1578,20 +1260,17 @@
                         <h3 class="clienti-section-title">Istituzioni e terzo settore</h3>
                     </div>
                     <div class="clienti-grid">
-                        <div class="cliente"><span class="cliente-main">Camera dei Deputati</span></div>
-                        <div class="cliente"><span class="cliente-main">Parlamento Europeo</span></div>
-                        <div class="cliente"><span class="cliente-main">Save the Children</span></div>
-                        <div class="cliente"><span class="cliente-main">Oxfam</span></div>
-                        <div class="cliente"><span class="cliente-main">UNHCR</span></div>
-                        <div class="cliente"><span class="cliente-main">WeWorld</span></div>
-                        <div class="cliente"><span class="cliente-main">Valore D</span></div>
-                        <div class="cliente"><span class="cliente-main">CGIL</span></div>
-                        <div class="cliente"><span class="cliente-main">CISL</span></div>
-                        <div class="cliente"><span class="cliente-main">Legacoop</span></div>
-                        <div class="cliente"><span class="cliente-main">CNA</span></div>
-                        <div class="cliente"><span class="cliente-main">Confindustria</span></div>
-                        <div class="cliente"><span class="cliente-main">AVIS</span></div>
-                        <div class="cliente"><span class="cliente-main">National Geographic</span></div>
+                        <div class="cliente">Camera dei Deputati</div>
+                        <div class="cliente">Parlamento Europeo</div>
+                        <div class="cliente">Save the Children</div>
+                        <div class="cliente">Oxfam</div>
+                        <div class="cliente">UNHCR</div>
+                        <div class="cliente">WeWorld</div>
+                        <div class="cliente">Valore D</div>
+                        <div class="cliente">CGIL</div>
+                        <div class="cliente">Legacoop</div>
+                        <div class="cliente">CNA</div>
+                        <div class="cliente">Confindustria</div>
                     </div>
                 </div>
             </div>
@@ -1603,125 +1282,24 @@
                 <div class="universita-intro reveal">
                     <h2>Il mondo <em>accademico</em></h2>
                     <p>Andrea insegna Social Media Theory alla IULM e Comunicazione Multimediale allo IED. Insieme a Maura collabora con numerose università italiane e internazionali per lectio magistralis, seminari e percorsi strutturati.</p>
-                    <p>Nel biennio 2024-2025 abbiamo collaborato con oltre 20 istituzioni accademiche, da Roma a Buenos Aires, da Milano a New York.</p>
-                    <div class="universita-highlight">
-                        <p class="universita-highlight-title">Docenza strutturata IED</p>
-                        <p class="universita-highlight-text">51 eventi nel biennio: lezioni regolari, commissioni di laurea, eventi speciali</p>
-                    </div>
                 </div>
                 <div class="universita-list reveal">
-                    <div class="uni-item">
-                        <span class="uni-name">IED Roma</span>
-                        <span class="uni-detail">Docenza strutturata — 51 eventi</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">IULM Milano</span>
-                        <span class="uni-detail">Social Media Theory — 5 eventi</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Sapienza</span>
-                        <span class="uni-detail">Convegni, panel — 5 eventi</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">San Raffaele</span>
-                        <span class="uni-detail">Alumni, assemblee — 4 eventi</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">LUISS</span>
-                        <span class="uni-detail">Master AI — 3 eventi</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Università di Foggia</span>
-                        <span class="uni-detail">Premio I Fiori Blu — 3 eventi</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Politecnico di Milano</span>
-                        <span class="uni-detail">Lezioni — 2 eventi</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Columbia University</span>
-                        <span class="uni-detail">New York</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Università argentine</span>
-                        <span class="uni-detail">9 eventi nel biennio</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Università di Bologna</span>
-                        <span class="uni-detail">Master Giornalismo</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Federico II Napoli</span>
-                        <span class="uni-detail">Convegno</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Università di Torino</span>
-                        <span class="uni-detail">Seminario AI</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Politecnico di Torino</span>
-                        <span class="uni-detail">Lectio</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Università di Udine</span>
-                        <span class="uni-detail">Spring School Filosofia</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Università di Verona</span>
-                        <span class="uni-detail">Con Luigina Mortari</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Università di Trento</span>
-                        <span class="uni-detail">Convegno</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Università Cattolica</span>
-                        <span class="uni-detail">Milano</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Bicocca</span>
-                        <span class="uni-detail">Milano</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Roma Tre</span>
-                        <span class="uni-detail">Roma</span>
-                    </div>
-                    <div class="uni-item">
-                        <span class="uni-name">Università di Perugia</span>
-                        <span class="uni-detail">Lectio</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- COLLABORAZIONI MARQUEE -->
-        <section class="collab">
-            <div class="collab-header">
-                <h3>Altre collaborazioni</h3>
-                <p>Treccani Academy, IMUN, AFAM, Complexity Institute, Associazione Pedagogica Italiana, Società Italiana Ricerca Didattica, e molti altri</p>
-            </div>
-            <div class="collab-marquee">
-                <div class="collab-track">
-                    <span>Treccani Academy</span>
-                    <span>IMUN</span>
-                    <span>AFAM</span>
-                    <span>Complexity Institute</span>
-                    <span>Formazione Continua Psicologia</span>
-                    <span>Associazione Pedagogica Italiana</span>
-                    <span>Società Italiana Ricerca Didattica</span>
-                    <span>Liceo Morgagni</span>
-                    <span>Liceo Avogadro</span>
-                    <span>Learning Institute</span>
-                    <span>Treccani Academy</span>
-                    <span>IMUN</span>
-                    <span>AFAM</span>
-                    <span>Complexity Institute</span>
-                    <span>Formazione Continua Psicologia</span>
-                    <span>Associazione Pedagogica Italiana</span>
-                    <span>Società Italiana Ricerca Didattica</span>
-                    <span>Liceo Morgagni</span>
-                    <span>Liceo Avogadro</span>
-                    <span>Learning Institute</span>
+                    <div class="uni-item"><span class="uni-name">IED — Istituto Europeo di Design</span></div>
+                    <div class="uni-item"><span class="uni-name">IULM Milano</span></div>
+                    <div class="uni-item"><span class="uni-name">Sapienza Università di Roma</span></div>
+                    <div class="uni-item"><span class="uni-name">Università Vita-Salute San Raffaele</span></div>
+                    <div class="uni-item"><span class="uni-name">LUISS</span></div>
+                    <div class="uni-item"><span class="uni-name">Politecnico di Milano</span></div>
+                    <div class="uni-item"><span class="uni-name">Columbia University</span></div>
+                    <div class="uni-item"><span class="uni-name">Università di Bologna</span></div>
+                    <div class="uni-item"><span class="uni-name">Federico II Napoli</span></div>
+                    <div class="uni-item"><span class="uni-name">Università di Torino</span></div>
+                    <div class="uni-item"><span class="uni-name">Politecnico di Torino</span></div>
+                    <div class="uni-item"><span class="uni-name">Università di Verona</span></div>
+                    <div class="uni-item"><span class="uni-name">Università Cattolica</span></div>
+                    <div class="uni-item"><span class="uni-name">Bicocca</span></div>
+                    <div class="uni-item"><span class="uni-name">Roma Tre</span></div>
+                    <div class="uni-item"><span class="uni-name">Treccani Academy</span></div>
                 </div>
             </div>
         </section>
@@ -1733,19 +1311,11 @@
                     <p class="docenza-uni">IED — Istituto Europeo di Design</p>
                     <h3 class="docenza-title">Comunicazione Multimediale</h3>
                     <p class="docenza-desc">Corso strutturato nel percorso di laurea. Lezioni regolari, commissioni di laurea, eventi speciali. Presenza di Maura, Andrea e interventi congiunti.</p>
-                    <div class="docenza-stat">
-                        <span class="docenza-stat-value">51</span>
-                        <span class="docenza-stat-label">eventi nel biennio</span>
-                    </div>
                 </div>
                 <div class="docenza-card reveal">
                     <p class="docenza-uni">IULM — Università di Lingue e Comunicazione</p>
                     <h3 class="docenza-title">Social Media Theory</h3>
                     <p class="docenza-desc">Corso tenuto da Andrea Colamedici. Teoria e pratica dei social media, algoritmi, attenzione, economia dell'engagement.</p>
-                    <div class="docenza-stat">
-                        <span class="docenza-stat-value">5</span>
-                        <span class="docenza-stat-label">convegni ed esami</span>
-                    </div>
                 </div>
             </div>
         </section>
@@ -1764,9 +1334,6 @@
                 <span class="guest-item">Gianrico Carofiglio</span>
                 <span class="guest-item">Lidia Ravera</span>
                 <span class="guest-item">Wu Ming</span>
-                <span class="guest-item">Michela Murgia</span>
-                <span class="guest-item">Ilan Pappé</span>
-                <span class="guest-item">Greta Thunberg</span>
                 <span class="guest-item">Riccardo Falcinelli</span>
                 <span class="guest-item">Asma Mhalla</span>
                 <span class="guest-item">Matteo Lancini</span>
@@ -1774,7 +1341,6 @@
                 <span class="guest-item">Nicola Lagioia</span>
                 <span class="guest-item">Mariano Tomatis</span>
                 <span class="guest-item">Luigina Mortari</span>
-                <span class="guest-item">Angela Staude Terzani</span>
             </div>
         </section>
 
