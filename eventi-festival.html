@@ -60,7 +60,8 @@
 
         .cursor.hover {
             transform: scale(2.5);
-            background: rgba(42, 107, 107, 0.1);
+            background: var(--ottanio);
+            opacity: 0.3;
         }
 
         /* HEADER */
@@ -74,9 +75,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            background: var(--bianco);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        header.scrolled {
+            box-shadow: 0 2px 30px rgba(0,0,0,0.06);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
         }
 
         .logo img {
@@ -103,13 +112,18 @@
             opacity: 1;
         }
 
+        /* MAIN CONTENT */
+        main {
+            padding-top: 80px;
+        }
+
         /* HERO */
         .hero {
-            min-height: 100vh;
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 8rem 3rem 4rem;
+            padding: 6rem 3rem;
             position: relative;
             overflow: hidden;
         }
@@ -144,38 +158,16 @@
             width: 400px;
             height: 400px;
             background: radial-gradient(circle, rgba(42, 107, 107, 0.2) 0%, transparent 70%);
-            bottom: 10%;
-            left: -100px;
+            bottom: -100px;
+            left: 10%;
             animation-delay: -7s;
-        }
-
-        .hero-orb-3 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(42, 107, 107, 0.15) 0%, transparent 70%);
-            top: 40%;
-            right: 20%;
-            animation-delay: -14s;
         }
 
         @keyframes orbFloat {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(30px, -30px) scale(1.1); }
-            50% { transform: translate(-20px, 20px) scale(0.95); }
-            75% { transform: translate(20px, 10px) scale(1.05); }
-        }
-
-        .hero-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                linear-gradient(rgba(42, 107, 107, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(42, 107, 107, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+            25% { transform: translate(30px, -20px) scale(1.05); }
+            50% { transform: translate(-20px, 30px) scale(0.95); }
+            75% { transform: translate(-30px, -10px) scale(1.02); }
         }
 
         .hero-content {
@@ -187,34 +179,36 @@
         .hero-label {
             font-size: 0.85rem;
             font-weight: 500;
-            letter-spacing: 0.3em;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--ottanio);
             margin-bottom: 2rem;
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeUp 1s ease forwards 0.2s;
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.2s;
         }
 
         .hero-label::before {
             content: '';
-            width: 60px;
+            width: 40px;
             height: 1px;
             background: var(--ottanio);
         }
 
         .hero-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(4rem, 10vw, 8rem);
+            font-size: clamp(3.5rem, 9vw, 7rem);
             font-weight: 400;
-            line-height: 0.95;
+            line-height: 1;
             letter-spacing: -0.03em;
             opacity: 0;
             transform: translateY(40px);
-            animation: fadeUp 1.2s ease forwards 0.4s;
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.4s;
         }
 
         .hero-title em {
@@ -228,16 +222,16 @@
             position: absolute;
             bottom: 0.1em;
             left: 0;
-            width: 100%;
-            height: 0.1em;
+            right: 0;
+            height: 2px;
             background: var(--ottanio);
-            opacity: 0.2;
             transform: scaleX(0);
             transform-origin: left;
-            animation: lineGrow 1s ease forwards 1.2s;
+            animation: lineReveal 0.8s ease forwards;
+            animation-delay: 1.2s;
         }
 
-        @keyframes lineGrow {
+        @keyframes lineReveal {
             to { transform: scaleX(1); }
         }
 
@@ -246,41 +240,11 @@
             line-height: 1.8;
             color: var(--grigio);
             max-width: 600px;
-            margin-top: 3rem;
+            margin-top: 2.5rem;
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeUp 1s ease forwards 0.8s;
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 4rem;
-            margin-top: 4rem;
-            padding-top: 3rem;
-            border-top: 1px solid var(--grigio-chiaro);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 1s ease forwards 1s;
-        }
-
-        .hero-stat {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .hero-stat-value {
-            font-family: 'Instrument Serif', serif;
-            font-size: 3rem;
-            color: var(--ottanio);
-            line-height: 1;
-        }
-
-        .hero-stat-label {
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--grigio);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.6s;
         }
 
         @keyframes fadeUp {
@@ -290,72 +254,52 @@
             }
         }
 
-        /* SECTION INTRO */
+        /* SECTION TITLE */
         .section-intro {
-            padding: 6rem 3rem;
-            background: var(--nero);
-            color: var(--bianco);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section-intro-text {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-style: italic;
-            line-height: 1.6;
-            max-width: 900px;
+            padding: 6rem 3rem 3rem;
+            max-width: 1400px;
             margin: 0 auto;
-            text-align: center;
-            opacity: 0.9;
         }
 
-        .section-intro-text span {
-            color: var(--ottanio);
-        }
-
-        /* EVENTI GRID */
-        .eventi-section {
-            padding: 8rem 3rem;
-        }
-
-        .eventi-header {
-            text-align: center;
-            margin-bottom: 6rem;
-        }
-
-        .eventi-header-label {
+        .section-label {
             font-size: 0.75rem;
             font-weight: 500;
             letter-spacing: 0.3em;
             text-transform: uppercase;
             color: var(--ottanio);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        .eventi-header-title {
+        .section-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 400;
+            line-height: 1.2;
         }
 
+        .section-title em {
+            font-style: italic;
+        }
+
+        /* EVENTI GRID - CARD STYLE */
         .eventi-grid {
+            padding: 0 3rem 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
         }
 
         .evento-card {
-            position: relative;
             background: var(--bianco);
             border: 1px solid var(--grigio-chiaro);
             padding: 3rem;
+            position: relative;
             overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             opacity: 0;
             transform: translateY(40px);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .evento-card.visible {
@@ -368,53 +312,56 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(42, 107, 107, 0.03) 0%, rgba(42, 107, 107, 0.08) 100%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            width: 4px;
+            height: 0;
+            background: var(--ottanio);
+            transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .evento-card:hover::before {
-            opacity: 1;
+            height: 100%;
         }
 
-        .evento-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: var(--ottanio);
-            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        .evento-card:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(42, 107, 107, 0.1);
         }
 
-        .evento-card:hover::after {
-            width: 100%;
+        .evento-card.featured {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            background: linear-gradient(135deg, rgba(42, 107, 107, 0.03) 0%, rgba(42, 107, 107, 0.08) 100%);
+            border: none;
+        }
+
+        .evento-card.featured::before {
+            display: none;
         }
 
         .evento-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 5rem;
+            line-height: 1;
+            color: var(--grigio-chiaro);
+            transition: color 0.4s ease;
             position: absolute;
             top: 2rem;
             right: 2rem;
-            font-family: 'Instrument Serif', serif;
-            font-size: 5rem;
-            color: var(--grigio-chiaro);
-            line-height: 1;
-            transition: all 0.5s ease;
-            opacity: 0.5;
         }
 
         .evento-card:hover .evento-num {
             color: var(--ottanio);
-            opacity: 0.3;
-            transform: scale(1.1);
         }
 
-        .evento-content {
+        .evento-card.featured .evento-num {
             position: relative;
-            z-index: 1;
+            top: auto;
+            right: auto;
+            font-size: 8rem;
+            opacity: 0.2;
         }
 
         .evento-location {
@@ -439,7 +386,7 @@
 
         .evento-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 400;
             line-height: 1.2;
             margin-bottom: 1.5rem;
@@ -447,7 +394,7 @@
         }
 
         .evento-card:hover .evento-title {
-            transform: translateX(8px);
+            transform: translateX(5px);
         }
 
         .evento-title em {
@@ -458,18 +405,19 @@
             font-size: 0.95rem;
             line-height: 1.8;
             color: var(--grigio);
-            margin-bottom: 1.5rem;
         }
 
         .evento-role {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--grigio-chiaro);
             font-size: 0.85rem;
             color: var(--nero);
-            padding-top: 1rem;
-            border-top: 1px solid var(--grigio-chiaro);
         }
 
         .evento-role strong {
             font-weight: 600;
+            color: var(--ottanio);
         }
 
         .evento-highlights {
@@ -487,53 +435,147 @@
 
         .highlight-value {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             color: var(--ottanio);
         }
 
         .highlight-label {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--grigio);
         }
 
-        /* EVENTO FEATURED (full width) */
-        .evento-featured {
-            grid-column: span 2;
+        /* FEATURED CONTENT */
+        .featured-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-visual {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* OSPITI SECTION */
+        .ospiti-section {
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ospiti-row {
+            display: flex;
+            gap: 3rem;
+            padding: 1rem 0;
+            animation: scroll-left 40s linear infinite;
+        }
+
+        .ospiti-row.reverse {
+            animation: scroll-right 35s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scroll-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        .ospite-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-style: italic;
+            white-space: nowrap;
+            color: var(--grigio-chiaro);
+            transition: color 0.3s ease;
+        }
+
+        .ospite-name:hover {
+            color: var(--ottanio);
+        }
+
+        /* ILPOD SECTION */
+        .ilpod-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%);
+            color: var(--bianco);
+            position: relative;
+            overflow: hidden;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0;
-            padding: 0;
-            border: none;
-            background: var(--nero);
-            color: var(--bianco);
+            min-height: 80vh;
         }
 
-        .evento-featured::before,
-        .evento-featured::after {
-            display: none;
-        }
-
-        .evento-featured-visual {
+        .ilpod-visual {
             position: relative;
-            min-height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
 
-        .evento-featured-icon {
+        .ilpod-rings {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .ilpod-ring {
+            position: absolute;
+            border: 1px solid rgba(42, 107, 107, 0.2);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ilpod-ring:nth-child(1) {
             width: 200px;
             height: 200px;
+            animation: ringPulse 3s ease-in-out infinite;
+        }
+
+        .ilpod-ring:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            animation: ringPulse 3s ease-in-out infinite 0.5s;
+        }
+
+        .ilpod-ring:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            animation: ringPulse 3s ease-in-out infinite 1s;
+        }
+
+        .ilpod-ring:nth-child(4) {
+            width: 500px;
+            height: 500px;
+            animation: ringPulse 3s ease-in-out infinite 1.5s;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        .ilpod-icon {
+            position: relative;
+            z-index: 1;
+            width: 160px;
+            height: 160px;
             border: 2px solid var(--ottanio);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            z-index: 2;
+            background: rgba(42, 107, 107, 0.1);
             animation: iconFloat 6s ease-in-out infinite;
         }
 
@@ -542,264 +584,239 @@
             50% { transform: translateY(-15px) rotate(5deg); }
         }
 
-        .evento-featured-icon svg {
-            width: 60px;
-            height: 60px;
+        .ilpod-icon svg {
+            width: 50px;
+            height: 50px;
             stroke: var(--ottanio);
         }
 
-        .evento-featured-waves {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .wave-ring {
-            position: absolute;
-            border: 1px solid rgba(42, 107, 107, 0.2);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: waveExpand 4s ease-out infinite;
-        }
-
-        .wave-ring:nth-child(1) { width: 280px; height: 280px; animation-delay: 0s; }
-        .wave-ring:nth-child(2) { width: 380px; height: 380px; animation-delay: 1s; }
-        .wave-ring:nth-child(3) { width: 480px; height: 480px; animation-delay: 2s; }
-        .wave-ring:nth-child(4) { width: 580px; height: 580px; animation-delay: 3s; }
-
-        @keyframes waveExpand {
-            0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.8); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
-        }
-
-        .evento-featured-content {
-            padding: 4rem;
+        .ilpod-content {
             display: flex;
             flex-direction: column;
             justify-content: center;
+            padding: 6rem;
+            position: relative;
+            z-index: 1;
         }
 
-        .evento-featured .evento-location {
+        .ilpod-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
             color: var(--ottanio);
-        }
-
-        .evento-featured .evento-title {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .evento-featured-subtitle {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
-            font-style: italic;
-            color: rgba(255, 255, 255, 0.4);
             margin-bottom: 2rem;
         }
 
-        .evento-featured .evento-desc {
-            color: rgba(255, 255, 255, 0.6);
-            max-width: 450px;
+        .ilpod-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 0.5rem;
         }
 
-        .evento-featured-stats {
+        .ilpod-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .ilpod-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 2rem;
+        }
+
+        .ilpod-desc {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.6);
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+        }
+
+        .ilpod-stats {
             display: flex;
             gap: 3rem;
-            margin: 2rem 0;
-            padding: 2rem 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .evento-featured-stat-value {
+        .ilpod-stat-value {
             font-family: 'Instrument Serif', serif;
             font-size: 2.5rem;
             color: var(--ottanio);
         }
 
-        .evento-featured-stat-label {
-            font-size: 0.7rem;
+        .ilpod-stat-label {
+            font-size: 0.65rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255,255,255,0.4);
+            margin-top: 0.25rem;
         }
 
-        .evento-featured-cta {
+        .ilpod-cta {
             display: inline-flex;
             align-items: center;
             gap: 1rem;
-            padding: 1rem 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.25rem 2.5rem;
             font-size: 0.8rem;
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--bianco);
-            transition: all 0.4s ease;
-            align-self: flex-start;
-            margin-top: 1rem;
-        }
-
-        .evento-featured-cta:hover {
-            background: var(--ottanio);
-            border-color: var(--ottanio);
-        }
-
-        .evento-featured-cta svg {
-            transition: transform 0.3s ease;
-        }
-
-        .evento-featured-cta:hover svg {
-            transform: translateX(5px);
-        }
-
-        /* OSPITI MARQUEE */
-        .ospiti-section {
-            padding: 5rem 0;
-            background: linear-gradient(180deg, var(--nero) 0%, #1a1a1a 100%);
-            color: var(--bianco);
-            overflow: hidden;
-        }
-
-        .ospiti-label {
-            font-size: 0.7rem;
-            font-weight: 500;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            text-align: center;
-            opacity: 0.4;
-            margin-bottom: 2.5rem;
-        }
-
-        .marquee {
-            display: flex;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .marquee-content {
-            display: flex;
-            animation: marquee 40s linear infinite;
-        }
-
-        .marquee:hover .marquee-content {
-            animation-play-state: paused;
-        }
-
-        .marquee-content span {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-style: italic;
-            padding: 0 2.5rem;
-            opacity: 0.6;
-            transition: opacity 0.3s ease;
-        }
-
-        .marquee-content span:hover {
-            opacity: 1;
-        }
-
-        .marquee-content span::after {
-            content: '·';
-            margin-left: 2.5rem;
-            opacity: 0.3;
-            color: var(--ottanio);
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* DOVE CI TROVI */
-        .dove-section {
-            padding: 8rem 3rem;
-            background: linear-gradient(180deg, #fafafa 0%, var(--bianco) 100%);
-        }
-
-        .dove-header {
-            text-align: center;
-            margin-bottom: 5rem;
-        }
-
-        .dove-header-label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 1.5rem;
-        }
-
-        .dove-header-title {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 400;
-        }
-
-        .dove-header-title em {
-            font-style: italic;
-        }
-
-        .dove-header-desc {
-            font-size: 1.1rem;
-            color: var(--grigio);
-            max-width: 600px;
-            margin: 1.5rem auto 0;
-            line-height: 1.8;
-        }
-
-        .festival-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .festival-tag {
-            padding: 1rem 2rem;
-            border: 1px solid var(--grigio-chiaro);
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255,255,255,0.2);
             position: relative;
             overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            align-self: flex-start;
         }
 
-        .festival-tag::before {
+        .ilpod-cta::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--nero);
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: var(--ottanio);
+            transform: translateX(-100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: -1;
         }
 
-        .festival-tag:hover::before {
-            transform: translateY(0);
+        .ilpod-cta:hover::before {
+            transform: translateX(0);
         }
 
-        .festival-tag:hover {
+        .ilpod-cta:hover {
+            border-color: var(--ottanio);
+        }
+
+        .ilpod-cta svg {
+            transition: transform 0.4s ease;
+        }
+
+        .ilpod-cta:hover svg {
+            transform: translateX(5px);
+        }
+
+        /* FESTIVAL SECTION */
+        .festival-section {
+            padding: 8rem 3rem;
+            background: var(--nero);
             color: var(--bianco);
-            border-color: var(--nero);
+            position: relative;
+            overflow: hidden;
         }
 
-        .festival-tag-city {
+        .festival-bg-text {
+            position: absolute;
+            font-family: 'Instrument Serif', serif;
+            font-size: 20vw;
+            font-style: italic;
+            color: rgba(255,255,255,0.02);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .festival-header {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .festival-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1rem;
+        }
+
+        .festival-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .festival-title em {
+            font-style: italic;
+        }
+
+        .festival-desc {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.5);
+            max-width: 600px;
+        }
+
+        .festival-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .festival-item {
+            background: var(--nero);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .festival-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--ottanio);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .festival-item:hover::before {
+            opacity: 0.1;
+        }
+
+        .festival-item:hover {
+            transform: scale(1.02);
+        }
+
+        .festival-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .festival-city {
             font-size: 0.7rem;
-            color: var(--grigio);
-            margin-left: 0.5rem;
-            transition: color 0.4s ease;
-        }
-
-        .festival-tag:hover .festival-tag-city {
-            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            position: relative;
+            z-index: 1;
         }
 
         /* CTA SECTION */
@@ -810,18 +827,13 @@
             overflow: hidden;
         }
 
-        .cta-bg-text {
+        .cta-bg {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(8rem, 20vw, 20rem);
-            font-style: italic;
-            color: var(--grigio-chiaro);
-            opacity: 0.3;
-            white-space: nowrap;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(42, 107, 107, 0.05) 0%, transparent 70%);
         }
 
         .cta-content {
@@ -831,7 +843,7 @@
 
         .cta-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 400;
             margin-bottom: 2rem;
         }
@@ -846,39 +858,21 @@
             align-items: center;
             gap: 1rem;
             padding: 1.25rem 3rem;
-            border: 2px solid var(--nero);
-            font-size: 0.85rem;
+            border: 1px solid var(--nero);
+            font-size: 0.8rem;
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .cta-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--nero);
-            transform: translateX(-100%);
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: -1;
-        }
-
-        .cta-btn:hover::before {
-            transform: translateX(0);
+            transition: all 0.4s ease;
         }
 
         .cta-btn:hover {
+            background: var(--nero);
             color: var(--bianco);
         }
 
         .cta-btn svg {
-            transition: transform 0.4s ease;
+            transition: transform 0.3s ease;
         }
 
         .cta-btn:hover svg {
@@ -895,8 +889,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .footer-back {
@@ -936,18 +930,27 @@
                 grid-template-columns: 1fr;
             }
 
-            .evento-featured {
+            .evento-card.featured {
                 grid-column: span 1;
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .ilpod-section {
                 grid-template-columns: 1fr;
             }
 
-            .evento-featured-visual {
-                min-height: 350px;
+            .ilpod-visual {
+                padding: 4rem 2rem;
+                min-height: 300px;
             }
 
-            .hero-stats {
-                gap: 2rem;
-                flex-wrap: wrap;
+            .ilpod-content {
+                padding: 3rem 2rem 5rem;
+            }
+
+            .festival-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -957,27 +960,20 @@
             }
 
             nav {
-                gap: 1.5rem;
-            }
-
-            nav a {
-                font-size: 0.65rem;
+                display: none;
             }
 
             .hero {
-                padding: 6rem 1.5rem 3rem;
-            }
-
-            .hero-stats {
-                gap: 1.5rem;
-            }
-
-            .hero-stat-value {
-                font-size: 2rem;
-            }
-
-            .eventi-section {
                 padding: 4rem 1.5rem;
+                min-height: 70vh;
+            }
+
+            .section-intro {
+                padding: 4rem 1.5rem 2rem;
+            }
+
+            .eventi-grid {
+                padding: 0 1.5rem 4rem;
             }
 
             .evento-card {
@@ -990,20 +986,12 @@
                 right: 1.5rem;
             }
 
-            .evento-title {
-                font-size: 1.5rem;
+            .festival-section {
+                padding: 5rem 1.5rem;
             }
 
-            .evento-featured-content {
-                padding: 2rem;
-            }
-
-            .evento-featured .evento-title {
-                font-size: 2rem;
-            }
-
-            .dove-section {
-                padding: 4rem 1.5rem;
+            .festival-grid {
+                grid-template-columns: 1fr;
             }
 
             .cta-section {
@@ -1016,31 +1004,12 @@
 
             .footer-nav {
                 flex-direction: column;
+                gap: 2rem;
                 text-align: center;
             }
 
             .cursor {
                 display: none;
-            }
-        }
-
-        @media (max-width: 480px) {
-            nav {
-                display: none;
-            }
-
-            .evento-featured-stats {
-                gap: 1.5rem;
-                flex-wrap: wrap;
-            }
-
-            .festival-grid {
-                gap: 0.75rem;
-            }
-
-            .festival-tag {
-                padding: 0.75rem 1.25rem;
-                font-size: 0.8rem;
             }
         }
     </style>
@@ -1068,286 +1037,307 @@
             <div class="hero-bg">
                 <div class="hero-orb hero-orb-1"></div>
                 <div class="hero-orb hero-orb-2"></div>
-                <div class="hero-orb hero-orb-3"></div>
-                <div class="hero-grid"></div>
             </div>
             <div class="hero-content">
                 <span class="hero-label">Dal 2016</span>
-                <h1 class="hero-title">Eventi e<br><em>festival</em></h1>
-                <p class="hero-desc">Direzione filosofica, curatela, ideazione. Portiamo il pensiero nei luoghi dove può accadere qualcosa di imprevisto: piazze, teatri, streaming, festival.</p>
-                <div class="hero-stats">
-                    <div class="hero-stat">
-                        <span class="hero-stat-value">35+</span>
-                        <span class="hero-stat-label">Festival all'anno</span>
-                    </div>
-                    <div class="hero-stat">
-                        <span class="hero-stat-value">12</span>
-                        <span class="hero-stat-label">Format originali</span>
-                    </div>
-                    <div class="hero-stat">
-                        <span class="hero-stat-value">2M</span>
-                        <span class="hero-stat-label">Spettatori raggiunti</span>
-                    </div>
-                </div>
+                <h1 class="hero-title">Eventi e <em>festival</em></h1>
+                <p class="hero-desc">Direzione filosofica, curatela, ideazione. Portiamo il pensiero nei luoghi dove può accadere qualcosa di imprevisto: teatri, piazze, festival, librerie. Ovunque si possa stare insieme a pensare.</p>
             </div>
         </section>
 
         <section class="section-intro">
-            <p class="section-intro-text">«La filosofia nasce dal <span>θαῦμα</span>, dalla meraviglia che è anche terrore, dall'apertura nei confronti dell'ignoto. Questa condizione è il punto di partenza, il <span>cominciamento</span> del filosofare.»</p>
+            <span class="section-label">I nostri format</span>
+            <h2 class="section-title">Eventi che <em>ideiamo</em> e dirigiamo</h2>
         </section>
 
-        <section class="eventi-section">
-            <div class="eventi-header">
-                <p class="eventi-header-label">I nostri format</p>
-                <h2 class="eventi-header-title">Eventi che ideiamo e dirigiamo</h2>
-            </div>
+        <section class="eventi-grid">
 
-            <div class="eventi-grid">
-
-                <!-- IL POD - Featured -->
-                <article class="evento-card evento-featured">
-                    <div class="evento-featured-visual">
-                        <div class="evento-featured-waves">
-                            <div class="wave-ring"></div>
-                            <div class="wave-ring"></div>
-                            <div class="wave-ring"></div>
-                            <div class="wave-ring"></div>
-                        </div>
-                        <div class="evento-featured-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                                <line x1="12" y1="19" x2="12" y2="23"/>
-                                <line x1="8" y1="23" x2="16" y2="23"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="evento-featured-content">
-                        <span class="evento-location">Piacenza · Italia</span>
-                        <h2 class="evento-title">Il<em>Pod</em></h2>
-                        <p class="evento-featured-subtitle">Italian Podcast Awards</p>
-                        <p class="evento-desc">Il primo e più importante riconoscimento per i podcast italiani, nato per celebrare l'eccellenza di un medium che sta trasformando il modo in cui ascoltiamo storie, idee e conversazioni. Talk, workshop, presentazioni e una grande cerimonia di premiazione.</p>
-                        <div class="evento-featured-stats">
-                            <div>
-                                <span class="evento-featured-stat-value">IV</span>
-                                <span class="evento-featured-stat-label">Edizione</span>
-                            </div>
-                            <div>
-                                <span class="evento-featured-stat-value">864</span>
-                                <span class="evento-featured-stat-label">Podcast iscritti</span>
-                            </div>
-                            <div>
-                                <span class="evento-featured-stat-value">18</span>
-                                <span class="evento-featured-stat-label">Categorie</span>
-                            </div>
-                        </div>
-                        <a href="./ilpod.html" class="evento-featured-cta">
-                            <span>Scopri IlPod</span>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M5 12h14M12 5l7 7-7 7"/>
-                            </svg>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- FESTIVAL DEL PENSARE CONTEMPORANEO -->
-                <article class="evento-card">
+            <article class="evento-card featured">
+                <div class="featured-content">
+                    <span class="evento-location">Piacenza</span>
+                    <h2 class="evento-title">Festival del Pensare <em>Contemporaneo</em></h2>
+                    <p class="evento-desc">Dal 2023 la città di Piacenza lavora all'ideazione e alla realizzazione di un Festival di caratura nazionale e richiamo internazionale con il quale, anno dopo anno, ispirare un futuro più consapevole di ciò che possiamo essere e realizzare insieme. Uno spazio, fisico e intellettuale, per stimolare il dialogo e la cooperazione tra personalità e pubblici diversi per età, interessi, storie e provenienze.</p>
+                    <p class="evento-role"><strong>Direzione filosofica</strong> di Tlon · Curatela di Alessandro Fusacchia</p>
+                </div>
+                <div class="featured-visual">
                     <span class="evento-num">01</span>
-                    <div class="evento-content">
-                        <span class="evento-location">Piacenza</span>
-                        <h2 class="evento-title">Festival del Pensare <em>Contemporaneo</em></h2>
-                        <p class="evento-desc">Dal 2023 Piacenza ospita un Festival di caratura nazionale per ispirare un futuro più consapevole. Uno spazio fisico e intellettuale per stimolare il dialogo tra personalità e pubblici diversi per età, interessi, storie e provenienze.</p>
-                        <p class="evento-role"><strong>Direzione filosofica</strong> di Tlon</p>
-                    </div>
-                </article>
+                </div>
+            </article>
 
-                <!-- LEZIONI DI MERAVIGLIA -->
-                <article class="evento-card">
-                    <span class="evento-num">02</span>
-                    <div class="evento-content">
-                        <span class="evento-location">Milano · Teatro Carcano</span>
-                        <h2 class="evento-title">Lezioni di <em>Meraviglia</em></h2>
-                        <p class="evento-desc">Imparare a meravigliarsi, a non dare per scontato il mondo: dialoghi con musicisti, scienziati e artisti per affrontare l'apparente mancanza di senso dell'esistenza. Sul palco del Carcano con La Rappresentante di Lista, NAIP, Murubutu, Barbascura X, Telmo Pievani.</p>
-                        <p class="evento-role">Ciclo di incontri <strong>Follow The Monday</strong></p>
+            <article class="evento-card">
+                <span class="evento-num">02</span>
+                <span class="evento-location">Milano · Teatro Carcano</span>
+                <h2 class="evento-title">Lezioni di <em>Meraviglia</em></h2>
+                <p class="evento-desc">Imparare a meravigliarsi, a non dare per scontato il mondo, ad esercitare l'erotica della complessità. Un ciclo di incontri in cui Andrea e Maura dialogano con musicisti, scienziati e artisti per affrontare ciò che sembra inaffrontabile: l'apparente mancanza di senso dell'esistenza.</p>
+                <div class="evento-highlights">
+                    <div class="highlight">
+                        <span class="highlight-value">2021</span>
+                        <span class="highlight-label">Prima stagione</span>
                     </div>
-                </article>
-
-                <!-- CARNEVALE DI PUTIGNANO -->
-                <article class="evento-card">
-                    <span class="evento-num">03</span>
-                    <div class="evento-content">
-                        <span class="evento-location">Putignano</span>
-                        <h2 class="evento-title">Carnevale di <em>Putignano</em></h2>
-                        <p class="evento-desc">Andrea è il direttore filosofico del Carnevale di Putignano. Ha scelto i temi della Sovversione (2024) e del Paradosso (2025), recuperando le radici filosofiche del Carnevale e attualizzando i temi su cui lavorano i maestri cartapestai.</p>
-                        <div class="evento-highlights">
-                            <div class="highlight">
-                                <span class="highlight-value">2024</span>
-                                <span class="highlight-label">Sovversione</span>
-                            </div>
-                            <div class="highlight">
-                                <span class="highlight-value">2025</span>
-                                <span class="highlight-label">Paradosso</span>
-                            </div>
-                        </div>
+                    <div class="highlight">
+                        <span class="highlight-value">7+</span>
+                        <span class="highlight-label">Edizioni</span>
                     </div>
-                </article>
+                </div>
+            </article>
 
-                <!-- PARTY LETTERARI -->
-                <article class="evento-card">
-                    <span class="evento-num">04</span>
-                    <div class="evento-content">
-                        <span class="evento-location">Roma · Torino · Milano</span>
-                        <h2 class="evento-title">Party <em>Letterari</em></h2>
-                        <p class="evento-desc">Il fenomeno nato a New York e Amsterdam arriva in Italia grazie a Tlon. Cellulari aboliti, luci soffuse, una farmacia letteraria: serate per riscoprire il piacere della lettura condivisa. Al Salone del Libro di Torino, a Villa Lazzaroni con Robinson, nella Libreria Teatro di Roma.</p>
-                        <div class="evento-highlights">
-                            <div class="highlight">
-                                <span class="highlight-value">170+</span>
-                                <span class="highlight-label">Partecipanti a serata</span>
-                            </div>
-                        </div>
+            <article class="evento-card">
+                <span class="evento-num">03</span>
+                <span class="evento-location">Roma · Libreria Teatro Tlon</span>
+                <h2 class="evento-title">Party <em>Letterari</em></h2>
+                <p class="evento-desc">Serate di celebrazione dell'amore per i libri, ispirate al fenomeno nato a New York e Amsterdam. Cellulari aboliti, luci soffuse, consigli personalizzati dalla nostra "farmacia letteraria". Un'oasi di cultura e socialità dove, tra una pagina e l'altra, nascono nuove amicizie accomunate dalla passione per la lettura.</p>
+                <div class="evento-highlights">
+                    <div class="highlight">
+                        <span class="highlight-value">170+</span>
+                        <span class="highlight-label">Partecipanti</span>
                     </div>
-                </article>
-
-                <!-- FESTA DELLA FILOSOFIA -->
-                <article class="evento-card">
-                    <span class="evento-num">05</span>
-                    <div class="evento-content">
-                        <span class="evento-location">Milano · Roma</span>
-                        <h2 class="evento-title">Festa della <em>Filosofia</em></h2>
-                        <p class="evento-desc">Vivere la filosofia come facevano gli antichi: Socrate incontrava allievi in forma conviviale, Aristotele passeggiava con i discepoli. Esercizi ginnici e mentali, passeggiate filosofiche, conversazioni per stuzzicare l'amore per la sapienza.</p>
-                        <div class="evento-highlights">
-                            <div class="highlight">
-                                <span class="highlight-value">Triennale</span>
-                                <span class="highlight-label">Milano</span>
-                            </div>
-                            <div class="highlight">
-                                <span class="highlight-value">Monk</span>
-                                <span class="highlight-label">Roma · 3 edizioni</span>
-                            </div>
-                        </div>
+                    <div class="highlight">
+                        <span class="highlight-value">Salone</span>
+                        <span class="highlight-label">del Libro</span>
                     </div>
-                </article>
+                </div>
+            </article>
 
-                <!-- PENSARE EUROPEO -->
-                <article class="evento-card">
-                    <span class="evento-num">06</span>
-                    <div class="evento-content">
-                        <span class="evento-location">Europa · Podcast</span>
-                        <h2 class="evento-title">Pensare <em>Europeo</em></h2>
-                        <p class="evento-desc">Un ciclo di incontri realizzato in collaborazione con il Parlamento Europeo, pensato per rafforzare il senso di appartenenza alla comunità europea mettendo in connessione eurodeputati con filosofi, attivisti, storici e artisti.</p>
-                        <p class="evento-role">In collaborazione con il <strong>Parlamento Europeo</strong></p>
+            <article class="evento-card">
+                <span class="evento-num">04</span>
+                <span class="evento-location">Putignano</span>
+                <h2 class="evento-title">Carnevale di <em>Putignano</em></h2>
+                <p class="evento-desc">Andrea è il direttore filosofico del Carnevale più antico d'Europa. Ha scelto per le sfilate dei carri il tema della Sovversione nell'edizione 2024 e del Paradosso in quella del 2025. Un lavoro incentrato sul recupero delle radici filosofiche del Carnevale e sull'attualizzazione dei temi dei maestri cartapestai.</p>
+                <p class="evento-role"><strong>Direzione filosofica</strong> · Andrea Colamedici</p>
+            </article>
+
+            <article class="evento-card">
+                <span class="evento-num">05</span>
+                <span class="evento-location">Bari</span>
+                <h2 class="evento-title">BariDiversa – Festival del <em>Pensare Queer</em></h2>
+                <p class="evento-desc">Un invito provocatorio a riconoscere e onorare la diversità che abita la nostra città e ciascuno di noi, a non avere paura di essere se stessi. Pensare in maniera queer significa sforzarsi di superare i binarismi e le etichette, facendo proprio l'insegnamento di Emily Dickinson: «Dì tutta la verità ma dilla obliqua».</p>
+                <p class="evento-role">Organizzato per il <strong>Comune di Bari</strong></p>
+            </article>
+
+            <article class="evento-card">
+                <span class="evento-num">06</span>
+                <span class="evento-location">Parlamento Europeo</span>
+                <h2 class="evento-title">Pensare <em>Europeo</em></h2>
+                <p class="evento-desc">Un ciclo di incontri realizzato in collaborazione con il Parlamento Europeo, pensato per rafforzare il senso di appartenenza alla comunità europea mettendo in connessione eurodeputati con filosofi, attivisti, storici e artisti. Un ponte tra le istituzioni e i cittadini attraverso il dialogo culturale.</p>
+                <p class="evento-role"><strong>Podcast</strong> e incontri dal vivo</p>
+            </article>
+
+            <article class="evento-card">
+                <span class="evento-num">07</span>
+                <span class="evento-location">Milano · Roma</span>
+                <h2 class="evento-title">Festa della <em>Filosofia</em></h2>
+                <p class="evento-desc">Vivere la filosofia come facevano anche gli antichi: Socrate incontrava allievi e amici in forma conviviale, i libri di Platone sono conversazioni, Aristotele "passeggiava" con i discepoli. Non un convegno tradizionale con lezioni frontali, ma un evento con esercizi ginnici e mentali, passeggiate filosofiche e conversazioni.</p>
+                <div class="evento-highlights">
+                    <div class="highlight">
+                        <span class="highlight-value">Triennale</span>
+                        <span class="highlight-label">Milano</span>
                     </div>
-                </article>
-
-                <!-- PRENDIAMOLA CON FILOSOFIA -->
-                <article class="evento-card">
-                    <span class="evento-num">07</span>
-                    <div class="evento-content">
-                        <span class="evento-location">Streaming internazionale</span>
-                        <h2 class="evento-title">Prendiamola con <em>Filosofia</em></h2>
-                        <p class="evento-desc">La maratona online di divulgazione culturale nata nel marzo 2020 durante il lockdown, su sollecitazione del Ministero della Salute. Due milioni di spettatori, 12 ore di diretta con centinaia di filosofi, intellettuali, artisti e musicisti.</p>
-                        <div class="evento-highlights">
-                            <div class="highlight">
-                                <span class="highlight-value">2M</span>
-                                <span class="highlight-label">Spettatori</span>
-                            </div>
-                            <div class="highlight">
-                                <span class="highlight-value">12h</span>
-                                <span class="highlight-label">Di diretta</span>
-                            </div>
-                        </div>
+                    <div class="highlight">
+                        <span class="highlight-value">Monk</span>
+                        <span class="highlight-label">Roma</span>
                     </div>
-                </article>
+                </div>
+            </article>
 
-                <!-- GENIALAB -->
-                <article class="evento-card">
-                    <span class="evento-num">08</span>
-                    <div class="evento-content">
-                        <span class="evento-location">Roma · AANT</span>
-                        <h2 class="evento-title"><em>GenIA</em>LAB</h2>
-                        <p class="evento-desc">Hub di ricerca transdisciplinare dell'Accademia di Arti e Nuove Tecnologie. Osservatorio permanente interdisciplinare per co-creare progetti innovativi, unendo la tradizione italiana dell'arte e della filosofia con l'innovazione tecnologica.</p>
-                        <p class="evento-role"><strong>Andrea Colamedici</strong> · Presidente</p>
+            <article class="evento-card">
+                <span class="evento-num">08</span>
+                <span class="evento-location">Roma · Villa Ada</span>
+                <h2 class="evento-title">Tlon Fest – <em>Pensare la Musica</em></h2>
+                <p class="evento-desc">Tre giorni di musica e pensiero. Filosofi, musicisti, artisti e intellettuali uniscono alto e basso, serio e faceto, passando da Mozart a Raffaella Carrà, dalla filosofia del Grunge a Franco Battiato, dalle boyband anni '90 all'AI nella musica. Montagne russe dell'intelletto che si concludono con un party letterario.</p>
+                <div class="evento-highlights">
+                    <div class="highlight">
+                        <span class="highlight-value">3</span>
+                        <span class="highlight-label">Giorni</span>
                     </div>
-                </article>
-
-                <!-- BARIDIVERSA -->
-                <article class="evento-card">
-                    <span class="evento-num">09</span>
-                    <div class="evento-content">
-                        <span class="evento-location">Bari</span>
-                        <h2 class="evento-title">BariDiversa – Festival del <em>Pensare Queer</em></h2>
-                        <p class="evento-desc">Un invito provocatorio a riconoscere e onorare la diversità che abita la nostra città e ciascuno di noi. Pensare in maniera queer significa sforzarsi di superare i binarismi e le etichette, come insegnava Emily Dickinson.</p>
-                        <p class="evento-role">Organizzato per il <strong>Comune di Bari</strong></p>
+                    <div class="highlight">
+                        <span class="highlight-value">Free</span>
+                        <span class="highlight-label">Ingresso</span>
                     </div>
-                </article>
+                </div>
+            </article>
 
+            <article class="evento-card">
+                <span class="evento-num">09</span>
+                <span class="evento-location">Streaming internazionale</span>
+                <h2 class="evento-title">Prendiamola con <em>Filosofia</em></h2>
+                <p class="evento-desc">Dopo la prima edizione che ha raggiunto due milioni di spettatori durante il lockdown, riuniti con l'intento di usare la filosofia come strumento per affrontare il momento pandemico, è tornata in una veste internazionale. Dalle 11 del mattino fino alle 23, una staffetta con grandi nomi del panorama culturale mondiale.</p>
+                <div class="evento-highlights">
+                    <div class="highlight">
+                        <span class="highlight-value">2M</span>
+                        <span class="highlight-label">Spettatori</span>
+                    </div>
+                    <div class="highlight">
+                        <span class="highlight-value">12h</span>
+                        <span class="highlight-label">Di diretta</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="evento-card">
+                <span class="evento-num">10</span>
+                <span class="evento-location">Roma · AANT</span>
+                <h2 class="evento-title"><em>GenIA</em>LAB</h2>
+                <p class="evento-desc">Hub di ricerca transdisciplinare dell'Accademia di Arti e Nuove Tecnologie. Un osservatorio permanente interdisciplinare, aperto al dialogo con esperti esterni, per co-creare progetti innovativi. Un laboratorio di eccellenza che unisce la tradizione italiana dell'arte, della filosofia e della comunicazione con l'innovazione tecnologica.</p>
+                <p class="evento-role"><strong>Andrea Colamedici</strong> · Presidente</p>
+            </article>
+
+        </section>
+
+        <!-- OSPITI MARQUEE -->
+        <section class="ospiti-section">
+            <div class="ospiti-row">
+                <span class="ospite-name">La Rappresentante di Lista</span>
+                <span class="ospite-name">Telmo Pievani</span>
+                <span class="ospite-name">Barbascura X</span>
+                <span class="ospite-name">Murubutu</span>
+                <span class="ospite-name">N.A.I.P.</span>
+                <span class="ospite-name">Vandana Shiva</span>
+                <span class="ospite-name">Noam Chomsky</span>
+                <span class="ospite-name">David Quammen</span>
+                <span class="ospite-name">Alain de Botton</span>
+                <span class="ospite-name">La Rappresentante di Lista</span>
+                <span class="ospite-name">Telmo Pievani</span>
+                <span class="ospite-name">Barbascura X</span>
+                <span class="ospite-name">Murubutu</span>
+                <span class="ospite-name">N.A.I.P.</span>
+                <span class="ospite-name">Vandana Shiva</span>
+                <span class="ospite-name">Noam Chomsky</span>
+                <span class="ospite-name">David Quammen</span>
+                <span class="ospite-name">Alain de Botton</span>
+            </div>
+            <div class="ospiti-row reverse">
+                <span class="ospite-name">Niccolò Fabi</span>
+                <span class="ospite-name">Carmen Consoli</span>
+                <span class="ospite-name">Vasco Brondi</span>
+                <span class="ospite-name">Rancore</span>
+                <span class="ospite-name">Loredana Lipperini</span>
+                <span class="ospite-name">Davide Toffolo</span>
+                <span class="ospite-name">Eugenio in Via di Gioia</span>
+                <span class="ospite-name">Valerio Lundini</span>
+                <span class="ospite-name">Niccolò Fabi</span>
+                <span class="ospite-name">Carmen Consoli</span>
+                <span class="ospite-name">Vasco Brondi</span>
+                <span class="ospite-name">Rancore</span>
+                <span class="ospite-name">Loredana Lipperini</span>
+                <span class="ospite-name">Davide Toffolo</span>
+                <span class="ospite-name">Eugenio in Via di Gioia</span>
+                <span class="ospite-name">Valerio Lundini</span>
             </div>
         </section>
 
-        <section class="ospiti-section">
-            <p class="ospiti-label">Alcuni ospiti delle nostre edizioni</p>
-            <div class="marquee">
-                <div class="marquee-content">
-                    <span>Telmo Pievani</span>
-                    <span>Barbascura X</span>
-                    <span>Vandana Shiva</span>
-                    <span>Noam Chomsky</span>
-                    <span>La Rappresentante di Lista</span>
-                    <span>Murubutu</span>
-                    <span>NAIP</span>
-                    <span>David Quammen</span>
-                    <span>Alain de Botton</span>
-                    <span>Nicola Lagioia</span>
-                    <span>Pablo Trincia</span>
-                    <span>Francesco Costa</span>
-                    <span>Telmo Pievani</span>
-                    <span>Barbascura X</span>
-                    <span>Vandana Shiva</span>
-                    <span>Noam Chomsky</span>
-                    <span>La Rappresentante di Lista</span>
-                    <span>Murubutu</span>
-                    <span>NAIP</span>
-                    <span>David Quammen</span>
-                    <span>Alain de Botton</span>
-                    <span>Nicola Lagioia</span>
-                    <span>Pablo Trincia</span>
-                    <span>Francesco Costa</span>
+        <!-- ILPOD SECTION -->
+        <section class="ilpod-section">
+            <div class="ilpod-visual">
+                <div class="ilpod-rings">
+                    <div class="ilpod-ring"></div>
+                    <div class="ilpod-ring"></div>
+                    <div class="ilpod-ring"></div>
+                    <div class="ilpod-ring"></div>
+                </div>
+                <div class="ilpod-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="ilpod-content">
+                <span class="ilpod-label">Il premio per il podcasting italiano</span>
+                <h2 class="ilpod-title">Il<em>Pod</em></h2>
+                <p class="ilpod-subtitle">Italian Podcast Awards</p>
+                <p class="ilpod-desc">Il primo e più importante riconoscimento per i podcast italiani, nato per celebrare l'eccellenza di un medium che sta trasformando il modo in cui ascoltiamo storie, idee e conversazioni. Una comunità sempre più ampia di voci che meritano di essere ascoltate.</p>
+                <div class="ilpod-stats">
+                    <div class="ilpod-stat">
+                        <span class="ilpod-stat-value">IV</span>
+                        <span class="ilpod-stat-label">Edizione</span>
+                    </div>
+                    <div class="ilpod-stat">
+                        <span class="ilpod-stat-value">864</span>
+                        <span class="ilpod-stat-label">Iscritti 2024</span>
+                    </div>
+                    <div class="ilpod-stat">
+                        <span class="ilpod-stat-value">18</span>
+                        <span class="ilpod-stat-label">Categorie</span>
+                    </div>
+                </div>
+                <a href="./ilpod.html" class="ilpod-cta">
+                    <span>Scopri IlPod</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- FESTIVAL SECTION -->
+        <section class="festival-section">
+            <div class="festival-bg-text">Festival</div>
+            <div class="festival-header">
+                <span class="festival-label">Dove ci trovi</span>
+                <h2 class="festival-title">I festival dove siamo <em>ospiti</em></h2>
+                <p class="festival-desc">Oltre agli eventi che ideiamo e dirigiamo, Maura e Andrea partecipano regolarmente ai principali festival culturali italiani. Nel biennio 2024-2025, oltre 35 rassegne in tutta Italia.</p>
+            </div>
+            <div class="festival-grid">
+                <div class="festival-item">
+                    <span class="festival-name">Salone del Libro</span>
+                    <span class="festival-city">Torino</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">Festival di Gavoi</span>
+                    <span class="festival-city">Sardegna</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">Pordenonelegge</span>
+                    <span class="festival-city">Pordenone</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">Book Pride</span>
+                    <span class="festival-city">Milano</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">Festival Filosofia</span>
+                    <span class="festival-city">Modena</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">Voices</span>
+                    <span class="festival-city">Firenze</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">WeWorld Festival</span>
+                    <span class="festival-city">Milano</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">inQuiete</span>
+                    <span class="festival-city">Roma</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">Repubblica delle Idee</span>
+                    <span class="festival-city">Napoli</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">Bookcity</span>
+                    <span class="festival-city">Milano</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">Torino Spiritualità</span>
+                    <span class="festival-city">Torino</span>
+                </div>
+                <div class="festival-item">
+                    <span class="festival-name">Taobuk</span>
+                    <span class="festival-city">Taormina</span>
                 </div>
             </div>
         </section>
 
-        <section class="dove-section">
-            <div class="dove-header">
-                <p class="dove-header-label">Dove ci trovi</p>
-                <h2 class="dove-header-title">I festival che ci <em>ospitano</em></h2>
-                <p class="dove-header-desc">Oltre agli eventi che ideiamo, partecipiamo ogni anno come ospiti ai principali festival culturali italiani.</p>
-            </div>
-            <div class="festival-grid">
-                <div class="festival-tag">Salone del Libro <span class="festival-tag-city">Torino</span></div>
-                <div class="festival-tag">Festival Letterario di Gavoi <span class="festival-tag-city">Sardegna</span></div>
-                <div class="festival-tag">Pordenonelegge <span class="festival-tag-city">Pordenone</span></div>
-                <div class="festival-tag">Festival Filosofia <span class="festival-tag-city">Modena</span></div>
-                <div class="festival-tag">Voices <span class="festival-tag-city">Firenze</span></div>
-                <div class="festival-tag">Book Pride <span class="festival-tag-city">Milano</span></div>
-                <div class="festival-tag">inQuiete <span class="festival-tag-city">Roma</span></div>
-                <div class="festival-tag">La Repubblica delle Idee <span class="festival-tag-city">Napoli</span></div>
-                <div class="festival-tag">WeWorld Festival <span class="festival-tag-city">Milano</span></div>
-                <div class="festival-tag">Bookcity <span class="festival-tag-city">Milano</span></div>
-                <div class="festival-tag">Taobuk <span class="festival-tag-city">Taormina</span></div>
-                <div class="festival-tag">Torino Spiritualità <span class="festival-tag-city">Torino</span></div>
-                <div class="festival-tag">Festival della Peste <span class="festival-tag-city">Itinerante</span></div>
-                <div class="festival-tag">Concentrico <span class="festival-tag-city">Carpi</span></div>
-                <div class="festival-tag">Auditorium Parco della Musica <span class="festival-tag-city">Roma</span></div>
-            </div>
-        </section>
-
         <section class="cta-section">
-            <div class="cta-bg-text">Incontriamoci</div>
+            <div class="cta-bg"></div>
             <div class="cta-content">
                 <h2 class="cta-title">Vuoi organizzare un evento <em>con noi</em>?</h2>
                 <a href="mailto:eventi@tlon.it" class="cta-btn">
                     <span>Scrivici</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                 </a>
@@ -1362,8 +1352,7 @@
             <div class="footer-links">
                 <a href="./ilpod.html">IlPod</a>
                 <a href="./ipnocrazia.html">Ipnocrazia</a>
-                <a href="./formazione.html">Formazione</a>
-                <a href="./contatti.html">Contatti</a>
+                <a href="./esplora.html">Mappa del sito</a>
             </div>
         </div>
     </footer>
@@ -1379,17 +1368,27 @@
         });
 
         function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.12;
-            cursorY += (mouseY - cursorY) * 0.12;
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
             cursor.style.left = cursorX - 10 + 'px';
             cursor.style.top = cursorY - 10 + 'px';
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
 
-        document.querySelectorAll('a, button, .evento-card, .festival-tag').forEach(el => {
+        document.querySelectorAll('a, button, .evento-card, .festival-item').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // HEADER SCROLL
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
 
         // SCROLL REVEAL
@@ -1412,41 +1411,27 @@
         cards.forEach(card => observer.observe(card));
 
         // PARALLAX HERO
+        const heroOrbs = document.querySelectorAll('.hero-orb');
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            const orbs = document.querySelectorAll('.hero-orb');
+            heroOrbs.forEach((orb, i) => {
+                const speed = (i + 1) * 0.1;
+                orb.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // MOUSE PARALLAX ON HERO
+        const hero = document.querySelector('.hero');
+        hero.addEventListener('mousemove', (e) => {
+            const rect = hero.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
             
-            if (scrolled < window.innerHeight) {
-                orbs.forEach((orb, i) => {
-                    const speed = 0.2 + (i * 0.1);
-                    orb.style.transform = `translateY(${scrolled * speed}px)`;
-                });
-            }
+            heroOrbs.forEach((orb, i) => {
+                const speed = (i + 1) * 20;
+                orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
         });
-
-        // FESTIVAL TAGS STAGGER
-        const tags = document.querySelectorAll('.festival-tag');
-        const tagObserver = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                tags.forEach((tag, i) => {
-                    setTimeout(() => {
-                        tag.style.opacity = '1';
-                        tag.style.transform = 'translateY(0)';
-                    }, i * 50);
-                });
-            }
-        }, { threshold: 0.2 });
-
-        tags.forEach(tag => {
-            tag.style.opacity = '0';
-            tag.style.transform = 'translateY(20px)';
-            tag.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-        });
-
-        if (tags.length > 0) {
-            tagObserver.observe(tags[0].parentElement);
-        }
     </script>
 
 </body>
