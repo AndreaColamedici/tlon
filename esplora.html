@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esplora Tlon — Mappa del progetto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+            --crema: #f8f6f3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { font-size: 16px; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--nero);
+            color: var(--bianco);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        ::selection { background: var(--ottanio); color: var(--bianco); }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* CURSOR */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--ottanio);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, background 0.2s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor.hover {
+            width: 80px;
+            height: 80px;
+            background: var(--bianco);
+            border-color: var(--bianco);
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img { height: 24px; filter: invert(1); }
+
+        .header-back {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .header-back:hover { opacity: 1; }
+
+        /* HERO */
+        .hero {
+            min-height: 50vh;
+            display: flex;
+            align-items: flex-end;
+            padding: 10rem 3rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards 0.2s;
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 400;
+            line-height: 0.9;
+            opacity: 0;
+            animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* GRID PRINCIPALE */
+        .main-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 3rem 10rem;
+        }
+
+        /* SEZIONE FONDATORI */
+        .founders {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .founder-card {
+            position: relative;
+            padding: 4rem 3rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transform: translateY(40px);
+            animation: cardReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .founder-card:nth-child(1) { animation-delay: 0.5s; }
+        .founder-card:nth-child(2) { animation-delay: 0.6s; }
+
+        @keyframes cardReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .founder-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--ottanio) 0%, #1a4848 100%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            z-index: 0;
+        }
+
+        .founder-card:hover::before { opacity: 1; }
+
+        .founder-card:hover { border-color: var(--ottanio); transform: translateY(-10px); }
+
+        .founder-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .founder-role {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .founder-card:hover .founder-role { color: rgba(255,255,255,0.7); }
+
+        .founder-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-style: italic;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .founder-desc {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.5);
+            max-width: 400px;
+            transition: color 0.3s ease;
+        }
+
+        .founder-card:hover .founder-desc { color: rgba(255,255,255,0.8); }
+
+        .founder-arrow {
+            position: absolute;
+            bottom: 3rem;
+            right: 3rem;
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.4s ease;
+        }
+
+        .founder-card:hover .founder-arrow {
+            background: var(--bianco);
+            color: var(--nero);
+            border-color: var(--bianco);
+            transform: scale(1.1);
+        }
+
+        /* GRIGLIA SEZIONI */
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .section-card {
+            position: relative;
+            padding: 3rem 2.5rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transform: translateY(30px);
+            overflow: hidden;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--ottanio);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .section-card:hover::before { transform: scaleX(1); }
+
+        .section-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.12);
+            transform: translateY(-8px);
+        }
+
+        .section-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-icon {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3rem;
+            font-style: italic;
+            color: var(--ottanio);
+            opacity: 0.4;
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .section-card:hover .section-icon {
+            opacity: 1;
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 2rem;
+        }
+
+        .section-link {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s ease;
+        }
+
+        .section-card:hover .section-link { gap: 1rem; }
+
+        /* SEZIONI GRANDI */
+        .large-sections {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .large-card {
+            position: relative;
+            padding: 4rem 3rem;
+            background: var(--bianco);
+            color: var(--nero);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transform: translateY(30px);
+            overflow: hidden;
+        }
+
+        .large-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .large-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nero);
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 0;
+        }
+
+        .large-card:hover::before { transform: translateY(0); }
+
+        .large-card:hover { color: var(--bianco); }
+
+        .large-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .large-icon {
+            font-family: 'Instrument Serif', serif;
+            font-size: 4rem;
+            font-style: italic;
+            color: var(--ottanio);
+            opacity: 0.3;
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .large-card:hover .large-icon {
+            opacity: 0.6;
+            transform: scale(1.1);
+        }
+
+        .large-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .large-desc {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--grigio);
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        .large-card:hover .large-desc { color: rgba(255,255,255,0.6); }
+
+        .large-link {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* SEZIONI SPECIALI */
+        .special-sections {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .special-card {
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .special-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .special-card:hover {
+            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.05);
+        }
+
+        .special-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .special-desc {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 3rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copy {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.3);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover { color: var(--bianco); }
+
+        /* RESPONSIVE */
+        @media (max-width: 1000px) {
+            .founders { grid-template-columns: 1fr; }
+            .sections-grid { grid-template-columns: repeat(2, 1fr); }
+            .large-sections { grid-template-columns: 1fr; }
+            .special-sections { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 1.5rem; }
+            .hero { padding: 8rem 1.5rem 3rem; }
+            .main-grid { padding: 3rem 1.5rem 6rem; }
+            .sections-grid { grid-template-columns: 1fr; }
+            .cursor { display: none; }
+            .founder-card { padding: 3rem 2rem; }
+            .founder-arrow { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<header>
+    <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+    <a href="./" class="header-back">← Home</a>
+</header>
+
+<main>
+
+<section class="hero">
+    <div class="hero-content">
+        <p class="hero-label">Mappa del progetto</p>
+        <h1 class="hero-title">Esplora <em>Tlon</em></h1>
+    </div>
+</section>
+
+<div class="main-grid">
+
+    <!-- FONDATORI -->
+    <div class="founders">
+        <a href="./andrea-colamedici/" class="founder-card">
+            <div class="founder-content">
+                <p class="founder-role">Fondatore · Editore · Filosofo</p>
+                <h2 class="founder-name">Andrea Colamedici</h2>
+                <p class="founder-desc">Filosofo, scrittore, editore. Co-fondatore di Tlon e autore di saggi che hanno segnato il dibattito culturale italiano.</p>
+            </div>
+            <div class="founder-arrow">→</div>
+        </a>
+        <a href="./maura-gancitano/" class="founder-card">
+            <div class="founder-content">
+                <p class="founder-role">Fondatrice · Editrice · Filosofa</p>
+                <h2 class="founder-name">Maura Gancitano</h2>
+                <p class="founder-desc">Filosofa, scrittrice, editrice. Co-fondatrice di Tlon e voce del femminismo filosofico contemporaneo.</p>
+            </div>
+            <div class="founder-arrow">→</div>
+        </a>
+    </div>
+
+    <!-- SEZIONI PRINCIPALI -->
+    <div class="sections-grid" id="sectionsGrid">
+        <a href="./il-progetto.html" class="section-card">
+            <div class="section-icon">◎</div>
+            <h3 class="section-title">Il Progetto</h3>
+            <p class="section-desc">La storia, la visione, le nove dimensioni di Tlon. Cosa significa costruire un pianeta immaginario.</p>
+            <span class="section-link">Scopri →</span>
+        </a>
+        <a href="./edizioni.html" class="section-card">
+            <div class="section-icon">⊛</div>
+            <h3 class="section-title">Edizioni</h3>
+            <p class="section-desc">200+ titoli in catalogo. Sloterdijk, Haraway, Carson, Badinter. Il serpente editoriale.</p>
+            <span class="section-link">Esplora →</span>
+        </a>
+        <a href="./librerie.html" class="section-card">
+            <div class="section-icon">☉</div>
+            <h3 class="section-title">Librerie</h3>
+            <p class="section-desc">Via Nansen a Roma, GNAM, Villa Medici. Spazi fisici dove le idee prendono forma.</p>
+            <span class="section-link">Visita →</span>
+        </a>
+        <a href="./formazione.html" class="section-card">
+            <div class="section-icon">◇</div>
+            <h3 class="section-title">Formazione</h3>
+            <p class="section-desc">Percorsi per aziende e organizzazioni. Filosofia applicata alla trasformazione.</p>
+            <span class="section-link">Scopri →</span>
+        </a>
+        <a href="./eventi-festival.html" class="section-card">
+            <div class="section-icon">∞</div>
+            <h3 class="section-title">Eventi e Festival</h3>
+            <p class="section-desc">Polis, Biennale, incontri. Dove la filosofia diventa esperienza collettiva.</p>
+            <span class="section-link">Esplora →</span>
+        </a>
+        <a href="./ilpod.html" class="section-card">
+            <div class="section-icon">◉</div>
+            <h3 class="section-title">Podcast</h3>
+            <p class="section-desc">Tlon, Scuola di Filosofia, Audible. 150 milioni di ascolti. Filosofia per tutti.</p>
+            <span class="section-link">Ascolta →</span>
+        </a>
+    </div>
+
+    <!-- SEZIONI GRANDI -->
+    <div class="large-sections" id="largeSections">
+        <a href="./ipnocrazia.html" class="large-card">
+            <div class="large-content">
+                <div class="large-icon">Ψ</div>
+                <h3 class="large-title">Ipnocrazia</h3>
+                <p class="large-desc">Il fenomeno editoriale internazionale. Una performance narrativa sulla manipolazione della realtà nell'era di Trump e Musk.</p>
+                <span class="large-link">Approfondisci →</span>
+            </div>
+        </a>
+        <a href="https://shop.tlon.it" class="large-card" target="_blank">
+            <div class="large-content">
+                <div class="large-icon">✧</div>
+                <h3 class="large-title">Shop</h3>
+                <p class="large-desc">Il catalogo completo. Libri, oggetti, idee. Tutto il mondo Tlon in un unico luogo.</p>
+                <span class="large-link">Vai allo shop →</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- SEZIONI SPECIALI -->
+    <div class="special-sections" id="specialSections">
+        <a href="./contatti/" class="special-card">
+            <h4 class="special-title">Contatti</h4>
+            <p class="special-desc">Scrivici, trovaci, collabora con noi.</p>
+        </a>
+        <a href="mailto:redazione@tlon.it" class="special-card">
+            <h4 class="special-title">Proposte editoriali</h4>
+            <p class="special-desc">redazione@tlon.it</p>
+        </a>
+        <a href="mailto:commerciale@tlon.it" class="special-card">
+            <h4 class="special-title">Ufficio commerciale</h4>
+            <p class="special-desc">commerciale@tlon.it</p>
+        </a>
+    </div>
+
+</div>
+
+</main>
+
+<footer>
+    <div class="footer-content">
+        <p class="footer-copy">© Tlon 2016—2025</p>
+        <div class="footer-links">
+            <a href="./">Home</a>
+            <a href="https://www.instagram.com/taborieditore/" target="_blank">Instagram</a>
+            <a href="https://www.facebook.com/TlonEdizioni" target="_blank">Facebook</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+
+document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateCursor() {
+    cursorX += (mouseX - cursorX) * 0.15;
+    cursorY += (mouseY - cursorY) * 0.15;
+    cursor.style.left = cursorX - 10 + 'px';
+    cursor.style.top = cursorY - 10 + 'px';
+    requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// REVEAL ON SCROLL
+const revealElements = document.querySelectorAll('.section-card, .large-card, .special-card');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.classList.add('visible');
+            }, index * 100);
+        }
+    });
+}, { threshold: 0.1 });
+
+revealElements.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
