@@ -331,6 +331,223 @@
             color: var(--grigio);
         }
 
+        /* ILPOD FEATURED */
+        .ilpod-featured {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%);
+            color: var(--bianco);
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 70vh;
+        }
+
+        .ilpod-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .ilpod-visual::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.3) 0%, transparent 70%);
+            animation: podPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes podPulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        .ilpod-icon {
+            position: relative;
+            z-index: 1;
+            width: 180px;
+            height: 180px;
+            border: 2px solid var(--ottanio);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: podFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes podFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .ilpod-icon svg {
+            width: 60px;
+            height: 60px;
+            stroke: var(--ottanio);
+        }
+
+        .ilpod-waves {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .ilpod-wave {
+            position: absolute;
+            border: 1px solid rgba(42, 107, 107, 0.2);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: waveExpand 4s ease-out infinite;
+        }
+
+        .ilpod-wave:nth-child(1) { width: 250px; height: 250px; animation-delay: 0s; }
+        .ilpod-wave:nth-child(2) { width: 350px; height: 350px; animation-delay: 1s; }
+        .ilpod-wave:nth-child(3) { width: 450px; height: 450px; animation-delay: 2s; }
+
+        @keyframes waveExpand {
+            0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+        }
+
+        .ilpod-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ilpod-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ilpod-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .ilpod-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .ilpod-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .ilpod-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 2rem;
+        }
+
+        .ilpod-desc {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.6);
+            max-width: 500px;
+            margin-bottom: 3rem;
+        }
+
+        .ilpod-stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .ilpod-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .ilpod-stat-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            color: var(--ottanio);
+        }
+
+        .ilpod-stat-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .ilpod-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--bianco);
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            align-self: flex-start;
+        }
+
+        .ilpod-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--ottanio);
+            transform: translateX(-100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+
+        .ilpod-cta:hover::before {
+            transform: translateX(0);
+        }
+
+        .ilpod-cta:hover {
+            border-color: var(--ottanio);
+        }
+
+        .ilpod-cta svg {
+            transition: transform 0.4s ease;
+        }
+
+        .ilpod-cta:hover svg {
+            transform: translateX(5px);
+        }
+
         /* OSPITI MARQUEE */
         .ospiti-section {
             padding: 4rem 0;
@@ -445,6 +662,21 @@
             content: '←';
         }
 
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--nero);
+        }
+
         .footer-other {
             text-align: right;
         }
@@ -502,6 +734,24 @@
                 font-size: 1.5rem;
             }
 
+            .ilpod-featured {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .ilpod-visual {
+                padding: 4rem 2rem;
+                min-height: 300px;
+            }
+
+            .ilpod-content {
+                padding: 3rem 1.5rem 4rem;
+            }
+
+            .ilpod-stats {
+                gap: 2rem;
+            }
+
             footer {
                 padding: 2rem 1.5rem;
             }
@@ -521,6 +771,16 @@
             nav {
                 display: none;
             }
+
+            .ilpod-icon {
+                width: 120px;
+                height: 120px;
+            }
+
+            .ilpod-icon svg {
+                width: 40px;
+                height: 40px;
+            }
         }
     </style>
 </head>
@@ -529,15 +789,15 @@
     <header>
         <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
         <nav>
-    <a href="./il-progetto.html">Il Progetto</a>
-    <a href="./andrea-colamedici/">Colamedici</a>
-    <a href="./maura-gancitano/">Gancitano</a>
-    <a href="./edizioni.html">Edizioni</a>
-    <a href="./librerie.html">Librerie</a>
-    <a href="./formazione.html">Formazione</a>
-    <a href="./eventi-festival.html">Eventi</a>
-    <a href="./contatti/">Contatti</a>
-</nav>
+            <a href="./il-progetto.html">Il Progetto</a>
+            <a href="./andrea-colamedici/">Colamedici</a>
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="./edizioni.html">Edizioni</a>
+            <a href="./librerie.html">Librerie</a>
+            <a href="./formazione.html">Formazione</a>
+            <a href="./eventi-festival.html">Eventi</a>
+            <a href="./contatti/">Contatti</a>
+        </nav>
     </header>
 
     <main>
@@ -586,18 +846,6 @@
                 <article class="evento">
                     <div class="evento-header">
                         <span class="evento-num">03</span>
-                        <h2 class="evento-title">IlPod — Italian <em>Podcast</em> Awards</h2>
-                        <span class="evento-location">Italia</span>
-                    </div>
-                    <div class="evento-body">
-                        <p class="evento-desc">Siamo i fondatori de ilPod, il premio per i migliori podcast italiani, giunto alla sua quarta edizione. Il mondo del podcasting è un motore culturale che ha un potenziale enorme. Creando i primi premi per i migliori podcast italiani abbiamo voluto mettere in luce i tanti progetti di qualità che sono fioriti durante l'anno, e rafforzare la comunità di chi ascolta i podcast ogni giorno.</p>
-                        <p class="evento-role"><strong>Fondatori</strong> · Quarta edizione</p>
-                    </div>
-                </article>
-
-                <article class="evento">
-                    <div class="evento-header">
-                        <span class="evento-num">04</span>
                         <h2 class="evento-title"><em>GenIA</em>LAB</h2>
                         <span class="evento-location">Roma · AANT</span>
                     </div>
@@ -609,7 +857,7 @@
 
                 <article class="evento">
                     <div class="evento-header">
-                        <span class="evento-num">05</span>
+                        <span class="evento-num">04</span>
                         <h2 class="evento-title">BariDiversa — Festival del <em>Pensare Queer</em></h2>
                         <span class="evento-location">Bari</span>
                     </div>
@@ -621,7 +869,7 @@
 
                 <article class="evento">
                     <div class="evento-header">
-                        <span class="evento-num">06</span>
+                        <span class="evento-num">05</span>
                         <h2 class="evento-title">Festa della <em>Filosofia</em></h2>
                         <span class="evento-location">Milano · Roma</span>
                     </div>
@@ -642,7 +890,7 @@
 
                 <article class="evento">
                     <div class="evento-header">
-                        <span class="evento-num">07</span>
+                        <span class="evento-num">06</span>
                         <h2 class="evento-title">Prendiamola con <em>Filosofia</em></h2>
                         <span class="evento-location">Streaming internazionale</span>
                     </div>
@@ -661,6 +909,51 @@
                     </div>
                 </article>
 
+            </div>
+        </section>
+
+        <!-- ILPOD FEATURED -->
+        <section class="ilpod-featured">
+            <div class="ilpod-visual">
+                <div class="ilpod-waves">
+                    <div class="ilpod-wave"></div>
+                    <div class="ilpod-wave"></div>
+                    <div class="ilpod-wave"></div>
+                </div>
+                <div class="ilpod-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="ilpod-content">
+                <span class="ilpod-label">Il premio per il podcasting italiano</span>
+                <h2 class="ilpod-title">Il<em>Pod</em></h2>
+                <p class="ilpod-subtitle">Italian Podcast Awards</p>
+                <p class="ilpod-desc">Il primo e più importante riconoscimento per i podcast italiani, nato per celebrare l'eccellenza di un medium che sta trasformando il modo in cui ascoltiamo storie, idee e conversazioni. Dalla quarta edizione, una comunità sempre più ampia di voci che meritano di essere ascoltate.</p>
+                <div class="ilpod-stats">
+                    <div class="ilpod-stat">
+                        <span class="ilpod-stat-value">IV</span>
+                        <span class="ilpod-stat-label">Edizione</span>
+                    </div>
+                    <div class="ilpod-stat">
+                        <span class="ilpod-stat-value">50+</span>
+                        <span class="ilpod-stat-label">Podcast premiati</span>
+                    </div>
+                    <div class="ilpod-stat">
+                        <span class="ilpod-stat-value">∞</span>
+                        <span class="ilpod-stat-label">Storie da ascoltare</span>
+                    </div>
+                </div>
+                <a href="./ilpod.html" class="ilpod-cta">
+                    <span>Scopri IlPod</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
             </div>
         </section>
 
@@ -690,9 +983,10 @@
     <footer>
         <div class="footer-nav">
             <a href="./" class="footer-back">Torna alla home</a>
-            <div class="footer-other">
-                <div class="footer-other-label">Scopri</div>
-                <div class="footer-other-name"><a href="./contatti/">Contatti</a></div>
+            <div class="footer-links">
+                <a href="./ilpod.html">IlPod</a>
+                <a href="./ipnocrazia.html">Ipnocrazia</a>
+                <a href="./esplora.html">Mappa del sito</a>
             </div>
         </div>
     </footer>
