@@ -17,15 +17,9 @@
             --crema: #f8f6f3;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html {
-            font-size: 16px;
-        }
+        html { font-size: 16px; scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -35,15 +29,9 @@
             overflow-x: hidden;
         }
 
-        ::selection {
-            background: var(--ottanio);
-            color: var(--bianco);
-        }
+        ::selection { background: var(--ottanio); color: var(--bianco); }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+        a { color: inherit; text-decoration: none; }
 
         /* CURSOR */
         .cursor {
@@ -54,24 +42,15 @@
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-            transition: transform 0.15s ease, background 0.15s ease;
+            transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, background 0.2s ease;
             mix-blend-mode: difference;
         }
 
-        .cursor-dot {
-            width: 4px;
-            height: 4px;
-            background: var(--ottanio);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
         .cursor.hover {
-            transform: scale(2.5);
-            background: var(--ottanio);
-            border-color: transparent;
+            width: 60px;
+            height: 60px;
+            background: var(--bianco);
+            border-color: var(--bianco);
         }
 
         /* HEADER */
@@ -81,321 +60,228 @@
             left: 0;
             right: 0;
             z-index: 100;
-            padding: 1.5rem 3rem;
+            padding: 2rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             mix-blend-mode: difference;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-        }
+        .logo img { height: 24px; filter: invert(1); }
 
-        .logo img {
-            height: 28px;
-            width: auto;
-            filter: invert(1);
-        }
-
-        nav {
-            display: flex;
-            gap: 3rem;
-        }
+        nav { display: flex; gap: 3rem; }
 
         nav a {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 500;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--bianco);
             opacity: 0.5;
             transition: opacity 0.3s ease;
         }
 
-        nav a:hover {
-            opacity: 1;
-        }
+        nav a:hover { opacity: 1; }
 
-        /* HERO - CINEMATIC OPENING */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* ================================================
+           OPENING - NOMI GIGANTI CHE SCORRONO
+           ================================================ */
+        .opening {
+            height: 500vh;
             position: relative;
-            overflow: hidden;
             background: var(--nero);
         }
 
-        .hero-canvas {
-            position: absolute;
+        .opening-sticky {
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
         }
 
-        /* Orbite animate */
-        .orbit {
+        /* Griglia di sfondo animata */
+        .grid-bg {
             position: absolute;
-            border: 1px solid rgba(42, 107, 107, 0.15);
-            border-radius: 50%;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image: 
+                linear-gradient(rgba(42, 107, 107, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(42, 107, 107, 0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            transform: rotate(0deg);
+            transition: transform 0.1s linear;
+        }
+
+        /* Container nomi */
+        .names-stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .giant-name {
+            position: absolute;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: clamp(6rem, 18vw, 16rem);
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(200px) rotateX(-20deg);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            color: var(--bianco);
+            letter-spacing: -0.03em;
+            text-shadow: 
+                0 0 80px rgba(42, 107, 107, 0.4),
+                0 0 200px rgba(42, 107, 107, 0.2);
+            perspective: 1000px;
+        }
+
+        .giant-name.visible {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg);
+        }
+
+        .giant-name.exit-up {
+            opacity: 0;
+            transform: translateY(-200px) rotateX(20deg) scale(0.8);
+        }
+
+        .giant-name .dim {
+            opacity: 0.3;
+        }
+
+        /* Linee che esplodono */
+        .burst-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .burst-line {
+            position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .orbit-1 {
-            width: 300px;
-            height: 300px;
-            animation: orbitPulse 8s ease-in-out infinite;
-        }
-
-        .orbit-2 {
-            width: 500px;
-            height: 500px;
-            animation: orbitPulse 10s ease-in-out infinite;
-            animation-delay: -2s;
-        }
-
-        .orbit-3 {
-            width: 750px;
-            height: 750px;
-            animation: orbitPulse 12s ease-in-out infinite;
-            animation-delay: -4s;
-        }
-
-        .orbit-4 {
-            width: 1000px;
-            height: 1000px;
-            animation: orbitPulse 14s ease-in-out infinite;
-            animation-delay: -6s;
-        }
-
-        .orbit-5 {
-            width: 1300px;
-            height: 1300px;
-            animation: orbitPulse 16s ease-in-out infinite;
-            animation-delay: -8s;
-        }
-
-        @keyframes orbitPulse {
-            0%, 100% { 
-                transform: translate(-50%, -50%) scale(1) rotate(0deg);
-                opacity: 0.3;
-            }
-            50% { 
-                transform: translate(-50%, -50%) scale(1.05) rotate(180deg);
-                opacity: 0.6;
-            }
-        }
-
-        /* Particelle fluttuanti */
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--ottanio);
-            border-radius: 50%;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--ottanio), transparent);
+            transform-origin: left center;
             opacity: 0;
-            animation: particleFloat 20s linear infinite;
         }
 
-        @keyframes particleFloat {
-            0% {
-                opacity: 0;
-                transform: translateY(100vh) scale(0);
-            }
-            10% {
-                opacity: 0.8;
-            }
-            90% {
-                opacity: 0.8;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100vh) scale(1);
-            }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 0 3rem;
-        }
-
-        .hero-pre {
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.6em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 3rem;
-            overflow: hidden;
-        }
-
-        .hero-pre span {
-            display: inline-block;
-            transform: translateY(100%);
-            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation-delay: 0.5s;
-        }
-
-        .hero-title {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(5rem, 15vw, 12rem);
-            font-weight: 400;
-            line-height: 0.85;
-            letter-spacing: -0.04em;
-            margin-bottom: 4rem;
-            overflow: hidden;
-        }
-
-        .hero-title .line {
-            display: block;
-            overflow: hidden;
-        }
-
-        .hero-title .word {
-            display: inline-block;
-            transform: translateY(100%);
-            animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .hero-title .line:nth-child(1) .word { animation-delay: 0.7s; }
-        .hero-title .line:nth-child(2) .word { animation-delay: 0.85s; }
-
-        .hero-title em {
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        @keyframes slideUp {
-            to { transform: translateY(0); }
-        }
-
-        .hero-quote {
-            max-width: 700px;
-            margin: 0 auto;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 1s ease forwards;
-            animation-delay: 1.2s;
-        }
-
-        .hero-quote p {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.2rem;
-            font-style: italic;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.6);
-        }
-
-        .hero-quote cite {
-            display: block;
-            margin-top: 1.5rem;
-            font-style: normal;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-        }
-
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-scroll {
+        /* Counter in basso */
+        .opening-counter {
             position: absolute;
-            bottom: 3rem;
+            bottom: 4rem;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1rem;
-            opacity: 0;
-            animation: fadeUp 1s ease forwards;
-            animation-delay: 1.8s;
         }
 
-        .hero-scroll span {
-            font-size: 0.7rem;
+        .counter-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+        }
+
+        .counter-progress {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .counter-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transition: all 0.5s ease;
+        }
+
+        .counter-dot.active {
+            background: var(--ottanio);
+            box-shadow: 0 0 20px var(--ottanio);
+        }
+
+        /* Titolo finale opening */
+        .opening-finale {
+            position: absolute;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .opening-finale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .opening-finale h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 400;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .opening-finale h1 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .opening-finale p {
+            font-size: 1rem;
             letter-spacing: 0.3em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.4);
         }
 
-        .scroll-line {
-            width: 1px;
-            height: 60px;
-            background: linear-gradient(to bottom, var(--ottanio), transparent);
-            animation: scrollPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes scrollPulse {
-            0%, 100% { transform: scaleY(1); opacity: 1; }
-            50% { transform: scaleY(0.5); opacity: 0.5; }
-        }
-
-        /* GRANDI NOMI - STATEMENT SECTION */
+        /* ================================================
+           STATEMENT - FRASE IMPATTO
+           ================================================ */
         .statement {
-            padding: 15rem 3rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 10rem 3rem;
             background: var(--nero);
             position: relative;
-            overflow: hidden;
-        }
-
-        .statement-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse at 50% 50%, rgba(42, 107, 107, 0.08) 0%, transparent 70%);
         }
 
         .statement-content {
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .statement-label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.4em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 4rem;
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .statement-label.visible {
-            opacity: 1;
-            transform: translateX(0);
         }
 
         .statement-text {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            font-weight: 400;
-            line-height: 1.2;
-            color: var(--bianco);
+            font-size: clamp(2rem, 4.5vw, 4rem);
+            line-height: 1.4;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .statement-text em {
+            font-style: italic;
+            color: var(--ottanio);
+            position: relative;
         }
 
         .statement-text .word {
             display: inline-block;
             opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .statement-text .word.visible {
@@ -403,469 +289,194 @@
             transform: translateY(0);
         }
 
-        .statement-text em {
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        .statement-text .highlight {
-            color: var(--ottanio);
-        }
-
-        /* NOMI MARQUEE */
-        .names-marquee {
-            padding: 8rem 0;
+        /* ================================================
+           MARQUEE INFINITO
+           ================================================ */
+        .marquee-section {
+            padding: 6rem 0;
             background: var(--nero);
-            overflow: hidden;
             border-top: 1px solid rgba(255,255,255,0.05);
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
         }
 
-        .marquee-track {
+        .marquee {
             display: flex;
-            animation: marquee 40s linear infinite;
+            animation: scroll-left 60s linear infinite;
         }
 
-        .marquee-track:hover {
-            animation-play-state: paused;
-        }
+        .marquee:hover { animation-play-state: paused; }
 
-        @keyframes marquee {
+        @keyframes scroll-left {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
         .marquee-item {
             flex-shrink: 0;
-            padding: 0 4rem;
+            padding: 0 3rem;
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-size: clamp(1.8rem, 4vw, 3rem);
             font-style: italic;
-            color: rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.12);
             white-space: nowrap;
-            transition: color 0.3s ease;
+            transition: color 0.4s ease;
             cursor: default;
         }
 
-        .marquee-item:hover {
-            color: var(--ottanio);
-        }
+        .marquee-item:hover { color: var(--ottanio); }
 
-        .marquee-separator {
+        .marquee-dot {
             flex-shrink: 0;
-            width: 12px;
-            height: 12px;
+            width: 8px;
+            height: 8px;
             background: var(--ottanio);
             border-radius: 50%;
-            margin: auto 2rem;
+            margin: auto 1.5rem;
             opacity: 0.3;
         }
 
-        /* NUMERI - IMPATTO */
+        /* ================================================
+           NUMERI - IMPATTO
+           ================================================ */
         .numeri {
-            padding: 12rem 3rem;
+            padding: 10rem 3rem;
             background: var(--bianco);
             color: var(--nero);
-            position: relative;
         }
 
         .numeri-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .numero-item {
-            padding: 4rem 2rem;
-            border-right: 1px solid var(--grigio-chiaro);
+        .numero {
             text-align: center;
+            padding: 3rem;
             position: relative;
-            overflow: hidden;
         }
 
-        .numero-item:last-child {
-            border-right: none;
-        }
-
-        .numero-item::before {
+        .numero::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
             right: 0;
-            height: 3px;
-            background: var(--ottanio);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background: var(--grigio-chiaro);
         }
 
-        .numero-item.visible::before {
-            transform: scaleX(1);
-        }
+        .numero:last-child::after { display: none; }
 
         .numero-value {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(4rem, 8vw, 6rem);
+            font-size: clamp(4rem, 10vw, 7rem);
             font-style: italic;
             line-height: 1;
             color: var(--nero);
-            margin-bottom: 1rem;
-        }
-
-        .numero-value span {
-            display: inline-block;
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .numero-item.visible .numero-value span {
+        .numero.visible .numero-value {
             opacity: 1;
             transform: translateY(0);
         }
 
         .numero-label {
-            font-size: 0.8rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--grigio);
-        }
-
-        /* MANIFESTO */
-        .manifesto {
-            padding: 15rem 3rem;
-            background: var(--nero);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .manifesto-bg-text {
-            position: absolute;
-            font-family: 'Instrument Serif', serif;
-            font-size: 35vw;
-            font-style: italic;
-            color: rgba(255,255,255,0.02);
-            white-space: nowrap;
-            pointer-events: none;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .manifesto-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 10rem;
-            align-items: start;
-            position: relative;
-            z-index: 1;
-        }
-
-        .manifesto-left {
-            position: sticky;
-            top: 8rem;
-        }
-
-        .manifesto-title {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(3rem, 6vw, 5rem);
-            font-weight: 400;
-            line-height: 1;
-            margin-bottom: 2rem;
-        }
-
-        .manifesto-title em {
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        .manifesto-year {
-            display: flex;
-            align-items: baseline;
-            gap: 1rem;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .manifesto-year-num {
-            font-family: 'Instrument Serif', serif;
-            font-size: 6rem;
-            font-style: italic;
-            line-height: 1;
-            color: var(--ottanio);
-            opacity: 0.3;
-        }
-
-        .manifesto-year-text {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
+            color: var(--grigio);
+            margin-top: 1rem;
         }
 
-        .manifesto-text {
-            font-size: 1.25rem;
-            line-height: 2;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .manifesto-text p {
-            margin-bottom: 2.5rem;
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .manifesto-text p.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .manifesto-highlight {
-            padding: 3rem;
-            background: rgba(42, 107, 107, 0.1);
-            border-left: 4px solid var(--ottanio);
-            margin: 4rem 0;
-        }
-
-        .manifesto-highlight p {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
-            font-style: italic;
-            line-height: 1.6;
-            color: var(--bianco);
-            margin-bottom: 0 !important;
-            opacity: 1 !important;
-            transform: none !important;
-        }
-
-        /* COLLANE - IMMERSIVE GRID */
-        .collane {
+        /* ================================================
+           LIBRI SHOWCASE - SCROLL ORIZZONTALE
+           ================================================ */
+        .libri {
             padding: 12rem 0;
-            background: var(--bianco);
-            color: var(--nero);
+            background: var(--nero);
         }
 
-        .collane-header {
+        .libri-header {
             max-width: 1400px;
-            margin: 0 auto 8rem;
+            margin: 0 auto 5rem;
             padding: 0 3rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            display: flex;
+            justify-content: space-between;
             align-items: end;
         }
 
-        .collane-header h2 {
+        .libri-header h2 {
             font-family: 'Instrument Serif', serif;
             font-size: clamp(3rem, 6vw, 5rem);
             font-weight: 400;
-            line-height: 1;
         }
 
-        .collane-header h2 em {
+        .libri-header h2 em {
             font-style: italic;
             color: var(--ottanio);
         }
 
-        .collane-header p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--grigio);
-        }
-
-        .collane-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .collana {
-            aspect-ratio: 1;
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid var(--grigio-chiaro);
-            border-right: none;
-            border-bottom: none;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .collana:nth-child(3n) {
-            border-right: 1px solid var(--grigio-chiaro);
-        }
-
-        .collana:nth-child(n+7) {
-            border-bottom: 1px solid var(--grigio-chiaro);
-        }
-
-        .collana::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--nero);
-            transform: translateY(100%);
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 0;
-        }
-
-        .collana:hover::before {
-            transform: translateY(0);
-        }
-
-        .collana:hover {
-            color: var(--bianco);
-        }
-
-        .collana-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .collana-symbol {
-            font-family: 'Instrument Serif', serif;
-            font-size: 5rem;
-            font-style: italic;
-            line-height: 1;
-            color: var(--ottanio);
-            opacity: 0.2;
-            transition: all 0.6s ease;
-        }
-
-        .collana:hover .collana-symbol {
-            opacity: 0.6;
-            transform: scale(1.2) rotate(-5deg);
-        }
-
-        .collana-info {
-            position: relative;
-            z-index: 1;
-        }
-
-        .collana-name {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .collana-desc {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            opacity: 0.6;
-            margin-bottom: 1rem;
-        }
-
-        .collana-autori {
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-            color: var(--ottanio);
-            transition: color 0.3s ease;
-        }
-
-        .collana:hover .collana-autori {
-            color: var(--ottanio);
-        }
-
-        /* LIBRI SHOWCASE */
-        .libri-showcase {
-            padding: 15rem 3rem;
-            background: var(--nero);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .libri-showcase-header {
-            max-width: 1400px;
-            margin: 0 auto 8rem;
-            text-align: center;
-        }
-
-        .libri-showcase-header h2 {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(3rem, 6vw, 5rem);
-            font-weight: 400;
-            margin-bottom: 1.5rem;
-        }
-
-        .libri-showcase-header h2 em {
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        .libri-showcase-header p {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.5);
-            max-width: 600px;
-            margin: 0 auto;
+        .libri-header p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            max-width: 400px;
+            text-align: right;
         }
 
         .libri-scroll {
             display: flex;
-            gap: 4rem;
-            padding: 0 3rem;
+            gap: 2rem;
+            padding: 2rem 3rem;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             scrollbar-width: none;
-            -ms-overflow-style: none;
         }
 
-        .libri-scroll::-webkit-scrollbar {
-            display: none;
-        }
+        .libri-scroll::-webkit-scrollbar { display: none; }
 
-        .libro-grande {
+        .libro-card {
             flex-shrink: 0;
-            width: 600px;
-            scroll-snap-align: center;
+            width: 500px;
+            scroll-snap-align: start;
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 3rem;
-            padding: 3rem;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            transition: all 0.5s ease;
+            grid-template-columns: 180px 1fr;
+            gap: 2rem;
+            padding: 2.5rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .libro-grande:hover {
-            background: rgba(255,255,255,0.06);
+        .libro-card:hover {
+            background: rgba(255,255,255,0.05);
             border-color: var(--ottanio);
             transform: translateY(-10px);
         }
 
         .libro-cover {
             aspect-ratio: 2/3;
-            background: linear-gradient(135deg, var(--ottanio) 0%, #1a4a4a 100%);
+            background: linear-gradient(160deg, var(--ottanio), #1a4848);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1.5rem;
             position: relative;
-            overflow: hidden;
         }
 
-        .libro-cover::before {
+        .libro-cover::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.3) 100%);
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.4));
         }
 
-        .libro-cover-text {
+        .libro-cover-inner {
             position: relative;
             z-index: 1;
             text-align: center;
@@ -873,18 +484,18 @@
 
         .libro-cover-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-style: italic;
             line-height: 1.3;
             color: var(--bianco);
         }
 
         .libro-cover-author {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: rgba(255,255,255,0.7);
-            margin-top: 1rem;
+            margin-top: 0.8rem;
         }
 
         .libro-info {
@@ -894,62 +505,60 @@
         }
 
         .libro-collana {
-            font-size: 0.7rem;
-            font-weight: 500;
-            letter-spacing: 0.2em;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--ottanio);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
 
         .libro-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             line-height: 1.2;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         .libro-author {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: rgba(255,255,255,0.5);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         .libro-desc {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             line-height: 1.7;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.6);
         }
 
         .libro-meta {
             margin-top: auto;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.4);
+            padding-top: 1rem;
+            font-size: 0.7rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
         }
 
-        /* AUTORI CLOUD */
+        /* ================================================
+           AUTORI - CLOUD DINAMICA
+           ================================================ */
         .autori {
-            padding: 12rem 3rem;
+            padding: 10rem 3rem;
             background: var(--crema);
             color: var(--nero);
-            overflow: hidden;
         }
 
         .autori-header {
-            max-width: 1400px;
-            margin: 0 auto 6rem;
             text-align: center;
+            margin-bottom: 5rem;
         }
 
         .autori-header h2 {
             font-family: 'Instrument Serif', serif;
             font-size: clamp(3rem, 6vw, 5rem);
             font-weight: 400;
-            margin-bottom: 1rem;
         }
 
         .autori-header h2 em {
@@ -958,93 +567,78 @@
         }
 
         .autori-cloud {
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
             justify-content: center;
-            align-items: center;
         }
 
-        .autore-tag {
+        .autore {
             padding: 1rem 2rem;
-            font-size: 1rem;
-            border: 1px solid var(--grigio-chiaro);
             background: var(--bianco);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid var(--grigio-chiaro);
+            font-size: 1rem;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: default;
             position: relative;
             overflow: hidden;
         }
 
-        .autore-tag::before {
+        .autore::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            top: 0; left: -100%; width: 100%; height: 100%;
             background: var(--nero);
-            transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 0;
         }
 
-        .autore-tag:hover::before {
-            left: 0;
-        }
+        .autore:hover::before { left: 0; }
 
-        .autore-tag:hover {
+        .autore:hover {
             color: var(--bianco);
             border-color: var(--nero);
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.05);
         }
 
-        .autore-tag span {
-            position: relative;
-            z-index: 1;
-        }
+        .autore span { position: relative; z-index: 1; }
 
-        .autore-tag.large {
+        .autore.big {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-style: italic;
-            padding: 1.5rem 3rem;
-            background: var(--nero);
-            color: var(--bianco);
-            border-color: var(--nero);
+            padding: 1.2rem 2.5rem;
         }
 
-        .autore-tag.large::before {
-            background: var(--ottanio);
-        }
-
-        .autore-tag.medium {
+        .autore.medium {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-style: italic;
         }
 
-        /* TEAM */
+        /* ================================================
+           TEAM
+           ================================================ */
         .team {
-            padding: 12rem 3rem;
+            padding: 10rem 3rem;
             background: var(--nero);
         }
 
         .team-container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 2fr;
-            gap: 8rem;
-            align-items: start;
+            gap: 6rem;
         }
 
         .team-intro h2 {
             font-family: 'Instrument Serif', serif;
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 400;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .team-intro h2 em {
@@ -1053,7 +647,7 @@
         }
 
         .team-intro p {
-            font-size: 1.1rem;
+            font-size: 1rem;
             line-height: 1.9;
             color: rgba(255,255,255,0.6);
         }
@@ -1066,136 +660,30 @@
         }
 
         .team-member {
-            padding: 2.5rem;
+            padding: 2rem;
             background: var(--nero);
-            transition: all 0.4s ease;
+            transition: background 0.4s ease;
         }
 
-        .team-member:hover {
-            background: rgba(42, 107, 107, 0.1);
-        }
+        .team-member:hover { background: rgba(42, 107, 107, 0.1); }
 
-        .team-member-name {
+        .team-name {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
         }
 
-        .team-member-role {
-            font-size: 0.75rem;
+        .team-role {
+            font-size: 0.7rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--ottanio);
         }
 
-        /* SPAZI */
-        .spazi {
-            padding: 12rem 3rem;
-            background: var(--bianco);
-            color: var(--nero);
-        }
-
-        .spazi-header {
-            max-width: 1400px;
-            margin: 0 auto 6rem;
-            text-align: center;
-        }
-
-        .spazi-header h2 {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(3rem, 6vw, 5rem);
-            font-weight: 400;
-            margin-bottom: 1rem;
-        }
-
-        .spazi-header h2 em {
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        .spazi-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .spazio {
-            padding: 5rem 3rem;
-            text-align: center;
-            border: 1px solid var(--grigio-chiaro);
-            border-right: none;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .spazio:last-child {
-            border-right: 1px solid var(--grigio-chiaro);
-        }
-
-        .spazio::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--nero);
-            transform: scaleY(0);
-            transform-origin: bottom;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 0;
-        }
-
-        .spazio:hover::before {
-            transform: scaleY(1);
-        }
-
-        .spazio:hover {
-            color: var(--bianco);
-        }
-
-        .spazio-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .spazio-icon {
-            font-family: 'Instrument Serif', serif;
-            font-size: 5rem;
-            font-style: italic;
-            color: var(--ottanio);
-            opacity: 0.2;
-            margin-bottom: 2rem;
-            transition: all 0.4s ease;
-        }
-
-        .spazio:hover .spazio-icon {
-            opacity: 0.6;
-            transform: scale(1.1);
-        }
-
-        .spazio-name {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .spazio-location {
-            font-size: 0.85rem;
-            opacity: 0.5;
-            margin-bottom: 1.5rem;
-        }
-
-        .spazio-desc {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            opacity: 0.7;
-        }
-
-        /* CTA FINALE */
-        .cta-finale {
+        /* ================================================
+           CTA FINALE
+           ================================================ */
+        .cta {
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -1208,47 +696,36 @@
 
         .cta-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
         }
 
-        .cta-gradient {
+        .cta-glow {
             position: absolute;
             width: 800px;
             height: 800px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(42, 107, 107, 0.3) 0%, transparent 60%);
-            animation: ctaFloat 15s ease-in-out infinite;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.25) 0%, transparent 60%);
+            animation: float 12s ease-in-out infinite;
         }
 
-        .cta-gradient:nth-child(1) {
-            top: -200px;
-            left: -200px;
-        }
+        .cta-glow:nth-child(1) { top: -300px; left: -200px; }
+        .cta-glow:nth-child(2) { bottom: -300px; right: -200px; animation-delay: -6s; }
 
-        .cta-gradient:nth-child(2) {
-            bottom: -300px;
-            right: -200px;
-            animation-delay: -5s;
-        }
-
-        @keyframes ctaFloat {
+        @keyframes float {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(50px, -50px) scale(1.2); }
+            50% { transform: translate(50px, -50px) scale(1.15); }
         }
 
         .cta-content {
             position: relative;
             z-index: 1;
             text-align: center;
-            max-width: 900px;
         }
 
         .cta-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(4rem, 10vw, 8rem);
+            font-size: clamp(4rem, 12vw, 9rem);
             font-weight: 400;
             line-height: 0.9;
             margin-bottom: 2rem;
@@ -1259,14 +736,12 @@
             color: var(--ottanio);
         }
 
-        .cta-subtitle {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 4rem;
+        .cta-sub {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.5);
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto 4rem;
+            line-height: 1.8;
         }
 
         .cta-buttons {
@@ -1274,18 +749,17 @@
             gap: 1.5rem;
             justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 5rem;
         }
 
         .cta-btn {
-            padding: 1.5rem 4rem;
-            font-size: 0.8rem;
+            padding: 1.4rem 3.5rem;
+            font-size: 0.75rem;
             font-weight: 500;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
             color: var(--bianco);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
         }
@@ -1293,71 +767,56 @@
         .cta-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            top: 0; left: -100%; width: 100%; height: 100%;
             background: var(--ottanio);
-            transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: -1;
         }
 
-        .cta-btn:hover::before {
-            left: 0;
-        }
-
-        .cta-btn:hover {
-            border-color: var(--ottanio);
-        }
+        .cta-btn:hover::before { left: 0; }
+        .cta-btn:hover { border-color: var(--ottanio); }
 
         .cta-btn.primary {
             background: var(--ottanio);
             border-color: var(--ottanio);
         }
 
-        .cta-btn.primary::before {
-            background: var(--bianco);
-        }
-
-        .cta-btn.primary:hover {
-            color: var(--nero);
-        }
+        .cta-btn.primary::before { background: var(--bianco); }
+        .cta-btn.primary:hover { color: var(--nero); }
 
         .cta-contact {
-            padding-top: 4rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
         }
 
         .cta-contact-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 0.3em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.25);
             margin-bottom: 1.5rem;
         }
 
         .cta-contact-links {
             display: flex;
-            gap: 4rem;
+            gap: 3rem;
             justify-content: center;
-            flex-wrap: wrap;
         }
 
         .cta-contact-link {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-style: italic;
             color: var(--ottanio);
             transition: color 0.3s ease;
         }
 
-        .cta-contact-link:hover {
-            color: var(--bianco);
-        }
+        .cta-contact-link:hover { color: var(--bianco); }
 
         /* FOOTER */
         footer {
-            padding: 3rem;
+            padding: 2rem 3rem;
             background: var(--nero);
             border-top: 1px solid rgba(255,255,255,0.05);
         }
@@ -1371,785 +830,491 @@
         }
 
         .footer-back {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255,255,255,0.3);
             transition: color 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
-        .footer-back::before {
-            content: '←';
-        }
-
-        .footer-back:hover {
-            color: var(--bianco);
-        }
+        .footer-back:hover { color: var(--bianco); }
 
         .footer-links {
             display: flex;
-            gap: 3rem;
+            gap: 2rem;
         }
 
         .footer-links a {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.4);
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.3);
             transition: color 0.3s ease;
         }
 
-        .footer-links a:hover {
-            color: var(--bianco);
-        }
+        .footer-links a:hover { color: var(--bianco); }
 
         /* RESPONSIVE */
-        @media (max-width: 1200px) {
-            .collane-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .collana:nth-child(2n) {
-                border-right: 1px solid var(--grigio-chiaro);
-            }
-
-            .collana:nth-child(3n) {
-                border-right: none;
-            }
-
-            .numeri-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .numero-item:nth-child(2) {
-                border-right: none;
-            }
-
-            .numero-item:nth-child(3) {
-                border-right: 1px solid var(--grigio-chiaro);
-            }
+        @media (max-width: 1000px) {
+            .numeri-grid { grid-template-columns: repeat(2, 1fr); }
+            .numero:nth-child(2)::after { display: none; }
+            .team-container { grid-template-columns: 1fr; gap: 3rem; }
+            .team-grid { grid-template-columns: 1fr; }
         }
 
-        @media (max-width: 900px) {
-            header {
-                padding: 1rem 1.5rem;
-            }
-
-            nav {
-                display: none;
-            }
-
-            .cursor, .cursor-dot {
-                display: none;
-            }
-
-            .manifesto-container {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-
-            .manifesto-left {
-                position: static;
-            }
-
-            .collane-header {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .team-container {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-
-            .team-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .spazi-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .spazio {
-                border-right: 1px solid var(--grigio-chiaro) !important;
-                border-bottom: none;
-            }
-
-            .spazio:last-child {
-                border-bottom: 1px solid var(--grigio-chiaro);
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 2rem;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .collane-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .collana {
-                border-right: 1px solid var(--grigio-chiaro) !important;
-                aspect-ratio: auto;
-            }
-
-            .numeri-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .numero-item {
-                border-right: none !important;
-            }
-
-            .libro-grande {
-                width: 90vw;
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 768px) {
+            header { padding: 1.5rem; }
+            nav { display: none; }
+            .cursor { display: none; }
+            .giant-name { font-size: clamp(3rem, 12vw, 8rem); }
+            .numeri-grid { grid-template-columns: 1fr; }
+            .numero::after { display: none; }
+            .libro-card { width: 85vw; grid-template-columns: 1fr; }
+            .libro-cover { max-width: 200px; margin: 0 auto; }
+            .libri-header { flex-direction: column; align-items: start; gap: 1rem; }
+            .libri-header p { text-align: left; }
         }
     </style>
 </head>
 <body>
 
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor" id="cursor"></div>
 
-    <header>
-        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
-        <nav>
-            <a href="./andrea-colamedici/">Colamedici</a>
-            <a href="./maura-gancitano/">Gancitano</a>
-            <a href="./edizioni.html">Edizioni</a>
-            <a href="./librerie.html">Librerie</a>
-            <a href="https://shop.tlon.it">Shop</a>
-            <a href="./contatti/">Contatti</a>
-        </nav>
-    </header>
+<header>
+    <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+    <nav>
+        <a href="./andrea-colamedici/">Colamedici</a>
+        <a href="./maura-gancitano/">Gancitano</a>
+        <a href="./edizioni.html">Edizioni</a>
+        <a href="./librerie.html">Librerie</a>
+        <a href="https://shop.tlon.it">Shop</a>
+    </nav>
+</header>
 
-    <main>
-        <!-- HERO -->
-        <section class="hero">
-            <div class="hero-canvas">
-                <div class="orbit orbit-1"></div>
-                <div class="orbit orbit-2"></div>
-                <div class="orbit orbit-3"></div>
-                <div class="orbit orbit-4"></div>
-                <div class="orbit orbit-5"></div>
-                <!-- Particelle generate via JS -->
-            </div>
-            <div class="hero-content">
-                <div class="hero-pre"><span>Casa editrice dal 2016</span></div>
-                <h1 class="hero-title">
-                    <span class="line"><span class="word">Edizioni</span></span>
-                    <span class="line"><span class="word"><em>Tlon</em></span></span>
-                </h1>
-                <div class="hero-quote">
-                    <p>«Anche il libro è una cosa, lo si può mettere su un tavolo e guardarlo soltanto, magari per tener su un tavolino zoppo lo si può usare o per sbatterlo in testa a qualcuno: ma se lo apri e leggi diventa un mondo.»</p>
-                    <cite>Leonardo Sciascia</cite>
-                </div>
-            </div>
-            <div class="hero-scroll">
-                <span>Scorri</span>
-                <div class="scroll-line"></div>
-            </div>
-        </section>
+<main>
 
-        <!-- STATEMENT - GRANDI NOMI -->
-        <section class="statement">
-            <div class="statement-bg"></div>
-            <div class="statement-content">
-                <p class="statement-label" data-reveal>Il catalogo</p>
-                <p class="statement-text" data-words>
-                    Pubblichiamo <em>Peter Sloterdijk</em>, <em>Donna Haraway</em>, <em>Anne Carson</em>. Abbiamo riportato in Italia <em>Élisabeth Badinter</em> dopo anni di assenza. Lavoriamo con <em>Franco «Bifo» Berardi</em>, <em>Federico Campagna</em>, <em>Laurent De Sutter</em>. Traduciamo <em>Jude Ellison S. Doyle</em>, <em>Darío Sztajnszrajber</em>, <em>Julian Jaynes</em>. Pubblichiamo poesia: <em>Frank Bidart</em>, <em>Terrance Hayes</em>, <em>Giorgiomaria Cornelio</em>. E narrativa: <em>Tom Robbins</em>, <em>René Daumal</em>. Il nostro catalogo è un <span class="highlight">serpente editoriale</span> che si muove verso spazi ancora da esplorare.
-                </p>
-            </div>
-        </section>
-
-        <!-- MARQUEE NOMI -->
-        <section class="names-marquee">
-            <div class="marquee-track">
-                <span class="marquee-item">Sloterdijk</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Haraway</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Anne Carson</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Badinter</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Bifo Berardi</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Von Franz</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Gurdjieff</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Jaynes</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">De Sutter</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Campagna</span>
-                <span class="marquee-separator"></span>
-                <!-- Duplicato per loop continuo -->
-                <span class="marquee-item">Sloterdijk</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Haraway</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Anne Carson</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Badinter</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Bifo Berardi</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Von Franz</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Gurdjieff</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Jaynes</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">De Sutter</span>
-                <span class="marquee-separator"></span>
-                <span class="marquee-item">Campagna</span>
-                <span class="marquee-separator"></span>
-            </div>
-        </section>
-
-        <!-- NUMERI -->
-        <section class="numeri">
-            <div class="numeri-grid">
-                <div class="numero-item" data-count>
-                    <div class="numero-value"><span data-target="126">0</span>+</div>
-                    <div class="numero-label">Titoli in catalogo</div>
-                </div>
-                <div class="numero-item" data-count>
-                    <div class="numero-value"><span data-target="9">0</span></div>
-                    <div class="numero-label">Collane attive</div>
-                </div>
-                <div class="numero-item" data-count>
-                    <div class="numero-value"><span data-target="12">0</span></div>
-                    <div class="numero-label">Lingue di traduzione</div>
-                </div>
-                <div class="numero-item" data-count>
-                    <div class="numero-value"><span data-target="9">0</span></div>
-                    <div class="numero-label">Anni di attività</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- MANIFESTO -->
-        <section class="manifesto">
-            <div class="manifesto-bg-text">Tlön</div>
-            <div class="manifesto-container">
-                <div class="manifesto-left">
-                    <h2 class="manifesto-title">Il pianeta <em>immaginario</em></h2>
-                    <div class="manifesto-year">
-                        <span class="manifesto-year-num">2016</span>
-                        <span class="manifesto-year-text">Fondazione</span>
-                    </div>
-                </div>
-                <div class="manifesto-text">
-                    <p data-para>Tlön è un pianeta immaginario, raccontato da Jorge Luis Borges nel racconto «Tlön, Uqbar, Orbis Tertius». È un nuovo mondo creato attraverso uno sforzo di immaginazione comune: le idee, se pensate insieme — e pensate bene — possono creare persino un mondo intero, tutto nuovo, e vero.</p>
-                    
-                    <p data-para>I libri di Edizioni Tlon vogliono essere gli strumenti di questa immaginazione. Filosofia e storia delle idee, femminismi e studi di genere, scienze sociali, poesia e narrativa. Ogni libro è un tassello, le spire di un serpente che si muove verso spazi ancora da esplorare.</p>
-                    
-                    <div class="manifesto-highlight">
-                        <p>Il nostro pubblico non ha paura della complessità e non teme di accostarsi a temi che non conosce, ma è animato da grande curiosità e dalla disposizione ad aprirsi a nuovi punti di vista.</p>
-                    </div>
-                    
-                    <p data-para>Mescoliamo cultura alta e cultura pop, analizziamo bisogni e significati del nostro tempo, mettiamo in connessione l'ambiente accademico con il mondo popolare. Lavoriamo perché la filosofia torni a essere ciò che è sempre stata: uno strumento per vivere meglio e pensare criticamente la contemporaneità.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- COLLANE -->
-        <section class="collane">
-            <div class="collane-header">
-                <h2>Le <em>collane</em></h2>
-                <p>Ogni collana è un percorso, una costellazione di libri che si parlano tra loro. Un catalogo che è insieme mappa e territorio.</p>
-            </div>
-            <div class="collane-grid">
-                <div class="collana">
-                    <div class="collana-content">
-                        <div class="collana-symbol">Π</div>
-                    </div>
-                    <div class="collana-info">
-                        <h3 class="collana-name">Planetari Big</h3>
-                        <p class="collana-desc">Grandi saggi filosofici. Pensiero critico, teoria sociale, psicologia.</p>
-                        <p class="collana-autori">Sloterdijk · Campagna · Sztajnszrajber · De Sutter · Jaynes</p>
-                    </div>
-                </div>
-                <div class="collana">
-                    <div class="collana-content">
-                        <div class="collana-symbol">№</div>
-                    </div>
-                    <div class="collana-info">
-                        <h3 class="collana-name">Numeri Primi</h3>
-                        <p class="collana-desc">Studi di genere, femminismi, sessualità.</p>
-                        <p class="collana-autori">Doyle · Haraway · Guerra · Gasparrini · Wolf · Facheris</p>
-                    </div>
-                </div>
-                <div class="collana">
-                    <div class="collana-content">
-                        <div class="collana-symbol">Σ</div>
-                    </div>
-                    <div class="collana-info">
-                        <h3 class="collana-name">Soglie</h3>
-                        <p class="collana-desc">Attualità con sguardo filosofico. Politica, tecnologia, società.</p>
-                        <p class="collana-autori">Franco «Bifo» Berardi</p>
-                    </div>
-                </div>
-                <div class="collana">
-                    <div class="collana-content">
-                        <div class="collana-symbol">↯</div>
-                    </div>
-                    <div class="collana-info">
-                        <h3 class="collana-name">Dardi</h3>
-                        <p class="collana-desc">Pamphlet filosofici. Testi brevi e affilati.</p>
-                        <p class="collana-autori">Negarestani</p>
-                    </div>
-                </div>
-                <div class="collana">
-                    <div class="collana-content">
-                        <div class="collana-symbol">◉</div>
-                    </div>
-                    <div class="collana-info">
-                        <h3 class="collana-name">Radici</h3>
-                        <p class="collana-desc">Pratiche e teorie spirituali. Tradizioni sapienziali.</p>
-                        <p class="collana-autori">Gurdjieff · Von Franz · Sibaldi · De Souzenelle</p>
-                    </div>
-                </div>
-                <div class="collana">
-                    <div class="collana-content">
-                        <div class="collana-symbol">◇</div>
-                    </div>
-                    <div class="collana-info">
-                        <h3 class="collana-name">Finzioni</h3>
-                        <p class="collana-desc">Narrativa letteraria. Romanzi che interrogano il reale.</p>
-                        <p class="collana-autori">Tom Robbins · René Daumal</p>
-                    </div>
-                </div>
-                <div class="collana">
-                    <div class="collana-content">
-                        <div class="collana-symbol">∞</div>
-                    </div>
-                    <div class="collana-info">
-                        <h3 class="collana-name">Controcielo</h3>
-                        <p class="collana-desc">Poesia contemporanea.</p>
-                        <p class="collana-autori">Anne Carson · Frank Bidart · Hayes · Cornelio</p>
-                    </div>
-                </div>
-                <div class="collana">
-                    <div class="collana-content">
-                        <div class="collana-symbol">Ω</div>
-                    </div>
-                    <div class="collana-info">
-                        <h3 class="collana-name">Hrönir</h3>
-                        <p class="collana-desc">Classici ritrovati. Testi riportati in libreria.</p>
-                        <p class="collana-autori">Élisabeth Badinter</p>
-                    </div>
-                </div>
-                <div class="collana">
-                    <div class="collana-content">
-                        <div class="collana-symbol">ℵ</div>
-                    </div>
-                    <div class="collana-info">
-                        <h3 class="collana-name">Tlon Aleph</h3>
-                        <p class="collana-desc">Arte e cataloghi. GNAM, Villa Medici.</p>
-                        <p class="collana-autori">Pubblicazioni d'arte</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- LIBRI SHOWCASE -->
-        <section class="libri-showcase">
-            <div class="libri-showcase-header">
-                <h2>Libri che hanno <em>segnato</em></h2>
-                <p>Titoli che hanno definito il dibattito culturale italiano.</p>
-            </div>
-            <div class="libri-scroll">
-                <div class="libro-grande">
-                    <div class="libro-cover">
-                        <div class="libro-cover-text">
-                            <div class="libro-cover-title">Il mostruoso femminile</div>
-                            <div class="libro-cover-author">Jude Ellison S. Doyle</div>
-                        </div>
-                    </div>
-                    <div class="libro-info">
-                        <span class="libro-collana">Planetari Big</span>
-                        <h3 class="libro-title">Il mostruoso femminile</h3>
-                        <p class="libro-author">Jude Ellison S. Doyle</p>
-                        <p class="libro-desc">Un saggio sulla natura selvaggia della femminilità. Da L'esorcista a Tiamat, da Lilith a Giovani streghe. Decine di migliaia di lettori grazie al passaparola.</p>
-                        <p class="libro-meta">Caso editoriale 2021</p>
-                    </div>
-                </div>
-                <div class="libro-grande">
-                    <div class="libro-cover">
-                        <div class="libro-cover-text">
-                            <div class="libro-cover-title">Ipnocrazia</div>
-                            <div class="libro-cover-author">Jianwei Xun</div>
-                        </div>
-                    </div>
-                    <div class="libro-info">
-                        <span class="libro-collana">Hrönir</span>
-                        <h3 class="libro-title">Ipnocrazia</h3>
-                        <p class="libro-author">Jianwei Xun</p>
-                        <p class="libro-desc">La manipolazione della realtà nell'era di Trump e Musk. Una «performance narrativa» che ha dimostrato i meccanismi che descrive.</p>
-                        <p class="libro-meta">Le Monde · El País · Wired · HEC Paris</p>
-                    </div>
-                </div>
-                <div class="libro-grande">
-                    <div class="libro-cover">
-                        <div class="libro-cover-text">
-                            <div class="libro-cover-title">L'amore in più</div>
-                            <div class="libro-cover-author">Élisabeth Badinter</div>
-                        </div>
-                    </div>
-                    <div class="libro-info">
-                        <span class="libro-collana">Hrönir</span>
-                        <h3 class="libro-title">L'amore in più</h3>
-                        <p class="libro-author">Élisabeth Badinter</p>
-                        <p class="libro-desc">Un classico del femminismo europeo, riportato in Italia dopo anni di assenza. L'istinto materno non esiste: è una costruzione sociale.</p>
-                        <p class="libro-meta">Classico ritrovato · 1980/2024</p>
-                    </div>
-                </div>
-                <div class="libro-grande">
-                    <div class="libro-cover">
-                        <div class="libro-cover-text">
-                            <div class="libro-cover-title">La società della performance</div>
-                            <div class="libro-cover-author">Gancitano · Colamedici</div>
-                        </div>
-                    </div>
-                    <div class="libro-info">
-                        <span class="libro-collana">Planetari</span>
-                        <h3 class="libro-title">La società della performance</h3>
-                        <p class="libro-author">Maura Gancitano, Andrea Colamedici</p>
-                        <p class="libro-desc">Il manifesto di Tlon. Come uscire dalla caverna in un'epoca di sovraesposizione e performance costante.</p>
-                        <p class="libro-meta">In traduzione: cinese</p>
-                    </div>
-                </div>
-                <div class="libro-grande">
-                    <div class="libro-cover">
-                        <div class="libro-cover-text">
-                            <div class="libro-cover-title">Non siamo ancora stati salvati</div>
-                            <div class="libro-cover-author">Peter Sloterdijk</div>
-                        </div>
-                    </div>
-                    <div class="libro-info">
-                        <span class="libro-collana">Planetari Big</span>
-                        <h3 class="libro-title">Non siamo ancora stati salvati</h3>
-                        <p class="libro-author">Peter Sloterdijk</p>
-                        <p class="libro-desc">«Solo un dio ci può salvare». Sloterdijk risponde: non siamo stati ancora salvati e non lo saremo. Dieci saggi filosofici dopo Heidegger.</p>
-                        <p class="libro-meta">Grande filosofia contemporanea</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- AUTORI CLOUD -->
-        <section class="autori">
-            <div class="autori-header">
-                <h2>Le <em>voci</em></h2>
-            </div>
-            <div class="autori-cloud">
-                <div class="autore-tag large"><span>Andrea Colamedici</span></div>
-                <div class="autore-tag large"><span>Maura Gancitano</span></div>
-                <div class="autore-tag medium"><span>Peter Sloterdijk</span></div>
-                <div class="autore-tag medium"><span>Donna Haraway</span></div>
-                <div class="autore-tag medium"><span>Anne Carson</span></div>
-                <div class="autore-tag medium"><span>Franco «Bifo» Berardi</span></div>
-                <div class="autore-tag"><span>Jude Ellison S. Doyle</span></div>
-                <div class="autore-tag"><span>Laurent De Sutter</span></div>
-                <div class="autore-tag"><span>Federico Campagna</span></div>
-                <div class="autore-tag"><span>Darío Sztajnszrajber</span></div>
-                <div class="autore-tag"><span>Jennifer Guerra</span></div>
-                <div class="autore-tag"><span>Lorenzo Gasparrini</span></div>
-                <div class="autore-tag medium"><span>Élisabeth Badinter</span></div>
-                <div class="autore-tag"><span>Naomi Wolf</span></div>
-                <div class="autore-tag"><span>Colin Wilson</span></div>
-                <div class="autore-tag medium"><span>Julian Jaynes</span></div>
-                <div class="autore-tag"><span>Georges Gurdjieff</span></div>
-                <div class="autore-tag"><span>Marie-Louise von Franz</span></div>
-                <div class="autore-tag"><span>Igor Sibaldi</span></div>
-                <div class="autore-tag"><span>Irene Facheris</span></div>
-                <div class="autore-tag"><span>Tom Robbins</span></div>
-                <div class="autore-tag"><span>René Daumal</span></div>
-                <div class="autore-tag"><span>Frank Bidart</span></div>
-                <div class="autore-tag"><span>Terrance Hayes</span></div>
-                <div class="autore-tag"><span>Tommaso Ariemma</span></div>
-                <div class="autore-tag"><span>Reza Negarestani</span></div>
-                <div class="autore-tag"><span>Barbascura X</span></div>
-            </div>
-        </section>
-
-        <!-- TEAM -->
-        <section class="team">
-            <div class="team-container">
-                <div class="team-intro">
-                    <h2>Chi <em>siamo</em></h2>
-                    <p>Edizioni Tlon nasce nel 2016 dall'incontro tra Andrea Colamedici, Maura Gancitano e Nicola Bonimelli. Un team che crede nei libri come strumenti di trasformazione.</p>
-                </div>
-                <div class="team-grid">
-                    <div class="team-member">
-                        <h3 class="team-member-name">Andrea Colamedici</h3>
-                        <p class="team-member-role">Editore</p>
-                    </div>
-                    <div class="team-member">
-                        <h3 class="team-member-name">Maura Gancitano</h3>
-                        <p class="team-member-role">Editrice</p>
-                    </div>
-                    <div class="team-member">
-                        <h3 class="team-member-name">Nicola Bonimelli</h3>
-                        <p class="team-member-role">Direttore commerciale</p>
-                    </div>
-                    <div class="team-member">
-                        <h3 class="team-member-name">Caterina Di Paolo</h3>
-                        <p class="team-member-role">Coordinatrice · Art Director</p>
-                    </div>
-                    <div class="team-member">
-                        <h3 class="team-member-name">Marco Carassai</h3>
-                        <p class="team-member-role">Editor</p>
-                    </div>
-                    <div class="team-member">
-                        <h3 class="team-member-name">Lorenzo Gasparrini</h3>
-                        <p class="team-member-role">Editor</p>
-                    </div>
-                    <div class="team-member">
-                        <h3 class="team-member-name">Michele Trionfera</h3>
-                        <p class="team-member-role">Direttore Librerie</p>
-                    </div>
-                    <div class="team-member">
-                        <h3 class="team-member-name">Massimo Salvati</h3>
-                        <p class="team-member-role">Ufficio stampa</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SPAZI -->
-        <section class="spazi">
-            <div class="spazi-header">
-                <h2>I <em>luoghi</em></h2>
-            </div>
-            <div class="spazi-grid">
-                <div class="spazio">
-                    <div class="spazio-content">
-                        <div class="spazio-icon">☉</div>
-                        <h3 class="spazio-name">Libreria Teatro</h3>
-                        <p class="spazio-location">Via Nansen 14, Roma</p>
-                        <p class="spazio-desc">La sede storica nel quartiere Ostiense. Libreria, teatro, spazio eventi. Dal 2016.</p>
-                    </div>
-                </div>
-                <div class="spazio">
-                    <div class="spazio-content">
-                        <div class="spazio-icon">✧</div>
-                        <h3 class="spazio-name">Tlon Aleph</h3>
-                        <p class="spazio-location">GNAM, Roma</p>
-                        <p class="spazio-desc">Il bookshop della Galleria Nazionale d'Arte Moderna e Contemporanea.</p>
-                    </div>
-                </div>
-                <div class="spazio">
-                    <div class="spazio-content">
-                        <div class="spazio-icon">◈</div>
-                        <h3 class="spazio-name">Villa Medici</h3>
-                        <p class="spazio-location">Accademia di Francia</p>
-                        <p class="spazio-desc">Curiamo la selezione dei libri per l'Institut Français a Roma.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA FINALE -->
-        <section class="cta-finale">
-            <div class="cta-bg">
-                <div class="cta-gradient"></div>
-                <div class="cta-gradient"></div>
-            </div>
-            <div class="cta-content">
-                <h2 class="cta-title">Ogni libro<br>è un <em>mondo</em></h2>
-                <p class="cta-subtitle">Esplora il catalogo, visita le librerie, o scrivici: siamo sempre in cerca di nuove voci e nuovi mondi da esplorare.</p>
-                <div class="cta-buttons">
-                    <a href="https://shop.tlon.it" class="cta-btn primary">Catalogo completo</a>
-                    <a href="./librerie.html" class="cta-btn">Librerie</a>
-                    <a href="./contatti/" class="cta-btn">Contatti</a>
-                </div>
-                <div class="cta-contact">
-                    <p class="cta-contact-label">Per proposte editoriali</p>
-                    <div class="cta-contact-links">
-                        <a href="mailto:redazione@tlon.it" class="cta-contact-link">redazione@tlon.it</a>
-                        <a href="mailto:commerciale@tlon.it" class="cta-contact-link">commerciale@tlon.it</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <a href="./" class="footer-back">Home</a>
-            <div class="footer-links">
-                <a href="./il-progetto.html">Il progetto</a>
-                <a href="./formazione.html">Formazione</a>
-                <a href="./eventi-festival.html">Eventi</a>
+<!-- OPENING: NOMI GIGANTI -->
+<section class="opening">
+    <div class="opening-sticky">
+        <div class="grid-bg" id="gridBg"></div>
+        <div class="names-stage">
+            <div class="giant-name" data-name="0">Sloterdijk</div>
+            <div class="giant-name" data-name="1">Donna Haraway</div>
+            <div class="giant-name" data-name="2">Anne Carson</div>
+            <div class="giant-name" data-name="3">Bifo Berardi</div>
+            <div class="giant-name" data-name="4">Élisabeth Badinter</div>
+            <div class="giant-name" data-name="5">Julian Jaynes</div>
+            <div class="opening-finale">
+                <h1>Edizioni <em>Tlon</em></h1>
+                <p>Casa editrice dal 2016</p>
             </div>
         </div>
-    </footer>
+        <div class="opening-counter">
+            <span class="counter-label">Il nostro catalogo</span>
+            <div class="counter-progress">
+                <div class="counter-dot" data-dot="0"></div>
+                <div class="counter-dot" data-dot="1"></div>
+                <div class="counter-dot" data-dot="2"></div>
+                <div class="counter-dot" data-dot="3"></div>
+                <div class="counter-dot" data-dot="4"></div>
+                <div class="counter-dot" data-dot="5"></div>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <script>
-        // CURSOR
-        const cursor = document.getElementById('cursor');
-        const cursorDot = document.getElementById('cursorDot');
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-        let dotX = 0, dotY = 0;
+<!-- STATEMENT -->
+<section class="statement">
+    <div class="statement-content">
+        <p class="statement-text" id="statementText">
+            Pubblichiamo i nomi che stanno ridefinendo il pensiero contemporaneo. Filosofia, femminismi, poesia, teoria critica. <em>Duecento titoli</em> in catalogo, tradotti in dodici lingue. Un progetto editoriale che mescola cultura alta e cultura pop, che connette l'accademia con il mondo, che non ha paura della complessità.
+        </p>
+    </div>
+</section>
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
+<!-- MARQUEE -->
+<section class="marquee-section">
+    <div class="marquee">
+        <span class="marquee-item">Sloterdijk</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Haraway</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Anne Carson</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Badinter</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Bifo Berardi</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Von Franz</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Gurdjieff</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Jaynes</span><span class="marquee-dot"></span>
+        <span class="marquee-item">De Sutter</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Campagna</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Frank Bidart</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Tom Robbins</span><span class="marquee-dot"></span>
+        <!-- Duplicate -->
+        <span class="marquee-item">Sloterdijk</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Haraway</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Anne Carson</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Badinter</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Bifo Berardi</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Von Franz</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Gurdjieff</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Jaynes</span><span class="marquee-dot"></span>
+        <span class="marquee-item">De Sutter</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Campagna</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Frank Bidart</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Tom Robbins</span><span class="marquee-dot"></span>
+    </div>
+</section>
 
-        function animateCursor() {
-            // Smooth follow for outer cursor
-            cursorX += (mouseX - cursorX) * 0.12;
-            cursorY += (mouseY - cursorY) * 0.12;
-            cursor.style.left = cursorX - 10 + 'px';
-            cursor.style.top = cursorY - 10 + 'px';
+<!-- NUMERI -->
+<section class="numeri">
+    <div class="numeri-grid">
+        <div class="numero" data-num>
+            <div class="numero-value"><span data-count="200">0</span>+</div>
+            <div class="numero-label">Titoli in catalogo</div>
+        </div>
+        <div class="numero" data-num>
+            <div class="numero-value"><span data-count="9">0</span></div>
+            <div class="numero-label">Collane attive</div>
+        </div>
+        <div class="numero" data-num>
+            <div class="numero-value"><span data-count="12">0</span></div>
+            <div class="numero-label">Lingue di traduzione</div>
+        </div>
+        <div class="numero" data-num>
+            <div class="numero-value"><span data-count="9">0</span></div>
+            <div class="numero-label">Anni di attività</div>
+        </div>
+    </div>
+</section>
 
-            // Faster follow for dot
-            dotX += (mouseX - dotX) * 0.3;
-            dotY += (mouseY - dotY) * 0.3;
-            cursorDot.style.left = dotX - 2 + 'px';
-            cursorDot.style.top = dotY - 2 + 'px';
+<!-- LIBRI -->
+<section class="libri">
+    <div class="libri-header">
+        <h2>Libri che hanno <em>segnato</em></h2>
+        <p>Titoli che hanno definito il dibattito culturale.</p>
+    </div>
+    <div class="libri-scroll">
+        <div class="libro-card">
+            <div class="libro-cover">
+                <div class="libro-cover-inner">
+                    <div class="libro-cover-title">Il mostruoso femminile</div>
+                    <div class="libro-cover-author">Jude Ellison S. Doyle</div>
+                </div>
+            </div>
+            <div class="libro-info">
+                <span class="libro-collana">Planetari Big</span>
+                <h3 class="libro-title">Il mostruoso femminile</h3>
+                <p class="libro-author">Jude Ellison S. Doyle</p>
+                <p class="libro-desc">Da L'esorcista a Tiamat, da Lilith a Giovani streghe. Un saggio sulla natura selvaggia della femminilità. Decine di migliaia di lettori grazie al passaparola.</p>
+                <p class="libro-meta">Caso editoriale 2021</p>
+            </div>
+        </div>
+        <div class="libro-card">
+            <div class="libro-cover">
+                <div class="libro-cover-inner">
+                    <div class="libro-cover-title">Ipnocrazia</div>
+                    <div class="libro-cover-author">Jianwei Xun</div>
+                </div>
+            </div>
+            <div class="libro-info">
+                <span class="libro-collana">Hrönir</span>
+                <h3 class="libro-title">Ipnocrazia</h3>
+                <p class="libro-author">Jianwei Xun</p>
+                <p class="libro-desc">La manipolazione della realtà nell'era di Trump e Musk. Una «performance narrativa» che ha dimostrato i meccanismi che descrive.</p>
+                <p class="libro-meta">Le Monde · El País · Wired</p>
+            </div>
+        </div>
+        <div class="libro-card">
+            <div class="libro-cover">
+                <div class="libro-cover-inner">
+                    <div class="libro-cover-title">L'amore in più</div>
+                    <div class="libro-cover-author">Élisabeth Badinter</div>
+                </div>
+            </div>
+            <div class="libro-info">
+                <span class="libro-collana">Hrönir</span>
+                <h3 class="libro-title">L'amore in più</h3>
+                <p class="libro-author">Élisabeth Badinter</p>
+                <p class="libro-desc">Un classico del femminismo europeo riportato in Italia dopo anni di assenza. L'istinto materno non esiste: è una costruzione sociale.</p>
+                <p class="libro-meta">Classico ritrovato · 1980/2024</p>
+            </div>
+        </div>
+        <div class="libro-card">
+            <div class="libro-cover">
+                <div class="libro-cover-inner">
+                    <div class="libro-cover-title">Non siamo ancora stati salvati</div>
+                    <div class="libro-cover-author">Peter Sloterdijk</div>
+                </div>
+            </div>
+            <div class="libro-info">
+                <span class="libro-collana">Planetari Big</span>
+                <h3 class="libro-title">Non siamo ancora stati salvati</h3>
+                <p class="libro-author">Peter Sloterdijk</p>
+                <p class="libro-desc">«Solo un dio ci può salvare», diceva Heidegger. Sloterdijk risponde: non siamo stati ancora salvati e non lo saremo. Dieci saggi filosofici.</p>
+                <p class="libro-meta">Grande filosofia contemporanea</p>
+            </div>
+        </div>
+        <div class="libro-card">
+            <div class="libro-cover">
+                <div class="libro-cover-inner">
+                    <div class="libro-cover-title">Manifesto cyborg</div>
+                    <div class="libro-cover-author">Donna Haraway</div>
+                </div>
+            </div>
+            <div class="libro-info">
+                <span class="libro-collana">Numeri Primi</span>
+                <h3 class="libro-title">Manifesto cyborg</h3>
+                <p class="libro-author">Donna Haraway</p>
+                <p class="libro-desc">Il testo che ha ridefinito il rapporto tra corpo, tecnologia e identità. Un classico del pensiero femminista e post-umano.</p>
+                <p class="libro-meta">Classico contemporaneo</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-            requestAnimationFrame(animateCursor);
+<!-- AUTORI -->
+<section class="autori">
+    <div class="autori-header">
+        <h2>Le <em>voci</em></h2>
+    </div>
+    <div class="autori-cloud">
+        <div class="autore big"><span>Peter Sloterdijk</span></div>
+        <div class="autore big"><span>Donna Haraway</span></div>
+        <div class="autore big"><span>Anne Carson</span></div>
+        <div class="autore medium"><span>Franco «Bifo» Berardi</span></div>
+        <div class="autore medium"><span>Élisabeth Badinter</span></div>
+        <div class="autore medium"><span>Julian Jaynes</span></div>
+        <div class="autore"><span>Jude Ellison S. Doyle</span></div>
+        <div class="autore"><span>Laurent De Sutter</span></div>
+        <div class="autore"><span>Federico Campagna</span></div>
+        <div class="autore"><span>Darío Sztajnszrajber</span></div>
+        <div class="autore"><span>Jennifer Guerra</span></div>
+        <div class="autore"><span>Lorenzo Gasparrini</span></div>
+        <div class="autore"><span>Naomi Wolf</span></div>
+        <div class="autore"><span>Colin Wilson</span></div>
+        <div class="autore medium"><span>Georges Gurdjieff</span></div>
+        <div class="autore medium"><span>Marie-Louise von Franz</span></div>
+        <div class="autore"><span>Igor Sibaldi</span></div>
+        <div class="autore"><span>Irene Facheris</span></div>
+        <div class="autore"><span>Tom Robbins</span></div>
+        <div class="autore"><span>René Daumal</span></div>
+        <div class="autore medium"><span>Frank Bidart</span></div>
+        <div class="autore"><span>Terrance Hayes</span></div>
+        <div class="autore"><span>Giorgiomaria Cornelio</span></div>
+        <div class="autore"><span>Tommaso Ariemma</span></div>
+        <div class="autore"><span>Reza Negarestani</span></div>
+    </div>
+</section>
+
+<!-- TEAM -->
+<section class="team">
+    <div class="team-container">
+        <div class="team-intro">
+            <h2>Chi <em>siamo</em></h2>
+            <p>Edizioni Tlon nasce nel 2016 dall'incontro tra Andrea Colamedici, Maura Gancitano e Nicola Bonimelli. Un team che crede nei libri come strumenti di trasformazione.</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-member">
+                <h3 class="team-name">Andrea Colamedici</h3>
+                <p class="team-role">Editore</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Maura Gancitano</h3>
+                <p class="team-role">Editrice</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Nicola Bonimelli</h3>
+                <p class="team-role">Direttore commerciale</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Caterina Di Paolo</h3>
+                <p class="team-role">Coordinatrice · Art Director</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Marco Carassai</h3>
+                <p class="team-role">Editor</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Lorenzo Gasparrini</h3>
+                <p class="team-role">Editor</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Michele Trionfera</h3>
+                <p class="team-role">Direttore Librerie</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Massimo Salvati</h3>
+                <p class="team-role">Ufficio stampa</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <div class="cta-bg">
+        <div class="cta-glow"></div>
+        <div class="cta-glow"></div>
+    </div>
+    <div class="cta-content">
+        <h2 class="cta-title">Ogni libro<br>è un <em>mondo</em></h2>
+        <p class="cta-sub">Esplora il catalogo, visita le librerie, o scrivici: siamo sempre in cerca di nuove voci e nuovi mondi.</p>
+        <div class="cta-buttons">
+            <a href="https://shop.tlon.it" class="cta-btn primary">Catalogo completo</a>
+            <a href="./librerie.html" class="cta-btn">Librerie</a>
+            <a href="./contatti/" class="cta-btn">Contatti</a>
+        </div>
+        <div class="cta-contact">
+            <p class="cta-contact-label">Per proposte editoriali</p>
+            <div class="cta-contact-links">
+                <a href="mailto:redazione@tlon.it" class="cta-contact-link">redazione@tlon.it</a>
+                <a href="mailto:commerciale@tlon.it" class="cta-contact-link">commerciale@tlon.it</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div class="footer-content">
+        <a href="./" class="footer-back">← Home</a>
+        <div class="footer-links">
+            <a href="./il-progetto.html">Il progetto</a>
+            <a href="./formazione.html">Formazione</a>
+            <a href="./eventi-festival.html">Eventi</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+
+document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateCursor() {
+    cursorX += (mouseX - cursorX) * 0.15;
+    cursorY += (mouseY - cursorY) * 0.15;
+    cursor.style.left = cursorX - 10 + 'px';
+    cursor.style.top = cursorY - 10 + 'px';
+    requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+document.querySelectorAll('a, button, .libro-card, .autore, .team-member, .marquee-item').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// OPENING SEQUENCE - NOMI GIGANTI
+const opening = document.querySelector('.opening');
+const names = document.querySelectorAll('.giant-name');
+const finale = document.querySelector('.opening-finale');
+const dots = document.querySelectorAll('.counter-dot');
+const gridBg = document.getElementById('gridBg');
+const totalNames = names.length;
+
+function updateOpening() {
+    const rect = opening.getBoundingClientRect();
+    const scrollProgress = -rect.top / (rect.height - window.innerHeight);
+    const progress = Math.max(0, Math.min(1, scrollProgress));
+    
+    // Ruota griglia
+    if (gridBg) {
+        gridBg.style.transform = `rotate(${progress * 15}deg) scale(${1 + progress * 0.2})`;
+    }
+    
+    // Calcola quale nome mostrare
+    const nameProgress = progress * (totalNames + 1); // +1 per il finale
+    const currentName = Math.floor(nameProgress);
+    
+    names.forEach((name, i) => {
+        name.classList.remove('visible', 'exit-up');
+        if (i === currentName && currentName < totalNames) {
+            name.classList.add('visible');
+        } else if (i < currentName) {
+            name.classList.add('exit-up');
         }
-        animateCursor();
+    });
+    
+    // Finale
+    if (currentName >= totalNames) {
+        finale.classList.add('visible');
+        names.forEach(n => n.classList.add('exit-up'));
+    } else {
+        finale.classList.remove('visible');
+    }
+    
+    // Dots
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i <= currentName && i < totalNames);
+    });
+}
 
-        // Hover effect
-        document.querySelectorAll('a, button, .collana, .libro-grande, .autore-tag, .team-member, .spazio, .marquee-item').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-        });
-
-        // GENERATE PARTICLES
-        const heroCanvas = document.querySelector('.hero-canvas');
-        for (let i = 0; i < 20; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 20 + 's';
-            particle.style.animationDuration = (15 + Math.random() * 15) + 's';
-            heroCanvas.appendChild(particle);
-        }
-
-        // STATEMENT WORD-BY-WORD REVEAL
-        const statementText = document.querySelector('.statement-text');
-        if (statementText) {
-            const html = statementText.innerHTML;
-            const words = html.split(/(\s+|<[^>]+>)/);
-            let newHtml = '';
+// STATEMENT WORDS
+const statementText = document.getElementById('statementText');
+if (statementText) {
+    const html = statementText.innerHTML;
+    const parts = html.split(/(<em>.*?<\/em>)/g);
+    let newHtml = '';
+    parts.forEach(part => {
+        if (part.startsWith('<em>')) {
+            const inner = part.replace(/<\/?em>/g, '');
+            newHtml += `<em><span class="word">${inner}</span></em>`;
+        } else {
+            const words = part.split(/\s+/);
             words.forEach(word => {
-                if (word.trim() && !word.startsWith('<')) {
-                    newHtml += `<span class="word">${word}</span>`;
-                } else {
-                    newHtml += word;
+                if (word.trim()) {
+                    newHtml += `<span class="word">${word}</span> `;
                 }
             });
-            statementText.innerHTML = newHtml;
         }
+    });
+    statementText.innerHTML = newHtml;
+}
 
-        // INTERSECTION OBSERVERS
-        const observerOptions = { threshold: 0.2, rootMargin: '-50px' };
-
-        // Statement label reveal
-        const statementLabel = document.querySelector('.statement-label');
-        if (statementLabel) {
-            const labelObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-            labelObserver.observe(statementLabel);
-        }
-
-        // Statement words reveal
-        const statementWords = document.querySelectorAll('.statement-text .word');
-        const wordsObserver = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                statementWords.forEach((word, index) => {
-                    setTimeout(() => {
-                        word.classList.add('visible');
-                    }, index * 30);
-                });
-            }
-        }, { threshold: 0.3 });
-        if (statementText) wordsObserver.observe(statementText);
-
-        // Numbers counter
-        const numeroItems = document.querySelectorAll('.numero-item');
-        const numbersObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    const span = entry.target.querySelector('[data-target]');
-                    if (span) {
-                        const target = parseInt(span.dataset.target);
-                        let current = 0;
-                        const increment = target / 40;
-                        const timer = setInterval(() => {
-                            current += increment;
-                            if (current >= target) {
-                                span.textContent = target;
-                                clearInterval(timer);
-                            } else {
-                                span.textContent = Math.floor(current);
-                            }
-                        }, 30);
-                    }
-                }
-            });
-        }, { threshold: 0.5 });
-        numeroItems.forEach(item => numbersObserver.observe(item));
-
-        // Manifesto paragraphs
-        const manifestoParas = document.querySelectorAll('[data-para]');
-        const paraObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, index * 150);
-                }
-            });
-        }, { threshold: 0.3 });
-        manifestoParas.forEach(p => paraObserver.observe(p));
-
-        // PARALLAX on scroll
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-
-            // Hero parallax
-            const hero = document.querySelector('.hero');
-            if (hero && scrolled < window.innerHeight) {
-                const orbits = hero.querySelectorAll('.orbit');
-                orbits.forEach((orbit, i) => {
-                    const speed = 0.03 * (i + 1);
-                    orbit.style.transform = `translate(-50%, -50%) scale(${1 + scrolled * 0.0003})`;
-                });
-            }
-
-            // Manifesto bg text
-            const manifestoBg = document.querySelector('.manifesto-bg-text');
-            if (manifestoBg) {
-                const rect = document.querySelector('.manifesto').getBoundingClientRect();
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    manifestoBg.style.transform = `translate(-50%, ${-50 + scrolled * 0.05}%) rotate(${scrolled * 0.01}deg)`;
-                }
-            }
+const statementWords = document.querySelectorAll('.statement-text .word');
+const statementObserver = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+        statementWords.forEach((word, i) => {
+            setTimeout(() => word.classList.add('visible'), i * 40);
         });
-    </script>
+    }
+}, { threshold: 0.3 });
+if (statementText) statementObserver.observe(statementText);
+
+// NUMERI COUNTER
+const numeri = document.querySelectorAll('.numero');
+const numObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            const span = entry.target.querySelector('[data-count]');
+            if (span && !span.dataset.animated) {
+                span.dataset.animated = 'true';
+                const target = parseInt(span.dataset.count);
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        span.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        span.textContent = Math.floor(current);
+                    }
+                }, 25);
+            }
+        }
+    });
+}, { threshold: 0.5 });
+numeri.forEach(n => numObserver.observe(n));
+
+// SCROLL LISTENER
+window.addEventListener('scroll', updateOpening, { passive: true });
+updateOpening();
+</script>
 
 </body>
 </html>
