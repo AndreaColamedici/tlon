@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Pod — Italian Podcast Awards — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+            --pod-accent: #ff6b35;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--nero);
+            color: var(--bianco);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--ottanio);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            mix-blend-mode: difference;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+            filter: invert(1);
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--bianco);
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 3rem;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 30% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(42, 107, 107, 0.15) 0%, transparent 50%);
+            animation: heroGlow 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+        }
+
+        .hero-logo {
+            width: 280px;
+            height: auto;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.3s forwards;
+        }
+
+        .hero-tagline {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.5s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.7s forwards;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.7);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.9s forwards;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 3rem;
+            background: var(--ottanio);
+            color: var(--bianco);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            opacity: 0;
+            animation: fadeUp 1s ease 1.1s forwards;
+        }
+
+        .hero-cta:hover {
+            background: var(--bianco);
+            color: var(--nero);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 1.3s forwards;
+        }
+
+        .hero-scroll-text {
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.4;
+        }
+
+        .hero-scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--ottanio), transparent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-scroll-line::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bianco);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+            0% { top: -100%; }
+            50% { top: 100%; }
+            100% { top: 100%; }
+        }
+
+        /* INTRO */
+        .intro {
+            padding: 10rem 3rem;
+            background: var(--bianco);
+            color: var(--nero);
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .intro-content {
+            max-width: 550px;
+        }
+
+        .intro-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .intro-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .intro-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+        }
+
+        .intro-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--grigio);
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-image {
+            position: relative;
+        }
+
+        .intro-image img {
+            width: 100%;
+            height: auto;
+            box-shadow: 30px 30px 60px rgba(0,0,0,0.1);
+        }
+
+        .intro-image-caption {
+            position: absolute;
+            bottom: -2rem;
+            right: 0;
+            font-size: 0.75rem;
+            font-style: italic;
+            color: var(--grigio);
+        }
+
+        /* STATS */
+        .stats {
+            padding: 6rem 3rem;
+            background: var(--nero);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat {
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .stat:hover {
+            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.05);
+        }
+
+        .stat-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3.5rem;
+            font-style: italic;
+            color: var(--ottanio);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* EDIZIONI */
+        .edizioni {
+            padding: 10rem 3rem;
+            background: var(--bianco);
+            color: var(--nero);
+        }
+
+        .edizioni-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .edizioni-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+        }
+
+        .edizioni-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .edizioni-timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .edizioni-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--grigio-chiaro);
+            transform: translateX(-50%);
+        }
+
+        .edizione {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 3rem;
+            margin-bottom: 5rem;
+            position: relative;
+        }
+
+        .edizione:last-child {
+            margin-bottom: 0;
+        }
+
+        .edizione-year {
+            display: flex;
+            justify-content: center;
+            grid-column: 2;
+        }
+
+        .edizione-year-inner {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--bianco);
+            border: 2px solid var(--grigio-chiaro);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        .edizione:hover .edizione-year-inner {
+            border-color: var(--ottanio);
+            background: var(--ottanio);
+        }
+
+        .edizione-year-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--ottanio);
+            transition: color 0.3s ease;
+        }
+
+        .edizione:hover .edizione-year-num {
+            color: var(--bianco);
+        }
+
+        .edizione-content {
+            padding: 2rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: all 0.5s ease;
+        }
+
+        .edizione:hover .edizione-content {
+            border-color: var(--ottanio);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .edizione-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .edizione-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .edizione-desc {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grigio);
+            margin-bottom: 1rem;
+        }
+
+        .edizione-stats {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .edizione-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .edizione-stat-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .edizione-stat-label {
+            font-size: 0.75rem;
+            color: var(--grigio);
+        }
+
+        .edizione-empty {
+            /* placeholder */
+        }
+
+        .edizione:nth-child(odd) .edizione-content {
+            grid-column: 1;
+            text-align: right;
+        }
+
+        .edizione:nth-child(odd) .edizione-stats {
+            justify-content: flex-end;
+        }
+
+        .edizione:nth-child(odd) .edizione-empty {
+            grid-column: 3;
+        }
+
+        .edizione:nth-child(even) .edizione-empty {
+            grid-column: 1;
+        }
+
+        .edizione:nth-child(even) .edizione-content {
+            grid-column: 3;
+            text-align: left;
+        }
+
+        /* CATEGORIE */
+        .categorie {
+            padding: 10rem 3rem;
+            background: var(--nero);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .categorie-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Instrument Serif', serif;
+            font-size: 30vw;
+            font-style: italic;
+            color: rgba(42, 107, 107, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .categorie-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .categorie-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+        }
+
+        .categorie-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .categorie-intro {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.6);
+            position: relative;
+            z-index: 1;
+        }
+
+        .categorie-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .categorie-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .categorie-section-title {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .categorie-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+
+        .categoria {
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .categoria:hover {
+            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .categoria-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        .super-premi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .super-premio {
+            padding: 2rem;
+            border: 1px solid var(--ottanio);
+            text-align: center;
+            transition: all 0.4s ease;
+            background: rgba(42, 107, 107, 0.05);
+        }
+
+        .super-premio:hover {
+            background: var(--ottanio);
+            transform: translateY(-5px);
+        }
+
+        .super-premio-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .super-premio-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .super-premio-desc {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.5;
+        }
+
+        .super-premio:hover .super-premio-desc {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* VINCITORI */
+        .vincitori {
+            padding: 10rem 3rem;
+            background: var(--bianco);
+            color: var(--nero);
+        }
+
+        .vincitori-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .vincitori-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .vincitori-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .vincitori-header p {
+            font-size: 1rem;
+            color: var(--grigio);
+        }
+
+        .vincitori-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .vincitore {
+            padding: 2.5rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vincitore::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--ottanio);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.4s ease;
+        }
+
+        .vincitore:hover::before {
+            transform: scaleY(1);
+        }
+
+        .vincitore:hover {
+            border-color: var(--ottanio);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .vincitore-premio {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1rem;
+        }
+
+        .vincitore-titolo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .vincitore-autore {
+            font-size: 0.95rem;
+            color: var(--grigio);
+        }
+
+        /* FONDATORI */
+        .fondatori {
+            padding: 10rem 3rem;
+            background: #f5f5f5;
+            color: var(--nero);
+        }
+
+        .fondatori-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .fondatori-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+        }
+
+        .fondatori-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .fondatori-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .fondatore {
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid transparent;
+            transition: all 0.4s ease;
+        }
+
+        .fondatore:hover {
+            border-color: var(--grigio-chiaro);
+            background: var(--bianco);
+        }
+
+        .fondatore-role {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 0.75rem;
+        }
+
+        .fondatore-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .fondatore-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--grigio);
+        }
+
+        /* PARTNER */
+        .partner {
+            padding: 6rem 3rem;
+            background: var(--nero);
+            overflow: hidden;
+        }
+
+        .partner-label {
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .partner-marquee {
+            display: flex;
+            overflow: hidden;
+            padding: 1rem 0;
+        }
+
+        .partner-track {
+            display: flex;
+            animation: partnerScroll 40s linear infinite;
+        }
+
+        .partner-track span {
+            padding: 0 3rem;
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.3);
+            white-space: nowrap;
+            transition: color 0.3s ease;
+        }
+
+        .partner-track span:hover {
+            color: var(--ottanio);
+        }
+
+        @keyframes partnerScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* CTA */
+        .cta {
+            padding: 10rem 3rem;
+            background: var(--bianco);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 400;
+            color: var(--nero);
+            margin-bottom: 3rem;
+        }
+
+        .cta-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1.25rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            border: 1px solid var(--nero);
+            transition: all 0.4s ease;
+        }
+
+        .cta-btn:hover {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        .cta-btn.primary {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        .cta-btn.primary:hover {
+            background: var(--ottanio);
+            border-color: var(--ottanio);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 3rem;
+            background: var(--nero);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-back {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-back:hover {
+            color: var(--bianco);
+        }
+
+        .footer-back::before {
+            content: '←';
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--bianco);
+        }
+
+        /* REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1000px) {
+            .intro-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .categorie-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .super-premi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .vincitori-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .fondatori-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .edizioni-timeline::before {
+                left: 50px;
+            }
+
+            .edizione {
+                grid-template-columns: 100px 1fr;
+                gap: 2rem;
+            }
+
+            .edizione:nth-child(odd) .edizione-content,
+            .edizione:nth-child(even) .edizione-content {
+                grid-column: 2;
+                text-align: left;
+            }
+
+            .edizione:nth-child(odd) .edizione-stats {
+                justify-content: flex-start;
+            }
+
+            .edizione-year {
+                grid-column: 1;
+            }
+
+            .edizione-empty {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 8rem 1.5rem 4rem;
+            }
+
+            .hero-logo {
+                width: 200px;
+            }
+
+            .intro,
+            .stats,
+            .edizioni,
+            .categorie,
+            .vincitori,
+            .fondatori,
+            .partner,
+            .cta {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .categorie-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .super-premi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .fondatori-grid {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-nav {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./andrea-colamedici/">Colamedici</a>
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="https://shop.tlon.it">Edizioni</a>
+            <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
+            <a href="https://shop.tlon.it">Shop</a>
+            <a href="./contatti/">Contatti</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <img src="./assets/images/ilpod-logo.png" alt="Il Pod" class="hero-logo">
+                <p class="hero-tagline">Italian Podcast Awards</p>
+                <h1 class="hero-title">Il primo premio per i migliori <em>podcast</em> italiani</h1>
+                <p class="hero-desc">Il mondo del podcasting è un motore culturale con un potenziale enorme. Ogni anno celebriamo i contenuti più interessanti per valorizzare e far crescere questo medium, rafforzando la comunità di chi ascolta e di chi crea.</p>
+                <a href="https://www.ilpod.it" target="_blank" class="hero-cta">Vai al sito ufficiale</a>
+            </div>
+            <div class="hero-scroll">
+                <span class="hero-scroll-text">Scopri</span>
+                <div class="hero-scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- INTRO -->
+        <section class="intro">
+            <div class="intro-grid">
+                <div class="intro-content reveal">
+                    <span class="intro-label">L'evento</span>
+                    <h2 class="intro-title">Non solo un premio, ma una <em>celebrazione</em></h2>
+                    <p class="intro-text">
+                        Ispirato ai British Podcast Awards e agli Australian Podcast Awards, Il Pod nasce nel 2022 dall'idea di Maura Gancitano e Andrea Colamedici insieme a Fabio Ragazzo, produttore di podcast ed ex responsabile di Audible Italia.
+                    </p>
+                    <p class="intro-text">
+                        L'obiettivo è mettere in luce i tanti progetti di qualità che fioriscono ogni anno, creando un evento che sia il più possibile condiviso e partecipato, pensato intorno ai podcaster e alla community di ascoltatori. Non una semplice cerimonia, ma una giornata di incontri, workshop, masterclass e dialoghi dedicati alla forma di comunicazione più appassionante degli ultimi anni.
+                    </p>
+                    <p class="intro-text">
+                        Dal 2024 Il Pod ha trovato casa a Piacenza, grazie al sostegno della Fondazione di Piacenza e Vigevano, del Comune di Piacenza e della Fondazione Teatri di Piacenza.
+                    </p>
+                </div>
+                <div class="intro-image reveal">
+                    <img src="./assets/images/ilpod-teatro.jpg" alt="Il Pod - Teatro Municipale di Piacenza">
+                    <span class="intro-image-caption">Teatro Municipale di Piacenza</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="stats">
+            <div class="stats-grid">
+                <div class="stat reveal">
+                    <div class="stat-num">4</div>
+                    <div class="stat-label">Edizioni</div>
+                </div>
+                <div class="stat reveal">
+                    <div class="stat-num">855</div>
+                    <div class="stat-label">Podcast candidati 2025</div>
+                </div>
+                <div class="stat reveal">
+                    <div class="stat-num">15</div>
+                    <div class="stat-label">Categorie</div>
+                </div>
+                <div class="stat reveal">
+                    <div class="stat-num">5</div>
+                    <div class="stat-label">Super premi</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EDIZIONI -->
+        <section class="edizioni">
+            <div class="edizioni-header reveal">
+                <h2>Le <em>edizioni</em></h2>
+            </div>
+            <div class="edizioni-timeline">
+                <div class="edizione reveal">
+                    <div class="edizione-content">
+                        <h3 class="edizione-title">La <em>nascita</em></h3>
+                        <p class="edizione-desc">La prima edizione si tiene a Milano. Sul palco si alternano podcast dal vivo e panel tematici, per concludersi con la cerimonia di premiazione condotta da Diego Passoni, Maura Gancitano, Florencia di Stefano e Marco Carrara, con il sound design improvvisato dal vivo da Naip.</p>
+                        <div class="edizione-stats">
+                            <div class="edizione-stat">
+                                <span class="edizione-stat-num">221</span>
+                                <span class="edizione-stat-label">podcast</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edizione-year">
+                        <div class="edizione-year-inner">
+                            <span class="edizione-year-num">2022</span>
+                        </div>
+                    </div>
+                    <div class="edizione-empty"></div>
+                </div>
+
+                <div class="edizione reveal">
+                    <div class="edizione-empty"></div>
+                    <div class="edizione-year">
+                        <div class="edizione-year-inner">
+                            <span class="edizione-year-num">2023</span>
+                        </div>
+                    </div>
+                    <div class="edizione-content">
+                        <h3 class="edizione-title">La <em>crescita</em></h3>
+                        <p class="edizione-desc">La seconda edizione conferma il successo del format. Cresce il numero di candidature e si consolida la struttura dell'evento con workshop, talk e la cerimonia finale. Nasce il Premio del pubblico in collaborazione con Amazon Music.</p>
+                        <div class="edizione-stats">
+                            <div class="edizione-stat">
+                                <span class="edizione-stat-num">15</span>
+                                <span class="edizione-stat-label">categorie</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edizione reveal">
+                    <div class="edizione-content">
+                        <h3 class="edizione-title"><em>Piacenza</em></h3>
+                        <p class="edizione-desc">Per la prima volta l'evento si tiene a Piacenza, negli spazi del Laboratorio Aperto e di Palazzo Farnese. Masterclass con Nicola Lagioia e Stefano Nazzi, talk con Daniele Tinti e Stefano Rapone di Tintoria. Nasce il Premio Piacenza per il Podcast Rivelazione.</p>
+                        <div class="edizione-stats">
+                            <div class="edizione-stat">
+                                <span class="edizione-stat-num">864</span>
+                                <span class="edizione-stat-label">podcast</span>
+                            </div>
+                            <div class="edizione-stat">
+                                <span class="edizione-stat-num">136</span>
+                                <span class="edizione-stat-label">finalisti</span>
+                            </div>
+                            <div class="edizione-stat">
+                                <span class="edizione-stat-num">18</span>
+                                <span class="edizione-stat-label">categorie</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edizione-year">
+                        <div class="edizione-year-inner">
+                            <span class="edizione-year-num">2024</span>
+                        </div>
+                    </div>
+                    <div class="edizione-empty"></div>
+                </div>
+
+                <div class="edizione reveal">
+                    <div class="edizione-empty"></div>
+                    <div class="edizione-year">
+                        <div class="edizione-year-inner">
+                            <span class="edizione-year-num">2025</span>
+                        </div>
+                    </div>
+                    <div class="edizione-content">
+                        <h3 class="edizione-title">Il Teatro <em>Municipale</em></h3>
+                        <p class="edizione-desc">L'edizione 2025 si tiene nel Teatro Municipale di Piacenza, che ha celebrato 220 anni di storia. Due giorni di PodLab con workshop e masterclass, e la serata finale con Francesco Costa e Valerio Nicolosi in dialogo con Maura Gancitano. Rossella Pivanti è la nuova direttrice artistica.</p>
+                        <div class="edizione-stats">
+                            <div class="edizione-stat">
+                                <span class="edizione-stat-num">855</span>
+                                <span class="edizione-stat-label">podcast</span>
+                            </div>
+                            <div class="edizione-stat">
+                                <span class="edizione-stat-num">15</span>
+                                <span class="edizione-stat-label">categorie</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORIE -->
+        <section class="categorie">
+            <div class="categorie-bg">Pod</div>
+            <div class="categorie-header reveal">
+                <h2>Le <em>categorie</em></h2>
+            </div>
+            <p class="categorie-intro reveal">Quindici categorie tematiche per celebrare la varietà e la ricchezza del podcasting italiano, più cinque super premi speciali.</p>
+
+            <div class="categorie-section reveal">
+                <h3 class="categorie-section-title">Categorie tematiche</h3>
+                <div class="categorie-grid">
+                    <div class="categoria"><span class="categoria-name">Benessere</span></div>
+                    <div class="categoria"><span class="categoria-name">Business</span></div>
+                    <div class="categoria"><span class="categoria-name">Comedy</span></div>
+                    <div class="categoria"><span class="categoria-name">Cultura</span></div>
+                    <div class="categoria"><span class="categoria-name">Diversity</span></div>
+                    <div class="categoria"><span class="categoria-name">Documentario</span></div>
+                    <div class="categoria"><span class="categoria-name">Indie Informazione</span></div>
+                    <div class="categoria"><span class="categoria-name">Indie Intrattenimento</span></div>
+                    <div class="categoria"><span class="categoria-name">Indie Narrazione</span></div>
+                    <div class="categoria"><span class="categoria-name">News</span></div>
+                    <div class="categoria"><span class="categoria-name">Script</span></div>
+                    <div class="categoria"><span class="categoria-name">Sound Design</span></div>
+                    <div class="categoria"><span class="categoria-name">Talk</span></div>
+                    <div class="categoria"><span class="categoria-name">True Crime</span></div>
+                    <div class="categoria"><span class="categoria-name">Video Podcast</span></div>
+                </div>
+            </div>
+
+            <div class="categorie-section reveal">
+                <h3 class="categorie-section-title">Super premi</h3>
+                <div class="super-premi-grid">
+                    <div class="super-premio">
+                        <div class="super-premio-icon">🏆</div>
+                        <h4 class="super-premio-name">Podcast dell'Anno</h4>
+                        <p class="super-premio-desc">Il premio più prestigioso, assegnato dalla giuria al miglior podcast pubblicato nell'anno</p>
+                    </div>
+                    <div class="super-premio">
+                        <div class="super-premio-icon">👥</div>
+                        <h4 class="super-premio-name">Premio del Pubblico</h4>
+                        <p class="super-premio-desc">La community di ascoltatori vota online il miglior podcast</p>
+                    </div>
+                    <div class="super-premio">
+                        <div class="super-premio-icon">🌟</div>
+                        <h4 class="super-premio-name">Premio Piacenza</h4>
+                        <p class="super-premio-desc">Il Comune di Piacenza premia il Podcast Rivelazione dell'anno</p>
+                    </div>
+                    <div class="super-premio">
+                        <div class="super-premio-icon">📜</div>
+                        <h4 class="super-premio-name">Premio Storia del Podcast</h4>
+                        <p class="super-premio-desc">Dedicato a un podcast che ha fatto la storia prima che nascesse Il Pod</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VINCITORI 2025 -->
+        <section class="vincitori">
+            <div class="vincitori-header reveal">
+                <h2>Vincitori <em>2025</em></h2>
+                <p>I podcast premiati nell'ultima edizione</p>
+            </div>
+            <div class="vincitori-grid">
+                <div class="vincitore reveal">
+                    <span class="vincitore-premio">Podcast dell'Anno</span>
+                    <h3 class="vincitore-titolo">E poi il silenzio — Il disastro di Rigopiano</h3>
+                    <p class="vincitore-autore">di Pablo Trincia</p>
+                </div>
+                <div class="vincitore reveal">
+                    <span class="vincitore-premio">Premio del Pubblico</span>
+                    <h3 class="vincitore-titolo">Avanti veloce — Viaggio nell'ADHD</h3>
+                    <p class="vincitore-autore">di Gianpiero Kesten</p>
+                </div>
+                <div class="vincitore reveal">
+                    <span class="vincitore-premio">Documentario</span>
+                    <h3 class="vincitore-titolo">E poi il silenzio — Il disastro di Rigopiano</h3>
+                    <p class="vincitore-autore">di Pablo Trincia</p>
+                </div>
+                <div class="vincitore reveal">
+                    <span class="vincitore-premio">True Crime</span>
+                    <h3 class="vincitore-titolo">Sangue loro — Il ragazzo mandato a uccidere</h3>
+                    <p class="vincitore-autore">di Pablo Trincia</p>
+                </div>
+                <div class="vincitore reveal">
+                    <span class="vincitore-premio">Indie Narrazione</span>
+                    <h3 class="vincitore-titolo">Gianni</h3>
+                    <p class="vincitore-autore">di Caroline Baglioni e Michelangelo Bellani</p>
+                </div>
+                <div class="vincitore reveal">
+                    <span class="vincitore-premio">Cultura</span>
+                    <h3 class="vincitore-titolo">La grande famiglia</h3>
+                    <p class="vincitore-autore">di Cristiano Barducci</p>
+                </div>
+                <div class="vincitore reveal">
+                    <span class="vincitore-premio">Comedy</span>
+                    <h3 class="vincitore-titolo">Libri brutti podcast</h3>
+                    <p class="vincitore-autore">di Auroro Borealo, Carlotta Sanzogni, Massimo Fiorio e Niccolò Martin</p>
+                </div>
+                <div class="vincitore reveal">
+                    <span class="vincitore-premio">Diversity</span>
+                    <h3 class="vincitore-titolo">Come una marea</h3>
+                    <p class="vincitore-autore">di Francesca Zanni ed Enrico Bergianti</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FONDATORI -->
+        <section class="fondatori">
+            <div class="fondatori-header reveal">
+                <h2>Chi <em>siamo</em></h2>
+            </div>
+            <div class="fondatori-grid">
+                <div class="fondatore reveal">
+                    <span class="fondatore-role">Co-fondatrice</span>
+                    <h3 class="fondatore-name">Maura Gancitano</h3>
+                    <p class="fondatore-desc">Filosofa, scrittrice, editrice. Autrice di podcast tra cui "Scuola di Filosofie" per Audible.</p>
+                </div>
+                <div class="fondatore reveal">
+                    <span class="fondatore-role">Co-fondatore</span>
+                    <h3 class="fondatore-name">Andrea Colamedici</h3>
+                    <p class="fondatore-desc">Filosofo, editore, formatore. Ideatore del format e curatore dell'evento.</p>
+                </div>
+                <div class="fondatore reveal">
+                    <span class="fondatore-role">Co-fondatore</span>
+                    <h3 class="fondatore-name">Fabio Ragazzo</h3>
+                    <p class="fondatore-desc">Produttore e consulente di podcast, ex responsabile dei podcast di Audible Italia.</p>
+                </div>
+                <div class="fondatore reveal">
+                    <span class="fondatore-role">Direttrice artistica</span>
+                    <h3 class="fondatore-name">Rossella Pivanti</h3>
+                    <p class="fondatore-desc">Podcast producer indipendente, fondatrice di PodNest Academy e co-fondatrice di Baby Hurricane.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTNER -->
+        <section class="partner">
+            <p class="partner-label reveal">Partner e sostenitori</p>
+            <div class="partner-marquee">
+                <div class="partner-track">
+                    <span>Amazon Music</span>
+                    <span>Spotify</span>
+                    <span>Audible</span>
+                    <span>Iren</span>
+                    <span>Comune di Piacenza</span>
+                    <span>Fondazione di Piacenza e Vigevano</span>
+                    <span>Fondazione Teatri di Piacenza</span>
+                    <span>RaiPlay Sound</span>
+                    <span>Amazon Music</span>
+                    <span>Spotify</span>
+                    <span>Audible</span>
+                    <span>Iren</span>
+                    <span>Comune di Piacenza</span>
+                    <span>Fondazione di Piacenza e Vigevano</span>
+                    <span>Fondazione Teatri di Piacenza</span>
+                    <span>RaiPlay Sound</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta">
+            <div class="cta-content reveal">
+                <h2 class="cta-title">Scopri tutti i <em>vincitori</em></h2>
+                <div class="cta-buttons">
+                    <a href="https://www.ilpod.it" target="_blank" class="cta-btn primary">Vai a ilpod.it</a>
+                    <a href="./il-progetto.html" class="cta-btn">Il progetto Tlon</a>
+                    <a href="./contatti/" class="cta-btn">Contatti</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-nav">
+            <a href="./" class="footer-back">Home</a>
+            <div class="footer-links">
+                <a href="https://www.ilpod.it" target="_blank">ilpod.it</a>
+                <a href="https://www.instagram.com/ilpod.it/" target="_blank">Instagram</a>
+                <a href="https://www.tlonletter.it">Newsletter</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 80);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        reveals.forEach(el => observer.observe(el));
+
+        // Parallax hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+
+            if (hero && scrolled < window.innerHeight) {
+                const content = hero.querySelector('.hero-content');
+                content.style.transform = `translateY(${scrolled * 0.3}px)`;
+                content.style.opacity = 1 - (scrolled / window.innerHeight * 0.8);
+            }
+        });
+    </script>
+
+</body>
+</html>
