@@ -205,24 +205,33 @@
             gap: 2rem;
         }
 
+        .sedi-title {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 0.5rem;
+        }
+
         .sede-card {
             background: linear-gradient(135deg, rgba(42, 107, 107, 0.03) 0%, rgba(42, 107, 107, 0.08) 100%);
             padding: 2.5rem;
         }
 
         .sede-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 500;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 1rem;
+            color: var(--grigio);
+            margin-bottom: 0.75rem;
         }
 
         .sede-nome {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
-            margin-bottom: 1.25rem;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
             line-height: 1.3;
         }
 
@@ -231,8 +240,8 @@
         }
 
         .sede-indirizzo {
-            font-size: 0.95rem;
-            line-height: 1.8;
+            font-size: 0.9rem;
+            line-height: 1.7;
             color: var(--grigio);
         }
 
@@ -242,7 +251,7 @@
 
         .sede-telefono a,
         .sede-email a {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 500;
             color: var(--nero);
             transition: color 0.3s ease;
@@ -258,19 +267,19 @@
         }
 
         .sede-mappa {
-            margin-top: 1.5rem;
+            margin-top: 1.25rem;
         }
 
         .mappa-link {
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
-            font-size: 0.8rem;
+            gap: 0.5rem;
+            font-size: 0.75rem;
             font-weight: 500;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--ottanio);
-            padding: 0.75rem 1.25rem;
+            padding: 0.6rem 1rem;
             border: 1px solid var(--ottanio);
             transition: all 0.3s ease;
         }
@@ -281,8 +290,8 @@
         }
 
         .mappa-link svg {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
         }
 
         /* NEWSLETTER SECTION */
@@ -492,4 +501,173 @@
 </head>
 <body>
     <header>
-        <a href="./" class="logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcsAAAB1CAYAAAAhtcr2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAHDhJREFUeNrsnQe4HVW1x9eU027JzU0oCU1IKAKCRiJNAQXeMyC2Jx+KBd4nKKICimBDFBUEUURRbPgsCHZFCTY6CkhJKKE8MJCEJJKe2869p87MW+vMvrxLTDlzz545M2f+v4/1JR+5d8/sKfs/a+211zY8zyMAAAAAbBkTlwAAAACAWAIAAAAQSwAAAABiCQAAAEAsAQAAAIglAAAAALEEAAAAIJYAAAAAxBIAAAAAEEsAAAAAYgkAAABALAEAAACIJQAAAACxBAAAACCWAAAAAMQSAAAAgFgCAAAAAGIJAAAANI2hoxHbMF7UmjfZk/F89TbG22u0ZChVN9T/8Vu31b86E37f87zG78qfjfYMk//uNtowJtnTuutS45cN//ykNcfz8OQAEC0Ztiybtcm4JUNAja3awtADEo4XwZhs61DbuT3dZGVMqnFrTtWjksmSYgVTJ4ef8+08m2bwu1CwM5TP2FSqVKnbzLBQetRncuMe/1TWoFrdpLm2RYMshE/UHcqbJrmOS8NOhaZZNg05Bpl87Sw+hxG3zv/m0LRspiF0Qfu2cP0GMruzVDYt6q/Wab3r0SNjJTydAOhHvpV3ZduHbV+22Wy7s+3A1svWowTT
+        <a href="./" class="logo"><img src="./assets/images/logo-tlon.png" alt="Tlon"></a>
+        <nav>
+            <a href="./il-progetto.html">Il Progetto</a>
+            <a href="./andrea-colamedici/">Colamedici</a>
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="./edizioni.html">Edizioni</a>
+            <a href="./librerie.html">Librerie</a>
+            <a href="./formazione.html">Formazione</a>
+            <a href="./eventi-festival.html">Eventi</a>
+            <a href="./contatti.html">Contatti</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <span class="page-label reveal">Scrivici</span>
+            <h1 class="page-title reveal">Entra in <em>contatto</em></h1>
+            <p class="page-intro reveal">Tlon è un organismo con molte anime: una casa editrice, una rete di librerie, un centro di formazione, un laboratorio di ricerca. Ogni anima ha il proprio indirizzo: scegli quello giusto per la tua richiesta, e ti risponderemo con cura.</p>
+        </section>
+
+        <section class="contatti-section">
+            <div class="contatti-grid">
+                <div class="contatti-email">
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Informazioni generali</span>
+                        <a href="mailto:info@tlon.it" class="contatto-email">info@tlon.it</a>
+                        <p class="contatto-desc">Per domande sulle attività di Tlon e tutto ciò che non rientra nelle altre categorie.</p>
+                    </div>
+
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Eventi e collaborazioni</span>
+                        <a href="mailto:eventi@tlon.it" class="contatto-email">eventi@tlon.it</a>
+                        <p class="contatto-desc">Per proposte di collaborazione e richieste di partecipazione di Maura Gancitano e Andrea Colamedici a eventi, festival e conferenze.</p>
+                    </div>
+
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Edizioni Tlon – Redazione</span>
+                        <a href="mailto:redazione@tlon.it" class="contatto-email">redazione@tlon.it</a>
+                        <p class="contatto-desc">Per inviare manoscritti, proposte editoriali e richieste relative ai nostri libri.</p>
+                    </div>
+
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Edizioni Tlon – Ufficio stampa</span>
+                        <a href="mailto:ufficiostampa@tlon.it" class="contatto-email">ufficiostampa@tlon.it</a>
+                        <p class="contatto-desc">Per giornalisti, recensori e richieste di copie stampa.</p>
+                    </div>
+
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Libreria Teatro Tlon</span>
+                        <a href="mailto:libreriateatro@tlon.it" class="contatto-email">libreriateatro@tlon.it</a>
+                        <p class="contatto-desc">Per informazioni sugli eventi in libreria, presentazioni e attività a Roma Ostiense.</p>
+                    </div>
+
+                    <div class="contatto-gruppo reveal">
+                        <span class="contatto-label">Acquisti e distribuzione</span>
+                        <a href="mailto:commerciale@tlon.it" class="contatto-email">commerciale@tlon.it</a>
+                        <p class="contatto-desc">Per ordini online, librerie che desiderano rifornirsi e questioni commerciali.</p>
+                    </div>
+                </div>
+
+                <div class="contatti-sedi reveal">
+                    <span class="sedi-title">Dove trovarci</span>
+                    
+                    <div class="sede-card">
+                        <span class="sede-label">Roma · Ostiense</span>
+                        <h2 class="sede-nome">Libreria Teatro <em>Tlon</em></h2>
+                        <p class="sede-indirizzo">
+                            Via Federico Nansen 14/16<br>
+                            00154 Roma
+                        </p>
+                        <div class="sede-telefono">
+                            <a href="tel:+390645653446">06 4565 3446</a>
+                        </div>
+                        <div class="sede-email">
+                            <a href="mailto:libreriateatro@tlon.it">libreriateatro@tlon.it</a>
+                        </div>
+                        <div class="sede-mappa">
+                            <a href="https://maps.google.com/?q=Via+Federico+Nansen+14,+00154+Roma" target="_blank" class="mappa-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                Google Maps
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="sede-card">
+                        <span class="sede-label">Venezia · San Marco</span>
+                        <h2 class="sede-nome">Fondazione Querini <em>Stampalia</em></h2>
+                        <p class="sede-indirizzo">
+                            Campo Santa Maria Formosa, 5252<br>
+                            30122 Venezia
+                        </p>
+                        <div class="sede-email">
+                            <a href="mailto:tlon@querinistampalia.org">tlon@querinistampalia.org</a>
+                        </div>
+                        <div class="sede-mappa">
+                            <a href="https://maps.google.com/?q=Campo+Santa+Maria+Formosa+5252+Venezia" target="_blank" class="mappa-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                Google Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter">
+            <div class="newsletter-inner reveal">
+                <h2 class="newsletter-title">Tlonletter</h2>
+                <p class="newsletter-desc">La nostra newsletter settimanale, su Substack.</p>
+                <a href="https://www.tlonletter.it" class="newsletter-btn" target="_blank">Iscriviti</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">TLON</div>
+                <p class="footer-tagline">Un pianeta immaginario. Che esiste.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Progetto</h4>
+                    <a href="./il-progetto.html">Chi siamo</a>
+                    <a href="./contatti.html">Contatti</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Edizioni</h4>
+                    <a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a>
+                    <a href="https://shop.tlon.it/autori/">Autori</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Attività</h4>
+                    <a href="./eventi-festival.html">Eventi</a>
+                    <a href="./formazione.html">Formazione</a>
+                    <a href="./ilpod.html">Podcast</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Tlon Srl</p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
+                <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
+                <a href="https://www.tlonletter.it" target="_blank">Substack</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
