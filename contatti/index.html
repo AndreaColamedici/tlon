@@ -14,10 +14,7 @@
             --ottanio: #2a6b6b;
             --grigio: #6b6b6b;
             --grigio-chiaro: #e5e5e5;
-        }
-
-        html {
-            scroll-behavior: smooth;
+            --crema: #f9f7f4;
         }
 
         * {
@@ -28,6 +25,7 @@
 
         html {
             font-size: 16px;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -35,6 +33,7 @@
             background: var(--bianco);
             color: var(--nero);
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         ::selection {
@@ -59,6 +58,7 @@
             justify-content: space-between;
             align-items: center;
             background: var(--bianco);
+            border-bottom: 1px solid var(--grigio-chiaro);
         }
 
         .logo {
@@ -69,7 +69,6 @@
         .logo img {
             height: 28px;
             width: auto;
-            transition: filter 0.3s ease;
         }
 
         nav {
@@ -91,99 +90,264 @@
             opacity: 1;
         }
 
-        /* MAIN CONTENT */
-        main {
-            padding-top: 120px;
+        /* HERO */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10rem 3rem 6rem;
+            background: var(--nero);
+            color: var(--bianco);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* PAGE HERO */
-        .page-hero {
-            padding: 4rem 3rem 6rem;
-            max-width: 1400px;
-            margin: 0 auto;
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
         }
 
-        .page-label {
-            font-size: 0.85rem;
+        .hero-line {
+            position: absolute;
+            background: rgba(42, 107, 107, 0.15);
+        }
+
+        .hero-line.horizontal {
+            height: 1px;
+            width: 100%;
+            animation: lineExpand 2s ease forwards;
+        }
+
+        .hero-line.vertical {
+            width: 1px;
+            height: 100%;
+            animation: lineExpandV 2s ease forwards;
+        }
+
+        .hero-line:nth-child(1) { top: 25%; animation-delay: 0.2s; }
+        .hero-line:nth-child(2) { top: 50%; animation-delay: 0.4s; }
+        .hero-line:nth-child(3) { top: 75%; animation-delay: 0.6s; }
+        .hero-line:nth-child(4) { left: 25%; animation-delay: 0.3s; }
+        .hero-line:nth-child(5) { left: 50%; animation-delay: 0.5s; }
+        .hero-line:nth-child(6) { left: 75%; animation-delay: 0.7s; }
+
+        @keyframes lineExpand {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+
+        @keyframes lineExpandV {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.2) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: glowPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero-label {
+            font-size: 0.8rem;
             font-weight: 500;
-            letter-spacing: 0.25em;
+            letter-spacing: 0.5em;
             text-transform: uppercase;
             color: var(--ottanio);
             margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 0.3s;
         }
 
-        .page-label::before {
-            content: '';
-            width: 40px;
-            height: 1px;
-            background: var(--ottanio);
-        }
-
-        .page-title {
+        .hero-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-size: clamp(4rem, 12vw, 10rem);
             font-weight: 400;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
+            line-height: 0.9;
             margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeUp 1s ease forwards 0.5s;
         }
 
-        .page-title em {
+        .hero-title em {
             font-style: italic;
+            color: var(--ottanio);
         }
 
-        .page-intro {
+        .hero-subtitle {
             font-size: 1.15rem;
-            line-height: 1.9;
-            color: var(--grigio);
-            max-width: 680px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.6);
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 0.7s;
         }
 
-        /* CONTATTI SECTION */
-        .contatti-section {
-            padding: 0 3rem 8rem;
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CONTATTI GRID */
+        .contatti {
+            padding: 8rem 3rem;
+            background: var(--bianco);
+        }
+
+        .contatti-container {
             max-width: 1400px;
             margin: 0 auto;
+        }
+
+        .contatti-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .contatti-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+        }
+
+        .contatti-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .contatti-header p {
+            font-size: 0.9rem;
+            color: var(--grigio);
+            max-width: 400px;
+            text-align: right;
         }
 
         .contatti-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
         }
 
-        /* COLONNA EMAIL */
-        .contatti-email {
+        .contatto-card {
+            padding: 3rem;
+            border: 1px solid var(--grigio-chiaro);
+            border-right: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .contatto-card:last-child {
+            border-right: 1px solid var(--grigio-chiaro);
+        }
+
+        .contatto-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: linear-gradient(180deg, rgba(42, 107, 107, 0.05) 0%, transparent 100%);
+            transition: height 0.5s ease;
+        }
+
+        .contatto-card:hover::before {
+            height: 100%;
+        }
+
+        .contatto-card:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .contatto-icon {
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--grigio-chiaro);
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
         }
 
-        .contatto-gruppo {
-            padding: 2rem 0;
-            border-top: 1px solid var(--grigio-chiaro);
+        .contatto-card:hover .contatto-icon {
+            border-color: var(--ottanio);
+            background: var(--ottanio);
         }
 
-        .contatto-gruppo:first-child {
-            border-top: none;
-            padding-top: 0;
+        .contatto-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--ottanio);
+            transition: stroke 0.4s ease;
+        }
+
+        .contatto-card:hover .contatto-icon svg {
+            stroke: var(--bianco);
         }
 
         .contatto-label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.2em;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--ottanio);
             margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contatto-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
         }
 
         .contatto-email {
             font-size: 1.1rem;
             color: var(--nero);
+            display: inline-block;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
             transition: color 0.3s ease;
         }
 
@@ -193,216 +357,378 @@
 
         .contatto-desc {
             font-size: 0.9rem;
+            line-height: 1.7;
             color: var(--grigio);
-            margin-top: 0.5rem;
-            line-height: 1.6;
+            position: relative;
+            z-index: 1;
         }
 
-        /* COLONNA SEDE */
-        .contatti-sede {
-            background: linear-gradient(135deg, rgba(42, 107, 107, 0.03) 0%, rgba(42, 107, 107, 0.08) 100%);
+        /* SECONDA RIGA */
+        .contatti-grid-secondary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+            margin-top: -1px;
+        }
+
+        .contatti-grid-secondary .contatto-card {
+            border-top: none;
+        }
+
+        .contatti-grid-secondary .contatto-card:first-child {
+            border-right: none;
+        }
+
+        .contatti-grid-secondary .contatto-card:last-child {
+            border-right: 1px solid var(--grigio-chiaro);
+        }
+
+        /* SEDI SECTION */
+        .sedi {
+            padding: 0 3rem 10rem;
+        }
+
+        .sedi-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .sedi-header {
+            margin-bottom: 4rem;
+        }
+
+        .sedi-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+        }
+
+        .sedi-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .sedi-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+        }
+
+        .sede-card {
+            background: var(--crema);
             padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
         }
 
-        .sede-principale {
-            margin-bottom: 3rem;
+        .sede-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--ottanio);
+            transition: height 0.5s ease;
         }
 
-        .sede-label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.2em;
+        .sede-card:hover::before {
+            height: 100%;
+        }
+
+        .sede-card:hover {
+            transform: translateX(10px);
+        }
+
+        .sede-tag {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
             color: var(--ottanio);
             margin-bottom: 1.5rem;
         }
 
-        .sede-nome {
+        .sede-name {
             font-family: 'Instrument Serif', serif;
             font-size: 1.75rem;
             margin-bottom: 1.5rem;
-            line-height: 1.3;
         }
 
-        .sede-indirizzo {
-            font-size: 1rem;
-            line-height: 1.8;
+        .sede-name em {
+            font-style: italic;
+        }
+
+        .sede-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .sede-detail-group h4 {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
             color: var(--grigio);
+            margin-bottom: 0.5rem;
         }
 
-        .sede-telefono {
-            margin-top: 1.5rem;
+        .sede-detail-group p {
+            font-size: 0.95rem;
+            line-height: 1.7;
         }
 
-        .sede-telefono a {
-            font-size: 1.25rem;
-            font-weight: 500;
+        .sede-detail-group a {
             color: var(--nero);
             transition: color 0.3s ease;
         }
 
-        .sede-telefono a:hover {
+        .sede-detail-group a:hover {
             color: var(--ottanio);
         }
 
-        .sede-mappa {
-            margin-top: auto;
-        }
-
-        .mappa-link {
+        .sede-cta {
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 500;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--ottanio);
+            color: var(--nero);
             padding: 1rem 1.5rem;
-            border: 1px solid var(--ottanio);
-            transition: all 0.3s ease;
+            border: 1px solid var(--nero);
+            transition: all 0.4s ease;
         }
 
-        .mappa-link:hover {
-            background: var(--ottanio);
+        .sede-cta:hover {
+            background: var(--nero);
             color: var(--bianco);
         }
 
-        .mappa-link svg {
-            width: 16px;
-            height: 16px;
+        .sede-cta svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.3s ease;
         }
 
-        /* NEWSLETTER SECTION */
+        .sede-cta:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* NEWSLETTER */
         .newsletter {
+            padding: 8rem 3rem;
             background: var(--nero);
-            padding: 6rem 3rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .newsletter-inner {
-            max-width: 600px;
+        .newsletter-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Instrument Serif', serif;
+            font-size: 30vw;
+            font-style: italic;
+            color: rgba(42, 107, 107, 0.05);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .newsletter-content {
+            max-width: 700px;
             margin: 0 auto;
             text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .newsletter-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
         }
 
         .newsletter-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 2.5rem;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
             color: var(--bianco);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .newsletter-title em {
+            font-style: italic;
+            color: var(--ottanio);
         }
 
         .newsletter-desc {
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 3rem;
         }
 
         .newsletter-btn {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: var(--bianco);
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 3rem;
             font-size: 0.8rem;
             font-weight: 500;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            transition: all 0.3s ease;
+            color: var(--bianco);
+            border: 1px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .newsletter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--ottanio);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+
+        .newsletter-btn:hover::before {
+            left: 0;
         }
 
         .newsletter-btn:hover {
-            background: var(--bianco);
-            color: var(--nero);
+            border-color: var(--ottanio);
+        }
+
+        .newsletter-btn svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .newsletter-btn:hover svg {
+            transform: translateX(5px);
+        }
+
+        /* SOCIAL */
+        .social {
+            padding: 6rem 3rem;
+            background: #111;
+        }
+
+        .social-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem 3rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .social-link:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-5px);
+        }
+
+        .social-link svg {
+            width: 28px;
+            height: 28px;
+            stroke: rgba(255,255,255,0.5);
+            transition: stroke 0.3s ease;
+        }
+
+        .social-link:hover svg {
+            stroke: var(--ottanio);
+        }
+
+        .social-link span {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover span {
+            color: var(--bianco);
         }
 
         /* FOOTER */
         footer {
-            background: var(--nero);
-            color: var(--bianco);
-            padding: 4rem 3rem 2rem;
+            padding: 4rem 3rem;
+            background: var(--bianco);
+            border-top: 1px solid var(--grigio-chiaro);
         }
 
-        .footer-grid {
+        .footer-nav {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 4rem;
-            flex-wrap: wrap;
-            gap: 3rem;
+            align-items: center;
         }
 
-        .footer-brand {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-tagline {
+        .footer-back {
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-back:hover {
+            color: var(--nero);
+        }
+
+        .footer-back::before {
+            content: '←';
         }
 
         .footer-links {
             display: flex;
-            gap: 5rem;
+            gap: 3rem;
         }
 
-        .footer-col h4 {
-            font-size: 0.7rem;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .footer-col a {
-            display: block;
-            font-size: 0.9rem;
-            margin-bottom: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--grigio);
             transition: color 0.3s ease;
         }
 
-        .footer-col a:hover {
-            color: var(--bianco);
+        .footer-links a:hover {
+            color: var(--nero);
         }
 
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-bottom p {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .footer-social a {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.5);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-        }
-
-        .footer-social a:hover {
-            color: var(--bianco);
-        }
-
-        /* REVEAL ANIMATION */
+        /* REVEAL */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(40px);
             transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -412,196 +738,349 @@
         }
 
         /* RESPONSIVE */
-        @media (max-width: 1024px) {
+        @media (max-width: 1100px) {
             .contatti-grid {
-                grid-template-columns: 1fr;
-                gap: 4rem;
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .contatti-sede {
-                order: -1;
+            .contatto-card:nth-child(2) {
+                border-right: 1px solid var(--grigio-chiaro);
+            }
+
+            .contatto-card:nth-child(3) {
+                border-right: 1px solid var(--grigio-chiaro);
+                border-top: none;
+            }
+
+            .contatti-grid-secondary {
+                grid-template-columns: 1fr;
+            }
+
+            .contatti-grid-secondary .contatto-card {
+                border-right: 1px solid var(--grigio-chiaro) !important;
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             header {
                 padding: 1rem 1.5rem;
             }
 
             nav {
-                gap: 1.5rem;
-            }
-
-            nav a {
-                font-size: 0.65rem;
-            }
-
-            .page-hero {
-                padding: 3rem 1.5rem 4rem;
-            }
-
-            .contatti-section {
-                padding: 0 1.5rem 5rem;
-            }
-
-            .contatti-sede {
-                padding: 2rem;
-            }
-
-            .footer-links {
-                gap: 3rem;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                gap: 1.5rem;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            nav {
                 display: none;
             }
 
-            .footer-grid {
-                flex-direction: column;
+            .hero {
+                padding: 8rem 1.5rem 5rem;
             }
 
-            .footer-links {
-                flex-wrap: wrap;
+            .contatti,
+            .sedi {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .contatti-header {
+                flex-direction: column;
+                align-items: start;
+                gap: 1rem;
+            }
+
+            .contatti-header p {
+                text-align: left;
+            }
+
+            .contatti-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contatto-card {
+                border-right: 1px solid var(--grigio-chiaro) !important;
+                border-bottom: none;
+            }
+
+            .contatto-card:last-child {
+                border-bottom: 1px solid var(--grigio-chiaro);
+            }
+
+            .sedi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sede-details {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .social-container {
+                gap: 1.5rem;
+            }
+
+            .social-link {
+                padding: 1.5rem 2rem;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-nav {
+                flex-direction: column;
                 gap: 2rem;
             }
+        }
 
-            .footer-social {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 1rem;
+        @media (max-width: 600px) {
+            .contatti-grid-secondary .contatto-card:first-child {
+                border-right: 1px solid var(--grigio-chiaro);
             }
         }
     </style>
 </head>
 <body>
+
     <header>
         <a href="../" class="logo"><img src="../assets/images/tlon-logo.png" alt="Tlon"></a>
         <nav>
+            <a href="../il-progetto.html">Il Progetto</a>
             <a href="../andrea-colamedici/">Colamedici</a>
             <a href="../maura-gancitano/">Gancitano</a>
-            <a href="https://shop.tlon.it">Edizioni</a>
-            <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
-            <a href="https://shop.tlon.it">Shop</a>
+            <a href="../edizioni.html">Edizioni</a>
+            <a href="../librerie.html">Librerie</a>
+            <a href="../formazione.html">Formazione</a>
+            <a href="../eventi-festival.html">Eventi</a>
             <a href="../contatti/">Contatti</a>
         </nav>
     </header>
 
     <main>
-        <section class="page-hero">
-            <span class="page-label reveal">Scrivici</span>
-            <h1 class="page-title reveal">Entra in <em>contatto</em></h1>
-            <p class="page-intro reveal">Tlon è un organismo con molte anime: una casa editrice, una rete di librerie, un centro di formazione, un laboratorio di ricerca. Ogni anima ha il proprio indirizzo: scegli quello giusto per la tua richiesta, e ti risponderemo con cura.</p>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-bg">
+                <div class="hero-line horizontal"></div>
+                <div class="hero-line horizontal"></div>
+                <div class="hero-line horizontal"></div>
+                <div class="hero-line vertical"></div>
+                <div class="hero-line vertical"></div>
+                <div class="hero-line vertical"></div>
+                <div class="hero-glow"></div>
+            </div>
+            <div class="hero-content">
+                <span class="hero-label">Parliamoci</span>
+                <h1 class="hero-title"><em>Contatti</em></h1>
+                <p class="hero-subtitle">Tlon è un organismo con molte anime. Ogni anima ha il proprio indirizzo: scegli quello giusto, ti risponderemo con cura.</p>
+            </div>
         </section>
 
-        <section class="contatti-section">
-            <div class="contatti-grid">
-                <div class="contatti-email">
-                    <div class="contatto-gruppo reveal">
+        <!-- CONTATTI -->
+        <section class="contatti">
+            <div class="contatti-container">
+                <div class="contatti-header reveal">
+                    <h2>Scrivi <em>all'anima giusta</em></h2>
+                    <p>Ciascun indirizzo corrisponde a un ambito specifico delle nostre attività.</p>
+                </div>
+
+                <div class="contatti-grid">
+                    <div class="contatto-card reveal">
+                        <div class="contatto-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 16v-4M12 8h.01"/>
+                            </svg>
+                        </div>
                         <span class="contatto-label">Informazioni generali</span>
+                        <h3 class="contatto-title">Info Tlon</h3>
                         <a href="mailto:info@tlon.it" class="contatto-email">info@tlon.it</a>
                         <p class="contatto-desc">Per domande sulle attività di Tlon, collaborazioni, proposte e tutto ciò che non rientra nelle altre categorie.</p>
                     </div>
 
-                    <div class="contatto-gruppo reveal">
-                        <span class="contatto-label">Edizioni Tlon — Redazione</span>
+                    <div class="contatto-card reveal">
+                        <div class="contatto-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            </svg>
+                        </div>
+                        <span class="contatto-label">Edizioni Tlon</span>
+                        <h3 class="contatto-title">Redazione</h3>
                         <a href="mailto:redazione@tlon.it" class="contatto-email">redazione@tlon.it</a>
                         <p class="contatto-desc">Per inviare manoscritti, proposte editoriali e richieste relative ai nostri libri.</p>
                     </div>
 
-                    <div class="contatto-gruppo reveal">
-                        <span class="contatto-label">Edizioni Tlon — Ufficio stampa</span>
+                    <div class="contatto-card reveal">
+                        <div class="contatto-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <span class="contatto-label">Edizioni Tlon</span>
+                        <h3 class="contatto-title">Ufficio stampa</h3>
                         <a href="mailto:ufficiostampa@tlon.it" class="contatto-email">ufficiostampa@tlon.it</a>
                         <p class="contatto-desc">Per giornalisti, recensori e richieste di copie stampa.</p>
                     </div>
+                </div>
 
-                    <div class="contatto-gruppo reveal">
-                        <span class="contatto-label">Libreria Teatro Tlon</span>
+                <div class="contatti-grid-secondary">
+                    <div class="contatto-card reveal">
+                        <div class="contatto-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                        </div>
+                        <span class="contatto-label">Librerie</span>
+                        <h3 class="contatto-title">Libreria Teatro Tlon</h3>
                         <a href="mailto:libreriateatro@tlon.it" class="contatto-email">libreriateatro@tlon.it</a>
                         <p class="contatto-desc">Per informazioni sugli eventi in libreria, presentazioni e attività a Roma Ostiense.</p>
                     </div>
 
-                    <div class="contatto-gruppo reveal">
-                        <span class="contatto-label">Acquisti e distribuzione</span>
+                    <div class="contatto-card reveal">
+                        <div class="contatto-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="9" cy="21" r="1"/>
+                                <circle cx="20" cy="21" r="1"/>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                            </svg>
+                        </div>
+                        <span class="contatto-label">Commerciale</span>
+                        <h3 class="contatto-title">Acquisti e distribuzione</h3>
                         <a href="mailto:commerciale@tlon.it" class="contatto-email">commerciale@tlon.it</a>
                         <p class="contatto-desc">Per ordini online, librerie che desiderano rifornirsi e questioni commerciali.</p>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="contatti-sede reveal">
-                    <div class="sede-principale">
-                        <span class="sede-label">Sede principale</span>
-                        <h2 class="sede-nome">Libreria Teatro Tlon</h2>
-                        <p class="sede-indirizzo">
-                            Via Federico Nansen 14/16<br>
-                            00154 Roma<br>
-                            Quartiere Ostiense
-                        </p>
-                        <div class="sede-telefono">
-                            <a href="tel:+390645653446">06 4565 3446</a>
+        <!-- SEDI -->
+        <section class="sedi">
+            <div class="sedi-container">
+                <div class="sedi-header reveal">
+                    <h2>Dove <em>trovarci</em></h2>
+                </div>
+
+                <div class="sedi-grid">
+                    <div class="sede-card reveal">
+                        <span class="sede-tag">Sede principale</span>
+                        <h3 class="sede-name">Libreria Teatro <em>Tlon</em></h3>
+                        <div class="sede-details">
+                            <div class="sede-detail-group">
+                                <h4>Indirizzo</h4>
+                                <p>Via Federico Nansen 14<br>00154 Roma · Ostiense</p>
+                            </div>
+                            <div class="sede-detail-group">
+                                <h4>Orari</h4>
+                                <p>Lun 10–14:30<br>Mar–Sab 10–19:30</p>
+                            </div>
+                            <div class="sede-detail-group">
+                                <h4>Telefono</h4>
+                                <p><a href="tel:+390645653446">06 4565 3446</a></p>
+                            </div>
+                            <div class="sede-detail-group">
+                                <h4>Email</h4>
+                                <p><a href="mailto:libreriateatro@tlon.it">libreriateatro@tlon.it</a></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="sede-mappa">
-                        <a href="https://maps.google.com/?q=Via+Federico+Nansen+14,+00154+Roma" target="_blank" class="mappa-link">
+                        <a href="https://maps.google.com/?q=Via+Federico+Nansen+14+Roma" target="_blank" class="sede-cta">
+                            <span>Indicazioni</span>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                                <circle cx="12" cy="10" r="3"/>
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
-                            Apri in Google Maps
+                        </a>
+                    </div>
+
+                    <div class="sede-card reveal">
+                        <span class="sede-tag">Roma · Galleria Nazionale</span>
+                        <h3 class="sede-name">Tlon <em>Aleph</em></h3>
+                        <div class="sede-details">
+                            <div class="sede-detail-group">
+                                <h4>Indirizzo</h4>
+                                <p>Viale delle Belle Arti 131<br>00197 Roma</p>
+                            </div>
+                            <div class="sede-detail-group">
+                                <h4>Orari</h4>
+                                <p>Mar–Dom<br>9–19</p>
+                            </div>
+                            <div class="sede-detail-group">
+                                <h4>Telefono</h4>
+                                <p><a href="tel:+39065433466">06 543 3466</a></p>
+                            </div>
+                            <div class="sede-detail-group">
+                                <h4>Museo</h4>
+                                <p><a href="https://lagallerianazionale.com" target="_blank">lagallerianazionale.com</a></p>
+                            </div>
+                        </div>
+                        <a href="https://maps.google.com/?q=Viale+delle+Belle+Arti+131+Roma" target="_blank" class="sede-cta">
+                            <span>Indicazioni</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
                         </a>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- NEWSLETTER -->
         <section class="newsletter">
-            <div class="newsletter-inner reveal">
-                <h2 class="newsletter-title">Tlonletter</h2>
-                <p class="newsletter-desc">La nostra newsletter settimanale, su Substack.</p>
-                <a href="https://www.tlonletter.it" class="newsletter-btn" target="_blank">Iscriviti</a>
+            <div class="newsletter-bg">Tlonletter</div>
+            <div class="newsletter-content reveal">
+                <span class="newsletter-label">Ogni settimana</span>
+                <h2 class="newsletter-title">La <em>Tlonletter</em></h2>
+                <p class="newsletter-desc">Il nostro sguardo sul mondo, ogni venerdì. Filosofia, cultura, meraviglia. Gratis, su Substack.</p>
+                <a href="https://www.tlonletter.it" target="_blank" class="newsletter-btn">
+                    <span>Iscriviti ora</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- SOCIAL -->
+        <section class="social">
+            <div class="social-container">
+                <a href="https://www.instagram.com/tlon.it/" target="_blank" class="social-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                    </svg>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://www.facebook.com/associazionetlon" target="_blank" class="social-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                    </svg>
+                    <span>Facebook</span>
+                </a>
+                <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank" class="social-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+                        <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+                    </svg>
+                    <span>YouTube</span>
+                </a>
+                <a href="https://www.tlonletter.it" target="_blank" class="social-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <span>Substack</span>
+                </a>
             </div>
         </section>
     </main>
 
     <footer>
-        <div class="footer-grid">
-            <div>
-                <div class="footer-brand">TLON</div>
-                <p class="footer-tagline">Un pianeta immaginario. Che esiste.</p>
-            </div>
+        <div class="footer-nav">
+            <a href="../" class="footer-back">Torna alla home</a>
             <div class="footer-links">
-                <div class="footer-col">
-                    <h4>Progetto</h4>
-                    <a href="../">Chi siamo</a>
-                    <a href="../contatti/">Contatti</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Edizioni</h4>
-                    <a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a>
-                    <a href="https://shop.tlon.it/autori/">Autori</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Attività</h4>
-                    <a href="#">Eventi</a>
-                    <a href="#">Formazione</a>
-                    <a href="#">Podcast</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2026 Tlon Srl</p>
-            <div class="footer-social">
-                <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
-                <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
-                <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
-                <a href="https://www.tlonletter.it" target="_blank">Substack</a>
+                <a href="../ilpod.html">IlPod</a>
+                <a href="../ipnocrazia.html">Ipnocrazia</a>
+                <a href="../esplora.html">Mappa del sito</a>
             </div>
         </div>
     </footer>
@@ -610,13 +1089,27 @@
         // Scroll reveal
         const reveals = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+            entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 80);
                 }
             });
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         reveals.forEach(el => observer.observe(el));
+
+        // Parallax hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < window.innerHeight) {
+                const content = hero.querySelector('.hero-content');
+                content.style.transform = `translateY(${scrolled * 0.3}px)`;
+                content.style.opacity = 1 - (scrolled / window.innerHeight * 0.7);
+            }
+        });
     </script>
+
 </body>
 </html>
