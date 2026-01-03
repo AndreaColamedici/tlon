@@ -24,7 +24,6 @@
 
         html {
             font-size: 16px;
-            scroll-behavior: smooth;
         }
 
         body {
@@ -36,13 +35,30 @@
         }
 
         ::selection {
-            background: var(--nero);
+            background: var(--ottanio);
             color: var(--bianco);
         }
 
         a {
             color: inherit;
             text-decoration: none;
+        }
+
+        /* CURSOR */
+        .cursor {
+            width: 12px;
+            height: 12px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            mix-blend-mode: difference;
+            transition: transform 0.2s ease;
+        }
+
+        .cursor.hover {
+            transform: scale(3);
         }
 
         /* HEADER */
@@ -89,46 +105,71 @@
             opacity: 1;
         }
 
-        /* MAIN */
-        main {
-            padding-top: 80px;
-        }
-
         /* HERO */
         .hero {
-            min-height: 70vh;
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 6rem 3rem 5rem;
+            align-items: center;
+            padding: 10rem 3rem 6rem;
+            background: var(--nero);
+            color: var(--bianco);
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--nero) 0%, #1a1a1a 100%);
-            color: var(--bianco);
         }
 
-        .hero::before {
-            content: '';
+        .hero-bg {
             position: absolute;
             top: 0;
+            left: 0;
             right: 0;
-            width: 60%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at 70% 30%, rgba(42, 107, 107, 0.2) 0%, transparent 50%);
-            pointer-events: none;
+            bottom: 0;
+            overflow: hidden;
         }
 
-        .hero-content {
-            max-width: 800px;
+        .hero-bg-gradient {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.25) 0%, transparent 70%);
+            animation: heroFloat 15s ease-in-out infinite;
+        }
+
+        .hero-bg-gradient:nth-child(1) {
+            top: -200px;
+            right: -200px;
+        }
+
+        .hero-bg-gradient:nth-child(2) {
+            bottom: -300px;
+            left: -200px;
+            animation-delay: -5s;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: center;
             position: relative;
             z-index: 1;
         }
 
+        .hero-content {
+            max-width: 700px;
+        }
+
         .hero-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            letter-spacing: 0.25em;
+            letter-spacing: 0.4em;
             text-transform: uppercase;
             color: var(--ottanio);
             margin-bottom: 2rem;
@@ -143,17 +184,17 @@
 
         .hero-label::before {
             content: '';
-            width: 40px;
+            width: 50px;
             height: 1px;
             background: var(--ottanio);
         }
 
         .hero-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-size: clamp(3.5rem, 8vw, 6rem);
             font-weight: 400;
-            line-height: 1.05;
-            letter-spacing: -0.02em;
+            line-height: 1;
+            letter-spacing: -0.03em;
             margin-bottom: 2rem;
             opacity: 0;
             transform: translateY(30px);
@@ -169,12 +210,50 @@
         .hero-desc {
             font-size: 1.2rem;
             line-height: 1.8;
-            opacity: 0.8;
-            max-width: 600px;
+            opacity: 0.7;
+            max-width: 550px;
             opacity: 0;
             transform: translateY(20px);
             animation: fadeUp 0.8s ease forwards;
             animation-delay: 0.6s;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+        .hero-stat {
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.02);
+            transition: all 0.4s ease;
+        }
+
+        .hero-stat:hover {
+            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.1);
+        }
+
+        .hero-stat-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 4rem;
+            font-style: italic;
+            color: var(--ottanio);
+            line-height: 1;
+        }
+
+        .hero-stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-top: 0.5rem;
         }
 
         @keyframes fadeUp {
@@ -182,108 +261,184 @@
         }
 
         /* INTRO */
-        .intro-section {
-            padding: 6rem 3rem;
+        .intro {
+            padding: 10rem 3rem;
             background: var(--bianco);
         }
 
         .intro-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            max-width: 1200px;
+            gap: 8rem;
+            max-width: 1400px;
             margin: 0 auto;
             align-items: center;
         }
 
-        .intro-text h2 {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2.5rem;
-            font-weight: 400;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
+        .intro-content {
+            max-width: 550px;
         }
 
-        .intro-text h2 em {
+        .intro-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .intro-title em {
             font-style: italic;
             color: var(--ottanio);
         }
 
-        .intro-text p {
-            font-size: 1.05rem;
-            line-height: 1.9;
+        .intro-text {
+            font-size: 1.1rem;
+            line-height: 2;
             color: var(--grigio);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .intro-stats {
+        .intro-highlight {
+            padding: 2rem;
+            background: #fafafa;
+            border-left: 3px solid var(--ottanio);
+            margin-top: 2rem;
+        }
+
+        .intro-highlight p {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--nero);
+        }
+
+        .intro-numbers {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
         }
 
-        .stat-card {
-            padding: 2rem;
-            background: #fafafa;
+        .intro-number {
+            padding: 2.5rem;
             border: 1px solid var(--grigio-chiaro);
-            transition: all 0.4s ease;
+            text-align: center;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .stat-card:hover {
+        .intro-number::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--ottanio);
+            transform: scaleX(0);
+            transition: transform 0.5s ease;
+        }
+
+        .intro-number:hover::before {
+            transform: scaleX(1);
+        }
+
+        .intro-number:hover {
             border-color: var(--ottanio);
             transform: translateY(-5px);
         }
 
-        .stat-value {
+        .intro-number-value {
             font-family: 'Instrument Serif', serif;
-            font-size: 3.5rem;
+            font-size: 4rem;
+            font-style: italic;
             color: var(--ottanio);
             line-height: 1;
         }
 
-        .stat-label {
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
+        .intro-number-label {
+            font-size: 0.8rem;
             color: var(--grigio);
+            margin-top: 0.5rem;
+            line-height: 1.4;
         }
 
         /* TEMI */
-        .temi-section {
-            padding: 6rem 3rem;
-            background: #fafafa;
+        .temi {
+            padding: 10rem 3rem;
+            background: var(--nero);
+            color: var(--bianco);
+            position: relative;
+            overflow: hidden;
         }
 
-        .section-header {
-            max-width: 1200px;
-            margin: 0 auto 4rem;
-        }
-
-        .section-header h2 {
+        .temi-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 400;
+            font-size: 40vw;
+            font-style: italic;
+            color: rgba(255,255,255,0.02);
+            white-space: nowrap;
+            pointer-events: none;
         }
 
-        .section-header h2 em {
+        .temi-header {
+            max-width: 1400px;
+            margin: 0 auto 6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .temi-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .temi-header h2 em {
             font-style: italic;
             color: var(--ottanio);
+        }
+
+        .temi-header p {
+            color: rgba(255,255,255,0.5);
+            font-size: 1rem;
+            max-width: 600px;
         }
 
         .temi-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            max-width: 1200px;
+            gap: 0;
+            max-width: 1400px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .tema-card {
-            padding: 2.5rem;
-            background: var(--bianco);
-            border: 1px solid var(--grigio-chiaro);
+            padding: 3rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-bottom: none;
             position: relative;
             overflow: hidden;
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tema-card:nth-child(4),
+        .tema-card:nth-child(5),
+        .tema-card:nth-child(6) {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .tema-card:nth-child(3n+1) {
+            border-left: 1px solid rgba(255,255,255,0.08);
         }
 
         .tema-card::before {
@@ -291,97 +446,158 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 4px;
-            height: 0;
-            background: var(--ottanio);
-            transition: height 0.5s ease;
+            width: 0;
+            height: 100%;
+            background: rgba(42, 107, 107, 0.15);
+            transition: width 0.6s ease;
+            z-index: 0;
         }
 
         .tema-card:hover::before {
-            height: 100%;
+            width: 100%;
         }
 
         .tema-card:hover {
-            border-color: var(--ottanio);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border-color: rgba(42, 107, 107, 0.3);
+        }
+
+        .tema-content {
+            position: relative;
+            z-index: 1;
         }
 
         .tema-icon {
             font-family: 'Instrument Serif', serif;
-            font-size: 2.5rem;
+            font-size: 4rem;
             font-style: italic;
             color: var(--ottanio);
             opacity: 0.3;
-            margin-bottom: 1rem;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            transition: opacity 0.4s ease;
+        }
+
+        .tema-card:hover .tema-icon {
+            opacity: 0.6;
         }
 
         .tema-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             margin-bottom: 1rem;
         }
 
         .tema-desc {
             font-size: 0.95rem;
-            line-height: 1.7;
-            color: var(--grigio);
+            line-height: 1.8;
+            opacity: 0.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .tema-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tema-tag {
+            padding: 0.4rem 0.8rem;
+            background: rgba(42, 107, 107, 0.2);
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+        }
+
+        .tema-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+        }
+
+        .tema-trend.up {
+            color: #4ade80;
+        }
+
+        .tema-trend.down {
+            color: #f87171;
         }
 
         /* FORMATI */
-        .formati-section {
-            padding: 6rem 3rem;
-            background: var(--nero);
-            color: var(--bianco);
+        .formati {
+            padding: 10rem 3rem;
+            background: var(--bianco);
         }
 
-        .formati-section .section-header {
-            margin-bottom: 4rem;
+        .formati-header {
+            max-width: 1400px;
+            margin: 0 auto 6rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: end;
         }
 
-        .formati-section .section-header h2 {
-            color: var(--bianco);
+        .formati-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+        }
+
+        .formati-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .formati-header p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grigio);
         }
 
         .formati-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 0;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        .formato-card {
-            padding: 3rem 2rem;
-            border: 1px solid rgba(255,255,255,0.1);
+        .formato {
+            padding: 4rem 2rem;
+            border: 1px solid var(--grigio-chiaro);
             border-right: none;
             text-align: center;
-            transition: all 0.4s ease;
             position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
         }
 
-        .formato-card:last-child {
-            border-right: 1px solid rgba(255,255,255,0.1);
+        .formato:last-child {
+            border-right: 1px solid var(--grigio-chiaro);
         }
 
-        .formato-card::before {
+        .formato::before {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
             height: 0;
-            background: var(--ottanio);
-            transition: height 0.4s ease;
+            background: var(--nero);
+            transition: height 0.5s ease;
             z-index: 0;
         }
 
-        .formato-card:hover::before {
+        .formato:hover::before {
             height: 100%;
         }
 
-        .formato-card:hover {
-            border-color: var(--ottanio);
+        .formato:hover {
+            color: var(--bianco);
+            border-color: var(--nero);
         }
 
         .formato-content {
@@ -391,118 +607,167 @@
 
         .formato-num {
             font-family: 'Instrument Serif', serif;
-            font-size: 4rem;
+            font-size: 6rem;
             font-style: italic;
             line-height: 1;
-            opacity: 0.2;
-            margin-bottom: 1rem;
+            opacity: 0.08;
+            margin-bottom: -1rem;
             transition: opacity 0.4s ease;
         }
 
-        .formato-card:hover .formato-num {
-            opacity: 0.4;
+        .formato:hover .formato-num {
+            opacity: 0.2;
+            color: var(--ottanio);
         }
 
         .formato-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
         }
 
         .formato-desc {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             opacity: 0.6;
+            line-height: 1.6;
         }
 
         /* CLIENTI */
-        .clienti-section {
-            padding: 6rem 3rem;
-            background: var(--bianco);
+        .clienti {
+            padding: 10rem 3rem;
+            background: #fafafa;
         }
 
-        .clienti-intro {
-            max-width: 800px;
-            margin: 0 auto 4rem;
+        .clienti-header {
             text-align: center;
+            max-width: 800px;
+            margin: 0 auto 6rem;
         }
 
-        .clienti-intro h2 {
+        .clienti-header h2 {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 400;
             margin-bottom: 1rem;
         }
 
-        .clienti-intro h2 em {
+        .clienti-header h2 em {
             font-style: italic;
             color: var(--ottanio);
         }
 
-        .clienti-intro p {
+        .clienti-header p {
             font-size: 1rem;
             color: var(--grigio);
         }
 
-        .clienti-categories {
-            max-width: 1200px;
+        .clienti-container {
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        .clienti-category {
+        .clienti-section {
             margin-bottom: 4rem;
         }
 
-        .clienti-category:last-child {
+        .clienti-section:last-child {
             margin-bottom: 0;
         }
 
-        .category-title {
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 1.5rem;
+        .clienti-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--grigio-chiaro);
         }
 
-        .clienti-logos {
+        .clienti-section-title {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+        }
+
+        .clienti-section-count {
+            font-size: 0.75rem;
+            color: var(--grigio);
+        }
+
+        .clienti-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
         }
 
-        .cliente-tag {
-            padding: 0.75rem 1.5rem;
+        .cliente {
+            padding: 1rem 1.5rem;
             border: 1px solid var(--grigio-chiaro);
+            background: var(--bianco);
             font-size: 0.9rem;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .cliente-tag:hover {
+        .cliente::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 0;
+            background: var(--ottanio);
+            transition: height 0.3s ease;
+        }
+
+        .cliente:hover::before {
+            height: 100%;
+        }
+
+        .cliente:hover {
             border-color: var(--ottanio);
-            background: rgba(42, 107, 107, 0.05);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .cliente-main {
+            font-weight: 500;
+        }
+
+        .cliente-count {
+            font-size: 0.75rem;
+            color: var(--ottanio);
+            margin-left: 0.5rem;
+        }
+
+        .cliente-note {
+            font-size: 0.7rem;
+            color: var(--grigio);
+            margin-top: 0.25rem;
         }
 
         /* UNIVERSITÀ */
-        .universita-section {
-            padding: 6rem 3rem;
-            background: #fafafa;
+        .universita {
+            padding: 10rem 3rem;
+            background: var(--nero);
+            color: var(--bianco);
         }
 
         .universita-grid {
             display: grid;
             grid-template-columns: 1fr 2fr;
-            gap: 4rem;
-            max-width: 1200px;
+            gap: 6rem;
+            max-width: 1400px;
             margin: 0 auto;
             align-items: start;
         }
 
         .universita-intro h2 {
             font-family: 'Instrument Serif', serif;
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 400;
             margin-bottom: 1.5rem;
         }
@@ -514,8 +779,29 @@
 
         .universita-intro p {
             font-size: 1rem;
-            line-height: 1.8;
-            color: var(--grigio);
+            line-height: 1.9;
+            opacity: 0.7;
+            margin-bottom: 1rem;
+        }
+
+        .universita-highlight {
+            padding: 1.5rem 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 2rem;
+        }
+
+        .universita-highlight-title {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 0.5rem;
+        }
+
+        .universita-highlight-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-style: italic;
         }
 
         .universita-list {
@@ -524,57 +810,226 @@
             gap: 1.5rem;
         }
 
-        .universita-item {
+        .uni-item {
             display: flex;
             align-items: baseline;
-            gap: 1rem;
+            justify-content: space-between;
             padding: 1rem 0;
-            border-bottom: 1px solid var(--grigio-chiaro);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
         }
 
-        .universita-item::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--ottanio);
-            border-radius: 50%;
-            flex-shrink: 0;
+        .uni-item:hover {
+            padding-left: 1rem;
+            border-color: var(--ottanio);
         }
 
-        .universita-name {
+        .uni-name {
             font-size: 1rem;
         }
 
-        .universita-note {
-            font-size: 0.8rem;
+        .uni-detail {
+            font-size: 0.75rem;
+            color: var(--ottanio);
+        }
+
+        /* COLLABORAZIONI */
+        .collab {
+            padding: 6rem 3rem;
+            background: #111;
+        }
+
+        .collab-header {
+            max-width: 1400px;
+            margin: 0 auto 3rem;
+        }
+
+        .collab-header h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.75rem;
+            font-weight: 400;
+            color: var(--bianco);
+            margin-bottom: 0.5rem;
+        }
+
+        .collab-header p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .collab-marquee {
+            overflow: hidden;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .collab-track {
+            display: flex;
+            animation: collabScroll 40s linear infinite;
+        }
+
+        .collab-track span {
+            padding: 0 2.5rem;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.3);
+            white-space: nowrap;
+            transition: color 0.3s ease;
+        }
+
+        .collab-track span:hover {
+            color: var(--ottanio);
+        }
+
+        @keyframes collabScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* DOCENZA */
+        .docenza {
+            padding: 8rem 3rem;
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        .docenza-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .docenza-card {
+            padding: 3rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.5s ease;
+        }
+
+        .docenza-card:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-5px);
+        }
+
+        .docenza-uni {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1rem;
+        }
+
+        .docenza-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .docenza-desc {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            opacity: 0.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .docenza-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .docenza-stat-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .docenza-stat-label {
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+
+        /* GUEST */
+        .guest {
+            padding: 8rem 3rem;
+            background: var(--bianco);
+        }
+
+        .guest-header {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+        }
+
+        .guest-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .guest-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .guest-header p {
             color: var(--grigio);
+            font-size: 0.9rem;
+        }
+
+        .guest-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .guest-item {
+            padding: 0.75rem 1.25rem;
+            border: 1px solid var(--grigio-chiaro);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .guest-item:hover {
+            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.05);
         }
 
         /* CTA */
-        .cta-section {
-            padding: 8rem 3rem;
-            background: var(--bianco);
+        .cta {
+            padding: 12rem 3rem;
+            background: linear-gradient(135deg, var(--nero) 0%, #1a1a1a 100%);
             text-align: center;
             position: relative;
+            overflow: hidden;
         }
 
-        .cta-section::before {
-            content: '';
+        .cta-bg {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(42, 107, 107, 0.05) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 30% 50%, rgba(42, 107, 107, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(42, 107, 107, 0.1) 0%, transparent 40%);
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
         }
 
         .cta-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: clamp(3rem, 7vw, 5rem);
             font-weight: 400;
-            margin-bottom: 1rem;
+            color: var(--bianco);
+            margin-bottom: 1.5rem;
         }
 
         .cta-title em {
@@ -584,29 +1039,91 @@
 
         .cta-subtitle {
             font-size: 1.1rem;
-            color: var(--grigio);
-            margin-bottom: 2rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .cta-btn {
-            display: inline-block;
             padding: 1.25rem 3rem;
-            background: var(--nero);
-            color: var(--bianco);
             font-size: 0.8rem;
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--bianco);
             transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--ottanio);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .cta-btn:hover::before {
+            left: 0;
         }
 
         .cta-btn:hover {
+            border-color: var(--ottanio);
+        }
+
+        .cta-btn.primary {
             background: var(--ottanio);
+            border-color: var(--ottanio);
+        }
+
+        .cta-btn.primary::before {
+            background: var(--bianco);
+        }
+
+        .cta-btn.primary:hover {
+            color: var(--nero);
+        }
+
+        .cta-contact {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .cta-contact-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 1rem;
+        }
+
+        .cta-contact-email {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--ottanio);
         }
 
         /* FOOTER */
         footer {
             padding: 4rem 3rem;
+            background: var(--bianco);
             border-top: 1px solid var(--grigio-chiaro);
         }
 
@@ -651,22 +1168,34 @@
             color: var(--nero);
         }
 
+        /* ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* RESPONSIVE */
-        @media (max-width: 1000px) {
+        @media (max-width: 1200px) {
             .temi-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tema-card:nth-child(2n) {
+                border-right: 1px solid rgba(255,255,255,0.08);
             }
 
             .formati-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .formato-card:nth-child(2) {
-                border-right: 1px solid rgba(255,255,255,0.1);
-            }
-
-            .universita-grid {
-                grid-template-columns: 1fr;
+            .formato:nth-child(2) {
+                border-right: 1px solid var(--grigio-chiaro);
             }
         }
 
@@ -676,23 +1205,38 @@
             }
 
             nav {
-                gap: 1.5rem;
+                display: none;
             }
 
-            .hero {
-                padding: 5rem 1.5rem 4rem;
+            .cursor {
+                display: none;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
             }
 
             .intro-grid {
                 grid-template-columns: 1fr;
-                gap: 3rem;
+                gap: 4rem;
             }
 
-            .intro-stats {
-                grid-template-columns: repeat(4, 1fr);
+            .formati-header {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .universita-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
             }
 
             .universita-list {
+                grid-template-columns: 1fr;
+            }
+
+            .docenza-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -707,46 +1251,40 @@
         }
 
         @media (max-width: 600px) {
-            nav {
-                display: none;
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .intro-numbers {
+                grid-template-columns: 1fr;
             }
 
             .temi-grid {
                 grid-template-columns: 1fr;
             }
 
+            .tema-card {
+                border-right: 1px solid rgba(255,255,255,0.08) !important;
+            }
+
             .formati-grid {
                 grid-template-columns: 1fr;
             }
 
-            .formato-card {
-                border-right: 1px solid rgba(255,255,255,0.1);
+            .formato {
+                border-right: 1px solid var(--grigio-chiaro) !important;
             }
-
-            .intro-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* REVEAL ANIMATIONS */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
         }
     </style>
 </head>
 <body>
 
+    <div class="cursor" id="cursor"></div>
+
     <header>
         <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
         <nav>
-            <a href="./andrea-colamedici/">Colamedici</a> 
+            <a href="./andrea-colamedici/">Colamedici</a>
             <a href="./maura-gancitano/">Gancitano</a>
             <a href="https://shop.tlon.it">Edizioni</a>
             <a href="https://shop.tlon.it/librerie-tlon/">Librerie</a>
@@ -758,221 +1296,504 @@
     <main>
         <!-- HERO -->
         <section class="hero">
-            <div class="hero-content">
-                <span class="hero-label">Per aziende, istituzioni, università</span>
-                <h1 class="hero-title">La filosofia come <em>strumento</em></h1>
-                <p class="hero-desc">Percorsi formativi che trasformano il pensiero critico in competenza organizzativa. Per chi vuole andare oltre le soluzioni preconfezionate.</p>
+            <div class="hero-bg">
+                <div class="hero-bg-gradient"></div>
+                <div class="hero-bg-gradient"></div>
+            </div>
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <span class="hero-label">Per aziende, istituzioni, università</span>
+                    <h1 class="hero-title">La filosofia come <em>strumento</em></h1>
+                    <p class="hero-desc">Percorsi formativi che trasformano il pensiero critico in competenza organizzativa. Per chi vuole andare oltre le soluzioni preconfezionate, costruendo le proprie domande. E le proprie risposte.</p>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">120+</div>
+                        <div class="hero-stat-label">Eventi formativi</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">25+</div>
+                        <div class="hero-stat-label">Aziende partner</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">20+</div>
+                        <div class="hero-stat-label">Università</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">51</div>
+                        <div class="hero-stat-label">Solo allo IED</div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- INTRO -->
-        <section class="intro-section">
+        <section class="intro">
             <div class="intro-grid">
-                <div class="intro-text reveal">
-                    <h2>Pensare insieme, <em>trasformare</em> insieme</h2>
-                    <p>La formazione Tlon nasce dall'idea che la filosofia non sia un sapere astratto ma uno strumento concreto per orientarsi nella complessità. Lavoriamo con aziende, istituzioni e università per costruire percorsi su misura che affrontano le grandi questioni del nostro tempo: il senso del lavoro, la trasformazione digitale, la leadership consapevole, l'inclusione.</p>
-                    <p>Non offriamo risposte pronte, ma metodi per costruire le proprie domande. E le proprie risposte.</p>
+                <div class="intro-content reveal">
+                    <h2 class="intro-title">Pensare insieme, <em>trasformare</em> insieme</h2>
+                    <p class="intro-text">La formazione Tlon nasce dall'idea che la filosofia non sia un sapere astratto ma uno strumento concreto per orientarsi nella complessità. Lavoriamo con aziende, istituzioni e università per costruire percorsi su misura che affrontano le grandi questioni del nostro tempo: il senso del lavoro, la trasformazione digitale, la leadership consapevole, l'inclusione.</p>
+                    <p class="intro-text">Non offriamo risposte pronte, ma metodi per costruire le proprie domande. Il nostro approccio mescola filosofia classica e contemporanea, cultura pop e rigore accademico, creando esperienze formative che restano.</p>
+                    <div class="intro-highlight">
+                        <p>«La filosofia è la chiave per salvare il meglio del sapere che abbiamo alle spalle e portare alla luce limiti e slanci del futuro che già ci circonda.»</p>
+                    </div>
                 </div>
-                <div class="intro-stats reveal">
-                    <div class="stat-card">
-                        <div class="stat-value">120+</div>
-                        <div class="stat-label">Eventi formativi nel biennio</div>
+                <div class="intro-numbers reveal">
+                    <div class="intro-number">
+                        <div class="intro-number-value">10.7%</div>
+                        <div class="intro-number-label">Revenue da formazione corporate sul totale attività</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value">25</div>
-                        <div class="stat-label">Aziende e istituzioni</div>
+                    <div class="intro-number">
+                        <div class="intro-number-value">103</div>
+                        <div class="intro-number-label">Eventi business al mese in media</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value">20</div>
-                        <div class="stat-label">Università partner</div>
+                    <div class="intro-number">
+                        <div class="intro-number-value">+159%</div>
+                        <div class="intro-number-label">Crescita tema AI tra 2024 e 2025</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value">51</div>
-                        <div class="stat-label">Lezioni solo allo IED</div>
+                    <div class="intro-number">
+                        <div class="intro-number-value">6.5x</div>
+                        <div class="intro-number-label">Ratio Andrea su temi AI rispetto a Maura</div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- TEMI -->
-        <section class="temi-section">
-            <div class="section-header">
+        <section class="temi">
+            <div class="temi-bg">Filosofia</div>
+            <div class="temi-header reveal">
                 <h2>I temi che <em>affrontiamo</em></h2>
+                <p>Ogni percorso è costruito su misura, ma questi sono i territori che esploriamo più spesso. I dati vengono dall'analisi semantica di 2.468 eventi nel biennio 2024-2025.</p>
             </div>
             <div class="temi-grid">
                 <div class="tema-card reveal">
-                    <div class="tema-icon">α</div>
-                    <h3 class="tema-title">Filosofia e pensiero critico</h3>
-                    <p class="tema-desc">Strumenti per navigare la complessità, porre le domande giuste, costruire visione. Dal metodo socratico alla filosofia contemporanea.</p>
+                    <div class="tema-content">
+                        <div class="tema-icon">α</div>
+                        <h3 class="tema-title">AI e trasformazione digitale</h3>
+                        <p class="tema-desc">Comprendere l'intelligenza artificiale oltre la tecnologia. Prompt thinking, etica dell'AI, impatto sociale e organizzativo. Da Ipnocrazia ai laboratori FabLab ENEA, GenIALAB e TOCC.</p>
+                        <div class="tema-tags">
+                            <span class="tema-tag">91 occorrenze</span>
+                            <span class="tema-tag">Ipnocrazia</span>
+                            <span class="tema-tag">GenIALAB</span>
+                        </div>
+                        <p class="tema-trend up">↑ +159% tra 2024 e 2025</p>
+                    </div>
                 </div>
                 <div class="tema-card reveal">
-                    <div class="tema-icon">β</div>
-                    <h3 class="tema-title">AI e trasformazione digitale</h3>
-                    <p class="tema-desc">Comprendere l'intelligenza artificiale oltre la tecnologia. Prompt thinking, etica dell'AI, impatto sociale e organizzativo.</p>
+                    <div class="tema-content">
+                        <div class="tema-icon">β</div>
+                        <h3 class="tema-title">Filosofia e pensiero critico</h3>
+                        <p class="tema-desc">Strumenti per navigare la complessità, porre le domande giuste, costruire visione. Dal metodo socratico alla filosofia contemporanea. Il cuore dell'identità Tlon.</p>
+                        <div class="tema-tags">
+                            <span class="tema-tag">54 occorrenze</span>
+                            <span class="tema-tag">Lezioni di Meraviglia</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="tema-card reveal">
-                    <div class="tema-icon">γ</div>
-                    <h3 class="tema-title">Diversity & Inclusion</h3>
-                    <p class="tema-desc">Percorsi su genere, inclusione, linguaggio. Una formazione che parte dalla filosofia per arrivare alla pratica quotidiana.</p>
+                    <div class="tema-content">
+                        <div class="tema-icon">γ</div>
+                        <h3 class="tema-title">Educazione e formazione</h3>
+                        <p class="tema-desc">Pedagogia, didattica, formazione dei formatori. Come si trasmette il sapere, come si costruisce pensiero critico nelle nuove generazioni.</p>
+                        <div class="tema-tags">
+                            <span class="tema-tag">47 occorrenze</span>
+                            <span class="tema-tag">Scuole</span>
+                            <span class="tema-tag">Università</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="tema-card reveal">
-                    <div class="tema-icon">δ</div>
-                    <h3 class="tema-title">Educazione sentimentale</h3>
-                    <p class="tema-desc">Emozioni, relazioni, comunicazione. Per costruire ambienti di lavoro più consapevoli e comunità più sane.</p>
+                    <div class="tema-content">
+                        <div class="tema-icon">δ</div>
+                        <h3 class="tema-title">Diversity & Inclusion</h3>
+                        <p class="tema-desc">Percorsi su genere, inclusione, linguaggio. Una formazione che parte dalla filosofia per arrivare alla pratica quotidiana. Collaborazioni con Valore D, WeWorld, inQuiete.</p>
+                        <div class="tema-tags">
+                            <span class="tema-tag">33 occorrenze</span>
+                            <span class="tema-tag">Femminismo filosofico</span>
+                        </div>
+                        <p class="tema-trend down">↓ -87% tra 2024 e 2025</p>
+                    </div>
                 </div>
                 <div class="tema-card reveal">
-                    <div class="tema-icon">ε</div>
-                    <h3 class="tema-title">Senso del lavoro</h3>
-                    <p class="tema-desc">Perché lavoriamo? Come lavoriamo? Dal libro "Ma chi me lo fa fare?" a percorsi per ripensare cultura aziendale e motivazione.</p>
+                    <div class="tema-content">
+                        <div class="tema-icon">ε</div>
+                        <h3 class="tema-title">Senso del lavoro</h3>
+                        <p class="tema-desc">Perché lavoriamo? Come lavoriamo? Dal libro "Ma chi me lo fa fare?" a percorsi per ripensare cultura aziendale, motivazione, purpose. Great resignation e quiet quitting.</p>
+                        <div class="tema-tags">
+                            <span class="tema-tag">33 occorrenze</span>
+                            <span class="tema-tag">Ma chi me lo fa fare?</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="tema-card reveal">
-                    <div class="tema-icon">ζ</div>
-                    <h3 class="tema-title">Comunicazione culturale</h3>
-                    <p class="tema-desc">Storytelling, social media, divulgazione. Come raccontare idee complesse in modo accessibile senza banalizzarle.</p>
+                    <div class="tema-content">
+                        <div class="tema-icon">ζ</div>
+                        <h3 class="tema-title">Comunicazione e media</h3>
+                        <p class="tema-desc">Storytelling, social media, divulgazione. Come raccontare idee complesse in modo accessibile senza banalizzarle. Social Media Theory (IULM), Comunicazione Multimediale (IED).</p>
+                        <div class="tema-tags">
+                            <span class="tema-tag">28 occorrenze</span>
+                            <span class="tema-tag">Docenza IULM</span>
+                            <span class="tema-tag">IED</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- FORMATI -->
-        <section class="formati-section">
-            <div class="section-header">
-                <h2>I <em>formati</em></h2>
+        <section class="formati">
+            <div class="formati-header reveal">
+                <div>
+                    <h2>I <em>formati</em></h2>
+                </div>
+                <p>Ogni formato risponde a esigenze diverse. Dallo speech singolo al percorso strutturato, dalla lezione frontale al workshop interattivo. Costruiamo insieme il formato giusto per i vostri obiettivi.</p>
             </div>
             <div class="formati-grid">
-                <div class="formato-card">
+                <div class="formato reveal">
                     <div class="formato-content">
                         <div class="formato-num">01</div>
                         <h3 class="formato-title">Speech</h3>
-                        <p class="formato-desc">Interventi singoli per eventi, convention, kick-off</p>
+                        <p class="formato-desc">Interventi singoli per eventi, convention, kick-off. Da 30 minuti a 2 ore. Ispirazione e visione.</p>
                     </div>
                 </div>
-                <div class="formato-card">
+                <div class="formato reveal">
                     <div class="formato-content">
                         <div class="formato-num">02</div>
                         <h3 class="formato-title">Workshop</h3>
-                        <p class="formato-desc">Sessioni interattive per piccoli gruppi</p>
+                        <p class="formato-desc">Sessioni interattive per piccoli gruppi. Mezza giornata o giornata intera. Pratica e confronto.</p>
                     </div>
                 </div>
-                <div class="formato-card">
+                <div class="formato reveal">
                     <div class="formato-content">
                         <div class="formato-num">03</div>
                         <h3 class="formato-title">Percorsi</h3>
-                        <p class="formato-desc">Programmi strutturati su più incontri</p>
+                        <p class="formato-desc">Programmi strutturati su più incontri. Da 3 a 12 sessioni. Trasformazione profonda.</p>
                     </div>
                 </div>
-                <div class="formato-card">
+                <div class="formato reveal">
                     <div class="formato-content">
                         <div class="formato-num">04</div>
                         <h3 class="formato-title">Docenza</h3>
-                        <p class="formato-desc">Collaborazioni accademiche continuative</p>
+                        <p class="formato-desc">Collaborazioni accademiche continuative. Corsi universitari, master, academy aziendali.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- CLIENTI -->
-        <section class="clienti-section">
-            <div class="clienti-intro reveal">
+        <section class="clienti">
+            <div class="clienti-header reveal">
                 <h2>Chi ha scelto <em>Tlon</em></h2>
-                <p>Alcune delle realtà con cui abbiamo lavorato nel biennio 2024-2025</p>
+                <p>Alcune delle realtà con cui abbiamo lavorato nel biennio 2024-2025. Dati estratti dall'analisi di 2.468 eventi business.</p>
             </div>
-            <div class="clienti-categories">
-                <div class="clienti-category reveal">
-                    <h3 class="category-title">Banche e Assicurazioni</h3>
-                    <div class="clienti-logos">
-                        <span class="cliente-tag">Generali</span>
-                        <span class="cliente-tag">UniCredit</span>
-                        <span class="cliente-tag">Intesa Sanpaolo</span>
-                        <span class="cliente-tag">Reale Mutua</span>
-                        <span class="cliente-tag">BPER</span>
-                        <span class="cliente-tag">BNL</span>
+            <div class="clienti-container">
+                <div class="clienti-section reveal">
+                    <div class="clienti-section-header">
+                        <h3 class="clienti-section-title">Clienti strutturati</h3>
+                        <span class="clienti-section-count">Collaborazioni continuative</span>
+                    </div>
+                    <div class="clienti-grid">
+                        <div class="cliente">
+                            <span class="cliente-main">IED</span>
+                            <span class="cliente-count">51 eventi</span>
+                            <p class="cliente-note">Cliente principale. Docenza regolare, commissioni di laurea, eventi speciali.</p>
+                        </div>
+                        <div class="cliente">
+                            <span class="cliente-main">FabLab ENEA</span>
+                            <span class="cliente-count">18 eventi</span>
+                            <p class="cliente-note">Laboratori di innovazione, concentrati nel 2024.</p>
+                        </div>
+                        <div class="cliente">
+                            <span class="cliente-main">Generali</span>
+                            <span class="cliente-count">12 eventi</span>
+                            <p class="cliente-note">Formazione, lezioni, riunioni, podcast corporate.</p>
+                        </div>
+                        <div class="cliente">
+                            <span class="cliente-main">Bloom</span>
+                            <span class="cliente-count">11 eventi</span>
+                            <p class="cliente-note">Formazione corporate, workshop sviluppo personale.</p>
+                        </div>
+                        <div class="cliente">
+                            <span class="cliente-main">UniCredit</span>
+                            <span class="cliente-count">7 eventi</span>
+                            <p class="cliente-note">ESG Day, Conversazioni sul denaro, eventi corporate.</p>
+                        </div>
+                        <div class="cliente">
+                            <span class="cliente-main">Ambrosetti/TEHA</span>
+                            <span class="cliente-count">6 eventi</span>
+                            <p class="cliente-note">Advisory board, eventi, Pickwick.</p>
+                        </div>
+                        <div class="cliente">
+                            <span class="cliente-main">Reale Mutua</span>
+                            <span class="cliente-count">5 eventi</span>
+                            <p class="cliente-note">Speech e formazione. Presenza Maura e Andrea.</p>
+                        </div>
+                        <div class="cliente">
+                            <span class="cliente-main">Intesa Sanpaolo</span>
+                            <span class="cliente-count">5 eventi</span>
+                            <p class="cliente-note">Interventi formativi, call di allineamento.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="clienti-category reveal">
-                    <h3 class="category-title">Corporate e Consulting</h3>
-                    <div class="clienti-logos">
-                        <span class="cliente-tag">Ambrosetti / TEHA</span>
-                        <span class="cliente-tag">Bloom</span>
-                        <span class="cliente-tag">Google</span>
-                        <span class="cliente-tag">Amazon / Audible</span>
-                        <span class="cliente-tag">Ferrero</span>
-                        <span class="cliente-tag">Sanofi</span>
-                        <span class="cliente-tag">WINDTRE</span>
-                        <span class="cliente-tag">Veralab</span>
+
+                <div class="clienti-section reveal">
+                    <div class="clienti-section-header">
+                        <h3 class="clienti-section-title">Banche e assicurazioni</h3>
+                    </div>
+                    <div class="clienti-grid">
+                        <div class="cliente"><span class="cliente-main">BPER</span></div>
+                        <div class="cliente"><span class="cliente-main">BNL</span></div>
+                        <div class="cliente"><span class="cliente-main">BNP Paribas</span></div>
+                        <div class="cliente"><span class="cliente-main">Findomestic</span></div>
+                        <div class="cliente"><span class="cliente-main">Banca Etica</span></div>
                     </div>
                 </div>
-                <div class="clienti-category reveal">
-                    <h3 class="category-title">Istituzioni e Terzo Settore</h3>
-                    <div class="clienti-logos">
-                        <span class="cliente-tag">FabLab ENEA</span>
-                        <span class="cliente-tag">Camera dei Deputati</span>
-                        <span class="cliente-tag">Parlamento Europeo</span>
-                        <span class="cliente-tag">Save the Children</span>
-                        <span class="cliente-tag">Oxfam</span>
-                        <span class="cliente-tag">Valore D</span>
-                        <span class="cliente-tag">CGIL</span>
-                        <span class="cliente-tag">Legacoop</span>
+
+                <div class="clienti-section reveal">
+                    <div class="clienti-section-header">
+                        <h3 class="clienti-section-title">Corporate e consulting</h3>
+                    </div>
+                    <div class="clienti-grid">
+                        <div class="cliente"><span class="cliente-main">Google</span></div>
+                        <div class="cliente"><span class="cliente-main">Amazon / Audible</span></div>
+                        <div class="cliente"><span class="cliente-main">Ferrero</span></div>
+                        <div class="cliente"><span class="cliente-main">Sanofi</span></div>
+                        <div class="cliente"><span class="cliente-main">WINDTRE</span></div>
+                        <div class="cliente"><span class="cliente-main">Veralab</span></div>
+                        <div class="cliente"><span class="cliente-main">Angelini</span></div>
+                        <div class="cliente"><span class="cliente-main">Clivet</span></div>
+                        <div class="cliente"><span class="cliente-main">Lamborghini</span></div>
+                        <div class="cliente"><span class="cliente-main">Ducati</span></div>
+                        <div class="cliente"><span class="cliente-main">Mercedes</span></div>
+                        <div class="cliente"><span class="cliente-main">Dassault</span></div>
+                        <div class="cliente"><span class="cliente-main">eFM</span></div>
+                        <div class="cliente"><span class="cliente-main">Atlantis Company</span></div>
+                        <div class="cliente"><span class="cliente-main">Depro</span></div>
+                    </div>
+                </div>
+
+                <div class="clienti-section reveal">
+                    <div class="clienti-section-header">
+                        <h3 class="clienti-section-title">Istituzioni e terzo settore</h3>
+                    </div>
+                    <div class="clienti-grid">
+                        <div class="cliente"><span class="cliente-main">Camera dei Deputati</span></div>
+                        <div class="cliente"><span class="cliente-main">Parlamento Europeo</span></div>
+                        <div class="cliente"><span class="cliente-main">Save the Children</span></div>
+                        <div class="cliente"><span class="cliente-main">Oxfam</span></div>
+                        <div class="cliente"><span class="cliente-main">UNHCR</span></div>
+                        <div class="cliente"><span class="cliente-main">WeWorld</span></div>
+                        <div class="cliente"><span class="cliente-main">Valore D</span></div>
+                        <div class="cliente"><span class="cliente-main">CGIL</span></div>
+                        <div class="cliente"><span class="cliente-main">CISL</span></div>
+                        <div class="cliente"><span class="cliente-main">Legacoop</span></div>
+                        <div class="cliente"><span class="cliente-main">CNA</span></div>
+                        <div class="cliente"><span class="cliente-main">Confindustria</span></div>
+                        <div class="cliente"><span class="cliente-main">AVIS</span></div>
+                        <div class="cliente"><span class="cliente-main">National Geographic</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- UNIVERSITÀ -->
-        <section class="universita-section">
+        <section class="universita">
             <div class="universita-grid">
                 <div class="universita-intro reveal">
                     <h2>Il mondo <em>accademico</em></h2>
                     <p>Andrea insegna Social Media Theory alla IULM e Comunicazione Multimediale allo IED. Insieme a Maura collabora con numerose università italiane e internazionali per lectio magistralis, seminari e percorsi strutturati.</p>
+                    <p>Nel biennio 2024-2025 abbiamo collaborato con oltre 20 istituzioni accademiche, da Roma a Buenos Aires, da Milano a New York.</p>
+                    <div class="universita-highlight">
+                        <p class="universita-highlight-title">Docenza strutturata IED</p>
+                        <p class="universita-highlight-text">51 eventi nel biennio: lezioni regolari, commissioni di laurea, eventi speciali</p>
+                    </div>
                 </div>
                 <div class="universita-list reveal">
-                    <div class="universita-item">
-                        <span class="universita-name">IED</span>
-                        <span class="universita-note">Docenza strutturata</span>
+                    <div class="uni-item">
+                        <span class="uni-name">IED Roma</span>
+                        <span class="uni-detail">Docenza strutturata — 51 eventi</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">IULM</span>
-                        <span class="universita-note">Docenza strutturata</span>
+                    <div class="uni-item">
+                        <span class="uni-name">IULM Milano</span>
+                        <span class="uni-detail">Social Media Theory — 5 eventi</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">Sapienza</span>
+                    <div class="uni-item">
+                        <span class="uni-name">Sapienza</span>
+                        <span class="uni-detail">Convegni, panel — 5 eventi</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">San Raffaele</span>
+                    <div class="uni-item">
+                        <span class="uni-name">San Raffaele</span>
+                        <span class="uni-detail">Alumni, assemblee — 4 eventi</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">LUISS</span>
+                    <div class="uni-item">
+                        <span class="uni-name">LUISS</span>
+                        <span class="uni-detail">Master AI — 3 eventi</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">Politecnico di Milano</span>
+                    <div class="uni-item">
+                        <span class="uni-name">Università di Foggia</span>
+                        <span class="uni-detail">Premio I Fiori Blu — 3 eventi</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">Columbia University</span>
+                    <div class="uni-item">
+                        <span class="uni-name">Politecnico di Milano</span>
+                        <span class="uni-detail">Lezioni — 2 eventi</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">Università di Bologna</span>
+                    <div class="uni-item">
+                        <span class="uni-name">Columbia University</span>
+                        <span class="uni-detail">New York</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">Università di Torino</span>
+                    <div class="uni-item">
+                        <span class="uni-name">Università argentine</span>
+                        <span class="uni-detail">9 eventi nel biennio</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">Università di Foggia</span>
+                    <div class="uni-item">
+                        <span class="uni-name">Università di Bologna</span>
+                        <span class="uni-detail">Master Giornalismo</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">Università Federico II</span>
+                    <div class="uni-item">
+                        <span class="uni-name">Federico II Napoli</span>
+                        <span class="uni-detail">Convegno</span>
                     </div>
-                    <div class="universita-item">
-                        <span class="universita-name">Università argentine</span>
-                        <span class="universita-note">9 eventi</span>
+                    <div class="uni-item">
+                        <span class="uni-name">Università di Torino</span>
+                        <span class="uni-detail">Seminario AI</span>
+                    </div>
+                    <div class="uni-item">
+                        <span class="uni-name">Politecnico di Torino</span>
+                        <span class="uni-detail">Lectio</span>
+                    </div>
+                    <div class="uni-item">
+                        <span class="uni-name">Università di Udine</span>
+                        <span class="uni-detail">Spring School Filosofia</span>
+                    </div>
+                    <div class="uni-item">
+                        <span class="uni-name">Università di Verona</span>
+                        <span class="uni-detail">Con Luigina Mortari</span>
+                    </div>
+                    <div class="uni-item">
+                        <span class="uni-name">Università di Trento</span>
+                        <span class="uni-detail">Convegno</span>
+                    </div>
+                    <div class="uni-item">
+                        <span class="uni-name">Università Cattolica</span>
+                        <span class="uni-detail">Milano</span>
+                    </div>
+                    <div class="uni-item">
+                        <span class="uni-name">Bicocca</span>
+                        <span class="uni-detail">Milano</span>
+                    </div>
+                    <div class="uni-item">
+                        <span class="uni-name">Roma Tre</span>
+                        <span class="uni-detail">Roma</span>
+                    </div>
+                    <div class="uni-item">
+                        <span class="uni-name">Università di Perugia</span>
+                        <span class="uni-detail">Lectio</span>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- COLLABORAZIONI MARQUEE -->
+        <section class="collab">
+            <div class="collab-header">
+                <h3>Altre collaborazioni</h3>
+                <p>Treccani Academy, IMUN, AFAM, Complexity Institute, Associazione Pedagogica Italiana, Società Italiana Ricerca Didattica, e molti altri</p>
+            </div>
+            <div class="collab-marquee">
+                <div class="collab-track">
+                    <span>Treccani Academy</span>
+                    <span>IMUN</span>
+                    <span>AFAM</span>
+                    <span>Complexity Institute</span>
+                    <span>Formazione Continua Psicologia</span>
+                    <span>Associazione Pedagogica Italiana</span>
+                    <span>Società Italiana Ricerca Didattica</span>
+                    <span>Liceo Morgagni</span>
+                    <span>Liceo Avogadro</span>
+                    <span>Learning Institute</span>
+                    <span>Treccani Academy</span>
+                    <span>IMUN</span>
+                    <span>AFAM</span>
+                    <span>Complexity Institute</span>
+                    <span>Formazione Continua Psicologia</span>
+                    <span>Associazione Pedagogica Italiana</span>
+                    <span>Società Italiana Ricerca Didattica</span>
+                    <span>Liceo Morgagni</span>
+                    <span>Liceo Avogadro</span>
+                    <span>Learning Institute</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOCENZA -->
+        <section class="docenza">
+            <div class="docenza-grid">
+                <div class="docenza-card reveal">
+                    <p class="docenza-uni">IED — Istituto Europeo di Design</p>
+                    <h3 class="docenza-title">Comunicazione Multimediale</h3>
+                    <p class="docenza-desc">Corso strutturato nel percorso di laurea. Lezioni regolari, commissioni di laurea, eventi speciali. Presenza di Maura, Andrea e interventi congiunti.</p>
+                    <div class="docenza-stat">
+                        <span class="docenza-stat-value">51</span>
+                        <span class="docenza-stat-label">eventi nel biennio</span>
+                    </div>
+                </div>
+                <div class="docenza-card reveal">
+                    <p class="docenza-uni">IULM — Università di Lingue e Comunicazione</p>
+                    <h3 class="docenza-title">Social Media Theory</h3>
+                    <p class="docenza-desc">Corso tenuto da Andrea Colamedici. Teoria e pratica dei social media, algoritmi, attenzione, economia dell'engagement.</p>
+                    <div class="docenza-stat">
+                        <span class="docenza-stat-value">5</span>
+                        <span class="docenza-stat-label">convegni ed esami</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GUEST -->
+        <section class="guest">
+            <div class="guest-header reveal">
+                <h2>Dialoghi con <em>autori</em></h2>
+                <p>Alcune delle personalità con cui abbiamo dialogato in contesti formativi e culturali</p>
+            </div>
+            <div class="guest-grid reveal">
+                <span class="guest-item">Antonio Scurati</span>
+                <span class="guest-item">Telmo Pievani</span>
+                <span class="guest-item">Donatella Di Pietrantonio</span>
+                <span class="guest-item">Concita De Gregorio</span>
+                <span class="guest-item">Gianrico Carofiglio</span>
+                <span class="guest-item">Lidia Ravera</span>
+                <span class="guest-item">Wu Ming</span>
+                <span class="guest-item">Michela Murgia</span>
+                <span class="guest-item">Ilan Pappé</span>
+                <span class="guest-item">Greta Thunberg</span>
+                <span class="guest-item">Riccardo Falcinelli</span>
+                <span class="guest-item">Asma Mhalla</span>
+                <span class="guest-item">Matteo Lancini</span>
+                <span class="guest-item">Enrico Galiano</span>
+                <span class="guest-item">Nicola Lagioia</span>
+                <span class="guest-item">Mariano Tomatis</span>
+                <span class="guest-item">Luigina Mortari</span>
+                <span class="guest-item">Angela Staude Terzani</span>
+            </div>
+        </section>
+
         <!-- CTA -->
-        <section class="cta-section">
-            <h2 class="cta-title">Costruiamo qualcosa <em>insieme</em></h2>
-            <p class="cta-subtitle">Raccontaci il tuo progetto. Costruiremo un percorso su misura.</p>
-            <a href="mailto:formazione@tlon.it" class="cta-btn">Scrivici</a>
+        <section class="cta">
+            <div class="cta-bg"></div>
+            <div class="cta-content">
+                <h2 class="cta-title">Costruiamo qualcosa <em>insieme</em></h2>
+                <p class="cta-subtitle">Raccontaci il tuo progetto. Costruiremo un percorso su misura, partendo dalle domande giuste.</p>
+                <div class="cta-buttons">
+                    <a href="mailto:formazione@tlon.it" class="cta-btn primary">Scrivici</a>
+                    <a href="./il-progetto.html" class="cta-btn">Scopri Tlon</a>
+                    <a href="./contatti/" class="cta-btn">Contatti</a>
+                </div>
+                <div class="cta-contact">
+                    <p class="cta-contact-label">Per proposte di formazione</p>
+                    <a href="mailto:formazione@tlon.it" class="cta-contact-email">formazione@tlon.it</a>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -988,14 +1809,33 @@
     </footer>
 
     <script>
-        // Reveal on scroll
-        const reveals = document.querySelectorAll('.reveal');
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        // CURSOR
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
 
-        const observer = new IntersectionObserver((entries) => {
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursor.style.left = cursorX - 6 + 'px';
+            cursor.style.top = cursorY - 6 + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        document.querySelectorAll('a, button, .cliente, .formato, .tema-card, .docenza-card, .guest-item').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // REVEAL ON SCROLL
+        const reveals = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
                     setTimeout(() => {
@@ -1003,9 +1843,22 @@
                     }, index * 50);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.15, rootMargin: '-50px' });
 
-        reveals.forEach(el => observer.observe(el));
+        reveals.forEach(el => revealObserver.observe(el));
+
+        // PARALLAX HERO
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+
+            if (hero && scrolled < window.innerHeight) {
+                const gradients = hero.querySelectorAll('.hero-bg-gradient');
+                gradients.forEach((g, i) => {
+                    g.style.transform = `translate(${scrolled * 0.1 * (i + 1)}px, ${scrolled * 0.2}px)`;
+                });
+            }
+        });
     </script>
 
 </body>
