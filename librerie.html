@@ -468,26 +468,34 @@
         .libreria-visual {
             position: relative;
             overflow: hidden;
-            background: var(--ottanio);
+            background: var(--nero);
         }
 
-        .libreria-visual-bg {
+        .libreria-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+        }
+
+        .libreria-card:hover .libreria-visual img {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+
+        .libreria-visual-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, transparent 50%);
+            pointer-events: none;
         }
 
-        .libreria-visual-icon {
-            font-family: 'Instrument Serif', serif;
-            font-size: 25vw;
-            font-style: italic;
-            color: rgba(255,255,255,0.08);
-            user-select: none;
+        .libreria-card:nth-child(even) .libreria-visual-overlay {
+            background: linear-gradient(to left, rgba(0,0,0,0.3) 0%, transparent 50%);
         }
 
         .libreria-visual-num {
@@ -497,14 +505,15 @@
             font-family: 'Instrument Serif', serif;
             font-size: 8rem;
             font-style: italic;
-            color: rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.2);
             line-height: 1;
+            z-index: 2;
         }
 
-        .libreria-card:nth-child(1) .libreria-visual { background: linear-gradient(135deg, #2a6b6b 0%, #1a4a4a 100%); }
-        .libreria-card:nth-child(2) .libreria-visual { background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); }
-        .libreria-card:nth-child(3) .libreria-visual { background: linear-gradient(135deg, #8b4513 0%, #5c2d0a 100%); }
-        .libreria-card:nth-child(4) .libreria-visual { background: linear-gradient(135deg, #2a4a6b 0%, #1a3a5a 100%); }
+        .libreria-card:nth-child(even) .libreria-visual-num {
+            left: auto;
+            right: 3rem;
+        }
 
         .libreria-content {
             display: flex;
@@ -957,6 +966,21 @@
                 min-height: 300px;
             }
 
+            .libreria-visual-num {
+                font-size: 5rem;
+                bottom: 2rem;
+                left: 2rem;
+            }
+
+            .libreria-card:nth-child(even) .libreria-visual-num {
+                left: 2rem;
+                right: auto;
+            }
+
+            .libreria-visual-overlay {
+                background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%) !important;
+            }
+
             .libreria-content {
                 padding: 3rem 2rem;
             }
@@ -1073,9 +1097,8 @@
             <div class="libreria-section">
                 <div class="libreria-card">
                     <div class="libreria-visual">
-                        <div class="libreria-visual-bg">
-                            <span class="libreria-visual-icon">T</span>
-                        </div>
+                        <img src="./assets/images/libreria-1.jpg" alt="Libreria Teatro Tlon" loading="lazy">
+                        <div class="libreria-visual-overlay"></div>
                         <span class="libreria-visual-num">01</span>
                     </div>
                     <div class="libreria-content">
@@ -1120,9 +1143,8 @@
             <div class="libreria-section">
                 <div class="libreria-card">
                     <div class="libreria-visual">
-                        <div class="libreria-visual-bg">
-                            <span class="libreria-visual-icon">א</span>
-                        </div>
+                        <img src="./assets/images/libreria-2.jpg" alt="Tlon Aleph - Galleria Nazionale" loading="lazy">
+                        <div class="libreria-visual-overlay"></div>
                         <span class="libreria-visual-num">02</span>
                     </div>
                     <div class="libreria-content">
@@ -1161,9 +1183,8 @@
             <div class="libreria-section">
                 <div class="libreria-card">
                     <div class="libreria-visual">
-                        <div class="libreria-visual-bg">
-                            <span class="libreria-visual-icon">M</span>
-                        </div>
+                        <img src="./assets/images/libreria-3.jpeg" alt="Bookshop Villa Medici" loading="lazy">
+                        <div class="libreria-visual-overlay"></div>
                         <span class="libreria-visual-num">03</span>
                     </div>
                     <div class="libreria-content">
@@ -1208,9 +1229,8 @@
             <div class="libreria-section">
                 <div class="libreria-card">
                     <div class="libreria-visual">
-                        <div class="libreria-visual-bg">
-                            <span class="libreria-visual-icon">Q</span>
-                        </div>
+                        <img src="./assets/images/libreria-4.jpg" alt="Libreria Giovanni - Fondazione Querini Stampalia" loading="lazy">
+                        <div class="libreria-visual-overlay"></div>
                         <span class="libreria-visual-num">04</span>
                     </div>
                     <div class="libreria-content">
