@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eventi e Festival – Tlon</title>
+    <title>Eventi e Festival — Tlon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -566,45 +566,416 @@
             position: relative;
         }
 
-        /* OSPITI SECTION */
-        .ospiti-section {
-            padding: 0;
+        /* =============================================
+           DIALOGHI - SEZIONE PENSATORI INTERNAZIONALI
+           ============================================= */
+        .dialoghi-section {
+            padding: 10rem 3rem;
+            background: linear-gradient(180deg, #0a0a0a 0%, #111827 50%, #0a0a0a 100%);
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        .dialoghi-cosmos {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        .cosmos-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            animation: starTwinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        .dialoghi-nebula {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: nebulaFloat 25s ease-in-out infinite;
+        }
+
+        .nebula-1 {
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.15) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+        }
+
+        .nebula-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(107, 42, 107, 0.1) 0%, transparent 70%);
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -10s;
+        }
+
+        .nebula-3 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(42, 80, 107, 0.12) 0%, transparent 70%);
+            top: 40%;
+            left: 50%;
+            animation-delay: -15s;
+        }
+
+        @keyframes nebulaFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, -30px) rotate(5deg); }
+            50% { transform: translate(-30px, 50px) rotate(-3deg); }
+            75% { transform: translate(-50px, -20px) rotate(3deg); }
+        }
+
+        .dialoghi-header {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .dialoghi-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dialoghi-label::before,
+        .dialoghi-label::after {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--ottanio));
+        }
+
+        .dialoghi-label::after {
+            background: linear-gradient(90deg, var(--ottanio), transparent);
+        }
+
+        .dialoghi-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 400;
+            color: var(--bianco);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .dialoghi-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .dialoghi-intro {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.5);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Floating Names Container */
+        .pensatori-universe {
+            position: relative;
+            z-index: 2;
+            min-height: 500px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            padding: 2rem;
+        }
+
+        .pensatore-orbit {
+            position: relative;
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            animation: pensatoreFloat 8s ease-in-out infinite;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pensatore-orbit:nth-child(3n) { animation-duration: 10s; animation-delay: -2s; }
+        .pensatore-orbit:nth-child(3n+1) { animation-duration: 7s; animation-delay: -4s; }
+        .pensatore-orbit:nth-child(3n+2) { animation-duration: 9s; animation-delay: -1s; }
+        .pensatore-orbit:nth-child(5n) { animation-delay: -3s; }
+        .pensatore-orbit:nth-child(7n) { animation-delay: -5s; }
+
+        @keyframes pensatoreFloat {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-12px) translateX(5px); }
+            50% { transform: translateY(5px) translateX(-8px); }
+            75% { transform: translateY(-8px) translateX(-5px); }
+        }
+
+        .pensatore-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.4);
+            white-space: nowrap;
+            position: relative;
+            transition: all 0.4s ease;
+            cursor: default;
+        }
+
+        .pensatore-name::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: var(--ottanio);
+            transition: all 0.4s ease;
+            transform: translateX(-50%);
+        }
+
+        .pensatore-orbit:hover .pensatore-name {
+            color: var(--bianco);
+            text-shadow: 0 0 30px rgba(42, 107, 107, 0.5);
+            transform: scale(1.1);
+        }
+
+        .pensatore-orbit:hover .pensatore-name::before {
+            width: 100%;
+        }
+
+        /* Prominent names */
+        .pensatore-orbit.major .pensatore-name {
+            font-size: 2rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .pensatore-orbit.legend .pensatore-name {
+            font-size: 2.5rem;
+            color: var(--ottanio);
+            text-shadow: 0 0 40px rgba(42, 107, 107, 0.3);
+        }
+
+        /* =============================================
+           CONCERTI FILOSOFICI - SEZIONE MUSICISTI
+           ============================================= */
+        .concerti-section {
+            padding: 10rem 3rem;
+            background: var(--bianco);
             position: relative;
             overflow: hidden;
         }
 
-        .ospiti-row {
+        .concerti-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        /* Sound waves animation */
+        .sound-wave {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 200px;
             display: flex;
-            gap: 3rem;
-            padding: 1rem 0;
-            animation: scroll-left 40s linear infinite;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            opacity: 0.06;
         }
 
-        .ospiti-row.reverse {
-            animation: scroll-right 35s linear infinite;
+        .sound-wave.top { top: 5%; }
+        .sound-wave.bottom { bottom: 5%; }
+
+        .wave-bar {
+            width: 3px;
+            background: var(--ottanio);
+            border-radius: 3px;
+            animation: waveBar 1.2s ease-in-out infinite;
         }
 
-        @keyframes scroll-left {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        .wave-bar:nth-child(1) { height: 20px; animation-delay: 0s; }
+        .wave-bar:nth-child(2) { height: 40px; animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { height: 60px; animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { height: 80px; animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { height: 100px; animation-delay: 0.4s; }
+        .wave-bar:nth-child(6) { height: 80px; animation-delay: 0.5s; }
+        .wave-bar:nth-child(7) { height: 60px; animation-delay: 0.6s; }
+        .wave-bar:nth-child(8) { height: 40px; animation-delay: 0.7s; }
+        .wave-bar:nth-child(9) { height: 20px; animation-delay: 0.8s; }
+        .wave-bar:nth-child(10) { height: 40px; animation-delay: 0.9s; }
+        .wave-bar:nth-child(11) { height: 70px; animation-delay: 1s; }
+        .wave-bar:nth-child(12) { height: 90px; animation-delay: 1.1s; }
+        .wave-bar:nth-child(13) { height: 70px; animation-delay: 0.15s; }
+        .wave-bar:nth-child(14) { height: 50px; animation-delay: 0.25s; }
+        .wave-bar:nth-child(15) { height: 30px; animation-delay: 0.35s; }
+
+        @keyframes waveBar {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.3); }
         }
 
-        @keyframes scroll-right {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
+        .concerti-header {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            margin-bottom: 5rem;
         }
 
-        .ospite-name {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2rem;
-            font-style: italic;
-            white-space: nowrap;
-            color: var(--grigio-chiaro);
-            transition: color 0.3s ease;
-        }
-
-        .ospite-name:hover {
+        .concerti-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
             color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .concerti-label::before,
+        .concerti-label::after {
+            content: '♪';
+            font-size: 0.8rem;
+            animation: notePulse 2s ease-in-out infinite;
+        }
+
+        .concerti-label::after {
+            animation-delay: -1s;
+        }
+
+        @keyframes notePulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-3px); }
+        }
+
+        .concerti-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 400;
+            color: var(--nero);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .concerti-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .concerti-intro {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--grigio);
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        /* Musicians Flow */
+        .musicisti-flow {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .musicisti-wave {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 1rem;
+            padding: 1rem 0;
+        }
+
+        .musicista-item {
+            position: relative;
+            padding: 0.6rem 1.2rem;
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--grigio);
+            cursor: default;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: musicistaPulse 4s ease-in-out infinite;
+        }
+
+        .musicista-item:nth-child(odd) { animation-delay: -2s; }
+        .musicista-item:nth-child(3n) { animation-delay: -1s; }
+        .musicista-item:nth-child(5n) { animation-delay: -3s; }
+
+        @keyframes musicistaPulse {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .musicista-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--ottanio), transparent);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .musicista-item:hover {
+            color: var(--nero);
+            transform: translateY(-8px) scale(1.05);
+        }
+
+        .musicista-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Major artists */
+        .musicista-item.major {
+            font-size: 1.6rem;
+            color: var(--nero);
+        }
+
+        .musicista-item.legend {
+            font-size: 2rem;
+            color: var(--ottanio);
+            font-weight: 400;
+        }
+
+        /* Separator dots */
+        .musicisti-wave .separator {
+            width: 4px;
+            height: 4px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            align-self: center;
+            opacity: 0.3;
+            animation: separatorPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes separatorPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.5); opacity: 0.6; }
         }
 
         /* ILPOD SECTION */
@@ -1094,6 +1465,18 @@
             .festival-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .pensatore-orbit.legend .pensatore-name {
+                font-size: 1.8rem;
+            }
+
+            .pensatore-orbit.major .pensatore-name {
+                font-size: 1.5rem;
+            }
+
+            .musicista-item.legend {
+                font-size: 1.6rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1134,6 +1517,35 @@
                 font-size: 3rem;
                 top: 1.5rem;
                 right: 1.5rem;
+            }
+
+            .dialoghi-section,
+            .concerti-section {
+                padding: 6rem 1.5rem;
+            }
+
+            .pensatore-name {
+                font-size: 1.1rem;
+            }
+
+            .pensatore-orbit.legend .pensatore-name {
+                font-size: 1.4rem;
+            }
+
+            .pensatore-orbit.major .pensatore-name {
+                font-size: 1.2rem;
+            }
+
+            .musicista-item {
+                font-size: 1.1rem;
+            }
+
+            .musicista-item.legend {
+                font-size: 1.4rem;
+            }
+
+            .musicista-item.major {
+                font-size: 1.2rem;
             }
 
             .festival-section {
@@ -1181,6 +1593,11 @@
                 flex-wrap: wrap;
                 justify-content: center;
                 gap: 1rem;
+            }
+
+            .ilpod-stats {
+                flex-wrap: wrap;
+                gap: 2rem;
             }
         }
     </style>
@@ -1296,7 +1713,7 @@
             <article class="evento-card">
                 <span class="evento-num">05</span>
                 <span class="evento-location">Bari</span>
-                <h2 class="evento-title">BariDiversa – Festival del <em>Pensare Queer</em></h2>
+                <h2 class="evento-title">BariDiversa — Festival del <em>Pensare Queer</em></h2>
                 <p class="evento-desc">Un invito provocatorio a riconoscere e onorare la diversità che abita la nostra città e ciascuno di noi, a non avere paura di essere se stessi. Pensare in maniera queer significa sforzarsi di superare i binarismi e le etichette, facendo proprio l'insegnamento di Emily Dickinson: «Dì tutta la verità ma dilla obliqua».</p>
                 <p class="evento-role">Organizzato per il <strong>Comune di Bari</strong></p>
             </article>
@@ -1329,7 +1746,7 @@
             <article class="evento-card">
                 <span class="evento-num">08</span>
                 <span class="evento-location">Roma · Villa Ada</span>
-                <h2 class="evento-title">Tlon Fest – <em>Pensare la Musica</em></h2>
+                <h2 class="evento-title">Tlon Fest — <em>Pensare la Musica</em></h2>
                 <p class="evento-desc">Tre giorni di musica e pensiero. Filosofi, musicisti, artisti e intellettuali uniscono alto e basso, serio e faceto, passando da Mozart a Raffaella Carrà, dalla filosofia del Grunge a Franco Battiato, dalle boyband anni '90 all'AI nella musica. Montagne russe dell'intelletto che si concludono con un party letterario.</p>
                 <div class="evento-highlights">
                     <div class="highlight">
@@ -1370,45 +1787,167 @@
 
         </section>
 
-        <!-- OSPITI MARQUEE -->
-        <section class="ospiti-section">
-            <div class="ospiti-row">
-                <span class="ospite-name">La Rappresentante di Lista</span>
-                <span class="ospite-name">Telmo Pievani</span>
-                <span class="ospite-name">Barbascura X</span>
-                <span class="ospite-name">Murubutu</span>
-                <span class="ospite-name">N.A.I.P.</span>
-                <span class="ospite-name">Vandana Shiva</span>
-                <span class="ospite-name">Noam Chomsky</span>
-                <span class="ospite-name">David Quammen</span>
-                <span class="ospite-name">Alain de Botton</span>
-                <span class="ospite-name">La Rappresentante di Lista</span>
-                <span class="ospite-name">Telmo Pievani</span>
-                <span class="ospite-name">Barbascura X</span>
-                <span class="ospite-name">Murubutu</span>
-                <span class="ospite-name">N.A.I.P.</span>
-                <span class="ospite-name">Vandana Shiva</span>
-                <span class="ospite-name">Noam Chomsky</span>
-                <span class="ospite-name">David Quammen</span>
-                <span class="ospite-name">Alain de Botton</span>
+        <!-- ==========================================
+             DIALOGHI - PENSATORI INTERNAZIONALI
+             ========================================== -->
+        <section class="dialoghi-section">
+            <div class="dialoghi-cosmos">
+                <div class="dialoghi-nebula nebula-1"></div>
+                <div class="dialoghi-nebula nebula-2"></div>
+                <div class="dialoghi-nebula nebula-3"></div>
             </div>
-            <div class="ospiti-row reverse">
-                <span class="ospite-name">Niccolò Fabi</span>
-                <span class="ospite-name">Carmen Consoli</span>
-                <span class="ospite-name">Vasco Brondi</span>
-                <span class="ospite-name">Rancore</span>
-                <span class="ospite-name">Loredana Lipperini</span>
-                <span class="ospite-name">Davide Toffolo</span>
-                <span class="ospite-name">Eugenio in Via di Gioia</span>
-                <span class="ospite-name">Valerio Lundini</span>
-                <span class="ospite-name">Niccolò Fabi</span>
-                <span class="ospite-name">Carmen Consoli</span>
-                <span class="ospite-name">Vasco Brondi</span>
-                <span class="ospite-name">Rancore</span>
-                <span class="ospite-name">Loredana Lipperini</span>
-                <span class="ospite-name">Davide Toffolo</span>
-                <span class="ospite-name">Eugenio in Via di Gioia</span>
-                <span class="ospite-name">Valerio Lundini</span>
+
+            <div class="dialoghi-header">
+                <span class="dialoghi-label">Il pensiero globale</span>
+                <h2 class="dialoghi-title">Dialoghi con grandi <em>pensatori</em></h2>
+                <p class="dialoghi-intro">Coltiviamo un dialogo perenne con alcune tra le voci più importanti del pensiero contemporaneo mondiale. Negli anni abbiamo avuto l'onore di conversare con filosofi, scienziati, attivisti e intellettuali che stanno ridefinendo il modo in cui comprendiamo il presente e immaginiamo il futuro.</p>
+            </div>
+
+            <div class="pensatori-universe">
+                <div class="pensatore-orbit legend"><span class="pensatore-name">Noam Chomsky</span></div>
+                <div class="pensatore-orbit major"><span class="pensatore-name">Vandana Shiva</span></div>
+                <div class="pensatore-orbit legend"><span class="pensatore-name">Byung-Chul Han</span></div>
+                <div class="pensatore-orbit major"><span class="pensatore-name">Peter Sloterdijk</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">David Quammen</span></div>
+                <div class="pensatore-orbit major"><span class="pensatore-name">Donna Haraway</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Alain de Botton</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Carlo Rovelli</span></div>
+                <div class="pensatore-orbit major"><span class="pensatore-name">Telmo Pievani</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Judith Butler</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Roberto Saviano</span></div>
+                <div class="pensatore-orbit major"><span class="pensatore-name">Massimo Recalcati</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Franco Ferraris</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Luciano Floridi</span></div>
+                <div class="pensatore-orbit major"><span class="pensatore-name">Edgar Morin</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Umberto Galimberti</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Federico Ferrazza</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Vito Mancuso</span></div>
+                <div class="pensatore-orbit major"><span class="pensatore-name">Emanuele Coccia</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Chiara Valerio</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Michela Murgia</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Alessandro Baricco</span></div>
+                <div class="pensatore-orbit major"><span class="pensatore-name">Barbascura X</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Paolo Giordano</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Stefano Mancuso</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Vera Gheno</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Loredana Lipperini</span></div>
+                <div class="pensatore-orbit major"><span class="pensatore-name">Davide Toffolo</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Valerio Lundini</span></div>
+                <div class="pensatore-orbit"><span class="pensatore-name">Zerocalcare</span></div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             CONCERTI FILOSOFICI - MUSICISTI
+             ========================================== -->
+        <section class="concerti-section">
+            <div class="concerti-bg">
+                <div class="sound-wave top">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
+                <div class="sound-wave bottom">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
+            </div>
+
+            <div class="concerti-header">
+                <span class="concerti-label">Musica e filosofia</span>
+                <h2 class="concerti-title">Concerti <em>filosofici</em></h2>
+                <p class="concerti-intro">Coltiviamo un dialogo perenne tra musica e filosofia attraverso eventi pubblici con musicisti e musiciste. Negli anni abbiamo fatto concerti spettacolo (in particolare con La Rappresentante di Lista) dal titolo <em>Lezioni di Meraviglia</em>, talk, dialoghi e maratone in streaming che hanno riunito alcune delle voci più significative della scena musicale italiana.</p>
+            </div>
+
+            <div class="musicisti-flow">
+                <div class="musicisti-wave">
+                    <span class="musicista-item legend">Vasco Brondi</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Niccolò Fabi</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item legend">Giovanni Truppi</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Vinicio Capossela</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Samuele Bersani</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item legend">La Rappresentante di Lista</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Jovanotti</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Carmen Consoli</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Elisa</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item legend">Brunori SAS</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Giuliano Sangiorgi</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Daniele Silvestri</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Malika Ayane</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Margherita Vicario</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item legend">Madame</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Colapesce e Dimartino</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Willie Peyote</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Rancore</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item legend">Murubutu</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Cristina Donà</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Arisa</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Dargen D'Amico</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">NAIP</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Nayt</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Francesco Bianconi</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Emma Nolde</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Eugenio in Via di Gioia</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Dardust</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Levante</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item major">Zen Circus</span>
+                    <span class="separator"></span>
+                    <span class="musicista-item">Tre Allegri Ragazzi Morti</span>
+                </div>
             </div>
         </section>
 
@@ -1609,7 +2148,7 @@
         }
         animateCursor();
 
-        document.querySelectorAll('a, button, .evento-card, .festival-item').forEach(el => {
+        document.querySelectorAll('a, button, .evento-card, .festival-item, .pensatore-orbit, .musicista-item').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
@@ -1664,6 +2203,20 @@
                 orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
             });
         });
+
+        // GENERATE STARS FOR DIALOGHI SECTION
+        const cosmos = document.querySelector('.dialoghi-cosmos');
+        if (cosmos) {
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'cosmos-star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (2 + Math.random() * 2) + 's';
+                cosmos.appendChild(star);
+            }
+        }
     </script>
 
 </body>
