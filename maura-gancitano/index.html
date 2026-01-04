@@ -214,6 +214,236 @@
             font-weight: 600;
         }
 
+        /* BIO CONTENT */
+        .bio-content {
+            padding: 6rem 3rem;
+            background: var(--bianco);
+        }
+
+        .bio-section {
+            max-width: 900px;
+            margin: 0 auto 6rem;
+        }
+
+        .bio-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        .section-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .bio-text {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--nero);
+        }
+
+        .bio-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .bio-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .bio-text strong {
+            font-weight: 600;
+        }
+
+        /* LIBRI */
+        .libro-categoria {
+            margin-bottom: 3rem;
+        }
+
+        .libro-categoria:last-child {
+            margin-bottom: 0;
+        }
+
+        .categoria-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .categoria-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--grigio-chiaro);
+        }
+
+        .libro {
+            display: grid;
+            grid-template-columns: 60px 1fr auto;
+            gap: 1.5rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--grigio-chiaro);
+            align-items: baseline;
+        }
+
+        .libro:last-child {
+            border-bottom: none;
+        }
+
+        .libro-anno {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .libro-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .libro-titolo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+        }
+
+        .libro-sottotitolo {
+            font-size: 0.9rem;
+            color: var(--grigio);
+        }
+
+        .libro-editore {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            text-align: right;
+        }
+
+        .libro-premio {
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--ottanio);
+        }
+
+        /* TRADUZIONI */
+        .traduzioni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .traduzione-item {
+            padding: 1.5rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: border-color 0.3s ease;
+        }
+
+        .traduzione-item:hover {
+            border-color: var(--ottanio);
+        }
+
+        .traduzione-titolo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .traduzione-lingue {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            line-height: 1.6;
+        }
+
+        /* PODCAST */
+        .podcast-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .podcast-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: border-color 0.3s ease;
+        }
+
+        .podcast-item:hover {
+            border-color: var(--ottanio);
+        }
+
+        .podcast-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+
+        .podcast-meta {
+            font-size: 0.85rem;
+            color: var(--ottanio);
+            margin-top: 0.5rem;
+        }
+
+        .podcast-desc {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        /* ATTIVITÀ */
+        .attivita-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+        }
+
+        .attivita-item h4 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .attivita-item p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        .attivita-item strong {
+            color: var(--nero);
+            font-weight: 600;
+        }
+
         /* SPECCHIO FEATURE */
         .specchio-feature {
             background: var(--nero);
@@ -452,236 +682,6 @@
             transform: translateX(4px);
         }
 
-        /* BIO CONTENT */
-        .bio-content {
-            padding: 6rem 3rem;
-            background: var(--bianco);
-        }
-
-        .bio-section {
-            max-width: 900px;
-            margin: 0 auto 6rem;
-        }
-
-        .bio-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 3rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--grigio-chiaro);
-        }
-
-        .section-title {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2.5rem;
-            font-weight: 400;
-            letter-spacing: -0.02em;
-        }
-
-        .section-num {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.25rem;
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        .bio-text {
-            font-size: 1.1rem;
-            line-height: 2;
-            color: var(--nero);
-        }
-
-        .bio-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .bio-text p:last-child {
-            margin-bottom: 0;
-        }
-
-        .bio-text strong {
-            font-weight: 600;
-        }
-
-        /* LIBRI */
-        .libro-categoria {
-            margin-bottom: 3rem;
-        }
-
-        .libro-categoria:last-child {
-            margin-bottom: 0;
-        }
-
-        .categoria-title {
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .categoria-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--grigio-chiaro);
-        }
-
-        .libro {
-            display: grid;
-            grid-template-columns: 60px 1fr auto;
-            gap: 1.5rem;
-            padding: 1.25rem 0;
-            border-bottom: 1px solid var(--grigio-chiaro);
-            align-items: baseline;
-        }
-
-        .libro:last-child {
-            border-bottom: none;
-        }
-
-        .libro-anno {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1rem;
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        .libro-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .libro-titolo {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.25rem;
-            font-weight: 400;
-        }
-
-        .libro-sottotitolo {
-            font-size: 0.9rem;
-            color: var(--grigio);
-        }
-
-        .libro-editore {
-            font-size: 0.85rem;
-            color: var(--grigio);
-            text-align: right;
-        }
-
-        .libro-premio {
-            display: inline-block;
-            margin-top: 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            padding: 0.25rem 0.5rem;
-            border: 1px solid var(--ottanio);
-        }
-
-        /* TRADUZIONI */
-        .traduzioni-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .traduzione-item {
-            padding: 1.5rem;
-            border: 1px solid var(--grigio-chiaro);
-            transition: border-color 0.3s ease;
-        }
-
-        .traduzione-item:hover {
-            border-color: var(--ottanio);
-        }
-
-        .traduzione-titolo {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .traduzione-lingue {
-            font-size: 0.85rem;
-            color: var(--grigio);
-            line-height: 1.6;
-        }
-
-        /* PODCAST */
-        .podcast-grid {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .podcast-item {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2rem;
-            padding: 2rem;
-            border: 1px solid var(--grigio-chiaro);
-            transition: border-color 0.3s ease;
-        }
-
-        .podcast-item:hover {
-            border-color: var(--ottanio);
-        }
-
-        .podcast-title {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
-            font-weight: 400;
-        }
-
-        .podcast-meta {
-            font-size: 0.85rem;
-            color: var(--ottanio);
-            margin-top: 0.5rem;
-        }
-
-        .podcast-desc {
-            font-size: 0.95rem;
-            line-height: 1.8;
-            color: var(--grigio);
-        }
-
-        /* ATTIVITÀ */
-        .attivita-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 3rem;
-        }
-
-        .attivita-item h4 {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.25rem;
-            font-weight: 400;
-            margin-bottom: 1rem;
-        }
-
-        .attivita-item p {
-            font-size: 0.95rem;
-            line-height: 1.8;
-            color: var(--grigio);
-        }
-
-        .attivita-item strong {
-            color: var(--nero);
-            font-weight: 600;
-        }
-
         /* FOOTER */
         footer {
             padding: 4rem 3rem;
@@ -861,50 +861,6 @@
                     <span>Mazara del Vallo, 1985</span>
                     <span>Direttrice filosofica, <strong>Festival del Pensare Contemporaneo</strong></span>
                     <span><strong>Premio Rapallo 2022</strong></span>
-                </div>
-            </div>
-        </section>
-
-        <!-- SPECCHIO DELLE MIE BRAME FEATURE -->
-        <section class="specchio-feature reveal">
-            <div class="specchio-bg">
-                <span class="specchio-bg-text">Specchio</span>
-                <div class="specchio-glow"></div>
-                <div class="specchio-glow"></div>
-            </div>
-            <div class="specchio-content">
-                <div class="specchio-left">
-                    <span class="specchio-label">Premio Rapallo 2022</span>
-                    <h2 class="specchio-title">Specchio delle <em>mie brame</em></h2>
-                    <p class="specchio-subtitle">La prigione della bellezza</p>
-                    <p class="specchio-desc">Un'indagine filosofica sulla <strong>dittatura della bellezza</strong> e sul rapporto tra corpo, identità e potere. Un libro che ha attraversato i confini italiani, tradotto in cinque lingue, e che ha vinto il <strong>Premio Rapallo 2022</strong> ex aequo con Bianca Pitzorno.</p>
-                    <p class="specchio-desc">Perché ci sentiamo <em>mai abbastanza</em>? Perché il corpo delle donne è diventato un campo di battaglia? Maura Gancitano esplora le radici culturali e filosofiche di un'ossessione contemporanea, offrendo strumenti per liberarsene.</p>
-                    <div class="specchio-premio">
-                        <span class="specchio-premio-icon">✦</span>
-                        <span class="specchio-premio-text">Premio Rapallo 2022</span>
-                    </div>
-                    <a href="https://shop.tlon.it" target="_blank" class="specchio-cta">
-                        <span>Acquista il libro</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                </div>
-                <div class="specchio-right">
-                    <div class="specchio-quote">
-                        <p>«Il corpo femminile è diventato il luogo in cui si gioca una partita che non riguarda mai davvero le donne, ma il potere di chi le guarda.»</p>
-                        <cite>— Specchio delle mie brame</cite>
-                    </div>
-                    <div class="specchio-traduzioni">
-                        <div class="specchio-traduzioni-label">Traduzioni internazionali</div>
-                        <div class="specchio-traduzioni-list">
-                            <span>Spagnolo</span>
-                            <span>Cinese</span>
-                            <span>Portoghese</span>
-                            <span>Coreano</span>
-                            <span>Romeno</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -1146,6 +1102,51 @@
             </section>
 
         </div>
+
+        <!-- SPECCHIO DELLE MIE BRAME FEATURE -->
+        <section class="specchio-feature reveal">
+            <div class="specchio-bg">
+                <span class="specchio-bg-text">Specchio</span>
+                <div class="specchio-glow"></div>
+                <div class="specchio-glow"></div>
+            </div>
+            <div class="specchio-content">
+                <div class="specchio-left">
+                    <span class="specchio-label">Premio Rapallo 2022</span>
+                    <h2 class="specchio-title">Specchio delle <em>mie brame</em></h2>
+                    <p class="specchio-subtitle">La prigione della bellezza</p>
+                    <p class="specchio-desc">Un'indagine filosofica sulla <strong>dittatura della bellezza</strong> e sul rapporto tra corpo, identità e potere. Un libro che ha attraversato i confini italiani, tradotto in cinque lingue, e che ha vinto il <strong>Premio Rapallo 2022</strong> ex aequo con Bianca Pitzorno.</p>
+                    <p class="specchio-desc">Perché ci sentiamo <em>mai abbastanza</em>? Perché il corpo delle donne è diventato un campo di battaglia? Maura Gancitano esplora le radici culturali e filosofiche di un'ossessione contemporanea, offrendo strumenti per liberarsene.</p>
+                    <div class="specchio-premio">
+                        <span class="specchio-premio-icon">✦</span>
+                        <span class="specchio-premio-text">Premio Rapallo 2022</span>
+                    </div>
+                    <a href="https://shop.tlon.it" target="_blank" class="specchio-cta">
+                        <span>Acquista il libro</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="specchio-right">
+                    <div class="specchio-quote">
+                        <p>«Il corpo femminile è diventato il luogo in cui si gioca una partita che non riguarda mai davvero le donne, ma il potere di chi le guarda.»</p>
+                        <cite>— Specchio delle mie brame</cite>
+                    </div>
+                    <div class="specchio-traduzioni">
+                        <div class="specchio-traduzioni-label">Traduzioni internazionali</div>
+                        <div class="specchio-traduzioni-list">
+                            <span>Spagnolo</span>
+                            <span>Cinese</span>
+                            <span>Portoghese</span>
+                            <span>Coreano</span>
+                            <span>Romeno</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer>
