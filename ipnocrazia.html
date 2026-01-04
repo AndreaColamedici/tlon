@@ -1134,8 +1134,15 @@
         }
 
         @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden;
+                max-width: 100vw;
+            }
+            
             header {
                 padding: 1rem 1.5rem;
+                background: var(--nero);
+                border-bottom: 1px solid rgba(255,255,255,0.1);
             }
 
             nav {
@@ -1144,6 +1151,11 @@
 
             .hamburger {
                 display: flex;
+                flex-shrink: 0;
+            }
+            
+            .hamburger span {
+                background: var(--bianco);
             }
 
             .mobile-menu {
