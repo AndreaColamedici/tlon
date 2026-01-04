@@ -60,12 +60,21 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 100;
+            z-index: 1002;
             padding: 2rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             mix-blend-mode: difference;
+        }
+
+        header.menu-open {
+            background: var(--nero);
+            mix-blend-mode: normal;
+        }
+
+        header.menu-open .logo img {
+            filter: invert(1);
         }
 
         .logo img { height: 24px; filter: invert(1); }
@@ -92,7 +101,8 @@
             width: 32px;
             height: 32px;
             cursor: pointer;
-            z-index: 1001;
+            position: relative;
+            z-index: 1003;
         }
 
         .hamburger span {
@@ -173,9 +183,7 @@
             color: var(--ottanio);
         }
 
-        /* ================================================
-           HERO
-           ================================================ */
+        /* HERO */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -233,9 +241,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ================================================
-           MARQUEE
-           ================================================ */
+        /* MARQUEE */
         .marquee-section {
             padding: 5rem 0;
             background: var(--nero);
@@ -280,9 +286,7 @@
             opacity: 0.3;
         }
 
-        /* ================================================
-           NUMERI
-           ================================================ */
+        /* NUMERI */
         .numeri {
             padding: 10rem 3rem;
             background: var(--bianco);
@@ -338,16 +342,13 @@
             margin-top: 1rem;
         }
 
-        /* ================================================
-           ABOUT EDIZIONI - SEZIONE IMMERSIVA
-           ================================================ */
+        /* ABOUT EDIZIONI */
         .about-edizioni {
             position: relative;
             background: var(--bianco);
             overflow: hidden;
         }
 
-        /* Hero della sezione */
         .about-hero {
             min-height: 100vh;
             display: flex;
@@ -429,7 +430,6 @@
             transform: translateY(0);
         }
 
-        /* Linea editoriale - layout drammatico */
         .linea-editoriale {
             padding: 12rem 3rem;
             background: var(--nero);
@@ -519,7 +519,6 @@
             transform: translateY(0);
         }
 
-        /* Collane - design immersivo */
         .collane-section {
             padding: 10rem 0;
             background: var(--crema);
@@ -638,9 +637,7 @@
             transition: color 0.6s ease;
         }
 
-        /* ================================================
-           LIBRI SHOWCASE - CON COVER REALI
-           ================================================ */
+        /* LIBRI */
         .libri {
             padding: 12rem 0;
             background: var(--nero);
@@ -746,9 +743,7 @@
             letter-spacing: 0.05em;
         }
 
-        /* ================================================
-           CATALOGO LINK
-           ================================================ */
+        /* CATALOGO LINK */
         .catalogo-link {
             padding: 8rem 3rem;
             background: var(--bianco);
@@ -812,9 +807,7 @@
             border-color: var(--nero);
         }
 
-        /* ================================================
-           TEAM
-           ================================================ */
+        /* TEAM */
         .team {
             padding: 10rem 3rem;
             background: var(--crema);
@@ -876,9 +869,7 @@
             color: var(--ottanio);
         }
 
-        /* ================================================
-           CTA
-           ================================================ */
+        /* CTA */
         .cta {
             min-height: 100vh;
             display: flex;
@@ -1443,10 +1434,12 @@
 // HAMBURGER MENU
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
+const header = document.querySelector('header');
 
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
     mobileMenu.classList.toggle('active');
+    header.classList.toggle('menu-open');
     document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
 });
 
@@ -1454,6 +1447,7 @@ mobileMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
         hamburger.classList.remove('active');
         mobileMenu.classList.remove('active');
+        header.classList.remove('menu-open');
         document.body.style.overflow = '';
     });
 });
