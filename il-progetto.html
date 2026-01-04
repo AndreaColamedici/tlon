@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Il Progetto — Tlon</title>
+    <title>Il Progetto â€” Tlon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -118,23 +118,12 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1002;
+            z-index: 100;
             padding: 1.5rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--bianco);
-            border-bottom: 1px solid var(--grigio-chiaro);
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-
-        header.menu-open {
-            background: var(--nero);
-            border-bottom-color: var(--nero);
-        }
-
-        header.menu-open .logo img {
-            filter: invert(1);
+            mix-blend-mode: difference;
         }
 
         .logo {
@@ -145,7 +134,7 @@
         .logo img {
             height: 28px;
             width: auto;
-            transition: filter 0.3s ease;
+            filter: invert(1);
         }
 
         nav {
@@ -158,103 +147,13 @@
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--nero);
-            opacity: 0.5;
+            color: var(--bianco);
+            opacity: 0.6;
             transition: opacity 0.3s ease;
         }
 
         nav a:hover {
             opacity: 1;
-        }
-
-        /* HAMBURGER */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            position: relative;
-            z-index: 1003;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: var(--nero);
-            margin: 3px 0;
-            transition: all 0.3s ease;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-
-        .hamburger.active span {
-            background: var(--bianco);
-        }
-
-        /* MOBILE MENU */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--nero);
-            z-index: 1000;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-
-        .mobile-menu.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-menu a {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2rem;
-            font-style: italic;
-            color: var(--bianco);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
-        }
-
-        .mobile-menu.active a {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
-        .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
-        .mobile-menu a:nth-child(3) { transition-delay: 0.2s; }
-        .mobile-menu a:nth-child(4) { transition-delay: 0.25s; }
-        .mobile-menu a:nth-child(5) { transition-delay: 0.3s; }
-        .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
-        .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
-        .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
-
-        .mobile-menu a:hover {
-            color: var(--ottanio);
         }
 
         /* CANVAS BG */
@@ -1149,7 +1048,7 @@
         }
 
         .founder-cta::after {
-            content: '→';
+            content: 'â†’';
             transition: transform 0.3s ease;
         }
 
@@ -1384,7 +1283,7 @@
         }
 
         .footer-back::before {
-            content: '←';
+            content: 'â†';
         }
 
         .footer-links {
@@ -1403,6 +1302,99 @@
         }
 
         /* RESPONSIVE */
+        /* HAMBURGER MENU */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1003;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--nero);
+            margin: 3px 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .hamburger.active span {
+            background: var(--bianco);
+        }
+
+        /* MOBILE MENU */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nero);
+            z-index: 1001;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--bianco);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+        }
+
+        .mobile-menu.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu a:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
+        .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
+        .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
+
+        .mobile-menu a:hover {
+            color: var(--ottanio);
+        }
+
         @media (max-width: 1200px) {
             .books-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -1424,6 +1416,44 @@
 
             .mobile-menu {
                 display: flex;
+            }
+
+            /* MISSION - VERTICALE SU MOBILE */
+            .mission {
+                height: auto;
+            }
+
+            .mission-sticky {
+                position: relative;
+                height: auto;
+            }
+
+            .mission-track {
+                flex-direction: column;
+                transform: none !important;
+            }
+
+            .mission-panel {
+                min-width: 100%;
+                min-height: 80vh;
+                padding: 4rem 1.5rem;
+            }
+
+            .mission-panel-num {
+                font-size: 6rem;
+                margin-bottom: -2rem;
+            }
+
+            .mission-panel-title {
+                font-size: 2rem;
+            }
+
+            .mission-panel-text {
+                font-size: 1rem;
+            }
+
+            .mission-progress {
+                display: none;
             }
 
             .cursor, .cursor-follower {
@@ -1527,11 +1557,11 @@
             <a href="./eventi-festival.html">Eventi</a>
             <a href="./contatti/">Contatti</a>
         </nav>
-        <div class="hamburger" id="hamburger">
+        <button class="hamburger" id="hamburger" aria-label="Menu">
             <span></span>
             <span></span>
             <span></span>
-        </div>
+        </button>
     </header>
 
     <div class="mobile-menu" id="mobileMenu">
@@ -1571,13 +1601,13 @@
         <!-- BORGES -->
         <section class="borges">
             <div class="borges-bg">
-                <span class="borges-bg-text">Tlön</span>
+                <span class="borges-bg-text">TlÃ¶n</span>
             </div>
             <div class="borges-content">
-                <p class="borges-quote" id="borges-quote">«Tlön sarà un labirinto, ma è un labirinto ordito dagli uomini, un labirinto destinato a essere decifrato dagli uomini.»</p>
+                <p class="borges-quote" id="borges-quote">Â«TlÃ¶n sarÃ  un labirinto, ma Ã¨ un labirinto ordito dagli uomini, un labirinto destinato a essere decifrato dagli uomini.Â»</p>
                 <div class="borges-author" id="borges-author">
                     <p class="borges-author-name">Jorge Luis Borges</p>
-                    <p class="borges-author-work">Tlön, Uqbar, Orbis Tertius — Finzioni, 1944</p>
+                    <p class="borges-author-work">TlÃ¶n, Uqbar, Orbis Tertius â€” Finzioni, 1944</p>
                 </div>
             </div>
         </section>
@@ -1594,8 +1624,8 @@
                 <div class="origin-content" id="origin-content">
                     <span class="origin-label">L'origine</span>
                     <h2 class="origin-title">Un progetto di <em>ricerca</em> e divulgazione</h2>
-                    <p class="origin-text">Tlon è un progetto di ricerca e divulgazione culturale e filosofica ideato da Maura Gancitano e Andrea Colamedici. Il nome deriva dal pianeta immaginario creato da Borges nel racconto contenuto in Finzioni: un mondo fittizio che, a forza di essere pensato, diventa reale.</p>
-                    <p class="origin-text">La missione è recuperare il modo originario di fare filosofia attraverso il dialogo e l'incontro umano, mescolando cultura alta e cultura pop, mettendo in connessione l'ambiente accademico con il mondo popolare.</p>
+                    <p class="origin-text">Tlon Ã¨ un progetto di ricerca e divulgazione culturale e filosofica ideato da Maura Gancitano e Andrea Colamedici. Il nome deriva dal pianeta immaginario creato da Borges nel racconto contenuto in Finzioni: un mondo fittizio che, a forza di essere pensato, diventa reale.</p>
+                    <p class="origin-text">La missione Ã¨ recuperare il modo originario di fare filosofia attraverso il dialogo e l'incontro umano, mescolando cultura alta e cultura pop, mettendo in connessione l'ambiente accademico con il mondo popolare.</p>
                     <div class="origin-date">
                         <div class="origin-date-item">
                             <p class="origin-date-label">Fondazione</p>
@@ -1622,35 +1652,35 @@
                         <div class="mission-panel-content">
                             <div class="mission-panel-num">I</div>
                             <h2 class="mission-panel-title">Scuola di <em>Filosofia</em></h2>
-                            <p class="mission-panel-text">Corsi, seminari, podcast. La filosofia come strumento per vivere meglio e pensare criticamente la contemporaneità. Collaboriamo con istituzioni, università, aziende e fondazioni.</p>
+                            <p class="mission-panel-text">Corsi, seminari, podcast. La filosofia come strumento per vivere meglio e pensare criticamente la contemporaneitÃ . Il podcast Scuola di Filosofie Ã¨ tra i piÃ¹ ascoltati in Italia. Pensare Europeo nasce in collaborazione con il Parlamento Europeo, Meno per Meno con NiccolÃ² Fabi su RaiPlaySound.</p>
                         </div>
                     </div>
                     <div class="mission-panel">
                         <div class="mission-panel-content">
                             <div class="mission-panel-num">II</div>
                             <h2 class="mission-panel-title">Casa <em>Editrice</em></h2>
-                            <p class="mission-panel-text">Edizioni Tlon nasce nel 2016 come articolazione editoriale del progetto culturale Tlon. Pubblica filosofia contemporanea, studi di genere, saggistica critica, narrativa e poesia, con un'attenzione costante alla relazione tra pensiero, linguaggio e vita quotidiana.</p>
+                            <p class="mission-panel-text">Edizioni Tlon nasce nel febbraio 2016. Pubblichiamo filosofia (Planetari Big), studi di genere (Numeri Primi), attualitÃ  (Soglie, Urano), pamphlet (Dardi), pratiche spirituali (Radici), romanzi (Finzioni), poesia (Controcielo). Tra i titoli di punta, Storia dell'amore materno di Ã‰lisabeth Badinter.</p>
                         </div>
                     </div>
                     <div class="mission-panel">
                         <div class="mission-panel-content">
                             <div class="mission-panel-num">III</div>
                             <h2 class="mission-panel-title">Librerie e <em>Bookshop</em></h2>
-                            <p class="mission-panel-text">Il 2 ottobre 2016 apre la Libreria Teatro Tlon in Via Federico Nansen 14, quartiere Ostiense di Roma. Dal 2021 gestiamo Tlon Aleph alla Galleria Nazionale d'Arte Moderna e Contemporanea e il bookshop di Villa Medici. Da marzo 2025 siamo a Venezia, con la Libreria Giovanni alla Fondazione Querini Stampalia.</p>
+                            <p class="mission-panel-text">Il 2 ottobre 2016 apre la Libreria Teatro Tlon in Via Federico Nansen 14, quartiere Ostiense di Roma. Dal 2021 gestiamo Tlon Aleph alla Galleria Nazionale d'Arte Moderna e Contemporanea e il bookshop di Villa Medici. A Venezia, la Libreria Giovanni alla Fondazione Querini Stampalia.</p>
                         </div>
                     </div>
                     <div class="mission-panel">
                         <div class="mission-panel-content">
                             <div class="mission-panel-num">IV</div>
                             <h2 class="mission-panel-title">Festival ed <em>Eventi</em></h2>
-                            <p class="mission-panel-text">Direzione filosofica del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. Ideatori de Il Pod — Italian Podcast Awards, della Festa della Filosofia, di Prendiamola con Filosofia. Portiamo il pensiero dove può accadere l'imprevisto.</p>
+                            <p class="mission-panel-text">Direzione filosofica del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. Ideatori de Il Pod â€” Italian Podcast Awards, della Festa della Filosofia, di Prendiamola con Filosofia. Portiamo il pensiero dove puÃ² accadere l'imprevisto.</p>
                         </div>
                     </div>
                     <div class="mission-panel">
                         <div class="mission-panel-content">
                             <div class="mission-panel-num">V</div>
                             <h2 class="mission-panel-title">Formazione <em>Corporate</em></h2>
-                            <p class="mission-panel-text">Percorsi formativi su filosofia, AI, diversity & inclusion, educazione sentimentale, senso del lavoro.</p>
+                            <p class="mission-panel-text">Percorsi formativi su filosofia, AI, diversity & inclusion, educazione sentimentale, senso del lavoro. Andrea insegna Social Media Theory alla IULM e Comunicazione Multimediale allo IED. Collaboriamo con aziende, istituzioni e universitÃ  italiane e internazionali.</p>
                         </div>
                     </div>
                 </div>
@@ -1670,7 +1700,7 @@
                 <div class="timeline-item">
                     <div class="timeline-content">
                         <h3 class="timeline-title">L'<em>inizio</em></h3>
-                        <p class="timeline-desc">Nasce Tlon con una serie di eventi culturali a Roma. Il nome viene dal racconto di Borges: un pianeta immaginario dai tratti distopici che diventa reale a forza di essere pensato.</p>
+                        <p class="timeline-desc">Nasce Tlon con una serie di eventi culturali a Roma. Il nome viene dal racconto di Borges: un pianeta immaginario che diventa reale a forza di essere pensato.</p>
                     </div>
                     <div class="timeline-year">
                         <div class="timeline-year-circle">
@@ -1689,7 +1719,8 @@
                     </div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">Edizioni e <em>Libreria</em></h3>
-                        <p class="timeline-desc">Nascono Edizioni Tlon (a febbraio) e la Libreria Teatro in Via Federico Nansen 14, quartiere Ostiense di Roma (il 2 ottobre). Ad aprile esce per Edizioni Tlon il primo libro scritto a quattro mani da Maura Gancitano e Andrea Colamedici: "Tu non sei Dio, fenomenologia della spiritualità contemporanea".</p>
+                        <p class="timeline-desc">Nascono Edizioni Tlon (a febbraio) e la Libreria Teatro in Via Federico Nansen 14, quartiere Ostiense di Roma (il 2 ottobre). Ad aprile esce per Edizioni Tlon il primo libro scritto a quattro mani da Maura Gancitano e Andrea Colamedici: â€œTu non sei Dio, fenomenologia della spiritualitÃ  contemporaneaâ€.
+</p>
                         <div class="timeline-tags">
                             <span class="timeline-tag">Edizioni Tlon</span>
                             <span class="timeline-tag">Libreria Teatro</span>
@@ -1699,8 +1730,8 @@
 
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <h3 class="timeline-title">La società della <em>performance</em></h3>
-                        <p class="timeline-desc">La filosofia di Tlon inizia a prendere forma come critica della contemporaneità.</p>
+                        <h3 class="timeline-title">La societÃ  della <em>performance</em></h3>
+                        <p class="timeline-desc">Il saggio che prosegue la linea di Guy Debord e Byung-Chul Han. La filosofia di Tlon inizia a prendere forma come critica della contemporaneitÃ .</p>
                         <div class="timeline-tags">
                             <span class="timeline-tag">Critica culturale</span>
                         </div>
@@ -1733,7 +1764,7 @@
                 <div class="timeline-item">
                     <div class="timeline-content">
                         <h3 class="timeline-title">Prendiamola con <em>Filosofia</em></h3>
-                        <p class="timeline-desc">Durante il lockdown organizziamo la maratona online con centinaia di ospiti tra filosofi, artisti, musicisti, seguita da milioni di italiani. Nasce anche la Festa della Filosofia alla Triennale di Milano.</p>
+                        <p class="timeline-desc">Durante il lockdown organizziamo la maratona online con centinaia di ospiti tra filosofi, artisti, musicisti. Nasce anche la Festa della Filosofia alla Triennale di Milano.</p>
                         <div class="timeline-tags">
                             <span class="timeline-tag">Maratona culturale</span>
                         </div>
@@ -1755,7 +1786,7 @@
                     </div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">Tlon <em>Aleph</em></h3>
-                        <p class="timeline-desc">Apre il bookshop alla Galleria Nazionale d'Arte Moderna e Contemporanea di Roma. Esce L'alba dei nuovi dei con Mondadori. Scuola di Filosofie diventa uno dei podcast più ascoltati su Audible Italia.</p>
+                        <p class="timeline-desc">Apre il bookshop alla Galleria Nazionale d'Arte Moderna e Contemporanea di Roma. Esce L'alba dei nuovi dei con Mondadori. Scuola di Filosofie diventa uno dei podcast piÃ¹ ascoltati su Audible Italia.</p>
                         <div class="timeline-tags">
                             <span class="timeline-tag">GNAM Roma</span>
                             <span class="timeline-tag">Mondadori</span>
@@ -1766,7 +1797,7 @@
                 <div class="timeline-item">
                     <div class="timeline-content">
                         <h3 class="timeline-title">Il Pod e Premio <em>Rapallo</em></h3>
-                        <p class="timeline-desc">Nasce Il Pod — Italian Podcast Awards, il primo premio per i migliori podcast italiani. Maura vince il Premio Rapallo con Specchio delle mie brame (Einaudi), ex aequo con Bianca Pitzorno.</p>
+                        <p class="timeline-desc">Nasce Il Pod â€” Italian Podcast Awards, il primo premio per i migliori podcast italiani. Maura vince il Premio Rapallo con Specchio delle mie brame (Einaudi), ex aequo con Bianca Pitzorno.</p>
                         <div class="timeline-tags">
                             <span class="timeline-tag">Il Pod</span>
                             <span class="timeline-tag">Premio Rapallo</span>
@@ -1790,7 +1821,7 @@
                     </div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">Festival del <em>Pensare</em></h3>
-                        <p class="timeline-desc">Inizia la direzione filosofica del Festival del Pensare Contemporaneo di Piacenza. Tlon diventa un progetto nazionale. Esce "Ma chi me lo fa fare?" sul senso del lavoro.</p>
+                        <p class="timeline-desc">Inizia la direzione filosofica del Festival del Pensare Contemporaneo di Piacenza. Tlon diventa un progetto nazionale. Esce Ma chi me lo fa fare? sul senso del lavoro.</p>
                         <div class="timeline-tags">
                             <span class="timeline-tag">Piacenza</span>
                             <span class="timeline-tag">Direzione artistica</span>
@@ -1801,7 +1832,7 @@
                 <div class="timeline-item">
                     <div class="timeline-content">
                         <h3 class="timeline-title"><em>Ipnocrazia</em></h3>
-                        <p class="timeline-desc">Il libro di Andrea, firmato inizialmente dal filosofo cinese Jianwei Xun, viene rivelato come performance narrativa. Diventa un caso internazionale e viene tradotto in francese, spagnolo, inglese.</p>
+                        <p class="timeline-desc">Il libro di Andrea, firmato inizialmente dal filosofo cinese Jianwei Xun, viene rivelato come performance narrativa. Discusso sulla stampa internazionale e tradotto in francese, spagnolo, inglese.</p>
                         <div class="timeline-tags">
                             <span class="timeline-tag">Caso internazionale</span>
                         </div>
@@ -1850,7 +1881,7 @@
                 </div>
                 <div class="book-item">
                     <div class="book-year">2018</div>
-                    <h3 class="book-title">La società della performance</h3>
+                    <h3 class="book-title">La societÃ  della performance</h3>
                     <p class="book-publisher">Tlon</p>
                 </div>
                 <div class="book-item">
@@ -1880,7 +1911,7 @@
                 </div>
                 <div class="book-item">
                     <div class="book-year">2024</div>
-                    <h3 class="book-title">Filosofia (non) è noioso</h3>
+                    <h3 class="book-title">Filosofia (non) Ã¨ noioso</h3>
                     <p class="book-publisher">Zanichelli</p>
                 </div>
                 <div class="book-item">
@@ -1941,18 +1972,18 @@
                         <div class="founder-specialties">
                             <p class="founder-specialty-label">Libri propri</p>
                             <div class="founder-tags">
-                                <span class="founder-tag">Specchio delle mie brame — Einaudi</span>
-                                <span class="founder-tag">Erotica dei sentimenti — Einaudi</span>
+                                <span class="founder-tag">Specchio delle mie brame â€” Einaudi</span>
+                                <span class="founder-tag">Erotica dei sentimenti â€” Einaudi</span>
                             </div>
                         </div>
-                        <span class="founder-cta">Scopri di più</span>
+                        <span class="founder-cta">Scopri di piÃ¹</span>
                     </a>
                 </div>
                 <div class="founder">
                     <a href="./andrea-colamedici/">
                         <span class="founder-role">Fondatore</span>
                         <h3 class="founder-name">Andrea <em>Colamedici</em></h3>
-                        <p class="founder-bio">Filosofo, editore, formatore, regista, attore teatrale. Docente IED e 24OreBusiness School. Presidente GenIALAB.</p>
+                        <p class="founder-bio">Filosofo, editore, formatore, regista, attore teatrale. Docente IED e IULM. Presidente GenIALAB.</p>
                         <div class="founder-specialties">
                             <p class="founder-specialty-label">Specializzazioni</p>
                             <div class="founder-tags">
@@ -1965,10 +1996,10 @@
                         <div class="founder-specialties">
                             <p class="founder-specialty-label">Libro proprio</p>
                             <div class="founder-tags">
-                                <span class="founder-tag">Ipnocrazia — Tlon</span>
+                                <span class="founder-tag">Ipnocrazia â€” Tlon</span>
                             </div>
                         </div>
-                        <span class="founder-cta">Scopri di più</span>
+                        <span class="founder-cta">Scopri di piÃ¹</span>
                     </a>
                 </div>
             </div>
@@ -2001,14 +2032,14 @@
             <p class="partners-label">Hanno lavorato con noi</p>
             <div class="partners-row">
                 <div class="partners-track">
-                    <span>RAI</span><span>La7</span><span>Sky</span><span>RSI Svizzera</span><span>Radio24</span><span>Radio Capital</span><span>Radio Rock</span><span>France Culture</span><span>La Repubblica</span><span>Vanity Fair</span><span>linus</span><span>Donna Moderna</span><span>Elle</span><span>Harper's Bazaar</span><span>Corriere della Sera</span><span>La Stampa</span><span>El País</span><span>La Vanguardia</span><span>Le Monde</span><span>Le Figaro</span>
-                    <span>RAI</span><span>La7</span><span>Sky</span><span>RSI Svizzera</span><span>Radio24</span><span>Radio Capital</span><span>Radio Rock</span><span>France Culture</span><span>La Repubblica</span><span>Vanity Fair</span><span>linus</span><span>Donna Moderna</span><span>Elle</span><span>Harper's Bazaar</span><span>Corriere della Sera</span><span>La Stampa</span><span>El País</span><span>La Vanguardia</span><span>Le Monde</span><span>Le Figaro</span>
+                    <span>RAI</span><span>La7</span><span>Sky</span><span>RSI Svizzera</span><span>Radio24</span><span>Radio Capital</span><span>Radio Rock</span><span>France Culture</span><span>La Repubblica</span><span>Vanity Fair</span><span>linus</span><span>Donna Moderna</span><span>Elle</span><span>Harper's Bazaar</span><span>Corriere della Sera</span><span>La Stampa</span><span>El PaÃ­s</span><span>La Vanguardia</span><span>Le Monde</span><span>Le Figaro</span>
+                    <span>RAI</span><span>La7</span><span>Sky</span><span>RSI Svizzera</span><span>Radio24</span><span>Radio Capital</span><span>Radio Rock</span><span>France Culture</span><span>La Repubblica</span><span>Vanity Fair</span><span>linus</span><span>Donna Moderna</span><span>Elle</span><span>Harper's Bazaar</span><span>Corriere della Sera</span><span>La Stampa</span><span>El PaÃ­s</span><span>La Vanguardia</span><span>Le Monde</span><span>Le Figaro</span>
                 </div>
             </div>
             <div class="partners-row">
                 <div class="partners-track">
-                    <span>IED</span><span>IULM</span><span>Sapienza</span><span>LUISS</span><span>San Raffaele</span><span>Politecnico Milano</span><span>Università di Bologna</span><span>Federico II Napoli</span><span>Treccani Academy</span>
-                    <span>IED</span><span>IULM</span><span>Sapienza</span><span>LUISS</span><span>San Raffaele</span><span>Politecnico Milano</span><span>Università di Bologna</span><span>Federico II Napoli</span><span>Treccani Academy</span>
+                    <span>IED</span><span>IULM</span><span>Sapienza</span><span>LUISS</span><span>San Raffaele</span><span>Politecnico Milano</span><span>Columbia University</span><span>UniversitÃ  di Bologna</span><span>Federico II Napoli</span><span>Treccani Academy</span>
+                    <span>IED</span><span>IULM</span><span>Sapienza</span><span>LUISS</span><span>San Raffaele</span><span>Politecnico Milano</span><span>Columbia University</span><span>UniversitÃ  di Bologna</span><span>Federico II Napoli</span><span>Treccani Academy</span>
                 </div>
             </div>
             <div class="partners-row">
@@ -2072,6 +2103,26 @@
     </footer>
 
     <script>
+        // MOBILE MENU TOGGLE
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (hamburger && mobileMenu) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            });
+
+            document.querySelectorAll('.mobile-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+
         // LOADER
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -2273,7 +2324,10 @@
         const panels = document.querySelectorAll('.mission-panel');
         const progressDots = document.querySelectorAll('.mission-progress-dot');
 
-        window.addEventListener('scroll', () => {
+        function handleMissionScroll() {
+            // Disabilita su mobile
+            if (window.innerWidth <= 900) return;
+
             const rect = missionSection.getBoundingClientRect();
             const sectionHeight = missionSection.offsetHeight;
             const viewportHeight = window.innerHeight;
@@ -2292,7 +2346,9 @@
             } else {
                 missionProgress.classList.remove('visible');
             }
-        });
+        }
+
+        window.addEventListener('scroll', handleMissionScroll);
 
         // TIMELINE ANIMATION
         const timelineItems = document.querySelectorAll('.timeline-item');
@@ -2344,28 +2400,6 @@
                 content.style.transform = `translateY(${scrolled * 0.4}px)`;
                 content.style.opacity = 1 - (scrolled / window.innerHeight);
             }
-        });
-
-        // MOBILE MENU
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const header = document.querySelector('header');
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-            header.classList.toggle('menu-open');
-            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-        });
-
-        // Close menu when clicking a link
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                header.classList.remove('menu-open');
-                document.body.style.overflow = '';
-            });
         });
     </script>
 
