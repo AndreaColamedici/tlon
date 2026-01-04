@@ -60,6 +60,16 @@
             align-items: center;
             background: var(--bianco);
             border-bottom: 1px solid var(--grigio-chiaro);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        header.menu-open {
+            background: var(--nero);
+            border-bottom-color: transparent;
+        }
+
+        header.menu-open .logo img {
+            filter: invert(1);
         }
 
         .logo {
@@ -70,6 +80,7 @@
         .logo img {
             height: 28px;
             width: auto;
+            transition: filter 0.3s ease;
         }
 
         nav {
@@ -1255,10 +1266,12 @@
         // Mobile menu
         const hamburger = document.getElementById('hamburger');
         const mobileMenu = document.getElementById('mobileMenu');
+        const header = document.querySelector('header');
 
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
+            header.classList.toggle('menu-open');
             document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
         });
 
@@ -1267,6 +1280,7 @@
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
                 mobileMenu.classList.remove('active');
+                header.classList.remove('menu-open');
                 document.body.style.overflow = '';
             });
         });
