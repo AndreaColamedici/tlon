@@ -29,20 +29,50 @@
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bianco);
-            color: var(--nero);
+            background: var(--nero);
+            color: var(--bianco);
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            cursor: none;
         }
 
         ::selection {
-            background: var(--nero);
+            background: var(--ottanio);
             color: var(--bianco);
         }
 
         a {
             color: inherit;
             text-decoration: none;
+        }
+
+        /* CUSTOM CURSOR */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--ottanio);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .cursor.hover {
+            width: 60px;
+            height: 60px;
+            border-color: var(--bianco);
         }
 
         /* HEADER */
@@ -56,8 +86,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--bianco);
-            border-bottom: 1px solid var(--grigio-chiaro);
+            background: transparent;
+            mix-blend-mode: difference;
         }
 
         .logo {
@@ -68,6 +98,7 @@
         .logo img {
             height: 28px;
             width: auto;
+            filter: invert(1);
         }
 
         nav {
@@ -80,7 +111,7 @@
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--nero);
+            color: var(--bianco);
             opacity: 0.5;
             transition: opacity 0.3s ease;
         }
@@ -89,262 +120,375 @@
             opacity: 1;
         }
 
+        /* PARTICLES CANVAS */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         /* HERO */
         .hero {
-            min-height: 80vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 10rem 3rem 6rem;
+            align-items: center;
+            padding: 10rem 3rem;
             position: relative;
             overflow: hidden;
+            perspective: 1000px;
         }
 
-        .hero-bg {
+        .hero-depth-layer {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
-                radial-gradient(ellipse at 20% 30%, rgba(42, 107, 107, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(42, 107, 107, 0.04) 0%, transparent 50%);
         }
 
-        .hero-grid-pattern {
+        .hero-depth-layer.layer-1 {
+            background: radial-gradient(ellipse at 30% 20%, rgba(42, 107, 107, 0.15) 0%, transparent 60%);
+            transform: translateZ(-100px) scale(1.2);
+        }
+
+        .hero-depth-layer.layer-2 {
+            background: radial-gradient(ellipse at 70% 80%, rgba(42, 107, 107, 0.1) 0%, transparent 50%);
+            transform: translateZ(-200px) scale(1.4);
+        }
+
+        .hero-grid {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background-image: 
-                linear-gradient(rgba(42, 107, 107, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(42, 107, 107, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+                linear-gradient(rgba(42, 107, 107, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(42, 107, 107, 0.08) 1px, transparent 1px);
+            background-size: 80px 80px;
+            transform: perspective(500px) rotateX(60deg) translateY(-50%);
+            transform-origin: center top;
             opacity: 0.5;
+            animation: gridFlow 20s linear infinite;
+        }
+
+        @keyframes gridFlow {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 80px; }
         }
 
         .hero-content {
-            max-width: 900px;
+            text-align: center;
             position: relative;
-            z-index: 1;
+            z-index: 2;
+            max-width: 1000px;
         }
 
         .hero-label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.4em;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.6em;
             text-transform: uppercase;
             color: var(--ottanio);
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            margin-bottom: 3rem;
             opacity: 0;
-            animation: fadeUp 1s ease 0.3s forwards;
-        }
-
-        .hero-label::before {
-            content: '';
-            width: 40px;
-            height: 1px;
-            background: var(--ottanio);
+            animation: glitchIn 1s ease 0.5s forwards;
         }
 
         .hero-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-size: clamp(4rem, 12vw, 10rem);
             font-weight: 400;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            margin-bottom: 2rem;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            margin-bottom: 3rem;
             opacity: 0;
-            animation: fadeUp 1s ease 0.5s forwards;
+            animation: titleReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
         }
 
         .hero-title em {
             font-style: italic;
             color: var(--ottanio);
+            position: relative;
+            display: inline-block;
         }
 
-        .hero-desc {
-            font-size: 1.3rem;
+        .hero-title em::after {
+            content: '';
+            position: absolute;
+            bottom: 0.1em;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--ottanio);
+            transform: scaleX(0);
+            animation: lineExpand 0.8s ease 2s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
             line-height: 1.8;
-            color: var(--grigio);
+            color: rgba(255,255,255,0.5);
             max-width: 700px;
+            margin: 0 auto;
             opacity: 0;
-            animation: fadeUp 1s ease 0.7s forwards;
+            animation: fadeUp 1s ease 1.2s forwards;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 1.5s forwards;
+        }
+
+        .hero-scroll-text {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .hero-scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--ottanio), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes glitchIn {
+            0% { opacity: 0; transform: translateX(-20px); }
+            20% { opacity: 1; transform: translateX(5px); }
+            40% { transform: translateX(-3px); }
+            60% { transform: translateX(2px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes titleReveal {
+            0% { opacity: 0; transform: translateY(100px) rotateX(-20deg); }
+            100% { opacity: 1; transform: translateY(0) rotateX(0); }
+        }
+
+        @keyframes lineExpand {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
         }
 
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* GENIALAB */
-        .genialab {
-            padding: 10rem 3rem;
-            background: var(--nero);
-            color: var(--bianco);
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(1); }
+            50% { opacity: 1; transform: scaleY(1.2); }
+        }
+
+        /* MANIFESTO */
+        .manifesto {
+            padding: 15rem 3rem;
             position: relative;
             overflow: hidden;
         }
 
-        .genialab-bg {
+        .manifesto-bg-text {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Instrument Serif', serif;
-            font-size: 18vw;
+            font-size: 25vw;
             font-style: italic;
-            color: rgba(42, 107, 107, 0.04);
+            color: rgba(42, 107, 107, 0.03);
             white-space: nowrap;
             pointer-events: none;
         }
 
-        .genialab-glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(42, 107, 107, 0.12) 0%, transparent 70%);
-        }
-
-        .genialab-glow:nth-child(2) {
-            top: -200px;
-            right: -100px;
-        }
-
-        .genialab-glow:nth-child(3) {
-            bottom: -200px;
-            left: -100px;
-        }
-
-        .genialab-content {
-            max-width: 1200px;
+        .manifesto-content {
+            max-width: 900px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
 
-        .genialab-header {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            margin-bottom: 5rem;
-            align-items: center;
-        }
-
-        .genialab-intro {
-            max-width: 500px;
-        }
-
-        .genialab-label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.4em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .genialab-label::before {
-            content: '';
-            width: 30px;
-            height: 1px;
-            background: var(--ottanio);
-        }
-
-        .genialab-title {
+        .manifesto-text {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 400;
-            line-height: 1.15;
-            margin-bottom: 1.5rem;
-        }
-
-        .genialab-title em {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            line-height: 1.6;
             font-style: italic;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .manifesto-text strong {
             color: var(--ottanio);
+            font-weight: 400;
         }
 
-        .genialab-desc {
-            font-size: 1.1rem;
-            line-height: 1.9;
-            color: rgba(255,255,255,0.7);
-        }
-
-        .genialab-visual {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .genialab-node {
-            width: 300px;
-            height: 300px;
-            border: 1px solid rgba(42, 107, 107, 0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* GENIALAB */
+        .genialab {
+            min-height: 100vh;
+            padding: 10rem 3rem;
             position: relative;
-            animation: nodeFloat 8s ease-in-out infinite;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
         }
 
-        .genialab-node::before {
-            content: '';
+        .genialab-orb {
             position: absolute;
-            width: 220px;
-            height: 220px;
+            width: 800px;
+            height: 800px;
+            right: -200px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .genialab-orb-ring {
+            position: absolute;
             border: 1px solid rgba(42, 107, 107, 0.2);
             border-radius: 50%;
-            animation: nodeFloat 6s ease-in-out infinite reverse;
+            animation: orbRotate 30s linear infinite;
         }
 
-        .genialab-node::after {
-            content: '';
+        .genialab-orb-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .genialab-orb-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            animation-duration: 25s;
+            animation-direction: reverse;
+        }
+
+        .genialab-orb-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            animation-duration: 20s;
+        }
+
+        .genialab-orb-ring:nth-child(4) {
+            width: 40%;
+            height: 40%;
+            top: 30%;
+            left: 30%;
+            animation-duration: 15s;
+            animation-direction: reverse;
+        }
+
+        .genialab-orb-core {
             position: absolute;
-            width: 140px;
-            height: 140px;
-            border: 1px solid rgba(42, 107, 107, 0.4);
+            width: 20%;
+            height: 20%;
+            top: 40%;
+            left: 40%;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.4) 0%, transparent 70%);
             border-radius: 50%;
-            animation: nodeFloat 4s ease-in-out infinite;
+            animation: orbPulse 4s ease-in-out infinite;
         }
 
-        .genialab-node-text {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
-            font-style: italic;
-            color: var(--ottanio);
+        @keyframes orbRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes orbPulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        .genialab-content {
+            max-width: 700px;
             position: relative;
             z-index: 1;
         }
 
-        @keyframes nodeFloat {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.05) rotate(5deg); }
+        .genialab-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(42, 107, 107, 0.3);
+            margin-bottom: 2rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+        }
+
+        .genialab-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .genialab-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 2rem;
+        }
+
+        .genialab-title span {
+            color: var(--ottanio);
+            font-style: italic;
+        }
+
+        .genialab-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 3rem;
+        }
+
+        .genialab-desc {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 4rem;
         }
 
         .genialab-role {
-            padding: 3rem;
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2.5rem;
+            border-left: 3px solid var(--ottanio);
+            background: rgba(42, 107, 107, 0.05);
             margin-bottom: 4rem;
         }
 
         .genialab-role-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-style: italic;
             color: var(--ottanio);
             margin-bottom: 1rem;
@@ -353,411 +497,510 @@
         .genialab-role-text {
             font-size: 1rem;
             line-height: 1.8;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.6);
         }
 
-        .genialab-comitato {
-            margin-top: 4rem;
+        /* COMITATO SECTION */
+        .comitato-section {
+            padding: 8rem 3rem;
+            position: relative;
         }
 
-        .genialab-comitato-title {
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 2rem;
+        .comitato-header {
             text-align: center;
+            margin-bottom: 5rem;
         }
 
-        .genialab-comitato-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem 2rem;
+        .comitato-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            color: rgba(255,255,255,0.3);
         }
 
-        .genialab-comitato-member {
+        .comitato-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .comitato-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .comitato-member {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comitato-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(42, 107, 107, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .comitato-member:hover::before {
+            opacity: 1;
+        }
+
+        .comitato-member:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-10px);
+        }
+
+        .comitato-member-name {
             font-family: 'Instrument Serif', serif;
             font-size: 1rem;
             font-style: italic;
             color: rgba(255,255,255,0.5);
+            position: relative;
+            z-index: 1;
             transition: color 0.3s ease;
         }
 
-        .genialab-comitato-member:hover {
+        .comitato-member:hover .comitato-member-name {
+            color: var(--bianco);
+        }
+
+        .comitato-member.highlight .comitato-member-name {
             color: var(--ottanio);
         }
 
-        .genialab-comitato-member.highlight {
-            color: var(--ottanio);
-            font-weight: 500;
-        }
-
-        /* IPNOCRAZIA RESEARCH */
-        .ipnocrazia-research {
+        /* IPNOCRAZIA */
+        .ipnocrazia {
+            min-height: 100vh;
             padding: 10rem 3rem;
-            background: var(--bianco);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(180deg, var(--nero) 0%, #0f1a1a 100%);
+        }
+
+        .ipnocrazia-glitch-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(42, 107, 107, 0.03) 2px,
+                    rgba(42, 107, 107, 0.03) 4px
+                );
+            pointer-events: none;
+            animation: scanlines 8s linear infinite;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        .ipnocrazia-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ipnocrazia-visual {
             position: relative;
         }
 
-        .ipnocrazia-research-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            align-items: center;
+        .ipnocrazia-frame {
+            position: relative;
+            padding: 3rem;
         }
 
-        .ipnocrazia-research-content {
+        .ipnocrazia-frame::before,
+        .ipnocrazia-frame::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 1px solid var(--ottanio);
+        }
+
+        .ipnocrazia-frame::before {
+            top: 0;
+            left: 0;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .ipnocrazia-frame::after {
+            bottom: 0;
+            right: 0;
+            border-left: none;
+            border-top: none;
+        }
+
+        .ipnocrazia-book {
+            position: relative;
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ipnocrazia-book:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.02);
+        }
+
+        .ipnocrazia-book img {
+            width: 100%;
+            max-width: 400px;
+            display: block;
+            box-shadow: 
+                30px 30px 60px rgba(0,0,0,0.4),
+                0 0 100px rgba(42, 107, 107, 0.1);
+        }
+
+        .ipnocrazia-glitch-text {
+            position: absolute;
+            top: -2rem;
+            right: -2rem;
+            font-family: 'Instrument Serif', serif;
+            font-size: 8rem;
+            font-style: italic;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(42, 107, 107, 0.2);
+            pointer-events: none;
+            animation: glitchFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes glitchFloat {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(5px, -5px); }
+            50% { transform: translate(-3px, 3px); }
+            75% { transform: translate(3px, 5px); }
+        }
+
+        .ipnocrazia-info {
             max-width: 500px;
         }
 
-        .ipnocrazia-research-label {
+        .ipnocrazia-label {
             font-size: 0.7rem;
             font-weight: 600;
             letter-spacing: 0.4em;
             text-transform: uppercase;
             color: var(--ottanio);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
-        .ipnocrazia-research-label::before {
+        .ipnocrazia-label::before {
             content: '';
-            width: 30px;
+            width: 40px;
             height: 1px;
             background: var(--ottanio);
         }
 
-        .ipnocrazia-research-title {
+        .ipnocrazia-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 400;
-            line-height: 1.2;
+            line-height: 1.15;
             margin-bottom: 2rem;
         }
 
-        .ipnocrazia-research-title em {
+        .ipnocrazia-title em {
             font-style: italic;
             color: var(--ottanio);
         }
 
-        .ipnocrazia-research-text {
+        .ipnocrazia-text {
             font-size: 1.1rem;
             line-height: 1.9;
-            color: var(--grigio);
+            color: rgba(255,255,255,0.6);
             margin-bottom: 1.5rem;
         }
 
-        .ipnocrazia-research-meta {
+        .ipnocrazia-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-top: 3rem;
+        }
+
+        .ipnocrazia-meta-item {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            padding: 2rem;
-            background: #f8f8f8;
-            margin-top: 2rem;
+            gap: 0.25rem;
         }
 
-        .ipnocrazia-research-meta-item {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .ipnocrazia-research-meta-label {
-            font-size: 0.7rem;
+        .ipnocrazia-meta-label {
+            font-size: 0.65rem;
             font-weight: 600;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--ottanio);
-            min-width: 120px;
         }
 
-        .ipnocrazia-research-meta-value {
-            font-size: 0.95rem;
-            color: var(--grigio);
+        .ipnocrazia-meta-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.7);
         }
 
-        .ipnocrazia-research-visual {
-            position: relative;
-        }
-
-        .ipnocrazia-research-book {
-            width: 100%;
-            max-width: 350px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .ipnocrazia-research-book-cover {
-            width: 100%;
-            height: auto;
-            box-shadow: 30px 30px 60px rgba(0,0,0,0.15);
-        }
-
-        .ipnocrazia-research-link {
+        .ipnocrazia-link {
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding: 1.25rem 2.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
             font-size: 0.8rem;
             font-weight: 500;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--nero);
-            margin-top: 2rem;
-            transition: color 0.3s ease;
+            transition: all 0.4s ease;
         }
 
-        .ipnocrazia-research-link:hover {
-            color: var(--ottanio);
+        .ipnocrazia-link:hover {
+            background: var(--ottanio);
+            border-color: var(--ottanio);
         }
 
-        .ipnocrazia-research-link svg {
+        .ipnocrazia-link svg {
             width: 16px;
             height: 16px;
             transition: transform 0.3s ease;
         }
 
-        .ipnocrazia-research-link:hover svg {
-            transform: translateX(4px);
+        .ipnocrazia-link:hover svg {
+            transform: translateX(5px);
         }
 
         /* GENERATIVA */
         .generativa {
-            padding: 10rem 3rem;
-            background: #f8f8f8;
+            padding: 15rem 3rem;
+            position: relative;
+            background: var(--nero);
         }
 
-        .generativa-content {
-            max-width: 1000px;
-            margin: 0 auto;
+        .generativa-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(42, 107, 107, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(42, 107, 107, 0.05) 0%, transparent 50%);
         }
 
         .generativa-header {
             text-align: center;
-            margin-bottom: 5rem;
+            margin-bottom: 8rem;
+            position: relative;
+            z-index: 1;
         }
 
-        .generativa-label {
-            font-size: 0.7rem;
+        .generativa-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(42, 107, 107, 0.1);
+            border: 1px solid rgba(42, 107, 107, 0.2);
+            margin-bottom: 2rem;
+            font-size: 0.65rem;
             font-weight: 600;
-            letter-spacing: 0.4em;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
             color: var(--ottanio);
-            margin-bottom: 1.5rem;
         }
 
         .generativa-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(5rem, 15vw, 12rem);
             font-weight: 400;
-            margin-bottom: 2rem;
+            line-height: 0.9;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--bianco) 0%, var(--ottanio) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .generativa-title em {
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        .generativa-desc {
-            font-size: 1.2rem;
-            line-height: 1.9;
-            color: var(--grigio);
+        .generativa-subtitle {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.5);
             max-width: 700px;
             margin: 0 auto;
         }
 
         .generativa-partners {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 2rem;
-            margin-bottom: 4rem;
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-bottom: 8rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
         }
 
         .generativa-partner {
             text-align: center;
-            padding: 2rem 1rem;
-            background: var(--bianco);
-            border: 1px solid var(--grigio-chiaro);
-            transition: all 0.4s ease;
+            opacity: 0.4;
+            transition: opacity 0.4s ease;
         }
 
         .generativa-partner:hover {
-            border-color: var(--ottanio);
-            transform: translateY(-5px);
+            opacity: 1;
         }
 
         .generativa-partner-name {
             font-family: 'Instrument Serif', serif;
-            font-size: 1rem;
+            font-size: 1.2rem;
             font-style: italic;
+            color: var(--bianco);
         }
 
         .generativa-partner-role {
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--grigio);
-            margin-top: 0.5rem;
+            color: var(--ottanio);
+            margin-top: 0.25rem;
         }
 
         .generativa-features {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            gap: 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .generativa-feature {
-            padding: 2.5rem;
-            background: var(--bianco);
-            border: 1px solid var(--grigio-chiaro);
-            transition: all 0.4s ease;
+            padding: 4rem 3rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .generativa-feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--ottanio);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .generativa-feature:hover::before {
+            transform: scaleX(1);
         }
 
         .generativa-feature:hover {
-            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.05);
+            border-color: rgba(42, 107, 107, 0.2);
         }
 
         .generativa-feature-num {
             font-family: 'Instrument Serif', serif;
-            font-size: 2.5rem;
+            font-size: 5rem;
             font-style: italic;
+            color: rgba(42, 107, 107, 0.2);
+            line-height: 1;
+            margin-bottom: 2rem;
+            transition: color 0.4s ease;
+        }
+
+        .generativa-feature:hover .generativa-feature-num {
             color: var(--ottanio);
-            margin-bottom: 1rem;
         }
 
         .generativa-feature-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.2rem;
-            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .generativa-feature-desc {
-            font-size: 0.9rem;
-            line-height: 1.7;
-            color: var(--grigio);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.5);
         }
 
         .generativa-cta {
             text-align: center;
-            margin-top: 4rem;
+            margin-top: 6rem;
+            position: relative;
+            z-index: 1;
         }
 
         .generativa-cta a {
             display: inline-flex;
             align-items: center;
             gap: 1rem;
-            padding: 1.25rem 3rem;
-            background: var(--nero);
+            padding: 1.5rem 4rem;
+            background: var(--ottanio);
             color: var(--bianco);
             font-size: 0.8rem;
             font-weight: 500;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             transition: all 0.4s ease;
         }
 
         .generativa-cta a:hover {
-            background: var(--ottanio);
-        }
-
-        /* COMITATI */
-        .comitati {
-            padding: 10rem 3rem;
             background: var(--bianco);
-        }
-
-        .comitati-header {
-            text-align: center;
-            margin-bottom: 5rem;
-        }
-
-        .comitati-header h2 {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 400;
-        }
-
-        .comitati-header h2 em {
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        .comitati-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 3rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .comitato-card {
-            padding: 3rem;
-            border: 1px solid var(--grigio-chiaro);
-            transition: all 0.5s ease;
-            position: relative;
-        }
-
-        .comitato-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 0;
-            background: var(--ottanio);
-            transition: height 0.5s ease;
-        }
-
-        .comitato-card:hover::before {
-            height: 100%;
-        }
-
-        .comitato-card:hover {
-            border-color: var(--ottanio);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-        }
-
-        .comitato-org {
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 1rem;
-        }
-
-        .comitato-title {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .comitato-desc {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: var(--grigio);
+            color: var(--nero);
         }
 
         /* UNIVERSITA */
         .universita {
-            padding: 10rem 3rem;
-            background: var(--nero);
-            color: var(--bianco);
+            padding: 10rem 0;
             overflow: hidden;
+            background: linear-gradient(180deg, var(--nero) 0%, #0a0f0f 100%);
         }
 
         .universita-header {
             text-align: center;
-            margin-bottom: 4rem;
+            padding: 0 3rem;
+            margin-bottom: 5rem;
         }
 
         .universita-header h2 {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 400;
         }
 
@@ -766,29 +1009,25 @@
             color: var(--ottanio);
         }
 
-        .universita-header p {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.6);
-            margin-top: 1rem;
-        }
-
         .universita-marquee {
             display: flex;
             overflow: hidden;
-            padding: 2rem 0;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .universita-track {
             display: flex;
-            animation: uniScroll 60s linear infinite;
+            animation: marqueeScroll 80s linear infinite;
         }
 
         .universita-track span {
-            padding: 0 3rem;
+            padding: 0 4rem;
             font-family: 'Instrument Serif', serif;
-            font-size: 1.3rem;
+            font-size: 2rem;
             font-style: italic;
-            color: rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.15);
             white-space: nowrap;
             transition: color 0.3s ease;
         }
@@ -797,7 +1036,7 @@
             color: var(--ottanio);
         }
 
-        @keyframes uniScroll {
+        @keyframes marqueeScroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
@@ -805,58 +1044,106 @@
         .universita-docenze {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            max-width: 1100px;
-            margin: 4rem auto 0;
+            gap: 0;
+            max-width: 1200px;
+            margin: 5rem auto 0;
+            padding: 0 3rem;
         }
 
         .docenza {
-            padding: 2.5rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.4s ease;
+            padding: 3rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .docenza::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(42, 107, 107, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .docenza:hover::before {
+            opacity: 1;
         }
 
         .docenza:hover {
             border-color: var(--ottanio);
-            background: rgba(42, 107, 107, 0.05);
         }
 
         .docenza-uni {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--ottanio);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .docenza-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
         }
 
         .docenza-prof {
             font-size: 0.9rem;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.4);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
         }
 
         /* CTA */
         .cta {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 10rem 3rem;
-            background: var(--bianco);
-            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.15) 0%, transparent 50%);
+            animation: ctaPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes ctaPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
         }
 
         .cta-content {
-            max-width: 800px;
-            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
         }
 
         .cta-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-size: clamp(4rem, 10vw, 8rem);
             font-weight: 400;
+            line-height: 1;
             margin-bottom: 2rem;
         }
 
@@ -868,8 +1155,8 @@
         .cta-desc {
             font-size: 1.2rem;
             line-height: 1.8;
-            color: var(--grigio);
-            margin-bottom: 3rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 4rem;
         }
 
         .cta-buttons {
@@ -880,35 +1167,35 @@
         }
 
         .cta-btn {
-            padding: 1.25rem 3rem;
+            padding: 1.5rem 3.5rem;
             font-size: 0.8rem;
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            border: 1px solid var(--nero);
+            border: 1px solid rgba(255,255,255,0.2);
             transition: all 0.4s ease;
         }
 
         .cta-btn:hover {
-            background: var(--nero);
-            color: var(--bianco);
+            background: var(--bianco);
+            color: var(--nero);
+            border-color: var(--bianco);
         }
 
         .cta-btn.primary {
-            background: var(--nero);
-            color: var(--bianco);
+            background: var(--ottanio);
+            border-color: var(--ottanio);
         }
 
         .cta-btn.primary:hover {
-            background: var(--ottanio);
-            border-color: var(--ottanio);
+            background: var(--bianco);
+            color: var(--nero);
         }
 
         /* FOOTER */
         footer {
             padding: 4rem 3rem;
-            background: var(--nero);
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
         .footer-nav {
@@ -922,7 +1209,7 @@
             font-weight: 500;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.3);
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -944,7 +1231,7 @@
 
         .footer-links a {
             font-size: 0.85rem;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.3);
             transition: color 0.3s ease;
         }
 
@@ -955,8 +1242,8 @@
         /* REVEAL */
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(60px);
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .reveal.visible {
@@ -964,40 +1251,52 @@
             transform: translateY(0);
         }
 
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
         /* RESPONSIVE */
-        @media (max-width: 1000px) {
-            .genialab-header {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-
-            .genialab-visual {
-                order: -1;
-            }
-
-            .ipnocrazia-research-grid {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-
-            .generativa-partners {
+        @media (max-width: 1200px) {
+            .comitato-grid {
                 grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .ipnocrazia-content {
+                grid-template-columns: 1fr;
+                gap: 5rem;
+            }
+
+            .ipnocrazia-visual {
+                order: -1;
             }
 
             .generativa-features {
                 grid-template-columns: 1fr;
             }
 
-            .comitati-grid {
+            .universita-docenze {
                 grid-template-columns: 1fr;
             }
 
-            .universita-docenze {
-                grid-template-columns: 1fr;
+            .genialab-orb {
+                width: 400px;
+                height: 400px;
+                right: -100px;
+                opacity: 0.5;
             }
         }
 
         @media (max-width: 768px) {
+            body {
+                cursor: auto;
+            }
+
+            .cursor, .cursor-dot {
+                display: none;
+            }
+
             header {
                 padding: 1rem 1.5rem;
             }
@@ -1007,37 +1306,30 @@
             }
 
             .hero,
+            .manifesto,
             .genialab,
-            .ipnocrazia-research,
+            .comitato-section,
+            .ipnocrazia,
             .generativa,
-            .comitati,
-            .universita,
             .cta {
                 padding-left: 1.5rem;
                 padding-right: 1.5rem;
             }
 
-            .hero {
-                padding-top: 8rem;
-            }
-
-            .generativa-partners {
+            .comitato-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .genialab-node {
-                width: 200px;
-                height: 200px;
+            .generativa-partners {
+                gap: 2rem;
             }
 
-            .genialab-node::before {
-                width: 150px;
-                height: 150px;
+            .ipnocrazia-glitch-text {
+                font-size: 4rem;
             }
 
-            .genialab-node::after {
-                width: 100px;
-                height: 100px;
+            .ipnocrazia-book img {
+                max-width: 280px;
             }
 
             footer {
@@ -1057,6 +1349,13 @@
 </head>
 <body>
 
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- Particles Canvas -->
+    <canvas id="particles-canvas"></canvas>
+
     <header>
         <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
         <nav>
@@ -1064,9 +1363,7 @@
             <a href="./andrea-colamedici/">Colamedici</a>
             <a href="./maura-gancitano/">Gancitano</a>
             <a href="./edizioni.html">Edizioni</a>
-            <a href="./librerie.html">Librerie</a>
             <a href="./formazione.html">Formazione</a>
-            <a href="./eventi-festival.html">Eventi</a>
             <a href="./contatti.html">Contatti</a>
         </nav>
     </header>
@@ -1074,177 +1371,173 @@
     <main>
         <!-- HERO -->
         <section class="hero">
-            <div class="hero-bg"></div>
-            <div class="hero-grid-pattern"></div>
+            <div class="hero-depth-layer layer-1"></div>
+            <div class="hero-depth-layer layer-2"></div>
+            <div class="hero-grid"></div>
             <div class="hero-content">
                 <span class="hero-label">Ricerca</span>
-                <h1 class="hero-title">Pensare il <em>presente</em>, costruire il futuro</h1>
-                <p class="hero-desc">Tlon porta la filosofia nei luoghi dove si costruisce il domani: hub di ricerca sull'intelligenza artificiale, comitati scientifici internazionali, academy per la cultura digitale. Un ponte tra il rigore accademico e l'urgenza della contemporaneità.</p>
+                <h1 class="hero-title">Pensare il<br><em>presente</em></h1>
+                <p class="hero-subtitle">La filosofia nei luoghi dove si costruisce il domani. Hub di ricerca sull'intelligenza artificiale, comitati scientifici internazionali, academy per la cultura digitale.</p>
+            </div>
+            <div class="hero-scroll">
+                <span class="hero-scroll-text">Esplora</span>
+                <div class="hero-scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- MANIFESTO -->
+        <section class="manifesto">
+            <div class="manifesto-bg-text">Ricerca</div>
+            <div class="manifesto-content reveal">
+                <p class="manifesto-text">La ricerca di Tlon nasce dall'urgenza di comprendere un presente che cambia più velocemente della nostra capacità di pensarlo. <strong>Non ci limitiamo a osservare le trasformazioni tecnologiche</strong>: le abitiamo, le interroghiamo, le mettiamo alla prova. Perché la filosofia, oggi, si fa anche scrivendo codice e dialogando con le macchine.</p>
             </div>
         </section>
 
         <!-- GENIALAB -->
         <section class="genialab">
-            <div class="genialab-bg">genIA</div>
-            <div class="genialab-glow"></div>
-            <div class="genialab-glow"></div>
+            <div class="genialab-orb">
+                <div class="genialab-orb-ring"></div>
+                <div class="genialab-orb-ring"></div>
+                <div class="genialab-orb-ring"></div>
+                <div class="genialab-orb-ring"></div>
+                <div class="genialab-orb-core"></div>
+            </div>
             <div class="genialab-content">
-                <div class="genialab-header reveal">
-                    <div class="genialab-intro">
-                        <span class="genialab-label">AANT · Roma</span>
-                        <h2 class="genialab-title"><em>genIA</em>LAB</h2>
-                        <p class="genialab-desc">Hub di ricerca transdisciplinare dell'Accademia delle Arti e Nuove Tecnologie di Roma, dedicato all'intelligenza artificiale, alla cultura digitale, alle tecnologie cognitive e all'innovazione creativa. Un laboratorio di eccellenza che unisce la tradizione italiana dell'arte, della filosofia e della comunicazione con l'innovazione tecnologica.</p>
-                    </div>
-                    <div class="genialab-visual">
-                        <div class="genialab-node">
-                            <span class="genialab-node-text">AI + Arte</span>
-                        </div>
-                    </div>
-                </div>
-
+                <div class="genialab-badge reveal">AANT · Roma · Hub di Ricerca</div>
+                <h2 class="genialab-title reveal"><span>gen</span>IALAB</h2>
+                <p class="genialab-subtitle reveal">Hub di ricerca transdisciplinare</p>
+                <p class="genialab-desc reveal">Centro di ricerca permanente dell'Accademia delle Arti e Nuove Tecnologie di Roma, dedicato all'intelligenza artificiale, alla cultura digitale, alle tecnologie cognitive e all'innovazione creativa. Un laboratorio che unisce la tradizione italiana dell'arte, della filosofia e della comunicazione con l'innovazione tecnologica, sviluppando approcci critici e creativi alle trasformazioni dell'IA nell'era contemporanea.</p>
+                
                 <div class="genialab-role reveal">
                     <h3 class="genialab-role-title">Andrea Colamedici — Presidente del Comitato Scientifico</h3>
-                    <p class="genialab-role-text">Il Comitato Scientifico di genIALAB riunisce una costellazione di esperti provenienti sia dall'interno dell'accademia sia dall'esterno, coprendo i campi dell'arte, della filosofia, della tecnologia e della cultura digitale. La missione è fungere da osservatorio permanente interdisciplinare, aperto al dialogo con esperti esterni, per co-creare progetti innovativi.</p>
-                </div>
-
-                <div class="genialab-comitato reveal">
-                    <h4 class="genialab-comitato-title">Comitato Scientifico</h4>
-                    <div class="genialab-comitato-grid">
-                        <span class="genialab-comitato-member">Gianna Angelini</span>
-                        <span class="genialab-comitato-member">Simone Arcagni</span>
-                        <span class="genialab-comitato-member">Maurice Benayoun</span>
-                        <span class="genialab-comitato-member">Luna Bianchi</span>
-                        <span class="genialab-comitato-member">Alex Braga</span>
-                        <span class="genialab-comitato-member">Massimo Canevacci</span>
-                        <span class="genialab-comitato-member">Pier Luigi Capucci</span>
-                        <span class="genialab-comitato-member">Matteo Ciastellardi</span>
-                        <span class="genialab-comitato-member highlight">Andrea Colamedici</span>
-                        <span class="genialab-comitato-member">Derrick de Kerckhove</span>
-                        <span class="genialab-comitato-member highlight">Maura Gancitano</span>
-                        <span class="genialab-comitato-member">Marco Gori</span>
-                        <span class="genialab-comitato-member">Paolo Granata</span>
-                        <span class="genialab-comitato-member">Sabina Minardi</span>
-                        <span class="genialab-comitato-member">Rossana Quarta</span>
-                    </div>
+                    <p class="genialab-role-text">Il Comitato Scientifico riunisce una costellazione di esperti provenienti dall'accademia e dal mondo della ricerca, coprendo i campi dell'arte, della filosofia, della tecnologia e della cultura digitale. La missione è fungere da osservatorio permanente interdisciplinare per co-creare progetti innovativi.</p>
                 </div>
             </div>
         </section>
 
-        <!-- IPNOCRAZIA RESEARCH -->
-        <section class="ipnocrazia-research">
-            <div class="ipnocrazia-research-grid">
-                <div class="ipnocrazia-research-content reveal">
-                    <span class="ipnocrazia-research-label">Università di Foggia</span>
-                    <h2 class="ipnocrazia-research-title">Il progetto <em>Ipnocrazia</em> come caso di studio</h2>
-                    <p class="ipnocrazia-research-text">L'esperimento filosofico-editoriale di Jianwei Xun è diventato oggetto di ricerca accademica. Il progetto ha analizzato le dinamiche di legittimazione del sapere attraverso la costruzione di un autore fittizio, indagando i meccanismi di manipolazione percettiva e le tensioni tra autenticità e simulacro nella produzione contemporanea.</p>
-                    <p class="ipnocrazia-research-text">Discusso su Le Monde, The New York Times, Wired, El País, citato da studiosi dell'HEC Paris e tradotto in francese, spagnolo e inglese, Ipnocrazia rappresenta un caso unico di teoria che si dimostra attraverso la propria pratica.</p>
+        <!-- COMITATO -->
+        <section class="comitato-section">
+            <div class="comitato-header reveal">
+                <h2>Comitato <em>Scientifico</em></h2>
+            </div>
+            <div class="comitato-grid">
+                <div class="comitato-member reveal"><span class="comitato-member-name">Gianna Angelini</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Simone Arcagni</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Maurice Benayoun</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Luna Bianchi</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Alex Braga</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Massimo Canevacci</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Pier Luigi Capucci</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Matteo Ciastellardi</span></div>
+                <div class="comitato-member highlight reveal"><span class="comitato-member-name">Andrea Colamedici</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Derrick de Kerckhove</span></div>
+                <div class="comitato-member highlight reveal"><span class="comitato-member-name">Maura Gancitano</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Marco Gori</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Paolo Granata</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Sabina Minardi</span></div>
+                <div class="comitato-member reveal"><span class="comitato-member-name">Rossana Quarta</span></div>
+            </div>
+        </section>
 
-                    <div class="ipnocrazia-research-meta">
-                        <div class="ipnocrazia-research-meta-item">
-                            <span class="ipnocrazia-research-meta-label">Ricercatore</span>
-                            <span class="ipnocrazia-research-meta-value">Andrea Colamedici</span>
+        <!-- IPNOCRAZIA -->
+        <section class="ipnocrazia">
+            <div class="ipnocrazia-glitch-bg"></div>
+            <div class="ipnocrazia-content">
+                <div class="ipnocrazia-visual reveal">
+                    <div class="ipnocrazia-frame">
+                        <div class="ipnocrazia-book">
+                            <img src="./assets/images/ipnocrazia-cover.jpg" alt="Ipnocrazia">
                         </div>
-                        <div class="ipnocrazia-research-meta-item">
-                            <span class="ipnocrazia-research-meta-label">Istituzione</span>
-                            <span class="ipnocrazia-research-meta-value">Università di Foggia</span>
+                        <span class="ipnocrazia-glitch-text">虚</span>
+                    </div>
+                </div>
+                <div class="ipnocrazia-info">
+                    <span class="ipnocrazia-label reveal">Performance Narrativa</span>
+                    <h2 class="ipnocrazia-title reveal">Il progetto <em>Ipnocrazia</em></h2>
+                    <p class="ipnocrazia-text reveal">Un libro che dimostra ciò che racconta. L'esperimento filosofico-editoriale di Jianwei Xun ha analizzato i meccanismi di legittimazione del sapere attraverso la costruzione di un autore fittizio, indagando le tensioni tra autenticità e simulacro nella produzione contemporanea.</p>
+                    <p class="ipnocrazia-text reveal">Discusso su Le Monde, The New York Times, Wired, El País. Tradotto in francese, spagnolo e inglese. Citato da studiosi dell'HEC Paris. Un caso unico di teoria che si dimostra attraverso la propria pratica.</p>
+                    
+                    <div class="ipnocrazia-meta reveal">
+                        <div class="ipnocrazia-meta-item">
+                            <span class="ipnocrazia-meta-label">Ricercatore</span>
+                            <span class="ipnocrazia-meta-value">Andrea Colamedici</span>
                         </div>
-                        <div class="ipnocrazia-research-meta-item">
-                            <span class="ipnocrazia-research-meta-label">Anno</span>
-                            <span class="ipnocrazia-research-meta-value">2024–2025</span>
+                        <div class="ipnocrazia-meta-item">
+                            <span class="ipnocrazia-meta-label">Focus</span>
+                            <span class="ipnocrazia-meta-value">IA e sistemi di pensiero</span>
                         </div>
-                        <div class="ipnocrazia-research-meta-item">
-                            <span class="ipnocrazia-research-meta-label">Focus</span>
-                            <span class="ipnocrazia-research-meta-value">IA e sistemi di pensiero</span>
+                        <div class="ipnocrazia-meta-item">
+                            <span class="ipnocrazia-meta-label">Anno</span>
+                            <span class="ipnocrazia-meta-value">2024–2025</span>
+                        </div>
+                        <div class="ipnocrazia-meta-item">
+                            <span class="ipnocrazia-meta-label">Traduzioni</span>
+                            <span class="ipnocrazia-meta-value">FR · ES · EN</span>
                         </div>
                     </div>
 
-                    <a href="./ipnocrazia.html" class="ipnocrazia-research-link">
+                    <a href="./ipnocrazia.html" class="ipnocrazia-link reveal">
                         <span>Scopri Ipnocrazia</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
                     </a>
                 </div>
-                <div class="ipnocrazia-research-visual reveal">
-                    <div class="ipnocrazia-research-book">
-                        <img src="./assets/images/ipnocrazia-cover.jpg" alt="Ipnocrazia" class="ipnocrazia-research-book-cover">
-                    </div>
-                </div>
             </div>
         </section>
 
         <!-- GENERATIVA -->
         <section class="generativa">
-            <div class="generativa-content">
-                <div class="generativa-header reveal">
-                    <span class="generativa-label">Academy PNRR</span>
-                    <h2 class="generativa-title"><em>Generativa</em></h2>
-                    <p class="generativa-desc">La prima academy italiana sull'intelligenza artificiale generativa per la cultura. Un percorso formativo che combina teoria e pratica, presenza e online, per sviluppare competenze tecniche, sensibilità etica e visione critica.</p>
-                </div>
+            <div class="generativa-bg"></div>
+            <div class="generativa-header reveal">
+                <span class="generativa-badge">Academy PNRR · TOCC</span>
+                <h2 class="generativa-title">Generativa</h2>
+                <p class="generativa-subtitle">La prima academy italiana sull'intelligenza artificiale generativa per la cultura. Un percorso che combina teoria e pratica per sviluppare competenze tecniche, sensibilità etica e visione critica.</p>
+            </div>
 
-                <div class="generativa-partners reveal">
-                    <div class="generativa-partner">
-                        <span class="generativa-partner-name">Materahub</span>
-                        <span class="generativa-partner-role">Coordinamento</span>
-                    </div>
-                    <div class="generativa-partner">
-                        <span class="generativa-partner-name">Sineglossa</span>
-                        <span class="generativa-partner-role">Direzione scientifica</span>
-                    </div>
-                    <div class="generativa-partner">
-                        <span class="generativa-partner-name">Tlon</span>
-                        <span class="generativa-partner-role">Partner</span>
-                    </div>
-                    <div class="generativa-partner">
-                        <span class="generativa-partner-name">L'Orientale</span>
-                        <span class="generativa-partner-role">Napoli</span>
-                    </div>
-                    <div class="generativa-partner">
-                        <span class="generativa-partner-name">Basilicata Creativa</span>
-                        <span class="generativa-partner-role">Cluster</span>
-                    </div>
+            <div class="generativa-partners reveal">
+                <div class="generativa-partner">
+                    <span class="generativa-partner-name">Materahub</span>
+                    <span class="generativa-partner-role">Coordinamento</span>
                 </div>
-
-                <div class="generativa-features reveal">
-                    <div class="generativa-feature">
-                        <div class="generativa-feature-num">01</div>
-                        <h3 class="generativa-feature-title">AI Literacy</h3>
-                        <p class="generativa-feature-desc">Basi teoriche e culturali dell'IA generativa, storia culturale dell'intelligenza artificiale, prompt thinking.</p>
-                    </div>
-                    <div class="generativa-feature">
-                        <div class="generativa-feature-num">02</div>
-                        <h3 class="generativa-feature-title">Etica e dati</h3>
-                        <p class="generativa-feature-desc">Data literacy, aspetti legali ed economici, geopolitica dell'IA, responsabilità nella produzione culturale.</p>
-                    </div>
-                    <div class="generativa-feature">
-                        <div class="generativa-feature-num">03</div>
-                        <h3 class="generativa-feature-title">Applicazioni</h3>
-                        <p class="generativa-feature-desc">Percorsi specialistici per industrie creative, musei, archivi, gallerie e artisti. Co-progettazione e sperimentazione.</p>
-                    </div>
+                <div class="generativa-partner">
+                    <span class="generativa-partner-name">Sineglossa</span>
+                    <span class="generativa-partner-role">Direzione scientifica</span>
                 </div>
-
-                <div class="generativa-cta reveal">
-                    <a href="https://www.generativa.art" target="_blank">Scopri Generativa</a>
+                <div class="generativa-partner">
+                    <span class="generativa-partner-name">Tlon</span>
+                    <span class="generativa-partner-role">Partner</span>
+                </div>
+                <div class="generativa-partner">
+                    <span class="generativa-partner-name">L'Orientale</span>
+                    <span class="generativa-partner-role">Napoli</span>
+                </div>
+                <div class="generativa-partner">
+                    <span class="generativa-partner-name">Basilicata Creativa</span>
+                    <span class="generativa-partner-role">Cluster</span>
                 </div>
             </div>
-        </section>
 
-        <!-- COMITATI SCIENTIFICI -->
-        <section class="comitati">
-            <div class="comitati-header reveal">
-                <h2>Comitati <em>scientifici</em></h2>
+            <div class="generativa-features">
+                <div class="generativa-feature reveal reveal-delay-1">
+                    <div class="generativa-feature-num">01</div>
+                    <h3 class="generativa-feature-title">AI Literacy</h3>
+                    <p class="generativa-feature-desc">Basi teoriche e culturali dell'IA generativa, storia culturale dell'intelligenza artificiale, prompt thinking, explainable AI.</p>
+                </div>
+                <div class="generativa-feature reveal reveal-delay-2">
+                    <div class="generativa-feature-num">02</div>
+                    <h3 class="generativa-feature-title">Etica e dati</h3>
+                    <p class="generativa-feature-desc">Data literacy, aspetti legali ed economici, geopolitica dell'IA, responsabilità nella produzione culturale digitale.</p>
+                </div>
+                <div class="generativa-feature reveal reveal-delay-3">
+                    <div class="generativa-feature-num">03</div>
+                    <h3 class="generativa-feature-title">Applicazioni</h3>
+                    <p class="generativa-feature-desc">Percorsi specialistici per industrie creative, musei, archivi, gallerie e artisti. Campus di co-progettazione e sperimentazione.</p>
+                </div>
             </div>
-            <div class="comitati-grid">
-                <div class="comitato-card reveal">
-                    <span class="comitato-org">Firenze University Press · USiena Press</span>
-                    <h3 class="comitato-title">Collana Intrecci</h3>
-                    <p class="comitato-desc">Serie internazionale dedicata a studi interdisciplinari sulle connessioni tra filosofia, scienze sociali e innovazione tecnologica. Un progetto editoriale dell'Università di Siena e dell'Università di Firenze.</p>
-                </div>
-                <div class="comitato-card reveal">
-                    <span class="comitato-org">Università di Foggia</span>
-                    <h3 class="comitato-title">Visual Education / ASTERA</h3>
-                    <p class="comitato-desc">Conferenza internazionale dedicata all'educazione visiva e alle nuove tecnologie nell'apprendimento, organizzata dall'Università di Foggia.</p>
-                </div>
+
+            <div class="generativa-cta reveal">
+                <a href="https://www.generativa.art" target="_blank">Scopri Generativa</a>
             </div>
         </section>
 
@@ -1252,7 +1545,6 @@
         <section class="universita">
             <div class="universita-header reveal">
                 <h2>Mondo <em>accademico</em></h2>
-                <p>Collaborazioni, lectio magistralis e docenze in università italiane e internazionali</p>
             </div>
 
             <div class="universita-marquee">
@@ -1260,7 +1552,7 @@
                     <span>Politecnico di Milano</span>
                     <span>IED Roma</span>
                     <span>IULM Milano</span>
-                    <span>Universidad del Sur Buenos Aires</span>
+                    <span>Universidad del Sur</span>
                     <span>Columbia University</span>
                     <span>Sapienza Roma</span>
                     <span>San Raffaele</span>
@@ -1276,7 +1568,7 @@
                     <span>Politecnico di Milano</span>
                     <span>IED Roma</span>
                     <span>IULM Milano</span>
-                    <span>Universidad del Sur Buenos Aires</span>
+                    <span>Universidad del Sur</span>
                     <span>Columbia University</span>
                     <span>Sapienza Roma</span>
                     <span>San Raffaele</span>
@@ -1292,18 +1584,18 @@
                 </div>
             </div>
 
-            <div class="universita-docenze reveal">
-                <div class="docenza">
+            <div class="universita-docenze">
+                <div class="docenza reveal">
                     <span class="docenza-uni">IED Roma</span>
                     <h3 class="docenza-title">Prompt Thinking</h3>
                     <p class="docenza-prof">Maura Gancitano · Andrea Colamedici</p>
                 </div>
-                <div class="docenza">
+                <div class="docenza reveal">
                     <span class="docenza-uni">Universidad del Sur · Buenos Aires</span>
                     <h3 class="docenza-title">Borges y la Inteligencia Artificial</h3>
                     <p class="docenza-prof">Andrea Colamedici</p>
                 </div>
-                <div class="docenza">
+                <div class="docenza reveal">
                     <span class="docenza-uni">24Ore Business School</span>
                     <h3 class="docenza-title">Faculty Member</h3>
                     <p class="docenza-prof">Andrea Colamedici</p>
@@ -1313,9 +1605,10 @@
 
         <!-- CTA -->
         <section class="cta">
+            <div class="cta-bg"></div>
             <div class="cta-content reveal">
-                <h2 class="cta-title">Costruiamo <em>insieme</em></h2>
-                <p class="cta-desc">Siamo aperti a collaborazioni con università, centri di ricerca, istituzioni culturali e aziende interessate a esplorare le connessioni tra pensiero critico e innovazione tecnologica.</p>
+                <h2 class="cta-title">Costruiamo<br><em>insieme</em></h2>
+                <p class="cta-desc">Siamo aperti a collaborazioni con università, centri di ricerca, istituzioni culturali e aziende interessate a esplorare le connessioni tra pensiero critico e innovazione.</p>
                 <div class="cta-buttons">
                     <a href="./contatti.html" class="cta-btn primary">Contattaci</a>
                     <a href="./formazione.html" class="cta-btn">Formazione</a>
@@ -1336,31 +1629,132 @@
     </footer>
 
     <script>
-        // Scroll reveal
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        
+        if (window.innerWidth > 768) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX - 10 + 'px';
+                cursor.style.top = e.clientY - 10 + 'px';
+                cursorDot.style.left = e.clientX - 2 + 'px';
+                cursorDot.style.top = e.clientY - 2 + 'px';
+            });
+
+            document.querySelectorAll('a, button, .comitato-member, .generativa-feature, .docenza').forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+        }
+
+        // Particles
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(42, 107, 107, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 80; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(42, 107, 107, ${0.1 * (1 - dist / 150)})`;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Scroll Reveal
         const reveals = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
+            entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, index * 100);
+                    entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
 
         reveals.forEach(el => observer.observe(el));
 
-        // Parallax hero
+        // Parallax on hero
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
             const hero = document.querySelector('.hero');
+            const layers = document.querySelectorAll('.hero-depth-layer');
+            const grid = document.querySelector('.hero-grid');
 
             if (hero && scrolled < window.innerHeight) {
-                const content = hero.querySelector('.hero-content');
-                content.style.transform = `translateY(${scrolled * 0.2}px)`;
-                content.style.opacity = 1 - (scrolled / window.innerHeight * 0.6);
+                layers.forEach((layer, i) => {
+                    const speed = (i + 1) * 0.1;
+                    layer.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+                if (grid) {
+                    grid.style.transform = `perspective(500px) rotateX(60deg) translateY(${-50 + scrolled * 0.05}%)`;
+                }
             }
         });
+
+        // Mouse parallax on orb
+        const orb = document.querySelector('.genialab-orb');
+        if (orb) {
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 30;
+                const y = (e.clientY / window.innerHeight - 0.5) * 30;
+                orb.style.transform = `translateY(-50%) translate(${x}px, ${y}px)`;
+            });
+        }
     </script>
 
 </body>
