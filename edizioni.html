@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edizioni Tlon — Casa editrice di filosofia e immaginazione</title>
+    <title>Edizioni Tlon – Casa editrice di filosofia e immaginazione</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -255,6 +255,100 @@
             text-transform: uppercase;
             color: var(--grigio);
             margin-top: 1rem;
+        }
+
+        /* ================================================
+           ABOUT EDIZIONI - NUOVA SEZIONE
+           ================================================ */
+        .about-edizioni {
+            padding: 8rem 3rem;
+            background: var(--bianco);
+            color: var(--nero);
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .about-edizioni-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-edizioni-header {
+            margin-bottom: 4rem;
+        }
+
+        .about-edizioni-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        .about-edizioni-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .about-edizioni-intro {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: var(--grigio);
+            max-width: 800px;
+        }
+
+        .about-section {
+            padding: 3rem 0;
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .about-section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: var(--nero);
+        }
+
+        .about-section-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .about-section-text {
+            font-size: 1rem;
+            line-height: 2;
+            color: var(--grigio);
+        }
+
+        /* Collane grid */
+        .collane-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .collana-item {
+            padding: 2rem;
+            background: var(--crema);
+            transition: all 0.4s ease;
+        }
+
+        .collana-item:hover {
+            background: rgba(42, 107, 107, 0.08);
+        }
+
+        .collana-nome {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--ottanio);
+            margin-bottom: 0.75rem;
+        }
+
+        .collana-desc {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--grigio);
         }
 
         /* ================================================
@@ -646,6 +740,7 @@
             .numero:nth-child(2)::after { display: none; }
             .team-container { grid-template-columns: 1fr; gap: 3rem; }
             .team-grid { grid-template-columns: 1fr; }
+            .collane-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -656,6 +751,7 @@
             .hero-label { margin-bottom: 2rem; }
             .numeri-grid { grid-template-columns: 1fr; }
             .numero::after { display: none; }
+            .about-edizioni { padding: 5rem 1.5rem; }
             .libro-card { width: 85vw; grid-template-columns: 1fr; }
             .libro-cover { max-width: 200px; margin: 0 auto; }
             .libri-header { flex-direction: column; align-items: start; gap: 1rem; }
@@ -740,6 +836,67 @@
         <div class="numero" data-num>
             <div class="numero-value"><span data-count="9">0</span></div>
             <div class="numero-label">Anni di attività</div>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT EDIZIONI -->
+<section class="about-edizioni">
+    <div class="about-edizioni-container">
+        <div class="about-edizioni-header">
+            <h2>Edizioni <em>Tlon</em></h2>
+            <p class="about-edizioni-intro">Edizioni Tlon nasce nel 2016 come articolazione editoriale del progetto culturale Tlon. È una casa editrice indipendente che pubblica filosofia contemporanea, studi di genere, saggistica critica, narrativa e poesia, con un'attenzione costante alla relazione tra pensiero, linguaggio e vita quotidiana. Il catalogo è costruito per continuità e coerenza. I libri non rispondono a un'idea di «attualità» immediata, ma a un lavoro di lungo periodo sui nodi culturali del presente: desiderio, potere, spiritualità, identità, trasformazioni sociali.</p>
+        </div>
+
+        <div class="about-section">
+            <h3 class="about-section-title">Linea <em>editoriale</em></h3>
+            <p class="about-section-text">La filosofia è il perno del progetto editoriale, intesa come pratica di orientamento e non come specialismo accademico. Attorno a questo asse si articolano testi che attraversano il femminismo, la politica del corpo, l'immaginario religioso, le narrazioni contemporanee e la poesia come forma di conoscenza. Edizioni Tlon lavora su testi che tengono insieme accessibilità e rigore, evitando sia la semplificazione divulgativa sia il linguaggio autoreferenziale.</p>
+        </div>
+
+        <div class="about-section">
+            <h3 class="about-section-title">Le <em>collane</em></h3>
+            <div class="collane-grid">
+                <div class="collana-item">
+                    <h4 class="collana-nome">Numeri Primi</h4>
+                    <p class="collana-desc">Collana dedicata agli studi di genere, ai femminismi e alle genealogie del potere. Ospita testi fondamentali per comprendere la costruzione storica delle disuguaglianze e le forme contemporanee del dominio.</p>
+                </div>
+                <div class="collana-item">
+                    <h4 class="collana-nome">Planetari</h4>
+                    <p class="collana-desc">Filosofia e pensiero contemporaneo. Libri che affrontano i grandi temi del presente: spiritualità, soggettività, tecnica, senso, comunità.</p>
+                </div>
+                <div class="collana-item">
+                    <h4 class="collana-nome">Planetari Big</h4>
+                    <p class="collana-desc">Testi di maggiore estensione e complessità teorica. Una collana pensata per lavori strutturali, non occasionali.</p>
+                </div>
+                <div class="collana-item">
+                    <h4 class="collana-nome">Hrönir</h4>
+                    <p class="collana-desc">Saggi filosofici in forma estesa. Libri che cercano l'approfondimento, e che richiedono un tempo di lettura non accelerato.</p>
+                </div>
+                <div class="collana-item">
+                    <h4 class="collana-nome">Soglie</h4>
+                    <p class="collana-desc">Saggistica politica e sociale. Testi che lavorano sui confini tra individuo e collettivo, norma e deviazione, privato e pubblico.</p>
+                </div>
+                <div class="collana-item">
+                    <h4 class="collana-nome">Radici</h4>
+                    <p class="collana-desc">Spiritualità, simbolismo, tradizioni religiose e loro trasformazioni contemporanee. Una collana che affronta il sacro senza ridurlo né a folklore né a psicologia spicciola.</p>
+                </div>
+                <div class="collana-item">
+                    <h4 class="collana-nome">Finzioni</h4>
+                    <p class="collana-desc">Narrativa italiana e straniera. Romanzi e racconti che esplorano identità instabili, memorie fratturate, mondi interiori e immaginari perturbanti.</p>
+                </div>
+                <div class="collana-item">
+                    <h4 class="collana-nome">Controcielo</h4>
+                    <p class="collana-desc">Poesia. Una collana dedicata alla parola poetica come spazio di precisione, ricerca e resistenza al linguaggio standardizzato.</p>
+                </div>
+                <div class="collana-item">
+                    <h4 class="collana-nome">Tlon Aleph</h4>
+                    <p class="collana-desc">Cataloghi d'arte e libri ibridi, nati dal lavoro di Tlon nei bookshop museali e nei contesti espositivi.</p>
+                </div>
+                <div class="collana-item">
+                    <h4 class="collana-nome">Uqbar</h4>
+                    <p class="collana-desc">Produzioni digitali ed ebook, spesso pensate come estensioni o variazioni del catalogo cartaceo.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -929,7 +1086,7 @@ function animateCursor() {
 }
 animateCursor();
 
-document.querySelectorAll('a, button, .libro-card, .team-member, .marquee-item').forEach(el => {
+document.querySelectorAll('a, button, .libro-card, .team-member, .marquee-item, .collana-item').forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
 });
