@@ -94,6 +94,90 @@
         nav a:hover {
             opacity: 1;
         }
+        /* HAMBURGER */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--bianco);
+    margin: 3px 0;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* MOBILE MENU */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--nero);
+    z-index: 1000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.mobile-menu.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mobile-menu a {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2rem;
+    font-style: italic;
+    color: var(--bianco);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease, color 0.3s ease;
+}
+
+.mobile-menu.active a {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mobile-menu.active a:nth-child(1) { transition-delay: 0.1s; }
+.mobile-menu.active a:nth-child(2) { transition-delay: 0.15s; }
+.mobile-menu.active a:nth-child(3) { transition-delay: 0.2s; }
+.mobile-menu.active a:nth-child(4) { transition-delay: 0.25s; }
+.mobile-menu.active a:nth-child(5) { transition-delay: 0.3s; }
+.mobile-menu.active a:nth-child(6) { transition-delay: 0.35s; }
+.mobile-menu.active a:nth-child(7) { transition-delay: 0.4s; }
+.mobile-menu.active a:nth-child(8) { transition-delay: 0.45s; }
+
+.mobile-menu a:hover {
+    color: var(--ottanio);
+}
 
         /* HERO */
         .hero {
@@ -262,23 +346,25 @@
             }
         }
 
-        @media (max-width: 768px) {
-            header {
-                padding: 1rem 1.5rem;
-            }
-            nav {
-                display: none;
-            }
-            .hero {
-                padding: 0 1.5rem 3rem;
-            }
-            .hero-founders {
-                flex-direction: column;
-            }
-            .founder {
-                min-width: auto;
-            }
-        }
+    @media (max-width: 768px) {
+    header {
+        padding: 1rem 1.5rem;
+    }
+    nav {
+        display: none;
+    }
+    .hamburger { display: flex; }
+    .mobile-menu { display: flex; }
+    .hero {
+        padding: 0 1.5rem 3rem;
+    }
+    .hero-founders {
+        flex-direction: column;
+    }
+    .founder {
+        min-width: auto;
+    }
+}
     
         /* ============ ECOSISTEMA ============ */
         .ecosistema {
@@ -1213,9 +1299,25 @@
 </head>
 <body>
 
-   <header>
+  <header>
     <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
     <nav>
+        <a href="./il-progetto.html">Il Progetto</a>
+        <a href="./andrea-colamedici/">Colamedici</a>
+        <a href="./maura-gancitano/">Gancitano</a>
+        <a href="./edizioni.html">Edizioni</a>
+        <a href="./librerie.html">Librerie</a>
+        <a href="./formazione.html">Formazione</a>
+        <a href="./eventi-festival.html">Eventi</a>
+        <a href="./contatti/">Contatti</a>
+    </nav>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+    <div class="mobile-menu" id="mobileMenu">
     <a href="./il-progetto.html">Il Progetto</a>
     <a href="./andrea-colamedici/">Colamedici</a>
     <a href="./maura-gancitano/">Gancitano</a>
@@ -1224,8 +1326,7 @@
     <a href="./formazione.html">Formazione</a>
     <a href="./eventi-festival.html">Eventi</a>
     <a href="./contatti/">Contatti</a>
-</nav>
-</header>
+</div>
 
     <section class="hero">
         <div class="hero-content">
@@ -1593,6 +1694,22 @@
 </footer>
 
     <script>
+        // Mobile Menu Toggle
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+});
+
+// Chiudi menu quando si clicca un link
+document.querySelectorAll('.mobile-menu a').forEach(link => {
+    link.addEventListener('click', function() {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+    });
+});
         // Scroll reveal
         const reveals = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver((entries) => {
