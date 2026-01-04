@@ -1,0 +1,174 @@
+/* EVIDENZA - Stili per la sezione In Evidenza */
+
+.evidenza-main {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 4rem;
+    align-items: center;
+    padding: 4rem;
+    background: linear-gradient(135deg, rgba(42, 107, 107, 0.08) 0%, rgba(42, 107, 107, 0.02) 100%);
+    border: 1px solid rgba(42, 107, 107, 0.15);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.evidenza-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--ottanio), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s ease;
+}
+
+.evidenza-main:hover::before {
+    transform: scaleX(1);
+}
+
+.evidenza-main:hover {
+    border-color: var(--ottanio);
+    transform: translateY(-5px);
+    box-shadow: 0 30px 80px rgba(42, 107, 107, 0.15);
+}
+
+.evidenza-main-visual {
+    position: relative;
+}
+
+.evidenza-book-frame {
+    position: relative;
+    transform: perspective(1000px) rotateY(-8deg);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.evidenza-main:hover .evidenza-book-frame {
+    transform: perspective(1000px) rotateY(-3deg) scale(1.03);
+}
+
+.evidenza-book-cover {
+    width: 100%;
+    display: block;
+    box-shadow: 20px 20px 60px rgba(0,0,0,0.3), 0 0 80px rgba(42, 107, 107, 0.1);
+    transition: box-shadow 0.6s ease;
+}
+
+.evidenza-main:hover .evidenza-book-cover {
+    box-shadow: 25px 25px 80px rgba(0,0,0,0.35), 0 0 100px rgba(42, 107, 107, 0.2);
+}
+
+.evidenza-book-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(42, 107, 107, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.evidenza-main:hover .evidenza-book-glow {
+    opacity: 1;
+}
+
+.evidenza-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.evidenza-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ottanio);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.evidenza-label::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--ottanio);
+}
+
+.evidenza-main-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--bianco);
+}
+
+.evidenza-main-title em {
+    font-style: italic;
+    color: var(--ottanio);
+}
+
+.evidenza-authors {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+}
+
+.evidenza-excerpt {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.6);
+    margin-top: 0.5rem;
+}
+
+.evidenza-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ottanio);
+    margin-top: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.evidenza-cta svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+}
+
+.evidenza-main:hover .evidenza-cta {
+    color: var(--bianco);
+}
+
+.evidenza-main:hover .evidenza-cta svg {
+    transform: translateX(5px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .evidenza-main {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding: 3rem;
+    }
+    
+    .evidenza-main-visual {
+        max-width: 220px;
+        margin: 0 auto;
+    }
+    
+    .evidenza-book-frame {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+}
