@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bianco);
+            color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+            transition: filter 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            padding-top: 120px;
+        }
+
+        /* PAGE HERO */
+        .page-hero {
+            padding: 4rem 3rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .page-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+        }
+
+        .page-title em {
+            font-style: italic;
+        }
+
+        .page-intro {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: var(--grigio);
+            max-width: 680px;
+        }
+
+        /* PRIVACY CONTENT */
+        .privacy-content {
+            padding: 0 3rem 8rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .privacy-section {
+            padding: 3rem 0;
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .privacy-section:first-child {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .section-number {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .section-title em {
+            font-style: italic;
+        }
+
+        .section-text {
+            font-size: 1rem;
+            line-height: 1.9;
+            color: var(--grigio);
+        }
+
+        .section-text p {
+            margin-bottom: 1.25rem;
+        }
+
+        .section-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-text strong {
+            color: var(--nero);
+            font-weight: 500;
+        }
+
+        .section-text a {
+            color: var(--ottanio);
+            border-bottom: 1px solid var(--ottanio);
+            transition: opacity 0.3s ease;
+        }
+
+        .section-text a:hover {
+            opacity: 0.7;
+        }
+
+        .data-box {
+            background: linear-gradient(135deg, rgba(42, 107, 107, 0.03) 0%, rgba(42, 107, 107, 0.08) 100%);
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .data-box p {
+            margin-bottom: 0.5rem;
+        }
+
+        .data-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .update-notice {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            padding-top: 3rem;
+            border-top: 1px solid var(--grigio-chiaro);
+            margin-top: 2rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--nero);
+            color: var(--bianco);
+            padding: 4rem 3rem 2rem;
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+
+        .footer-brand {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-tagline {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 5rem;
+        }
+
+        .footer-col h4 {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--bianco);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 1.8;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-social a {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            color: var(--bianco);
+        }
+
+        /* REVEAL ANIMATION */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                gap: 1.5rem;
+            }
+
+            nav a {
+                font-size: 0.65rem;
+            }
+
+            .page-hero {
+                padding: 3rem 1.5rem 3rem;
+            }
+
+            .privacy-content {
+                padding: 0 1.5rem 5rem;
+            }
+
+            .data-box {
+                padding: 1.5rem;
+            }
+
+            .footer-links {
+                gap: 3rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                display: none;
+            }
+
+            .footer-grid {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+
+            .footer-social {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/logo-tlon.png" alt="Tlon"></a>
+        <nav>
+            <a href="./il-progetto.html">Il Progetto</a>
+            <a href="./andrea-colamedici/">Colamedici</a>
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="./edizioni.html">Edizioni</a>
+            <a href="./librerie.html">Librerie</a>
+            <a href="./formazione.html">Formazione</a>
+            <a href="./eventi-festival.html">Eventi</a>
+            <a href="./contatti.html">Contatti</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <span class="page-label reveal">Informativa</span>
+            <h1 class="page-title reveal">Privacy <em>Policy</em></h1>
+            <p class="page-intro reveal">Informativa sul trattamento dei dati personali ai sensi degli artt. 13 e 14 del Regolamento (UE) 2016/679 (GDPR).</p>
+        </section>
+
+        <section class="privacy-content">
+            <div class="privacy-section reveal">
+                <span class="section-number">01</span>
+                <h2 class="section-title">Titolare del <em>trattamento</em></h2>
+                <div class="section-text">
+                    <p>Il Titolare del trattamento dei dati personali raccolti attraverso questo sito è:</p>
+                    <div class="data-box">
+                        <p><strong>Tlon srl</strong></p>
+                        <p>Sede legale: Via Nicolò da Pistoia, 12 — 00154 Roma</p>
+                        <p>P.IVA: 13583341006</p>
+                        <p>C.F.: 13583341006</p>
+                        <p>REA: RM – 1458496</p>
+                        <p>Email: <a href="mailto:info@tlon.it">info@tlon.it</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="privacy-section reveal">
+                <span class="section-number">02</span>
+                <h2 class="section-title">Tipologie di dati <em>raccolti</em></h2>
+                <div class="section-text">
+                    <p>Questo sito raccoglie dati personali esclusivamente quando l'utente decide volontariamente di comunicarli, ad esempio inviando un messaggio agli indirizzi email pubblicati nella pagina Contatti, iscrivendosi alla newsletter attraverso il servizio Substack, oppure effettuando acquisti sullo shop online gestito su piattaforma esterna.</p>
+                    <p>I dati che possono essere raccolti in queste circostanze includono: nome, cognome, indirizzo email, e ogni altra informazione che l'utente sceglie di condividere nel corpo del messaggio.</p>
+                    <p>Il sito non utilizza cookie di profilazione né strumenti di tracciamento pubblicitario. Possono essere presenti esclusivamente cookie tecnici, strettamente necessari al funzionamento della navigazione, che non richiedono il consenso dell'utente.</p>
+                </div>
+            </div>
+
+            <div class="privacy-section reveal">
+                <span class="section-number">03</span>
+                <h2 class="section-title">Finalità del <em>trattamento</em></h2>
+                <div class="section-text">
+                    <p>I dati personali forniti volontariamente dall'utente vengono trattati per le seguenti finalità:</p>
+                    <p><strong>Rispondere alle richieste di contatto.</strong> Quando l'utente invia un'email a uno degli indirizzi pubblicati sul sito, i dati contenuti nel messaggio vengono utilizzati esclusivamente per fornire riscontro alla richiesta e per le comunicazioni strettamente connesse.</p>
+                    <p><strong>Gestione della newsletter.</strong> L'iscrizione alla Tlonletter avviene attraverso la piattaforma Substack, che opera come titolare autonomo del trattamento secondo la propria informativa privacy.</p>
+                    <p><strong>Gestione degli acquisti.</strong> Gli acquisti effettuati sullo shop Tlon sono gestiti attraverso piattaforma esterna, il cui titolare del trattamento è responsabile del trattamento dei dati relativi alle transazioni commerciali.</p>
+                </div>
+            </div>
+
+            <div class="privacy-section reveal">
+                <span class="section-number">04</span>
+                <h2 class="section-title">Base <em>giuridica</em></h2>
+                <div class="section-text">
+                    <p>Il trattamento dei dati personali si fonda sulle seguenti basi giuridiche previste dall'art. 6 del GDPR:</p>
+                    <p><strong>Consenso dell'interessato</strong> (art. 6, par. 1, lett. a), espresso attraverso l'invio volontario di comunicazioni agli indirizzi email del Titolare.</p>
+                    <p><strong>Esecuzione di un contratto</strong> (art. 6, par. 1, lett. b), nel caso di acquisti effettuati attraverso lo shop online.</p>
+                    <p><strong>Legittimo interesse del Titolare</strong> (art. 6, par. 1, lett. f), per quanto riguarda la protezione dei propri sistemi informatici e la prevenzione di utilizzi fraudolenti.</p>
+                </div>
+            </div>
+
+            <div class="privacy-section reveal">
+                <span class="section-number">05</span>
+                <h2 class="section-title">Modalità e durata del <em>trattamento</em></h2>
+                <div class="section-text">
+                    <p>I dati personali sono trattati con strumenti informatici e telematici, con logiche strettamente correlate alle finalità indicate e, comunque, in modo da garantire la sicurezza e la riservatezza degli stessi.</p>
+                    <p>I dati raccolti attraverso le comunicazioni email vengono conservati per il tempo strettamente necessario a fornire riscontro alla richiesta dell'utente e, successivamente, per il periodo previsto dalla normativa applicabile in materia di conservazione documentale, comunque non oltre dieci anni dalla cessazione del rapporto, salvo obblighi di legge che ne impongano una conservazione più lunga.</p>
+                </div>
+            </div>
+
+            <div class="privacy-section reveal">
+                <span class="section-number">06</span>
+                <h2 class="section-title">Comunicazione e <em>diffusione</em></h2>
+                <div class="section-text">
+                    <p>I dati personali non vengono diffusi né comunicati a terzi, ad eccezione dei casi in cui la comunicazione sia necessaria per adempiere a obblighi di legge, oppure sia richiesta dall'autorità giudiziaria.</p>
+                    <p>I dati possono essere trattati da soggetti che agiscono in qualità di responsabili del trattamento, nominati ai sensi dell'art. 28 del GDPR, quali fornitori di servizi tecnici e informatici indispensabili per il funzionamento del sito.</p>
+                </div>
+            </div>
+
+            <div class="privacy-section reveal">
+                <span class="section-number">07</span>
+                <h2 class="section-title">Trasferimento dei dati <em>all'estero</em></h2>
+                <div class="section-text">
+                    <p>Il sito è ospitato su server situati all'interno dell'Unione Europea. Qualora si rendesse necessario il trasferimento di dati verso paesi terzi, questo avverrà esclusivamente nel rispetto delle garanzie previste dal GDPR, incluse le decisioni di adeguatezza della Commissione Europea o le clausole contrattuali standard approvate dalla Commissione stessa.</p>
+                </div>
+            </div>
+
+            <div class="privacy-section reveal">
+                <span class="section-number">08</span>
+                <h2 class="section-title">Diritti <em>dell'interessato</em></h2>
+                <div class="section-text">
+                    <p>In qualità di interessato, l'utente può esercitare in qualsiasi momento i diritti previsti dagli artt. 15-22 del GDPR, e in particolare:</p>
+                    <p><strong>Diritto di accesso</strong> (art. 15): ottenere conferma che sia o meno in corso un trattamento di dati personali che lo riguardano e, in tal caso, ottenere l'accesso ai dati e alle informazioni relative al trattamento.</p>
+                    <p><strong>Diritto di rettifica</strong> (art. 16): ottenere la rettifica dei dati personali inesatti o l'integrazione dei dati incompleti.</p>
+                    <p><strong>Diritto alla cancellazione</strong> (art. 17): ottenere la cancellazione dei dati personali, nei casi previsti dal Regolamento.</p>
+                    <p><strong>Diritto di limitazione</strong> (art. 18): ottenere la limitazione del trattamento, nei casi previsti dal Regolamento.</p>
+                    <p><strong>Diritto alla portabilità</strong> (art. 20): ricevere i dati personali in un formato strutturato, di uso comune e leggibile da dispositivo automatico.</p>
+                    <p><strong>Diritto di opposizione</strong> (art. 21): opporsi in qualsiasi momento al trattamento dei dati personali che lo riguardano.</p>
+                    <p>Per esercitare i propri diritti, l'utente può inviare una richiesta scritta all'indirizzo email <a href="mailto:info@tlon.it">info@tlon.it</a>.</p>
+                    <p>L'interessato ha inoltre il diritto di proporre reclamo all'Autorità Garante per la Protezione dei Dati Personali, con sede in Piazza Venezia 11, 00187 Roma, oppure attraverso il sito <a href="https://www.garanteprivacy.it" target="_blank">www.garanteprivacy.it</a>.</p>
+                </div>
+            </div>
+
+            <div class="privacy-section reveal">
+                <span class="section-number">09</span>
+                <h2 class="section-title">Modifiche alla presente <em>informativa</em></h2>
+                <div class="section-text">
+                    <p>Il Titolare si riserva il diritto di modificare, aggiornare o integrare la presente informativa in qualsiasi momento, in conformità con la normativa vigente. Le modifiche saranno pubblicate su questa pagina. Si consiglia pertanto di consultare periodicamente questa sezione per prendere visione della versione più aggiornata dell'informativa.</p>
+                </div>
+            </div>
+
+            <p class="update-notice reveal">Ultimo aggiornamento: gennaio 2025</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">TLON</div>
+                <p class="footer-tagline">Un pianeta immaginario. Che esiste.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Progetto</h4>
+                    <a href="./il-progetto.html">Chi siamo</a>
+                    <a href="./contatti.html">Contatti</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Edizioni</h4>
+                    <a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a>
+                    <a href="https://shop.tlon.it/autori/">Autori</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Attività</h4>
+                    <a href="./eventi-festival.html">Eventi</a>
+                    <a href="./formazione.html">Formazione</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Tlon | Tlon srl | Sede legale: Via Nicolò da Pistoia, 12 — 00154 Roma<br>
+            P.IVA: 13583341006 | C.F.: 13583341006 | REA: RM – 1458496 | <a href="./privacy.html" style="color: rgba(255,255,255,0.6);">Privacy Policy</a></p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
+                <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
+                <a href="https://www.tlonletter.it" target="_blank">Substack</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
