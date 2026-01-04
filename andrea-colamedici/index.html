@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andrea Colamedici — Tlon</title>
+    <title>Andrea Colamedici – Tlon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -53,7 +53,7 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 100;
+            z-index: 1002;
             padding: 1.5rem 3rem;
             display: flex;
             justify-content: space-between;
@@ -96,23 +96,25 @@
             display: none;
             flex-direction: column;
             justify-content: center;
-            gap: 6px;
+            align-items: center;
             width: 32px;
             height: 32px;
             cursor: pointer;
-            z-index: 1001;
+            position: relative;
+            z-index: 1003;
         }
 
         .hamburger span {
             display: block;
-            width: 100%;
+            width: 24px;
             height: 2px;
-            background: var(--nero);
+            background: #000;
+            margin: 3px 0;
             transition: all 0.3s ease;
         }
 
         .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
+            transform: rotate(45deg) translate(5px, 5px);
         }
 
         .hamburger.active span:nth-child(2) {
@@ -120,7 +122,13 @@
         }
 
         .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .hamburger.active span:nth-child(1),
+        .hamburger.active span:nth-child(2),
+        .hamburger.active span:nth-child(3) {
+            background: #fff;
         }
 
         /* MOBILE MENU */
@@ -131,7 +139,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: var(--bianco);
+            background: var(--nero);
             z-index: 1000;
             flex-direction: column;
             justify-content: center;
@@ -151,7 +159,7 @@
             font-family: 'Instrument Serif', serif;
             font-size: 2rem;
             font-style: italic;
-            color: var(--nero);
+            color: var(--bianco);
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
@@ -942,7 +950,7 @@
                 <div class="bio-text">
                     <p>Andrea Colamedici è filosofo, editore e saggista. Nel 2014 ha fondato <strong>Tlon</strong> insieme a Maura Gancitano: un progetto culturale che si manifesta attraverso l'organizzazione di festival ed eventi, una casa editrice, due librerie e un'attività di divulgazione online e dal vivo, mescolando cultura alta e bassa, analizzando bisogni e significati del nostro tempo e mettendo in connessione l'ambiente accademico con la cultura popolare.</p>
                     <p>Insegna <strong>Prompt Thinking</strong> presso lo IED Roma e la 24Ore Business School, e <em>Borges y la Inteligencia Artificial</em> all'Universidad del Sur di Buenos Aires. Ha insegnato Social Media Theory presso l'Università IULM di Milano. È membro della faculty della 24Ore Business School e ha collaborato con numerose università italiane e internazionali, tra cui Politecnico di Milano, Università di Bologna, San Raffaele, Roma Tre e LUISS.</p>
-                    <p>È <strong>presidente di GenIA</strong>, hub interdisciplinare sull'intelligenza artificiale dell'AANT — Accademia delle Arti e Nuove Tecnologie di Roma, dove coordina le attività di ricerca applicata e formazione su IA generativa per arte, design e comunicazione. Nel 2024–2025 ha svolto un assegno di ricerca presso l'Università di Foggia su intelligenza artificiale e sistemi di pensiero, con un progetto centrato sull'esperimento filosofico-editoriale di Jianwei Xun e la genesi di <em>Ipnocrazia</em>.</p>
+                    <p>È <strong>presidente di GenIA</strong>, hub interdisciplinare sull'intelligenza artificiale dell'AANT – Accademia delle Arti e Nuove Tecnologie di Roma, dove coordina le attività di ricerca applicata e formazione su IA generativa per arte, design e comunicazione. Nel 2024–2025 ha svolto un assegno di ricerca presso l'Università di Foggia su intelligenza artificiale e sistemi di pensiero, con un progetto centrato sull'esperimento filosofico-editoriale di Jianwei Xun e la genesi di <em>Ipnocrazia</em>.</p>
                     <p>Insieme a Maura Gancitano è <strong>direttore filosofico</strong> del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. È l'ideatore della <em>Festa della Filosofia</em> presso le Triennali di Milano e Roma, della maratona online <em>Prendiamola con Filosofia</em> (nata su sollecitazione del Ministero della Salute) e degli <em>Italian Podcast Awards</em>. Ha tenuto speech per TEDxRoma sulla filosofia dell'intelligenza artificiale e per TEDxBarletta sul rapporto tra arte e IA.</p>
                 </div>
             </section>
