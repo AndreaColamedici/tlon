@@ -419,29 +419,65 @@
             color: var(--grigio);
         }
 
-        /* ATTIVITÀ */
-        .attivita-grid {
+        /* LISTA VOCI */
+        .lista-voci {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .voce-item {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 3rem;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--grigio-chiaro);
+            align-items: baseline;
         }
 
-        .attivita-item h4 {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.25rem;
-            font-weight: 400;
-            margin-bottom: 1rem;
+        .voce-item:last-child {
+            border-bottom: none;
         }
 
-        .attivita-item p {
-            font-size: 0.95rem;
-            line-height: 1.8;
-            color: var(--grigio);
-        }
-
-        .attivita-item strong {
+        .voce-titolo {
+            font-size: 1rem;
+            line-height: 1.6;
             color: var(--nero);
+        }
+
+        .voce-titolo em {
+            font-style: italic;
+        }
+
+        .voce-titolo strong {
             font-weight: 600;
+        }
+
+        .voce-dettaglio {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* LISTA SEMPLICE */
+        .lista-semplice {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .lista-semplice .voce-item {
+            grid-template-columns: 1fr;
+        }
+
+        /* PUBBLICAZIONI */
+        .pubblicazioni-categoria {
+            margin-bottom: 3rem;
+        }
+
+        .pubblicazioni-categoria:last-child {
+            margin-bottom: 0;
         }
 
         /* SPECCHIO FEATURE */
@@ -759,10 +795,6 @@
                 margin: 0 auto;
             }
 
-            .attivita-grid {
-                grid-template-columns: 1fr;
-            }
-
             .podcast-item {
                 grid-template-columns: 1fr;
                 gap: 1rem;
@@ -778,6 +810,15 @@
             }
 
             .libro-editore {
+                text-align: left;
+            }
+
+            .voce-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .voce-dettaglio {
                 text-align: left;
             }
 
@@ -866,7 +907,7 @@
         </section>
 
         <div class="bio-content">
-            <!-- BIOGRAFIA -->
+            <!-- I. BIOGRAFIA -->
             <section class="bio-section reveal">
                 <div class="section-header">
                     <h2 class="section-title">Biografia</h2>
@@ -875,12 +916,11 @@
                 <div class="bio-text">
                     <p>Maura Gancitano è <strong>filosofa, pedagogista e scrittrice</strong>. Ha conseguito una laurea in <strong>filosofia politica</strong> all'Università Vita-Salute San Raffaele di Milano e una laurea magistrale in <strong>Scienze Pedagogiche e della Progettazione Educativa</strong> presso l'Università di Foggia, con una tesi in Filosofia dell'educazione dal titolo <em>«Il dispositivo narrativo tra vincolo e possibilità. Genealogia critica e prospettive micropedagogiche sui processi di soggettivazione contemporanei»</em>. Nel 2015 ha fondato <em>Tlon</em> insieme ad Andrea Colamedici, con cui cura la rubrica «Prendila con Filosofia» per <em>Vanity Fair</em>.</p>
                     <p>Ha collaborato con <strong>La Repubblica</strong>, <em>La Stampa</em>, <em>Linus</em>, <strong>Radio 1</strong> e <em>Radio Freccia</em>. È stata inserita da Vanity Fair Italia, Francia e Spagna nella lista «Generazione futuro», tra gli artisti, attivisti e pionieri che stanno disegnando il futuro dell'Europa, e nella lista <strong>Unstoppable Women</strong> di StartUpItalia, le 150 donne da seguire nel mondo dell'innovazione in Italia.</p>
-                    <p>Insieme ad Andrea Colamedici è <strong>direttrice filosofica</strong> del <em>Festival del Pensare Contemporaneo</em> di Piacenza. È <strong>direttrice scientifica</strong> della <em>Fondazione WoW</em> e fa parte dei comitati scientifici di <strong>Fondazione Lotus</strong> di Elisa Toffoli, di <em>United Network</em>, di <strong>geniaLAB</strong> di AANT, di <em>Rizzoli Education</em>, della collana <strong>Intrecci</strong> di Firenze University Press (in collaborazione con l'Università di Siena) e della conferenza internazionale <em>Visual Education / ASTERA</em> dell'Università di Foggia.</p>
-                    <p>Insegna <strong>Prompt Thinking</strong> presso lo IED Roma e ha tenuto incontri e collaborazioni con numerose università italiane e internazionali, tra cui Politecnico di Milano, IED Milano, Università Cattolica, Bicocca, Roma Tre, LUISS, Università di Trento, Perugia e <strong>Columbia University</strong>. Ha tenuto speech per <em>TEDxGenova</em>, <em>TEDxLeverano</em> e <em>TEDxBellano</em>, e ha condotto il <strong>TEDxPavia</strong>. I suoi libri sono tradotti in <strong>dieci lingue</strong>. Con il saggio <em>Specchio delle mie brame. La prigione della bellezza</em> (Einaudi 2022) ha vinto il <strong>Premio Rapallo</strong>, ex aequo con Bianca Pitzorno.</p>
+                    <p>I suoi libri sono tradotti in <strong>dieci lingue</strong>. Con il saggio <em>Specchio delle mie brame. La prigione della bellezza</em> (Einaudi 2022) ha vinto il <strong>Premio Rapallo</strong>, ex aequo con Bianca Pitzorno.</p>
                 </div>
             </section>
 
-            <!-- LIBRI -->
+            <!-- II. LIBRI -->
             <section class="bio-section reveal">
                 <div class="section-header">
                     <h2 class="section-title">Libri</h2>
@@ -1003,7 +1043,7 @@
                 </div>
             </section>
 
-            <!-- TRADUZIONI -->
+            <!-- III. TRADUZIONI -->
             <section class="bio-section reveal">
                 <div class="section-header">
                     <h2 class="section-title">Traduzioni</h2>
@@ -1037,7 +1077,7 @@
                 </div>
             </section>
 
-            <!-- PODCAST -->
+            <!-- IV. PODCAST -->
             <section class="bio-section reveal">
                 <div class="section-header">
                     <h2 class="section-title">Podcast</h2>
@@ -1075,28 +1115,254 @@
                 </div>
             </section>
 
-            <!-- ATTIVITÀ -->
+            <!-- V. INSEGNAMENTO -->
             <section class="bio-section reveal">
                 <div class="section-header">
-                    <h2 class="section-title">Attività</h2>
+                    <h2 class="section-title">Insegnamento</h2>
                     <span class="section-num">V</span>
                 </div>
-                <div class="attivita-grid">
-                    <div class="attivita-item">
-                        <h4>Direzione artistica</h4>
-                        <p><strong>Direttrice filosofica</strong> del <em>Festival del Pensare Contemporaneo</em> di Piacenza. Ideatrice della <strong>Festa della Filosofia</strong> presso le Triennali di Milano e Roma e del premio <em>ilPod — Italian Podcast Awards</em>.</p>
+                <div class="lista-voci">
+                    <div class="voce-item">
+                        <span class="voce-titolo"><strong>Prompt Thinking</strong> — IED Roma</span>
+                        <span class="voce-dettaglio">in corso</span>
                     </div>
-                    <div class="attivita-item">
-                        <h4>Insegnamento</h4>
-                        <p>Docente di <strong>Prompt Thinking</strong> allo IED Roma. Ha collaborato con <em>Politecnico di Milano</em>, Università Cattolica, Bicocca, Roma Tre, LUISS, Università di Trento, Perugia e <strong>Columbia University</strong>.</p>
+                    <div class="voce-item">
+                        <span class="voce-titolo"><em>Dalla scrittura al digitale: la crepa che abitiamo</em> — Università di Foggia (con Andrea Colamedici)</span>
+                        <span class="voce-dettaglio">2021–2022</span>
                     </div>
-                    <div class="attivita-item">
-                        <h4>Comitati scientifici</h4>
-                        <p><strong>Direttrice scientifica</strong> della <em>Fondazione WoW</em>. Membro dei comitati scientifici di <strong>Fondazione Lotus</strong>, <em>United Network</em>, <strong>geniaLAB</strong>, <em>Rizzoli Education</em>, collana <strong>Intrecci</strong> e conferenza <em>Visual Education / ASTERA</em>.</p>
+                    <div class="voce-item">
+                        <span class="voce-titolo">Masterclass sugli stereotipi di genere — Università di Messina / Taobuk</span>
+                        <span class="voce-dettaglio">2025</span>
                     </div>
-                    <div class="attivita-item">
-                        <h4>Formazione</h4>
-                        <p>Propone percorsi formativi su <strong>filosofia</strong>, <em>diversity & inclusion</em>, educazione di genere, comunicazione culturale e spazi pubblici digitali, per aziende, istituzioni e associazioni.</p>
+                    <div class="voce-item">
+                        <span class="voce-titolo">Corso Competenze Trasversali — Università di Bari</span>
+                        <span class="voce-dettaglio">2025</span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo">Spring School <em>Filosofia e trasformazione digitale</em> — Università di Udine</span>
+                        <span class="voce-dettaglio">2023, 2024</span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo">Convegno <em>Donne e Scienza</em> — CNR Genova</span>
+                        <span class="voce-dettaglio">2024</span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo">Convegno <em>Gender Cultures</em> — IULM Milano</span>
+                        <span class="voce-dettaglio">2024</span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo">ICS Exchange Conference, keynote su <em>Prompt Thinking</em> — Università di Foggia</span>
+                        <span class="voce-dettaglio">2024</span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo">Convegno sull'intelligenza artificiale nel turismo — Università di Oristano</span>
+                        <span class="voce-dettaglio">2024</span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo"><em>Quanto è naturale l'Intelligenza Artificiale?</em> — Circolo dei Lettori di Torino con SIpEIA</span>
+                        <span class="voce-dettaglio">2023</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VI. COMITATI SCIENTIFICI -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Comitati scientifici</h2>
+                    <span class="section-num">VI</span>
+                </div>
+                <div class="lista-voci">
+                    <div class="voce-item">
+                        <span class="voce-titolo"><strong>Fondazione WoW</strong></span>
+                        <span class="voce-dettaglio">Direttrice scientifica</span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo"><strong>Fondazione Lotus</strong> di Elisa Toffoli</span>
+                        <span class="voce-dettaglio"></span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo"><strong>United Network</strong></span>
+                        <span class="voce-dettaglio"></span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo"><strong>geniaLAB</strong> di AANT</span>
+                        <span class="voce-dettaglio"></span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo"><strong>Rizzoli Education</strong></span>
+                        <span class="voce-dettaglio"></span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo">Collana <em>Intrecci</em> — Firenze University Press (con Università di Siena)</span>
+                        <span class="voce-dettaglio"></span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo">Conferenza internazionale <em>Visual Education / ASTERA</em> — Università di Foggia</span>
+                        <span class="voce-dettaglio"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VII. DIREZIONE ARTISTICA -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Direzione artistica</h2>
+                    <span class="section-num">VII</span>
+                </div>
+                <div class="lista-voci">
+                    <div class="voce-item">
+                        <span class="voce-titolo"><strong>Festival del Pensare Contemporaneo</strong> di Piacenza</span>
+                        <span class="voce-dettaglio">Direttrice filosofica</span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo"><strong>Festa della Filosofia</strong> presso le Triennali di Milano e Roma</span>
+                        <span class="voce-dettaglio">Ideatrice</span>
+                    </div>
+                    <div class="voce-item">
+                        <span class="voce-titolo"><em>ilPod — Italian Podcast Awards</em></span>
+                        <span class="voce-dettaglio">Ideatrice</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIII. PUBBLICAZIONI ACCADEMICHE -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Pubblicazioni accademiche</h2>
+                    <span class="section-num">VIII</span>
+                </div>
+
+                <div class="pubblicazioni-categoria">
+                    <div class="categoria-title">Articoli su rivista</div>
+                    <div class="lista-voci">
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Educare lo sguardo nell'epoca della saturazione. Visual Education, IA generativa e strategie critiche di apprendimento</em> (con Andrea Colamedici) — Atti Astrea 2025, Il Capoverso</span>
+                            <span class="voce-dettaglio">2025</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Filosofare artificiale: minaccia o opportunità per il pensiero?</em> — Mondo Digitale</span>
+                            <span class="voce-dettaglio">2025</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Una rivoluzione umanocentrica. Come l'intelligenza artificiale ridefinisce il lavoro e l'interazione umana</em> — Harvard Business Review Italia</span>
+                            <span class="voce-dettaglio">2024</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo">Atti del Convegno <em>Donne e Scienza</em></span>
+                            <span class="voce-dettaglio">2024</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Egemonia culturale o cancel culture?</em> — Vita e Pensiero</span>
+                            <span class="voce-dettaglio">2023</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo">Nuovi Argomenti n. 41 (<em>Non ancora trentenni</em>)</span>
+                            <span class="voce-dettaglio"></span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo">Nuovi Argomenti n. 77</span>
+                            <span class="voce-dettaglio"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pubblicazioni-categoria">
+                    <div class="categoria-title">Contributi in volumi collettanei</div>
+                    <div class="lista-voci">
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Sostenibilità e sviluppo sostenibile. Una lettura transdisciplinare</em> — UTET</span>
+                            <span class="voce-dettaglio">2025</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Le parole sono uno sciame d'api</em> — Sperling & Kupfer</span>
+                            <span class="voce-dettaglio">2025</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Franco Battiato. La musica del tempo</em> — Oblomov</span>
+                            <span class="voce-dettaglio">2025</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>È il pensiero che conta</em> — AA.VV., IlSole24ore</span>
+                            <span class="voce-dettaglio">2025</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Un anno di storie 2024</em> — Treccani</span>
+                            <span class="voce-dettaglio">2023</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Che traccia hai scelto</em> — UTET</span>
+                            <span class="voce-dettaglio">2023</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Adesso tocca a noi</em> — Fondazione Terra Santa</span>
+                            <span class="voce-dettaglio">2022</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Out of time. Ripartire dalla natura</em> — Biennale Donna Ferrara</span>
+                            <span class="voce-dettaglio">2022</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Riabitare il mondo</em> — Quodlibet</span>
+                            <span class="voce-dettaglio">2021</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Io dico io</em> — Silvana Editoriale per la Galleria Nazionale</span>
+                            <span class="voce-dettaglio">2021</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- IX. ALTRE PUBBLICAZIONI -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Altre pubblicazioni</h2>
+                    <span class="section-num">IX</span>
+                </div>
+
+                <div class="pubblicazioni-categoria">
+                    <div class="categoria-title">Prefazioni e postfazioni</div>
+                    <div class="lista-voci">
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Dance me to the end of the world. 30 esercizi performativi a Corvetto</em> di Sotterraneo — Il Saggiatore</span>
+                            <span class="voce-dettaglio">2025</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Misurare il salto delle rane</em> di Gabriele Di Luca — Cue Press</span>
+                            <span class="voce-dettaglio">2025</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Se dormo con gli occhiali, vedo meglio i sogni?</em> di Claude Ponti — Babalibri</span>
+                            <span class="voce-dettaglio">2025</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Mor. Storia per le mie madri</em> di Serena Garagnani — ADD Editore</span>
+                            <span class="voce-dettaglio">2024</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>L'amore in più</em> di Élisabeth Badinter — Tlon</span>
+                            <span class="voce-dettaglio">2024</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Intrepide</em> di Laura Donadoni — HarperCollins</span>
+                            <span class="voce-dettaglio">2023</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Il mito della bellezza</em> di Naomi Wolf — Tlon</span>
+                            <span class="voce-dettaglio">2022</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>La Torcia</em> di Marion Zimmer Bradley — HarperCollins</span>
+                            <span class="voce-dettaglio">2021</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>L'amore è un sintomo</em> di Leonardo Mendolicchio — Tlon</span>
+                            <span class="voce-dettaglio">2021</span>
+                        </div>
+                        <div class="voce-item">
+                            <span class="voce-titolo"><em>Eroine</em> di Marilù Pierri — Tlon</span>
+                            <span class="voce-dettaglio">2020</span>
+                        </div>
                     </div>
                 </div>
             </section>
