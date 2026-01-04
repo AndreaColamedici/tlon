@@ -70,17 +70,26 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 100;
+            z-index: 1002;
             padding: 1.5rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: var(--bianco);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            transition: background 0.3s ease, box-shadow 0.4s ease, border-color 0.3s ease;
         }
 
         header.scrolled {
             box-shadow: 0 2px 30px rgba(0,0,0,0.06);
+        }
+
+        header.menu-open {
+            background: var(--nero);
+            border-bottom-color: transparent;
+        }
+
+        header.menu-open .logo img {
+            filter: invert(1);
         }
 
         .logo {
@@ -91,6 +100,7 @@
         .logo img {
             height: 28px;
             width: auto;
+            transition: filter 0.3s ease;
         }
 
         nav {
@@ -121,25 +131,20 @@
             width: 32px;
             height: 32px;
             cursor: pointer;
-            z-index: 1001;
+            position: relative;
+            z-index: 1003;
             background: none;
             border: none;
             padding: 0;
-            gap: 6px;
         }
 
         .hamburger span {
             display: block;
             width: 24px;
-            height: 1.5px;
-            background: var(--nero);
+            height: 2px;
+            background: #000;
+            margin: 3px 0;
             transition: all 0.3s ease;
-            transform-origin: center;
-        }
-
-        .hamburger.active span {
-            background: var(--bianco);
-            mix-blend-mode: normal;
         }
 
         .hamburger.active span:nth-child(1) {
@@ -151,7 +156,13 @@
         }
 
         .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .hamburger.active span:nth-child(1),
+        .hamburger.active span:nth-child(2),
+        .hamburger.active span:nth-child(3) {
+            background: #fff;
         }
 
         /* MOBILE MENU */
@@ -169,22 +180,23 @@
             align-items: center;
             gap: 1.5rem;
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
         .mobile-menu.active {
             opacity: 1;
-            pointer-events: auto;
+            visibility: visible;
         }
 
         .mobile-menu a {
             font-family: 'Instrument Serif', serif;
             font-size: 2rem;
+            font-style: italic;
             color: var(--bianco);
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
         }
 
         .mobile-menu.active a {
@@ -1243,412 +1255,4 @@
                 <span class="evento-num">02</span>
                 <span class="evento-location">Milano · Teatro Carcano</span>
                 <h2 class="evento-title">Lezioni di <em>Meraviglia</em></h2>
-                <p class="evento-desc">Imparare a meravigliarsi, a non dare per scontato il mondo, ad esercitare l'erotica della complessità. Un ciclo di incontri in cui Andrea e Maura dialogano con musicisti, scienziati e artisti per affrontare ciò che sembra inaffrontabile: l'apparente mancanza di senso dell'esistenza.</p>
-                <div class="evento-highlights">
-                    <div class="highlight">
-                        <span class="highlight-value">2021</span>
-                        <span class="highlight-label">Prima stagione</span>
-                    </div>
-                    <div class="highlight">
-                        <span class="highlight-value">7+</span>
-                        <span class="highlight-label">Edizioni</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="evento-card">
-                <span class="evento-num">03</span>
-                <span class="evento-location">Roma · Libreria Teatro Tlon</span>
-                <h2 class="evento-title">Party <em>Letterari</em></h2>
-                <p class="evento-desc">Serate di celebrazione dell'amore per i libri, ispirate al fenomeno nato a New York e Amsterdam. Cellulari aboliti, luci soffuse, consigli personalizzati dalla nostra "farmacia letteraria". Un'oasi di cultura e socialità dove, tra una pagina e l'altra, nascono nuove amicizie accomunate dalla passione per la lettura.</p>
-                <div class="evento-highlights">
-                    <div class="highlight">
-                        <span class="highlight-value">170+</span>
-                        <span class="highlight-label">Partecipanti</span>
-                    </div>
-                    <div class="highlight">
-                        <span class="highlight-value">Salone</span>
-                        <span class="highlight-label">del Libro</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="evento-card">
-                <span class="evento-num">04</span>
-                <span class="evento-location">Putignano</span>
-                <h2 class="evento-title">Carnevale di <em>Putignano</em></h2>
-                <p class="evento-desc">Andrea è il direttore filosofico del Carnevale più antico d'Europa. Ha scelto per le sfilate dei carri il tema della Sovversione nell'edizione 2024 e del Paradosso in quella del 2025. Un lavoro incentrato sul recupero delle radici filosofiche del Carnevale e sull'attualizzazione dei temi dei maestri cartapestai.</p>
-                <p class="evento-role"><strong>Direzione filosofica</strong> · Andrea Colamedici</p>
-            </article>
-
-            <article class="evento-card">
-                <span class="evento-num">05</span>
-                <span class="evento-location">Bari</span>
-                <h2 class="evento-title">BariDiversa – Festival del <em>Pensare Queer</em></h2>
-                <p class="evento-desc">Un invito provocatorio a riconoscere e onorare la diversità che abita la nostra città e ciascuno di noi, a non avere paura di essere se stessi. Pensare in maniera queer significa sforzarsi di superare i binarismi e le etichette, facendo proprio l'insegnamento di Emily Dickinson: «Dì tutta la verità ma dilla obliqua».</p>
-                <p class="evento-role">Organizzato per il <strong>Comune di Bari</strong></p>
-            </article>
-
-            <article class="evento-card">
-                <span class="evento-num">06</span>
-                <span class="evento-location">Parlamento Europeo</span>
-                <h2 class="evento-title">Pensare <em>Europeo</em></h2>
-                <p class="evento-desc">Un ciclo di incontri realizzato in collaborazione con il Parlamento Europeo, pensato per rafforzare il senso di appartenenza alla comunità europea mettendo in connessione eurodeputati con filosofi, attivisti, storici e artisti. Un ponte tra le istituzioni e i cittadini attraverso il dialogo culturale.</p>
-                <p class="evento-role"><strong>Podcast</strong> e incontri dal vivo</p>
-            </article>
-
-            <article class="evento-card">
-                <span class="evento-num">07</span>
-                <span class="evento-location">Milano · Roma</span>
-                <h2 class="evento-title">Festa della <em>Filosofia</em></h2>
-                <p class="evento-desc">Vivere la filosofia come facevano anche gli antichi: Socrate incontrava allievi e amici in forma conviviale, i libri di Platone sono conversazioni, Aristotele "passeggiava" con i discepoli. Non un convegno tradizionale con lezioni frontali, ma un evento con esercizi ginnici e mentali, passeggiate filosofiche e conversazioni.</p>
-                <div class="evento-highlights">
-                    <div class="highlight">
-                        <span class="highlight-value">Triennale</span>
-                        <span class="highlight-label">Milano</span>
-                    </div>
-                    <div class="highlight">
-                        <span class="highlight-value">Monk</span>
-                        <span class="highlight-label">Roma</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="evento-card">
-                <span class="evento-num">08</span>
-                <span class="evento-location">Roma · Villa Ada</span>
-                <h2 class="evento-title">Tlon Fest – <em>Pensare la Musica</em></h2>
-                <p class="evento-desc">Tre giorni di musica e pensiero. Filosofi, musicisti, artisti e intellettuali uniscono alto e basso, serio e faceto, passando da Mozart a Raffaella Carrà, dalla filosofia del Grunge a Franco Battiato, dalle boyband anni '90 all'AI nella musica. Montagne russe dell'intelletto che si concludono con un party letterario.</p>
-                <div class="evento-highlights">
-                    <div class="highlight">
-                        <span class="highlight-value">3</span>
-                        <span class="highlight-label">Giorni</span>
-                    </div>
-                    <div class="highlight">
-                        <span class="highlight-value">Free</span>
-                        <span class="highlight-label">Ingresso</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="evento-card">
-                <span class="evento-num">09</span>
-                <span class="evento-location">Streaming internazionale</span>
-                <h2 class="evento-title">Prendiamola con <em>Filosofia</em></h2>
-                <p class="evento-desc">Dopo la prima edizione che ha raggiunto due milioni di spettatori durante il lockdown, riuniti con l'intento di usare la filosofia come strumento per affrontare il momento pandemico, è tornata in una veste internazionale. Dalle 11 del mattino fino alle 23, una staffetta con grandi nomi del panorama culturale mondiale.</p>
-                <div class="evento-highlights">
-                    <div class="highlight">
-                        <span class="highlight-value">2M</span>
-                        <span class="highlight-label">Spettatori</span>
-                    </div>
-                    <div class="highlight">
-                        <span class="highlight-value">12h</span>
-                        <span class="highlight-label">Di diretta</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="evento-card">
-                <span class="evento-num">10</span>
-                <span class="evento-location">Roma · AANT</span>
-                <h2 class="evento-title"><em>GenIA</em>LAB</h2>
-                <p class="evento-desc">Hub di ricerca transdisciplinare dell'Accademia di Arti e Nuove Tecnologie. Un osservatorio permanente interdisciplinare, aperto al dialogo con esperti esterni, per co-creare progetti innovativi. Un laboratorio di eccellenza che unisce la tradizione italiana dell'arte, della filosofia e della comunicazione con l'innovazione tecnologica.</p>
-                <p class="evento-role"><strong>Andrea Colamedici</strong> · Presidente</p>
-            </article>
-
-        </section>
-
-        <!-- OSPITI MARQUEE -->
-        <section class="ospiti-section">
-            <div class="ospiti-row">
-                <span class="ospite-name">La Rappresentante di Lista</span>
-                <span class="ospite-name">Telmo Pievani</span>
-                <span class="ospite-name">Barbascura X</span>
-                <span class="ospite-name">Murubutu</span>
-                <span class="ospite-name">N.A.I.P.</span>
-                <span class="ospite-name">Vandana Shiva</span>
-                <span class="ospite-name">Noam Chomsky</span>
-                <span class="ospite-name">David Quammen</span>
-                <span class="ospite-name">Alain de Botton</span>
-                <span class="ospite-name">La Rappresentante di Lista</span>
-                <span class="ospite-name">Telmo Pievani</span>
-                <span class="ospite-name">Barbascura X</span>
-                <span class="ospite-name">Murubutu</span>
-                <span class="ospite-name">N.A.I.P.</span>
-                <span class="ospite-name">Vandana Shiva</span>
-                <span class="ospite-name">Noam Chomsky</span>
-                <span class="ospite-name">David Quammen</span>
-                <span class="ospite-name">Alain de Botton</span>
-            </div>
-            <div class="ospiti-row reverse">
-                <span class="ospite-name">Niccolò Fabi</span>
-                <span class="ospite-name">Carmen Consoli</span>
-                <span class="ospite-name">Vasco Brondi</span>
-                <span class="ospite-name">Rancore</span>
-                <span class="ospite-name">Loredana Lipperini</span>
-                <span class="ospite-name">Davide Toffolo</span>
-                <span class="ospite-name">Eugenio in Via di Gioia</span>
-                <span class="ospite-name">Valerio Lundini</span>
-                <span class="ospite-name">Niccolò Fabi</span>
-                <span class="ospite-name">Carmen Consoli</span>
-                <span class="ospite-name">Vasco Brondi</span>
-                <span class="ospite-name">Rancore</span>
-                <span class="ospite-name">Loredana Lipperini</span>
-                <span class="ospite-name">Davide Toffolo</span>
-                <span class="ospite-name">Eugenio in Via di Gioia</span>
-                <span class="ospite-name">Valerio Lundini</span>
-            </div>
-        </section>
-
-        <!-- ILPOD SECTION -->
-        <section class="ilpod-section">
-            <div class="ilpod-visual">
-                <div class="ilpod-rings">
-                    <div class="ilpod-ring"></div>
-                    <div class="ilpod-ring"></div>
-                    <div class="ilpod-ring"></div>
-                    <div class="ilpod-ring"></div>
-                </div>
-                <div class="ilpod-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                        <line x1="12" y1="19" x2="12" y2="23"/>
-                        <line x1="8" y1="23" x2="16" y2="23"/>
-                    </svg>
-                </div>
-            </div>
-            <div class="ilpod-content">
-                <span class="ilpod-label">Il premio per il podcasting italiano</span>
-                <h2 class="ilpod-title">Il<em>Pod</em></h2>
-                <p class="ilpod-subtitle">Italian Podcast Awards</p>
-                <p class="ilpod-desc">Il primo e più importante riconoscimento per i podcast italiani, nato per celebrare l'eccellenza di un medium che sta trasformando il modo in cui ascoltiamo storie, idee e conversazioni. Una comunità sempre più ampia di voci che meritano di essere ascoltate.</p>
-                <div class="ilpod-stats">
-                    <div class="ilpod-stat">
-                        <span class="ilpod-stat-value">IV</span>
-                        <span class="ilpod-stat-label">Edizione</span>
-                    </div>
-                    <div class="ilpod-stat">
-                        <span class="ilpod-stat-value">864</span>
-                        <span class="ilpod-stat-label">Iscritti 2024</span>
-                    </div>
-                    <div class="ilpod-stat">
-                        <span class="ilpod-stat-value">18</span>
-                        <span class="ilpod-stat-label">Categorie</span>
-                    </div>
-                </div>
-                <a href="./ilpod.html" class="ilpod-cta">
-                    <span>Scopri IlPod</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </section>
-
-        <!-- FESTIVAL SECTION -->
-        <section class="festival-section">
-            <div class="festival-bg-text">Festival</div>
-            <div class="festival-header">
-                <span class="festival-label">Dove ci trovi</span>
-                <h2 class="festival-title">I festival dove siamo <em>ospiti</em></h2>
-                <p class="festival-desc">Oltre agli eventi che ideiamo e dirigiamo, Maura e Andrea partecipano regolarmente ai principali festival culturali italiani. Nel biennio 2024-2025, oltre 35 rassegne in tutta Italia.</p>
-            </div>
-            <div class="festival-grid">
-                <div class="festival-item">
-                    <span class="festival-name">Salone del Libro</span>
-                    <span class="festival-city">Torino</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">Festival di Gavoi</span>
-                    <span class="festival-city">Sardegna</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">Pordenonelegge</span>
-                    <span class="festival-city">Pordenone</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">Book Pride</span>
-                    <span class="festival-city">Milano</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">Festival Filosofia</span>
-                    <span class="festival-city">Modena</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">Voices</span>
-                    <span class="festival-city">Firenze</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">WeWorld Festival</span>
-                    <span class="festival-city">Milano</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">inQuiete</span>
-                    <span class="festival-city">Roma</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">Repubblica delle Idee</span>
-                    <span class="festival-city">Napoli</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">Bookcity</span>
-                    <span class="festival-city">Milano</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">Torino Spiritualità</span>
-                    <span class="festival-city">Torino</span>
-                </div>
-                <div class="festival-item">
-                    <span class="festival-name">Taobuk</span>
-                    <span class="festival-city">Taormina</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="cta-section">
-            <div class="cta-bg"></div>
-            <div class="cta-content">
-                <h2 class="cta-title">Vuoi organizzare un evento <em>con noi</em>?</h2>
-                <a href="mailto:eventi@tlon.it" class="cta-btn">
-                    <span>Scrivici</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="footer-grid">
-            <div>
-                <div class="footer-brand">TLON</div>
-                <p class="footer-tagline">Un pianeta immaginario. Che esiste.</p>
-            </div>
-            <div class="footer-links">
-                <div class="footer-col">
-                    <h4>Progetto</h4>
-                    <a href="./il-progetto.html">Chi siamo</a>
-                    <a href="./contatti/">Contatti</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Edizioni</h4>
-                    <a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a>
-                    <a href="https://shop.tlon.it/autori/">Autori</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Attività</h4>
-                    <a href="./eventi-festival.html">Eventi</a>
-                    <a href="./formazione.html">Formazione</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2026 Tlon Srl</p>
-            <div class="footer-social">
-                <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
-                <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
-                <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
-                <a href="https://www.tlonletter.it" target="_blank">Substack</a>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile Menu Toggle
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobileMenu');
-
-        hamburger.addEventListener('click', function() {
-            hamburger.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-        });
-
-        // Chiudi menu quando si clicca un link
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
-            link.addEventListener('click', function() {
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('active');
-            });
-        });
-
-        // CURSOR
-        const cursor = document.getElementById('cursor');
-        let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-
-        document.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.15;
-            cursorY += (mouseY - cursorY) * 0.15;
-            cursor.style.left = cursorX - 10 + 'px';
-            cursor.style.top = cursorY - 10 + 'px';
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-
-        document.querySelectorAll('a, button, .evento-card, .festival-item').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-        });
-
-        // HEADER SCROLL
-        const header = document.querySelector('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // SCROLL REVEAL
-        const cards = document.querySelectorAll('.evento-card');
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, index * 80);
-                }
-            });
-        }, observerOptions);
-
-        cards.forEach(card => observer.observe(card));
-
-        // PARALLAX HERO
-        const heroOrbs = document.querySelectorAll('.hero-orb');
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            heroOrbs.forEach((orb, i) => {
-                const speed = (i + 1) * 0.1;
-                orb.style.transform = `translateY(${scrolled * speed}px)`;
-            });
-        });
-
-        // MOUSE PARALLAX ON HERO
-        const hero = document.querySelector('.hero');
-        hero.addEventListener('mousemove', (e) => {
-            const rect = hero.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            
-            heroOrbs.forEach((orb, i) => {
-                const speed = (i + 1) * 20;
-                orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
-            });
-        });
-    </script>
-
-</body>
-</html>
+                <p class="evento-desc">Imparare a meravigliarsi, a non dare
