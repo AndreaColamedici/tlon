@@ -203,165 +203,243 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* FEATURED PODCAST */
-        .featured {
-            padding: 8rem 3rem;
+        /* SCUOLA DI FILOSOFIE - SEZIONE GRANDE */
+        .scuola {
+            padding: 10rem 3rem;
             background: var(--nero);
             color: var(--bianco);
             position: relative;
             overflow: hidden;
         }
 
-        .featured-bg {
+        .scuola-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        .scuola-bg-text {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Instrument Serif', serif;
-            font-size: 25vw;
+            font-size: 20vw;
             font-style: italic;
-            color: rgba(42, 107, 107, 0.05);
+            color: rgba(42, 107, 107, 0.04);
             white-space: nowrap;
             pointer-events: none;
         }
 
-        .featured-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
+        .scuola-glow {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.12) 0%, transparent 70%);
+            animation: scuolaFloat 15s ease-in-out infinite;
+        }
+
+        .scuola-glow:nth-child(2) {
+            top: -300px;
+            right: -200px;
+        }
+
+        .scuola-glow:nth-child(3) {
+            bottom: -400px;
+            left: -200px;
+            animation-delay: -7s;
+        }
+
+        @keyframes scuolaFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            50% { transform: translate(30px, -30px) scale(1.1); opacity: 1; }
+        }
+
+        .scuola-content {
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
-            align-items: center;
         }
 
-        .featured-content {
-            max-width: 500px;
+        .scuola-header {
+            text-align: center;
+            margin-bottom: 5rem;
         }
 
-        .featured-label {
+        .scuola-label {
             font-size: 0.7rem;
             font-weight: 600;
-            letter-spacing: 0.4em;
+            letter-spacing: 0.5em;
             text-transform: uppercase;
             color: var(--ottanio);
-            margin-bottom: 1.5rem;
-            display: flex;
+            margin-bottom: 2rem;
+            display: inline-flex;
             align-items: center;
             gap: 1rem;
         }
 
-        .featured-label::before {
+        .scuola-label::before,
+        .scuola-label::after {
             content: '';
-            width: 30px;
+            width: 40px;
             height: 1px;
             background: var(--ottanio);
         }
 
-        .featured-title {
+        .scuola-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 400;
-            line-height: 1.15;
-            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            margin-bottom: 2rem;
         }
 
-        .featured-title em {
+        .scuola-title em {
             font-style: italic;
             color: var(--ottanio);
         }
 
-        .featured-desc {
-            font-size: 1.1rem;
-            line-height: 1.9;
+        .scuola-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 3rem;
+        }
+
+        .scuola-desc {
+            font-size: 1.2rem;
+            line-height: 2;
             color: rgba(255,255,255,0.7);
-            margin-bottom: 2rem;
+            max-width: 800px;
+            margin: 0 auto 4rem;
         }
 
-        .featured-meta {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .featured-meta-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .featured-meta-label {
-            font-size: 0.65rem;
+        .scuola-desc strong {
+            color: var(--bianco);
             font-weight: 500;
+        }
+
+        .scuola-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .scuola-stat {
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .scuola-stat:hover {
+            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.1);
+        }
+
+        .scuola-stat-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3.5rem;
+            font-style: italic;
+            color: var(--ottanio);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .scuola-stat-label {
+            font-size: 0.75rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255,255,255,0.5);
         }
 
-        .featured-meta-value {
+        .scuola-quote {
+            padding: 3rem;
+            border-left: 3px solid var(--ottanio);
+            background: rgba(255,255,255,0.02);
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        .scuola-quote p {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             font-style: italic;
-            color: var(--ottanio);
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
         }
 
-        .featured-cta {
+        .scuola-cta {
+            text-align: center;
+        }
+
+        .scuola-cta a {
             display: inline-flex;
             align-items: center;
             gap: 1rem;
-            padding: 1.25rem 2.5rem;
+            padding: 1.5rem 4rem;
             background: var(--ottanio);
             color: var(--bianco);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 500;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             transition: all 0.4s ease;
         }
 
-        .featured-cta:hover {
+        .scuola-cta a:hover {
             background: var(--bianco);
             color: var(--nero);
         }
 
-        .featured-cta svg {
-            width: 18px;
-            height: 18px;
+        .scuola-cta svg {
+            width: 20px;
+            height: 20px;
         }
 
-        .featured-visual {
+        /* WAVEFORM DECORATION */
+        .waveform-container {
             display: flex;
             justify-content: center;
-            align-items: center;
+            margin-bottom: 4rem;
         }
 
-        .featured-waveform {
+        .waveform {
             display: flex;
             align-items: center;
-            gap: 6px;
-            height: 200px;
+            gap: 8px;
+            height: 120px;
         }
 
-        .featured-waveform span {
-            width: 6px;
+        .waveform span {
+            width: 8px;
             background: var(--ottanio);
-            border-radius: 3px;
+            border-radius: 4px;
             animation: waveform 1.5s ease-in-out infinite;
         }
 
-        .featured-waveform span:nth-child(1) { height: 40%; animation-delay: 0s; }
-        .featured-waveform span:nth-child(2) { height: 70%; animation-delay: 0.1s; }
-        .featured-waveform span:nth-child(3) { height: 50%; animation-delay: 0.2s; }
-        .featured-waveform span:nth-child(4) { height: 90%; animation-delay: 0.3s; }
-        .featured-waveform span:nth-child(5) { height: 60%; animation-delay: 0.4s; }
-        .featured-waveform span:nth-child(6) { height: 80%; animation-delay: 0.5s; }
-        .featured-waveform span:nth-child(7) { height: 45%; animation-delay: 0.6s; }
-        .featured-waveform span:nth-child(8) { height: 75%; animation-delay: 0.7s; }
-        .featured-waveform span:nth-child(9) { height: 55%; animation-delay: 0.8s; }
-        .featured-waveform span:nth-child(10) { height: 85%; animation-delay: 0.9s; }
-        .featured-waveform span:nth-child(11) { height: 65%; animation-delay: 1s; }
-        .featured-waveform span:nth-child(12) { height: 50%; animation-delay: 1.1s; }
+        .waveform span:nth-child(1) { height: 30%; animation-delay: 0s; }
+        .waveform span:nth-child(2) { height: 60%; animation-delay: 0.1s; }
+        .waveform span:nth-child(3) { height: 45%; animation-delay: 0.2s; }
+        .waveform span:nth-child(4) { height: 80%; animation-delay: 0.3s; }
+        .waveform span:nth-child(5) { height: 55%; animation-delay: 0.4s; }
+        .waveform span:nth-child(6) { height: 90%; animation-delay: 0.5s; }
+        .waveform span:nth-child(7) { height: 70%; animation-delay: 0.6s; }
+        .waveform span:nth-child(8) { height: 50%; animation-delay: 0.7s; }
+        .waveform span:nth-child(9) { height: 85%; animation-delay: 0.8s; }
+        .waveform span:nth-child(10) { height: 40%; animation-delay: 0.9s; }
+        .waveform span:nth-child(11) { height: 65%; animation-delay: 1s; }
+        .waveform span:nth-child(12) { height: 75%; animation-delay: 1.1s; }
+        .waveform span:nth-child(13) { height: 35%; animation-delay: 1.2s; }
+        .waveform span:nth-child(14) { height: 55%; animation-delay: 1.3s; }
+        .waveform span:nth-child(15) { height: 45%; animation-delay: 1.4s; }
 
         @keyframes waveform {
             0%, 100% { transform: scaleY(1); opacity: 0.6; }
@@ -502,59 +580,67 @@
             transform: translateX(4px);
         }
 
-        /* COLLABORAZIONI */
-        .collaborazioni {
+        /* YOUTUBE */
+        .youtube {
             padding: 8rem 3rem;
             background: #f8f8f8;
         }
 
-        .collaborazioni-header {
+        .youtube-content {
+            max-width: 900px;
+            margin: 0 auto;
             text-align: center;
-            margin-bottom: 4rem;
         }
 
-        .collaborazioni-header h2 {
+        .youtube-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+        }
+
+        .youtube-title {
             font-family: 'Instrument Serif', serif;
             font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 400;
+            margin-bottom: 1.5rem;
         }
 
-        .collaborazioni-header h2 em {
+        .youtube-title em {
             font-style: italic;
             color: var(--ottanio);
         }
 
-        .collaborazioni-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
+        .youtube-desc {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--grigio);
+            margin-bottom: 3rem;
         }
 
-        .collab-item {
-            padding: 2rem;
-            background: var(--bianco);
-            border: 1px solid var(--grigio-chiaro);
-            text-align: center;
+        .youtube-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 3rem;
+            background: var(--nero);
+            color: var(--bianco);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
             transition: all 0.4s ease;
         }
 
-        .collab-item:hover {
-            border-color: var(--ottanio);
-            transform: translateY(-5px);
+        .youtube-cta:hover {
+            background: var(--ottanio);
         }
 
-        .collab-title {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .collab-desc {
-            font-size: 0.9rem;
-            line-height: 1.7;
-            color: var(--grigio);
+        .youtube-cta svg {
+            width: 20px;
+            height: 20px;
         }
 
         /* CTA */
@@ -705,20 +791,11 @@
 
         /* RESPONSIVE */
         @media (max-width: 1000px) {
-            .featured-grid {
+            .scuola-grid {
                 grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-
-            .featured-visual {
-                order: -1;
             }
 
             .podcasts-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .collaborazioni-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -733,9 +810,9 @@
             }
 
             .hero,
-            .featured,
+            .scuola,
             .podcasts,
-            .collaborazioni,
+            .youtube,
             .cta {
                 padding-left: 1.5rem;
                 padding-right: 1.5rem;
@@ -748,6 +825,18 @@
             .hero-bg {
                 width: 100%;
                 opacity: 0.5;
+            }
+
+            .scuola-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .waveform {
+                gap: 4px;
+            }
+
+            .waveform span {
+                width: 4px;
             }
 
             footer {
@@ -796,46 +885,63 @@
             </div>
         </section>
 
-        <!-- FEATURED: SCUOLA DI FILOSOFIE -->
-        <section class="featured">
-            <div class="featured-bg">Filosofie</div>
-            <div class="featured-grid">
-                <div class="featured-content reveal">
-                    <span class="featured-label">Esclusiva Audible</span>
-                    <h2 class="featured-title">Scuola di <em>Filosofie</em></h2>
-                    <p class="featured-desc">Un percorso in due stagioni attraverso i grandi pensatori del Novecento: dalla fenomenologia all'esistenzialismo, dalla filosofia della mente alla teoria critica. La filosofia messa alla prova nei campi del mondo esteriore e dei mondi interiori, nelle strade della città e nelle dinamiche quotidiane della vita.</p>
-                    <div class="featured-meta">
-                        <div class="featured-meta-item">
-                            <span class="featured-meta-label">Stagioni</span>
-                            <span class="featured-meta-value">2</span>
-                        </div>
-                        <div class="featured-meta-item">
-                            <span class="featured-meta-label">Con</span>
-                            <span class="featured-meta-value">Maura e Andrea</span>
-                        </div>
-                        <div class="featured-meta-item">
-                            <span class="featured-meta-label">Piattaforma</span>
-                            <span class="featured-meta-value">Audible</span>
-                        </div>
+        <!-- SCUOLA DI FILOSOFIE - SEZIONE PRINCIPALE -->
+        <section class="scuola">
+            <div class="scuola-bg">
+                <span class="scuola-bg-text">Filosofie</span>
+                <div class="scuola-glow"></div>
+                <div class="scuola-glow"></div>
+            </div>
+            <div class="scuola-content">
+                <div class="scuola-header reveal">
+                    <span class="scuola-label">Esclusiva Audible</span>
+                    <h2 class="scuola-title">Scuola di <em>Filosofie</em></h2>
+                    <p class="scuola-subtitle">Un viaggio nel pensiero del Novecento</p>
+                </div>
+
+                <div class="waveform-container reveal">
+                    <div class="waveform">
+                        <span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span><span></span>
                     </div>
-                    <a href="https://www.audible.it/pd/Scuola-di-filosofie-Podcast/B09LHGFVB8" target="_blank" class="featured-cta">
+                </div>
+
+                <p class="scuola-desc reveal">
+                    Lo scopo di questa Scuola di Filosofie è pratico: non troverete un riassunto delle migliori pensate degli autori che Maura Gancitano e Andrea Colamedici hanno scelto, ma la loro filosofia verrà <strong>messa alla prova nei campi di gioco del mondo esteriore e dei mondi interiori</strong>, nelle strade aperte della città e nelle dinamiche quotidiane della vita, perché è proprio nelle piazze e tra le persone che è nata e prosperata la filosofia.
+                </p>
+
+                <div class="scuola-grid reveal">
+                    <div class="scuola-stat">
+                        <div class="scuola-stat-num">2</div>
+                        <div class="scuola-stat-label">Stagioni</div>
+                    </div>
+                    <div class="scuola-stat">
+                        <div class="scuola-stat-num">20+</div>
+                        <div class="scuola-stat-label">Filosofi</div>
+                    </div>
+                    <div class="scuola-stat">
+                        <div class="scuola-stat-num">∞</div>
+                        <div class="scuola-stat-label">Applicazioni</div>
+                    </div>
+                </div>
+
+                <div class="scuola-quote reveal">
+                    <p>«La filosofia non è solo teoria, ma nasce come pratica trasformativa che aiuta a comprendere se stessi e il mondo.»</p>
+                </div>
+
+                <div class="scuola-cta reveal">
+                    <a href="https://www.audible.it/search?keywords=scuola+di+filosofie&ref=a_search_t1_header_search" target="_blank">
                         <span>Ascolta su Audible</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
                     </a>
                 </div>
-                <div class="featured-visual reveal">
-                    <div class="featured-waveform">
-                        <span></span><span></span><span></span><span></span>
-                        <span></span><span></span><span></span><span></span>
-                        <span></span><span></span><span></span><span></span>
-                    </div>
-                </div>
             </div>
         </section>
 
-        <!-- PODCAST PRINCIPALI -->
+        <!-- ALTRI PODCAST -->
         <section class="podcasts">
             <div class="podcasts-header reveal">
                 <h2>I nostri <em>podcast</em></h2>
@@ -844,10 +950,10 @@
 
             <div class="podcasts-grid">
                 <div class="podcast-card reveal">
-                    <span class="podcast-platform">Tutte le piattaforme</span>
+                    <span class="podcast-platform">Spotify</span>
                     <h3 class="podcast-title">Tlon — Il podcast</h3>
                     <p class="podcast-desc">Una raccolta di interventi, dialoghi e conferenze. Interviste, conversazioni tenute in diretta sui social di Tlon e durante le maratone filosofiche, contributi degli amici di Tlon in occasione di festival ed eventi. Il podcast imprescindibile per restare aggiornati sulle iniziative del progetto.</p>
-                    <a href="https://open.spotify.com/show/5vCMdHPpNCp1vMrPCaLs5Y" target="_blank" class="podcast-link">
+                    <a href="https://open.spotify.com/show/5dtrhf7zRe0u0UfDzpoIDp" target="_blank" class="podcast-link">
                         <span>Ascolta</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -859,7 +965,7 @@
                     <span class="podcast-platform">Parlamento Europeo</span>
                     <h3 class="podcast-title">Pensare Europeo</h3>
                     <p class="podcast-desc">Un ciclo di incontri per potenziare il senso di appartenenza alla comunità europea. Un ponte tra Italia ed Europa, tra politica e pensiero, mettendo in connessione eurodeputati con filosofi, attivisti, storici e artisti italiani.</p>
-                    <a href="https://open.spotify.com/show/0RMKfEiFmLLQvXJJ1ZcLPH" target="_blank" class="podcast-link">
+                    <a href="https://open.spotify.com/show/1DO3lhQ2DF5vCxk5xUyfdI" target="_blank" class="podcast-link">
                         <span>Ascolta</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -884,7 +990,19 @@
                     <span class="podcast-platform">Audible</span>
                     <h3 class="podcast-title">Audible Club</h3>
                     <p class="podcast-desc">La prima comunità degli ascoltatori di audiolibri: un'avanguardia curiosa riunita intorno allo stesso focolare, una voce che ogni due settimane ascolta e riflette insieme a partire da un grande capolavoro della letteratura.</p>
-                    <a href="https://www.audible.it/pd/Audible-Club-Podcast/B09N3LPP7Q" target="_blank" class="podcast-link">
+                    <a href="https://www.audible.it/pd/Audible-Club-Podcast/B09J1LQK9C" target="_blank" class="podcast-link">
+                        <span>Ascolta</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="podcast-card reveal">
+                    <span class="podcast-platform">Spotify</span>
+                    <h3 class="podcast-title">Raccontarsi</h3>
+                    <p class="podcast-desc">Dieci racconti di fioritura personale, di costruzione di identità e di distruzione dei condizionamenti per dimostrare come possiamo cambiare il luogo in cui viviamo ogni giorno. Un progetto nato dalla collaborazione di Tlon, Diversity e AkraStudios.</p>
+                    <a href="https://open.spotify.com/show/3Qa0wzd1CUxwXyCA6tlWCC" target="_blank" class="podcast-link">
                         <span>Ascolta</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -894,20 +1012,18 @@
             </div>
         </section>
 
-        <!-- COLLABORAZIONI -->
-        <section class="collaborazioni">
-            <div class="collaborazioni-header reveal">
-                <h2>Altre <em>produzioni</em></h2>
-            </div>
-            <div class="collaborazioni-grid">
-                <div class="collab-item reveal">
-                    <h3 class="collab-title">RomaEuropa Festival</h3>
-                    <p class="collab-desc">Dialoghi intorno agli spettacoli del programma con ospiti d'eccezione: Jonathan Bazzi, Nadia Terranova, Paolo di Paolo.</p>
-                </div>
-                <div class="collab-item reveal">
-                    <h3 class="collab-title">Il Libro della Settimana</h3>
-                    <p class="collab-desc">L'itinerario bibliofilo di Maura Gancitano tra narrativa, filosofia, storia e studi sociali.</p>
-                </div>
+        <!-- YOUTUBE -->
+        <section class="youtube">
+            <div class="youtube-content reveal">
+                <span class="youtube-label">Video</span>
+                <h2 class="youtube-title">Archivio <em>Tlon</em></h2>
+                <p class="youtube-desc">Il nostro canale YouTube raccoglie interviste, conferenze, lezioni e contributi video. Un archivio in continua crescita per chi preferisce guardare oltre che ascoltare.</p>
+                <a href="https://www.youtube.com/@ArchivioTlon" target="_blank" class="youtube-cta">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    <span>Vai al canale</span>
+                </a>
             </div>
         </section>
 
@@ -919,9 +1035,9 @@
                 <h2 class="cta-title">Ascoltaci <em>ovunque</em></h2>
                 <p class="cta-desc">I podcast Tlon sono disponibili su tutte le principali piattaforme di streaming audio.</p>
                 <div class="cta-buttons">
-                    <a href="https://open.spotify.com/show/5vCMdHPpNCp1vMrPCaLs5Y" target="_blank" class="cta-btn primary">Spotify</a>
-                    <a href="https://www.audible.it" target="_blank" class="cta-btn">Audible</a>
-                    <a href="https://podcasts.apple.com" target="_blank" class="cta-btn">Apple Podcasts</a>
+                    <a href="https://open.spotify.com/show/5dtrhf7zRe0u0UfDzpoIDp" target="_blank" class="cta-btn primary">Spotify</a>
+                    <a href="https://www.audible.it/search?keywords=scuola+di+filosofie" target="_blank" class="cta-btn">Audible</a>
+                    <a href="https://www.youtube.com/@ArchivioTlon" target="_blank" class="cta-btn">YouTube</a>
                 </div>
             </div>
         </section>
