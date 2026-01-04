@@ -12,6 +12,7 @@
             --bianco: #ffffff;
             --nero: #0a0a0a;
             --ottanio: #2a6b6b;
+            --ottanio-scuro: #1a4848;
             --grigio: #6b6b6b;
             --grigio-chiaro: #e5e5e5;
             --crema: #f8f6f3;
@@ -69,16 +70,6 @@
 
         .logo img { height: 24px; filter: invert(1); }
 
-        .header-label {
-            position: absolute;
-            left: 3rem;
-            top: 5rem;
-            font-size: 0.65rem;
-            letter-spacing: 0.4em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
-        }
-
         nav { display: flex; gap: 3rem; }
 
         nav a {
@@ -93,7 +84,7 @@
         nav a:hover { opacity: 1; }
 
         /* ================================================
-           HERO - STATEMENT CON NOMI
+           HERO
            ================================================ */
         .hero {
             min-height: 100vh;
@@ -153,7 +144,7 @@
         }
 
         /* ================================================
-           MARQUEE INFINITO
+           MARQUEE
            ================================================ */
         .marquee-section {
             padding: 5rem 0;
@@ -200,7 +191,7 @@
         }
 
         /* ================================================
-           NUMERI - IMPATTO
+           NUMERI
            ================================================ */
         .numeri {
             padding: 10rem 3rem;
@@ -258,101 +249,307 @@
         }
 
         /* ================================================
-           ABOUT EDIZIONI - NUOVA SEZIONE
+           ABOUT EDIZIONI - SEZIONE IMMERSIVA
            ================================================ */
         .about-edizioni {
-            padding: 8rem 3rem;
+            position: relative;
             background: var(--bianco);
-            color: var(--nero);
-            border-top: 1px solid var(--grigio-chiaro);
+            overflow: hidden;
         }
 
-        .about-edizioni-container {
-            max-width: 1000px;
-            margin: 0 auto;
+        /* Hero della sezione */
+        .about-hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 3rem;
+            position: relative;
+            background: linear-gradient(180deg, var(--bianco) 0%, var(--crema) 100%);
         }
 
-        .about-edizioni-header {
-            margin-bottom: 4rem;
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--ottanio), transparent);
         }
 
-        .about-edizioni-header h2 {
+        .about-hero-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .about-hero-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+
+        .about-hero-label.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-hero-title {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(4rem, 12vw, 10rem);
             font-weight: 400;
+            line-height: 0.9;
+            color: var(--nero);
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .about-hero-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-hero-title em {
+            font-style: italic;
+            color: var(--ottanio);
+            display: block;
+        }
+
+        .about-hero-text {
+            font-size: 1.25rem;
+            line-height: 2.2;
+            color: var(--grigio);
+            max-width: 750px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+        }
+
+        .about-hero-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Linea editoriale - layout drammatico */
+        .linea-editoriale {
+            padding: 12rem 3rem;
+            background: var(--nero);
+            color: var(--bianco);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .linea-editoriale::before {
+            content: 'FILOSOFIA';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(8rem, 25vw, 20rem);
+            font-style: italic;
+            color: rgba(255,255,255,0.02);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .linea-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 8rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .linea-title-wrapper {
+            position: sticky;
+            top: 30vh;
+        }
+
+        .linea-label {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.8s ease;
+        }
+
+        .linea-label.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .linea-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .linea-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .linea-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .linea-text {
+            font-size: 1.15rem;
+            line-height: 2.2;
+            color: rgba(255,255,255,0.7);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .linea-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Collane - design immersivo */
+        .collane-section {
+            padding: 10rem 0;
+            background: var(--crema);
+            position: relative;
+        }
+
+        .collane-header {
+            text-align: center;
+            padding: 0 3rem 8rem;
+        }
+
+        .collane-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
             margin-bottom: 2rem;
         }
 
-        .about-edizioni-header h2 em {
-            font-style: italic;
-            color: var(--ottanio);
-        }
-
-        .about-edizioni-intro {
-            font-size: 1.15rem;
-            line-height: 2;
-            color: var(--grigio);
-            max-width: 800px;
-        }
-
-        .about-section {
-            padding: 3rem 0;
-            border-top: 1px solid var(--grigio-chiaro);
-        }
-
-        .about-section-title {
+        .collane-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.8rem;
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 400;
-            margin-bottom: 1.5rem;
             color: var(--nero);
         }
 
-        .about-section-title em {
+        .collane-title em {
             font-style: italic;
             color: var(--ottanio);
         }
 
-        .about-section-text {
-            font-size: 1rem;
-            line-height: 2;
-            color: var(--grigio);
-        }
-
-        /* Collane grid */
         .collane-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin-top: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .collana-item {
-            padding: 2rem;
-            background: var(--crema);
-            transition: all 0.4s ease;
+            padding: 4rem;
+            border: 1px solid transparent;
+            border-top-color: var(--grigio-chiaro);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: default;
+        }
+
+        .collana-item:nth-child(odd) {
+            border-right-color: var(--grigio-chiaro);
+        }
+
+        .collana-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--ottanio) 0%, var(--ottanio-scuro) 100%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            z-index: 0;
+        }
+
+        .collana-item:hover::before {
+            opacity: 1;
         }
 
         .collana-item:hover {
-            background: rgba(42, 107, 107, 0.08);
+            transform: scale(1.02);
+            z-index: 2;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        .collana-item:hover .collana-nome,
+        .collana-item:hover .collana-desc {
+            color: var(--bianco);
+        }
+
+        .collana-item:hover .collana-numero {
+            color: rgba(255,255,255,0.2);
+        }
+
+        .collana-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .collana-numero {
+            font-family: 'Instrument Serif', serif;
+            font-size: 6rem;
+            font-style: italic;
+            line-height: 1;
+            color: var(--grigio-chiaro);
+            position: absolute;
+            top: -1rem;
+            right: 2rem;
+            transition: color 0.6s ease;
         }
 
         .collana-nome {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.3rem;
+            font-size: 2rem;
             font-style: italic;
-            color: var(--ottanio);
-            margin-bottom: 0.75rem;
+            color: var(--nero);
+            margin-bottom: 1.5rem;
+            transition: color 0.6s ease;
         }
 
         .collana-desc {
-            font-size: 0.9rem;
-            line-height: 1.8;
+            font-size: 0.95rem;
+            line-height: 1.9;
             color: var(--grigio);
+            transition: color 0.6s ease;
         }
 
         /* ================================================
-           LIBRI SHOWCASE - SCROLL ORIZZONTALE
+           LIBRI SHOWCASE
            ================================================ */
         .libri {
             padding: 12rem 0;
@@ -418,7 +615,7 @@
 
         .libro-cover {
             aspect-ratio: 2/3;
-            background: linear-gradient(160deg, var(--ottanio), #1a4848);
+            background: linear-gradient(160deg, var(--ottanio), var(--ottanio-scuro));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -563,7 +760,7 @@
         }
 
         /* ================================================
-           CTA FINALE
+           CTA
            ================================================ */
         .cta {
             min-height: 100vh;
@@ -738,9 +935,12 @@
         @media (max-width: 1000px) {
             .numeri-grid { grid-template-columns: repeat(2, 1fr); }
             .numero:nth-child(2)::after { display: none; }
+            .linea-container { grid-template-columns: 1fr; gap: 4rem; }
+            .linea-title-wrapper { position: relative; top: 0; }
+            .collane-grid { grid-template-columns: 1fr; }
+            .collana-item { border-right-color: transparent !important; }
             .team-container { grid-template-columns: 1fr; gap: 3rem; }
             .team-grid { grid-template-columns: 1fr; }
-            .collane-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -751,7 +951,12 @@
             .hero-label { margin-bottom: 2rem; }
             .numeri-grid { grid-template-columns: 1fr; }
             .numero::after { display: none; }
-            .about-edizioni { padding: 5rem 1.5rem; }
+            .about-hero { padding: 6rem 1.5rem; min-height: auto; }
+            .linea-editoriale { padding: 6rem 1.5rem; }
+            .collane-section { padding: 6rem 0; }
+            .collane-header { padding: 0 1.5rem 4rem; }
+            .collana-item { padding: 3rem 1.5rem; }
+            .collana-numero { font-size: 4rem; right: 1rem; }
             .libro-card { width: 85vw; grid-template-columns: 1fr; }
             .libro-cover { max-width: 200px; margin: 0 auto; }
             .libri-header { flex-direction: column; align-items: start; gap: 1rem; }
@@ -766,15 +971,15 @@
 <header>
     <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
     <nav>
-    <a href="./il-progetto.html">Il Progetto</a>
-    <a href="./andrea-colamedici/">Colamedici</a>
-    <a href="./maura-gancitano/">Gancitano</a>
-    <a href="./edizioni.html">Edizioni</a>
-    <a href="./librerie.html">Librerie</a>
-    <a href="./formazione.html">Formazione</a>
-    <a href="./eventi-festival.html">Eventi</a>
-    <a href="./contatti/">Contatti</a>
-</nav>
+        <a href="./il-progetto.html">Il Progetto</a>
+        <a href="./andrea-colamedici/">Colamedici</a>
+        <a href="./maura-gancitano/">Gancitano</a>
+        <a href="./edizioni.html">Edizioni</a>
+        <a href="./librerie.html">Librerie</a>
+        <a href="./formazione.html">Formazione</a>
+        <a href="./eventi-festival.html">Eventi</a>
+        <a href="./contatti/">Contatti</a>
+    </nav>
 </header>
 
 <main>
@@ -802,7 +1007,6 @@
         <span class="marquee-item">Campagna</span><span class="marquee-dot"></span>
         <span class="marquee-item">Frank Bidart</span><span class="marquee-dot"></span>
         <span class="marquee-item">Tom Robbins</span><span class="marquee-dot"></span>
-        <!-- Duplicate -->
         <span class="marquee-item">Sloterdijk</span><span class="marquee-dot"></span>
         <span class="marquee-item">Haraway</span><span class="marquee-dot"></span>
         <span class="marquee-item">Anne Carson</span><span class="marquee-dot"></span>
@@ -842,57 +1046,102 @@
 
 <!-- ABOUT EDIZIONI -->
 <section class="about-edizioni">
-    <div class="about-edizioni-container">
-        <div class="about-edizioni-header">
-            <h2>Edizioni <em>Tlon</em></h2>
-            <p class="about-edizioni-intro">Edizioni Tlon nasce nel 2016 come articolazione editoriale del progetto culturale Tlon. È una casa editrice indipendente che pubblica filosofia contemporanea, studi di genere, saggistica critica, narrativa e poesia, con un'attenzione costante alla relazione tra pensiero, linguaggio e vita quotidiana. Il catalogo è costruito per continuità e coerenza. I libri non rispondono a un'idea di «attualità» immediata, ma a un lavoro di lungo periodo sui nodi culturali del presente: desiderio, potere, spiritualità, identità, trasformazioni sociali.</p>
+    
+    <!-- Hero della sezione -->
+    <div class="about-hero">
+        <div class="about-hero-content">
+            <p class="about-hero-label reveal-about">Casa editrice indipendente dal 2016</p>
+            <h2 class="about-hero-title reveal-about">Edizioni<em>Tlon</em></h2>
+            <p class="about-hero-text reveal-about">Edizioni Tlon nasce nel 2016 come articolazione editoriale del progetto culturale Tlon. È una casa editrice indipendente che pubblica filosofia contemporanea, studi di genere, saggistica critica, narrativa e poesia, con un'attenzione costante alla relazione tra pensiero, linguaggio e vita quotidiana. Il catalogo è costruito per continuità e coerenza: i libri non rispondono a un'idea di «attualità» immediata, ma a un lavoro di lungo periodo sui nodi culturali del presente.</p>
         </div>
+    </div>
 
-        <div class="about-section">
-            <h3 class="about-section-title">Linea <em>editoriale</em></h3>
-            <p class="about-section-text">La filosofia è il perno del progetto editoriale, intesa come pratica di orientamento e non come specialismo accademico. Attorno a questo asse si articolano testi che attraversano il femminismo, la politica del corpo, l'immaginario religioso, le narrazioni contemporanee e la poesia come forma di conoscenza. Edizioni Tlon lavora su testi che tengono insieme accessibilità e rigore, evitando sia la semplificazione divulgativa sia il linguaggio autoreferenziale.</p>
+    <!-- Linea editoriale -->
+    <div class="linea-editoriale">
+        <div class="linea-container">
+            <div class="linea-title-wrapper">
+                <p class="linea-label reveal-linea">Il nostro orientamento</p>
+                <h3 class="linea-title reveal-linea">Linea<br><em>editoriale</em></h3>
+            </div>
+            <div class="linea-text reveal-linea">
+                La filosofia è il perno del progetto editoriale, intesa come pratica di orientamento e non come specialismo accademico. Attorno a questo asse si articolano testi che attraversano il femminismo, la politica del corpo, l'immaginario religioso, le narrazioni contemporanee e la poesia come forma di conoscenza. Edizioni Tlon lavora su testi che tengono insieme accessibilità e rigore, evitando sia la semplificazione divulgativa sia il linguaggio autoreferenziale. Desiderio, potere, spiritualità, identità, trasformazioni sociali: questi sono i nodi che i nostri libri esplorano, con pazienza e profondità.
+            </div>
         </div>
+    </div>
 
-        <div class="about-section">
-            <h3 class="about-section-title">Le <em>collane</em></h3>
-            <div class="collane-grid">
-                <div class="collana-item">
+    <!-- Collane -->
+    <div class="collane-section">
+        <div class="collane-header">
+            <p class="collane-label">Dieci percorsi di lettura</p>
+            <h3 class="collane-title">Le <em>collane</em></h3>
+        </div>
+        <div class="collane-grid">
+            <div class="collana-item">
+                <span class="collana-numero">01</span>
+                <div class="collana-content">
                     <h4 class="collana-nome">Numeri Primi</h4>
-                    <p class="collana-desc">Collana dedicata agli studi di genere, ai femminismi e alle genealogie del potere. Ospita testi fondamentali per comprendere la costruzione storica delle disuguaglianze e le forme contemporanee del dominio.</p>
+                    <p class="collana-desc">Studi di genere, femminismi, genealogie del potere. Testi fondamentali per comprendere la costruzione storica delle disuguaglianze e le forme contemporanee del dominio.</p>
                 </div>
-                <div class="collana-item">
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">02</span>
+                <div class="collana-content">
                     <h4 class="collana-nome">Planetari</h4>
                     <p class="collana-desc">Filosofia e pensiero contemporaneo. Libri che affrontano i grandi temi del presente: spiritualità, soggettività, tecnica, senso, comunità.</p>
                 </div>
-                <div class="collana-item">
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">03</span>
+                <div class="collana-content">
                     <h4 class="collana-nome">Planetari Big</h4>
                     <p class="collana-desc">Testi di maggiore estensione e complessità teorica. Una collana pensata per lavori strutturali, non occasionali.</p>
                 </div>
-                <div class="collana-item">
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">04</span>
+                <div class="collana-content">
                     <h4 class="collana-nome">Hrönir</h4>
                     <p class="collana-desc">Saggi filosofici in forma estesa. Libri che cercano l'approfondimento, e che richiedono un tempo di lettura non accelerato.</p>
                 </div>
-                <div class="collana-item">
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">05</span>
+                <div class="collana-content">
                     <h4 class="collana-nome">Soglie</h4>
                     <p class="collana-desc">Saggistica politica e sociale. Testi che lavorano sui confini tra individuo e collettivo, norma e deviazione, privato e pubblico.</p>
                 </div>
-                <div class="collana-item">
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">06</span>
+                <div class="collana-content">
                     <h4 class="collana-nome">Radici</h4>
-                    <p class="collana-desc">Spiritualità, simbolismo, tradizioni religiose e loro trasformazioni contemporanee. Una collana che affronta il sacro senza ridurlo né a folklore né a psicologia spicciola.</p>
+                    <p class="collana-desc">Spiritualità, simbolismo, tradizioni religiose e loro trasformazioni contemporanee. Il sacro senza folklore né psicologia spicciola.</p>
                 </div>
-                <div class="collana-item">
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">07</span>
+                <div class="collana-content">
                     <h4 class="collana-nome">Finzioni</h4>
                     <p class="collana-desc">Narrativa italiana e straniera. Romanzi e racconti che esplorano identità instabili, memorie fratturate, mondi interiori e immaginari perturbanti.</p>
                 </div>
-                <div class="collana-item">
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">08</span>
+                <div class="collana-content">
                     <h4 class="collana-nome">Controcielo</h4>
-                    <p class="collana-desc">Poesia. Una collana dedicata alla parola poetica come spazio di precisione, ricerca e resistenza al linguaggio standardizzato.</p>
+                    <p class="collana-desc">Poesia. La parola poetica come spazio di precisione, ricerca e resistenza al linguaggio standardizzato.</p>
                 </div>
-                <div class="collana-item">
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">09</span>
+                <div class="collana-content">
                     <h4 class="collana-nome">Tlon Aleph</h4>
                     <p class="collana-desc">Cataloghi d'arte e libri ibridi, nati dal lavoro di Tlon nei bookshop museali e nei contesti espositivi.</p>
                 </div>
-                <div class="collana-item">
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">10</span>
+                <div class="collana-content">
                     <h4 class="collana-nome">Uqbar</h4>
                     <p class="collana-desc">Produzioni digitali ed ebook, spesso pensate come estensioni o variazioni del catalogo cartaceo.</p>
                 </div>
@@ -1095,7 +1344,6 @@ document.querySelectorAll('a, button, .libro-card, .team-member, .marquee-item, 
 const heroText = document.getElementById('heroText');
 if (heroText) {
     const html = heroText.innerHTML;
-    // Split preserving tags
     const parts = html.split(/(<em>.*?<\/em>|<span[^>]*>.*?<\/span>)/g);
     let newHtml = '';
     let wordIndex = 0;
@@ -1152,6 +1400,38 @@ const numObserver = new IntersectionObserver(entries => {
     });
 }, { threshold: 0.5 });
 numeri.forEach(n => numObserver.observe(n));
+
+// ABOUT SECTION REVEALS
+const aboutObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.2, rootMargin: '0px 0px -100px 0px' });
+
+document.querySelectorAll('.reveal-about, .reveal-linea').forEach(el => {
+    aboutObserver.observe(el);
+});
+
+// COLLANE STAGGER ANIMATION
+const collaneObserver = new IntersectionObserver(entries => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }, index * 100);
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.collana-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+    collaneObserver.observe(el);
+});
 </script>
 
 </body>
