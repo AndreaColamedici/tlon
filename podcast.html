@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podcast — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bianco);
+            color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10rem 3rem 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 50%;
+            background: linear-gradient(135deg, rgba(42, 107, 107, 0.03) 0%, rgba(42, 107, 107, 0.08) 100%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.3s forwards;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.5s forwards;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .hero-desc {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: var(--grigio);
+            max-width: 600px;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.7s forwards;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* WAVE DECORATION */
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,60 C150,120 350,0 600,60 C850,120 1050,0 1200,60 L1200,120 L0,120 Z' fill='%232a6b6b' opacity='0.05'/%3E%3C/svg%3E") repeat-x;
+            animation: wave 20s linear infinite;
+        }
+
+        .wave:nth-child(2) {
+            opacity: 0.5;
+            animation-delay: -5s;
+            animation-duration: 15s;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* FEATURED PODCAST */
+        .featured {
+            padding: 8rem 3rem;
+            background: var(--nero);
+            color: var(--bianco);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Instrument Serif', serif;
+            font-size: 25vw;
+            font-style: italic;
+            color: rgba(42, 107, 107, 0.05);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            align-items: center;
+        }
+
+        .featured-content {
+            max-width: 500px;
+        }
+
+        .featured-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .featured-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .featured-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .featured-desc {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2rem;
+        }
+
+        .featured-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .featured-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .featured-meta-label {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .featured-meta-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .featured-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2.5rem;
+            background: var(--ottanio);
+            color: var(--bianco);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+        }
+
+        .featured-cta:hover {
+            background: var(--bianco);
+            color: var(--nero);
+        }
+
+        .featured-cta svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .featured-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .featured-waveform {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 200px;
+        }
+
+        .featured-waveform span {
+            width: 6px;
+            background: var(--ottanio);
+            border-radius: 3px;
+            animation: waveform 1.5s ease-in-out infinite;
+        }
+
+        .featured-waveform span:nth-child(1) { height: 40%; animation-delay: 0s; }
+        .featured-waveform span:nth-child(2) { height: 70%; animation-delay: 0.1s; }
+        .featured-waveform span:nth-child(3) { height: 50%; animation-delay: 0.2s; }
+        .featured-waveform span:nth-child(4) { height: 90%; animation-delay: 0.3s; }
+        .featured-waveform span:nth-child(5) { height: 60%; animation-delay: 0.4s; }
+        .featured-waveform span:nth-child(6) { height: 80%; animation-delay: 0.5s; }
+        .featured-waveform span:nth-child(7) { height: 45%; animation-delay: 0.6s; }
+        .featured-waveform span:nth-child(8) { height: 75%; animation-delay: 0.7s; }
+        .featured-waveform span:nth-child(9) { height: 55%; animation-delay: 0.8s; }
+        .featured-waveform span:nth-child(10) { height: 85%; animation-delay: 0.9s; }
+        .featured-waveform span:nth-child(11) { height: 65%; animation-delay: 1s; }
+        .featured-waveform span:nth-child(12) { height: 50%; animation-delay: 1.1s; }
+
+        @keyframes waveform {
+            0%, 100% { transform: scaleY(1); opacity: 0.6; }
+            50% { transform: scaleY(0.5); opacity: 1; }
+        }
+
+        /* PODCAST GRID */
+        .podcasts {
+            padding: 8rem 3rem;
+            background: var(--bianco);
+        }
+
+        .podcasts-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .podcasts-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .podcasts-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .podcasts-header p {
+            font-size: 1.1rem;
+            color: var(--grigio);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .podcasts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .podcast-card {
+            padding: 3rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .podcast-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--ottanio);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .podcast-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .podcast-card:hover {
+            border-color: var(--ottanio);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            transform: translateY(-5px);
+        }
+
+        .podcast-platform {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .podcast-platform::before {
+            content: '●';
+            font-size: 0.5rem;
+        }
+
+        .podcast-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.75rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .podcast-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--grigio);
+            margin-bottom: 1.5rem;
+        }
+
+        .podcast-desc {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--grigio);
+            margin-bottom: 2rem;
+        }
+
+        .podcast-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--nero);
+            transition: color 0.3s ease;
+        }
+
+        .podcast-link:hover {
+            color: var(--ottanio);
+        }
+
+        .podcast-link svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .podcast-link:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* COLLABORAZIONI */
+        .collaborazioni {
+            padding: 8rem 3rem;
+            background: #f8f8f8;
+        }
+
+        .collaborazioni-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .collaborazioni-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+        }
+
+        .collaborazioni-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .collaborazioni-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .collab-item {
+            padding: 2rem;
+            background: var(--bianco);
+            border: 1px solid var(--grigio-chiaro);
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .collab-item:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-5px);
+        }
+
+        .collab-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .collab-desc {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--grigio);
+        }
+
+        /* CTA */
+        .cta {
+            padding: 10rem 3rem;
+            background: var(--nero);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.15) 0%, transparent 70%);
+        }
+
+        .cta-glow:nth-child(1) {
+            top: -200px;
+            left: -200px;
+        }
+
+        .cta-glow:nth-child(2) {
+            bottom: -200px;
+            right: -200px;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 400;
+            color: var(--bianco);
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .cta-desc {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.6);
+            max-width: 500px;
+            margin: 0 auto 3rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1.25rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--bianco);
+            transition: all 0.4s ease;
+        }
+
+        .cta-btn:hover {
+            background: var(--bianco);
+            color: var(--nero);
+            border-color: var(--bianco);
+        }
+
+        .cta-btn.primary {
+            background: var(--ottanio);
+            border-color: var(--ottanio);
+        }
+
+        .cta-btn.primary:hover {
+            background: var(--bianco);
+            color: var(--nero);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 3rem;
+            background: var(--nero);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-back {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-back:hover {
+            color: var(--bianco);
+        }
+
+        .footer-back::before {
+            content: '←';
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--bianco);
+        }
+
+        /* REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1000px) {
+            .featured-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .featured-visual {
+                order: -1;
+            }
+
+            .podcasts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .collaborazioni-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero,
+            .featured,
+            .podcasts,
+            .collaborazioni,
+            .cta {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .hero {
+                padding-top: 8rem;
+            }
+
+            .hero-bg {
+                width: 100%;
+                opacity: 0.5;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-nav {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .footer-links {
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./il-progetto.html">Il Progetto</a>
+            <a href="./andrea-colamedici/">Colamedici</a>
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="./edizioni.html">Edizioni</a>
+            <a href="./librerie.html">Librerie</a>
+            <a href="./formazione.html">Formazione</a>
+            <a href="./eventi-festival.html">Eventi</a>
+            <a href="./contatti.html">Contatti</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-label">Audio</span>
+                <h1 class="hero-title">La filosofia che si <em>ascolta</em></h1>
+                <p class="hero-desc">Podcast, dialoghi, lezioni: Tlon esplora i grandi temi del pensiero attraverso la voce. Dalle piattaforme più seguite ai progetti esclusivi, un universo sonoro per chi vuole andare oltre la superficie.</p>
+            </div>
+            <div class="wave-container">
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+        </section>
+
+        <!-- FEATURED: SCUOLA DI FILOSOFIE -->
+        <section class="featured">
+            <div class="featured-bg">Filosofie</div>
+            <div class="featured-grid">
+                <div class="featured-content reveal">
+                    <span class="featured-label">Esclusiva Audible</span>
+                    <h2 class="featured-title">Scuola di <em>Filosofie</em></h2>
+                    <p class="featured-desc">Un percorso in due stagioni attraverso i grandi pensatori del Novecento: dalla fenomenologia all'esistenzialismo, dalla filosofia della mente alla teoria critica. La filosofia messa alla prova nei campi del mondo esteriore e dei mondi interiori, nelle strade della città e nelle dinamiche quotidiane della vita.</p>
+                    <div class="featured-meta">
+                        <div class="featured-meta-item">
+                            <span class="featured-meta-label">Stagioni</span>
+                            <span class="featured-meta-value">2</span>
+                        </div>
+                        <div class="featured-meta-item">
+                            <span class="featured-meta-label">Con</span>
+                            <span class="featured-meta-value">Maura e Andrea</span>
+                        </div>
+                        <div class="featured-meta-item">
+                            <span class="featured-meta-label">Piattaforma</span>
+                            <span class="featured-meta-value">Audible</span>
+                        </div>
+                    </div>
+                    <a href="https://www.audible.it/pd/Scuola-di-filosofie-Podcast/B09LHGFVB8" target="_blank" class="featured-cta">
+                        <span>Ascolta su Audible</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="featured-visual reveal">
+                    <div class="featured-waveform">
+                        <span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PODCAST PRINCIPALI -->
+        <section class="podcasts">
+            <div class="podcasts-header reveal">
+                <h2>I nostri <em>podcast</em></h2>
+                <p>Progetti originali, collaborazioni istituzionali e raccolte di interventi: tutto il mondo audio di Tlon.</p>
+            </div>
+
+            <div class="podcasts-grid">
+                <div class="podcast-card reveal">
+                    <span class="podcast-platform">Tutte le piattaforme</span>
+                    <h3 class="podcast-title">Tlon — Il podcast</h3>
+                    <p class="podcast-desc">Una raccolta di interventi, dialoghi e conferenze. Interviste, conversazioni tenute in diretta sui social di Tlon e durante le maratone filosofiche, contributi degli amici di Tlon in occasione di festival ed eventi. Il podcast imprescindibile per restare aggiornati sulle iniziative del progetto.</p>
+                    <a href="https://open.spotify.com/show/5vCMdHPpNCp1vMrPCaLs5Y" target="_blank" class="podcast-link">
+                        <span>Ascolta</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="podcast-card reveal">
+                    <span class="podcast-platform">Parlamento Europeo</span>
+                    <h3 class="podcast-title">Pensare Europeo</h3>
+                    <p class="podcast-desc">Un ciclo di incontri per potenziare il senso di appartenenza alla comunità europea. Un ponte tra Italia ed Europa, tra politica e pensiero, mettendo in connessione eurodeputati con filosofi, attivisti, storici e artisti italiani.</p>
+                    <a href="https://open.spotify.com/show/0RMKfEiFmLLQvXJJ1ZcLPH" target="_blank" class="podcast-link">
+                        <span>Ascolta</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="podcast-card reveal">
+                    <span class="podcast-platform">RaiPlaySound</span>
+                    <h3 class="podcast-title">Meno per meno</h3>
+                    <p class="podcast-subtitle">con Niccolò Fabi</p>
+                    <p class="podcast-desc">Dieci puntate che partono dalle canzoni scelte da Niccolò Fabi per celebrare i suoi 25 anni di carriera. I testi divengono scintilla per affrontare tematiche disparate: un viaggio tra menti che dedicano alle parole e al loro significato tempo e attenzione.</p>
+                    <a href="https://www.raiplaysound.it/programmi/menopermeno" target="_blank" class="podcast-link">
+                        <span>Ascolta</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="podcast-card reveal">
+                    <span class="podcast-platform">Audible</span>
+                    <h3 class="podcast-title">Audible Club</h3>
+                    <p class="podcast-desc">La prima comunità degli ascoltatori di audiolibri: un'avanguardia curiosa riunita intorno allo stesso focolare, una voce che ogni due settimane ascolta e riflette insieme a partire da un grande capolavoro della letteratura.</p>
+                    <a href="https://www.audible.it/pd/Audible-Club-Podcast/B09N3LPP7Q" target="_blank" class="podcast-link">
+                        <span>Ascolta</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLLABORAZIONI -->
+        <section class="collaborazioni">
+            <div class="collaborazioni-header reveal">
+                <h2>Altre <em>produzioni</em></h2>
+            </div>
+            <div class="collaborazioni-grid">
+                <div class="collab-item reveal">
+                    <h3 class="collab-title">RomaEuropa Festival</h3>
+                    <p class="collab-desc">Dialoghi intorno agli spettacoli del programma con ospiti d'eccezione: Jonathan Bazzi, Nadia Terranova, Paolo di Paolo.</p>
+                </div>
+                <div class="collab-item reveal">
+                    <h3 class="collab-title">Il Libro della Settimana</h3>
+                    <p class="collab-desc">L'itinerario bibliofilo di Maura Gancitano tra narrativa, filosofia, storia e studi sociali.</p>
+                </div>
+                <div class="collab-item reveal">
+                    <h3 class="collab-title">Disc Jockey di Wally</h3>
+                    <p class="collab-desc">La rubrica settimanale di Maura e Andrea su Radiofreccia, ogni mercoledì.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta">
+            <div class="cta-glow"></div>
+            <div class="cta-glow"></div>
+            <div class="cta-content reveal">
+                <h2 class="cta-title">Ascoltaci <em>ovunque</em></h2>
+                <p class="cta-desc">I podcast Tlon sono disponibili su tutte le principali piattaforme di streaming audio.</p>
+                <div class="cta-buttons">
+                    <a href="https://open.spotify.com/show/5vCMdHPpNCp1vMrPCaLs5Y" target="_blank" class="cta-btn primary">Spotify</a>
+                    <a href="https://www.audible.it" target="_blank" class="cta-btn">Audible</a>
+                    <a href="https://podcasts.apple.com" target="_blank" class="cta-btn">Apple Podcasts</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-nav">
+            <a href="./" class="footer-back">Home</a>
+            <div class="footer-links">
+                <a href="./ilpod.html">Il Pod Awards</a>
+                <a href="./il-progetto.html">Il Progetto</a>
+                <a href="https://www.tlonletter.it" target="_blank">Newsletter</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        reveals.forEach(el => observer.observe(el));
+
+        // Parallax hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+
+            if (hero && scrolled < window.innerHeight) {
+                const content = hero.querySelector('.hero-content');
+                content.style.transform = `translateY(${scrolled * 0.2}px)`;
+                content.style.opacity = 1 - (scrolled / window.innerHeight * 0.6);
+            }
+        });
+    </script>
+
+</body>
+</html>
