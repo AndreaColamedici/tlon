@@ -1416,25 +1416,31 @@
                 display: flex;
             }
 
-            /* MISSION - VERTICALE SU MOBILE */
+            /* MISSION - VERTICALE SU MOBILE - Fix touch conflicts */
             .mission {
                 height: auto;
+                overflow: hidden;
             }
 
             .mission-sticky {
                 position: relative;
                 height: auto;
+                overflow: hidden;
             }
 
             .mission-track {
                 flex-direction: column;
                 transform: none !important;
+                overflow: hidden;
+                touch-action: pan-y;
             }
 
             .mission-panel {
                 min-width: 100%;
+                width: 100%;
                 min-height: 80vh;
                 padding: 4rem 1.5rem;
+                overflow: hidden;
             }
 
             .mission-panel-num {
