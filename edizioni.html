@@ -657,6 +657,72 @@
         }
 
         /* ================================================
+           CATALOGO LINK
+           ================================================ */
+        .catalogo-link {
+            padding: 8rem 3rem;
+            background: var(--bianco);
+            text-align: center;
+        }
+
+        .catalogo-link-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .catalogo-link-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+        }
+
+        .catalogo-link-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            line-height: 1.6;
+            color: var(--nero);
+            margin-bottom: 3rem;
+        }
+
+        .catalogo-link-btn {
+            display: inline-block;
+            padding: 1.4rem 3.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: var(--ottanio);
+            color: var(--bianco);
+            border: 1px solid var(--ottanio);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .catalogo-link-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--nero);
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+
+        .catalogo-link-btn:hover::before {
+            left: 0;
+        }
+
+        .catalogo-link-btn:hover {
+            border-color: var(--nero);
+        }
+
+        /* ================================================
            TEAM
            ================================================ */
         .team {
@@ -920,6 +986,7 @@
             .collana-numero { font-size: 4rem; right: 1rem; }
             .libro-card { width: 220px; }
             .libri-header { padding: 0 1.5rem; }
+            .catalogo-link { padding: 5rem 1.5rem; }
         }
     </style>
 </head>
@@ -1180,6 +1247,15 @@
                 <p class="libro-author">Peter Sloterdijk</p>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- CATALOGO COMPLETO -->
+<section class="catalogo-link">
+    <div class="catalogo-link-content">
+        <p class="catalogo-link-label">Il catalogo completo</p>
+        <p class="catalogo-link-text">Il catalogo completo di Edizioni Tlon, con tutte le pubblicazioni disponibili, è consultabile online.</p>
+        <a href="https://shop.tlon.it" class="catalogo-link-btn" target="_blank">Esplora il catalogo</a>
     </div>
 </section>
 
