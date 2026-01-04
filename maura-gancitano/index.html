@@ -24,30 +24,114 @@
         a { color: inherit; text-decoration: none; }
 
         /* HEADER */
-        header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; background: var(--bianco); border-bottom: 1px solid var(--grigio-chiaro); }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1002;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+            border-bottom: 1px solid var(--grigio-chiaro);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        header.menu-open {
+            background: var(--nero);
+            border-bottom-color: var(--nero);
+        }
+
         .logo { display: flex; align-items: center; }
-        .logo img { height: 28px; width: auto; }
+        .logo img { height: 28px; width: auto; transition: filter 0.3s ease; }
+
+        header.menu-open .logo img {
+            filter: invert(1);
+        }
+
         nav { display: flex; gap: 3rem; }
         nav a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--nero); opacity: 0.5; transition: opacity 0.3s ease; }
         nav a:hover { opacity: 1; }
 
         /* HAMBURGER */
-        .hamburger { display: none; flex-direction: column; justify-content: center; gap: 6px; width: 32px; height: 32px; cursor: pointer; z-index: 1001; }
-        .hamburger span { display: block; width: 100%; height: 2px; background: var(--nero); transition: all 0.3s ease; }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1003;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--nero);
+            margin: 3px 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
 
         .hamburger.active span {
-    background: var(--bianco);
-    mix-blend-mode: normal;
-}
+            background: var(--bianco);
+        }
 
-/* MOBILE MENU */
-        .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bianco); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; }
-        .mobile-menu.active { opacity: 1; visibility: visible; }
-        .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--nero); opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease; }
-        .mobile-menu.active a { opacity: 1; transform: translateY(0); }
+        /* MOBILE MENU */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nero);
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--bianco);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+        }
+
+        .mobile-menu.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
         .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
         .mobile-menu a:nth-child(3) { transition-delay: 0.2s; }
@@ -56,11 +140,12 @@
         .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
         .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
         .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
+
         .mobile-menu a:hover { color: var(--ottanio); }
 
         main { padding-top: 80px; }
 
-        /* HERO BIO */
+        /* BIO HERO */
         .bio-hero { min-height: 70vh; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; padding: 6rem 3rem; align-items: center; }
         .bio-photo { position: relative; }
         .bio-photo-frame { aspect-ratio: 3/4; background: linear-gradient(135deg, rgba(42, 107, 107, 0.08) 0%, rgba(42, 107, 107, 0.02) 100%); border: 1px solid var(--grigio-chiaro); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
@@ -181,6 +266,10 @@
         /* RESPONSIVE */
         @media (max-width: 1100px) { .specchio-content { grid-template-columns: 1fr; gap: 4rem; } }
         @media (max-width: 900px) {
+            header { padding: 1rem 1.5rem; }
+            nav { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu { display: flex; }
             .bio-hero { grid-template-columns: 1fr; gap: 3rem; }
             .bio-photo { order: -1; max-width: 400px; margin: 0 auto; }
             .podcast-item { grid-template-columns: 1fr; gap: 1rem; }
@@ -190,12 +279,8 @@
             .voce-item { grid-template-columns: 1fr; gap: 0.5rem; }
             .voce-dettaglio { text-align: left; }
             .specchio-content { padding: 5rem 1.5rem; }
-            nav { display: none; }
-            .hamburger { display: flex; }
-            .mobile-menu { display: flex; }
         }
         @media (max-width: 600px) {
-            header { padding: 1rem 1.5rem; }
             .bio-hero, .bio-content { padding-left: 1.5rem; padding-right: 1.5rem; }
             footer { padding: 2rem 1.5rem; }
             .footer-nav { flex-direction: column; gap: 2rem; text-align: center; }
@@ -330,8 +415,8 @@
                     <span class="section-num">V</span>
                 </div>
                 <div class="lista-voci">
-                    <div class="voce-item"><span class="voce-titolo"><strong>Prompt Thinking</strong> — IED Roma</span><span class="voce-dettaglio">2022–in corso</span></div>
-                    <div class="voce-item"><span class="voce-titolo"><em>Dalla scrittura al digitale: la crepa che abitiamo</em> — Università di Foggia (con Andrea Colamedici)</span><span class="voce-dettaglio">2021–2022</span></div>
+                    <div class="voce-item"><span class="voce-titolo"><strong>Prompt Thinking</strong> — IED Roma</span><span class="voce-dettaglio">2022—in corso</span></div>
+                    <div class="voce-item"><span class="voce-titolo"><em>Dalla scrittura al digitale: la crepa che abitiamo</em> — Università di Foggia (con Andrea Colamedici)</span><span class="voce-dettaglio">2021—2022</span></div>
                     <div class="voce-item"><span class="voce-titolo">Masterclass sugli stereotipi di genere — Università di Messina / Taobuk</span><span class="voce-dettaglio">2025</span></div>
                     <div class="voce-item"><span class="voce-titolo">Corso Competenze Trasversali — Università di Bari</span><span class="voce-dettaglio">2025</span></div>
                     <div class="voce-item"><span class="voce-titolo">Seminario <em>Social Emotional Learning e formazione degli insegnanti</em> — Università di Verona</span><span class="voce-dettaglio">2025</span></div>
@@ -468,15 +553,20 @@
 
         const hamburger = document.getElementById('hamburger');
         const mobileMenu = document.getElementById('mobileMenu');
+        const header = document.querySelector('header');
+
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
+            header.classList.toggle('menu-open');
             document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
         });
+
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
                 mobileMenu.classList.remove('active');
+                header.classList.remove('menu-open');
                 document.body.style.overflow = '';
             });
         });
