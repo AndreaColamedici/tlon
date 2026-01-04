@@ -1486,17 +1486,30 @@
             }
 
             .origin {
-                padding: 6rem 1.5rem;
+                padding: 4rem 1rem;
+                overflow: hidden;
             }
             
             .origin-grid {
                 grid-template-columns: 1fr;
-                gap: 4rem;
+                gap: 2rem;
+                padding: 0;
             }
             
             .origin-content {
-                max-width: 100%;
-                padding: 0;
+                max-width: 100% !important;
+                width: 100% !important;
+                padding: 0 0.5rem;
+                box-sizing: border-box;
+            }
+            
+            .origin-label {
+                letter-spacing: 0.2em;
+            }
+            
+            .origin-text {
+                font-size: 0.95rem;
+                line-height: 1.7;
             }
             
             .origin-title {
