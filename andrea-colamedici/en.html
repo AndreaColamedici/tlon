@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andrea Colamedici — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bianco);
+            color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1002;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+            border-bottom: 1px solid var(--grigio-chiaro);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        header.menu-open {
+            background: var(--nero);
+            border-bottom-color: transparent;
+        }
+
+        header.menu-open .logo img {
+            filter: invert(1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+            transition: filter 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* HAMBURGER */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1003;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #000;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .hamburger.active span:nth-child(1),
+        .hamburger.active span:nth-child(2),
+        .hamburger.active span:nth-child(3) {
+            background: #fff;
+        }
+
+        .hamburger.active span {
+            background: var(--bianco);
+            mix-blend-mode: normal;
+        }
+
+        /* MOBILE MENU */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nero);
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--bianco);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+        }
+
+        .mobile-menu.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu a:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
+        .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
+        .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
+
+        .mobile-menu a:hover {
+            color: var(--ottanio);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            padding-top: 80px;
+        }
+
+        /* HERO BIO */
+        .bio-hero {
+            min-height: 70vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            padding: 6rem 3rem;
+            align-items: center;
+        }
+
+        .bio-photo {
+            position: relative;
+        }
+
+        .bio-photo-frame {
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, rgba(42, 107, 107, 0.08) 0%, rgba(42, 107, 107, 0.02) 100%);
+            border: 1px solid var(--grigio-chiaro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bio-photo-frame::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            right: 2rem;
+            bottom: 2rem;
+            border: 1px solid var(--ottanio);
+            opacity: 0.3;
+        }
+
+        .bio-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .bio-photo-placeholder {
+            font-family: 'Instrument Serif', serif;
+            font-size: 8rem;
+            color: var(--ottanio);
+            opacity: 0.15;
+        }
+
+        .bio-intro {
+            max-width: 600px;
+        }
+
+        .bio-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .bio-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .bio-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+        }
+
+        .bio-name em {
+            font-style: italic;
+        }
+
+        .bio-tagline {
+            font-size: 1.25rem;
+            line-height: 1.7;
+            color: var(--grigio);
+            margin-bottom: 2.5rem;
+        }
+
+        .bio-tagline a {
+            color: var(--ottanio);
+            border-bottom: 1px solid var(--ottanio);
+            transition: opacity 0.3s ease;
+        }
+
+        .bio-tagline a:hover {
+            opacity: 0.7;
+        }
+
+        .bio-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--grigio);
+        }
+
+        .bio-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .bio-meta span::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--ottanio);
+            border-radius: 50%;
+        }
+
+        /* BIO CONTENT */
+        .bio-content {
+            padding: 6rem 3rem;
+            background: var(--bianco);
+        }
+
+        .bio-section {
+            max-width: 900px;
+            margin: 0 auto 6rem;
+        }
+
+        .bio-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        .section-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .bio-text {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--nero);
+        }
+
+        .bio-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .bio-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* IPNOCRAZIA FEATURED */
+        .ipnocrazia-featured {
+            min-height: 100vh;
+            background: var(--nero);
+            color: var(--bianco);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ipnocrazia-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .ipnocrazia-bg-text {
+            font-size: 60vw;
+            color: rgba(42, 107, 107, 0.05);
+            user-select: none;
+            line-height: 1;
+        }
+
+        .ipnocrazia-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.2) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: glowPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        .ipnocrazia-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 900px;
+            padding: 6rem 3rem;
+        }
+
+        .ipnocrazia-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 3rem;
+            padding: 0.75rem 2rem;
+            border: 1px solid rgba(42, 107, 107, 0.5);
+            position: relative;
+        }
+
+        .ipnocrazia-label::before,
+        .ipnocrazia-label::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 1px;
+            background: rgba(42, 107, 107, 0.3);
+            top: 50%;
+        }
+
+        .ipnocrazia-label::before {
+            right: 100%;
+            margin-right: 1.5rem;
+        }
+
+        .ipnocrazia-label::after {
+            left: 100%;
+            margin-left: 1.5rem;
+        }
+
+        .ipnocrazia-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(5rem, 15vw, 12rem);
+            font-weight: 400;
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+        }
+
+        .ipnocrazia-title em {
+            font-style: italic;
+        }
+
+        .ipnocrazia-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+            font-style: italic;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 4rem;
+        }
+
+        .ipnocrazia-desc {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ipnocrazia-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--bianco);
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ipnocrazia-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--ottanio);
+            transform: translateX(-100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+
+        .ipnocrazia-cta:hover::before {
+            transform: translateX(0);
+        }
+
+        .ipnocrazia-cta:hover {
+            border-color: var(--ottanio);
+        }
+
+        .ipnocrazia-cta svg {
+            transition: transform 0.4s ease;
+        }
+
+        .ipnocrazia-cta:hover svg {
+            transform: translateX(5px);
+        }
+
+        .ipnocrazia-press {
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .ipnocrazia-press-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 1.5rem;
+        }
+
+        .ipnocrazia-press-logos {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.25);
+        }
+
+        /* LIBRI */
+        .libro-categoria {
+            margin-bottom: 3rem;
+        }
+
+        .libro-categoria:last-child {
+            margin-bottom: 0;
+        }
+
+        .categoria-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .categoria-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--grigio-chiaro);
+        }
+
+        .libro {
+            display: grid;
+            grid-template-columns: 60px 1fr auto;
+            gap: 1.5rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--grigio-chiaro);
+            align-items: baseline;
+        }
+
+        .libro:last-child {
+            border-bottom: none;
+        }
+
+        .libro-anno {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .libro-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .libro-titolo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+        }
+
+        .libro-sottotitolo {
+            font-size: 0.9rem;
+            color: var(--grigio);
+        }
+
+        .libro-editore {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            text-align: right;
+        }
+
+        .libro-nota {
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--ottanio);
+        }
+
+        /* TRADUZIONI */
+        .traduzioni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .traduzione-item {
+            padding: 1.5rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: border-color 0.3s ease;
+        }
+
+        .traduzione-item:hover {
+            border-color: var(--ottanio);
+        }
+
+        .traduzione-titolo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .traduzione-lingue {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            line-height: 1.6;
+        }
+
+        /* PODCAST */
+        .podcast-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .podcast-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: border-color 0.3s ease;
+        }
+
+        .podcast-item:hover {
+            border-color: var(--ottanio);
+        }
+
+        .podcast-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+
+        .podcast-meta {
+            font-size: 0.85rem;
+            color: var(--ottanio);
+            margin-top: 0.5rem;
+        }
+
+        .podcast-desc {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        /* ATTIVITÀ */
+        .attivita-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+        }
+
+        .attivita-item h4 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .attivita-item p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 3rem;
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-back {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-back:hover {
+            color: var(--nero);
+        }
+
+        .footer-back::before {
+            content: '←';
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--nero);
+        }
+
+        .footer-other {
+            text-align: right;
+        }
+
+        .footer-other-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-other-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+        }
+
+        .footer-other-name a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-other-name a:hover {
+            color: var(--ottanio);
+        }
+
+        /* LANGUAGE SWITCHER */
+        .lang-switch {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-left: 2rem;
+            padding-left: 2rem;
+            border-left: 1px solid var(--grigio-chiaro);
+        }
+
+        .lang-switch a {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .lang-switch a:hover,
+        .lang-switch a.active {
+            opacity: 1;
+        }
+
+        .lang-switch a.active {
+            color: var(--ottanio);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .bio-hero {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .bio-photo {
+                order: -1;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .attivita-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .podcast-item {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .libro {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .libro-anno {
+                font-size: 0.85rem;
+            }
+
+            .libro-editore {
+                text-align: left;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .ipnocrazia-label::before,
+            .ipnocrazia-label::after {
+                display: none;
+            }
+
+            .lang-switch {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                gap: 1.5rem;
+            }
+
+            .bio-hero,
+            .bio-content {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .ipnocrazia-content {
+                padding: 4rem 1.5rem;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-nav {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .footer-other {
+                text-align: center;
+            }
+        }
+
+        /* REVEAL ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../" class="logo"><img src="../assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="../il-progetto.html">The Project</a>
+            <a href="../andrea-colamedici/en.html">Colamedici</a>
+            <a href="../maura-gancitano/">Gancitano</a>
+            <a href="../edizioni.html">Publishing</a>
+            <a href="../librerie.html">Bookstores</a>
+            <a href="../formazione.html">Education</a>
+            <a href="../eventi-festival.html">Events</a>
+            <a href="../contatti/">Contact</a>
+        </nav>
+        <div class="lang-switch">
+            <a href="./index.html">IT</a>
+            <a href="./en.html" class="active">EN</a>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="../il-progetto.html">The Project</a>
+        <a href="../andrea-colamedici/en.html">Colamedici</a>
+        <a href="../maura-gancitano/">Gancitano</a>
+        <a href="../edizioni.html">Publishing</a>
+        <a href="../librerie.html">Bookstores</a>
+        <a href="../formazione.html">Education</a>
+        <a href="../eventi-festival.html">Events</a>
+        <a href="../contatti/">Contact</a>
+    </div>
+
+    <main>
+        <!-- HERO -->
+        <section class="bio-hero">
+            <div class="bio-photo">
+                <div class="bio-photo-frame">
+                    <img src="../assets/images/andrea-colamedici.jpg" alt="Andrea Colamedici">
+                </div>
+            </div>
+            <div class="bio-intro">
+                <span class="bio-label">Founder</span>
+                <h1 class="bio-name">Andrea <em>Colamedici</em></h1>
+                <p class="bio-tagline">Philosopher, publisher and artist. Co-founder of Tlon, he works on philosophy of artificial intelligence, media theory and <a href="../cimiterologia.html">cemetery studies</a>.</p>
+                <div class="bio-meta">
+                    <span>Rome, 1987</span>
+                    <span>President of GenIALAB, AI Hub at AANT</span>
+                    <span>Philosophical Director, Festival del Pensare Contemporaneo</span>
+                    <span>Philosophical Director, Carnevale di Putignano</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="bio-content">
+            <!-- BIOGRAPHY -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Biography</h2>
+                    <span class="section-num">I</span>
+                </div>
+                <div class="bio-text">
+                    <p>Andrea Colamedici is a philosopher, publisher and essayist. In 2014 he founded <strong>Tlon</strong> together with Maura Gancitano: a cultural project that manifests itself through the organization of festivals and events, a publishing house, two bookstores and an activity of outreach online and in person, mixing high and popular culture, analyzing needs and meanings of our time and connecting the academic environment with popular culture.</p>
+                    <p>He teaches <strong>Prompt Thinking</strong> at IED Roma and the 24Ore Business School, and <em>Borges y la Inteligencia Artificial</em> at the Universidad del Sur in Buenos Aires. He has taught Social Media Theory at IULM University in Milan. He is a faculty member of the 24Ore Business School and has collaborated with numerous Italian and international universities, including Politecnico di Milano, University of Bologna, San Raffaele, Roma Tre and LUISS.</p>
+                    <p>He is <strong>president of GenIA</strong>, an interdisciplinary hub on artificial intelligence at AANT – Academy of Arts and New Technologies in Rome, where he coordinates applied research and training activities on generative AI for art, design and communication. In 2024–2025 he held a research fellowship at the University of Foggia on artificial intelligence and systems of thought, with a project centered on the philosophical-editorial experiment of Jianwei Xun and the genesis of <em>Ipnocrazia</em>.</p>
+                    <p>Together with Maura Gancitano he is the <strong>philosophical director</strong> of the Festival del Pensare Contemporaneo in Piacenza and the Carnevale di Putignano. He is the creator of the <em>Festa della Filosofia</em> at the Triennale in Milan and Rome, of the online marathon <em>Prendiamola con Filosofia</em> (created at the request of the Ministry of Health) and of the <em>Italian Podcast Awards</em>. He has given speeches for TEDxRoma on the philosophy of artificial intelligence and for TEDxBarletta on the relationship between art and AI.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- IPNOCRAZIA FEATURED -->
+        <section class="ipnocrazia-featured">
+            <div class="ipnocrazia-bg">
+                <span class="ipnocrazia-bg-text">谎</span>
+            </div>
+            <div class="ipnocrazia-glow"></div>
+            <div class="ipnocrazia-content">
+                <span class="ipnocrazia-label">The international publishing case</span>
+                <h2 class="ipnocrazia-title"><em>Ipnocrazia</em></h2>
+                <p class="ipnocrazia-subtitle">Trump, Musk and the New Architecture of Reality</p>
+                <p class="ipnocrazia-desc">A book signed by a Chinese philosopher who does not exist. A narrative performance that crossed the boundaries between fiction and truth, becoming the subject of debate in the international press. The first philosophical experiment of the artificial intelligence era.</p>
+                <a href="../ipnocrazia.html" class="ipnocrazia-cta">
+                    <span>Discover the experiment</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <div class="ipnocrazia-press">
+                    <p class="ipnocrazia-press-label">Featured in</p>
+                    <div class="ipnocrazia-press-logos">
+                        <span>El País</span>
+                        <span>Le Monde</span>
+                        <span>Libération</span>
+                        <span>Corriere della Sera</span>
+                        <span>La Stampa</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="bio-content">
+            <!-- BOOKS -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Books</h2>
+                    <span class="section-num">II</span>
+                </div>
+
+                <div class="libro-categoria">
+                    <div class="categoria-title">Individual works and collaborations</div>
+                    
+                    <div class="libro">
+                        <span class="libro-anno">2025</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Ipnocrazia</span>
+                            <span class="libro-sottotitolo">Trump, Musk and the New Architecture of Reality</span>
+                            <span class="libro-nota">as Jianwei Xun</span>
+                        </div>
+                        <span class="libro-editore">Tlon</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2024</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">L'algoritmo di Babele</span>
+                            <span class="libro-sottotitolo">Stories and Myths of Artificial Intelligence</span>
+                            <span class="libro-nota">with Simone Arcagni</span>
+                        </div>
+                        <span class="libro-editore">Solferino</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2021</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">La responsabilità della rivolta</span>
+                            <span class="libro-sottotitolo">The Responsibility of Revolt</span>
+                            <span class="libro-nota">with Miguel Benasayag</span>
+                        </div>
+                        <span class="libro-editore">Tlon</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2019</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Il codice del mito</span>
+                            <span class="libro-sottotitolo">Plato's Dream and the Nightmare of the West</span>
+                        </div>
+                        <span class="libro-editore">Mursia</span>
+                    </div>
+                </div>
+
+                <div class="libro-categoria">
+                    <div class="categoria-title">With Maura Gancitano</div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2025</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Botanica della meraviglia</span>
+                            <span class="libro-sottotitolo">Botany of Wonder</span>
+                        </div>
+                        <span class="libro-editore">HarperCollins</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2023</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Ma chi me lo fa fare?</span>
+                            <span class="libro-sottotitolo">How Work Has Deceived Us: The End of the Spell</span>
+                        </div>
+                        <span class="libro-editore">HarperCollins</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2022</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Il gioco del pensiero</span>
+                            <span class="libro-sottotitolo">The Game of Thought</span>
+                        </div>
+                        <span class="libro-editore">Zanichelli</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2021</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">L'alba dei nuovi dèi</span>
+                            <span class="libro-sottotitolo">From Plato to Big Data</span>
+                        </div>
+                        <span class="libro-editore">Mondadori</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2021</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Prendila con filosofia</span>
+                            <span class="libro-sottotitolo">A Manual for Personal Flourishing</span>
+                        </div>
+                        <span class="libro-editore">HarperCollins</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2019</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Liberati della brava bambina</span>
+                            <span class="libro-sottotitolo">Eight Stories to Flourish</span>
+                        </div>
+                        <span class="libro-editore">HarperCollins</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2018</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">La società della performance</span>
+                            <span class="libro-sottotitolo">How to Escape the Cave</span>
+                        </div>
+                        <span class="libro-editore">Tlon</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2017</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Lezioni di meraviglia</span>
+                            <span class="libro-sottotitolo">Journeys Between Philosophy and Imagination</span>
+                        </div>
+                        <span class="libro-editore">Tlon</span>
+                    </div>
+
+                    <div class="libro">
+                        <span class="libro-anno">2016</span>
+                        <div class="libro-info">
+                            <span class="libro-titolo">Tu non sei Dio</span>
+                            <span class="libro-sottotitolo">Phenomenology of Contemporary Spirituality</span>
+                        </div>
+                        <span class="libro-editore">Tlon</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TRANSLATIONS -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Translations</h2>
+                    <span class="section-num">III</span>
+                </div>
+                <div class="traduzioni-grid">
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">Botanica della meraviglia</div>
+                        <div class="traduzione-lingue">Spanish (forthcoming), French (forthcoming)</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">Ipnocrazia</div>
+                        <div class="traduzione-lingue">Spanish, French, English</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">L'alba dei nuovi dèi</div>
+                        <div class="traduzione-lingue">English (forthcoming)</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">Liberati della brava bambina</div>
+                        <div class="traduzione-lingue">Chinese, Korean</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">Prendila con filosofia</div>
+                        <div class="traduzione-lingue">Chinese, Spanish, Polish, Korean</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">La società della performance</div>
+                        <div class="traduzione-lingue">Chinese (forthcoming)</div>
+                    </div>
+                    <div class="traduzione-item">
+                        <div class="traduzione-titolo">Ma chi me lo fa fare?</div>
+                        <div class="traduzione-lingue">Chinese (forthcoming)</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PODCASTS -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Podcasts</h2>
+                    <span class="section-num">IV</span>
+                </div>
+                <div class="podcast-grid">
+                    <div class="podcast-item">
+                        <div>
+                            <div class="podcast-title">Scuola di Filosofie</div>
+                            <div class="podcast-meta">Audible · with Maura Gancitano</div>
+                        </div>
+                        <div class="podcast-desc">A journey in two seasons through the great thinkers of the twentieth century, from phenomenology to existentialism, from philosophy of mind to critical theory, to apply their insights to everyday life.</div>
+                    </div>
+                    <div class="podcast-item">
+                        <div>
+                            <div class="podcast-title">Pensare Europeo</div>
+                            <div class="podcast-meta">European Parliament · with Maura Gancitano</div>
+                        </div>
+                        <div class="podcast-desc">A series of conversations designed to strengthen the sense of belonging to the European community, connecting MEPs with philosophers, activists, historians and Italian artists.</div>
+                    </div>
+                    <div class="podcast-item">
+                        <div>
+                            <div class="podcast-title">Meno per meno</div>
+                            <div class="podcast-meta">RaiPlaySound · with Niccolò Fabi and Maura Gancitano</div>
+                        </div>
+                        <div class="podcast-desc">Ten episodes that start from the songs chosen by Niccolò Fabi to celebrate his 25 years of career, transforming the lyrics into sparks for addressing disparate themes.</div>
+                    </div>
+                    <div class="podcast-item">
+                        <div>
+                            <div class="podcast-title">Audible Club</div>
+                            <div class="podcast-meta">Audible</div>
+                        </div>
+                        <div class="podcast-desc">The first audiobook listeners' club in Italy: two seasons dedicated to the great classics of nineteenth and twentieth century literature, narrated and discussed together with the community.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ACTIVITIES -->
+            <section class="bio-section reveal">
+                <div class="section-header">
+                    <h2 class="section-title">Activities</h2>
+                    <span class="section-num">V</span>
+                </div>
+                <div class="attivita-grid">
+                    <div class="attivita-item">
+                        <h4>Artistic Direction</h4>
+                        <p>Philosophical director of the Festival del Pensare Contemporaneo in Piacenza and the Carnevale di Putignano. Creator of the Festa della Filosofia at the Triennale in Milan and Rome, the Prendiamola con Filosofia marathon and the Italian Podcast Awards.</p>
+                    </div>
+                    <div class="attivita-item">
+                        <h4>Research</h4>
+                        <p>President of GenIA at AANT in Rome. Research fellow at the University of Foggia on AI and systems of thought. Member of the Scientific Committee of the Intrecci series (Firenze University Press) and of the Visual Education / ASTERA conference.</p>
+                    </div>
+                    <div class="attivita-item">
+                        <h4>Teaching</h4>
+                        <p>Teaches Prompt Thinking at IED Roma and the 24Ore Business School. Teaches Borges y la Inteligencia Artificial at the Universidad del Sur in Buenos Aires. Has collaborated with Politecnico di Milano, IULM and Bologna.</p>
+                    </div>
+                    <div class="attivita-item">
+                        <h4>Outreach</h4>
+                        <p>Together with Maura Gancitano he curates the column "Prendila con filosofia" for Vanity Fair and participates in the program "Matteo Caccia racconta" on Radio24. Supervisor for the conscious use of AI at United Network.</p>
+                    </div>
+                    <div class="attivita-item">
+                        <h4>Theater</h4>
+                        <p>Philosophical consultant for <em>Salveremo il mondo prima dell'alba</em>, a play by Carrozzeria Orfeo with dramaturgy by Gabriele Di Luca and direction by Di Luca, Massimiliano Setti and Alessandro Tedeschi. The play, co-produced by Marche Teatro, Teatro dell'Elfo, Teatro Nazionale di Genova and Teatro Bellini, addresses the paradoxes of the contemporary world through the stories of guests at a space rehabilitation clinic specializing in the treatment of contemporary addictions.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-nav">
+            <a href="../" class="footer-back">Back to home</a>
+            <div class="footer-links">
+                <a href="../ilpod.html">IlPod</a>
+                <a href="../ipnocrazia.html">Ipnocrazia</a>
+                <a href="../esplora.html">Site Map</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        // Mobile menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const header = document.querySelector('header');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            header.classList.toggle('menu-open');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                header.classList.remove('menu-open');
+                document.body.style.overflow = '';
+            });
+        });
+    </script>
+
+</body>
+</html>
