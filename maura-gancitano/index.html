@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maura Gancitano – Tlon</title>
+    <title>Maura Gancitano — Tlon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -54,6 +54,35 @@
         nav { display: flex; gap: 3rem; }
         nav a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--nero); opacity: 0.5; transition: opacity 0.3s ease; }
         nav a:hover { opacity: 1; }
+
+        /* LANGUAGE SWITCHER */
+        .lang-switch {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-left: 2rem;
+            padding-left: 2rem;
+            border-left: 1px solid var(--grigio-chiaro);
+        }
+
+        .lang-switch a {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .lang-switch a:hover,
+        .lang-switch a.active {
+            opacity: 1;
+        }
+
+        .lang-switch a.active {
+            color: var(--ottanio);
+        }
 
         /* HAMBURGER */
         .hamburger {
@@ -270,6 +299,7 @@
             nav { display: none; }
             .hamburger { display: flex; }
             .mobile-menu { display: flex; }
+            .lang-switch { display: none; }
             .bio-hero { grid-template-columns: 1fr; gap: 3rem; }
             .bio-photo { order: -1; max-width: 400px; margin: 0 auto; }
             .podcast-item { grid-template-columns: 1fr; gap: 1rem; }
@@ -305,6 +335,10 @@
             <a href="../eventi-festival.html">Eventi</a>
             <a href="../contatti/">Contatti</a>
         </nav>
+        <div class="lang-switch">
+            <a href="./index.html" class="active">IT</a>
+            <a href="./en.html">EN</a>
+        </div>
         <div class="hamburger" id="hamburger">
             <span></span>
             <span></span>
