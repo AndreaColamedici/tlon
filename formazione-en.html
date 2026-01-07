@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bianco: #ffffff; --nero: #0a0a0a; --ottanio: #2a6b6b; --grigio: #6b6b6b; --grigio-chiaro: #e5e5e5; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bianco); color: var(--nero); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        ::selection { background: var(--ottanio); color: var(--bianco); }
+        a { color: inherit; text-decoration: none; }
+
+        .cursor { width: 12px; height: 12px; background: var(--ottanio); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; mix-blend-mode: difference; transition: transform 0.2s ease; }
+        .cursor.hover { transform: scale(3); }
+
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1002; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; background: var(--bianco); border-bottom: 1px solid var(--grigio-chiaro); transition: background 0.3s ease, border-color 0.3s ease; }
+        header.menu-open { background: var(--nero); border-bottom-color: var(--nero); }
+        .logo { display: flex; align-items: center; }
+        .logo img { height: 28px; width: auto; transition: filter 0.3s ease; }
+        header.menu-open .logo img { filter: invert(1); }
+        nav { display: flex; gap: 3rem; }
+        nav a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--nero); opacity: 0.5; transition: opacity 0.3s ease; }
+        nav a:hover { opacity: 1; }
+
+        .lang-switch { display: flex; gap: 0.5rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid var(--grigio-chiaro); }
+        .lang-switch a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grigio); opacity: 0.5; transition: opacity 0.3s ease; }
+        .lang-switch a:hover, .lang-switch a.active { opacity: 1; }
+        .lang-switch a.active { color: var(--ottanio); }
+
+        .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; width: 32px; height: 32px; cursor: pointer; position: relative; z-index: 1003; }
+        .hamburger span { display: block; width: 24px; height: 2px; background: var(--nero); margin: 3px 0; transition: all 0.3s ease; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+        .hamburger.active span { background: var(--bianco); }
+
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--nero); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; }
+        .mobile-menu.active { opacity: 1; visibility: visible; }
+        .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--bianco); opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease; }
+        .mobile-menu.active a { opacity: 1; transform: translateY(0); }
+        .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu a:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
+        .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
+        .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
+        .mobile-menu a:hover { color: var(--ottanio); }
+
+        .hero { min-height: 100vh; display: flex; align-items: center; padding: 10rem 3rem 6rem; background: var(--nero); color: var(--bianco); position: relative; overflow: hidden; }
+        .hero-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; }
+        .hero-bg-gradient { position: absolute; width: 800px; height: 800px; border-radius: 50%; background: radial-gradient(circle, rgba(42, 107, 107, 0.25) 0%, transparent 70%); animation: heroFloat 15s ease-in-out infinite; }
+        .hero-bg-gradient:nth-child(1) { top: -200px; right: -200px; }
+        .hero-bg-gradient:nth-child(2) { bottom: -300px; left: -200px; animation-delay: -5s; }
+        @keyframes heroFloat { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -30px) scale(1.1); } }
+        .hero-content { max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+        .hero-label { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; gap: 1rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; animation-delay: 0.2s; }
+        .hero-label::before, .hero-label::after { content: ''; width: 50px; height: 1px; background: var(--ottanio); }
+        .hero-title { font-family: 'Instrument Serif', serif; font-size: clamp(3.5rem, 8vw, 6rem); font-weight: 400; line-height: 1; letter-spacing: -0.03em; margin-bottom: 2rem; opacity: 0; transform: translateY(30px); animation: fadeUp 1s ease forwards; animation-delay: 0.4s; }
+        .hero-title em { font-style: italic; color: var(--ottanio); }
+        .hero-desc { font-size: 1.2rem; line-height: 1.8; opacity: 0.7; max-width: 700px; margin: 0 auto; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards; animation-delay: 0.6s; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        .intro { padding: 10rem 3rem; background: var(--bianco); }
+        .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; max-width: 1400px; margin: 0 auto; align-items: center; }
+        .intro-content { max-width: 550px; }
+        .intro-title { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.1; margin-bottom: 2rem; }
+        .intro-title em { font-style: italic; color: var(--ottanio); }
+        .intro-text { font-size: 1.1rem; line-height: 2; color: var(--grigio); margin-bottom: 1.5rem; }
+        .intro-highlight { padding: 2rem; background: #fafafa; border-left: 3px solid var(--ottanio); margin-top: 2rem; }
+        .intro-highlight p { font-family: 'Instrument Serif', serif; font-size: 1.25rem; font-style: italic; line-height: 1.6; color: var(--nero); }
+        .intro-visual { position: relative; height: 500px; display: flex; align-items: center; justify-content: center; }
+        .intro-visual-circle { position: absolute; border: 1px solid var(--grigio-chiaro); border-radius: 50%; animation: circleFloat 8s ease-in-out infinite; }
+        .intro-visual-circle:nth-child(1) { width: 300px; height: 300px; }
+        .intro-visual-circle:nth-child(2) { width: 400px; height: 400px; animation-delay: -2s; }
+        .intro-visual-circle:nth-child(3) { width: 500px; height: 500px; animation-delay: -4s; }
+        @keyframes circleFloat { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 1; } }
+        .intro-visual-text { font-family: 'Instrument Serif', serif; font-size: 8rem; font-style: italic; color: var(--ottanio); opacity: 0.1; position: relative; z-index: 1; }
+
+        .temi { padding: 10rem 3rem; background: var(--nero); color: var(--bianco); position: relative; overflow: hidden; }
+        .temi-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Instrument Serif', serif; font-size: 40vw; font-style: italic; color: rgba(255,255,255,0.02); white-space: nowrap; pointer-events: none; }
+        .temi-header { max-width: 1400px; margin: 0 auto 6rem; position: relative; z-index: 1; }
+        .temi-header h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; margin-bottom: 1rem; }
+        .temi-header h2 em { font-style: italic; color: var(--ottanio); }
+        .temi-header p { color: rgba(255,255,255,0.5); font-size: 1rem; max-width: 600px; }
+        .temi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+        .tema-card { padding: 3rem; border: 1px solid rgba(255,255,255,0.08); border-bottom: none; position: relative; overflow: hidden; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .tema-card:nth-child(4), .tema-card:nth-child(5), .tema-card:nth-child(6) { border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .tema-card:nth-child(3n+1) { border-left: 1px solid rgba(255,255,255,0.08); }
+        .tema-card::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 100%; background: rgba(42, 107, 107, 0.15); transition: width 0.6s ease; z-index: 0; }
+        .tema-card:hover::before { width: 100%; }
+        .tema-card:hover { border-color: rgba(42, 107, 107, 0.3); }
+        .tema-content { position: relative; z-index: 1; }
+        .tema-icon { font-family: 'Instrument Serif', serif; font-size: 4rem; font-style: italic; color: var(--ottanio); opacity: 0.3; line-height: 1; margin-bottom: 1.5rem; transition: opacity 0.4s ease; }
+        .tema-card:hover .tema-icon { opacity: 0.6; }
+        .tema-title { font-family: 'Instrument Serif', serif; font-size: 1.75rem; margin-bottom: 1rem; }
+        .tema-desc { font-size: 0.95rem; line-height: 1.8; opacity: 0.6; }
+
+        .formati { padding: 10rem 3rem; background: var(--bianco); }
+        .formati-header { max-width: 1400px; margin: 0 auto 6rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; }
+        .formati-header h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; }
+        .formati-header h2 em { font-style: italic; color: var(--ottanio); }
+        .formati-header p { font-size: 1rem; line-height: 1.8; color: var(--grigio); }
+        .formati-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; max-width: 1400px; margin: 0 auto; }
+        .formato { padding: 4rem 2rem; border: 1px solid var(--grigio-chiaro); border-right: none; text-align: center; position: relative; overflow: hidden; transition: all 0.5s ease; }
+        .formato:last-child { border-right: 1px solid var(--grigio-chiaro); }
+        .formato::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 0; background: var(--nero); transition: height 0.5s ease; z-index: 0; }
+        .formato:hover::before { height: 100%; }
+        .formato:hover { color: var(--bianco); border-color: var(--nero); }
+        .formato-content { position: relative; z-index: 1; }
+        .formato-num { font-family: 'Instrument Serif', serif; font-size: 6rem; font-style: italic; line-height: 1; opacity: 0.08; margin-bottom: -1rem; transition: opacity 0.4s ease; }
+        .formato:hover .formato-num { opacity: 0.2; color: var(--ottanio); }
+        .formato-title { font-family: 'Instrument Serif', serif; font-size: 1.75rem; margin-bottom: 0.75rem; }
+        .formato-desc { font-size: 0.9rem; opacity: 0.6; line-height: 1.6; }
+
+        .clienti { padding: 10rem 3rem; background: #fafafa; }
+        .clienti-header { text-align: center; max-width: 800px; margin: 0 auto 6rem; }
+        .clienti-header h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; margin-bottom: 1rem; }
+        .clienti-header h2 em { font-style: italic; color: var(--ottanio); }
+        .clienti-header p { font-size: 1rem; color: var(--grigio); }
+        .clienti-container { max-width: 1400px; margin: 0 auto; }
+        .clienti-section { margin-bottom: 4rem; }
+        .clienti-section:last-child { margin-bottom: 0; }
+        .clienti-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--grigio-chiaro); }
+        .clienti-section-title { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ottanio); }
+        .clienti-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .cliente { padding: 1rem 1.5rem; border: 1px solid var(--grigio-chiaro); background: var(--bianco); font-size: 0.9rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .cliente::before { content: ''; position: absolute; left: 0; top: 0; width: 3px; height: 0; background: var(--ottanio); transition: height 0.3s ease; }
+        .cliente:hover::before { height: 100%; }
+        .cliente:hover { border-color: var(--ottanio); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        .universita { padding: 10rem 3rem; background: var(--nero); color: var(--bianco); }
+        .universita-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; max-width: 1400px; margin: 0 auto; align-items: start; }
+        .universita-intro h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; margin-bottom: 1.5rem; }
+        .universita-intro h2 em { font-style: italic; color: var(--ottanio); }
+        .universita-intro p { font-size: 1rem; line-height: 1.9; opacity: 0.7; margin-bottom: 1rem; }
+        .universita-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .uni-item { padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); transition: all 0.3s ease; }
+        .uni-item:hover { padding-left: 1rem; border-color: var(--ottanio); }
+        .uni-name { font-size: 1rem; }
+
+        .cta { padding: 12rem 3rem; background: linear-gradient(135deg, var(--nero) 0%, #1a1a1a 100%); text-align: center; position: relative; overflow: hidden; }
+        .cta-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 30% 50%, rgba(42, 107, 107, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 70% 50%, rgba(42, 107, 107, 0.1) 0%, transparent 40%); }
+        .cta-content { position: relative; z-index: 1; }
+        .cta-title { font-family: 'Instrument Serif', serif; font-size: clamp(3rem, 7vw, 5rem); font-weight: 400; color: var(--bianco); margin-bottom: 1.5rem; }
+        .cta-title em { font-style: italic; color: var(--ottanio); }
+        .cta-subtitle { font-size: 1.1rem; color: rgba(255,255,255,0.6); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .cta-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+        .cta-btn { padding: 1.25rem 3rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.3); color: var(--bianco); transition: all 0.4s ease; position: relative; overflow: hidden; }
+        .cta-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--ottanio); transition: left 0.4s ease; z-index: -1; }
+        .cta-btn:hover::before { left: 0; }
+        .cta-btn:hover { border-color: var(--ottanio); }
+        .cta-btn.primary { background: var(--ottanio); border-color: var(--ottanio); }
+        .cta-btn.primary::before { background: var(--bianco); }
+        .cta-btn.primary:hover { color: var(--nero); }
+        .cta-contact { margin-top: 4rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        .cta-contact-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 1rem; }
+        .cta-contact-email { font-family: 'Instrument Serif', serif; font-size: 1.5rem; font-style: italic; color: var(--ottanio); }
+
+        footer { padding: 4rem 3rem; background: var(--bianco); border-top: 1px solid var(--grigio-chiaro); }
+        .footer-nav { display: flex; justify-content: space-between; align-items: center; }
+        .footer-back { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grigio); display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s ease; }
+        .footer-back:hover { color: var(--nero); }
+        .footer-back::before { content: '←'; }
+        .footer-links { display: flex; gap: 3rem; }
+        .footer-links a { font-size: 0.85rem; color: var(--grigio); transition: color 0.3s ease; }
+        .footer-links a:hover { color: var(--nero); }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1200px) {
+            .temi-grid { grid-template-columns: repeat(2, 1fr); }
+            .tema-card:nth-child(2n) { border-right: 1px solid rgba(255,255,255,0.08); }
+            .formati-grid { grid-template-columns: repeat(2, 1fr); }
+            .formato:nth-child(2) { border-right: 1px solid var(--grigio-chiaro); }
+        }
+        @media (max-width: 900px) {
+            header { padding: 1rem 1.5rem; }
+            nav { display: none; }
+            .lang-switch { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu { display: flex; }
+            .cursor { display: none; }
+            .intro-grid { grid-template-columns: 1fr; gap: 4rem; }
+            .intro-visual { display: none; }
+            .formati-header { grid-template-columns: 1fr; gap: 2rem; }
+            .universita-grid { grid-template-columns: 1fr; gap: 4rem; }
+            .universita-list { grid-template-columns: 1fr; }
+            footer { padding: 2rem 1.5rem; }
+            .footer-nav { flex-direction: column; gap: 2rem; }
+        }
+        @media (max-width: 600px) {
+            .temi-grid { grid-template-columns: 1fr; }
+            .tema-card { border-right: 1px solid rgba(255,255,255,0.08) !important; }
+            .formati-grid { grid-template-columns: 1fr; }
+            .formato { border-right: 1px solid var(--grigio-chiaro) !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor" id="cursor"></div>
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./il-progetto-en.html">The Project</a>
+            <a href="./andrea-colamedici/en.html">Colamedici</a>
+            <a href="./maura-gancitano/en.html">Gancitano</a>
+            <a href="./edizioni-en.html">Publishing</a>
+            <a href="./librerie-en.html">Bookstores</a>
+            <a href="./formazione-en.html">Education</a>
+            <a href="./eventi-festival-en.html">Events</a>
+            <a href="./contatti/en.html">Contact</a>
+        </nav>
+        <div class="lang-switch">
+            <a href="./formazione.html">IT</a>
+            <a href="./formazione-en.html" class="active">EN</a>
+        </div>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </header>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="./il-progetto-en.html">The Project</a>
+        <a href="./andrea-colamedici/en.html">Colamedici</a>
+        <a href="./maura-gancitano/en.html">Gancitano</a>
+        <a href="./edizioni-en.html">Publishing</a>
+        <a href="./librerie-en.html">Bookstores</a>
+        <a href="./formazione-en.html">Education</a>
+        <a href="./eventi-festival-en.html">Events</a>
+        <a href="./contatti/en.html">Contact</a>
+    </div>
+    <main>
+        <section class="hero">
+            <div class="hero-bg"><div class="hero-bg-gradient"></div><div class="hero-bg-gradient"></div></div>
+            <div class="hero-content">
+                <span class="hero-label">For companies, institutions, universities</span>
+                <h1 class="hero-title">Philosophy as a <em>tool</em></h1>
+                <p class="hero-desc">Training programs that transform critical thinking into organizational competence. For those who want to go beyond prepackaged solutions, constructing their own questions. And their own answers.</p>
+            </div>
+        </section>
+
+        <section class="intro">
+            <div class="intro-grid">
+                <div class="intro-content reveal">
+                    <h2 class="intro-title">Thinking together, <em>transforming</em> together</h2>
+                    <p class="intro-text">Tlon's training approach is built on the idea that philosophy is not abstract knowledge but a concrete tool for navigating complexity. We work with companies, institutions, and universities to build customized programs that address the great questions of our time: the meaning of work, digital transformation, conscious leadership, inclusion.</p>
+                    <p class="intro-text">We develop methods for constructing one's own questions. Our approach mixes different registers, creating educational experiences that last.</p>
+                    <div class="intro-highlight">
+                        <p>"Philosophy is the key to preserving the best of the knowledge behind us and bringing to light the limits and aspirations of the future that already surrounds us."</p>
+                    </div>
+                </div>
+                <div class="intro-visual reveal">
+                    <div class="intro-visual-circle"></div>
+                    <div class="intro-visual-circle"></div>
+                    <div class="intro-visual-circle"></div>
+                    <span class="intro-visual-text">φ</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="temi">
+            <div class="temi-bg">Philosophy</div>
+            <div class="temi-header reveal">
+                <h2>Topics we <em>address</em></h2>
+                <p>Each program is custom-built, but these are the territories we most often explore.</p>
+            </div>
+            <div class="temi-grid">
+                <div class="tema-card reveal">
+                    <div class="tema-content">
+                        <div class="tema-icon">α</div>
+                        <h3 class="tema-title">AI and digital transformation</h3>
+                        <p class="tema-desc">Understanding artificial intelligence beyond technology. Prompt thinking, AI ethics, social and organizational impact. From Ipnocrazia to innovation labs.</p>
+                    </div>
+                </div>
+                <div class="tema-card reveal">
+                    <div class="tema-content">
+                        <div class="tema-icon">β</div>
+                        <h3 class="tema-title">Philosophy and critical thinking</h3>
+                        <p class="tema-desc">Tools for navigating complexity, asking the right questions, building vision. From the Socratic method to contemporary philosophy. The heart of Tlon's identity.</p>
+                    </div>
+                </div>
+                <div class="tema-card reveal">
+                    <div class="tema-content">
+                        <div class="tema-icon">γ</div>
+                        <h3 class="tema-title">Education and training</h3>
+                        <p class="tema-desc">Pedagogy, teaching methods, training trainers. How knowledge is transmitted, how critical thinking is built in new generations.</p>
+                    </div>
+                </div>
+                <div class="tema-card reveal">
+                    <div class="tema-content">
+                        <div class="tema-icon">δ</div>
+                        <h3 class="tema-title">Diversity & Inclusion</h3>
+                        <p class="tema-desc">Programs on gender, inclusion, language. Training that starts from philosophy to arrive at daily practice.</p>
+                    </div>
+                </div>
+                <div class="tema-card reveal">
+                    <div class="tema-content">
+                        <div class="tema-icon">ε</div>
+                        <h3 class="tema-title">Meaning of work</h3>
+                        <p class="tema-desc">Why do we work? How do we work? Programs to rethink company culture, motivation, purpose. From the book "Ma chi me lo fa fare?" to daily practice.</p>
+                    </div>
+                </div>
+                <div class="tema-card reveal">
+                    <div class="tema-content">
+                        <div class="tema-icon">ζ</div>
+                        <h3 class="tema-title">Communication and media</h3>
+                        <p class="tema-desc">Storytelling, social media, knowledge sharing. How to communicate complex ideas in accessible ways without trivializing them.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="formati">
+            <div class="formati-header reveal">
+                <div><h2>The <em>formats</em></h2></div>
+                <p>Each format responds to different needs. From single speeches to structured programs, from lectures to interactive workshops.</p>
+            </div>
+            <div class="formati-grid">
+                <div class="formato reveal"><div class="formato-content"><div class="formato-num">01</div><h3 class="formato-title">Speech</h3><p class="formato-desc">Single presentations for events, conventions, kick-offs. Inspiration and vision.</p></div></div>
+                <div class="formato reveal"><div class="formato-content"><div class="formato-num">02</div><h3 class="formato-title">Workshop</h3><p class="formato-desc">Interactive sessions for small groups. Practice and exchange.</p></div></div>
+                <div class="formato reveal"><div class="formato-content"><div class="formato-num">03</div><h3 class="formato-title">Programs</h3><p class="formato-desc">Structured courses over multiple sessions. Deep transformation.</p></div></div>
+                <div class="formato reveal"><div class="formato-content"><div class="formato-num">04</div><h3 class="formato-title">Teaching</h3><p class="formato-desc">Ongoing academic collaborations. University courses, masters, academies.</p></div></div>
+            </div>
+        </section>
+
+        <section class="clienti">
+            <div class="clienti-header reveal">
+                <h2>Who has chosen <em>Tlon</em></h2>
+                <p>Some of the organizations we have worked with.</p>
+            </div>
+            <div class="clienti-container">
+                <div class="clienti-section reveal">
+                    <div class="clienti-section-header"><h3 class="clienti-section-title">Corporate and consulting</h3></div>
+                    <div class="clienti-grid">
+                        <div class="cliente">Ambrosetti/TEHA</div><div class="cliente">Google</div><div class="cliente">Amazon / Audible</div><div class="cliente">Ferrero</div><div class="cliente">Sanofi</div><div class="cliente">WINDTRE</div><div class="cliente">Veralab</div><div class="cliente">Lamborghini</div><div class="cliente">Ducati</div><div class="cliente">Mercedes</div><div class="cliente">Bloom</div><div class="cliente">Angelini</div><div class="cliente">Clivet</div><div class="cliente">Dassault</div><div class="cliente">eFM</div><div class="cliente">Atlantis Company</div><div class="cliente">National Geographic</div><div class="cliente">Depro</div>
+                    </div>
+                </div>
+                <div class="clienti-section reveal">
+                    <div class="clienti-section-header"><h3 class="clienti-section-title">Institutions and third sector</h3></div>
+                    <div class="clienti-grid">
+                        <div class="cliente">Italian Parliament</div><div class="cliente">European Parliament</div><div class="cliente">Save the Children</div><div class="cliente">Oxfam</div><div class="cliente">UNHCR</div><div class="cliente">WeWorld</div><div class="cliente">Valore D</div><div class="cliente">CGIL</div><div class="cliente">CISL</div><div class="cliente">Legacoop</div><div class="cliente">CNA</div><div class="cliente">Confindustria</div><div class="cliente">AVIS</div><div class="cliente">Fondazione Cassa di Risparmio di Cuneo</div><div class="cliente">Consorzio Dafne</div><div class="cliente">National Consumer Union</div><div class="cliente">Cresco</div>
+                    </div>
+                </div>
+                <div class="clienti-section reveal">
+                    <div class="clienti-section-header"><h3 class="clienti-section-title">Banks and insurance</h3></div>
+                    <div class="clienti-grid">
+                        <div class="cliente">Generali</div><div class="cliente">UniCredit</div><div class="cliente">Intesa Sanpaolo</div><div class="cliente">Reale Mutua</div><div class="cliente">BPER</div><div class="cliente">BNL</div><div class="cliente">BNP Paribas</div><div class="cliente">Findomestic</div><div class="cliente">Banca Etica</div>
+                    </div>
+                </div>
+                <div class="clienti-section reveal">
+                    <div class="clienti-section-header"><h3 class="clienti-section-title">Education and schools</h3></div>
+                    <div class="clienti-grid">
+                        <div class="cliente">Learning Institute</div><div class="cliente">IMUN</div><div class="cliente">AFAM</div><div class="cliente">Treccani Academy</div><div class="cliente">Complexity Institute</div><div class="cliente">Italian Pedagogical Association</div><div class="cliente">Italian Society for Didactic Research</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="universita">
+            <div class="universita-grid">
+                <div class="universita-intro reveal">
+                    <h2>The <em>academic</em> world</h2>
+                    <p>We have collaborated with or given lectures at:</p>
+                </div>
+                <div class="universita-list reveal">
+                    <div class="uni-item"><span class="uni-name">IED – European Institute of Design</span></div>
+                    <div class="uni-item"><span class="uni-name">IULM Milan</span></div>
+                    <div class="uni-item"><span class="uni-name">Sapienza University of Rome</span></div>
+                    <div class="uni-item"><span class="uni-name">Vita-Salute San Raffaele University</span></div>
+                    <div class="uni-item"><span class="uni-name">LUISS</span></div>
+                    <div class="uni-item"><span class="uni-name">Politecnico di Milano</span></div>
+                    <div class="uni-item"><span class="uni-name">Politecnico di Torino</span></div>
+                    <div class="uni-item"><span class="uni-name">Università Cattolica</span></div>
+                    <div class="uni-item"><span class="uni-name">Bicocca</span></div>
+                    <div class="uni-item"><span class="uni-name">Roma Tre</span></div>
+                    <div class="uni-item"><span class="uni-name">University of Bologna</span></div>
+                    <div class="uni-item"><span class="uni-name">University of Turin</span></div>
+                    <div class="uni-item"><span class="uni-name">Federico II Naples</span></div>
+                    <div class="uni-item"><span class="uni-name">University of Verona</span></div>
+                    <div class="uni-item"><span class="uni-name">University of Trento</span></div>
+                    <div class="uni-item"><span class="uni-name">University of Perugia</span></div>
+                    <div class="uni-item"><span class="uni-name">University of Foggia</span></div>
+                    <div class="uni-item"><span class="uni-name">University of Udine</span></div>
+                    <div class="uni-item"><span class="uni-name">University of Messina</span></div>
+                    <div class="uni-item"><span class="uni-name">University of L'Aquila</span></div>
+                    <div class="uni-item"><span class="uni-name">University of Bari</span></div>
+                    <div class="uni-item"><span class="uni-name">University of Oristano</span></div>
+                    <div class="uni-item"><span class="uni-name">Argentine Universities (various)</span></div>
+                    <div class="uni-item"><span class="uni-name">Master in Journalism Bologna</span></div>
+                    <div class="uni-item"><span class="uni-name">Treccani Academy</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="cta-bg"></div>
+            <div class="cta-content">
+                <h2 class="cta-title">Let's build something <em>together</em></h2>
+                <p class="cta-subtitle">Tell us about your project.</p>
+                <div class="cta-buttons">
+                    <a href="mailto:eventi@tlon.it" class="cta-btn primary">Contact Us</a>
+                    <a href="./il-progetto-en.html" class="cta-btn">Discover Tlon</a>
+                    <a href="./contatti/en.html" class="cta-btn">Contact</a>
+                </div>
+                <div class="cta-contact">
+                    <p class="cta-contact-label">For training inquiries</p>
+                    <a href="mailto:eventi@tlon.it" class="cta-contact-email">eventi@tlon.it</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-nav">
+            <a href="./" class="footer-back">Home</a>
+            <div class="footer-links">
+                <a href="./il-progetto-en.html">The Project</a>
+                <a href="./eventi-festival-en.html">Events</a>
+                <a href="./contatti/en.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        const hamburger=document.getElementById('hamburger'),mobileMenu=document.getElementById('mobileMenu'),header=document.querySelector('header');
+        hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');mobileMenu.classList.toggle('active');header.classList.toggle('menu-open');document.body.style.overflow=mobileMenu.classList.contains('active')?'hidden':'';});
+        mobileMenu.querySelectorAll('a').forEach(link=>{link.addEventListener('click',()=>{hamburger.classList.remove('active');mobileMenu.classList.remove('active');header.classList.remove('menu-open');document.body.style.overflow='';});});
+        const cursor=document.getElementById('cursor');let mouseX=0,mouseY=0,cursorX=0,cursorY=0;
+        document.addEventListener('mousemove',(e)=>{mouseX=e.clientX;mouseY=e.clientY;});
+        function animateCursor(){cursorX+=(mouseX-cursorX)*0.15;cursorY+=(mouseY-cursorY)*0.15;cursor.style.left=cursorX-6+'px';cursor.style.top=cursorY-6+'px';requestAnimationFrame(animateCursor);}animateCursor();
+        document.querySelectorAll('a,button,.cliente,.formato,.tema-card').forEach(el=>{el.addEventListener('mouseenter',()=>cursor.classList.add('hover'));el.addEventListener('mouseleave',()=>cursor.classList.remove('hover'));});
+        const reveals=document.querySelectorAll('.reveal');const revealObserver=new IntersectionObserver((entries)=>{entries.forEach((entry,index)=>{if(entry.isIntersecting){setTimeout(()=>{entry.target.classList.add('visible');},index*50);}});},{threshold:0.15,rootMargin:'-50px'});reveals.forEach(el=>revealObserver.observe(el));
+        window.addEventListener('scroll',()=>{const scrolled=window.pageYOffset;const hero=document.querySelector('.hero');if(hero&&scrolled<window.innerHeight){const gradients=hero.querySelectorAll('.hero-bg-gradient');gradients.forEach((g,i)=>{g.style.transform=`translate(${scrolled*0.1*(i+1)}px,${scrolled*0.2}px)`;});}});
+    </script>
+</body>
+</html>
