@@ -853,7 +853,6 @@
             margin-bottom: 3rem;
         }
 
-        /* FORM STYLES */
         .iscrizione-form {
             display: flex;
             flex-direction: column;
@@ -1576,7 +1575,7 @@
             }
         });
 
-        // FORM SUBMISSION - usando GET con nuovo URL
+        // FORM SUBMISSION - usa immagine nascosta per aggirare CORS
         const form = document.getElementById('cimiterologia-form');
         const successMessage = document.getElementById('form-success');
         const errorMessage = document.getElementById('form-error');
@@ -1585,7 +1584,6 @@
             e.preventDefault();
             
             const submitBtn = form.querySelector('.submit-btn');
-            const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<span>Invio in corso...</span>';
             submitBtn.disabled = true;
 
@@ -1595,16 +1593,13 @@
 
             const url = `https://script.google.com/macros/s/AKfycbzJh4nIVqjMLUl-a4_Pp0Qqf95iZR1XyxWEQzgDA4WQbraEGhonHCgF7o8sEL3MOTdShg/exec?nome=${nome}&cognome=${cognome}&email=${email}`;
 
-            fetch(url, { mode: 'no-cors' })
-                .then(() => {
-                    form.style.display = 'none';
-                    successMessage.style.display = 'block';
-                })
-                .catch(() => {
-                    errorMessage.style.display = 'block';
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                });
+            // Usa immagine nascosta per aggirare CORS
+            const img = new Image();
+            img.onload = img.onerror = function() {
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+            };
+            img.src = url;
         });
     </script>
 
