@@ -45,25 +45,18 @@
             text-decoration: none;
         }
 
-        /* HEADER */
         header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1002;
+            z-index: 100;
             padding: 1.5rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: var(--bianco);
             border-bottom: 1px solid var(--grigio-chiaro);
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-
-        header.menu-open {
-            background: var(--nero);
-            border-bottom-color: var(--nero);
         }
 
         .logo {
@@ -74,16 +67,12 @@
         .logo img {
             height: 28px;
             width: auto;
-            transition: filter 0.3s ease;
-        }
-
-        header.menu-open .logo img {
-            filter: invert(1);
         }
 
         nav {
             display: flex;
             gap: 3rem;
+            align-items: center;
         }
 
         nav a {
@@ -100,97 +89,33 @@
             opacity: 1;
         }
 
-        /* HAMBURGER */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
+        .lang-switch {
+            display: flex;
+            gap: 0.75rem;
             align-items: center;
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            position: relative;
-            z-index: 1003;
+            margin-left: 2rem;
+            padding-left: 2rem;
+            border-left: 1px solid rgba(0,0,0,0.15);
         }
 
-        .hamburger span {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: var(--nero);
-            margin: 3px 0;
-            transition: all 0.3s ease;
+        .lang-switch a {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+            color: var(--nero);
         }
 
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-
-        .hamburger.active span {
-            background: var(--bianco);
-        }
-
-        /* MOBILE MENU */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--nero);
-            z-index: 1000;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-
-        .mobile-menu.active {
+        .lang-switch a:hover {
             opacity: 1;
-            visibility: visible;
         }
 
-        .mobile-menu a {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2rem;
-            font-style: italic;
-            color: var(--bianco);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
-        }
-
-        .mobile-menu.active a {
+        .lang-switch a.active {
             opacity: 1;
-            transform: translateY(0);
         }
 
-        .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
-        .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
-        .mobile-menu a:nth-child(3) { transition-delay: 0.2s; }
-        .mobile-menu a:nth-child(4) { transition-delay: 0.25s; }
-        .mobile-menu a:nth-child(5) { transition-delay: 0.3s; }
-        .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
-        .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
-        .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
-
-        .mobile-menu a:hover {
-            color: var(--ottanio);
-        }
-
-        /* HERO */
         .hero {
             min-height: 70vh;
             display: flex;
@@ -273,7 +198,6 @@
             }
         }
 
-        /* WAVE DECORATION */
         .wave-container {
             position: absolute;
             bottom: 0;
@@ -304,7 +228,6 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* SCUOLA DI FILOSOFIE - SEZIONE GRANDE */
         .scuola {
             padding: 10rem 3rem;
             background: var(--nero);
@@ -505,7 +428,6 @@
             height: 20px;
         }
 
-        /* WAVEFORM DECORATION */
         .waveform-container {
             display: flex;
             justify-content: center;
@@ -547,7 +469,6 @@
             50% { transform: scaleY(0.5); opacity: 1; }
         }
 
-        /* PODCAST GRID */
         .podcasts {
             padding: 8rem 3rem;
             background: var(--bianco);
@@ -629,7 +550,7 @@
         }
 
         .podcast-platform::before {
-            content: '●';
+            content: '◉';
             font-size: 0.5rem;
         }
 
@@ -681,7 +602,6 @@
             transform: translateX(4px);
         }
 
-        /* YOUTUBE */
         .youtube {
             padding: 8rem 3rem;
             background: #f8f8f8;
@@ -744,7 +664,6 @@
             height: 20px;
         }
 
-        /* CTA */
         .cta {
             padding: 10rem 3rem;
             background: var(--nero);
@@ -830,7 +749,6 @@
             color: var(--nero);
         }
 
-        /* FOOTER */
         footer {
             padding: 4rem 3rem;
             background: var(--nero);
@@ -878,7 +796,6 @@
             color: var(--bianco);
         }
 
-        /* REVEAL */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
@@ -890,7 +807,6 @@
             transform: translateY(0);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 1000px) {
             .scuola-grid {
                 grid-template-columns: 1fr;
@@ -901,7 +817,7 @@
             }
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 768px) {
             header {
                 padding: 1rem 1.5rem;
             }
@@ -910,16 +826,6 @@
                 display: none;
             }
 
-            .hamburger {
-                display: flex;
-            }
-
-            .mobile-menu {
-                display: flex;
-            }
-        }
-
-        @media (max-width: 768px) {
             .hero,
             .scuola,
             .podcasts,
@@ -977,28 +883,15 @@
             <a href="./librerie.html">Librerie</a>
             <a href="./formazione.html">Formazione</a>
             <a href="./eventi-festival.html">Eventi</a>
-            <a href="./contatti/">Contatti</a>
+            <a href="./contatti.html">Contatti</a>
+            <div class="lang-switch">
+                <a href="./podcast.html" class="active">IT</a>
+                <a href="./podcast-en.html">EN</a>
+            </div>
         </nav>
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
     </header>
 
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="./il-progetto.html">Il Progetto</a>
-        <a href="./andrea-colamedici/">Colamedici</a>
-        <a href="./maura-gancitano/">Gancitano</a>
-        <a href="./edizioni.html">Edizioni</a>
-        <a href="./librerie.html">Librerie</a>
-        <a href="./formazione.html">Formazione</a>
-        <a href="./eventi-festival.html">Eventi</a>
-        <a href="./contatti/">Contatti</a>
-    </div>
-
     <main>
-        <!-- HERO -->
         <section class="hero">
             <div class="hero-bg"></div>
             <div class="hero-content">
@@ -1012,7 +905,6 @@
             </div>
         </section>
 
-        <!-- SCUOLA DI FILOSOFIE - SEZIONE PRINCIPALE -->
         <section class="scuola">
             <div class="scuola-bg">
                 <span class="scuola-bg-text">Filosofie</span>
@@ -1068,7 +960,6 @@
             </div>
         </section>
 
-        <!-- ALTRI PODCAST -->
         <section class="podcasts">
             <div class="podcasts-header reveal">
                 <h2>I nostri <em>podcast</em></h2>
@@ -1139,7 +1030,6 @@
             </div>
         </section>
 
-        <!-- YOUTUBE -->
         <section class="youtube">
             <div class="youtube-content reveal">
                 <span class="youtube-label">Video</span>
@@ -1154,7 +1044,6 @@
             </div>
         </section>
 
-        <!-- CTA -->
         <section class="cta">
             <div class="cta-glow"></div>
             <div class="cta-glow"></div>
@@ -1182,28 +1071,6 @@
     </footer>
 
     <script>
-        // HAMBURGER MENU
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const header = document.querySelector('header');
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-            header.classList.toggle('menu-open');
-            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-        });
-
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                header.classList.remove('menu-open');
-                document.body.style.overflow = '';
-            });
-        });
-
-        // Scroll reveal
         const reveals = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
@@ -1217,7 +1084,6 @@
 
         reveals.forEach(el => observer.observe(el));
 
-        // Parallax hero
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
             const hero = document.querySelector('.hero');
