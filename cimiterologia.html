@@ -853,9 +853,76 @@
             margin-bottom: 3rem;
         }
 
+        /* FORM STYLES */
+        .iscrizione-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-field {
+            position: relative;
+        }
+
+        .form-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-field input {
+            width: 100%;
+            padding: 1.25rem 1rem 0.75rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: rgba(230, 220, 200, 0.95);
+            background: rgba(42, 107, 107, 0.08);
+            border: 1px solid rgba(200, 180, 150, 0.15);
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .form-field input:focus {
+            border-color: var(--ottanio);
+            background: rgba(42, 107, 107, 0.12);
+        }
+
+        .form-field label {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+            color: rgba(180, 170, 150, 0.5);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-field input:focus + label,
+        .form-field input:not(:placeholder-shown) + label {
+            top: 0.6rem;
+            transform: translateY(0);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+        }
+
+        .submit-btn {
+            margin-top: 1rem;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
         .cta-btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 1rem;
             padding: 1.5rem 3rem;
             font-size: 0.8rem;
@@ -890,6 +957,45 @@
         .cta-btn:hover {
             border-color: var(--ottanio);
             color: var(--bianco);
+        }
+
+        .cta-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .cta-btn:disabled:hover::before {
+            transform: translateX(-100%);
+        }
+
+        .form-message {
+            margin-top: 2rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .form-message .success-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--ottanio);
+            border-radius: 50%;
+            font-size: 1.5rem;
+            color: var(--ottanio);
+            margin-bottom: 1rem;
+        }
+
+        .form-message p {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: rgba(220, 210, 190, 0.9);
+        }
+
+        .form-message.error p {
+            color: #c47070;
         }
 
         footer {
@@ -1034,6 +1140,9 @@
             }
             .cta-section {
                 padding: 4rem 1.5rem 8rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
             }
             footer {
                 padding: 3rem 1.5rem 2rem;
@@ -1293,17 +1402,43 @@
             </div>
         </section>
 
-        <section class="cta-section">
+        <section class="cta-section" id="iscrizione">
             <div class="cta-container">
                 <span class="cta-label">Partecipa</span>
-                <h2 class="cta-title">Prossimi <em>incontri</em></h2>
+                <h2 class="cta-title">Iscriviti al <em>ciclo completo</em></h2>
                 <p class="cta-desc">Gli incontri di Cimiterologia si svolgono la domenica mattina e si esauriscono spesso in poche ore dall'apertura delle iscrizioni.</p>
-                <a href="https://tlon.it/evento/memento/" target="_blank" class="cta-btn">
-                    <span>Prenota il tuo posto</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
+                
+                <form id="cimiterologia-form" class="iscrizione-form">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <input type="text" id="nome" name="nome" required placeholder=" ">
+                            <label for="nome">Nome</label>
+                        </div>
+                        <div class="form-field">
+                            <input type="text" id="cognome" name="cognome" required placeholder=" ">
+                            <label for="cognome">Cognome</label>
+                        </div>
+                    </div>
+                    <div class="form-field full">
+                        <input type="email" id="email" name="email" required placeholder=" ">
+                        <label for="email">Email</label>
+                    </div>
+                    <button type="submit" class="cta-btn submit-btn">
+                        <span>Iscriviti</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </form>
+                
+                <div id="form-success" class="form-message" style="display: none;">
+                    <span class="success-icon">✓</span>
+                    <p>Iscrizione completata. Ti contatteremo presto.</p>
+                </div>
+                
+                <div id="form-error" class="form-message error" style="display: none;">
+                    <p>Si è verificato un errore. Riprova.</p>
+                </div>
             </div>
         </section>
     </main>
@@ -1381,7 +1516,7 @@
         }
         animateCursor();
 
-        document.querySelectorAll('a, button, .detail-card, .illustre-item, .cta-btn').forEach(el => {
+        document.querySelectorAll('a, button, .detail-card, .illustre-item, .cta-btn, input').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
@@ -1438,6 +1573,45 @@
             const scrolled = window.pageYOffset;
             if (atmosphere) {
                 atmosphere.style.transform = `translateY(${scrolled * 0.3}px)`;
+            }
+        });
+
+        // FORM SUBMISSION
+        const form = document.getElementById('cimiterologia-form');
+        const successMessage = document.getElementById('form-success');
+        const errorMessage = document.getElementById('form-error');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = form.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span>Invio in corso...</span>';
+            submitBtn.disabled = true;
+
+            const data = {
+                nome: document.getElementById('nome').value,
+                cognome: document.getElementById('cognome').value,
+                email: document.getElementById('email').value
+            };
+
+            try {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbx8posLbDKYclW8c13EkvP2Ckt-KTlngnYeE2Oz9PXGOql-HwEUe7toyngXltoKTHXL3Q/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+            } catch (error) {
+                errorMessage.style.display = 'block';
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
         });
     </script>
