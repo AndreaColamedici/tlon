@@ -50,7 +50,6 @@
             text-decoration: none;
         }
 
-        /* CURSOR */
         .cursor {
             width: 20px;
             height: 20px;
@@ -69,7 +68,6 @@
             opacity: 0.3;
         }
 
-        /* HEADER */
         header {
             position: fixed;
             top: 0;
@@ -112,6 +110,7 @@
         nav {
             display: flex;
             gap: 3rem;
+            align-items: center;
         }
 
         nav a {
@@ -128,7 +127,33 @@
             opacity: 1;
         }
 
-        /* HAMBURGER */
+        .lang-switch {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            margin-left: 2rem;
+            padding-left: 2rem;
+            border-left: 1px solid rgba(230, 220, 200, 0.3);
+        }
+
+        .lang-switch a {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+            color: var(--seppia-chiaro);
+        }
+
+        .lang-switch a:hover {
+            opacity: 1;
+        }
+
+        .lang-switch a.active {
+            opacity: 1;
+        }
+
         .hamburger {
             display: none;
             flex-direction: column;
@@ -165,7 +190,6 @@
             transform: rotate(-45deg) translate(7px, -6px);
         }
 
-        /* MOBILE MENU */
         .mobile-menu {
             display: none;
             position: fixed;
@@ -212,12 +236,31 @@
         .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
         .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
         .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
+        .mobile-menu a:nth-child(9) { transition-delay: 0.5s; }
 
         .mobile-menu a:hover {
             color: var(--ottanio);
         }
 
-        /* ATMOSPHERIC BACKGROUND */
+        .mobile-menu .mobile-lang-switch {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .mobile-menu .mobile-lang-switch a {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-style: normal;
+            letter-spacing: 0.2em;
+        }
+
+        .mobile-menu .mobile-lang-switch a.active {
+            color: var(--ottanio);
+        }
+
         .atmosphere {
             position: fixed;
             top: 0;
@@ -229,7 +272,6 @@
             z-index: 0;
         }
 
-        /* Cypresses */
         .cypress {
             position: absolute;
             bottom: 0;
@@ -280,7 +322,6 @@
             75% { transform: rotate(-0.8deg); }
         }
 
-        /* Piramide Cestia */
         .piramide {
             position: absolute;
             bottom: 8%;
@@ -295,29 +336,6 @@
             filter: blur(3px);
         }
 
-        .piramide::before {
-            content: '';
-            position: absolute;
-            bottom: -300px;
-            left: -180px;
-            width: 360px;
-            height: 300px;
-            background: linear-gradient(135deg, rgba(200, 190, 170, 0.04) 0%, rgba(150, 140, 120, 0.02) 100%);
-            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-        }
-
-        .piramide::after {
-            content: '';
-            position: absolute;
-            bottom: -300px;
-            left: -90px;
-            width: 180px;
-            height: 300px;
-            background: linear-gradient(90deg, rgba(220, 210, 190, 0.03) 0%, transparent 100%);
-            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-        }
-
-        /* Mist layers */
         .mist {
             position: absolute;
             width: 300%;
@@ -337,7 +355,6 @@
             100% { transform: translateX(0%); }
         }
 
-        /* Dust particles */
         .dust-container {
             position: absolute;
             top: 0;
@@ -362,7 +379,6 @@
             75% { opacity: 0.6; }
         }
 
-        /* Falling leaves */
         .leaves-container {
             position: absolute;
             top: 0;
@@ -391,7 +407,6 @@
             100% { opacity: 0; transform: translateY(100vh) rotate(1080deg) translateX(150px); }
         }
 
-        /* Candles */
         .candles-container {
             position: absolute;
             bottom: 12%;
@@ -411,18 +426,6 @@
             box-shadow: 0 0 10px rgba(255, 200, 100, 0.1);
         }
 
-        .candle::before {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: -10px;
-            width: 30px;
-            height: 12px;
-            background: rgba(42, 107, 107, 0.2);
-            border-radius: 50%;
-            filter: blur(5px);
-        }
-
         .flame {
             position: absolute;
             top: -25px;
@@ -433,44 +436,20 @@
             background: linear-gradient(180deg, rgba(255, 255, 200, 0.95) 0%, rgba(255, 200, 100, 0.9) 30%, rgba(255, 150, 50, 0.8) 60%, rgba(255, 100, 30, 0.6) 100%);
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
             animation: flameFlicker 0.4s ease-in-out infinite alternate;
-            box-shadow: 0 0 15px rgba(255, 200, 100, 0.6), 0 0 30px rgba(255, 150, 50, 0.4), 0 0 60px rgba(255, 100, 30, 0.2), 0 0 100px rgba(255, 80, 20, 0.1);
+            box-shadow: 0 0 15px rgba(255, 200, 100, 0.6), 0 0 30px rgba(255, 150, 50, 0.4), 0 0 60px rgba(255, 100, 30, 0.2);
         }
-
-        .flame::before {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 12px;
-            background: linear-gradient(180deg, rgba(100, 150, 255, 0.8) 0%, rgba(255, 200, 100, 0.9) 100%);
-            border-radius: 50%;
-            animation: innerFlame 0.3s ease-in-out infinite alternate;
-        }
-
-        .candle-1 .flame { animation-delay: 0s; }
-        .candle-2 .flame { animation-delay: 0.13s; }
-        .candle-3 .flame { animation-delay: 0.27s; }
 
         @keyframes flameFlicker {
             0% { transform: translateX(-50%) scaleY(1) scaleX(1) rotate(-2deg); opacity: 0.9; }
             100% { transform: translateX(-50%) scaleY(1.15) scaleX(0.85) rotate(2deg); opacity: 1; }
         }
 
-        @keyframes innerFlame {
-            0% { opacity: 0.7; transform: translateX(-50%) scaleY(1); }
-            100% { opacity: 1; transform: translateX(-50%) scaleY(1.1); }
-        }
-
-        /* MAIN CONTENT */
         main {
             position: relative;
             z-index: 1;
             padding-top: 100px;
         }
 
-        /* HERO */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -505,10 +484,6 @@
             font-size: 1rem;
             opacity: 0.4;
             animation: crossPulse 4s ease-in-out infinite;
-        }
-
-        .label-cross:last-child {
-            animation-delay: -2s;
         }
 
         @keyframes crossPulse {
@@ -584,7 +559,6 @@
             50% { transform: scaleY(1.2); opacity: 0.8; }
         }
 
-        /* CONTENT SECTION */
         .content-section {
             padding: 8rem 3rem;
             max-width: 1200px;
@@ -626,7 +600,6 @@
             color: rgba(220, 210, 190, 0.9);
         }
 
-        /* Detail Cards */
         .details-sidebar {
             display: flex;
             flex-direction: column;
@@ -709,7 +682,6 @@
             margin-top: 0.25rem;
         }
 
-        /* ILLUSTRI MORTI */
         .illustri-section {
             padding: 10rem 3rem;
             text-align: center;
@@ -720,16 +692,6 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 10%;
-            right: 10%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(200, 180, 150, 0.15), transparent);
-        }
-
-        .illustri-section::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
             left: 10%;
             right: 10%;
             height: 1px;
@@ -769,10 +731,6 @@
             white-space: nowrap;
         }
 
-        .illustre-item:nth-child(odd) .illustre-name { animation-delay: -4s; }
-        .illustre-item:nth-child(3n) .illustre-name { animation-delay: -2s; }
-        .illustre-item:nth-child(5n) .illustre-name { animation-delay: -6s; }
-
         @keyframes nameFloat {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
@@ -802,35 +760,25 @@
             opacity: 1;
         }
 
-        /* Category colors */
         .illustre-item.poeta .illustre-name { color: rgba(150, 190, 150, 0.5); }
         .illustre-item.poeta .illustre-name:hover { color: rgba(180, 230, 180, 0.95); }
-
         .illustre-item.filosofo .illustre-name { color: rgba(190, 150, 150, 0.5); }
         .illustre-item.filosofo .illustre-name:hover { color: rgba(230, 180, 180, 0.95); }
-
         .illustre-item.scrittore .illustre-name { color: rgba(150, 170, 200, 0.5); }
         .illustre-item.scrittore .illustre-name:hover { color: rgba(180, 210, 250, 0.95); }
-
         .illustre-item.politico .illustre-name { color: rgba(200, 180, 150, 0.5); }
         .illustre-item.politico .illustre-name:hover { color: rgba(240, 220, 190, 0.95); }
 
-        /* Featured names */
-        .illustre-item.featured .illustre-name {
-            font-size: 2rem;
-        }
-
+        .illustre-item.featured .illustre-name { font-size: 2rem; }
         .illustre-item.legend .illustre-name {
             font-size: 2.5rem;
             color: rgba(42, 107, 107, 0.6);
         }
-
         .illustre-item.legend .illustre-name:hover {
             color: var(--ottanio);
             text-shadow: 0 0 60px rgba(42, 107, 107, 0.5);
         }
 
-        /* QUOTE SECTION */
         .quote-section {
             padding: 8rem 3rem;
             text-align: center;
@@ -867,7 +815,6 @@
             color: rgba(42, 107, 107, 0.7);
         }
 
-        /* CTA SECTION */
         .cta-section {
             padding: 6rem 3rem 10rem;
             text-align: center;
@@ -945,32 +892,12 @@
             color: var(--bianco);
         }
 
-        .cta-btn svg {
-            transition: transform 0.4s ease;
-            stroke: currentColor;
-        }
-
-        .cta-btn:hover svg {
-            transform: translateX(5px);
-        }
-
-        /* FOOTER */
         footer {
             background: rgba(5, 8, 5, 0.8);
             color: var(--bianco);
             padding: 4rem 3rem 2rem;
             position: relative;
             z-index: 1;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 10%;
-            right: 10%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(200, 180, 150, 0.1), transparent);
         }
 
         .footer-grid {
@@ -1049,30 +976,19 @@
             color: rgba(230, 220, 200, 0.9);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 1024px) {
             .content-grid {
                 grid-template-columns: 1fr;
                 gap: 4rem;
             }
-
             .details-sidebar {
                 position: static;
                 flex-direction: row;
                 flex-wrap: wrap;
             }
-
             .detail-card {
                 flex: 1;
                 min-width: 250px;
-            }
-
-            .illustre-item.legend .illustre-name {
-                font-size: 2rem;
-            }
-
-            .illustre-item.featured .illustre-name {
-                font-size: 1.6rem;
             }
         }
 
@@ -1080,85 +996,62 @@
             header {
                 padding: 1rem 1.5rem;
             }
-
             nav {
                 display: none;
             }
-
             .hamburger {
                 display: flex;
             }
-
             .mobile-menu {
                 display: flex;
             }
-
             .hero {
                 padding: 4rem 1.5rem;
             }
-
             .hero-title {
                 font-size: clamp(3.5rem, 18vw, 6rem);
             }
-
             .content-section {
                 padding: 5rem 1.5rem;
             }
-
             .details-sidebar {
                 flex-direction: column;
             }
-
             .detail-card {
                 min-width: 100%;
             }
-
             .illustri-section {
                 padding: 6rem 1.5rem;
             }
-
             .illustre-name {
                 font-size: 1.1rem;
             }
-
             .illustre-item.legend .illustre-name {
                 font-size: 1.5rem;
             }
-
-            .illustre-item.featured .illustre-name {
-                font-size: 1.3rem;
-            }
-
             .quote-section {
                 padding: 5rem 1.5rem;
             }
-
             .cta-section {
                 padding: 4rem 1.5rem 8rem;
             }
-
             footer {
                 padding: 3rem 1.5rem 2rem;
             }
-
             .footer-links {
                 gap: 3rem;
             }
-
             .footer-bottom {
                 flex-direction: column;
                 gap: 1.5rem;
                 text-align: center;
             }
-
             .cypress {
                 display: none;
             }
-
             .candles-container {
                 gap: 60px;
             }
-
             .cursor {
                 display: none;
             }
@@ -1168,31 +1061,14 @@
             .footer-grid {
                 flex-direction: column;
             }
-
             .footer-links {
                 flex-wrap: wrap;
                 gap: 2rem;
             }
-
             .footer-social {
                 flex-wrap: wrap;
                 justify-content: center;
                 gap: 1rem;
-            }
-
-            .candles-container {
-                gap: 40px;
-            }
-
-            .candle {
-                width: 8px;
-                height: 40px;
-            }
-
-            .flame {
-                width: 8px;
-                height: 20px;
-                top: -20px;
             }
         }
     </style>
@@ -1201,32 +1077,20 @@
 
     <div class="cursor" id="cursor"></div>
 
-    <!-- ATMOSPHERIC BACKGROUND -->
     <div class="atmosphere">
-        <!-- Cypresses -->
         <div class="cypress cypress-1"></div>
         <div class="cypress cypress-2"></div>
         <div class="cypress cypress-3"></div>
         <div class="cypress cypress-4"></div>
         <div class="cypress cypress-5"></div>
         <div class="cypress cypress-6"></div>
-        
-        <!-- Piramide Cestia -->
         <div class="piramide"></div>
-        
-        <!-- Mist layers -->
         <div class="mist mist-1"></div>
         <div class="mist mist-2"></div>
         <div class="mist mist-3"></div>
         <div class="mist mist-4"></div>
-        
-        <!-- Dust particles -->
         <div class="dust-container" id="dustContainer"></div>
-        
-        <!-- Falling leaves -->
         <div class="leaves-container" id="leavesContainer"></div>
-        
-        <!-- Candles -->
         <div class="candles-container">
             <div class="candle candle-1"><div class="flame"></div></div>
             <div class="candle candle-2"><div class="flame"></div></div>
@@ -1245,6 +1109,10 @@
             <a href="./formazione.html">Formazione</a>
             <a href="./eventi-festival.html">Eventi</a>
             <a href="./contatti/">Contatti</a>
+            <div class="lang-switch">
+                <a href="./cimiterologia.html" class="active">IT</a>
+                <a href="./cimiterologia-en.html">EN</a>
+            </div>
         </nav>
         <button class="hamburger" id="hamburger" aria-label="Menu">
             <span></span>
@@ -1262,10 +1130,13 @@
         <a href="./formazione.html">Formazione</a>
         <a href="./eventi-festival.html">Eventi</a>
         <a href="./contatti/">Contatti</a>
+        <div class="mobile-lang-switch">
+            <a href="./cimiterologia.html" class="active">IT</a>
+            <a href="./cimiterologia-en.html">EN</a>
+        </div>
     </div>
 
     <main>
-        <!-- HERO -->
         <section class="hero">
             <div class="hero-content">
                 <span class="hero-label">
@@ -1282,7 +1153,6 @@
             </div>
         </section>
 
-        <!-- CONTENT -->
         <section class="content-section">
             <div class="content-grid">
                 <div class="content-text">
@@ -1358,7 +1228,6 @@
             </div>
         </section>
 
-        <!-- ILLUSTRI MORTI -->
         <section class="illustri-section">
             <span class="illustri-label">Qui riposano</span>
             <div class="illustri-grid">
@@ -1413,7 +1282,6 @@
             </div>
         </section>
 
-        <!-- QUOTE -->
         <section class="quote-section">
             <div class="quote-container">
                 <blockquote class="quote-text">
@@ -1425,7 +1293,6 @@
             </div>
         </section>
 
-        <!-- CTA -->
         <section class="cta-section">
             <div class="cta-container">
                 <span class="cta-label">Partecipa</span>
@@ -1477,7 +1344,6 @@
     </footer>
 
     <script>
-        // Mobile Menu Toggle
         const hamburger = document.getElementById('hamburger');
         const mobileMenu = document.getElementById('mobileMenu');
         const header = document.querySelector('header');
@@ -1498,7 +1364,6 @@
             });
         });
 
-        // CURSOR
         const cursor = document.getElementById('cursor');
         let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
 
@@ -1521,7 +1386,6 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
 
-        // HEADER SCROLL
         window.addEventListener('scroll', () => {
             if (window.scrollY > 100) {
                 header.classList.add('scrolled');
@@ -1530,7 +1394,6 @@
             }
         });
 
-        // GENERATE DUST PARTICLES
         const dustContainer = document.getElementById('dustContainer');
         if (dustContainer) {
             for (let i = 0; i < 50; i++) {
@@ -1544,7 +1407,6 @@
             }
         }
 
-        // GENERATE FALLING LEAVES
         const leavesContainer = document.getElementById('leavesContainer');
         if (leavesContainer) {
             function createLeaf() {
@@ -1553,35 +1415,24 @@
                 leaf.style.left = Math.random() * 100 + '%';
                 leaf.style.animationDuration = (12 + Math.random() * 10) + 's';
                 leaf.style.animationDelay = Math.random() * 3 + 's';
-                
                 const colors = [
                     'linear-gradient(135deg, #4a3728 0%, #2d2118 100%)',
                     'linear-gradient(135deg, #5a4030 0%, #3d3020 100%)',
-                    'linear-gradient(135deg, #3a2a20 0%, #252015 100%)',
-                    'linear-gradient(135deg, #4d3a28 0%, #352818 100%)',
-                    'linear-gradient(135deg, #554433 0%, #332211 100%)'
+                    'linear-gradient(135deg, #3a2a20 0%, #252015 100%)'
                 ];
                 leaf.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
                 const size = 10 + Math.random() * 10;
                 leaf.style.width = size + 'px';
                 leaf.style.height = size + 'px';
-                
                 leavesContainer.appendChild(leaf);
-                
                 setTimeout(() => leaf.remove(), 22000);
             }
-            
-            // Initial leaves
             for (let i = 0; i < 12; i++) {
                 setTimeout(createLeaf, i * 400);
             }
-            
-            // Continue creating leaves
             setInterval(createLeaf, 1200);
         }
 
-        // PARALLAX ON SCROLL
         const atmosphere = document.querySelector('.atmosphere');
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
