@@ -12,50 +12,33 @@
             --bianco: #ffffff;
             --nero: #0a0a0a;
             --ottanio: #2a6b6b;
-            --grigio: #6b6b6b;
-            --grigio-chiaro: #e5e5e5;
-            --seppia: rgba(200, 180, 150, 1);
             --seppia-chiaro: rgba(230, 220, 200, 1);
-            --verde-cipresso: #0f1a0f;
-            --nebbia: rgba(180, 180, 160, 0.05);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { font-size: 16px; scroll-behavior: smooth; }
-
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background: linear-gradient(180deg, #0a2010 0%, #061a08 30%, #04120a 60%, #020a04 100%);
+            background: linear-gradient(180deg, #1a1f1a 0%, #0d110d 30%, #0a0d0a 60%, #080a08 100%);
             color: var(--seppia-chiaro);
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
             min-height: 100vh;
         }
-
         ::selection { background: var(--ottanio); color: var(--bianco); }
         a { color: inherit; text-decoration: none; }
 
-        .cursor { width: 20px; height: 20px; border: 1px solid var(--seppia); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.15s ease, opacity 0.15s ease; mix-blend-mode: difference; }
-        .cursor.hover { transform: scale(2.5); background: var(--ottanio); opacity: 0.3; }
-
-        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1002; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; background: transparent; transition: background 0.5s ease, box-shadow 0.4s ease; }
-        header.scrolled { background: rgba(6, 26, 8, 0.95); box-shadow: 0 2px 30px rgba(0,0,0,0.3); }
-        header.menu-open { background: var(--nero); }
-        header.menu-open .logo img { filter: invert(1); }
-
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1002; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; background: transparent; transition: background 0.5s ease; }
+        header.scrolled { background: rgba(10, 13, 10, 0.95); }
         .logo { display: flex; align-items: center; }
-        .logo img { height: 28px; width: auto; filter: invert(1); transition: filter 0.3s ease; }
-
+        .logo img { height: 28px; width: auto; filter: invert(1); }
         nav { display: flex; gap: 3rem; align-items: center; }
         nav a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--seppia-chiaro); opacity: 0.5; transition: opacity 0.3s ease; }
         nav a:hover { opacity: 1; }
-
         .lang-switch { display: flex; gap: 0.75rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid rgba(230, 220, 200, 0.3); }
-        .lang-switch a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.5; transition: opacity 0.3s ease; color: var(--seppia-chiaro); }
-        .lang-switch a:hover { opacity: 1; }
+        .lang-switch a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.5; color: var(--seppia-chiaro); }
         .lang-switch a.active { opacity: 1; }
 
-        .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; width: 32px; height: 32px; cursor: pointer; position: relative; z-index: 1003; background: none; border: none; padding: 0; }
+        .hamburger { display: none; flex-direction: column; width: 32px; height: 32px; cursor: pointer; z-index: 1003; background: none; border: none; justify-content: center; align-items: center; }
         .hamburger span { display: block; width: 24px; height: 2px; background: var(--seppia-chiaro); margin: 3px 0; transition: all 0.3s ease; }
         .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
@@ -63,51 +46,26 @@
 
         .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--nero); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; }
         .mobile-menu.active { opacity: 1; visibility: visible; }
-        .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--bianco); opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease; }
-        .mobile-menu.active a { opacity: 1; transform: translateY(0); }
-        .mobile-menu a:hover { color: var(--ottanio); }
-        .mobile-menu .mobile-lang-switch { display: flex; gap: 2rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
-        .mobile-menu .mobile-lang-switch a { font-family: 'Inter', sans-serif; font-size: 0.9rem; font-style: normal; letter-spacing: 0.2em; }
-        .mobile-menu .mobile-lang-switch a.active { color: var(--ottanio); }
+        .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--bianco); }
 
         .atmosphere { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; overflow: hidden; z-index: 0; }
-
-        .cypress { position: absolute; bottom: 0; width: 0; height: 0; border-left: 30px solid transparent; border-right: 30px solid transparent; border-bottom: 450px solid #0a1f0a; opacity: 0.8; filter: blur(1px); animation: cypressSway 10s ease-in-out infinite; transform-origin: bottom center; }
-        .cypress-1 { left: 2%; animation-delay: 0s; opacity: 0.6; transform: scale(1.1); }
-        .cypress-2 { left: 6%; animation-delay: -3s; opacity: 0.7; transform: scale(0.9); }
-        .cypress-3 { left: 10%; animation-delay: -1s; opacity: 0.5; transform: scale(0.8); }
-        .cypress-4 { right: 3%; animation-delay: -5s; opacity: 0.65; transform: scale(1.05); }
-        .cypress-5 { right: 8%; animation-delay: -2s; opacity: 0.55; transform: scale(0.85); }
-        .cypress-6 { right: 13%; animation-delay: -4s; opacity: 0.45; transform: scale(0.75); }
-        @keyframes cypressSway { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(0.8deg); } 75% { transform: rotate(-0.8deg); } }
-
-        .piramide { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 180px solid transparent; border-right: 180px solid transparent; border-bottom: 300px solid rgba(180, 170, 150, 0.06); opacity: 0.8; filter: blur(3px); }
-
-        .mist { position: absolute; width: 300%; height: 200px; background: linear-gradient(90deg, transparent 0%, rgba(100, 150, 100, 0.04) 15%, rgba(80, 130, 80, 0.06) 35%, rgba(70, 120, 70, 0.08) 50%, rgba(80, 130, 80, 0.06) 65%, rgba(100, 150, 100, 0.04) 85%, transparent 100%); filter: blur(40px); animation: mistDrift linear infinite; }
-        .mist-1 { bottom: 5%; animation-duration: 60s; opacity: 1; height: 180px; }
-        .mist-2 { bottom: 15%; animation-duration: 80s; animation-delay: -30s; opacity: 0.7; height: 150px; }
-        .mist-3 { bottom: 25%; animation-duration: 100s; animation-delay: -50s; opacity: 0.5; height: 120px; }
-        @keyframes mistDrift { 0% { transform: translateX(-66%); } 100% { transform: translateX(0%); } }
-
+        .cypress { position: absolute; bottom: 0; width: 0; height: 0; border-left: 30px solid transparent; border-right: 30px solid transparent; border-bottom: 450px solid #0f1a0f; opacity: 0.7; }
+        .cypress-1 { left: 2%; opacity: 0.5; }
+        .cypress-2 { left: 6%; opacity: 0.6; }
+        .cypress-4 { right: 3%; opacity: 0.55; }
+        .cypress-5 { right: 8%; opacity: 0.45; }
+        .piramide { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 180px solid transparent; border-right: 180px solid transparent; border-bottom: 300px solid rgba(180, 170, 150, 0.06); }
         .candles-container { position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%); display: flex; gap: 120px; opacity: 0.8; }
-        .candle { position: relative; width: 10px; height: 50px; background: linear-gradient(180deg, #f0e6d3 0%, #d4c4a8 50%, #c8b898 100%); border-radius: 3px 3px 0 0; }
-        .flame { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); width: 10px; height: 25px; background: linear-gradient(180deg, rgba(255, 255, 200, 0.95) 0%, rgba(255, 200, 100, 0.9) 30%, rgba(255, 150, 50, 0.8) 60%, rgba(255, 100, 30, 0.6) 100%); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; animation: flameFlicker 0.4s ease-in-out infinite alternate; box-shadow: 0 0 15px rgba(255, 200, 100, 0.6), 0 0 30px rgba(255, 150, 50, 0.4); }
-        @keyframes flameFlicker { 0% { transform: translateX(-50%) scaleY(1) scaleX(1) rotate(-2deg); opacity: 0.9; } 100% { transform: translateX(-50%) scaleY(1.15) scaleX(0.85) rotate(2deg); opacity: 1; } }
+        .candle { position: relative; width: 10px; height: 50px; background: linear-gradient(180deg, #f0e6d3 0%, #c8b898 100%); border-radius: 3px 3px 0 0; }
+        .flame { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); width: 10px; height: 25px; background: linear-gradient(180deg, rgba(255, 255, 200, 0.95) 0%, rgba(255, 100, 30, 0.6) 100%); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; animation: flameFlicker 0.4s ease-in-out infinite alternate; box-shadow: 0 0 15px rgba(255, 200, 100, 0.6); }
+        @keyframes flameFlicker { 0% { transform: translateX(-50%) scaleY(1) rotate(-2deg); } 100% { transform: translateX(-50%) scaleY(1.15) rotate(2deg); } }
 
         main { position: relative; z-index: 1; padding-top: 100px; }
-
-        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 6rem 3rem; position: relative; }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 6rem 3rem; }
         .hero-content { max-width: 900px; }
-        .hero-label { display: inline-flex; align-items: center; gap: 1.5rem; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.6em; text-transform: uppercase; color: rgba(200, 180, 150, 0.5); margin-bottom: 3rem; opacity: 0; animation: fadeUp 1s ease forwards; animation-delay: 0.3s; }
-        .label-cross { font-size: 1rem; opacity: 0.4; }
-        .hero-title { font-family: 'Instrument Serif', serif; font-size: clamp(5rem, 15vw, 12rem); font-weight: 400; font-style: italic; line-height: 0.9; color: rgba(230, 220, 200, 0.95); text-shadow: 0 0 80px rgba(200, 180, 150, 0.15); margin-bottom: 1.5rem; opacity: 0; animation: titleReveal 1.5s ease forwards; animation-delay: 0.6s; }
-        @keyframes titleReveal { 0% { opacity: 0; transform: translateY(50px); filter: blur(10px); } 100% { opacity: 1; transform: translateY(0); filter: blur(0); } }
-        .hero-subtitle { font-family: 'Instrument Serif', serif; font-size: clamp(1.2rem, 3vw, 1.8rem); font-style: italic; color: var(--ottanio); letter-spacing: 0.1em; opacity: 0; animation: fadeUp 1s ease forwards; animation-delay: 1s; }
-        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(30px); } }
-
-        .scroll-indicator { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 1rem; opacity: 0; animation: fadeUp 1s ease forwards; animation-delay: 1.5s; }
-        .scroll-text { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(200, 180, 150, 0.4); }
-        .scroll-line { width: 1px; height: 60px; background: linear-gradient(180deg, rgba(200, 180, 150, 0.4) 0%, transparent 100%); }
+        .hero-label { display: inline-flex; align-items: center; gap: 1.5rem; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.6em; text-transform: uppercase; color: rgba(200, 180, 150, 0.5); margin-bottom: 3rem; }
+        .hero-title { font-family: 'Instrument Serif', serif; font-size: clamp(5rem, 15vw, 12rem); font-weight: 400; font-style: italic; line-height: 0.9; color: rgba(230, 220, 200, 0.95); margin-bottom: 1.5rem; }
+        .hero-subtitle { font-family: 'Instrument Serif', serif; font-size: clamp(1.2rem, 3vw, 1.8rem); font-style: italic; color: var(--ottanio); }
 
         .content-section { padding: 8rem 3rem; max-width: 1200px; margin: 0 auto; }
         .content-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 6rem; align-items: start; }
@@ -118,38 +76,32 @@
         .content-desc em { font-style: italic; color: rgba(220, 210, 190, 0.9); }
 
         .details-sidebar { display: flex; flex-direction: column; gap: 1.5rem; position: sticky; top: 120px; }
-        .detail-card { background: rgba(42, 107, 107, 0.06); border: 1px solid rgba(42, 107, 107, 0.12); padding: 2rem; display: flex; align-items: flex-start; gap: 1.5rem; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
-        .detail-card:hover { background: rgba(42, 107, 107, 0.1); border-color: rgba(42, 107, 107, 0.25); transform: translateX(8px); }
-        .detail-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .detail-card { background: rgba(42, 107, 107, 0.06); border: 1px solid rgba(42, 107, 107, 0.12); padding: 2rem; display: flex; align-items: flex-start; gap: 1.5rem; }
+        .detail-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
         .detail-icon svg { width: 28px; height: 28px; stroke: rgba(42, 107, 107, 0.6); }
         .detail-content { display: flex; flex-direction: column; gap: 0.5rem; }
         .detail-label { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(150, 140, 120, 0.5); }
         .detail-value { font-family: 'Instrument Serif', serif; font-size: 1.3rem; font-style: italic; color: rgba(220, 210, 190, 0.9); }
-        .detail-note { font-size: 0.8rem; color: rgba(150, 140, 120, 0.6); margin-top: 0.25rem; }
+        .detail-note { font-size: 0.8rem; color: rgba(150, 140, 120, 0.6); }
 
-        .illustri-section { padding: 10rem 3rem; text-align: center; position: relative; }
-        .illustri-section::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(200, 180, 150, 0.15), transparent); }
+        .illustri-section { padding: 10rem 3rem; text-align: center; }
         .illustri-label { font-size: 0.65rem; letter-spacing: 0.5em; text-transform: uppercase; color: rgba(150, 140, 120, 0.4); margin-bottom: 4rem; }
         .illustri-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 3rem; max-width: 1000px; margin: 0 auto; }
-        .illustre-item { position: relative; padding: 1rem 0; }
-        .illustre-name { font-family: 'Instrument Serif', serif; font-size: 1.4rem; font-style: italic; color: rgba(180, 170, 150, 0.4); cursor: default; transition: all 0.5s; white-space: nowrap; }
-        .illustre-name:hover { color: rgba(230, 220, 200, 0.95); text-shadow: 0 0 40px rgba(200, 180, 150, 0.4); transform: scale(1.08); }
-        .illustre-role { position: absolute; bottom: -0.5rem; left: 50%; transform: translateX(-50%); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(42, 107, 107, 0.5); opacity: 0; transition: opacity 0.3s ease; white-space: nowrap; }
-        .illustre-item:hover .illustre-role { opacity: 1; }
+        .illustre-item { padding: 1rem 0; }
+        .illustre-name { font-family: 'Instrument Serif', serif; font-size: 1.4rem; font-style: italic; color: rgba(180, 170, 150, 0.4); }
         .illustre-item.legend .illustre-name { font-size: 2.5rem; color: rgba(42, 107, 107, 0.6); }
-        .illustre-item.legend .illustre-name:hover { color: var(--ottanio); }
         .illustre-item.featured .illustre-name { font-size: 2rem; }
 
         .quote-section { padding: 8rem 3rem; text-align: center; }
         .quote-container { max-width: 800px; margin: 0 auto; }
         .quote-text { font-family: 'Instrument Serif', serif; font-size: clamp(1.5rem, 4vw, 2.5rem); font-style: italic; line-height: 1.6; color: rgba(220, 210, 190, 0.85); }
-        .quote-mark { font-family: 'Instrument Serif', serif; font-size: 5rem; color: rgba(42, 107, 107, 0.3); line-height: 0; vertical-align: top; margin: 0 0.5rem; }
+        .quote-mark { font-size: 5rem; color: rgba(42, 107, 107, 0.3); line-height: 0; vertical-align: top; }
         .quote-author { margin-top: 2.5rem; font-size: 0.9rem; letter-spacing: 0.15em; color: rgba(42, 107, 107, 0.7); }
 
         .cta-section { padding: 6rem 3rem 10rem; text-align: center; }
         .cta-container { max-width: 600px; margin: 0 auto; }
         .cta-label { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(150, 140, 120, 0.5); margin-bottom: 2rem; }
-        .cta-title { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 400; color: rgba(230, 220, 200, 0.9); margin-bottom: 1rem; }
+        .cta-title { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 5vw, 3rem); color: rgba(230, 220, 200, 0.9); margin-bottom: 1rem; }
         .cta-title em { font-style: italic; color: var(--ottanio); }
         .cta-desc { font-size: 1rem; line-height: 1.8; color: rgba(180, 170, 150, 0.6); margin-bottom: 3rem; }
 
@@ -157,54 +109,39 @@
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         .form-field { position: relative; }
         .form-field.full { grid-column: 1 / -1; }
-        .form-field input { width: 100%; padding: 1.25rem 1rem 0.75rem; font-family: 'Inter', sans-serif; font-size: 1rem; color: rgba(230, 220, 200, 0.95); background: rgba(42, 107, 107, 0.08); border: 1px solid rgba(200, 180, 150, 0.15); outline: none; transition: all 0.4s; }
+        .form-field input { width: 100%; padding: 1.25rem 1rem 0.75rem; font-family: 'Inter', sans-serif; font-size: 1rem; color: rgba(230, 220, 200, 0.95); background: rgba(42, 107, 107, 0.08); border: 1px solid rgba(200, 180, 150, 0.15); outline: none; }
         .form-field input:focus { border-color: var(--ottanio); background: rgba(42, 107, 107, 0.12); }
         .form-field label { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem; color: rgba(180, 170, 150, 0.5); pointer-events: none; transition: all 0.3s ease; }
         .form-field input:focus + label, .form-field input:not(:placeholder-shown) + label { top: 0.6rem; transform: translateY(0); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ottanio); }
 
-        .submit-btn { margin-top: 1rem; cursor: pointer; font-family: 'Inter', sans-serif; }
-        .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 1rem; padding: 1.5rem 3rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(220, 210, 190, 0.9); border: 1px solid rgba(200, 180, 150, 0.25); background: transparent; position: relative; overflow: hidden; transition: all 0.5s; }
-        .cta-btn::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--ottanio); transform: translateX(-100%); transition: transform 0.5s; z-index: -1; }
-        .cta-btn:hover::before { transform: translateX(0); }
-        .cta-btn:hover { border-color: var(--ottanio); color: var(--bianco); }
+        .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 1rem; padding: 1.5rem 3rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(220, 210, 190, 0.9); border: 1px solid rgba(200, 180, 150, 0.25); background: transparent; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; }
+        .cta-btn:hover { border-color: var(--ottanio); background: var(--ottanio); color: var(--bianco); }
 
-        .form-message { margin-top: 2rem; padding: 2rem; text-align: center; }
-        .form-message .success-icon { display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border: 2px solid var(--ottanio); border-radius: 50%; font-size: 1.5rem; color: var(--ottanio); margin-bottom: 1rem; }
-        .form-message p { font-family: 'Instrument Serif', serif; font-size: 1.3rem; font-style: italic; color: rgba(220, 210, 190, 0.9); }
+        .form-note { font-size: 0.8rem; color: rgba(150, 140, 120, 0.5); margin-top: 1rem; font-style: italic; }
 
-        footer { background: rgba(2, 10, 4, 0.95); color: var(--bianco); padding: 4rem 3rem 2rem; position: relative; z-index: 1; }
+        footer { background: rgba(5, 8, 5, 0.8); color: var(--bianco); padding: 4rem 3rem 2rem; position: relative; z-index: 1; }
         .footer-grid { display: flex; justify-content: space-between; margin-bottom: 4rem; flex-wrap: wrap; gap: 3rem; }
         .footer-brand { font-family: 'Instrument Serif', serif; font-size: 1.5rem; margin-bottom: 0.5rem; color: rgba(230, 220, 200, 0.9); }
         .footer-tagline { font-size: 0.85rem; color: rgba(180, 170, 150, 0.5); }
         .footer-links { display: flex; gap: 5rem; }
         .footer-col h4 { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; color: rgba(180, 170, 150, 0.4); }
-        .footer-col a { display: block; font-size: 0.9rem; margin-bottom: 0.75rem; color: rgba(200, 190, 170, 0.6); transition: color 0.3s ease; }
-        .footer-col a:hover { color: rgba(230, 220, 200, 0.9); }
+        .footer-col a { display: block; font-size: 0.9rem; margin-bottom: 0.75rem; color: rgba(200, 190, 170, 0.6); }
         .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid rgba(200, 180, 150, 0.08); }
         .footer-bottom p { font-size: 0.8rem; color: rgba(180, 170, 150, 0.4); }
         .footer-social { display: flex; gap: 2rem; }
-        .footer-social a { font-size: 0.75rem; color: rgba(180, 170, 150, 0.4); letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s ease; }
-        .footer-social a:hover { color: rgba(230, 220, 200, 0.9); }
+        .footer-social a { font-size: 0.75rem; color: rgba(180, 170, 150, 0.4); letter-spacing: 0.1em; text-transform: uppercase; }
 
-        @media (max-width: 1024px) { .content-grid { grid-template-columns: 1fr; gap: 4rem; } .details-sidebar { position: static; flex-direction: row; flex-wrap: wrap; } .detail-card { flex: 1; min-width: 250px; } }
-        @media (max-width: 768px) { header { padding: 1rem 1.5rem; } nav { display: none; } .hamburger { display: flex; } .mobile-menu { display: flex; } .hero { padding: 4rem 1.5rem; } .hero-title { font-size: clamp(3.5rem, 18vw, 6rem); } .content-section { padding: 5rem 1.5rem; } .details-sidebar { flex-direction: column; } .detail-card { min-width: 100%; } .illustri-section { padding: 6rem 1.5rem; } .quote-section { padding: 5rem 1.5rem; } .cta-section { padding: 4rem 1.5rem 8rem; } .form-row { grid-template-columns: 1fr; } footer { padding: 3rem 1.5rem 2rem; } .footer-links { gap: 3rem; } .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center; } .cypress { display: none; } .cursor { display: none; } }
-        @media (max-width: 480px) { .footer-grid { flex-direction: column; } .footer-links { flex-wrap: wrap; gap: 2rem; } .footer-social { flex-wrap: wrap; justify-content: center; gap: 1rem; } }
+        @media (max-width: 1024px) { .content-grid { grid-template-columns: 1fr; gap: 4rem; } .details-sidebar { position: static; } }
+        @media (max-width: 768px) { header { padding: 1rem 1.5rem; } nav { display: none; } .hamburger { display: flex; } .mobile-menu { display: flex; } .hero { padding: 4rem 1.5rem; } .hero-title { font-size: clamp(3.5rem, 18vw, 6rem); } .content-section { padding: 5rem 1.5rem; } .form-row { grid-template-columns: 1fr; } .cypress { display: none; } }
     </style>
 </head>
 <body>
-    <div class="cursor" id="cursor"></div>
-
     <div class="atmosphere">
         <div class="cypress cypress-1"></div>
         <div class="cypress cypress-2"></div>
-        <div class="cypress cypress-3"></div>
         <div class="cypress cypress-4"></div>
         <div class="cypress cypress-5"></div>
-        <div class="cypress cypress-6"></div>
         <div class="piramide"></div>
-        <div class="mist mist-1"></div>
-        <div class="mist mist-2"></div>
-        <div class="mist mist-3"></div>
         <div class="candles-container">
             <div class="candle"><div class="flame"></div></div>
             <div class="candle"><div class="flame"></div></div>
@@ -240,20 +177,15 @@
         <a href="./formazione.html">Formazione</a>
         <a href="./eventi-festival.html">Eventi</a>
         <a href="./contatti/">Contatti</a>
-        <div class="mobile-lang-switch">
-            <a href="./cimiterologia.html" class="active">IT</a>
-            <a href="./cimiterologia-en.html">EN</a>
-        </div>
     </div>
 
     <main>
         <section class="hero">
             <div class="hero-content">
-                <span class="hero-label"><span class="label-cross">✝</span> Memento Mori <span class="label-cross">✝</span></span>
+                <span class="hero-label"><span>✝</span> Memento Mori <span>✝</span></span>
                 <h1 class="hero-title">Cimiterologia</h1>
                 <p class="hero-subtitle">Allargarsi la vita attraversando la Morte</p>
             </div>
-            <div class="scroll-indicator"><span class="scroll-text">Scorri</span><div class="scroll-line"></div></div>
         </section>
 
         <section class="content-section">
@@ -261,8 +193,7 @@
                 <div class="content-text">
                     <p class="content-intro">All'ombra della Piramide Cestia, dove i gatti si assopiscono sulle tombe di Gramsci e Keats, dove riposano Shelley e Camilleri, Amelia Rosselli e Dario Bellezza, si apre uno degli ingressi più inaspettati alla filosofia: il <strong>Cimitero Acattolico di Roma</strong>, un giardino di trecento anni che custodisce il silenzio nel cuore del Testaccio.</p>
                     <p class="content-desc">La Cimiterologia è un ciclo di incontri sulla morte e sul morire mediante l'attraversamento consapevole dei cimiteri. Nato il 12 gennaio 2025 dalla collaborazione tra Andrea Colamedici e la direttrice del cimitero Yvonne A. Mazurek, questo percorso trasforma il tabù in pratica filosofica: non uno studio architettonico né una curiosità morbosa, ma un modo per <em>allargare la vita attraversando la morte</em>, con i piedi e con le parole.</p>
-                    <p class="content-desc">Gli incontri si svolgono nella piccola cappella costruita nel 1898 dall'architetto tedesco Andreas Holzinger, alternando momenti di ascolto, silenzio e dialogo con attraversamenti intimi e consapevoli del cimitero. Ogni sessione è un pit-stop esistenziale dove fermarsi a riflettere sulla propria finitezza, lontani dall'isteria delle città visibili, di fronte a uno specchio che non concede superficialità.</p>
-                    <p class="content-desc">Il Cimitero Acattolico, dichiarato Zona Monumentale d'Interesse Nazionale nel 1918, raccoglie oltre quattromila sepolture di persone provenienti da tutto il mondo: inglesi, tedeschi, americani, scandinavi, russi, greci. Protestanti, ortodossi, islamici, buddhisti. Le iscrizioni sulle lapidi parlano in oltre quindici lingue diverse, componendo un coro silenzioso di vite finite che continuano a interrogare i vivi.</p>
+                    <p class="content-desc">Gli incontri si svolgono nella piccola cappella costruita nel 1898 dall'architetto tedesco Andreas Holzinger, alternando momenti di ascolto, silenzio e dialogo con attraversamenti intimi e consapevoli del cimitero.</p>
                 </div>
                 <aside class="details-sidebar">
                     <div class="detail-card">
@@ -274,11 +205,7 @@
                         <div class="detail-content"><span class="detail-label">Luogo</span><span class="detail-value">Cimitero Acattolico</span><span class="detail-note">Via Caio Cestio 6, Roma</span></div>
                     </div>
                     <div class="detail-card">
-                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
-                        <div class="detail-content"><span class="detail-label">Contributo</span><span class="detail-value">libero</span><span class="detail-note">Interamente devoluto al cimitero</span></div>
-                    </div>
-                    <div class="detail-card">
-                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
                         <div class="detail-content"><span class="detail-label">Conduce</span><span class="detail-value">Andrea Colamedici</span><span class="detail-note">Filosofo, fondatore di Tlon</span></div>
                     </div>
                 </aside>
@@ -288,22 +215,20 @@
         <section class="illustri-section">
             <span class="illustri-label">Qui riposano</span>
             <div class="illustri-grid">
-                <div class="illustre-item legend"><span class="illustre-name">John Keats</span><span class="illustre-role">Poeta</span></div>
-                <div class="illustre-item legend"><span class="illustre-name">Antonio Gramsci</span><span class="illustre-role">Filosofo</span></div>
-                <div class="illustre-item featured"><span class="illustre-name">Percy Bysshe Shelley</span><span class="illustre-role">Poeta</span></div>
-                <div class="illustre-item featured"><span class="illustre-name">Andrea Camilleri</span><span class="illustre-role">Scrittore</span></div>
-                <div class="illustre-item"><span class="illustre-name">Dario Bellezza</span><span class="illustre-role">Poeta</span></div>
-                <div class="illustre-item featured"><span class="illustre-name">Giorgio Napolitano</span><span class="illustre-role">Presidente</span></div>
-                <div class="illustre-item"><span class="illustre-name">Amelia Rosselli</span><span class="illustre-role">Poetessa</span></div>
-                <div class="illustre-item featured"><span class="illustre-name">Carlo Emilio Gadda</span><span class="illustre-role">Scrittore</span></div>
-                <div class="illustre-item"><span class="illustre-name">Emilio Lussu</span><span class="illustre-role">Politico</span></div>
-                <div class="illustre-item"><span class="illustre-name">Gregory Corso</span><span class="illustre-role">Poeta Beat</span></div>
+                <div class="illustre-item legend"><span class="illustre-name">John Keats</span></div>
+                <div class="illustre-item legend"><span class="illustre-name">Antonio Gramsci</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Percy Bysshe Shelley</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Andrea Camilleri</span></div>
+                <div class="illustre-item"><span class="illustre-name">Dario Bellezza</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Giorgio Napolitano</span></div>
+                <div class="illustre-item"><span class="illustre-name">Carlo Emilio Gadda</span></div>
+                <div class="illustre-item"><span class="illustre-name">Gregory Corso</span></div>
             </div>
         </section>
 
         <section class="quote-section">
             <div class="quote-container">
-                <blockquote class="quote-text"><span class="quote-mark">"</span>Possiamo allargare la vita attraversando la morte. Con i piedi e con le parole.<span class="quote-mark">"</span></blockquote>
+                <blockquote class="quote-text"><span class="quote-mark">"</span>Possiamo allargare la vita attraversando la morte.<span class="quote-mark">"</span></blockquote>
                 <cite class="quote-author">— Andrea Colamedici</cite>
             </div>
         </section>
@@ -312,18 +237,18 @@
             <div class="cta-container">
                 <span class="cta-label">Partecipa</span>
                 <h2 class="cta-title">Iscriviti al <em>ciclo completo</em></h2>
-                <p class="cta-desc">Gli incontri di Cimiterologia si svolgono la domenica mattina e si esauriscono spesso in poche ore dall'apertura delle iscrizioni.</p>
+                <p class="cta-desc">Gli incontri si svolgono la domenica mattina e si esauriscono spesso in poche ore.</p>
                 
-                <form id="cimiterologia-form" class="iscrizione-form">
+                <!-- FORM HTML PURO - target _blank -->
+                <form class="iscrizione-form" method="GET" action="https://script.google.com/macros/s/AKfycbzJh4nIVqjMLUl-a4_Pp0Qqf95iZR1XyxWEQzgDA4WQbraEGhonHCgF7o8sEL3MOTdShg/exec" target="_blank">
                     <div class="form-row">
                         <div class="form-field"><input type="text" id="nome" name="nome" required placeholder=" "><label for="nome">Nome</label></div>
                         <div class="form-field"><input type="text" id="cognome" name="cognome" required placeholder=" "><label for="cognome">Cognome</label></div>
                     </div>
                     <div class="form-field full"><input type="email" id="email" name="email" required placeholder=" "><label for="email">Email</label></div>
-                    <button type="submit" class="cta-btn submit-btn"><span>Iscriviti</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                    <button type="submit" class="cta-btn"><span>Iscriviti</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                    <p class="form-note">Si aprirà una nuova scheda con la conferma. Puoi chiuderla subito.</p>
                 </form>
-                
-                <div id="form-success" class="form-message" style="display: none;"><span class="success-icon">✓</span><p>Iscrizione completata. Ti contatteremo presto.</p></div>
             </div>
         </section>
     </main>
@@ -333,7 +258,7 @@
             <div><div class="footer-brand">TLON</div><p class="footer-tagline">Un pianeta immaginario. Che esiste.</p></div>
             <div class="footer-links">
                 <div class="footer-col"><h4>Progetto</h4><a href="./il-progetto.html">Chi siamo</a><a href="./contatti/">Contatti</a></div>
-                <div class="footer-col"><h4>Edizioni</h4><a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a><a href="https://shop.tlon.it/autori/">Autori</a></div>
+                <div class="footer-col"><h4>Edizioni</h4><a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a></div>
                 <div class="footer-col"><h4>Attività</h4><a href="./eventi-festival.html">Eventi</a><a href="./formazione.html">Formazione</a></div>
             </div>
         </div>
@@ -341,70 +266,20 @@
             <p>© 2026 Tlon Srl</p>
             <div class="footer-social">
                 <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
-                <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
                 <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
-                <a href="https://www.tlonletter.it" target="_blank">Substack</a>
             </div>
         </div>
     </footer>
 
     <script>
-        // Menu mobile
         const hamburger = document.getElementById('hamburger');
         const mobileMenu = document.getElementById('mobileMenu');
-        const header = document.querySelector('header');
         hamburger.addEventListener('click', function() {
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
-            header.classList.toggle('menu-open');
-            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
         });
-
-        // Scroll header
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) header.classList.add('scrolled');
-            else header.classList.remove('scrolled');
-        });
-
-        // Cursor
-        const cursor = document.getElementById('cursor');
-        let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-        document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-        function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.12;
-            cursorY += (mouseY - cursorY) * 0.12;
-            cursor.style.left = cursorX - 10 + 'px';
-            cursor.style.top = cursorY - 10 + 'px';
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-        document.querySelectorAll('a, button, .detail-card, .illustre-item, input').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-        });
-
-        // FORM - apre popup che si chiude subito
-        const form = document.getElementById('cimiterologia-form');
-        const successMessage = document.getElementById('form-success');
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const nome = encodeURIComponent(document.getElementById('nome').value);
-            const cognome = encodeURIComponent(document.getElementById('cognome').value);
-            const email = encodeURIComponent(document.getElementById('email').value);
-            
-            const url = 'https://script.google.com/macros/s/AKfycbzJh4nIVqjMLUl-a4_Pp0Qqf95iZR1XyxWEQzgDA4WQbraEGhonHCgF7o8sEL3MOTdShg/exec?nome=' + nome + '&cognome=' + cognome + '&email=' + email;
-            
-            // Apre popup piccola
-            const popup = window.open(url, 'submit', 'width=1,height=1,left=-1000,top=-1000');
-            
-            // Chiude popup dopo 2 secondi e mostra successo
-            setTimeout(function() {
-                if (popup) popup.close();
-                form.style.display = 'none';
-                successMessage.style.display = 'block';
-            }, 2000);
+            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 100);
         });
     </script>
 </body>
