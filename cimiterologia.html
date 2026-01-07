@@ -1576,12 +1576,12 @@
             }
         });
 
-        // FORM SUBMISSION
+        // FORM SUBMISSION - usando GET con nuovo URL
         const form = document.getElementById('cimiterologia-form');
         const successMessage = document.getElementById('form-success');
         const errorMessage = document.getElementById('form-error');
 
-        form.addEventListener('submit', async function(e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
             
             const submitBtn = form.querySelector('.submit-btn');
@@ -1589,30 +1589,22 @@
             submitBtn.innerHTML = '<span>Invio in corso...</span>';
             submitBtn.disabled = true;
 
-            const data = {
-                nome: document.getElementById('nome').value,
-                cognome: document.getElementById('cognome').value,
-                email: document.getElementById('email').value
-            };
+            const nome = encodeURIComponent(document.getElementById('nome').value);
+            const cognome = encodeURIComponent(document.getElementById('cognome').value);
+            const email = encodeURIComponent(document.getElementById('email').value);
 
-            try {
-                const response = await fetch('https://script.google.com/macros/s/AKfycbx8posLbDKYclW8c13EkvP2Ckt-KTlngnYeE2Oz9PXGOql-HwEUe7toyngXltoKTHXL3Q/exec', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
+            const url = `https://script.google.com/macros/s/AKfycbzJh4nIVqjMLUl-a4_Pp0Qqf95iZR1XyxWEQzgDA4WQbraEGhonHCgF7o8sEL3MOTdShg/exec?nome=${nome}&cognome=${cognome}&email=${email}`;
+
+            fetch(url, { mode: 'no-cors' })
+                .then(() => {
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                })
+                .catch(() => {
+                    errorMessage.style.display = 'block';
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
                 });
-
-                form.style.display = 'none';
-                successMessage.style.display = 'block';
-                
-            } catch (error) {
-                errorMessage.style.display = 'block';
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
         });
     </script>
 
