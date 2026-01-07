@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tlon — School of Philosophy and Imagination</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+            --crema: #f9f7f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bianco);
+            color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* CURSOR */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--ottanio);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor.hover {
+            transform: scale(2);
+            background: rgba(42, 107, 107, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .cursor { display: none; }
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1002;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+            border-bottom: 1px solid var(--grigio-chiaro);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        header.menu-open {
+            background: var(--nero);
+            border-bottom-color: var(--nero);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+            transition: filter 0.3s ease;
+        }
+
+        header.menu-open .logo img {
+            filter: invert(1);
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* LANGUAGE SWITCHER */
+        .lang-switch {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-left: 2rem;
+            padding-left: 2rem;
+            border-left: 1px solid var(--grigio-chiaro);
+        }
+
+        .lang-switch a {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .lang-switch a:hover,
+        .lang-switch a.active {
+            opacity: 1;
+        }
+
+        .lang-switch a.active {
+            color: var(--ottanio);
+        }
+
+        /* HAMBURGER */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1003;
+            background: none;
+            border: none;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--nero);
+            margin: 3px 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .hamburger.active span {
+            background: var(--bianco);
+        }
+
+        /* MOBILE MENU */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nero);
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--bianco);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+        }
+
+        .mobile-menu.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu a:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
+        .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
+        .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
+
+        .mobile-menu a:hover {
+            color: var(--ottanio);
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 3rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 6rem;
+            align-items: end;
+            padding-bottom: 2rem;
+        }
+
+        .hero-main {
+            max-width: 900px;
+        }
+
+        .hero-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3.5rem, 9vw, 7rem);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2.5rem;
+            color: var(--nero);
+        }
+
+        .hero-title em {
+            font-style: italic;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--grigio);
+            max-width: 540px;
+        }
+
+        /* Founders */
+        .hero-founders {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .founder {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--grigio-chiaro);
+            transition: all 0.4s ease;
+            min-width: 280px;
+        }
+
+        .founder:hover {
+            border-color: var(--ottanio);
+            transform: translateX(-4px);
+        }
+
+        .founder-photo {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(154, 123, 79, 0.1);
+            border: 1px solid var(--ottanio);
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .founder-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .founder-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .founder-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .founder-role {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--grigio);
+        }
+
+        /* DIMENSIONI */
+        .dimensioni {
+            padding: 8rem 3rem;
+            background: var(--crema);
+        }
+
+        .dimensioni-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .dimensioni-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+        }
+
+        .dimensioni-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .section-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .dimensioni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .dimensione {
+            padding: 2.5rem;
+            background: var(--bianco);
+            border: 1px solid var(--grigio-chiaro);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .dimensione:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-5px);
+        }
+
+        .dimensione-num {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+        }
+
+        .dimensione-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.75rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .dimensione-desc {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--grigio);
+            margin-bottom: 1.5rem;
+        }
+
+        .dimensione-link {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .dimensione-link:hover {
+            color: var(--ottanio);
+        }
+
+        .dimensione-link::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .dimensione:hover .dimensione-link::after {
+            transform: translateX(4px);
+        }
+
+        /* ESPLORA */
+        .esplora {
+            padding: 8rem 3rem;
+            background: var(--bianco);
+        }
+
+        .esplora-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .esplora-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .esplora-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .esplora-header p {
+            font-size: 1.1rem;
+            color: var(--grigio);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Founders Cards */
+        .founders-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .founder-card {
+            padding: 3rem;
+            background: var(--crema);
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .founder-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--ottanio);
+            transition: height 0.4s ease;
+        }
+
+        .founder-card:hover::before {
+            height: 100%;
+        }
+
+        .founder-card:hover {
+            transform: translateX(10px);
+        }
+
+        .founder-content {
+            flex: 1;
+        }
+
+        .founder-card .founder-role {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--grigio);
+            margin-bottom: 0.75rem;
+        }
+
+        .founder-card .founder-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .founder-card .founder-desc {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--grigio);
+            max-width: 400px;
+        }
+
+        .founder-arrow {
+            font-size: 2rem;
+            color: var(--ottanio);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .founder-card:hover .founder-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Sections Grid */
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-card {
+            padding: 2.5rem;
+            border: 1px solid var(--grigio-chiaro);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: linear-gradient(to top, rgba(42, 107, 107, 0.05), transparent);
+            transition: height 0.4s ease;
+        }
+
+        .section-card:hover::before {
+            height: 100%;
+        }
+
+        .section-card:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-5px);
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-card .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-card .section-desc {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--grigio);
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-link {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--nero);
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .section-card:hover .section-link {
+            color: var(--ottanio);
+        }
+
+        /* Large Sections */
+        .large-sections {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .large-card {
+            padding: 4rem 3rem;
+            background: var(--nero);
+            color: var(--bianco);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .large-card:hover {
+            transform: scale(1.02);
+        }
+
+        .large-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .large-icon {
+            font-size: 2rem;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+        }
+
+        .large-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .large-desc {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 2rem;
+            max-width: 400px;
+        }
+
+        .large-link {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+        }
+
+        /* Special Sections */
+        .special-sections {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .special-card {
+            padding: 2rem;
+            background: var(--crema);
+            transition: all 0.3s ease;
+        }
+
+        .special-card:hover {
+            background: var(--ottanio);
+            color: var(--bianco);
+        }
+
+        .special-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .special-desc {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            transition: color 0.3s ease;
+        }
+
+        .special-card:hover .special-desc {
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 3rem;
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copy {
+            font-size: 0.85rem;
+            color: var(--grigio);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--nero);
+        }
+
+        /* REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .hero-founders {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .sections-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .founders-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .lang-switch {
+                display: none;
+            }
+
+            .hero {
+                padding: 8rem 1.5rem 3rem;
+            }
+
+            .dimensioni,
+            .esplora {
+                padding: 5rem 1.5rem;
+            }
+
+            .large-sections,
+            .sections-grid,
+            .special-sections {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-founders {
+                flex-direction: column;
+            }
+
+            .founder {
+                min-width: auto;
+            }
+
+            .dimensioni-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor" id="cursor"></div>
+
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./il-progetto-en.html">The Project</a>
+            <a href="./andrea-colamedici/en.html">Colamedici</a>
+            <a href="./maura-gancitano/en.html">Gancitano</a>
+            <a href="./edizioni-en.html">Publishing</a>
+            <a href="./librerie-en.html">Bookstores</a>
+            <a href="./formazione-en.html">Education</a>
+            <a href="./eventi-festival-en.html">Events</a>
+            <a href="./contatti/en.html">Contact</a>
+        </nav>
+        <div class="lang-switch">
+            <a href="./index.html">IT</a>
+            <a href="./en.html" class="active">EN</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="./il-progetto-en.html">The Project</a>
+        <a href="./andrea-colamedici/en.html">Colamedici</a>
+        <a href="./maura-gancitano/en.html">Gancitano</a>
+        <a href="./edizioni-en.html">Publishing</a>
+        <a href="./librerie-en.html">Bookstores</a>
+        <a href="./formazione-en.html">Education</a>
+        <a href="./eventi-festival-en.html">Events</a>
+        <a href="./contatti/en.html">Contact</a>
+    </div>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-main">
+                    <span class="hero-label">Since 2015</span>
+                    <h1 class="hero-title">School of Philosophy and <em>Imagination</em></h1>
+                    <p class="hero-desc">A publishing house, a network of bookstores, festivals, podcasts, training programs. Philosophy as a tool for living better and thinking critically about the contemporary world.</p>
+                </div>
+                <div class="hero-founders">
+                    <a href="./andrea-colamedici/en.html" class="founder">
+                        <div class="founder-photo">
+                            <img src="./assets/images/andrea-colamedici.jpg" alt="Andrea Colamedici">
+                        </div>
+                        <div class="founder-info">
+                            <span class="founder-name">Andrea Colamedici</span>
+                            <span class="founder-role">Founder</span>
+                        </div>
+                    </a>
+                    <a href="./maura-gancitano/en.html" class="founder">
+                        <div class="founder-photo">
+                            <img src="./assets/images/maura-gancitano.jpg" alt="Maura Gancitano">
+                        </div>
+                        <div class="founder-info">
+                            <span class="founder-name">Maura Gancitano</span>
+                            <span class="founder-role">Founder</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIMENSIONI -->
+        <section class="dimensioni">
+            <div class="dimensioni-header">
+                <h2 class="reveal">The <em>Dimensions</em></h2>
+                <span class="section-num reveal">I</span>
+            </div>
+            <div class="dimensioni-grid">
+                <div class="dimensione reveal" id="dim-edizioni">
+                    <span class="dimensione-num">01</span>
+                    <h3 class="dimensione-title">Publishing</h3>
+                    <p class="dimensione-desc">Philosophy, gender studies, social sciences, poetry, fiction.</p>
+                    <a href="./edizioni-en.html" class="dimensione-link">Catalogue</a>
+                </div>
+                <div class="dimensione reveal" id="dim-librerie">
+                    <span class="dimensione-num">02</span>
+                    <h3 class="dimensione-title">Bookstores</h3>
+                    <p class="dimensione-desc">Rome and Venice: Teatro Tlon, National Gallery, Villa Medici, Libreria Giovanni.</p>
+                    <a href="./librerie-en.html" class="dimensione-link">Visit</a>
+                </div>
+                <div class="dimensione reveal" id="dim-podcast">
+                    <span class="dimensione-num">03</span>
+                    <h3 class="dimensione-title">Podcasts</h3>
+                    <p class="dimensione-desc">Scuola di Filosofie, Pensare Europeo, and other audio projects.</p>
+                    <a href="./podcast-en.html" class="dimensione-link">Listen</a>
+                </div>
+                <div class="dimensione reveal" id="dim-festival">
+                    <span class="dimensione-num">04</span>
+                    <h3 class="dimensione-title">Events</h3>
+                    <p class="dimensione-desc">Festival del Pensare Contemporaneo in Piacenza, Carnevale di Putignano, lectures, festivals.</p>
+                    <a href="./eventi-festival-en.html" class="dimensione-link">Programme</a>
+                </div>
+                <div class="dimensione reveal" id="dim-formazione">
+                    <span class="dimensione-num">05</span>
+                    <h3 class="dimensione-title">Education</h3>
+                    <p class="dimensione-desc">Courses for universities, institutions, companies. In Italy and abroad.</p>
+                    <a href="./formazione-en.html" class="dimensione-link">Discover</a>
+                </div>
+                <div class="dimensione reveal" id="dim-ricerca">
+                    <span class="dimensione-num">06</span>
+                    <h3 class="dimensione-title">Research</h3>
+                    <p class="dimensione-desc">GenIALab, Generativa, Ipnocrazia: artificial intelligence and philosophy.</p>
+                    <a href="./ricerca-en.html" class="dimensione-link">Explore</a>
+                </div>
+                <div class="dimensione reveal" id="dim-progetto">
+                    <span class="dimensione-num">07</span>
+                    <h3 class="dimensione-title">The Project</h3>
+                    <p class="dimensione-desc">The history, the mission, the founders. What it means to build an imaginary planet.</p>
+                    <a href="./il-progetto-en.html" class="dimensione-link">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESPLORA -->
+        <section class="esplora">
+            <div class="esplora-header">
+                <h2><em>Explore</em> Tlon</h2>
+                <p>An organism with many souls. Each soul has its own address.</p>
+            </div>
+
+            <!-- Founders Cards -->
+            <div class="founders-section" id="foundersSection">
+                <a href="./andrea-colamedici/en.html" class="founder-card">
+                    <div class="founder-content">
+                        <p class="founder-role">Founder · Publisher · Philosopher</p>
+                        <h2 class="founder-name">Andrea Colamedici</h2>
+                        <p class="founder-desc">Philosopher, publisher, essayist. Co-founder of Tlon and author of essays that have shaped Italian cultural debate.</p>
+                    </div>
+                    <div class="founder-arrow">→</div>
+                </a>
+                <a href="./maura-gancitano/en.html" class="founder-card">
+                    <div class="founder-content">
+                        <p class="founder-role">Founder · Publisher · Philosopher</p>
+                        <h2 class="founder-name">Maura Gancitano</h2>
+                        <p class="founder-desc">Philosopher, writer, publisher. Co-founder of Tlon and voice of contemporary philosophical feminism.</p>
+                    </div>
+                    <div class="founder-arrow">→</div>
+                </a>
+            </div>
+
+            <!-- Sections Grid -->
+            <div class="sections-grid" id="sectionsGrid">
+                <a href="./il-progetto-en.html" class="section-card">
+                    <div class="section-icon">◎</div>
+                    <h3 class="section-title">The Project</h3>
+                    <p class="section-desc">The history, the vision, the seven dimensions of Tlon. What it means to build an imaginary planet.</p>
+                    <span class="section-link">Discover →</span>
+                </a>
+                <a href="./edizioni-en.html" class="section-card">
+                    <div class="section-icon">⊛</div>
+                    <h3 class="section-title">Publishing</h3>
+                    <p class="section-desc">200+ titles in catalogue. Sloterdijk, Haraway, Carson, Badinter. The editorial serpent.</p>
+                    <span class="section-link">Explore →</span>
+                </a>
+                <a href="./librerie-en.html" class="section-card">
+                    <div class="section-icon">☉</div>
+                    <h3 class="section-title">Bookstores</h3>
+                    <p class="section-desc">Via Nansen in Rome, National Gallery, Villa Medici. Physical spaces where ideas take shape.</p>
+                    <span class="section-link">Visit →</span>
+                </a>
+                <a href="./formazione-en.html" class="section-card">
+                    <div class="section-icon">◇</div>
+                    <h3 class="section-title">Education</h3>
+                    <p class="section-desc">Programmes for companies and organisations. Philosophy applied to transformation.</p>
+                    <span class="section-link">Discover →</span>
+                </a>
+                <a href="./eventi-festival-en.html" class="section-card">
+                    <div class="section-icon">∞</div>
+                    <h3 class="section-title">Events and Festivals</h3>
+                    <p class="section-desc">Polis, Biennale, gatherings. Where philosophy becomes collective experience.</p>
+                    <span class="section-link">Explore →</span>
+                </a>
+                <a href="./ilpod-en.html" class="section-card">
+                    <div class="section-icon">◉</div>
+                    <h3 class="section-title">Podcasts</h3>
+                    <p class="section-desc">Tlon, Scuola di Filosofia, Audible. 150 million listens. Philosophy for everyone.</p>
+                    <span class="section-link">Listen →</span>
+                </a>
+            </div>
+
+            <!-- Large Sections -->
+            <div class="large-sections" id="largeSections">
+                <a href="./ipnocrazia-en.html" class="large-card">
+                    <div class="large-content">
+                        <div class="large-icon">Ψ</div>
+                        <h3 class="large-title">Ipnocrazia</h3>
+                        <p class="large-desc">The international publishing phenomenon. A narrative performance on the manipulation of reality in the era of Trump and Musk.</p>
+                        <span class="large-link">Learn More →</span>
+                    </div>
+                </a>
+                <a href="https://shop.tlon.it" class="large-card" target="_blank">
+                    <div class="large-content">
+                        <div class="large-icon">✧</div>
+                        <h3 class="large-title">Shop</h3>
+                        <p class="large-desc">The complete catalogue. Books, objects, ideas. The entire world of Tlon in one place.</p>
+                        <span class="large-link">Go to Shop →</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Special Sections -->
+            <div class="special-sections" id="specialSections">
+                <a href="./contatti/en.html" class="special-card">
+                    <h4 class="special-title">Contact</h4>
+                    <p class="special-desc">Write to us, find us, collaborate with us.</p>
+                </a>
+                <a href="mailto:redazione@tlon.it" class="special-card">
+                    <h4 class="special-title">Editorial Proposals</h4>
+                    <p class="special-desc">redazione@tlon.it</p>
+                </a>
+                <a href="mailto:commerciale@tlon.it" class="special-card">
+                    <h4 class="special-title">Commercial Office</h4>
+                    <p class="special-desc">commerciale@tlon.it</p>
+                </a>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p class="footer-copy">© Tlon 2016–2025</p>
+            <div class="footer-links">
+                <a href="./en.html">Home</a>
+                <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+
+    document.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+        cursorX += (mouseX - cursorX) * 0.15;
+        cursorY += (mouseY - cursorY) * 0.15;
+        cursor.style.left = cursorX - 10 + 'px';
+        cursor.style.top = cursorY - 10 + 'px';
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+
+    // REVEAL ON SCROLL
+    const revealElements = document.querySelectorAll('.reveal, .dimensione, .section-card, .large-card, .special-card, .founder-card');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 80);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    revealElements.forEach(el => observer.observe(el));
+
+    // MOBILE MENU
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const header = document.querySelector('header');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        header.classList.toggle('menu-open');
+        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            header.classList.remove('menu-open');
+            document.body.style.overflow = '';
+        });
+    });
+    </script>
+
+</body>
+</html>
