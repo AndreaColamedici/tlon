@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edizioni Tlon — Publishing house of philosophy and imagination</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --ottanio-scuro: #1a4848;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+            --crema: #f8f6f3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--nero); color: var(--bianco); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        ::selection { background: var(--ottanio); color: var(--bianco); }
+        a { color: inherit; text-decoration: none; }
+
+        .cursor { width: 20px; height: 20px; border: 2px solid var(--ottanio); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, background 0.2s ease; mix-blend-mode: difference; }
+        .cursor.hover { width: 60px; height: 60px; background: var(--bianco); border-color: var(--bianco); }
+
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1002; padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference; }
+        header.menu-open { background: var(--nero); mix-blend-mode: normal; }
+        header.menu-open .logo img { filter: invert(1); }
+        .logo img { height: 24px; filter: invert(1); }
+        nav { display: flex; gap: 3rem; }
+        nav a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.5; transition: opacity 0.3s ease; }
+        nav a:hover { opacity: 1; }
+
+        .lang-switch { display: flex; gap: 0.5rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid rgba(255,255,255,0.2); }
+        .lang-switch a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); transition: opacity 0.3s ease; }
+        .lang-switch a:hover, .lang-switch a.active { color: var(--bianco); }
+        .lang-switch a.active { color: var(--ottanio); }
+
+        .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; width: 32px; height: 32px; cursor: pointer; position: relative; z-index: 1003; }
+        .hamburger span { display: block; width: 24px; height: 2px; background: var(--bianco); margin: 3px 0; transition: all 0.3s ease; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+        .hamburger.active span { background: var(--bianco); mix-blend-mode: normal; }
+
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--nero); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .mobile-menu.active { opacity: 1; pointer-events: auto; }
+        .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--bianco); opacity: 0; transform: translateY(20px); transition: all 0.4s ease, color 0.3s ease; }
+        .mobile-menu.active a { opacity: 1; transform: translateY(0); }
+        .mobile-menu.active a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu.active a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu.active a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu.active a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu.active a:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu.active a:nth-child(6) { transition-delay: 0.35s; }
+        .mobile-menu.active a:nth-child(7) { transition-delay: 0.4s; }
+        .mobile-menu.active a:nth-child(8) { transition-delay: 0.45s; }
+        .mobile-menu a:hover { color: var(--ottanio); }
+
+        .hero { min-height: 100vh; display: flex; align-items: center; padding: 10rem 3rem 8rem; background: var(--nero); position: relative; }
+        .hero-content { max-width: 1400px; margin: 0 auto; }
+        .hero-label { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 4rem; opacity: 0; transform: translateX(-20px); animation: fadeInLeft 0.8s ease forwards; animation-delay: 0.2s; }
+        @keyframes fadeInLeft { to { opacity: 1; transform: translateX(0); } }
+        .hero-text { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 4.5vw, 3.8rem); line-height: 1.35; color: var(--bianco); }
+        .hero-text em { font-style: italic; color: var(--ottanio); }
+        .hero-text .highlight { color: var(--ottanio); }
+        .hero-text .word { display: inline-block; opacity: 0; transform: translateY(50px); animation: wordReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes wordReveal { to { opacity: 1; transform: translateY(0); } }
+
+        .marquee-section { padding: 5rem 0; background: var(--nero); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden; }
+        .marquee { display: flex; animation: scroll-left 60s linear infinite; }
+        .marquee:hover { animation-play-state: paused; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .marquee-item { flex-shrink: 0; padding: 0 3rem; font-family: 'Instrument Serif', serif; font-size: clamp(1.8rem, 4vw, 3rem); font-style: italic; color: rgba(255,255,255,0.12); white-space: nowrap; transition: color 0.4s ease; cursor: default; }
+        .marquee-item:hover { color: var(--ottanio); }
+        .marquee-dot { flex-shrink: 0; width: 8px; height: 8px; background: var(--ottanio); border-radius: 50%; margin: auto 1.5rem; opacity: 0.3; }
+
+        .numeri { padding: 10rem 3rem; background: var(--bianco); color: var(--nero); }
+        .numeri-grid { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 1200px; margin: 0 auto; }
+        .numero { text-align: center; padding: 3rem; position: relative; }
+        .numero::after { content: ''; position: absolute; right: 0; top: 20%; height: 60%; width: 1px; background: var(--grigio-chiaro); }
+        .numero:last-child::after { display: none; }
+        .numero-value { font-family: 'Instrument Serif', serif; font-size: clamp(4rem, 10vw, 7rem); font-style: italic; line-height: 1; color: var(--nero); opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .numero.visible .numero-value { opacity: 1; transform: translateY(0); }
+        .numero-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grigio); margin-top: 1rem; }
+
+        .about-edizioni { position: relative; background: var(--bianco); overflow: hidden; }
+        .about-hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 8rem 3rem; position: relative; background: linear-gradient(180deg, var(--bianco) 0%, var(--crema) 100%); }
+        .about-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--ottanio), transparent); }
+        .about-hero-content { max-width: 900px; text-align: center; }
+        .about-hero-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 3rem; opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
+        .about-hero-label.visible { opacity: 1; transform: translateY(0); }
+        .about-hero-title { font-family: 'Instrument Serif', serif; font-size: clamp(4rem, 12vw, 10rem); font-weight: 400; line-height: 0.9; color: var(--nero); margin-bottom: 4rem; opacity: 0; transform: translateY(60px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .about-hero-title.visible { opacity: 1; transform: translateY(0); }
+        .about-hero-title em { font-style: italic; color: var(--ottanio); display: block; }
+        .about-hero-text { font-size: 1.25rem; line-height: 2.2; color: var(--grigio); max-width: 750px; margin: 0 auto; opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s; }
+        .about-hero-text.visible { opacity: 1; transform: translateY(0); }
+
+        .linea-editoriale { padding: 12rem 3rem; background: var(--nero); color: var(--bianco); position: relative; overflow: hidden; }
+        .linea-editoriale::before { content: 'PHILOSOPHY'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Instrument Serif', serif; font-size: clamp(8rem, 25vw, 20rem); font-style: italic; color: rgba(255,255,255,0.02); white-space: nowrap; pointer-events: none; }
+        .linea-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.5fr; gap: 8rem; align-items: center; position: relative; z-index: 1; }
+        .linea-title-wrapper { position: sticky; top: 30vh; }
+        .linea-label { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 2rem; opacity: 0; transform: translateX(-30px); transition: all 0.8s ease; }
+        .linea-label.visible { opacity: 1; transform: translateX(0); }
+        .linea-title { font-family: 'Instrument Serif', serif; font-size: clamp(3rem, 7vw, 5rem); font-weight: 400; line-height: 1.1; opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .linea-title.visible { opacity: 1; transform: translateY(0); }
+        .linea-title em { font-style: italic; color: var(--ottanio); }
+        .linea-text { font-size: 1.15rem; line-height: 2.2; color: rgba(255,255,255,0.7); opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .linea-text.visible { opacity: 1; transform: translateY(0); }
+
+        .collane-section { padding: 10rem 0; background: var(--crema); position: relative; }
+        .collane-header { text-align: center; padding: 0 3rem 8rem; }
+        .collane-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 2rem; }
+        .collane-title { font-family: 'Instrument Serif', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 400; color: var(--nero); }
+        .collane-title em { font-style: italic; color: var(--ottanio); }
+        .collane-grid { display: grid; grid-template-columns: repeat(2, 1fr); max-width: 1400px; margin: 0 auto; }
+        .collana-item { padding: 4rem; border: 1px solid transparent; border-top-color: var(--grigio-chiaro); position: relative; overflow: hidden; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); cursor: default; }
+        .collana-item:nth-child(odd) { border-right-color: var(--grigio-chiaro); }
+        .collana-item::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--ottanio) 0%, var(--ottanio-scuro) 100%); opacity: 0; transition: opacity 0.6s ease; z-index: 0; }
+        .collana-item:hover::before { opacity: 1; }
+        .collana-item:hover { transform: scale(1.02); z-index: 2; box-shadow: 0 30px 60px rgba(0,0,0,0.15); }
+        .collana-item:hover .collana-nome, .collana-item:hover .collana-desc { color: var(--bianco); }
+        .collana-item:hover .collana-numero { color: rgba(255,255,255,0.2); }
+        .collana-content { position: relative; z-index: 1; }
+        .collana-numero { font-family: 'Instrument Serif', serif; font-size: 6rem; font-style: italic; line-height: 1; color: var(--grigio-chiaro); position: absolute; top: -1rem; right: 2rem; transition: color 0.6s ease; }
+        .collana-nome { font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--nero); margin-bottom: 1.5rem; transition: color 0.6s ease; }
+        .collana-desc { font-size: 0.95rem; line-height: 1.9; color: var(--grigio); transition: color 0.6s ease; }
+
+        .libri { padding: 12rem 0; background: var(--nero); }
+        .libri-header { max-width: 1400px; margin: 0 auto 5rem; padding: 0 3rem; }
+        .libri-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 2rem; }
+        .libri-header h2 { font-family: 'Instrument Serif', serif; font-size: clamp(3rem, 6vw, 5rem); font-weight: 400; margin-bottom: 1.5rem; }
+        .libri-header h2 em { font-style: italic; color: var(--ottanio); }
+        .libri-header p { font-size: 1.1rem; color: rgba(255,255,255,0.5); max-width: 600px; line-height: 1.8; }
+        .libri-scroll { display: flex; gap: 2.5rem; padding: 2rem 3rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+        .libri-scroll::-webkit-scrollbar { display: none; }
+        .libro-card { flex-shrink: 0; width: 280px; scroll-snap-align: start; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .libro-card:hover { transform: translateY(-15px); }
+        .libro-cover { width: 100%; aspect-ratio: 2/3; overflow: hidden; margin-bottom: 1.5rem; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.4); transition: box-shadow 0.6s ease; }
+        .libro-card:hover .libro-cover { box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+        .libro-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .libro-card:hover .libro-cover img { transform: scale(1.05); }
+        .libro-info { text-align: center; }
+        .libro-title { font-family: 'Instrument Serif', serif; font-size: 1.3rem; font-style: italic; line-height: 1.3; margin-bottom: 0.5rem; color: var(--bianco); }
+        .libro-author { font-size: 0.85rem; color: rgba(255,255,255,0.5); letter-spacing: 0.05em; }
+
+        .catalogo-link { padding: 8rem 3rem; background: var(--bianco); text-align: center; }
+        .catalogo-link-content { max-width: 700px; margin: 0 auto; }
+        .catalogo-link-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 2rem; }
+        .catalogo-link-text { font-family: 'Instrument Serif', serif; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.6; color: var(--nero); margin-bottom: 3rem; }
+        .catalogo-link-btn { display: inline-block; padding: 1.4rem 3.5rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; background: var(--ottanio); color: var(--bianco); border: 1px solid var(--ottanio); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
+        .catalogo-link-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--nero); transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: -1; }
+        .catalogo-link-btn:hover::before { left: 0; }
+        .catalogo-link-btn:hover { border-color: var(--nero); }
+
+        .team { padding: 10rem 3rem; background: var(--crema); color: var(--nero); }
+        .team-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; }
+        .team-intro h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; margin-bottom: 1.5rem; }
+        .team-intro h2 em { font-style: italic; color: var(--ottanio); }
+        .team-intro p { font-size: 1rem; line-height: 1.9; color: var(--grigio); }
+        .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--grigio-chiaro); }
+        .team-member { padding: 2rem; background: var(--crema); transition: background 0.4s ease; }
+        .team-member:hover { background: var(--bianco); }
+        .team-name { font-family: 'Instrument Serif', serif; font-size: 1.3rem; margin-bottom: 0.4rem; color: var(--nero); }
+        .team-role { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ottanio); }
+
+        .cta { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 6rem 3rem; background: var(--nero); position: relative; overflow: hidden; }
+        .cta-bg { position: absolute; width: 100%; height: 100%; }
+        .cta-glow { position: absolute; width: 800px; height: 800px; border-radius: 50%; background: radial-gradient(circle, rgba(42, 107, 107, 0.25) 0%, transparent 60%); animation: float 12s ease-in-out infinite; }
+        .cta-glow:nth-child(1) { top: -300px; left: -200px; }
+        .cta-glow:nth-child(2) { bottom: -300px; right: -200px; animation-delay: -6s; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(50px, -50px) scale(1.15); } }
+        .cta-content { position: relative; z-index: 1; text-align: center; }
+        .cta-title { font-family: 'Instrument Serif', serif; font-size: clamp(4rem, 12vw, 9rem); font-weight: 400; line-height: 0.9; margin-bottom: 2rem; }
+        .cta-title em { font-style: italic; color: var(--ottanio); }
+        .cta-sub { font-size: 1.1rem; color: rgba(255,255,255,0.5); max-width: 600px; margin: 0 auto 4rem; line-height: 1.8; }
+        .cta-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+        .cta-btn { padding: 1.4rem 3.5rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); color: var(--bianco); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
+        .cta-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--ottanio); transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: -1; }
+        .cta-btn:hover::before { left: 0; }
+        .cta-btn:hover { border-color: var(--ottanio); }
+        .cta-btn.primary { background: var(--ottanio); border-color: var(--ottanio); }
+        .cta-btn.primary::before { background: var(--bianco); }
+        .cta-btn.primary:hover { color: var(--nero); }
+        .cta-contact { margin-top: 5rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.08); }
+        .cta-contact-label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 1.5rem; }
+        .cta-contact-links { display: flex; gap: 3rem; justify-content: center; }
+        .cta-contact-link { font-family: 'Instrument Serif', serif; font-size: 1.3rem; font-style: italic; color: var(--ottanio); transition: color 0.3s ease; }
+        .cta-contact-link:hover { color: var(--bianco); }
+
+        footer { padding: 2rem 3rem; background: var(--nero); border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .footer-back { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); transition: color 0.3s ease; }
+        .footer-back:hover { color: var(--bianco); }
+        .footer-links { display: flex; gap: 2rem; }
+        .footer-links a { font-size: 0.75rem; color: rgba(255,255,255,0.3); transition: color 0.3s ease; }
+        .footer-links a:hover { color: var(--bianco); }
+
+        @media (max-width: 1000px) {
+            .numeri-grid { grid-template-columns: repeat(2, 1fr); }
+            .numero:nth-child(2)::after { display: none; }
+            .linea-container { grid-template-columns: 1fr; gap: 4rem; }
+            .linea-title-wrapper { position: relative; top: 0; }
+            .collane-grid { grid-template-columns: 1fr; }
+            .collana-item { border-right-color: transparent !important; }
+            .team-container { grid-template-columns: 1fr; gap: 3rem; }
+            .team-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 900px) {
+            nav { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu { display: flex; }
+            .lang-switch { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 1.5rem; }
+            .cursor { display: none; }
+            .hero { padding: 8rem 1.5rem 5rem; }
+            .hero-label { margin-bottom: 2rem; }
+            .numeri-grid { grid-template-columns: 1fr; }
+            .numero::after { display: none; }
+            .about-hero { padding: 6rem 1.5rem; min-height: auto; }
+            .linea-editoriale { padding: 6rem 1.5rem; }
+            .collane-section { padding: 6rem 0; }
+            .collane-header { padding: 0 1.5rem 4rem; }
+            .collana-item { padding: 3rem 1.5rem; }
+            .collana-numero { font-size: 4rem; right: 1rem; }
+            .libro-card { width: 220px; }
+            .libri-header { padding: 0 1.5rem; }
+            .catalogo-link { padding: 5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<header>
+    <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+    <nav>
+        <a href="./il-progetto-en.html">The Project</a>
+        <a href="./andrea-colamedici/en.html">Colamedici</a>
+        <a href="./maura-gancitano/en.html">Gancitano</a>
+        <a href="./edizioni-en.html">Publishing</a>
+        <a href="./librerie-en.html">Bookstores</a>
+        <a href="./formazione-en.html">Education</a>
+        <a href="./eventi-festival-en.html">Events</a>
+        <a href="./contatti/en.html">Contact</a>
+    </nav>
+    <div class="lang-switch">
+        <a href="./edizioni.html">IT</a>
+        <a href="./edizioni-en.html" class="active">EN</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="./il-progetto-en.html">The Project</a>
+    <a href="./andrea-colamedici/en.html">Colamedici</a>
+    <a href="./maura-gancitano/en.html">Gancitano</a>
+    <a href="./edizioni-en.html">Publishing</a>
+    <a href="./librerie-en.html">Bookstores</a>
+    <a href="./formazione-en.html">Education</a>
+    <a href="./eventi-festival-en.html">Events</a>
+    <a href="./contatti/en.html">Contact</a>
+</div>
+
+<main>
+
+<section class="hero">
+    <div class="hero-content">
+        <p class="hero-label">The catalogue</p>
+        <p class="hero-text" id="heroText">We publish <em>Peter Sloterdijk</em>, <em>Donna Haraway</em>, <em>Anne Carson</em>. We brought <em>Élisabeth Badinter</em> back to Italy after years of absence. We work with <em>Franco "Bifo" Berardi</em>, <em>Federico Campagna</em>, <em>Laurent De Sutter</em>. We translate <em>Jude Ellison S. Doyle</em>, <em>Darío Sztajnszrajber</em>, <em>Julian Jaynes</em>. We publish poetry: <em>Frank Bidart</em>, <em>Terrance Hayes</em>, <em>Giorgiomaria Cornelio</em>, <em>René Daumal</em>. And fiction: <em>Tom Robbins</em>, <em>Régis Messac</em>. Our catalogue is an <span class="highlight">editorial serpent</span> moving toward spaces yet to be explored.</p>
+    </div>
+</section>
+
+<section class="marquee-section">
+    <div class="marquee">
+        <span class="marquee-item">Sloterdijk</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Haraway</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Anne Carson</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Badinter</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Bifo Berardi</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Von Franz</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Gurdjieff</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Jaynes</span><span class="marquee-dot"></span>
+        <span class="marquee-item">De Sutter</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Campagna</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Frank Bidart</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Tom Robbins</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Sloterdijk</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Haraway</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Anne Carson</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Badinter</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Bifo Berardi</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Von Franz</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Gurdjieff</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Jaynes</span><span class="marquee-dot"></span>
+        <span class="marquee-item">De Sutter</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Campagna</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Frank Bidart</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Tom Robbins</span><span class="marquee-dot"></span>
+    </div>
+</section>
+
+<section class="numeri">
+    <div class="numeri-grid">
+        <div class="numero" data-num>
+            <div class="numero-value"><span data-count="200">0</span>+</div>
+            <div class="numero-label">Titles in catalogue</div>
+        </div>
+        <div class="numero" data-num>
+            <div class="numero-value"><span data-count="9">0</span></div>
+            <div class="numero-label">Active series</div>
+        </div>
+        <div class="numero" data-num>
+            <div class="numero-value"><span data-count="12">0</span></div>
+            <div class="numero-label">Translation languages</div>
+        </div>
+        <div class="numero" data-num>
+            <div class="numero-value"><span data-count="9">0</span></div>
+            <div class="numero-label">Years of activity</div>
+        </div>
+    </div>
+</section>
+
+<section class="about-edizioni">
+    <div class="about-hero">
+        <div class="about-hero-content">
+            <p class="about-hero-label reveal-about">Independent publishing house since 2016</p>
+            <h2 class="about-hero-title reveal-about">Edizioni<em>Tlon</em></h2>
+            <p class="about-hero-text reveal-about">Edizioni Tlon was founded in 2016 as the publishing arm of the Tlon cultural project. It is an independent publishing house that publishes contemporary philosophy, gender studies, critical essays, fiction and poetry, with constant attention to the relationship between thought, language and everyday life. The catalogue is built on continuity and coherence: our books do not respond to immediate "topicality," but to long-term work on the cultural knots of the present.</p>
+        </div>
+    </div>
+
+    <div class="linea-editoriale">
+        <div class="linea-container">
+            <div class="linea-title-wrapper">
+                <p class="linea-label reveal-linea">Our orientation</p>
+                <h3 class="linea-title reveal-linea">Editorial<br><em>line</em></h3>
+            </div>
+            <div class="linea-text reveal-linea">
+                Philosophy is the pivot of the publishing project, understood as a practice of orientation rather than academic specialism. Around this axis we articulate texts that traverse feminism, body politics, religious imagery, contemporary narratives and poetry as a form of knowledge. Edizioni Tlon works on texts that hold together accessibility and rigor, avoiding both simplistic popularization and self-referential jargon. Desire, power, spirituality, identity, social transformations: these are the knots that our books explore, with patience and depth.
+            </div>
+        </div>
+    </div>
+
+    <div class="collane-section">
+        <div class="collane-header">
+            <p class="collane-label">Ten reading paths</p>
+            <h3 class="collane-title">The <em>series</em></h3>
+        </div>
+        <div class="collane-grid">
+            <div class="collana-item">
+                <span class="collana-numero">01</span>
+                <div class="collana-content">
+                    <h4 class="collana-nome">Numeri Primi</h4>
+                    <p class="collana-desc">Gender studies, feminisms, genealogies of power. Foundational texts for understanding the historical construction of inequalities and contemporary forms of domination.</p>
+                </div>
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">02</span>
+                <div class="collana-content">
+                    <h4 class="collana-nome">Planetari</h4>
+                    <p class="collana-desc">Philosophy and contemporary thought. Books that address the great themes of the present: spirituality, subjectivity, technology, meaning, community.</p>
+                </div>
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">03</span>
+                <div class="collana-content">
+                    <h4 class="collana-nome">Planetari Big</h4>
+                    <p class="collana-desc">Texts of greater length and theoretical complexity. A series designed for structural works, not occasional ones.</p>
+                </div>
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">04</span>
+                <div class="collana-content">
+                    <h4 class="collana-nome">Hrönir</h4>
+                    <p class="collana-desc">Philosophical essays in extended form. Books that seek depth, and require an unhurried reading time.</p>
+                </div>
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">05</span>
+                <div class="collana-content">
+                    <h4 class="collana-nome">Soglie</h4>
+                    <p class="collana-desc">Political and social essays. Texts that work on the boundaries between individual and collective, norm and deviation, private and public.</p>
+                </div>
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">06</span>
+                <div class="collana-content">
+                    <h4 class="collana-nome">Radici</h4>
+                    <p class="collana-desc">Spirituality, symbolism, religious traditions and their contemporary transformations. The sacred without folklore or pop psychology.</p>
+                </div>
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">07</span>
+                <div class="collana-content">
+                    <h4 class="collana-nome">Finzioni</h4>
+                    <p class="collana-desc">Italian and foreign fiction. Novels and stories that explore unstable identities, fractured memories, inner worlds and unsettling imaginaries.</p>
+                </div>
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">08</span>
+                <div class="collana-content">
+                    <h4 class="collana-nome">Controcielo</h4>
+                    <p class="collana-desc">Poetry. The poetic word as a space of precision, research and resistance to standardized language.</p>
+                </div>
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">09</span>
+                <div class="collana-content">
+                    <h4 class="collana-nome">Tlon Aleph</h4>
+                    <p class="collana-desc">Art catalogues and hybrid books, born from Tlon's work in museum bookshops and exhibition contexts.</p>
+                </div>
+            </div>
+            <div class="collana-item">
+                <span class="collana-numero">10</span>
+                <div class="collana-content">
+                    <h4 class="collana-nome">Uqbar</h4>
+                    <p class="collana-desc">Digital productions and ebooks, often conceived as extensions or variations of the print catalogue.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="libri">
+    <div class="libri-header">
+        <p class="libri-label">The catalogue</p>
+        <h2><em>Representative</em> titles</h2>
+        <p>Books that have defined Edizioni Tlon's publishing identity over the years.</p>
+    </div>
+    <div class="libri-scroll">
+        <div class="libro-card">
+            <div class="libro-cover">
+                <img src="./assets/libri/bellezza.jpg" alt="The Beauty Myth">
+            </div>
+            <div class="libro-info">
+                <h3 class="libro-title">Il mito della bellezza</h3>
+                <p class="libro-author">Naomi Wolf</p>
+            </div>
+        </div>
+        <div class="libro-card">
+            <div class="libro-cover">
+                <img src="./assets/libri/mostruoso.jpg" alt="Dead Blondes and Bad Mothers">
+            </div>
+            <div class="libro-info">
+                <h3 class="libro-title">Il mostruoso femminile</h3>
+                <p class="libro-author">J. E. S. Doyle</p>
+            </div>
+        </div>
+        <div class="libro-card">
+            <div class="libro-cover">
+                <img src="./assets/libri/amore.jpg" alt="Mother Love">
+            </div>
+            <div class="libro-info">
+                <h3 class="libro-title">L'amore in più</h3>
+                <p class="libro-author">Élisabeth Badinter</p>
+            </div>
+        </div>
+        <div class="libro-card">
+            <div class="libro-cover">
+                <img src="./assets/libri/lavoro.jpg" alt="After Work">
+            </div>
+            <div class="libro-info">
+                <h3 class="libro-title">Dopo il lavoro</h3>
+                <p class="libro-author">Helen Hester · Nick Srnicek</p>
+            </div>
+        </div>
+        <div class="libro-card">
+            <div class="libro-cover">
+                <img src="./assets/libri/finita.jpg" alt="To Be Done With Oneself">
+            </div>
+            <div class="libro-info">
+                <h3 class="libro-title">Per farla finita con se stessi</h3>
+                <p class="libro-author">Laurent de Sutter</p>
+            </div>
+        </div>
+        <div class="libro-card">
+            <div class="libro-cover">
+                <img src="./assets/libri/martello.jpg" alt="Philosophy with a Hammer">
+            </div>
+            <div class="libro-info">
+                <h3 class="libro-title">Filosofia col martello</h3>
+                <p class="libro-author">Darío Sztajnszrajber</p>
+            </div>
+        </div>
+        <div class="libro-card">
+            <div class="libro-cover">
+                <img src="./assets/libri/salvati.jpg" alt="Not Yet Saved">
+            </div>
+            <div class="libro-info">
+                <h3 class="libro-title">Non siamo ancora stati salvati</h3>
+                <p class="libro-author">Peter Sloterdijk</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="catalogo-link">
+    <div class="catalogo-link-content">
+        <p class="catalogo-link-label">The complete catalogue</p>
+        <p class="catalogo-link-text">The complete Edizioni Tlon catalogue, with all available publications, can be viewed online.</p>
+        <a href="https://shop.tlon.it" class="catalogo-link-btn" target="_blank">Explore the catalogue</a>
+    </div>
+</section>
+
+<section class="team">
+    <div class="team-container">
+        <div class="team-intro">
+            <h2>Who we <em>are</em></h2>
+            <p>Edizioni Tlon was founded in 2016 from the meeting of Andrea Colamedici, Maura Gancitano and Nicola Bonimelli. A team that believes in books as tools for transformation.</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-member">
+                <h3 class="team-name">Andrea Colamedici</h3>
+                <p class="team-role">Publisher</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Maura Gancitano</h3>
+                <p class="team-role">Publisher</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Nicola Bonimelli</h3>
+                <p class="team-role">Commercial Director</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Marco Carassai</h3>
+                <p class="team-role">Editor</p>
+            </div>
+            <div class="team-member">
+                <h3 class="team-name">Michele Trionfera</h3>
+                <p class="team-role">Bookstores Director</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="cta-bg">
+        <div class="cta-glow"></div>
+        <div class="cta-glow"></div>
+    </div>
+    <div class="cta-content">
+        <h2 class="cta-title">Every book<br>is a <em>world</em></h2>
+        <p class="cta-sub">Explore the catalogue, visit the bookstores, or write to us: we are always looking for new voices and new worlds.</p>
+        <div class="cta-buttons">
+            <a href="https://shop.tlon.it" class="cta-btn primary">Full catalogue</a>
+            <a href="./librerie-en.html" class="cta-btn">Bookstores</a>
+            <a href="./contatti/en.html" class="cta-btn">Contact</a>
+        </div>
+        <div class="cta-contact">
+            <p class="cta-contact-label">For editorial proposals</p>
+            <div class="cta-contact-links">
+                <a href="mailto:redazione@tlon.it" class="cta-contact-link">redazione@tlon.it</a>
+                <a href="mailto:commerciale@tlon.it" class="cta-contact-link">commerciale@tlon.it</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div class="footer-content">
+        <a href="./en.html" class="footer-back">← Home</a>
+        <div class="footer-links">
+            <a href="./il-progetto-en.html">The project</a>
+            <a href="./formazione-en.html">Education</a>
+            <a href="./eventi-festival-en.html">Events</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+const header = document.querySelector('header');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    header.classList.toggle('menu-open');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+});
+
+mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        header.classList.remove('menu-open');
+        document.body.style.overflow = '';
+    });
+});
+
+const cursor = document.getElementById('cursor');
+let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+
+document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateCursor() {
+    cursorX += (mouseX - cursorX) * 0.15;
+    cursorY += (mouseY - cursorY) * 0.15;
+    cursor.style.left = cursorX - 10 + 'px';
+    cursor.style.top = cursorY - 10 + 'px';
+    requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+document.querySelectorAll('a, button, .libro-card, .team-member, .marquee-item, .collana-item').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+const heroText = document.getElementById('heroText');
+if (heroText) {
+    const html = heroText.innerHTML;
+    const parts = html.split(/(<em>.*?<\/em>|<span[^>]*>.*?<\/span>)/g);
+    let newHtml = '';
+    let wordIndex = 0;
+    
+    parts.forEach(part => {
+        if (part.startsWith('<em>')) {
+            const inner = part.replace(/<\/?em>/g, '');
+            newHtml += `<em><span class="word" style="animation-delay: ${wordIndex * 0.03}s">${inner}</span></em>`;
+            wordIndex++;
+        } else if (part.startsWith('<span')) {
+            const match = part.match(/<span([^>]*)>(.*?)<\/span>/);
+            if (match) {
+                newHtml += `<span${match[1]}><span class="word" style="animation-delay: ${wordIndex * 0.03}s">${match[2]}</span></span>`;
+                wordIndex++;
+            }
+        } else {
+            const words = part.split(/(\s+)/);
+            words.forEach(word => {
+                if (word.trim()) {
+                    newHtml += `<span class="word" style="animation-delay: ${wordIndex * 0.03}s">${word}</span>`;
+                    wordIndex++;
+                } else {
+                    newHtml += word;
+                }
+            });
+        }
+    });
+    heroText.innerHTML = newHtml;
+}
+
+const numeri = document.querySelectorAll('.numero');
+const numObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            const span = entry.target.querySelector('[data-count]');
+            if (span && !span.dataset.animated) {
+                span.dataset.animated = 'true';
+                const target = parseInt(span.dataset.count);
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        span.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        span.textContent = Math.floor(current);
+                    }
+                }, 25);
+            }
+        }
+    });
+}, { threshold: 0.5 });
+numeri.forEach(n => numObserver.observe(n));
+
+const aboutObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.2, rootMargin: '0px 0px -100px 0px' });
+
+document.querySelectorAll('.reveal-about, .reveal-linea').forEach(el => {
+    aboutObserver.observe(el);
+});
+
+const collaneObserver = new IntersectionObserver(entries => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }, index * 100);
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.collana-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+    collaneObserver.observe(el);
+});
+
+const libriObserver = new IntersectionObserver(entries => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }, index * 150);
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.libro-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(40px)';
+    el.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+    libriObserver.observe(el);
+});
+</script>
+
+</body>
+</html>
