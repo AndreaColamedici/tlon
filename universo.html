@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universo — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --ottanio-glow: rgba(42, 107, 107, 0.6);
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--nero);
+            color: var(--bianco);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        ::selection {
+            background: var(--ottanio);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            cursor: none;
+        }
+
+        /* ============ CUSTOM CURSOR ============ */
+        .cursor {
+            width: 8px;
+            height: 8px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cursor-ring {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(42, 107, 107, 0.4);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cursor-text {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            font-size: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            opacity: 0;
+            transform: translate(30px, -10px);
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .cursor.hover {
+            transform: scale(4);
+            background: var(--bianco);
+        }
+
+        .cursor-ring.hover {
+            width: 80px;
+            height: 80px;
+            border-color: var(--ottanio);
+        }
+
+        .cursor-text.visible {
+            opacity: 1;
+        }
+
+        /* ============ LOADER ============ */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--nero);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .loader-constellation {
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        .loader-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            animation: starPulse 2s ease-in-out infinite;
+        }
+
+        .loader-star:nth-child(1) { top: 20%; left: 50%; animation-delay: 0s; }
+        .loader-star:nth-child(2) { top: 40%; left: 20%; animation-delay: 0.2s; }
+        .loader-star:nth-child(3) { top: 40%; left: 80%; animation-delay: 0.4s; }
+        .loader-star:nth-child(4) { top: 60%; left: 35%; animation-delay: 0.6s; }
+        .loader-star:nth-child(5) { top: 60%; left: 65%; animation-delay: 0.8s; }
+        .loader-star:nth-child(6) { top: 80%; left: 50%; animation-delay: 1s; }
+
+        .loader-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--ottanio), transparent);
+            transform-origin: left center;
+            animation: lineGrow 2s ease-in-out infinite;
+        }
+
+        @keyframes starPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; box-shadow: 0 0 0 0 var(--ottanio-glow); }
+            50% { transform: scale(2); opacity: 1; box-shadow: 0 0 20px 5px var(--ottanio-glow); }
+        }
+
+        @keyframes lineGrow {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.6; }
+        }
+
+        .loader-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1rem;
+            font-style: italic;
+            letter-spacing: 0.5em;
+            color: var(--ottanio);
+            opacity: 0.5;
+        }
+
+        /* ============ CANVAS BACKGROUND ============ */
+        #universe-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* ============ HEADER ============ */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1002;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            mix-blend-mode: difference;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+            filter: invert(1);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover img {
+            transform: scale(1.05);
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--bianco);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* HAMBURGER */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            width: 28px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1003;
+            background: none;
+            border: none;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--bianco);
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nero);
+            z-index: 1001;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--bianco);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            perspective: 1000px;
+        }
+
+        .hero-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(4rem, 15vw, 14rem);
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(100px) rotateX(-90deg);
+            transform-origin: center bottom;
+        }
+
+        .hero-subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-style: italic;
+            color: rgba(255,255,255,0.4);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+        }
+
+        .hero-scroll-text {
+            font-size: 0.65rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            opacity: 0.3;
+        }
+
+        .hero-scroll-indicator {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--ottanio), transparent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-scroll-indicator::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bianco);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0% { top: -100%; }
+            50%, 100% { top: 100%; }
+        }
+
+        /* ============ ORBITAL NAVIGATION ============ */
+        .orbital-section {
+            min-height: 200vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orbital-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orbital-system {
+            position: relative;
+            width: 800px;
+            height: 800px;
+        }
+
+        .orbital-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, var(--ottanio) 0%, rgba(42, 107, 107, 0.3) 50%, transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 0 80px 20px var(--ottanio-glow);
+            animation: centerPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes centerPulse {
+            0%, 100% { box-shadow: 0 0 80px 20px var(--ottanio-glow); }
+            50% { box-shadow: 0 0 120px 40px var(--ottanio-glow); }
+        }
+
+        .orbital-center-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-style: italic;
+            color: var(--bianco);
+            text-shadow: 0 0 30px rgba(255,255,255,0.5);
+        }
+
+        .orbital-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px dashed rgba(42, 107, 107, 0.15);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .orbital-ring:nth-child(1) { width: 300px; height: 300px; }
+        .orbital-ring:nth-child(2) { width: 450px; height: 450px; }
+        .orbital-ring:nth-child(3) { width: 600px; height: 600px; }
+        .orbital-ring:nth-child(4) { width: 750px; height: 750px; }
+
+        .orbital-planet {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .orbital-planet::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--ottanio);
+            opacity: 0;
+            transform: scale(1.5);
+            transition: all 0.4s ease;
+        }
+
+        .orbital-planet:hover::before {
+            opacity: 0.2;
+            transform: scale(2);
+        }
+
+        .orbital-planet:hover {
+            transform: scale(1.2);
+        }
+
+        .orbital-planet:hover .planet-label {
+            opacity: 1;
+            transform: translateY(-60px);
+        }
+
+        .planet-core {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ottanio) 0%, rgba(42, 107, 107, 0.5) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .planet-icon {
+            font-size: 1.2rem;
+            color: var(--bianco);
+        }
+
+        .planet-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40px);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--bianco);
+            white-space: nowrap;
+            opacity: 0;
+            transition: all 0.4s ease;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Planet positions */
+        .planet-edizioni { top: 50%; left: 100%; transform: translate(-50%, -50%); width: 60px; height: 60px; }
+        .planet-librerie { top: 15%; left: 75%; transform: translate(-50%, -50%); width: 50px; height: 50px; }
+        .planet-formazione { top: 85%; left: 75%; transform: translate(-50%, -50%); width: 55px; height: 55px; }
+        .planet-podcast { top: 15%; left: 25%; transform: translate(-50%, -50%); width: 45px; height: 45px; }
+        .planet-eventi { top: 85%; left: 25%; transform: translate(-50%, -50%); width: 50px; height: 50px; }
+        .planet-ricerca { top: 50%; left: 0; transform: translate(-50%, -50%); width: 55px; height: 55px; }
+
+        /* ============ MANIFESTO SECTION ============ */
+        .manifesto {
+            min-height: 100vh;
+            padding: 15rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .manifesto-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            opacity: 0.03;
+        }
+
+        .manifesto-bg-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 40vw;
+            font-style: italic;
+            color: var(--ottanio);
+            white-space: nowrap;
+        }
+
+        .manifesto-content {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .manifesto-quote {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.3;
+            margin-bottom: 3rem;
+        }
+
+        .manifesto-quote em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .manifesto-quote .word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .manifesto-quote .word.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .manifesto-source {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+
+        .manifesto-source.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .manifesto-source-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+        }
+
+        .manifesto-source-work {
+            font-size: 0.75rem;
+            font-style: italic;
+            color: var(--grigio);
+            margin-top: 0.5rem;
+        }
+
+        /* ============ DIMENSIONS SECTION ============ */
+        .dimensions {
+            padding: 10rem 3rem;
+            position: relative;
+        }
+
+        .dimensions-header {
+            text-align: center;
+            margin-bottom: 8rem;
+        }
+
+        .dimensions-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 400;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dimensions-header h2.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dimensions-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .dimension-panels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dimension-panel {
+            position: relative;
+            padding: 3rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dimension-panel.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dimension-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--ottanio), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s ease;
+        }
+
+        .dimension-panel:hover::before {
+            transform: scaleX(1);
+        }
+
+        .dimension-panel:hover {
+            border-color: rgba(42, 107, 107, 0.3);
+            background: rgba(42, 107, 107, 0.05);
+        }
+
+        .dimension-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 6rem;
+            font-style: italic;
+            color: var(--ottanio);
+            opacity: 0.1;
+            line-height: 1;
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+        }
+
+        .dimension-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--ottanio);
+            position: relative;
+        }
+
+        .dimension-icon::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--ottanio);
+            border-radius: 50%;
+        }
+
+        .dimension-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .dimension-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .dimension-desc {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 2rem;
+        }
+
+        .dimension-link {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .dimension-link::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .dimension-link:hover::after {
+            transform: translateX(5px);
+        }
+
+        /* ============ FOUNDERS SECTION ============ */
+        .founders {
+            padding: 10rem 3rem;
+            background: linear-gradient(180deg, var(--nero) 0%, #0f1a1a 100%);
+        }
+
+        .founders-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .founders-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 400;
+        }
+
+        .founders-header h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .founders-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .founder-card {
+            position: relative;
+            padding: 4rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .founder-card::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, var(--ottanio-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+        .founder-card:hover::before {
+            top: 0;
+            opacity: 0.1;
+        }
+
+        .founder-card:hover {
+            border-color: var(--ottanio);
+            transform: translateY(-10px);
+        }
+
+        .founder-role {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1rem;
+        }
+
+        .founder-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .founder-name em {
+            font-style: italic;
+        }
+
+        .founder-bio {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 2rem;
+        }
+
+        .founder-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .founder-tag {
+            padding: 0.4rem 0.8rem;
+            background: rgba(42, 107, 107, 0.15);
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--ottanio);
+        }
+
+        .founder-cta {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--bianco);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .founder-cta::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .founder-card:hover .founder-cta {
+            color: var(--ottanio);
+        }
+
+        .founder-card:hover .founder-cta::after {
+            transform: translateX(5px);
+        }
+
+        /* ============ NUMBERS SECTION ============ */
+        .numbers {
+            padding: 10rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .numbers::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            border: 1px solid rgba(42, 107, 107, 0.1);
+            border-radius: 50%;
+            animation: numbersPulse 10s ease-in-out infinite;
+        }
+
+        @keyframes numbersPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.5; }
+        }
+
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .number-item {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .number-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .number-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(4rem, 8vw, 7rem);
+            font-style: italic;
+            color: var(--ottanio);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .number-value span {
+            display: inline-block;
+        }
+
+        .number-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ============ CONSTELLATION CTA ============ */
+        .constellation-cta {
+            padding: 15rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .constellation-cta-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .cta-star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        .constellation-cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 400;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .cta-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .cta-subtitle {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 3rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1.2rem 2.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            border: 1px solid var(--bianco);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--bianco);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .cta-btn:hover::before {
+            left: 0;
+        }
+
+        .cta-btn:hover {
+            color: var(--nero);
+        }
+
+        .cta-btn.primary {
+            background: var(--bianco);
+            color: var(--nero);
+            border-color: var(--bianco);
+        }
+
+        .cta-btn.primary::before {
+            background: var(--ottanio);
+        }
+
+        .cta-btn.primary:hover {
+            color: var(--bianco);
+            border-color: var(--ottanio);
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            padding: 4rem 3rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-brand {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-links a {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--bianco);
+        }
+
+        .footer-copyright {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1200px) {
+            .dimension-panels {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .numbers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .cursor, .cursor-ring, .cursor-text {
+                display: none;
+            }
+
+            body {
+                cursor: auto;
+            }
+
+            .orbital-system {
+                width: 350px;
+                height: 350px;
+            }
+
+            .orbital-center {
+                width: 100px;
+                height: 100px;
+            }
+
+            .orbital-center-text {
+                font-size: 1.5rem;
+            }
+
+            .orbital-ring:nth-child(1) { width: 160px; height: 160px; }
+            .orbital-ring:nth-child(2) { width: 220px; height: 220px; }
+            .orbital-ring:nth-child(3) { width: 280px; height: 280px; }
+            .orbital-ring:nth-child(4) { width: 340px; height: 340px; }
+
+            .planet-edizioni, .planet-librerie, .planet-formazione,
+            .planet-podcast, .planet-eventi, .planet-ricerca {
+                width: 35px !important;
+                height: 35px !important;
+            }
+
+            .dimension-panels {
+                grid-template-columns: 1fr;
+            }
+
+            .founders-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .numbers-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+
+            .footer-grid {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .numbers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-constellation">
+            <div class="loader-star"></div>
+            <div class="loader-star"></div>
+            <div class="loader-star"></div>
+            <div class="loader-star"></div>
+            <div class="loader-star"></div>
+            <div class="loader-star"></div>
+        </div>
+        <span class="loader-text">Mappando l'universo</span>
+    </div>
+
+    <!-- CURSOR -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+    <div class="cursor-text" id="cursor-text"></div>
+
+    <!-- CANVAS -->
+    <canvas id="universe-canvas"></canvas>
+
+    <!-- HEADER -->
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./il-progetto.html">Il Progetto</a>
+            <a href="./andrea-colamedici/">Colamedici</a>
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="./edizioni.html">Edizioni</a>
+            <a href="./librerie.html">Librerie</a>
+            <a href="./formazione.html">Formazione</a>
+            <a href="./eventi-festival.html">Eventi</a>
+            <a href="./contatti/">Contatti</a>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="./il-progetto.html">Il Progetto</a>
+        <a href="./andrea-colamedici/">Colamedici</a>
+        <a href="./maura-gancitano/">Gancitano</a>
+        <a href="./edizioni.html">Edizioni</a>
+        <a href="./librerie.html">Librerie</a>
+        <a href="./formazione.html">Formazione</a>
+        <a href="./eventi-festival.html">Eventi</a>
+        <a href="./contatti/">Contatti</a>
+    </div>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-content">
+                <p class="hero-label">Esplora le costellazioni</p>
+                <h1 class="hero-title" id="heroTitle">Universo</h1>
+                <p class="hero-subtitle">Un pianeta immaginario che, a forza di essere pensato, è diventato reale. Filosofia, editoria, luoghi, podcast, formazione: ogni dimensione è connessa alle altre.</p>
+            </div>
+            <div class="hero-scroll">
+                <span class="hero-scroll-text">Naviga</span>
+                <div class="hero-scroll-indicator"></div>
+            </div>
+        </section>
+
+        <!-- ORBITAL NAVIGATION -->
+        <section class="orbital-section">
+            <div class="orbital-container">
+                <div class="orbital-system">
+                    <div class="orbital-ring"></div>
+                    <div class="orbital-ring"></div>
+                    <div class="orbital-ring"></div>
+                    <div class="orbital-ring"></div>
+                    
+                    <div class="orbital-center">
+                        <span class="orbital-center-text">Tlon</span>
+                    </div>
+
+                    <a href="./edizioni.html" class="orbital-planet planet-edizioni" data-label="Edizioni">
+                        <div class="planet-core">
+                            <span class="planet-icon">📚</span>
+                        </div>
+                        <span class="planet-label">Edizioni</span>
+                    </a>
+
+                    <a href="./librerie.html" class="orbital-planet planet-librerie" data-label="Librerie">
+                        <div class="planet-core">
+                            <span class="planet-icon">🏛️</span>
+                        </div>
+                        <span class="planet-label">Librerie</span>
+                    </a>
+
+                    <a href="./formazione.html" class="orbital-planet planet-formazione" data-label="Formazione">
+                        <div class="planet-core">
+                            <span class="planet-icon">🎓</span>
+                        </div>
+                        <span class="planet-label">Formazione</span>
+                    </a>
+
+                    <a href="./podcast.html" class="orbital-planet planet-podcast" data-label="Podcast">
+                        <div class="planet-core">
+                            <span class="planet-icon">🎙️</span>
+                        </div>
+                        <span class="planet-label">Podcast</span>
+                    </a>
+
+                    <a href="./eventi-festival.html" class="orbital-planet planet-eventi" data-label="Eventi">
+                        <div class="planet-core">
+                            <span class="planet-icon">✨</span>
+                        </div>
+                        <span class="planet-label">Eventi</span>
+                    </a>
+
+                    <a href="./ricerca.html" class="orbital-planet planet-ricerca" data-label="Ricerca">
+                        <div class="planet-core">
+                            <span class="planet-icon">🔬</span>
+                        </div>
+                        <span class="planet-label">Ricerca</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- MANIFESTO -->
+        <section class="manifesto">
+            <div class="manifesto-bg">
+                <span class="manifesto-bg-text">Tlön</span>
+            </div>
+            <div class="manifesto-content">
+                <p class="manifesto-quote" id="manifestoQuote">«Tlön sarà un labirinto, ma è un labirinto ordito dagli uomini, un labirinto destinato a essere <em>decifrato</em> dagli uomini.»</p>
+                <div class="manifesto-source" id="manifestoSource">
+                    <p class="manifesto-source-name">Jorge Luis Borges</p>
+                    <p class="manifesto-source-work">Tlön, Uqbar, Orbis Tertius — Finzioni, 1944</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIMENSIONS -->
+        <section class="dimensions">
+            <div class="dimensions-header">
+                <h2 id="dimensionsTitle">Le <em>dimensioni</em></h2>
+            </div>
+            <div class="dimension-panels">
+                <div class="dimension-panel" data-delay="0">
+                    <span class="dimension-num">I</span>
+                    <div class="dimension-icon"></div>
+                    <h3 class="dimension-title">Casa <em>Editrice</em></h3>
+                    <p class="dimension-desc">Edizioni Tlon nasce nel febbraio 2016. Filosofia, studi di genere, attualità, pamphlet, pratiche spirituali, romanzi, poesia. Da Élisabeth Badinter a Peter Sloterdijk, da Anne Carson a Donna Haraway.</p>
+                    <a href="./edizioni.html" class="dimension-link">Catalogo</a>
+                </div>
+                <div class="dimension-panel" data-delay="100">
+                    <span class="dimension-num">II</span>
+                    <div class="dimension-icon"></div>
+                    <h3 class="dimension-title">Librerie e <em>Bookshop</em></h3>
+                    <p class="dimension-desc">Libreria Teatro Tlon a Roma Ostiense, Tlon Aleph alla Galleria Nazionale d'Arte Moderna, il bookshop di Villa Medici, la Libreria Giovanni alla Querini Stampalia di Venezia.</p>
+                    <a href="./librerie.html" class="dimension-link">Luoghi</a>
+                </div>
+                <div class="dimension-panel" data-delay="200">
+                    <span class="dimension-num">III</span>
+                    <div class="dimension-icon"></div>
+                    <h3 class="dimension-title">Scuola di <em>Filosofia</em></h3>
+                    <p class="dimension-desc">Podcast, corsi, seminari, lezioni di meraviglia. La filosofia come strumento per vivere meglio e pensare criticamente la contemporaneità. Scuola di Filosofie è tra i più ascoltati in Italia.</p>
+                    <a href="./podcast.html" class="dimension-link">Ascolta</a>
+                </div>
+                <div class="dimension-panel" data-delay="300">
+                    <span class="dimension-num">IV</span>
+                    <div class="dimension-icon"></div>
+                    <h3 class="dimension-title">Festival ed <em>Eventi</em></h3>
+                    <p class="dimension-desc">Direzione filosofica del Festival del Pensare Contemporaneo di Piacenza e del Carnevale di Putignano. Il Pod — Italian Podcast Awards, Festa della Filosofia, Prendiamola con Filosofia.</p>
+                    <a href="./eventi-festival.html" class="dimension-link">Calendario</a>
+                </div>
+                <div class="dimension-panel" data-delay="400">
+                    <span class="dimension-num">V</span>
+                    <div class="dimension-icon"></div>
+                    <h3 class="dimension-title">Formazione <em>Corporate</em></h3>
+                    <p class="dimension-desc">Percorsi formativi su filosofia, AI, diversity & inclusion, educazione sentimentale, senso del lavoro. Collaboriamo con IED, IULM, Generali, UniCredit, Ambrosetti, Google.</p>
+                    <a href="./formazione.html" class="dimension-link">Percorsi</a>
+                </div>
+                <div class="dimension-panel" data-delay="500">
+                    <span class="dimension-num">VI</span>
+                    <div class="dimension-icon"></div>
+                    <h3 class="dimension-title"><em>Ricerca</em></h3>
+                    <p class="dimension-desc">Ipnocrazia, L'alba dei nuovi dei, Botanica della meraviglia. Indagini sulla contemporaneità: intelligenza artificiale, trasformazione digitale, architettura della realtà.</p>
+                    <a href="./ricerca.html" class="dimension-link">Progetti</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOUNDERS -->
+        <section class="founders">
+            <div class="founders-header">
+                <h2>Chi ha <em>immaginato</em> Tlon</h2>
+            </div>
+            <div class="founders-grid">
+                <a href="./maura-gancitano/" class="founder-card">
+                    <span class="founder-role">Fondatrice</span>
+                    <h3 class="founder-name">Maura <em>Gancitano</em></h3>
+                    <p class="founder-bio">Filosofa, scrittrice, editrice. Premio Rapallo con Specchio delle mie brame (Einaudi). Collabora con La Repubblica, Vanity Fair, Donna Moderna.</p>
+                    <div class="founder-tags">
+                        <span class="founder-tag">Femminismo filosofico</span>
+                        <span class="founder-tag">Educazione sentimentale</span>
+                        <span class="founder-tag">Bellezza e corpo</span>
+                    </div>
+                    <span class="founder-cta">Scopri</span>
+                </a>
+                <a href="./andrea-colamedici/" class="founder-card">
+                    <span class="founder-role">Fondatore</span>
+                    <h3 class="founder-name">Andrea <em>Colamedici</em></h3>
+                    <p class="founder-bio">Filosofo, editore, formatore, regista teatrale. Docente IED e IULM. Presidente GenIALAB. Autore di Ipnocrazia, tradotto in quattro lingue.</p>
+                    <div class="founder-tags">
+                        <span class="founder-tag">AI e trasformazione digitale</span>
+                        <span class="founder-tag">Leadership</span>
+                        <span class="founder-tag">Social Media Theory</span>
+                    </div>
+                    <span class="founder-cta">Scopri</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- NUMBERS -->
+        <section class="numbers">
+            <div class="numbers-grid">
+                <div class="number-item">
+                    <div class="number-value"><span data-target="10">0</span></div>
+                    <p class="number-label">Anni di attività</p>
+                </div>
+                <div class="number-item">
+                    <div class="number-value"><span data-target="200">0</span>+</div>
+                    <p class="number-label">Titoli pubblicati</p>
+                </div>
+                <div class="number-item">
+                    <div class="number-value"><span data-target="4">0</span></div>
+                    <p class="number-label">Librerie</p>
+                </div>
+                <div class="number-item">
+                    <div class="number-value"><span data-target="9">0</span></div>
+                    <p class="number-label">Lingue traduzioni</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONSTELLATION CTA -->
+        <section class="constellation-cta">
+            <div class="constellation-cta-bg" id="ctaStars"></div>
+            <div class="constellation-cta-content">
+                <h2 class="cta-title">Entra nell'<em>orbita</em></h2>
+                <p class="cta-subtitle">Iscriviti alla newsletter, visita le librerie, esplora il catalogo. Ogni settimana nuove idee per pensare il presente.</p>
+                <div class="cta-buttons">
+                    <a href="https://www.tlonletter.it" class="cta-btn primary" target="_blank">Newsletter</a>
+                    <a href="./contatti/" class="cta-btn">Contatti</a>
+                    <a href="https://shop.tlon.it" class="cta-btn" target="_blank">Shop</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <span class="footer-brand">Tlon</span>
+            <div class="footer-links">
+                <a href="./">Home</a>
+                <a href="./il-progetto.html">Il Progetto</a>
+                <a href="./edizioni.html">Edizioni</a>
+                <a href="./librerie.html">Librerie</a>
+                <a href="./privacy.html">Privacy</a>
+            </div>
+            <span class="footer-copyright">© 2026 Tlon Srl</span>
+        </div>
+    </footer>
+
+    <script>
+        // ============ LOADER ============
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+                initAnimations();
+            }, 1500);
+        });
+
+        // ============ CUSTOM CURSOR ============
+        const cursor = document.getElementById('cursor');
+        const cursorRing = document.getElementById('cursor-ring');
+        const cursorText = document.getElementById('cursor-text');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        let ringX = 0, ringY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+            ringX += (mouseX - ringX) * 0.1;
+            ringY += (mouseY - ringY) * 0.1;
+
+            cursor.style.left = cursorX - 4 + 'px';
+            cursor.style.top = cursorY - 4 + 'px';
+            cursorRing.style.left = ringX - 20 + 'px';
+            cursorRing.style.top = ringY - 20 + 'px';
+            cursorText.style.left = mouseX + 'px';
+            cursorText.style.top = mouseY + 'px';
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Hover effects
+        document.querySelectorAll('a, button, .orbital-planet, .dimension-panel, .founder-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                cursorRing.classList.add('hover');
+                const label = el.dataset.label;
+                if (label) {
+                    cursorText.textContent = label;
+                    cursorText.classList.add('visible');
+                }
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+                cursorRing.classList.remove('hover');
+                cursorText.classList.remove('visible');
+            });
+        });
+
+        // ============ CANVAS UNIVERSE ============
+        const canvas = document.getElementById('universe-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        let nebulas = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            nebulas = [];
+            const starCount = Math.floor((canvas.width * canvas.height) / 8000);
+            
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.5 + 0.5,
+                    opacity: Math.random() * 0.5 + 0.2,
+                    pulse: Math.random() * Math.PI * 2,
+                    pulseSpeed: Math.random() * 0.02 + 0.01
+                });
+            }
+
+            // Nebulas
+            for (let i = 0; i < 3; i++) {
+                nebulas.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 300 + 200,
+                    opacity: Math.random() * 0.03 + 0.02
+                });
+            }
+        }
+
+        function drawUniverse() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw nebulas
+            nebulas.forEach(nebula => {
+                const gradient = ctx.createRadialGradient(
+                    nebula.x, nebula.y, 0,
+                    nebula.x, nebula.y, nebula.radius
+                );
+                gradient.addColorStop(0, `rgba(42, 107, 107, ${nebula.opacity})`);
+                gradient.addColorStop(1, 'transparent');
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(nebula.x, nebula.y, nebula.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Draw stars
+            stars.forEach(star => {
+                star.pulse += star.pulseSpeed;
+                const opacity = star.opacity + Math.sin(star.pulse) * 0.2;
+                
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                ctx.fill();
+            });
+
+            // Draw connections between nearby stars
+            stars.forEach((star1, i) => {
+                stars.slice(i + 1).forEach(star2 => {
+                    const dist = Math.hypot(star1.x - star2.x, star1.y - star2.y);
+                    if (dist < 80) {
+                        ctx.beginPath();
+                        ctx.moveTo(star1.x, star1.y);
+                        ctx.lineTo(star2.x, star2.y);
+                        ctx.strokeStyle = `rgba(42, 107, 107, ${0.1 * (1 - dist / 80)})`;
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(drawUniverse);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        drawUniverse();
+
+        // ============ MOBILE MENU ============
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // ============ HERO ANIMATIONS ============
+        function initAnimations() {
+            const heroTitle = document.getElementById('heroTitle');
+            const text = heroTitle.textContent;
+            heroTitle.innerHTML = text.split('').map(char => 
+                `<span class="char">${char}</span>`
+            ).join('');
+
+            const chars = heroTitle.querySelectorAll('.char');
+            chars.forEach((char, i) => {
+                setTimeout(() => {
+                    char.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
+                    char.style.opacity = '1';
+                    char.style.transform = 'translateY(0) rotateX(0)';
+                }, 100 + i * 80);
+            });
+
+            setTimeout(() => {
+                document.querySelector('.hero-label').style.cssText = 'opacity: 1; transform: translateY(0); transition: all 1s ease;';
+            }, 600);
+
+            setTimeout(() => {
+                document.querySelector('.hero-subtitle').style.cssText = 'opacity: 1; transform: translateY(0); transition: all 1s ease;';
+            }, 900);
+
+            setTimeout(() => {
+                document.querySelector('.hero-scroll').style.cssText = 'opacity: 1; transition: opacity 1s ease;';
+            }, 1200);
+        }
+
+        // ============ MANIFESTO ANIMATION ============
+        const manifestoQuote = document.getElementById('manifestoQuote');
+        const manifestoSource = document.getElementById('manifestoSource');
+        const quoteText = manifestoQuote.innerHTML;
+        
+        // Preserve HTML while wrapping words
+        const words = quoteText.replace(/<\/?em>/g, match => `|||${match}|||`).split(/\s+/);
+        manifestoQuote.innerHTML = words.map(word => {
+            if (word.includes('|||')) {
+                return word.replace(/\|\|\|/g, '');
+            }
+            return `<span class="word">${word}</span>`;
+        }).join(' ');
+
+        const manifestoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const wordEls = manifestoQuote.querySelectorAll('.word');
+                    wordEls.forEach((word, i) => {
+                        setTimeout(() => word.classList.add('visible'), i * 50);
+                    });
+                    setTimeout(() => {
+                        manifestoSource.classList.add('visible');
+                    }, wordEls.length * 50 + 300);
+                }
+            });
+        }, { threshold: 0.5 });
+        manifestoObserver.observe(manifestoQuote);
+
+        // ============ DIMENSIONS ANIMATION ============
+        const dimensionsTitle = document.getElementById('dimensionsTitle');
+        const dimensionsTitleObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.5 });
+        dimensionsTitleObserver.observe(dimensionsTitle);
+
+        const dimensionPanels = document.querySelectorAll('.dimension-panel');
+        const panelObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = parseInt(entry.target.dataset.delay) || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, delay);
+                }
+            });
+        }, { threshold: 0.2 });
+        dimensionPanels.forEach(panel => panelObserver.observe(panel));
+
+        // ============ NUMBERS ANIMATION ============
+        const numberItems = document.querySelectorAll('.number-item');
+        const numberObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                        
+                        // Animate number
+                        const valueEl = entry.target.querySelector('.number-value span');
+                        if (valueEl) {
+                            const target = parseInt(valueEl.dataset.target);
+                            animateNumber(valueEl, target);
+                        }
+                    }, index * 150);
+                }
+            });
+        }, { threshold: 0.5 });
+        numberItems.forEach(item => numberObserver.observe(item));
+
+        function animateNumber(el, target) {
+            let current = 0;
+            const increment = target / 40;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    el.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    el.textContent = Math.floor(current);
+                }
+            }, 30);
+        }
+
+        // ============ CTA STARS ============
+        const ctaStars = document.getElementById('ctaStars');
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.className = 'cta-star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            ctaStars.appendChild(star);
+        }
+
+        // ============ PARALLAX ============
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            
+            if (hero && scrolled < window.innerHeight) {
+                const content = hero.querySelector('.hero-content');
+                content.style.transform = `translateY(${scrolled * 0.4}px)`;
+                content.style.opacity = 1 - (scrolled / window.innerHeight);
+            }
+        });
+    </script>
+
+</body>
+</html>
