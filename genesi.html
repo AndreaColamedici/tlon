@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genesi — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --nero: #0a0a0a;
+            --bianco: #ffffff;
+            --ottanio: #2a6b6b;
+        }
+
+        html, body {
+            background: var(--nero);
+            color: var(--bianco);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* CUSTOM CURSOR - LIQUID */
+        #liquid-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            mix-blend-mode: difference;
+            filter: blur(0px);
+            transition: transform 0.1s, width 0.3s, height 0.3s, filter 0.3s;
+        }
+
+        #liquid-cursor.expand {
+            width: 100px;
+            height: 100px;
+            filter: blur(20px);
+        }
+
+        /* PROGRESS BAR */
+        #progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--ottanio);
+            z-index: 10000;
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+
+        /* NAVIGATION */
+        #nav {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            right: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        #nav a {
+            color: var(--bianco);
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        #nav a:hover { opacity: 1; }
+
+        .logo-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+        }
+
+        /* CHAPTER INDICATOR */
+        #chapter-indicator {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chapter-dot {
+            width: 8px;
+            height: 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chapter-dot.active {
+            background: var(--ottanio);
+            border-color: var(--ottanio);
+            transform: scale(1.5);
+        }
+
+        /* INTRO - VOID */
+        #void {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #void-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #void-text {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        #void-text h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 15vw, 12rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            opacity: 0;
+        }
+
+        #void-text h1 span {
+            display: inline-block;
+            animation: glitchIn 0.1s forwards;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes glitchIn {
+            0% { opacity: 0; transform: translateY(100px) skewX(20deg); filter: blur(10px); }
+            50% { opacity: 1; transform: translateY(-20px) skewX(-5deg); filter: blur(2px); }
+            100% { opacity: 1; transform: translateY(0) skewX(0); filter: blur(0); }
+        }
+
+        #void-subtitle {
+            font-size: 0.8rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            opacity: 0;
+            margin-top: 2rem;
+            color: var(--ottanio);
+        }
+
+        /* SCROLL PROMPT */
+        #scroll-prompt {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeInUp 1s 3s forwards;
+        }
+
+        #scroll-prompt::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--ottanio), transparent);
+            margin: 1rem auto 0;
+            animation: scrollLine 2s infinite;
+        }
+
+        @keyframes scrollLine {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.5); opacity: 0.3; }
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 0.5; }
+        }
+
+        /* BIRTH SECTION */
+        #birth {
+            min-height: 300vh;
+            position: relative;
+        }
+
+        #birth-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #birth-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            max-width: 800px;
+            text-align: center;
+            line-height: 1.6;
+            padding: 0 2rem;
+        }
+
+        #birth-text .word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(50px) rotateX(-90deg);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center bottom;
+        }
+
+        #birth-text .word.visible {
+            opacity: 1;
+            transform: translateY(0) rotateX(0);
+        }
+
+        #birth-text em {
+            color: var(--ottanio);
+            font-style: italic;
+        }
+
+        /* EXPANSION - PARTICLES */
+        #expansion {
+            min-height: 200vh;
+            position: relative;
+        }
+
+        #expansion-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        #expansion-canvas.visible {
+            opacity: 1;
+        }
+
+        #expansion-content {
+            position: relative;
+            z-index: 10;
+            min-height: 200vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20vh 2rem;
+        }
+
+        .dimension-card {
+            width: 100%;
+            max-width: 600px;
+            padding: 4rem;
+            margin: 10vh 0;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: scale(0.8) rotateY(-15deg);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dimension-card.visible {
+            opacity: 1;
+            transform: scale(1) rotateY(0);
+        }
+
+        .dimension-card:hover {
+            border-color: var(--ottanio);
+            transform: scale(1.02);
+        }
+
+        .dimension-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 8rem;
+            font-style: italic;
+            color: var(--ottanio);
+            opacity: 0.1;
+            line-height: 0.8;
+            margin-bottom: -3rem;
+        }
+
+        .dimension-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dimension-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .dimension-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            opacity: 0.6;
+        }
+
+        /* CONVERGENCE - MORPHING */
+        #convergence {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #morph-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        #morph-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        #morph-svg path {
+            fill: none;
+            stroke: var(--ottanio);
+            stroke-width: 1;
+            filter: drop-shadow(0 0 20px var(--ottanio));
+        }
+
+        .convergence-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Instrument Serif', serif;
+            font-size: 3rem;
+            font-style: italic;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* FOUNDERS - REVEAL */
+        #founders {
+            min-height: 100vh;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .founder-half {
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .founder-half::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--ottanio);
+            transform: translateY(100%);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .founder-half:hover::before {
+            transform: translateY(0);
+        }
+
+        .founder-half:first-child {
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .founder-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        .founder-half:hover .founder-content {
+            color: var(--bianco);
+        }
+
+        .founder-role {
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
+        .founder-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.1;
+        }
+
+        .founder-name em {
+            font-style: italic;
+        }
+
+        /* FINALE */
+        #finale {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #finale-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        #finale h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 3rem;
+        }
+
+        #finale h2 em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        #finale-cta {
+            display: inline-flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        #finale-cta a {
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--bianco);
+            color: var(--bianco);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.3s;
+        }
+
+        #finale-cta a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--bianco);
+            transition: left 0.3s;
+            z-index: -1;
+        }
+
+        #finale-cta a:hover::before {
+            left: 0;
+        }
+
+        #finale-cta a:hover {
+            color: var(--nero);
+        }
+
+        /* MAGNETIC LINKS */
+        .magnetic {
+            display: inline-block;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            #liquid-cursor { display: none; }
+            body { cursor: auto; }
+            #chapter-indicator { display: none; }
+            
+            #founders {
+                flex-direction: column;
+            }
+            
+            .founder-half {
+                min-height: 50vh;
+            }
+            
+            .founder-half:first-child {
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LIQUID CURSOR -->
+    <div id="liquid-cursor"></div>
+
+    <!-- PROGRESS -->
+    <div id="progress"></div>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <a href="./" class="logo-text magnetic">Tlon</a>
+        <a href="./il-progetto.html" class="magnetic">Scopri</a>
+    </nav>
+
+    <!-- CHAPTER INDICATOR -->
+    <div id="chapter-indicator">
+        <div class="chapter-dot active" data-section="void"></div>
+        <div class="chapter-dot" data-section="birth"></div>
+        <div class="chapter-dot" data-section="expansion"></div>
+        <div class="chapter-dot" data-section="convergence"></div>
+        <div class="chapter-dot" data-section="founders"></div>
+        <div class="chapter-dot" data-section="finale"></div>
+    </div>
+
+    <!-- VOID -->
+    <section id="void">
+        <canvas id="void-canvas"></canvas>
+        <div id="void-text">
+            <h1></h1>
+        </div>
+        <p id="void-subtitle">Un pianeta immaginario. Che esiste.</p>
+        <div id="scroll-prompt">Scroll</div>
+    </section>
+
+    <!-- BIRTH -->
+    <section id="birth">
+        <div id="birth-sticky">
+            <p id="birth-text">
+                Nel 1940, Borges immaginò un pianeta chiamato <em>Tlön</em>. 
+                Un mondo creato dal pensiero, dove le idee, a forza di essere pensate insieme, 
+                diventano <em>reali</em>. Nel 2015, Maura Gancitano e Andrea Colamedici 
+                decisero di abitare quel pianeta.
+            </p>
+        </div>
+    </section>
+
+    <!-- EXPANSION -->
+    <section id="expansion">
+        <canvas id="expansion-canvas"></canvas>
+        <div id="expansion-content">
+            <div class="dimension-card">
+                <div class="dimension-num">I</div>
+                <h3 class="dimension-title">Casa <em>Editrice</em></h3>
+                <p class="dimension-text">Da Élisabeth Badinter a Peter Sloterdijk, da Anne Carson a Donna Haraway. Oltre 200 titoli che esplorano i confini del pensiero.</p>
+            </div>
+            <div class="dimension-card">
+                <div class="dimension-num">II</div>
+                <h3 class="dimension-title">Quattro <em>Librerie</em></h3>
+                <p class="dimension-text">Roma Ostiense, Galleria Nazionale, Villa Medici, Querini Stampalia Venezia. Luoghi dove il pensiero prende forma fisica.</p>
+            </div>
+            <div class="dimension-card">
+                <div class="dimension-num">III</div>
+                <h3 class="dimension-title">Scuola di <em>Filosofie</em></h3>
+                <p class="dimension-text">Tra i podcast più ascoltati in Italia. La filosofia come strumento per abitare il presente.</p>
+            </div>
+            <div class="dimension-card">
+                <div class="dimension-num">IV</div>
+                <h3 class="dimension-title">Festival ed <em>Eventi</em></h3>
+                <p class="dimension-text">Piacenza, Putignano, Il Pod. Portare il pensiero dove può accadere l'imprevisto.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONVERGENCE -->
+    <section id="convergence">
+        <div id="morph-container">
+            <svg id="morph-svg" viewBox="0 0 400 400">
+                <path id="morph-path"></path>
+            </svg>
+            <div class="convergence-text">Tutto converge</div>
+        </div>
+    </section>
+
+    <!-- FOUNDERS -->
+    <section id="founders">
+        <a href="./maura-gancitano/" class="founder-half">
+            <div class="founder-content">
+                <p class="founder-role">Fondatrice</p>
+                <h3 class="founder-name">Maura<br><em>Gancitano</em></h3>
+            </div>
+        </a>
+        <a href="./andrea-colamedici/" class="founder-half">
+            <div class="founder-content">
+                <p class="founder-role">Fondatore</p>
+                <h3 class="founder-name">Andrea<br><em>Colamedici</em></h3>
+            </div>
+        </a>
+    </section>
+
+    <!-- FINALE -->
+    <section id="finale">
+        <div id="finale-content">
+            <h2>Entra nel <em>labirinto</em></h2>
+            <div id="finale-cta">
+                <a href="./il-progetto.html" class="magnetic">Il Progetto</a>
+                <a href="./edizioni.html" class="magnetic">Edizioni</a>
+                <a href="https://www.tlonletter.it" target="_blank" class="magnetic">Newsletter</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    // ═══════════════════════════════════════════════════════════
+    // LIQUID CURSOR
+    // ═══════════════════════════════════════════════════════════
+    const cursor = document.getElementById('liquid-cursor');
+    let cursorX = 0, cursorY = 0;
+    let targetX = 0, targetY = 0;
+
+    document.addEventListener('mousemove', e => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+    });
+
+    function animateCursor() {
+        cursorX += (targetX - cursorX) * 0.15;
+        cursorY += (targetY - cursorY) * 0.15;
+        cursor.style.left = cursorX - 10 + 'px';
+        cursor.style.top = cursorY - 10 + 'px';
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Expand on interactive elements
+    document.querySelectorAll('a, button, .founder-half, .dimension-card').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+    });
+
+    // ═══════════════════════════════════════════════════════════
+    // MAGNETIC LINKS
+    // ═══════════════════════════════════════════════════════════
+    document.querySelectorAll('.magnetic').forEach(el => {
+        el.addEventListener('mousemove', e => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        });
+        el.addEventListener('mouseleave', () => {
+            el.style.transform = 'translate(0, 0)';
+        });
+    });
+
+    // ═══════════════════════════════════════════════════════════
+    // PROGRESS BAR
+    // ═══════════════════════════════════════════════════════════
+    const progress = document.getElementById('progress');
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+        progress.style.transform = `scaleX(${scrolled})`;
+    });
+
+    // ═══════════════════════════════════════════════════════════
+    // VOID CANVAS - NOISE FIELD
+    // ═══════════════════════════════════════════════════════════
+    const voidCanvas = document.getElementById('void-canvas');
+    const voidCtx = voidCanvas.getContext('2d');
+    let noiseZ = 0;
+
+    function resizeVoidCanvas() {
+        voidCanvas.width = window.innerWidth;
+        voidCanvas.height = window.innerHeight;
+    }
+    resizeVoidCanvas();
+    window.addEventListener('resize', resizeVoidCanvas);
+
+    // Simple noise function
+    function noise(x, y, z) {
+        const X = Math.floor(x) & 255;
+        const Y = Math.floor(y) & 255;
+        const Z = Math.floor(z) & 255;
+        return (Math.sin(X * 12.9898 + Y * 78.233 + Z * 37.719) * 43758.5453) % 1;
+    }
+
+    function drawVoid() {
+        const imageData = voidCtx.createImageData(voidCanvas.width, voidCanvas.height);
+        const data = imageData.data;
+        const scale = 0.005;
+        
+        for (let y = 0; y < voidCanvas.height; y += 4) {
+            for (let x = 0; x < voidCanvas.width; x += 4) {
+                const n = noise(x * scale, y * scale, noiseZ);
+                const brightness = n > 0.97 ? 255 : 0;
+                const alpha = brightness > 0 ? Math.random() * 100 + 50 : 0;
+                
+                for (let dy = 0; dy < 4; dy++) {
+                    for (let dx = 0; dx < 4; dx++) {
+                        const i = ((y + dy) * voidCanvas.width + (x + dx)) * 4;
+                        data[i] = brightness;
+                        data[i + 1] = brightness;
+                        data[i + 2] = brightness;
+                        data[i + 3] = alpha;
+                    }
+                }
+            }
+        }
+        
+        voidCtx.putImageData(imageData, 0, 0);
+        noiseZ += 0.01;
+        requestAnimationFrame(drawVoid);
+    }
+    drawVoid();
+
+    // ═══════════════════════════════════════════════════════════
+    // GLITCH TEXT REVEAL
+    // ═══════════════════════════════════════════════════════════
+    const titleEl = document.querySelector('#void-text h1');
+    const titleText = 'Tlon';
+    const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`';
+
+    function glitchReveal() {
+        let iterations = 0;
+        const maxIterations = 20;
+        
+        const interval = setInterval(() => {
+            titleEl.innerHTML = titleText
+                .split('')
+                .map((char, i) => {
+                    if (iterations > i * 3) {
+                        return `<span style="--delay: ${i * 0.1}s">${char}</span>`;
+                    }
+                    return `<span style="opacity: 0.3">${glitchChars[Math.floor(Math.random() * glitchChars.length)]}</span>`;
+                })
+                .join('');
+            
+            iterations++;
+            
+            if (iterations > maxIterations) {
+                clearInterval(interval);
+                titleEl.innerHTML = titleText
+                    .split('')
+                    .map((char, i) => `<span style="--delay: ${i * 0.1}s">${char}</span>`)
+                    .join('');
+                titleEl.style.opacity = 1;
+                
+                setTimeout(() => {
+                    document.getElementById('void-subtitle').style.opacity = 1;
+                    document.getElementById('void-subtitle').style.transition = 'opacity 1s';
+                }, 500);
+            }
+        }, 50);
+    }
+
+    setTimeout(glitchReveal, 500);
+
+    // ═══════════════════════════════════════════════════════════
+    // BIRTH TEXT - WORD BY WORD REVEAL
+    // ═══════════════════════════════════════════════════════════
+    const birthText = document.getElementById('birth-text');
+    const birthHTML = birthText.innerHTML;
+    
+    // Wrap words
+    birthText.innerHTML = birthHTML.replace(/(<em>.*?<\/em>|\S+)/g, '<span class="word">$1</span>');
+    
+    const birthWords = birthText.querySelectorAll('.word');
+    const birthSection = document.getElementById('birth');
+
+    function updateBirthWords() {
+        const rect = birthSection.getBoundingClientRect();
+        const progress = Math.max(0, Math.min(1, -rect.top / (rect.height - window.innerHeight)));
+        
+        birthWords.forEach((word, i) => {
+            const wordProgress = (progress * birthWords.length) - i;
+            if (wordProgress > 0) {
+                word.classList.add('visible');
+            } else {
+                word.classList.remove('visible');
+            }
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // EXPANSION CANVAS - PARTICLE FIELD
+    // ═══════════════════════════════════════════════════════════
+    const expCanvas = document.getElementById('expansion-canvas');
+    const expCtx = expCanvas.getContext('2d');
+    let particles = [];
+
+    function resizeExpCanvas() {
+        expCanvas.width = window.innerWidth;
+        expCanvas.height = window.innerHeight;
+        initParticles();
+    }
+
+    function initParticles() {
+        particles = [];
+        const count = Math.floor((expCanvas.width * expCanvas.height) / 15000);
+        for (let i = 0; i < count; i++) {
+            particles.push({
+                x: Math.random() * expCanvas.width,
+                y: Math.random() * expCanvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2 + 0.5,
+                opacity: Math.random() * 0.5 + 0.2
+            });
+        }
+    }
+
+    function drawExpansion() {
+        expCtx.clearRect(0, 0, expCanvas.width, expCanvas.height);
+        
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            
+            if (p.x < 0) p.x = expCanvas.width;
+            if (p.x > expCanvas.width) p.x = 0;
+            if (p.y < 0) p.y = expCanvas.height;
+            if (p.y > expCanvas.height) p.y = 0;
+            
+            expCtx.beginPath();
+            expCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            expCtx.fillStyle = `rgba(42, 107, 107, ${p.opacity})`;
+            expCtx.fill();
+        });
+        
+        // Draw connections
+        particles.forEach((p1, i) => {
+            particles.slice(i + 1).forEach(p2 => {
+                const dx = p1.x - p2.x;
+                const dy = p1.y - p2.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < 100) {
+                    expCtx.beginPath();
+                    expCtx.moveTo(p1.x, p1.y);
+                    expCtx.lineTo(p2.x, p2.y);
+                    expCtx.strokeStyle = `rgba(42, 107, 107, ${0.1 * (1 - dist / 100)})`;
+                    expCtx.stroke();
+                }
+            });
+        });
+        
+        requestAnimationFrame(drawExpansion);
+    }
+
+    resizeExpCanvas();
+    window.addEventListener('resize', resizeExpCanvas);
+    drawExpansion();
+
+    // ═══════════════════════════════════════════════════════════
+    // DIMENSION CARDS REVEAL
+    // ═══════════════════════════════════════════════════════════
+    const dimensionCards = document.querySelectorAll('.dimension-card');
+    const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.3 });
+
+    dimensionCards.forEach(card => cardObserver.observe(card));
+
+    // ═══════════════════════════════════════════════════════════
+    // MORPHING SHAPE
+    // ═══════════════════════════════════════════════════════════
+    const morphPath = document.getElementById('morph-path');
+    let morphProgress = 0;
+
+    const shapes = [
+        // Circle
+        'M200,50 C280,50 350,120 350,200 C350,280 280,350 200,350 C120,350 50,280 50,200 C50,120 120,50 200,50',
+        // Square-ish
+        'M100,100 L300,100 L300,300 L100,300 Z',
+        // Star-ish
+        'M200,50 L230,150 L350,150 L250,210 L280,350 L200,270 L120,350 L150,210 L50,150 L170,150 Z',
+        // Organic
+        'M200,50 C300,80 350,150 320,230 C290,310 230,350 150,320 C70,290 40,200 80,130 C120,60 100,20 200,50'
+    ];
+
+    function updateMorph() {
+        const shapeIndex = Math.floor(morphProgress) % shapes.length;
+        const nextIndex = (shapeIndex + 1) % shapes.length;
+        const t = morphProgress % 1;
+        
+        // Simple interpolation (in production, use proper SVG morphing)
+        morphPath.setAttribute('d', shapes[shapeIndex]);
+        morphProgress += 0.005;
+        
+        requestAnimationFrame(updateMorph);
+    }
+    updateMorph();
+
+    // ═══════════════════════════════════════════════════════════
+    // CHAPTER INDICATOR
+    // ═══════════════════════════════════════════════════════════
+    const sections = ['void', 'birth', 'expansion', 'convergence', 'founders', 'finale'];
+    const dots = document.querySelectorAll('.chapter-dot');
+
+    function updateChapterIndicator() {
+        let currentSection = 'void';
+        
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight / 2) {
+                    currentSection = id;
+                }
+            }
+        });
+        
+        dots.forEach(dot => {
+            dot.classList.toggle('active', dot.dataset.section === currentSection);
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // EXPANSION CANVAS VISIBILITY
+    // ═══════════════════════════════════════════════════════════
+    function updateExpansionVisibility() {
+        const expansion = document.getElementById('expansion');
+        const rect = expansion.getBoundingClientRect();
+        const visible = rect.top < window.innerHeight && rect.bottom > 0;
+        expCanvas.classList.toggle('visible', visible);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // SCROLL HANDLER
+    // ═══════════════════════════════════════════════════════════
+    window.addEventListener('scroll', () => {
+        updateBirthWords();
+        updateChapterIndicator();
+        updateExpansionVisibility();
+    });
+
+    // Initial calls
+    updateChapterIndicator();
+    updateExpansionVisibility();
+
+    // Chapter dots click
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            const section = document.getElementById(dot.dataset.section);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+    </script>
+
+</body>
+</html>
