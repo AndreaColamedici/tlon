@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypnocracy — Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--nero); color: var(--bianco); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        ::selection { background: var(--ottanio); color: var(--bianco); }
+        a { color: inherit; text-decoration: none; }
+
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference; }
+        .logo { display: flex; align-items: center; }
+        .logo img { height: 28px; width: auto; filter: invert(1); }
+        nav { display: flex; gap: 3rem; }
+        nav a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--bianco); opacity: 0.6; transition: opacity 0.3s ease; }
+        nav a:hover { opacity: 1; }
+
+        .lang-switch { display: flex; gap: 0.5rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid rgba(255,255,255,0.2); }
+        .lang-switch a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); transition: opacity 0.3s ease; }
+        .lang-switch a:hover, .lang-switch a.active { color: var(--bianco); }
+        .lang-switch a.active { color: var(--ottanio); }
+
+        .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; width: 32px; height: 32px; cursor: pointer; z-index: 1001; background: none; border: none; padding: 0; gap: 6px; }
+        .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--bianco); transition: all 0.3s ease; transform-origin: center; }
+        .hamburger.active span { background: var(--bianco); mix-blend-mode: normal; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--nero); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .mobile-menu.active { opacity: 1; pointer-events: auto; }
+        .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 2rem; color: var(--bianco); opacity: 0; transform: translateY(20px); transition: all 0.4s ease, opacity 0.4s ease, transform 0.4s ease; }
+        .mobile-menu.active a { opacity: 1; transform: translateY(0); }
+        .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu a:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
+        .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
+        .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
+        .mobile-menu a:hover { color: var(--ottanio); }
+
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; padding: 6rem 3rem; }
+        .hero-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at center, rgba(42, 107, 107, 0.15) 0%, transparent 70%); animation: heroGlow 8s ease-in-out infinite alternate; }
+        @keyframes heroGlow { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 1; transform: scale(1.1); } }
+        .hero-content { text-align: center; position: relative; z-index: 1; max-width: 1100px; }
+        .hero-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.5em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 2rem; opacity: 0; transform: translateY(20px); animation: fadeUp 1s ease 0.3s forwards; }
+        .hero-title { font-family: 'Instrument Serif', serif; font-size: clamp(5rem, 18vw, 14rem); font-weight: 400; letter-spacing: -0.03em; line-height: 0.9; margin-bottom: 1rem; opacity: 0; animation: fadeUp 1.2s ease 0.5s forwards; }
+        .hero-subtitle { font-family: 'Instrument Serif', serif; font-size: clamp(1.2rem, 3vw, 2rem); font-style: italic; color: rgba(255,255,255,0.6); margin-bottom: 3rem; opacity: 0; animation: fadeUp 1s ease 0.8s forwards; }
+        .hero-author { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 2rem; opacity: 0; animation: fadeUp 1s ease 1s forwards; }
+        .hero-author-line { width: 60px; height: 1px; background: var(--ottanio); }
+        .hero-author-name { font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
+        .hero-author-name a { color: var(--ottanio); transition: opacity 0.3s ease; }
+        .hero-author-name a:hover { opacity: 0.7; }
+        .hero-meta { font-size: 0.85rem; color: var(--grigio); opacity: 0; animation: fadeUp 1s ease 1.2s forwards; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        .hero-scroll { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 1rem; opacity: 0; animation: fadeUp 1s ease 1.5s forwards; }
+        .hero-scroll-text { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.4; }
+        .hero-scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--ottanio), transparent); position: relative; overflow: hidden; }
+        .hero-scroll-line::before { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: var(--bianco); animation: scrollLine 2s ease-in-out infinite; }
+        @keyframes scrollLine { 0% { top: -100%; } 50% { top: 100%; } 100% { top: 100%; } }
+
+        .operazione { padding: 10rem 3rem; background: var(--bianco); color: var(--nero); position: relative; }
+        .operazione-intro { max-width: 900px; margin: 0 auto 8rem; }
+        .operazione-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
+        .operazione-label::before { content: ''; width: 40px; height: 1px; background: var(--ottanio); }
+        .operazione-title { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; line-height: 1.15; margin-bottom: 2.5rem; }
+        .operazione-title em { font-style: italic; color: var(--ottanio); }
+        .operazione-text { font-size: 1.15rem; line-height: 2; color: var(--grigio); margin-bottom: 2rem; }
+        .operazione-text strong { color: var(--nero); font-weight: 500; }
+
+        .timeline-op { max-width: 1000px; margin: 0 auto; position: relative; }
+        .timeline-op::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--grigio-chiaro); transform: translateX(-50%); }
+        .timeline-op-item { display: grid; grid-template-columns: 1fr auto 1fr; gap: 3rem; margin-bottom: 5rem; position: relative; }
+        .timeline-op-item:last-child { margin-bottom: 0; }
+        .timeline-op-date { display: flex; justify-content: center; }
+        .timeline-op-date-inner { width: 100px; height: 100px; border-radius: 50%; background: var(--bianco); border: 2px solid var(--grigio-chiaro); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 2; transition: all 0.5s ease; }
+        .timeline-op-item:hover .timeline-op-date-inner { border-color: var(--ottanio); background: var(--ottanio); }
+        .timeline-op-month { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grigio); transition: color 0.3s ease; }
+        .timeline-op-year { font-family: 'Instrument Serif', serif; font-size: 1.4rem; font-style: italic; color: var(--ottanio); transition: color 0.3s ease; }
+        .timeline-op-item:hover .timeline-op-month, .timeline-op-item:hover .timeline-op-year { color: var(--bianco); }
+        .timeline-op-content { padding: 2rem; border: 1px solid var(--grigio-chiaro); transition: all 0.5s ease; }
+        .timeline-op-item:hover .timeline-op-content { border-color: var(--ottanio); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .timeline-op-title { font-family: 'Instrument Serif', serif; font-size: 1.5rem; margin-bottom: 1rem; }
+        .timeline-op-title em { font-style: italic; color: var(--ottanio); }
+        .timeline-op-desc { font-size: 1rem; line-height: 1.8; color: var(--grigio); }
+        .timeline-op-empty { }
+        .timeline-op-item:nth-child(odd) .timeline-op-content { grid-column: 1; text-align: right; }
+        .timeline-op-item:nth-child(odd) .timeline-op-date { grid-column: 2; }
+        .timeline-op-item:nth-child(odd) .timeline-op-empty { grid-column: 3; }
+        .timeline-op-item:nth-child(even) .timeline-op-empty { grid-column: 1; }
+        .timeline-op-item:nth-child(even) .timeline-op-date { grid-column: 2; }
+        .timeline-op-item:nth-child(even) .timeline-op-content { grid-column: 3; text-align: left; }
+
+        .copertine { padding: 8rem 3rem; background: #f5f5f5; color: var(--nero); }
+        .copertine-header { text-align: center; margin-bottom: 4rem; }
+        .copertine-header h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; }
+        .copertine-header h2 em { font-style: italic; color: var(--ottanio); }
+        .copertine-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .copertina { position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .copertina:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.15); }
+        .copertina img { width: 100%; height: auto; display: block; }
+        .copertina-lang { position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bianco); text-align: center; opacity: 0; transform: translateY(100%); transition: all 0.4s ease; }
+        .copertina:hover .copertina-lang { opacity: 1; transform: translateY(0); }
+
+        .concetti { padding: 10rem 3rem; background: var(--nero); position: relative; overflow: hidden; }
+        .concetti-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Instrument Serif', serif; font-size: 40vw; font-style: italic; color: rgba(42, 107, 107, 0.03); white-space: nowrap; pointer-events: none; }
+        .concetti-header { text-align: center; margin-bottom: 6rem; position: relative; z-index: 1; }
+        .concetti-header h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; }
+        .concetti-header h2 em { font-style: italic; color: var(--ottanio); }
+        .concetti-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+        .concetto { padding: 2.5rem; border: 1px solid rgba(255,255,255,0.1); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
+        .concetto::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--ottanio); transform: scaleX(0); transform-origin: left; transition: transform 0.5s ease; }
+        .concetto:hover::before { transform: scaleX(1); }
+        .concetto:hover { border-color: var(--ottanio); transform: translateY(-10px); background: rgba(42, 107, 107, 0.05); }
+        .concetto-num { font-family: 'Instrument Serif', serif; font-size: 3rem; font-style: italic; color: var(--ottanio); opacity: 0.3; line-height: 1; margin-bottom: 1rem; }
+        .concetto-title { font-family: 'Instrument Serif', serif; font-size: 1.4rem; margin-bottom: 1rem; }
+        .concetto-title em { font-style: italic; }
+        .concetto-desc { font-size: 0.95rem; line-height: 1.8; color: rgba(255,255,255,0.6); }
+
+        .citazione { padding: 10rem 3rem; background: #fafafa; color: var(--nero); position: relative; }
+        .citazione-content { max-width: 900px; margin: 0 auto; text-align: center; }
+        .citazione-mark { font-family: 'Instrument Serif', serif; font-size: 8rem; color: var(--ottanio); opacity: 0.2; line-height: 0.5; margin-bottom: 2rem; }
+        .citazione-text { font-family: 'Instrument Serif', serif; font-size: clamp(1.5rem, 3.5vw, 2.5rem); font-style: italic; line-height: 1.6; margin-bottom: 2rem; }
+        .citazione-source { font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ottanio); }
+
+        .rassegna { padding: 10rem 3rem; background: var(--bianco); color: var(--nero); }
+        .rassegna-header { text-align: center; margin-bottom: 4rem; }
+        .rassegna-header h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; margin-bottom: 1rem; }
+        .rassegna-header h2 em { font-style: italic; color: var(--ottanio); }
+        .rassegna-header p { font-size: 1rem; color: var(--grigio); }
+        .rassegna-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--grigio-chiaro); border: 1px solid var(--grigio-chiaro); }
+        .rassegna-item { padding: 1.5rem 2rem; background: var(--bianco); transition: all 0.4s ease; display: flex; flex-direction: column; gap: 0.5rem; }
+        .rassegna-item:hover { background: #fafafa; }
+        .rassegna-testata { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ottanio); }
+        .rassegna-titolo { font-family: 'Instrument Serif', serif; font-size: 1.05rem; font-style: italic; line-height: 1.4; color: var(--nero); transition: color 0.3s ease; }
+        .rassegna-item:hover .rassegna-titolo { color: var(--ottanio); }
+
+        .traduzioni { padding: 6rem 3rem; background: var(--nero); text-align: center; }
+        .traduzioni-label { font-size: 0.75rem; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 2rem; }
+        .traduzioni-list { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; max-width: 800px; margin: 0 auto; }
+        .traduzione { padding: 1rem 2rem; border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s ease; }
+        .traduzione:hover { border-color: var(--ottanio); background: rgba(42, 107, 107, 0.1); }
+        .traduzione-lang { font-family: 'Instrument Serif', serif; font-size: 1.2rem; font-style: italic; }
+
+        .libro { padding: 10rem 3rem; background: var(--bianco); color: var(--nero); }
+        .libro-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; max-width: 1200px; margin: 0 auto; align-items: center; }
+        .libro-cover { position: relative; }
+        .libro-cover img { width: 100%; height: auto; box-shadow: 30px 30px 60px rgba(0,0,0,0.15); }
+        .libro-content { max-width: 550px; }
+        .libro-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 1.5rem; }
+        .libro-title { font-family: 'Instrument Serif', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 2rem; }
+        .libro-title em { font-style: italic; color: var(--ottanio); }
+        .libro-desc { font-size: 1.1rem; line-height: 1.9; color: var(--grigio); margin-bottom: 2rem; }
+        .libro-meta { display: flex; gap: 2rem; padding-top: 2rem; border-top: 1px solid var(--grigio-chiaro); }
+        .libro-meta-item { text-align: left; }
+        .libro-meta-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grigio); margin-bottom: 0.25rem; }
+        .libro-meta-value { font-family: 'Instrument Serif', serif; font-size: 1.1rem; font-style: italic; color: var(--nero); }
+        .libro-cta { display: inline-flex; align-items: center; gap: 1rem; padding: 1.25rem 2.5rem; background: var(--nero); color: var(--bianco); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 2rem; transition: all 0.4s ease; }
+        .libro-cta:hover { background: var(--ottanio); }
+
+        .cta { padding: 10rem 3rem; background: var(--nero); text-align: center; position: relative; overflow: hidden; }
+        .cta-content { position: relative; z-index: 1; }
+        .cta-title { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 400; margin-bottom: 3rem; }
+        .cta-title em { font-style: italic; color: var(--ottanio); }
+        .cta-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+        .cta-btn { padding: 1.25rem 3rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.3); transition: all 0.4s ease; }
+        .cta-btn:hover { border-color: var(--ottanio); background: var(--ottanio); }
+        .cta-btn.primary { background: var(--bianco); color: var(--nero); border-color: var(--bianco); }
+        .cta-btn.primary:hover { background: var(--ottanio); color: var(--bianco); border-color: var(--ottanio); }
+
+        footer { padding: 4rem 3rem; background: var(--nero); border-top: 1px solid rgba(255,255,255,0.1); }
+        .footer-nav { display: flex; justify-content: space-between; align-items: center; }
+        .footer-back { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s ease; }
+        .footer-back:hover { color: var(--bianco); }
+        .footer-back::before { content: '←'; }
+        .footer-links { display: flex; gap: 3rem; }
+        .footer-links a { font-size: 0.85rem; color: rgba(255,255,255,0.5); transition: color 0.3s ease; }
+        .footer-links a:hover { color: var(--bianco); }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1000px) {
+            .libro-grid { grid-template-columns: 1fr; gap: 4rem; }
+            .libro-cover { max-width: 400px; margin: 0 auto; }
+            .concetti-grid { grid-template-columns: 1fr; }
+            .copertine-grid { grid-template-columns: repeat(2, 1fr); }
+            .rassegna-grid { grid-template-columns: 1fr; }
+            .timeline-op::before { left: 50px; }
+            .timeline-op-item { grid-template-columns: 100px 1fr; gap: 2rem; }
+            .timeline-op-item:nth-child(odd) .timeline-op-content, .timeline-op-item:nth-child(even) .timeline-op-content { grid-column: 2; text-align: left; }
+            .timeline-op-item:nth-child(odd) .timeline-op-date, .timeline-op-item:nth-child(even) .timeline-op-date { grid-column: 1; }
+            .timeline-op-empty { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            html, body { overflow-x: hidden; max-width: 100vw; }
+            header { padding: 1rem 1.5rem; background: var(--nero); border-bottom: 1px solid rgba(255,255,255,0.1); }
+            nav { display: none; }
+            .hamburger { display: flex; flex-shrink: 0; }
+            .hamburger span { background: var(--bianco); }
+            .mobile-menu { display: flex; }
+            .lang-switch { display: none; }
+            .hero { padding: 8rem 1.5rem 4rem; }
+            .operazione, .concetti, .citazione, .rassegna, .traduzioni, .libro, .copertine, .cta { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .traduzioni-list { gap: 1rem; }
+            .traduzione { padding: 0.75rem 1.25rem; }
+            .copertine-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            footer { padding: 2rem 1.5rem; }
+            .footer-nav { flex-direction: column; gap: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./il-progetto-en.html">The Project</a>
+            <a href="./andrea-colamedici/en.html">Colamedici</a>
+            <a href="./maura-gancitano/en.html">Gancitano</a>
+            <a href="./edizioni-en.html">Publishing</a>
+            <a href="./librerie-en.html">Bookstores</a>
+            <a href="./formazione-en.html">Education</a>
+            <a href="./eventi-festival-en.html">Events</a>
+            <a href="./contatti/en.html">Contact</a>
+        </nav>
+        <div class="lang-switch">
+            <a href="./ipnocrazia.html">IT</a>
+            <a href="./ipnocrazia-en.html" class="active">EN</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="./il-progetto-en.html">The Project</a>
+        <a href="./andrea-colamedici/en.html">Colamedici</a>
+        <a href="./maura-gancitano/en.html">Gancitano</a>
+        <a href="./edizioni-en.html">Publishing</a>
+        <a href="./librerie-en.html">Bookstores</a>
+        <a href="./formazione-en.html">Education</a>
+        <a href="./eventi-festival-en.html">Events</a>
+        <a href="./contatti/en.html">Contact</a>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <p class="hero-label">Edizioni Tlon — 2025</p>
+                <h1 class="hero-title">Hypnocracy</h1>
+                <p class="hero-subtitle">Trump, Musk and the new architecture of reality</p>
+                <div class="hero-author">
+                    <span class="hero-author-line"></span>
+                    <span class="hero-author-name"><a href="https://www.jianweixun.com" target="_blank">Jianwei Xun</a> / Andrea Colamedici</span>
+                    <span class="hero-author-line"></span>
+                </div>
+                <p class="hero-meta">A book. A performance. A demonstration.</p>
+            </div>
+            <div class="hero-scroll">
+                <span class="hero-scroll-text">Discover</span>
+                <div class="hero-scroll-line"></div>
+            </div>
+        </section>
+
+        <section class="operazione">
+            <div class="operazione-intro reveal">
+                <span class="operazione-label">The operation</span>
+                <h2 class="operazione-title">A book that <em>demonstrates</em> what it describes</h2>
+                <p class="operazione-text">
+                    In January 2024, Edizioni Tlon published a philosophical essay signed by <strong><a href="https://www.jianweixun.com" target="_blank" style="color: var(--ottanio);">Jianwei Xun</a></strong>, presented as a young Chinese thinker already considered by some to be the heir of Jean Baudrillard and by others that of Byung-Chul Han. The book analyzes the mechanisms through which contemporary power manipulates the perception of reality, coining the term "Hypnocracy" to describe this new regime that operates directly on collective consciousness.
+                </p>
+                <p class="operazione-text">
+                    The volume was translated from English by Andrea Colamedici, who in the translator's note wrote of having had "the immediate sensation of being in front of something rare: a text that does not merely photograph the present but manages to show its inner workings." The book received immediate attention from the international press: <strong>The New York Times</strong>, <strong>Le Monde</strong>, <strong>Wired USA</strong>, <strong>El Clarín</strong> and dozens of other publications discussed its theses.
+                </p>
+                <p class="operazione-text">
+                    In April 2025, <strong>L'Espresso</strong> revealed that Jianwei Xun does not exist. The Chinese philosopher is an invention, and the book was written by Andrea Colamedici in collaboration with artificial intelligence. The operation, defined by the author as a "narrative performance," <em>performatively</em> demonstrated the reality manipulation mechanisms that the book itself analyzes: the ease with which a fictitious identity can acquire authority, the way cultural validation systems work, the constructed nature of collective perception.
+                </p>
+            </div>
+
+            <div class="timeline-op">
+                <div class="timeline-op-item reveal">
+                    <div class="timeline-op-content">
+                        <h3 class="timeline-op-title">The <em>publication</em></h3>
+                        <p class="timeline-op-desc">Hypnocracy is released, signed by Chinese philosopher Jianwei Xun and translated by Andrea Colamedici. The book is welcomed as an original contribution to the analysis of digital contemporaneity.</p>
+                    </div>
+                    <div class="timeline-op-date">
+                        <div class="timeline-op-date-inner">
+                            <span class="timeline-op-month">January</span>
+                            <span class="timeline-op-year">2024</span>
+                        </div>
+                    </div>
+                    <div class="timeline-op-empty"></div>
+                </div>
+
+                <div class="timeline-op-item reveal">
+                    <div class="timeline-op-empty"></div>
+                    <div class="timeline-op-date">
+                        <div class="timeline-op-date-inner">
+                            <span class="timeline-op-month">Spring</span>
+                            <span class="timeline-op-year">2024</span>
+                        </div>
+                    </div>
+                    <div class="timeline-op-content">
+                        <h3 class="timeline-op-title">The international <em>echo</em></h3>
+                        <p class="timeline-op-desc">The book is discussed on Le Grand Continent, Le Figaro, La Nación and dozens of other publications. Translations begin in French, Spanish, English.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-op-item reveal">
+                    <div class="timeline-op-content">
+                        <h3 class="timeline-op-title">The <em>revelation</em></h3>
+                        <p class="timeline-op-desc">L'Espresso reveals that Jianwei Xun does not exist: he is a creation of Andrea Colamedici made with artificial intelligence. The operation itself becomes the subject of global cultural debate.</p>
+                    </div>
+                    <div class="timeline-op-date">
+                        <div class="timeline-op-date-inner">
+                            <span class="timeline-op-month">April</span>
+                            <span class="timeline-op-year">2025</span>
+                        </div>
+                    </div>
+                    <div class="timeline-op-empty"></div>
+                </div>
+
+                <div class="timeline-op-item reveal">
+                    <div class="timeline-op-empty"></div>
+                    <div class="timeline-op-date">
+                        <div class="timeline-op-date-inner">
+                            <span class="timeline-op-month">Today</span>
+                            <span class="timeline-op-year">2025</span>
+                        </div>
+                    </div>
+                    <div class="timeline-op-content">
+                        <h3 class="timeline-op-title">The <em>meaning</em></h3>
+                        <p class="timeline-op-desc">Hypnocracy becomes a case study: a book that demonstrated its own theses through its very existence, making visible the mechanisms of reality construction that it theorized. From The New York Times to Le Monde, from El Clarín to Wired.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="copertine">
+            <div class="copertine-header reveal">
+                <h2>The <em>editions</em></h2>
+            </div>
+            <div class="copertine-grid">
+                <div class="copertina reveal">
+                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia - Italian edition">
+                    <span class="copertina-lang">Italian</span>
+                </div>
+                <div class="copertina reveal">
+                    <img src="./assets/images/ipnocrazia-en.jpg" alt="Hypnocracy - English edition">
+                    <span class="copertina-lang">English</span>
+                </div>
+                <div class="copertina reveal">
+                    <img src="./assets/images/ipnocrazia-es.jpg" alt="Hipnocracia - Spanish edition">
+                    <span class="copertina-lang">Spanish</span>
+                </div>
+                <div class="copertina reveal">
+                    <img src="./assets/images/ipnocrazia-fr.jpg" alt="Hypnocratie - French edition">
+                    <span class="copertina-lang">French</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="citazione">
+            <div class="citazione-content reveal">
+                <div class="citazione-mark">«</div>
+                <p class="citazione-text">Hypnocracy is the first regime that operates directly on consciousness. It does not control bodies. It does not repress thoughts. Rather, it induces a permanent altered state of consciousness. A lucid sleep. A functional trance.</p>
+                <p class="citazione-source">Hypnocracy, Introduction</p>
+            </div>
+        </section>
+
+        <section class="concetti">
+            <div class="concetti-bg">Trance</div>
+            <div class="concetti-header reveal">
+                <h2>Key <em>concepts</em></h2>
+            </div>
+            <div class="concetti-grid">
+                <div class="concetto reveal">
+                    <div class="concetto-num">01</div>
+                    <h3 class="concetto-title">Algorithmic <em>trance</em></h3>
+                    <p class="concetto-desc">The continuous flow of digital content induces a permanent altered state of consciousness, in which attention is modulated like a wave and emotional states are constantly induced and manipulated.</p>
+                </div>
+                <div class="concetto reveal">
+                    <div class="concetto-num">02</div>
+                    <h3 class="concetto-title">Perceptual <em>sovereignty</em></h3>
+                    <p class="concetto-desc">The ability to maintain a core of autonomy in the perception of reality, resisting the dissolution of the boundary between true and false that Hypnocracy produces.</p>
+                </div>
+                <div class="concetto reveal">
+                    <div class="concetto-num">03</div>
+                    <h3 class="concetto-title">Algorithmic <em>edging</em></h3>
+                    <p class="concetto-desc">The technique through which platforms keep users in a state of perpetual anticipation, promising satisfactions that are constantly postponed.</p>
+                </div>
+                <div class="concetto reveal">
+                    <div class="concetto-num">04</div>
+                    <h3 class="concetto-title">Dark <em>resistance</em></h3>
+                    <p class="concetto-desc">Forms of invisible resistance that do not frontally oppose the system but inhabit its cracks, cultivating spaces of opacity within the regime of total transparency.</p>
+                </div>
+                <div class="concetto reveal">
+                    <div class="concetto-num">05</div>
+                    <h3 class="concetto-title">Gaseous <em>reality</em></h3>
+                    <p class="concetto-desc">The contemporary condition in which reality has become entirely fluid: it is no longer a matter of separating truth from falsehood, the distinction itself has lost meaning.</p>
+                </div>
+                <div class="concetto reveal">
+                    <div class="concetto-num">06</div>
+                    <h3 class="concetto-title">The Other <em>Plane</em></h3>
+                    <p class="concetto-desc">The intuition that the digital may be not only an instrument of control but an interface toward new dimensions of experience, where traditional distinctions begin to dissolve.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="rassegna">
+            <div class="rassegna-header reveal">
+                <h2>Press <em>coverage</em></h2>
+                <p>International coverage of the Hypnocracy operation</p>
+            </div>
+            <div class="rassegna-grid reveal">
+                <a href="https://www.nytimes.com/2025/04/30/world/europe/hypnocracy-ai-philosopher-book.html" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">The New York Times</span>
+                    <span class="rassegna-titolo">A.I. Can Trick You, Warns Book That Hid A.I.'s Help Writing It</span>
+                </a>
+                <a href="https://www.lemonde.fr/idees/article/2025/04/16/le-philosophe-jianwei-xun-n-existe-pas-mais-son-concept-d-hypnocratie-entre-dans-notre-realite_6596657_3232.html" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Le Monde</span>
+                    <span class="rassegna-titolo">Le philosophe Jianwei Xun n'existe pas, mais son concept d'« hypnocratie » entre dans notre réalité</span>
+                </a>
+                <a href="https://www.clarin.com/opinion/hipnocracia-libro-ano_0_YpGyoKZ1Nh.html" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">El Clarín</span>
+                    <span class="rassegna-titolo">Hipnocracia, el libro del año</span>
+                </a>
+                <a href="https://www.lanacion.com.ar/economia/IA/el-filosofo-inventado-con-ia-que-fue-un-exito-editorial-nid11042025/" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">La Nación</span>
+                    <span class="rassegna-titolo">El filósofo inventado con IA que fue un éxito editorial</span>
+                </a>
+                <a href="https://www.wired.com/story/an-acclaimed-book-about-digital-manipulation-was-actually-written-by-ai/" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Wired USA</span>
+                    <span class="rassegna-titolo">A Philosopher Released an Acclaimed Book About Digital Manipulation. The Author Ended Up Being AI</span>
+                </a>
+                <a href="https://www.telerama.fr/livre/la-vertigineuse-histoire-d-hypnocratie-le-percutant-essai-d-un-auteur-philosophe-hongkongais-imaginaire-7025198.php" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Télérama</span>
+                    <span class="rassegna-titolo">La vertigineuse histoire d'"Hypnocratie", le percutant essai d'un philosophe hongkongais qui n'existe pas</span>
+                </a>
+                <a href="https://www.radiofrance.fr/franceculture/podcasts/questions-du-soir-l-idee/l-ia-peut-elle-inventer-des-concepts-1122233" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">France Inter</span>
+                    <span class="rassegna-titolo">L'IA peut-elle inventer des concepts ?</span>
+                </a>
+                <a href="https://es.wired.com/articulos/entrevista-con-andrea-colamedici-el-autor-detras-de-hipnocracia-de-jianwei-xun" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Wired ES</span>
+                    <span class="rassegna-titolo">Andrea Colamedici, la mente detrás de Hipnocracia</span>
+                </a>
+                <a href="https://style.corriere.it/attualita/societa/ipnocrazia-libro-andrea-colamedici-intervista/" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Style Corriere della Sera</span>
+                    <span class="rassegna-titolo">La verità su "Ipnocrazia", il libro esperimento di Jianwei Xun (che non esiste) raccontato dal suo creatore</span>
+                </a>
+                <a href="https://es.rollingstone.com/el-libro-del-ano-del-autor-inexistente-una-advertencia-sobre-la-inteligencia-artificial/" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Rolling Stone</span>
+                    <span class="rassegna-titolo">El libro del año del autor inexistente: Una advertencia sobre la inteligencia artificial</span>
+                </a>
+                <a href="https://www.nationalgeographic.com.es/ciencia/este-es-libro-ano-pero-su-aclamado-autor-no-existe-es-ia_24696" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">National Geographic ES</span>
+                    <span class="rassegna-titolo">Este es el "libro del año", pero su aclamado autor no existe: es una IA</span>
+                </a>
+                <a href="https://www.infobae.com/realidad-aumentada/2025/05/05/el-autor-chino-que-escribio-el-libro-del-ano-no-existe-lo-hicimos-la-ia-y-yo/" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Infobae</span>
+                    <span class="rassegna-titolo">El autor chino que escribió el libro del año no existe: "Lo hicimos la IA y yo"</span>
+                </a>
+                <a href="https://www.philomag.com/articles/lia-est-un-outil-dune-puissance-extraordinaire-pour-construire-des-concepts-entretien" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Philosophie Magazine FR</span>
+                    <span class="rassegna-titolo">"L'IA est un outil d'une puissance extraordinaire pour construire des concepts"</span>
+                </a>
+                <a href="https://www.philomag.de/artikel/der-xun-test" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Philosophie Magazine DE</span>
+                    <span class="rassegna-titolo">Der Xun-Test</span>
+                </a>
+                <a href="https://www.lavanguardia.com/cultura/20250406/10556823/ia-fake-jianwei-xun-hipnocracia.html" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">La Vanguardia</span>
+                    <span class="rassegna-titolo">El aclamado filósofo chino Jianwei Xun no existe, es en realidad una IA</span>
+                </a>
+                <a href="https://english.elpais.com/technology/2025-04-07/jianwei-xun-the-supposed-philosopher-behind-the-hypnocracy-theory-does-not-exist-and-is-a-product-of-artificial-intelligence.html" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">El País</span>
+                    <span class="rassegna-titolo">Jianwei Xun, the supposed philosopher behind the hypnocracy theory, does not exist</span>
+                </a>
+                <a href="https://lespresso.it/c/inchieste/2025/4/7/ipnocrazia-best-seller-libro-chi-e-xun/53621" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">L'Espresso</span>
+                    <span class="rassegna-titolo">Ipnocrazia, ecco perché il filosofo Xun non esiste</span>
+                </a>
+                <a href="https://legrandcontinent.eu/fr/2025/04/03/qui-est-vraiment-jianwei-xun-une-conversation-avec-jianwei-xun/" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Le Grand Continent</span>
+                    <span class="rassegna-titolo">Qui est vraiment Jianwei Xun ? Une conversation avec Jianwei Xun</span>
+                </a>
+                <a href="https://tg24.sky.it/tecnologia/2025/04/03/caso-ipnocrazia-lespresso-autore-non-estite-creato-ai" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Sky TG24</span>
+                    <span class="rassegna-titolo">L'Espresso su 'Ipnocrazia': autore non esiste, saggio creato dall'IA</span>
+                </a>
+                <a href="https://www.doppiozero.com/svegliarsi-dallipnocrazia" target="_blank" class="rassegna-item">
+                    <span class="rassegna-testata">Doppiozero</span>
+                    <span class="rassegna-titolo">Svegliarsi dall'Ipnocrazia</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="traduzioni">
+            <p class="traduzioni-label reveal">Translated into</p>
+            <div class="traduzioni-list reveal">
+                <div class="traduzione">
+                    <span class="traduzione-lang">Français</span>
+                </div>
+                <div class="traduzione">
+                    <span class="traduzione-lang">Español</span>
+                </div>
+                <div class="traduzione">
+                    <span class="traduzione-lang">English</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="libro">
+            <div class="libro-grid">
+                <div class="libro-cover reveal">
+                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Hypnocracy - Cover">
+                </div>
+                <div class="libro-content reveal">
+                    <span class="libro-label">The book</span>
+                    <h2 class="libro-title">Trump, Musk and the new architecture of <em>reality</em></h2>
+                    <p class="libro-desc">
+                        An essay that analyzes how contemporary power operates through the manipulation of perception, constructing multiple and incompatible truth regimes. Through the cases of Donald Trump and Elon Musk, the book reveals the mechanisms of Hypnocracy: the emptying of language, the flooding of imagination with promises destined never to be fulfilled, the modulation of collective states of consciousness.
+                    </p>
+                    <div class="libro-meta">
+                        <div class="libro-meta-item">
+                            <p class="libro-meta-label">Publisher</p>
+                            <p class="libro-meta-value">Edizioni Tlon</p>
+                        </div>
+                        <div class="libro-meta-item">
+                            <p class="libro-meta-label">Year</p>
+                            <p class="libro-meta-value">2024</p>
+                        </div>
+                        <div class="libro-meta-item">
+                            <p class="libro-meta-label">Series</p>
+                            <p class="libro-meta-value">Hrönir</p>
+                        </div>
+                    </div>
+                    <a href="https://shop.tlon.it/prodotto/ipnocrazia-trump-musk-e-la-nuova-architettura-della-realta-janwei-xun/" class="libro-cta">Buy the book</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="cta-content reveal">
+                <h2 class="cta-title">Learn more about <em>Andrea Colamedici</em></h2>
+                <div class="cta-buttons">
+                    <a href="./andrea-colamedici/en.html" class="cta-btn primary">Biography</a>
+                    <a href="https://www.jianweixun.com" target="_blank" class="cta-btn">jianweixun.com</a>
+                    <a href="./il-progetto-en.html" class="cta-btn">The Tlon project</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-nav">
+            <a href="./en.html" class="footer-back">Home</a>
+            <div class="footer-links">
+                <a href="https://www.jianweixun.com" target="_blank">jianweixun.com</a>
+                <a href="https://shop.tlon.it/edizioni-tlon/">Editions</a>
+                <a href="https://www.tlonletter.it">Newsletter</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => { entry.target.classList.add('visible'); }, index * 100);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < window.innerHeight) {
+                const content = hero.querySelector('.hero-content');
+                content.style.transform = `translateY(${scrolled * 0.3}px)`;
+                content.style.opacity = 1 - (scrolled / window.innerHeight * 0.8);
+            }
+        });
+    </script>
+</body>
+</html>
