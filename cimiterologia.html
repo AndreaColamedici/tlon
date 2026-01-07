@@ -117,8 +117,6 @@
         .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 1rem; padding: 1.5rem 3rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(220, 210, 190, 0.9); border: 1px solid rgba(200, 180, 150, 0.25); background: transparent; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; }
         .cta-btn:hover { border-color: var(--ottanio); background: var(--ottanio); color: var(--bianco); }
 
-        .form-note { font-size: 0.8rem; color: rgba(150, 140, 120, 0.5); margin-top: 1rem; font-style: italic; }
-
         footer { background: rgba(5, 8, 5, 0.8); color: var(--bianco); padding: 4rem 3rem 2rem; position: relative; z-index: 1; }
         .footer-grid { display: flex; justify-content: space-between; margin-bottom: 4rem; flex-wrap: wrap; gap: 3rem; }
         .footer-brand { font-family: 'Instrument Serif', serif; font-size: 1.5rem; margin-bottom: 0.5rem; color: rgba(230, 220, 200, 0.9); }
@@ -239,15 +237,13 @@
                 <h2 class="cta-title">Iscriviti al <em>ciclo completo</em></h2>
                 <p class="cta-desc">Gli incontri si svolgono la domenica mattina e si esauriscono spesso in poche ore.</p>
                 
-                <!-- FORM HTML PURO - target _blank -->
-                <form class="iscrizione-form" method="GET" action="https://script.google.com/macros/s/AKfycbzJh4nIVqjMLUl-a4_Pp0Qqf95iZR1XyxWEQzgDA4WQbraEGhonHCgF7o8sEL3MOTdShg/exec" target="_blank">
+                <form class="iscrizione-form" method="GET" action="https://script.google.com/macros/s/AKfycbwPnGxD8AG23Y4STbCzf7K7tVkCIegmB3ti-JIPCa2tGvR3hkOGqMx_GBAa7zbHjx36Pg/exec" target="_blank">
                     <div class="form-row">
                         <div class="form-field"><input type="text" id="nome" name="nome" required placeholder=" "><label for="nome">Nome</label></div>
                         <div class="form-field"><input type="text" id="cognome" name="cognome" required placeholder=" "><label for="cognome">Cognome</label></div>
                     </div>
                     <div class="form-field full"><input type="email" id="email" name="email" required placeholder=" "><label for="email">Email</label></div>
                     <button type="submit" class="cta-btn"><span>Iscriviti</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-                    <p class="form-note">Si aprirà una nuova scheda con la conferma. Puoi chiuderla subito.</p>
                 </form>
             </div>
         </section>
