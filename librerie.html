@@ -8,15 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bianco: #ffffff;
-            --nero: #0a0a0a;
-            --ottanio: #2a6b6b;
-            --grigio: #6b6b6b;
-            --grigio-chiaro: #e5e5e5;
-            --crema: #f9f7f4;
-        }
-
+        :root { --bianco: #ffffff; --nero: #0a0a0a; --ottanio: #2a6b6b; --grigio: #6b6b6b; --grigio-chiaro: #e5e5e5; --crema: #f9f7f4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { font-size: 16px; scroll-behavior: smooth; }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--nero); color: var(--bianco); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -39,79 +31,30 @@
         .cursor.hover { transform: scale(3); }
         .cursor-follower.hover { width: 80px; height: 80px; border-color: var(--ottanio); }
 
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1002;
-            padding: 1.5rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            mix-blend-mode: difference;
-            transition: background 0.3s ease, mix-blend-mode 0.3s ease;
-        }
-
-        header.menu-open {
-            background: var(--nero);
-            mix-blend-mode: normal;
-        }
-
-        header.menu-open .logo img {
-            filter: invert(1);
-        }
-
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1002; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference; transition: background 0.3s ease, mix-blend-mode 0.3s ease; }
+        header.menu-open { background: var(--nero); mix-blend-mode: normal; }
+        header.menu-open .logo img { filter: invert(1); }
         .logo { display: flex; align-items: center; }
         .logo img { height: 28px; width: auto; filter: invert(1); transition: filter 0.3s ease; }
         nav { display: flex; gap: 3rem; }
         nav a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--bianco); opacity: 0.6; transition: opacity 0.3s ease; }
         nav a:hover { opacity: 1; }
 
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            position: relative;
-            z-index: 1003;
-        }
+        .lang-switch { display: flex; gap: 0.5rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid rgba(255,255,255,0.2); }
+        .lang-switch a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bianco); opacity: 0.4; transition: opacity 0.3s ease; }
+        .lang-switch a:hover, .lang-switch a.active { opacity: 1; }
+        .lang-switch a.active { color: var(--ottanio); }
+
+        .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; width: 32px; height: 32px; cursor: pointer; position: relative; z-index: 1003; }
         .hamburger span { display: block; width: 24px; height: 2px; background: var(--bianco); margin: 3px 0; transition: all 0.3s ease; }
         .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
         .hamburger.active span { background: var(--bianco); }
 
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--nero);
-            z-index: 1000;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--nero); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; }
         .mobile-menu.active { opacity: 1; visibility: visible; }
-        .mobile-menu a {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2rem;
-            font-style: italic;
-            color: var(--bianco);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
-        }
+        .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--bianco); opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease; }
         .mobile-menu.active a { opacity: 1; transform: translateY(0); }
         .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
         .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
@@ -239,6 +182,7 @@
         @media (max-width: 900px) {
             header { padding: 1rem 1.5rem; }
             nav { display: none; }
+            .lang-switch { display: none; }
             .hamburger { display: flex; }
             .mobile-menu { display: flex; }
             .cursor, .cursor-follower { display: none; }
@@ -273,6 +217,10 @@
             <a href="./eventi-festival.html">Eventi</a>
             <a href="./contatti/">Contatti</a>
         </nav>
+        <div class="lang-switch">
+            <a href="./librerie.html" class="active">IT</a>
+            <a href="./librerie-en.html">EN</a>
+        </div>
         <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
     </header>
     <div class="mobile-menu" id="mobileMenu">
@@ -316,20 +264,8 @@
     <footer><div class="footer-nav"><a href="./" class="footer-back">Home</a><div class="footer-links"><a href="https://shop.tlon.it/edizioni-tlon/">Edizioni</a><a href="./il-progetto.html">Il Progetto</a><a href="https://www.tlonletter.it">Newsletter</a></div></div></footer>
     <script>
         const hamburger=document.getElementById('hamburger'),mobileMenu=document.getElementById('mobileMenu'),header=document.querySelector('header');
-        hamburger.addEventListener('click',()=>{
-            hamburger.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-            header.classList.toggle('menu-open');
-            document.body.style.overflow=mobileMenu.classList.contains('active')?'hidden':'';
-        });
-        mobileMenu.querySelectorAll('a').forEach(link=>{
-            link.addEventListener('click',()=>{
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                header.classList.remove('menu-open');
-                document.body.style.overflow='';
-            });
-        });
+        hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');mobileMenu.classList.toggle('active');header.classList.toggle('menu-open');document.body.style.overflow=mobileMenu.classList.contains('active')?'hidden':'';});
+        mobileMenu.querySelectorAll('a').forEach(link=>{link.addEventListener('click',()=>{hamburger.classList.remove('active');mobileMenu.classList.remove('active');header.classList.remove('menu-open');document.body.style.overflow='';});});
         window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('hidden');initAnimations();},1200);});
         const cursor=document.getElementById('cursor'),follower=document.getElementById('cursor-follower');let mouseX=0,mouseY=0,cursorX=0,cursorY=0,followerX=0,followerY=0;document.addEventListener('mousemove',(e)=>{mouseX=e.clientX;mouseY=e.clientY;});function animateCursor(){cursorX+=(mouseX-cursorX)*0.2;cursorY+=(mouseY-cursorY)*0.2;followerX+=(mouseX-followerX)*0.1;followerY+=(mouseY-followerY)*0.1;cursor.style.left=cursorX-6+'px';cursor.style.top=cursorY-6+'px';follower.style.left=followerX-20+'px';follower.style.top=followerY-20+'px';requestAnimationFrame(animateCursor);}animateCursor();document.querySelectorAll('a,button,.libreria-card,.stat-item').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.classList.add('hover');follower.classList.add('hover');});el.addEventListener('mouseleave',()=>{cursor.classList.remove('hover');follower.classList.remove('hover');});});
         function initAnimations(){const heroTitle=document.getElementById('hero-title');const text=heroTitle.textContent;heroTitle.innerHTML=text.split('').map(char=>`<span class="char">${char}</span>`).join('');const chars=heroTitle.querySelectorAll('.char');chars.forEach((char,i)=>{setTimeout(()=>{char.style.animation=`charReveal 1s cubic-bezier(0.16,1,0.3,1) forwards`;},200+i*80);});setTimeout(()=>{document.querySelector('.hero-label').style.cssText='opacity:1;transform:translateY(0);transition:all 1s ease;';},600);setTimeout(()=>{document.querySelector('.hero-subtitle').style.cssText='opacity:1;transform:translateY(0);transition:all 1s ease;';},1000);setTimeout(()=>{document.querySelector('.hero-scroll').style.cssText='opacity:1;transition:opacity 1s ease;';},1500);}
