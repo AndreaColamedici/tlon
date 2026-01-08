@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iscrizione completata — Cimiterologia</title>
+    <title>Pagina in aggiornamento – Tlon</title>
+    <meta http-equiv="refresh" content="5;url=./">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background: linear-gradient(180deg, #1a1f1a 0%, #0d110d 30%, #0a0d0a 60%, #080a08 100%);
-            color: rgba(230, 220, 200, 1);
+            background: var(--bianco);
+            color: var(--nero);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -21,104 +34,66 @@
             text-align: center;
             padding: 2rem;
         }
-        .container {
-            max-width: 600px;
+
+        .logo {
+            margin-bottom: 3rem;
         }
-        .success-icon {
-            width: 80px;
-            height: 80px;
-            border: 2px solid #2a6b6b;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 2rem;
-            font-size: 2.5rem;
-            color: #2a6b6b;
-            animation: scaleIn 0.5s ease;
+
+        .logo img {
+            height: 32px;
+            width: auto;
         }
-        @keyframes scaleIn {
-            from { transform: scale(0); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+
         h1 {
             font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 400;
-            font-style: italic;
+            line-height: 1.2;
             margin-bottom: 1.5rem;
-            color: rgba(230, 220, 200, 0.95);
         }
+
+        h1 em {
+            font-style: italic;
+        }
+
         p {
             font-size: 1.1rem;
-            line-height: 1.8;
-            color: rgba(180, 170, 150, 0.7);
-            margin-bottom: 2rem;
+            color: var(--grigio);
+            max-width: 480px;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
         }
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 2rem;
+
+        a.back {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--nero);
             font-size: 0.8rem;
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(220, 210, 190, 0.9);
-            border: 1px solid rgba(200, 180, 150, 0.25);
+            color: var(--nero);
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
-        .back-link:hover {
-            border-color: #2a6b6b;
-            background: #2a6b6b;
-            color: #fff;
+
+        a.back:hover {
+            background: var(--nero);
+            color: var(--bianco);
         }
-        .candle-row {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 4rem;
-            opacity: 0.6;
-        }
-        .candle {
-            position: relative;
-            width: 8px;
-            height: 40px;
-            background: linear-gradient(180deg, #f0e6d3 0%, #c8b898 100%);
-            border-radius: 2px 2px 0 0;
-        }
-        .flame {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px;
-            height: 20px;
-            background: linear-gradient(180deg, rgba(255, 255, 200, 0.95) 0%, rgba(255, 100, 30, 0.6) 100%);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            animation: flicker 0.4s ease-in-out infinite alternate;
-        }
-        @keyframes flicker {
-            from { transform: translateX(-50%) scaleY(1) rotate(-2deg); }
-            to { transform: translateX(-50%) scaleY(1.1) rotate(2deg); }
+
+        .countdown {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: var(--grigio);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="success-icon">✓</div>
-        <h1>Iscrizione completata</h1>
-        <p>Iscrizione avvenuta. Ci vediamo al cimitero.</p>
-        <a href="./cimiterologia.html" class="back-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Torna alla pagina
-        </a>
-        <div class="candle-row">
-            <div class="candle"><div class="flame"></div></div>
-            <div class="candle"><div class="flame"></div></div>
-            <div class="candle"><div class="flame"></div></div>
-        </div>
-    </div>
+    <a href="./" class="logo"><img src="./assets/images/logo-tlon.png" alt="Tlon"></a>
+    <h1>Pagina in <em>aggiornamento</em></h1>
+    <p>Questa sezione è momentaneamente non disponibile. Stiamo lavorando per renderla ancora migliore.</p>
+    <a href="./" class="back">Torna alla home</a>
+    <p class="countdown">Reindirizzamento automatico tra pochi secondi...</p>
 </body>
 </html>
