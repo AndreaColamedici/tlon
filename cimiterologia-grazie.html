@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina in aggiornamento – Tlon</title>
-    <meta http-equiv="refresh" content="5;url=./">
+    <title>Iscrizione confermata — Cimiterologia — Tlon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bianco: #ffffff;
-            --nero: #0a0a0a;
-            --ottanio: #2a6b6b;
-            --grigio: #6b6b6b;
+            --nero: #2d3a35;
+            --ottanio: #3d8b8b;
+            --verde-salvia: #7a9e8e;
+            --verde-acqua: #a8c5b8;
+            --verde-pallido: #e8f2ed;
+            --verde-chiaro: #f2f7f4;
+            --grigio: #8a9a92;
         }
 
         * {
@@ -44,22 +47,30 @@
             width: auto;
         }
 
-        h1 {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 400;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
+        .candle-icon {
+            margin-bottom: 2rem;
+            opacity: 0.8;
         }
 
-        h1 em {
+        .candle-icon svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
             font-style: italic;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--verde-salvia);
         }
 
         p {
             font-size: 1.1rem;
             color: var(--grigio);
-            max-width: 480px;
+            max-width: 420px;
             line-height: 1.7;
             margin-bottom: 2.5rem;
         }
@@ -67,33 +78,42 @@
         a.back {
             display: inline-block;
             padding: 1rem 2.5rem;
-            border: 1px solid var(--nero);
-            font-size: 0.8rem;
+            background: var(--verde-salvia);
+            font-size: 0.75rem;
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--nero);
+            color: var(--bianco);
             text-decoration: none;
+            border-radius: 6px;
             transition: all 0.3s ease;
         }
 
         a.back:hover {
-            background: var(--nero);
-            color: var(--bianco);
-        }
-
-        .countdown {
-            margin-top: 2rem;
-            font-size: 0.85rem;
-            color: var(--grigio);
+            background: var(--ottanio);
         }
     </style>
 </head>
 <body>
-    <a href="./" class="logo"><img src="./assets/images/logo-tlon.png" alt="Tlon"></a>
-    <h1>Pagina in <em>aggiornamento</em></h1>
-    <p>Questa sezione è momentaneamente non disponibile. Stiamo lavorando per renderla ancora migliore.</p>
-    <a href="./" class="back">Torna alla home</a>
-    <p class="countdown">Reindirizzamento automatico tra pochi secondi...</p>
+    <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+    
+    <div class="candle-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="24" width="8" height="20" rx="2" fill="#e8dcc8"/>
+            <ellipse cx="24" cy="18" rx="6" ry="8" fill="url(#flame)"/>
+            <defs>
+                <linearGradient id="flame" x1="24" y1="10" x2="24" y2="26" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#fff5c8" stop-opacity="0.9"/>
+                    <stop offset="50%" stop-color="#ffc878" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#ffa050" stop-opacity="0.5"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+
+    <h1>Iscrizione avvenuta</h1>
+    <p>Ci vediamo al cimitero.</p>
+    
+    <a href="./cimiterologia.html" class="back">Torna alla pagina</a>
 </body>
 </html>
