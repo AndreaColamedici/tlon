@@ -3,97 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina in aggiornamento – Tlon</title>
-    <meta http-equiv="refresh" content="5;url=./">
+    <title>Cimiterologia — Tlon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bianco: #ffffff;
-            --nero: #0a0a0a;
-            --ottanio: #2a6b6b;
-            --grigio: #6b6b6b;
+            --nero: #2d3a35;
+            --ottanio: #3d8b8b;
+            --verde-salvia: #7a9e8e;
+            --verde-acqua: #a8c5b8;
+            --verde-pallido: #e8f2ed;
+            --verde-chiaro: #f2f7f4;
+            --grigio: #8a9a92;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; scroll-behavior: smooth; }
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background: var(--bianco);
             color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 2rem;
         }
+        ::selection { background: var(--verde-acqua); color: var(--nero); }
+        a { color: inherit; text-decoration: none; }
 
-        .logo {
-            margin-bottom: 3rem;
-        }
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1002; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
+        .logo { display: flex; align-items: center; }
+        .logo img { height: 26px; width: auto; }
+        nav { display: flex; gap: 2.5rem; align-items: center; }
+        nav a { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grigio); transition: color 0.3s ease; }
+        nav a:hover { color: var(--ottanio); }
+        .lang-switch { display: flex; gap: 0.75rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid var(--verde-pallido); }
+        .lang-switch a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grigio); }
+        .lang-switch a.active { color: var(--ottanio); }
 
-        .logo img {
-            height: 32px;
-            width: auto;
-        }
+        .hamburger { display: none; flex-direction: column; width: 32px; height: 32px; cursor: pointer; z-index: 1003; background: none; border: none; justify-content: center; align-items: center; }
+        .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--nero); margin: 3px 0; transition: all 0.3s ease; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -5px); }
 
-        h1 {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 400;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-        }
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bianco); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; }
+        .mobile-menu.active { opacity: 1; visibility: visible; }
+        .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 1.8rem; font-style: italic; color: var(--nero); }
+        .mobile-menu a:hover { color: var(--ottanio); }
 
-        h1 em {
-            font-style: italic;
-        }
+        /* Atmosfera luminosa */
+        .atmosphere { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+        
+        .cypress { position: absolute; bottom: 0; width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 380px solid var(--verde-pallido); opacity: 0.6; filter: blur(1px); animation: cypressSway 12s ease-in-out infinite; transform-origin: bottom center; }
+        .cypress-1 { left: 3%; opacity: 0.5; transform: scale(1); }
+        .cypress-2 { left: 7%; opacity: 0.4; transform: scale(0.85); }
+        .cypress-3 { right: 4%; opacity: 0.5; transform: scale(0.95); }
+        .cypress-4 { right: 9%; opacity: 0.35; transform: scale(0.8); }
+        @keyframes cypressSway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(0.5deg); } }
 
-        p {
-            font-size: 1.1rem;
-            color: var(--grigio);
-            max-width: 480px;
-            line-height: 1.7;
-            margin-bottom: 2.5rem;
-        }
+        .piramide { position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 140px solid transparent; border-right: 140px solid transparent; border-bottom: 220px solid var(--verde-pallido); opacity: 0.5; }
 
-        a.back {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            border: 1px solid var(--nero);
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--nero);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
+        .candles-container { position: absolute; bottom: 15%; left: 50%; transform: translateX(-50%); display: flex; gap: 100px; opacity: 0.7; }
+        .candle { position: relative; width: 8px; height: 40px; background: linear-gradient(180deg, #f5efe6 0%, #e8dcc8 100%); border-radius: 3px 3px 0 0; }
+        .flame { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); width: 8px; height: 18px; background: linear-gradient(180deg, rgba(255, 245, 200, 0.9) 0%, rgba(255, 200, 120, 0.7) 50%, rgba(255, 160, 80, 0.5) 100%); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; animation: flameFlicker 0.5s ease-in-out infinite alternate; }
+        @keyframes flameFlicker { 0% { transform: translateX(-50%) scaleY(1) rotate(-1deg); } 100% { transform: translateX(-50%) scaleY(1.1) rotate(1deg); } }
 
-        a.back:hover {
-            background: var(--nero);
-            color: var(--bianco);
-        }
+        main { position: relative; z-index: 1; padding-top: 80px; }
+        
+        .hero { min-height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 5rem 3rem; background: transparent; }
+        .hero-content { max-width: 800px; }
+        .hero-label { display: inline-flex; align-items: center; gap: 1rem; font-size: 0.65rem; font-weight: 400; letter-spacing: 0.5em; text-transform: uppercase; color: var(--verde-salvia); margin-bottom: 2.5rem; }
+        .hero-title { font-family: 'Instrument Serif', serif; font-size: clamp(3.5rem, 10vw, 7rem); font-weight: 400; font-style: italic; line-height: 1; color: var(--verde-salvia); margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+        .hero-subtitle { font-family: 'Instrument Serif', serif; font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-style: italic; color: var(--grigio); font-weight: 400; }
 
-        .countdown {
-            margin-top: 2rem;
-            font-size: 0.85rem;
-            color: var(--grigio);
-        }
+        .content-section { padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; background: rgba(255,255,255,0.85); }
+        .content-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 5rem; align-items: start; }
+        .content-text { display: flex; flex-direction: column; gap: 1.75rem; }
+        .content-intro { font-size: 1.1rem; line-height: 1.95; color: var(--nero); font-weight: 400; }
+        .content-intro strong { color: var(--ottanio); font-weight: 500; }
+        .content-desc { font-size: 1rem; line-height: 1.9; color: var(--grigio); }
+        .content-desc em { font-style: italic; color: var(--nero); }
+
+        .details-sidebar { display: flex; flex-direction: column; gap: 1rem; position: sticky; top: 110px; }
+        .detail-card { background: var(--bianco); border: 1px solid var(--verde-pallido); padding: 1.5rem; display: flex; align-items: flex-start; gap: 1rem; border-radius: 8px; }
+        .detail-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--verde-chiaro); border-radius: 50%; }
+        .detail-icon svg { width: 20px; height: 20px; stroke: var(--verde-salvia); }
+        .detail-content { display: flex; flex-direction: column; gap: 0.3rem; }
+        .detail-label { font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--grigio); }
+        .detail-value { font-family: 'Instrument Serif', serif; font-size: 1.1rem; font-style: italic; color: var(--nero); }
+        .detail-note { font-size: 0.78rem; color: var(--grigio); }
+        .date-card .detail-value { font-size: 1rem; line-height: 1.65; }
+
+        .illustri-section { padding: 5rem 3rem; text-align: center; background: rgba(255,255,255,0.9); }
+        .illustri-label { font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--grigio); margin-bottom: 2.5rem; }
+        .illustri-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 2rem; max-width: 850px; margin: 0 auto; }
+        .illustre-item { padding: 0.6rem 0; }
+        .illustre-name { font-family: 'Instrument Serif', serif; font-size: 1.15rem; font-style: italic; color: var(--verde-acqua); transition: color 0.3s ease; }
+        .illustre-name:hover { color: var(--ottanio); }
+        .illustre-item.legend .illustre-name { font-size: 1.7rem; color: var(--verde-salvia); }
+        .illustre-item.featured .illustre-name { font-size: 1.4rem; color: var(--verde-salvia); opacity: 0.8; }
+
+        .quote-section { padding: 5rem 3rem; text-align: center; background: var(--verde-chiaro); }
+        .quote-container { max-width: 680px; margin: 0 auto; }
+        .quote-text { font-family: 'Instrument Serif', serif; font-size: clamp(1.3rem, 3vw, 1.9rem); font-style: italic; line-height: 1.6; color: var(--nero); font-weight: 400; }
+        .quote-mark { font-size: 3rem; color: var(--verde-acqua); line-height: 0; vertical-align: top; }
+        .quote-author { margin-top: 1.5rem; font-size: 0.8rem; letter-spacing: 0.12em; color: var(--verde-salvia); }
+
+        .cta-section { padding: 5rem 3rem 6rem; text-align: center; background: var(--bianco); }
+        .cta-container { max-width: 500px; margin: 0 auto; }
+        .cta-label { font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--grigio); margin-bottom: 1.25rem; }
+        .cta-title { font-family: 'Instrument Serif', serif; font-size: clamp(1.6rem, 3.5vw, 2.2rem); color: var(--nero); margin-bottom: 0.75rem; font-weight: 400; }
+        .cta-title em { font-style: italic; color: var(--ottanio); }
+        .cta-desc { font-size: 0.95rem; line-height: 1.75; color: var(--grigio); margin-bottom: 2rem; }
+
+        .iscrizione-form { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-field { position: relative; }
+        .form-field.full { grid-column: 1 / -1; }
+        .form-field input { width: 100%; padding: 1.1rem 1rem 0.7rem; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--nero); background: var(--verde-chiaro); border: 1px solid var(--verde-acqua); border-radius: 6px; outline: none; transition: all 0.3s ease; }
+        .form-field input:focus { border-color: var(--ottanio); background: var(--bianco); }
+        .form-field label { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--grigio); pointer-events: none; transition: all 0.3s ease; }
+        .form-field input:focus + label, .form-field input:not(:placeholder-shown) + label { top: 0.55rem; transform: translateY(0); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ottanio); }
+
+        .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1.1rem 2.2rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bianco); background: var(--verde-salvia); border: none; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
+        .cta-btn:hover { background: var(--ottanio); }
+        .cta-btn svg { stroke: var(--bianco); }
+
+        footer { background: var(--nero); color: var(--bianco); padding: 3.5rem 3rem 1.5rem; position: relative; z-index: 1; }
+        .footer-grid { display: flex; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 2.5rem; }
+        .footer-brand { font-family: 'Instrument Serif', serif; font-size: 1.3rem; margin-bottom: 0.4rem; }
+        .footer-tagline { font-size: 0.8rem; color: rgba(255,255,255,0.45); }
+        .footer-links { display: flex; gap: 4rem; }
+        .footer-col h4 { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 1.25rem; color: rgba(255,255,255,0.35); }
+        .footer-col a { display: block; font-size: 0.85rem; margin-bottom: 0.6rem; color: rgba(255,255,255,0.55); transition: color 0.3s ease; }
+        .footer-col a:hover { color: var(--bianco); }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+        .footer-bottom p { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+        .footer-social { display: flex; gap: 1.5rem; }
+        .footer-social a { font-size: 0.7rem; color: rgba(255,255,255,0.35); letter-spacing: 0.1em; text-transform: uppercase; }
+        .footer-social a:hover { color: var(--bianco); }
+
+        @media (max-width: 1024px) { .content-grid { grid-template-columns: 1fr; gap: 3rem; } .details-sidebar { position: static; } }
+        @media (max-width: 768px) { header { padding: 1rem 1.5rem; } nav { display: none; } .hamburger { display: flex; } .mobile-menu { display: flex; } .hero { padding: 3rem 1.5rem; min-height: 75vh; } .hero-title { font-size: clamp(2.8rem, 12vw, 4.5rem); } .content-section { padding: 3rem 1.5rem; } .form-row { grid-template-columns: 1fr; } .illustri-section, .quote-section, .cta-section { padding: 3rem 1.5rem; } footer { padding: 2.5rem 1.5rem 1.5rem; } .footer-links { gap: 2rem; } .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; } .cypress, .piramide { display: none; } .candles-container { gap: 60px; } }
     </style>
 </head>
 <body>
-    <a href="./" class="logo"><img src="./assets/images/logo-tlon.png" alt="Tlon"></a>
-    <h1>Pagina in <em>aggiornamento</em></h1>
-    <p>Questa sezione è momentaneamente non disponibile. Stiamo lavorando per renderla ancora migliore.</p>
-    <a href="./" class="back">Torna alla home</a>
-    <p class="countdown">Reindirizzamento automatico tra pochi secondi...</p>
+    <div class="atmosphere">
+        <div class="cypress cypress-1"></div>
+        <div class="cypress cypress-2"></div>
+        <div class="cypress cypress-3"></div>
+        <div class="cypress cypress-4"></div>
+        <div class="piramide"></div>
+        <div class="candles-container">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+        </div>
+    </div>
+
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./il-progetto.html">Il Progetto</a>
+            <a href="./andrea-colamedici/">Colamedici</a>
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="./edizioni.html">Edizioni</a>
+            <a href="./librerie.html">Librerie</a>
+            <a href="./formazione.html">Formazione</a>
+            <a href="./eventi-festival.html">Eventi</a>
+            <a href="./contatti/">Contatti</a>
+            <div class="lang-switch">
+                <a href="./cimiterologia.html" class="active">IT</a>
+                <a href="./cimiterologia-en.html">EN</a>
+            </div>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="./il-progetto.html">Il Progetto</a>
+        <a href="./andrea-colamedici/">Colamedici</a>
+        <a href="./maura-gancitano/">Gancitano</a>
+        <a href="./edizioni.html">Edizioni</a>
+        <a href="./librerie.html">Librerie</a>
+        <a href="./formazione.html">Formazione</a>
+        <a href="./eventi-festival.html">Eventi</a>
+        <a href="./contatti/">Contatti</a>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <span class="hero-label">✝ Memento Mori ✝</span>
+                <h1 class="hero-title">Cimiterologia</h1>
+                <p class="hero-subtitle">Allargarsi la vita attraversando la Morte</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="content-grid">
+                <div class="content-text">
+                    <p class="content-intro">All'ombra della Piramide Cestia, dove i gatti si assopiscono sulle tombe di Gramsci e Keats, dove riposano Shelley e Camilleri, Amelia Rosselli e Dario Bellezza, si apre uno degli ingressi più inaspettati alla filosofia: il <strong>Cimitero Acattolico di Roma</strong>, un giardino di trecento anni che custodisce il silenzio nel cuore del Testaccio.</p>
+                    <p class="content-desc">La Cimiterologia è un ciclo di incontri sulla morte e sul morire mediante l'attraversamento consapevole dei cimiteri. Nato il 12 gennaio 2025 dalla collaborazione tra Andrea Colamedici e la direttrice del cimitero Yvonne A. Mazurek, questo percorso trasforma il tabù in pratica filosofica: non uno studio architettonico né una curiosità morbosa, ma un modo per <em>allargare la vita attraversando la morte</em>, con i piedi e con le parole.</p>
+                    <p class="content-desc">Gli incontri si svolgono nella piccola cappella costruita nel 1898 dall'architetto tedesco Andreas Holzinger, alternando momenti di ascolto, silenzio e dialogo con attraversamenti intimi e consapevoli del cimitero.</p>
+                </div>
+                <aside class="details-sidebar">
+                    <div class="detail-card date-card">
+                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                        <div class="detail-content"><span class="detail-label">Date del ciclo 2026</span><span class="detail-value">25 gennaio<br>8 febbraio<br>8 marzo<br>15 marzo</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+                        <div class="detail-content"><span class="detail-label">Orario e durata</span><span class="detail-value">Ore 10.30</span><span class="detail-note">Circa 2 ore</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                        <div class="detail-content"><span class="detail-label">Luogo</span><span class="detail-value">Cimitero Acattolico</span><span class="detail-note">Via Caio Cestio 6, Roma</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+                        <div class="detail-content"><span class="detail-label">Conduce</span><span class="detail-value">Andrea Colamedici</span><span class="detail-note">Filosofo, fondatore di Tlon</span></div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section class="illustri-section">
+            <span class="illustri-label">Qui riposano</span>
+            <div class="illustri-grid">
+                <div class="illustre-item legend"><span class="illustre-name">John Keats</span></div>
+                <div class="illustre-item legend"><span class="illustre-name">Antonio Gramsci</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Percy Bysshe Shelley</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Andrea Camilleri</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Amelia Rosselli</span></div>
+                <div class="illustre-item"><span class="illustre-name">Dario Bellezza</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Giorgio Napolitano</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Luce d'Eramo</span></div>
+                <div class="illustre-item"><span class="illustre-name">Carlo Emilio Gadda</span></div>
+                <div class="illustre-item"><span class="illustre-name">Gregory Corso</span></div>
+            </div>
+        </section>
+
+        <section class="quote-section">
+            <div class="quote-container">
+                <blockquote class="quote-text"><span class="quote-mark">"</span>Possiamo allargare la vita attraversando la morte.<span class="quote-mark">"</span></blockquote>
+                <cite class="quote-author">— Andrea Colamedici</cite>
+            </div>
+        </section>
+
+        <section class="cta-section" id="iscrizione">
+            <div class="cta-container">
+                <span class="cta-label">Partecipa</span>
+                <h2 class="cta-title">Iscriviti al <em>ciclo completo</em></h2>
+                <p class="cta-desc">Quattro domeniche mattina alle 10.30 al Cimitero Acattolico di Roma: 25 gennaio, 8 febbraio, 8 marzo e 15 marzo 2026.</p>
+                
+                <form class="iscrizione-form" method="GET" action="https://script.google.com/macros/s/AKfycbxWrcJUskUAyOm-ZfR8Yx65tp52vtJ_gPg-UIUD23hEOpoz_ukq3jl7xhRpHigG8KvKJQ/exec" target="_blank">
+                    <div class="form-row">
+                        <div class="form-field"><input type="text" id="nome" name="nome" required placeholder=" "><label for="nome">Nome</label></div>
+                        <div class="form-field"><input type="text" id="cognome" name="cognome" required placeholder=" "><label for="cognome">Cognome</label></div>
+                    </div>
+                    <div class="form-field full"><input type="email" id="email" name="email" required placeholder=" "><label for="email">Email</label></div>
+                    <button type="submit" class="cta-btn"><span>Iscriviti</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div><div class="footer-brand">TLON</div><p class="footer-tagline">Un pianeta immaginario. Che esiste.</p></div>
+            <div class="footer-links">
+                <div class="footer-col"><h4>Progetto</h4><a href="./il-progetto.html">Chi siamo</a><a href="./contatti/">Contatti</a></div>
+                <div class="footer-col"><h4>Edizioni</h4><a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a></div>
+                <div class="footer-col"><h4>Attività</h4><a href="./eventi-festival.html">Eventi</a><a href="./formazione.html">Formazione</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Tlon Srl</p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
+                <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
