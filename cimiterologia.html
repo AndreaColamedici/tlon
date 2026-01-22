@@ -116,20 +116,7 @@
         .cta-title { font-family: 'Instrument Serif', serif; font-size: clamp(1.6rem, 3.5vw, 2.2rem); color: var(--nero); margin-bottom: 0.75rem; font-weight: 400; }
         .cta-title em { font-style: italic; color: var(--ottanio); }
         .cta-desc { font-size: 0.95rem; line-height: 1.75; color: var(--grigio); margin-bottom: 1.25rem; }
-        .cta-limited { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 2rem; font-weight: 500; }
-
-        .iscrizione-form { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .form-field { position: relative; }
-        .form-field.full { grid-column: 1 / -1; }
-        .form-field input { width: 100%; padding: 1.1rem 1rem 0.7rem; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--nero); background: var(--verde-chiaro); border: 1px solid var(--verde-acqua); border-radius: 6px; outline: none; transition: all 0.3s ease; }
-        .form-field input:focus { border-color: var(--ottanio); background: var(--bianco); }
-        .form-field label { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--grigio); pointer-events: none; transition: all 0.3s ease; }
-        .form-field input:focus + label, .form-field input:not(:placeholder-shown) + label { top: 0.55rem; transform: translateY(0); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ottanio); }
-
-        .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1.1rem 2.2rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bianco); background: var(--verde-salvia); border: none; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
-        .cta-btn:hover { background: var(--ottanio); }
-        .cta-btn svg { stroke: var(--bianco); }
+        .cta-soldout { font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ottanio); font-weight: 500; padding: 1rem 2rem; border: 1px solid var(--verde-acqua); border-radius: 6px; display: inline-block; }
 
         footer { background: var(--nero); color: var(--bianco); padding: 3.5rem 3rem 1.5rem; position: relative; z-index: 1; }
         .footer-grid { display: flex; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 2.5rem; }
@@ -146,7 +133,7 @@
         .footer-social a:hover { color: var(--bianco); }
 
         @media (max-width: 1024px) { .content-grid { grid-template-columns: 1fr; gap: 3rem; } .details-sidebar { position: static; } }
-        @media (max-width: 768px) { header { padding: 1rem 1.5rem; } nav { display: none; } .hamburger { display: flex; } .mobile-menu { display: flex; } .hero { padding: 3rem 1.5rem; min-height: 75vh; } .hero-title { font-size: clamp(2.8rem, 12vw, 4.5rem); } .content-section { padding: 3rem 1.5rem; } .form-row { grid-template-columns: 1fr; } .illustri-section, .quote-section, .cta-section { padding: 3rem 1.5rem; } footer { padding: 2.5rem 1.5rem 1.5rem; } .footer-links { gap: 2rem; } .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; } .cypress, .piramide { display: none; } .candles-container { gap: 60px; } }
+        @media (max-width: 768px) { header { padding: 1rem 1.5rem; } nav { display: none; } .hamburger { display: flex; } .mobile-menu { display: flex; } .hero { padding: 3rem 1.5rem; min-height: 75vh; } .hero-title { font-size: clamp(2.8rem, 12vw, 4.5rem); } .content-section { padding: 3rem 1.5rem; } .illustri-section, .quote-section, .cta-section { padding: 3rem 1.5rem; } footer { padding: 2.5rem 1.5rem 1.5rem; } .footer-links { gap: 2rem; } .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; } .cypress, .piramide { display: none; } .candles-container { gap: 60px; } }
     </style>
 </head>
 <body>
@@ -260,19 +247,10 @@
 
         <section class="cta-section" id="iscrizione">
             <div class="cta-container">
-                <span class="cta-label">Partecipa</span>
-                <h2 class="cta-title">Iscriviti al <em>ciclo completo</em></h2>
-                <p class="cta-desc">Quattro domeniche mattina alle 10.30 al Cimitero Acattolico di Roma: 1 febbraio, 8 marzo, 29 marzo e 19 aprile 2026.</p>
-                <p class="cta-limited">Posti limitati</p>
-                
-                <form class="iscrizione-form" method="GET" action="https://script.google.com/macros/s/AKfycbwTCxz0FQlGnHfolfgfyDC693mwrxYySnM0Q3mPXriu_qWZN8XHna-uS3EJV2xmWOhGzw/exec" target="_blank">
-                    <div class="form-row">
-                        <div class="form-field"><input type="text" id="nome" name="nome" required placeholder=" "><label for="nome">Nome</label></div>
-                        <div class="form-field"><input type="text" id="cognome" name="cognome" required placeholder=" "><label for="cognome">Cognome</label></div>
-                    </div>
-                    <div class="form-field full"><input type="email" id="email" name="email" required placeholder=" "><label for="email">Email</label></div>
-                    <button type="submit" class="cta-btn"><span>Iscriviti</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-                </form>
+                <span class="cta-label">Ciclo 2026</span>
+                <h2 class="cta-title">Quattro <em>domeniche mattina</em></h2>
+                <p class="cta-desc">1 febbraio, 8 marzo, 29 marzo e 19 aprile 2026, alle 10.30 al Cimitero Acattolico di Roma.</p>
+                <span class="cta-soldout">Posti esauriti</span>
             </div>
         </section>
     </main>
