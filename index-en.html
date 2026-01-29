@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tlon – School of Philosophy and Imagination</title>
+    <title>Tlon — School of Philosophy and Imagination</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -15,6 +15,7 @@
             --ottanio: #2a6b6b;
             --grigio: #6b6b6b;
             --grigio-chiaro: #e5e5e5;
+            --crema: #f8f6f3;
         }
 
         html {
@@ -739,6 +740,255 @@
         .statement-text em {
             font-style: italic;
             color: var(--ottanio);
+        }
+
+        /* ============ NEWS SECTION ============ */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes expandRing {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        .news-section {
+            background: var(--nero);
+            color: var(--bianco);
+            padding: 6rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-deco {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .news-deco-1 {
+            width: 400px;
+            height: 400px;
+            top: -150px;
+            right: -100px;
+            background: radial-gradient(circle, rgba(42, 107, 107, 0.15) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .news-deco-2 {
+            width: 200px;
+            height: 200px;
+            bottom: 50px;
+            left: -50px;
+            border: 1px solid rgba(42, 107, 107, 0.3);
+            animation: expandRing 6s ease-out infinite;
+        }
+
+        .news-deco-3 {
+            width: 60px;
+            height: 60px;
+            top: 30%;
+            left: 15%;
+            background: rgba(42, 107, 107, 0.1);
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .news-deco-4 {
+            width: 8px;
+            height: 8px;
+            bottom: 30%;
+            right: 20%;
+            background: var(--ottanio);
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .news-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .news-title-block {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .news-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .news-main-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            color: var(--ottanio);
+            line-height: 1;
+        }
+
+        .news-main-title em {
+            font-style: italic;
+        }
+
+        .news-stats {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .news-stat-number {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3rem;
+            font-style: italic;
+            color: var(--ottanio);
+            line-height: 1;
+        }
+
+        .news-stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.25rem;
+        }
+
+        .news-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+
+        .news-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .news-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .news-item:first-child {
+            padding-top: 0;
+        }
+
+        .news-item:hover {
+            padding-left: 1rem;
+            border-color: var(--ottanio);
+        }
+
+        .news-item-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--nero);
+            background: var(--ottanio);
+            padding: 0.25rem 0.6rem;
+            border-radius: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-item-date {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .news-item-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 0.3rem;
+            color: var(--bianco);
+        }
+
+        .news-item-meta {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .news-cta-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            background: rgba(42, 107, 107, 0.15);
+            border: 1px solid rgba(42, 107, 107, 0.3);
+            text-align: center;
+        }
+
+        .news-cta-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .news-cta-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--bianco);
+            color: var(--nero);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .news-cta-btn:hover {
+            background: var(--ottanio);
+            color: var(--bianco);
+        }
+
+        @media (max-width: 900px) {
+            .news-section {
+                padding: 4rem 1.5rem;
+            }
+            .news-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            .news-stats {
+                align-items: flex-start;
+                text-align: left;
+            }
+            .news-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
         }
 
         /* ============ DIMENSIONS ============ */
@@ -1510,6 +1760,60 @@
             </div>
         </section>
 
+        <!-- NEWS -->
+        <section class="news-section">
+            <div class="news-deco news-deco-1"></div>
+            <div class="news-deco news-deco-2"></div>
+            <div class="news-deco news-deco-3"></div>
+            <div class="news-deco news-deco-4"></div>
+            
+            <div class="news-container">
+                <div class="news-header">
+                    <div class="news-title-block reveal">
+                        <p class="news-label">February — March 2026</p>
+                        <h2 class="news-main-title"><em>News</em></h2>
+                    </div>
+                    <div class="news-stats reveal">
+                        <span class="news-stat-number">24</span>
+                        <span class="news-stat-label">upcoming events</span>
+                    </div>
+                </div>
+                
+                <div class="news-content">
+                    <div class="news-preview">
+                        <div class="news-item reveal">
+                            <span class="news-item-tag">Festival</span>
+                            <span class="news-item-date">February 14 · Putignano</span>
+                            <h3 class="news-item-title">Putignano Carnival: Love and Carnival</h3>
+                            <p class="news-item-meta">Lectio magistralis · Andrea Colamedici</p>
+                        </div>
+                        <div class="news-item reveal">
+                            <span class="news-item-tag">Trip</span>
+                            <span class="news-item-date">February 24 — March 3 · New York</span>
+                            <h3 class="news-item-title">United Network</h3>
+                            <p class="news-item-meta">Travel with Tlon · MUN Simulation</p>
+                        </div>
+                        <div class="news-item reveal">
+                            <span class="news-item-tag">Conference</span>
+                            <span class="news-item-date">March 12 · Florence</span>
+                            <h3 class="news-item-title">VOICES — European Journalism Festival</h3>
+                            <p class="news-item-meta">Talk · Andrea Colamedici, Maura Gancitano</p>
+                        </div>
+                        <div class="news-item reveal">
+                            <span class="news-item-tag">Course</span>
+                            <span class="news-item-date">March 30 · Rome</span>
+                            <h3 class="news-item-title">Prompt Thinking</h3>
+                            <p class="news-item-meta">IED Master · Course on AI and creativity</p>
+                        </div>
+                    </div>
+                    <div class="news-cta-block reveal">
+                        <p class="news-cta-text">Conferences, festivals, presentations, courses and trips in Italy and worldwide</p>
+                        <a href="./news-en.html" class="news-cta-btn">All events</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- DIMENSIONS -->
 <section class="dimensioni" id="dimensioni">
     <div class="section-header">
@@ -1599,19 +1903,19 @@
         <div class="evidenza-list">
             <a href="https://shop.tlon.it/prodotto/ipnocrazia-trump-musk-e-la-nuova-architettura-della-realta-janwei-xun/" class="evidenza-item reveal">
                 <h4 class="evidenza-item-title">Hypnocracy</h4>
-                <p class="evidenza-item-meta">Jianwei Xun – Edizioni Tlon</p>
+                <p class="evidenza-item-meta">Jianwei Xun — Edizioni Tlon</p>
             </a>
             <a href="https://shop.tlon.it/prodotto/l-algoritmo-di-babele-storia-e-miti-dell-intelligenza-artificiale-andrea-colamedici-simone-arcagni/" class="evidenza-item reveal">
                 <h4 class="evidenza-item-title">The Algorithm of Babel</h4>
-                <p class="evidenza-item-meta">A. Colamedici, S. Arcagni – Solferino</p>
+                <p class="evidenza-item-meta">A. Colamedici, S. Arcagni — Solferino</p>
             </a>
             <a href="https://www.pensarecontemporaneo.it" class="evidenza-item reveal">
                 <h4 class="evidenza-item-title">Festival 2026: Crossings</h4>
-                <p class="evidenza-item-meta">Piacenza, September 24–27</p>
+                <p class="evidenza-item-meta">Piacenza, September 24—27</p>
             </a>
             <a href="https://shop.tlon.it/edizioni-tlon/" class="evidenza-item reveal">
                 <h4 class="evidenza-item-title">Full Catalog</h4>
-                <p class="evidenza-item-meta">Edizioni Tlon →</p>
+                <p class="evidenza-item-meta">Edizioni Tlon —</p>
             </a>
         </div>
     </div>
@@ -1696,7 +2000,7 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>© 2026 Tlon Srl | Registered office: Via Nicolò da Pistoia, 12 – 00154 Rome | VAT: 13583341006 | REA: RM – 1458496</p>
+        <p>© 2026 Tlon Srl | Registered office: Via Nicolò da Pistoia, 12 — 00154 Rome | VAT: 13583341006 | REA: RM — 1458496</p>
         <div class="footer-social">
             <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
             <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
