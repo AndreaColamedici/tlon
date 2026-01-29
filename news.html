@@ -81,14 +81,21 @@
         .event-tag.presentazione { background: #5a2b8b; color: var(--bianco); }
         .event-tag.media { background: #8b2b5a; color: var(--bianco); }
         .event-tag.viaggio { background: #2b8b5a; color: var(--bianco); }
+        .event-tag.libro { background: #5a8b2b; color: var(--bianco); }
         
         .event-title { font-family: 'Instrument Serif', serif; font-size: 1.5rem; line-height: 1.3; margin-bottom: 0.5rem; color: var(--nero); }
+        .event-title a { border-bottom: 1px solid transparent; transition: border-color 0.3s ease; }
+        .event-title a:hover { border-color: var(--ottanio); }
         .event-who { font-size: 0.85rem; font-weight: 500; color: var(--ottanio); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
         .event-description { font-size: 1rem; line-height: 1.8; color: var(--grigio); }
         .event-location { font-size: 0.9rem; color: var(--grigio); margin-top: 0.8rem; }
         .event-location::before { content: '📍 '; }
+        .event-location a { color: var(--ottanio); border-bottom: 1px solid transparent; transition: border-color 0.3s ease; }
+        .event-location a:hover { border-color: var(--ottanio); }
         .event-time::before { content: '🕐 '; }
         .event-time { font-size: 0.9rem; color: var(--grigio); }
+        .event-link { display: inline-block; margin-top: 1rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ottanio); border-bottom: 1px solid var(--ottanio); padding-bottom: 2px; transition: all 0.3s ease; }
+        .event-link:hover { color: var(--nero); border-color: var(--nero); }
 
         .cta { padding: 8rem 3rem; background: var(--nero); text-align: center; }
         .cta-content { max-width: 700px; margin: 0 auto; }
@@ -189,7 +196,7 @@
                     <h3 class="event-title">Carnevale: dialogo con Danilo Daresta</h3>
                     <p class="event-who">Andrea Colamedici</p>
                     <p class="event-description">Diretta Instagram con Danilo Daresta, presidente della Fondazione Carnevale di Putignano. Andrea Colamedici è il direttore filosofico del Carnevale 2026.</p>
-                    <p class="event-location">Instagram @tlon.it</p>
+                    <p class="event-location"><a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram @tlon.it</a></p>
                 </div>
             </article>
 
@@ -200,10 +207,11 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag corso">Lezione</span>
-                    <h3 class="event-title">Master LUISS in Intelligenza Artificiale</h3>
+                    <h3 class="event-title"><a href="https://ai.luiss.it/" target="_blank">Master LUISS in Intelligenza Artificiale</a></h3>
                     <p class="event-who">Andrea Colamedici</p>
                     <p class="event-description">Lezione al Master "Intelligenza Artificiale. Tecnologie, regolamentazione, etica e società" dell'Università LUISS Guido Carli.</p>
                     <p class="event-location">LUISS, Roma</p>
+                    <a href="https://ai.luiss.it/" class="event-link" target="_blank">Info sul Master →</a>
                 </div>
             </article>
 
@@ -214,11 +222,12 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag conferenza">Conferenza</span>
-                    <h3 class="event-title">Da Platone ai Big Data. Filosofia e Digitale</h3>
+                    <h3 class="event-title"><a href="https://inlabmarcatrevigiana.it/" target="_blank">Da Platone ai Big Data. Filosofia e Digitale</a></h3>
                     <p class="event-who">Maura Gancitano</p>
                     <p class="event-description">Perché studiare filosofia non è noioso: un dialogo su come il pensiero antico illumina le sfide del presente digitale. Evento InnovationLab Marca Trevigiana.</p>
                     <p class="event-location">Online</p>
                     <p class="event-time">17:00 – 18:00</p>
+                    <a href="https://inlabmarcatrevigiana.it/" class="event-link" target="_blank">InnovationLab MTV →</a>
                 </div>
             </article>
 
@@ -229,11 +238,12 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag presentazione">Presentazione</span>
-                    <h3 class="event-title">Botanica della meraviglia</h3>
+                    <h3 class="event-title"><a href="https://www.fuoriluogobiella.it/" target="_blank">Botanica della meraviglia</a></h3>
                     <p class="event-who">Maura Gancitano</p>
                     <p class="event-description">Presentazione del libro nell'ambito di #fuoriluogo OFF, la programmazione "fuori festival" del Festival Letterario della Città di Biella.</p>
                     <p class="event-location">Biblioteca Civica di Biella</p>
                     <p class="event-time">18:30</p>
+                    <a href="https://www.fuoriluogobiella.it/" class="event-link" target="_blank">#fuoriluogo →</a>
                 </div>
             </article>
 
@@ -244,10 +254,11 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag festival">Festival</span>
-                    <h3 class="event-title">Carnevale di Putignano: Amore e Carnevale</h3>
+                    <h3 class="event-title"><a href="https://www.carnevalediputignano.it/" target="_blank">Carnevale di Putignano: Amore e Carnevale</a></h3>
                     <p class="event-who">Andrea Colamedici</p>
                     <p class="event-description">Lectio magistralis sul rapporto tra Amore e Carnevale, nell'ambito della direzione filosofica del Carnevale di Putignano 2026.</p>
                     <p class="event-location">Putignano (BA)</p>
+                    <a href="https://www.carnevalediputignano.it/" class="event-link" target="_blank">Carnevale di Putignano →</a>
                 </div>
             </article>
 
@@ -258,10 +269,26 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag festival">Festival</span>
-                    <h3 class="event-title">Carnevale di Putignano: Morte e Carnevale</h3>
+                    <h3 class="event-title"><a href="https://www.carnevalediputignano.it/" target="_blank">Carnevale di Putignano: Morte e Carnevale</a></h3>
                     <p class="event-who">Andrea Colamedici</p>
                     <p class="event-description">Lectio magistralis sul rapporto tra Morte e Carnevale, nell'ambito della direzione filosofica del Carnevale di Putignano 2026.</p>
                     <p class="event-location">Putignano (BA)</p>
+                    <a href="https://www.carnevalediputignano.it/" class="event-link" target="_blank">Carnevale di Putignano →</a>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">20</span>
+                    <span class="month-abbr">Feb</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag libro">Libro</span>
+                    <h3 class="event-title"><a href="https://www.wiley.com/en-us/Prompt+Thinking:+A+Critique+of+Generative+Reason-p-9781509573882" target="_blank">Prompt Thinking: A Critique of Generative Reason</a></h3>
+                    <p class="event-who">Jianwei Xun</p>
+                    <p class="event-description">Esce per Polity Press il nuovo libro di Jianwei Xun. Dopo Ipnocrazia, una riflessione filosofica sul pensiero nell'era dell'intelligenza artificiale generativa: il prompting come pratica filosofica e il concetto di "oversubject".</p>
+                    <p class="event-location">Polity Press</p>
+                    <a href="https://www.wiley.com/en-us/Prompt+Thinking:+A+Critique+of+Generative+Reason-p-9781509573882" class="event-link" target="_blank">Scopri il libro →</a>
                 </div>
             </article>
 
@@ -292,9 +319,10 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag corso">Corso</span>
-                    <h3 class="event-title">Cimiterologia</h3>
+                    <h3 class="event-title"><a href="https://tlon.it/cimiterologia" target="_blank">Cimiterologia</a></h3>
                     <p class="event-who">Andrea Colamedici</p>
                     <p class="event-description">Prosegue il ciclo di incontri dedicati alla Cimiterologia, lo studio filosofico e antropologico dei cimiteri come luoghi di memoria e trasformazione.</p>
+                    <a href="https://tlon.it/cimiterologia" class="event-link" target="_blank">Scopri il corso →</a>
                 </div>
             </article>
 
@@ -319,10 +347,11 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag festival">Festival</span>
-                    <h3 class="event-title">Festival Cambio Gioco</h3>
+                    <h3 class="event-title"><a href="https://www.comune.padova.it/vivere-il-comune/eventi/festival-cambio-gioco-connettiamoci" target="_blank">Festival Cambio Gioco</a></h3>
                     <p class="event-who">Maura Gancitano</p>
                     <p class="event-description">Partecipazione al Festival Cambio Gioco di Padova.</p>
                     <p class="event-location">Padova</p>
+                    <a href="https://www.comune.padova.it/vivere-il-comune/eventi/festival-cambio-gioco-connettiamoci" class="event-link" target="_blank">Festival Cambio Gioco →</a>
                 </div>
             </article>
 
@@ -333,10 +362,11 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag festival">Festival</span>
-                    <h3 class="event-title">VOICES – European Festival of Journalism and Media Freedom</h3>
+                    <h3 class="event-title"><a href="https://voicesfestival.eu/" target="_blank">VOICES – European Festival of Journalism and Media Freedom</a></h3>
                     <p class="event-who">Andrea Colamedici</p>
-                    <p class="event-description">Intervento al festival europeo dedicato al giornalismo e alla libertà dei media.</p>
-                    <p class="event-location">Firenze</p>
+                    <p class="event-description">Intervento al festival europeo dedicato al giornalismo e alla libertà dei media. Terza edizione, 10-12 marzo 2026.</p>
+                    <p class="event-location">Teatro del Maggio Musicale, Firenze</p>
+                    <a href="https://voicesfestival.eu/" class="event-link" target="_blank">VOICES Festival →</a>
                 </div>
             </article>
 
@@ -347,10 +377,11 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag festival">Festival</span>
-                    <h3 class="event-title">Natura Omnia</h3>
+                    <h3 class="event-title"><a href="https://www.naturaomnia.org/" target="_blank">Natura Omnia</a></h3>
                     <p class="event-who">Maura Gancitano</p>
                     <p class="event-description">Evento speciale con Cristina Donà nell'ambito del festival Natura Omnia.</p>
                     <p class="event-location">Verona</p>
+                    <a href="https://www.naturaomnia.org/" class="event-link" target="_blank">Natura Omnia →</a>
                 </div>
             </article>
 
@@ -402,10 +433,11 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag corso">Corso</span>
-                    <h3 class="event-title">Fondamenti dell'Ipnocrazia</h3>
+                    <h3 class="event-title"><a href="https://www.accademiadellearti.it/" target="_blank">Fondamenti dell'Ipnocrazia</a></h3>
                     <p class="event-who">Andrea Colamedici · Maura Gancitano</p>
                     <p class="event-description">Inizio del corso dedicato ai fondamenti teorici e pratici dell'Ipnocrazia, presso l'Accademia di Arti e Nuove Tecnologie.</p>
                     <p class="event-location">AANT, Roma</p>
+                    <a href="https://www.accademiadellearti.it/" class="event-link" target="_blank">AANT →</a>
                 </div>
             </article>
 
@@ -416,10 +448,10 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag conferenza">Evento</span>
-                    <h3 class="event-title">Teatro Carcano</h3>
+                    <h3 class="event-title"><a href="https://teatrocarcano.com/" target="_blank">Teatro Carcano</a></h3>
                     <p class="event-who">Andrea Colamedici · Maura Gancitano</p>
                     <p class="event-description">Evento al Teatro Carcano di Milano.</p>
-                    <p class="event-location">Teatro Carcano, Milano</p>
+                    <p class="event-location"><a href="https://teatrocarcano.com/" target="_blank">Teatro Carcano</a>, Milano</p>
                 </div>
             </article>
 
@@ -430,10 +462,11 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag conferenza">Scuole</span>
-                    <h3 class="event-title">Filosofarti – Incontro con le scuole</h3>
+                    <h3 class="event-title"><a href="https://www.filosofarti.it/" target="_blank">Filosofarti – Incontro con le scuole</a></h3>
                     <p class="event-who">Maura Gancitano</p>
-                    <p class="event-description">Incontro mattutino con gli studenti nell'ambito di Filosofarti.</p>
-                    <p class="event-location">Saronno</p>
+                    <p class="event-description">Incontro mattutino con gli studenti nell'ambito di Filosofarti, il festival di filosofia della provincia di Varese. Tema 2026: "Nodo/reti, individuo e comunità".</p>
+                    <p class="event-location">Teatro G. Pasta, Saronno</p>
+                    <a href="https://www.filosofarti.it/" class="event-link" target="_blank">Filosofarti →</a>
                 </div>
             </article>
 
@@ -444,9 +477,10 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag corso">Corso</span>
-                    <h3 class="event-title">Cimiterologia</h3>
+                    <h3 class="event-title"><a href="https://tlon.it/cimiterologia" target="_blank">Cimiterologia</a></h3>
                     <p class="event-who">Andrea Colamedici</p>
                     <p class="event-description">Nuovo appuntamento con il ciclo di Cimiterologia.</p>
+                    <a href="https://tlon.it/cimiterologia" class="event-link" target="_blank">Scopri il corso →</a>
                 </div>
             </article>
 
@@ -457,10 +491,10 @@
                 </div>
                 <div class="event-content">
                     <span class="event-tag corso">Corso</span>
-                    <h3 class="event-title">Prompt Thinking</h3>
+                    <h3 class="event-title"><a href="https://www.ied.it/roma" target="_blank">Prompt Thinking</a></h3>
                     <p class="event-who">Andrea Colamedici · Maura Gancitano</p>
                     <p class="event-description">Inizio del corso Prompt Thinking allo IED: un percorso su pensiero, linguaggio e intelligenza artificiale.</p>
-                    <p class="event-location">IED, Roma</p>
+                    <p class="event-location"><a href="https://www.ied.it/roma" target="_blank">IED</a>, Roma</p>
                 </div>
             </article>
 
@@ -533,7 +567,6 @@ document.querySelectorAll('a, button, .event-item').forEach(el => {
     el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
 });
 
-// Animate events on scroll
 const eventObserver = new IntersectionObserver(entries => {
     entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
