@@ -15,6 +15,7 @@
             --ottanio: #2a6b6b;
             --grigio: #6b6b6b;
             --grigio-chiaro: #e5e5e5;
+            --crema: #f8f6f3;
         }
 
         html {
@@ -739,6 +740,352 @@
         .statement-text em {
             font-style: italic;
             color: var(--ottanio);
+        }
+
+        /* ============ NEWS SECTION ============ */
+        .news-section {
+            padding: 6rem 3rem 8rem;
+            background: var(--nero);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(42, 107, 107, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(42, 107, 107, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .news-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 4rem;
+            align-items: end;
+            margin-bottom: 4rem;
+        }
+
+        .news-title-block {
+            position: relative;
+        }
+
+        .news-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .news-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .news-main-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 400;
+            line-height: 0.95;
+            color: var(--bianco);
+            letter-spacing: -0.02em;
+        }
+
+        .news-main-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .news-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+
+        .news-stat-number {
+            font-family: 'Instrument Serif', serif;
+            font-size: 5rem;
+            font-weight: 400;
+            line-height: 1;
+            color: var(--ottanio);
+            position: relative;
+        }
+
+        .news-stat-number::after {
+            content: '';
+            position: absolute;
+            bottom: 0.5rem;
+            right: -1rem;
+            width: 8px;
+            height: 8px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .news-stat-label {
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .news-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .news-preview {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .news-item {
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s ease;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-item:hover {
+            padding-left: 1rem;
+        }
+
+        .news-item-date {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 0.75rem;
+        }
+
+        .news-item-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.35rem;
+            color: var(--bianco);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .news-item-meta {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .news-cta-block {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: rgba(42, 107, 107, 0.08);
+            position: relative;
+        }
+
+        .news-cta-block::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border: 1px solid rgba(42, 107, 107, 0.2);
+            border-radius: 50%;
+            animation: expandRing 4s ease-out infinite;
+        }
+
+        .news-cta-block::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            border: 1px solid rgba(42, 107, 107, 0.3);
+            border-radius: 50%;
+            animation: expandRing 4s ease-out infinite 1s;
+        }
+
+        @keyframes expandRing {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        }
+
+        .news-cta-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            max-width: 280px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2.5rem;
+            background: var(--ottanio);
+            color: var(--bianco);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-cta-btn:hover {
+            background: var(--bianco);
+            color: var(--nero);
+            transform: translateY(-2px);
+        }
+
+        .news-cta-btn svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .news-cta-btn:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* Decorative elements */
+        .news-deco {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .news-deco-1 {
+            top: 10%;
+            right: 5%;
+            width: 120px;
+            height: 120px;
+            border: 1px solid rgba(42, 107, 107, 0.15);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .news-deco-2 {
+            bottom: 15%;
+            left: 3%;
+            width: 80px;
+            height: 80px;
+            border: 1px solid rgba(42, 107, 107, 0.2);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite reverse;
+        }
+
+        .news-deco-3 {
+            top: 40%;
+            left: 8%;
+            width: 6px;
+            height: 6px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .news-deco-4 {
+            bottom: 30%;
+            right: 12%;
+            width: 4px;
+            height: 4px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: twinkle 4s ease-in-out infinite 1s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.5); }
+        }
+
+        @media (max-width: 1024px) {
+            .news-header {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .news-stats {
+                align-items: flex-start;
+                flex-direction: row;
+                gap: 1rem;
+            }
+            .news-stat-number {
+                font-size: 3rem;
+            }
+            .news-content {
+                grid-template-columns: 1fr;
+            }
+            .news-preview {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .news-section {
+                padding: 4rem 1.5rem 5rem;
+            }
+            .news-main-title {
+                font-size: 2.5rem;
+            }
+            .news-preview,
+            .news-cta-block {
+                padding: 2rem;
+            }
+            .news-item-title {
+                font-size: 1.15rem;
+            }
         }
 
         /* ============ DIMENSIONI ============ */
@@ -1553,6 +1900,57 @@
             </div>
         </section>
 
+        <!-- NEWS -->
+        <section class="news-section">
+            <div class="news-deco news-deco-1"></div>
+            <div class="news-deco news-deco-2"></div>
+            <div class="news-deco news-deco-3"></div>
+            <div class="news-deco news-deco-4"></div>
+            
+            <div class="news-container">
+                <div class="news-header">
+                    <div class="news-title-block reveal">
+                        <p class="news-label">Agenda</p>
+                        <h2 class="news-main-title">Dove <em>siamo</em></h2>
+                    </div>
+                    <div class="news-stats reveal">
+                        <span class="news-stat-number">24</span>
+                        <span class="news-stat-label">eventi in programma</span>
+                    </div>
+                </div>
+                
+                <div class="news-content">
+                    <div class="news-preview">
+                        <div class="news-item reveal">
+                            <span class="news-item-date">4 Marzo 2026</span>
+                            <h3 class="news-item-title">Abbiamo bisogno di un altrove che non esiste</h3>
+                            <p class="news-item-meta">Lucie Azema · Edizioni Tlon</p>
+                        </div>
+                        <div class="news-item reveal">
+                            <span class="news-item-date">25 Marzo 2026</span>
+                            <h3 class="news-item-title">Il patriarcato del salario</h3>
+                            <p class="news-item-meta">Silvia Federici · Edizioni Tlon</p>
+                        </div>
+                        <div class="news-item reveal">
+                            <span class="news-item-date">26 Marzo 2026</span>
+                            <h3 class="news-item-title">Meno America nelle nostre vite</h3>
+                            <p class="news-item-meta">Bruno Giussani · Edizioni Tlon</p>
+                        </div>
+                    </div>
+                    
+                    <div class="news-cta-block reveal">
+                        <p class="news-cta-text">Conferenze, festival, presentazioni, corsi e viaggi tra febbraio e marzo 2026</p>
+                        <a href="./news.html" class="news-cta-btn">
+                            Vedi tutti gli eventi
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- DIMENSIONI -->
 <section class="dimensioni" id="dimensioni">
     <div class="section-header">
@@ -1640,10 +2038,6 @@
             </div>
         </a>
         <div class="evidenza-list">
-            <a href="./news.html" class="evidenza-item reveal">
-                <h4 class="evidenza-item-title">Dove siamo</h4>
-                <p class="evidenza-item-meta">24 eventi — Febbraio e Marzo 2026</p>
-            </a>
             <a href="https://shop.tlon.it/prodotto/ipnocrazia-trump-musk-e-la-nuova-architettura-della-realta-janwei-xun/" class="evidenza-item reveal">
                 <h4 class="evidenza-item-title">Ipnocrazia</h4>
                 <p class="evidenza-item-meta">Jianwei Xun — Edizioni Tlon</p>
@@ -1654,7 +2048,7 @@
             </a>
             <a href="https://www.pensarecontemporaneo.it" class="evidenza-item reveal">
                 <h4 class="evidenza-item-title">Festival 2026: Attraversamenti</h4>
-                <p class="evidenza-item-meta">Piacenza, 24—27 settembre</p>
+                <p class="evidenza-item-meta">Piacenza, 24–27 settembre</p>
             </a>
             <a href="https://shop.tlon.it/edizioni-tlon/" class="evidenza-item reveal">
                 <h4 class="evidenza-item-title">Tutto il catalogo</h4>
