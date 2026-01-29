@@ -252,15 +252,11 @@
             50% { transform: scaleY(1.2); opacity: 1; }
         }
 
-        /* FILTERS */
+        /* FILTERS - NON più sticky, diventa parte della sezione news */
         .filters-section {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--nero);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding: 1.5rem 3rem;
-            backdrop-filter: blur(20px);
+            background: var(--crema);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            padding: 2rem 3rem;
         }
 
         .filters-container {
@@ -277,7 +273,7 @@
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
+            color: var(--grigio);
             white-space: nowrap;
         }
 
@@ -294,27 +290,27 @@
             gap: 0.5rem;
             padding: 0.6rem 1.2rem;
             background: transparent;
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(0,0,0,0.15);
             border-radius: 100px;
             font-family: inherit;
             font-size: 0.75rem;
             font-weight: 500;
             letter-spacing: 0.05em;
-            color: rgba(255,255,255,0.6);
+            color: var(--grigio);
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .filter-btn:hover {
-            border-color: rgba(255,255,255,0.3);
-            color: var(--bianco);
+            border-color: var(--nero);
+            color: var(--nero);
             transform: translateY(-2px);
         }
 
         .filter-btn.active {
-            background: var(--bianco);
-            border-color: var(--bianco);
-            color: var(--nero);
+            background: var(--nero);
+            border-color: var(--nero);
+            color: var(--bianco);
         }
 
         .filter-btn .filter-icon {
@@ -340,19 +336,19 @@
             min-width: 20px;
             height: 20px;
             padding: 0 6px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.08);
             border-radius: 10px;
             font-size: 0.65rem;
             font-weight: 600;
         }
 
         .filter-btn.active .filter-count {
-            background: rgba(0,0,0,0.15);
+            background: rgba(255,255,255,0.2);
         }
 
         /* NEWS SECTION */
         .news-section {
-            padding: 6rem 3rem 10rem;
+            padding: 4rem 3rem 10rem;
             background: var(--crema);
             color: var(--nero);
             min-height: 100vh;
@@ -760,10 +756,10 @@
             .cursor { display: none; }
             .hero { padding: 6rem 1.5rem; }
             .hero-stats { flex-wrap: wrap; justify-content: center; }
-            .filters-section { padding: 1rem 1.5rem; }
+            .filters-section { padding: 1.5rem; }
             .filters-list { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 0.5rem; -webkit-overflow-scrolling: touch; }
             .filter-btn { flex-shrink: 0; }
-            .news-section { padding: 4rem 1.5rem 6rem; }
+            .news-section { padding: 3rem 1.5rem 6rem; }
             .events-grid { grid-template-columns: 1fr; }
             .month-header { flex-wrap: wrap; gap: 1rem; }
             .month-count { width: 100%; margin-left: 0; }
