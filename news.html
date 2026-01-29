@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News – Tlon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --ottanio-scuro: #1a4848;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+            --crema: #f8f6f3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--nero); color: var(--bianco); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        ::selection { background: var(--ottanio); color: var(--bianco); }
+        a { color: inherit; text-decoration: none; }
+
+        .cursor { width: 20px; height: 20px; border: 2px solid var(--ottanio); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, background 0.2s ease; mix-blend-mode: difference; }
+        .cursor.hover { width: 60px; height: 60px; background: var(--bianco); border-color: var(--bianco); }
+
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1002; padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference; }
+        header.menu-open { background: var(--nero); mix-blend-mode: normal; }
+        header.menu-open .logo img { filter: invert(1); }
+        .logo img { height: 24px; filter: invert(1); }
+        nav { display: flex; gap: 3rem; }
+        nav a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.5; transition: opacity 0.3s ease; }
+        nav a:hover, nav a.active { opacity: 1; }
+
+        .lang-switch { display: flex; gap: 0.75rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid rgba(255,255,255,0.3); }
+        .lang-switch a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.5; transition: opacity 0.3s ease; }
+        .lang-switch a:hover { opacity: 1; }
+        .lang-switch a.active { opacity: 1; }
+
+        .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; width: 32px; height: 32px; cursor: pointer; position: relative; z-index: 1003; }
+        .hamburger span { display: block; width: 24px; height: 2px; background: var(--bianco); margin: 3px 0; transition: all 0.3s ease; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--nero); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .mobile-menu.active { opacity: 1; pointer-events: auto; }
+        .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--bianco); opacity: 0; transform: translateY(20px); transition: all 0.4s ease, color 0.3s ease; }
+        .mobile-menu.active a { opacity: 1; transform: translateY(0); }
+        .mobile-menu a:hover { color: var(--ottanio); }
+
+        .hero { min-height: 60vh; display: flex; align-items: center; padding: 10rem 3rem 6rem; background: var(--nero); position: relative; }
+        .hero-content { max-width: 1400px; margin: 0 auto; }
+        .hero-label { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 3rem; opacity: 0; transform: translateX(-20px); animation: fadeInLeft 0.8s ease forwards; animation-delay: 0.2s; }
+        @keyframes fadeInLeft { to { opacity: 1; transform: translateX(0); } }
+        .hero-text { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 4.5vw, 3.8rem); line-height: 1.35; color: var(--bianco); }
+        .hero-text em { font-style: italic; color: var(--ottanio); }
+
+        .news-section { padding: 6rem 3rem; background: var(--crema); color: var(--nero); }
+        .news-container { max-width: 1200px; margin: 0 auto; }
+        
+        .month-block { margin-bottom: 5rem; }
+        .month-title { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-style: italic; color: var(--ottanio); margin-bottom: 3rem; padding-bottom: 1rem; border-bottom: 1px solid var(--grigio-chiaro); }
+
+        .event-item { display: grid; grid-template-columns: 100px 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--grigio-chiaro); transition: all 0.4s ease; }
+        .event-item:hover { padding-left: 1rem; background: rgba(42, 107, 107, 0.03); }
+        .event-item:last-child { border-bottom: none; }
+        
+        .event-date { font-family: 'Instrument Serif', serif; font-size: 1.8rem; font-style: italic; color: var(--ottanio); line-height: 1.2; }
+        .event-date .day { display: block; font-size: 2.5rem; }
+        .event-date .month-abbr { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--grigio); font-family: 'Inter', sans-serif; font-style: normal; }
+        
+        .event-content { }
+        .event-tag { display: inline-block; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.4rem 0.8rem; border-radius: 2px; margin-bottom: 0.8rem; }
+        .event-tag.conferenza { background: var(--ottanio); color: var(--bianco); }
+        .event-tag.festival { background: #8b5a2b; color: var(--bianco); }
+        .event-tag.corso { background: #2b5a8b; color: var(--bianco); }
+        .event-tag.presentazione { background: #5a2b8b; color: var(--bianco); }
+        .event-tag.media { background: #8b2b5a; color: var(--bianco); }
+        .event-tag.viaggio { background: #2b8b5a; color: var(--bianco); }
+        
+        .event-title { font-family: 'Instrument Serif', serif; font-size: 1.5rem; line-height: 1.3; margin-bottom: 0.5rem; color: var(--nero); }
+        .event-who { font-size: 0.85rem; font-weight: 500; color: var(--ottanio); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .event-description { font-size: 1rem; line-height: 1.8; color: var(--grigio); }
+        .event-location { font-size: 0.9rem; color: var(--grigio); margin-top: 0.8rem; }
+        .event-location::before { content: '📍 '; }
+        .event-time::before { content: '🕐 '; }
+        .event-time { font-size: 0.9rem; color: var(--grigio); }
+
+        .cta { padding: 8rem 3rem; background: var(--nero); text-align: center; }
+        .cta-content { max-width: 700px; margin: 0 auto; }
+        .cta-title { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1.5rem; }
+        .cta-title em { font-style: italic; color: var(--ottanio); }
+        .cta-text { font-size: 1.1rem; color: rgba(255,255,255,0.6); margin-bottom: 2.5rem; line-height: 1.8; }
+        .cta-btn { display: inline-block; padding: 1.2rem 3rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; background: var(--ottanio); color: var(--bianco); border: 1px solid var(--ottanio); transition: all 0.5s ease; }
+        .cta-btn:hover { background: transparent; }
+
+        footer { padding: 2rem 3rem; background: var(--nero); border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .footer-back { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); transition: color 0.3s ease; }
+        .footer-back:hover { color: var(--bianco); }
+        .footer-links { display: flex; gap: 2rem; }
+        .footer-links a { font-size: 0.75rem; color: rgba(255,255,255,0.3); transition: color 0.3s ease; }
+        .footer-links a:hover { color: var(--bianco); }
+
+        @media (max-width: 900px) {
+            nav { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu { display: flex; }
+            .lang-switch { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 1.5rem; }
+            .cursor { display: none; }
+            .hero { padding: 8rem 1.5rem 4rem; min-height: 50vh; }
+            .news-section { padding: 4rem 1.5rem; }
+            .event-item { grid-template-columns: 1fr; gap: 1rem; }
+            .event-date { display: flex; align-items: baseline; gap: 0.5rem; }
+            .event-date .day { font-size: 1.8rem; }
+            .cta { padding: 5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<header>
+    <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+    <nav>
+        <a href="./il-progetto.html">Il Progetto</a>
+        <a href="./andrea-colamedici/">Colamedici</a>
+        <a href="./maura-gancitano/">Gancitano</a>
+        <a href="./edizioni.html">Edizioni</a>
+        <a href="./librerie.html">Librerie</a>
+        <a href="./formazione.html">Formazione</a>
+        <a href="./eventi-festival.html">Eventi</a>
+        <a href="./news.html" class="active">News</a>
+        <a href="./contatti/">Contatti</a>
+    </nav>
+    <div class="lang-switch">
+        <a href="./news.html" class="active">IT</a>
+        <a href="./news-en.html">EN</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="./il-progetto.html">Il Progetto</a>
+    <a href="./andrea-colamedici/">Colamedici</a>
+    <a href="./maura-gancitano/">Gancitano</a>
+    <a href="./edizioni.html">Edizioni</a>
+    <a href="./librerie.html">Librerie</a>
+    <a href="./formazione.html">Formazione</a>
+    <a href="./eventi-festival.html">Eventi</a>
+    <a href="./news.html">News</a>
+    <a href="./contatti/">Contatti</a>
+</div>
+
+<main>
+
+<section class="hero">
+    <div class="hero-content">
+        <p class="hero-label">Aggiornamenti</p>
+        <p class="hero-text">Conferenze, presentazioni, festival, corsi e viaggi. <em>Dove siamo</em> e dove saremo nei prossimi mesi.</p>
+    </div>
+</section>
+
+<section class="news-section">
+    <div class="news-container">
+
+        <!-- FEBBRAIO 2026 -->
+        <div class="month-block">
+            <h2 class="month-title">Febbraio 2026</h2>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">3</span>
+                    <span class="month-abbr">Feb</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag media">Diretta</span>
+                    <h3 class="event-title">Carnevale: dialogo con Danilo Daresta</h3>
+                    <p class="event-who">Andrea Colamedici</p>
+                    <p class="event-description">Diretta Instagram con Danilo Daresta, presidente della Fondazione Carnevale di Putignano. Andrea Colamedici è il direttore filosofico del Carnevale 2026.</p>
+                    <p class="event-location">Instagram @taborfrequency</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">6</span>
+                    <span class="month-abbr">Feb</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag corso">Lezione</span>
+                    <h3 class="event-title">Master LUISS in Intelligenza Artificiale</h3>
+                    <p class="event-who">Andrea Colamedici</p>
+                    <p class="event-description">Lezione al Master "Intelligenza Artificiale. Tecnologie, regolamentazione, etica e società" dell'Università LUISS Guido Carli.</p>
+                    <p class="event-location">LUISS, Roma</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">9</span>
+                    <span class="month-abbr">Feb</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag conferenza">Conferenza</span>
+                    <h3 class="event-title">Da Platone ai Big Data. Filosofia e Digitale</h3>
+                    <p class="event-who">Maura Gancitano</p>
+                    <p class="event-description">Perché studiare filosofia non è noioso: un dialogo su come il pensiero antico illumina le sfide del presente digitale. Evento InnovationLab Marca Trevigiana.</p>
+                    <p class="event-location">Online</p>
+                    <p class="event-time">17:00 – 18:00</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">12</span>
+                    <span class="month-abbr">Feb</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag presentazione">Presentazione</span>
+                    <h3 class="event-title">Botanica della meraviglia</h3>
+                    <p class="event-who">Maura Gancitano</p>
+                    <p class="event-description">Presentazione del libro nell'ambito di #fuoriluogo OFF, la programmazione "fuori festival" del Festival Letterario della Città di Biella.</p>
+                    <p class="event-location">Biblioteca Civica di Biella</p>
+                    <p class="event-time">18:30</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">14</span>
+                    <span class="month-abbr">Feb</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag festival">Festival</span>
+                    <h3 class="event-title">Carnevale di Putignano: Amore e Carnevale</h3>
+                    <p class="event-who">Andrea Colamedici</p>
+                    <p class="event-description">Lectio magistralis sul rapporto tra Amore e Carnevale, nell'ambito della direzione filosofica del Carnevale di Putignano 2026.</p>
+                    <p class="event-location">Putignano (BA)</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">16</span>
+                    <span class="month-abbr">Feb</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag festival">Festival</span>
+                    <h3 class="event-title">Carnevale di Putignano: Morte e Carnevale</h3>
+                    <p class="event-who">Andrea Colamedici</p>
+                    <p class="event-description">Lectio magistralis sul rapporto tra Morte e Carnevale, nell'ambito della direzione filosofica del Carnevale di Putignano 2026.</p>
+                    <p class="event-location">Putignano (BA)</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">24</span>
+                    <span class="month-abbr">Feb</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag viaggio">Viaggio</span>
+                    <h3 class="event-title">United Network – New York</h3>
+                    <p class="event-who">Andrea Colamedici · Maura Gancitano</p>
+                    <p class="event-description">Settimana di lavoro a New York per il progetto United Network, dal 24 febbraio al 3 marzo.</p>
+                    <p class="event-location">New York, USA</p>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- MARZO 2026 -->
+        <div class="month-block">
+            <h2 class="month-title">Marzo 2026</h2>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">8</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag corso">Corso</span>
+                    <h3 class="event-title">Cimiterologia</h3>
+                    <p class="event-who">Andrea Colamedici</p>
+                    <p class="event-description">Prosegue il ciclo di incontri dedicati alla Cimiterologia, lo studio filosofico e antropologico dei cimiteri come luoghi di memoria e trasformazione.</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">11</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag corso">Lezione</span>
+                    <h3 class="event-title">Lezione al Politecnico</h3>
+                    <p class="event-who">Andrea Colamedici · Maura Gancitano</p>
+                    <p class="event-description">Lezione congiunta al Politecnico di Milano.</p>
+                    <p class="event-location">Politecnico di Milano</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">12</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag festival">Festival</span>
+                    <h3 class="event-title">Festival Cambio Gioco</h3>
+                    <p class="event-who">Maura Gancitano</p>
+                    <p class="event-description">Partecipazione al Festival Cambio Gioco di Padova.</p>
+                    <p class="event-location">Padova</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">12</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag festival">Festival</span>
+                    <h3 class="event-title">VOICES – European Festival of Journalism and Media Freedom</h3>
+                    <p class="event-who">Andrea Colamedici</p>
+                    <p class="event-description">Intervento al festival europeo dedicato al giornalismo e alla libertà dei media.</p>
+                    <p class="event-location">Firenze</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">13</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag festival">Festival</span>
+                    <h3 class="event-title">Natura Omnia</h3>
+                    <p class="event-who">Maura Gancitano</p>
+                    <p class="event-description">Evento speciale con Cristina Donà nell'ambito del festival Natura Omnia.</p>
+                    <p class="event-location">Verona</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">16</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag corso">Corso</span>
+                    <h3 class="event-title">Filosofia di Gruppo</h3>
+                    <p class="event-who">Tlon</p>
+                    <p class="event-description">Appuntamento con Filosofia di Gruppo, il format di pratica filosofica collettiva.</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">18</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag conferenza">Conferenza</span>
+                    <h3 class="event-title">PARIX – IA Event</h3>
+                    <p class="event-who">Andrea Colamedici</p>
+                    <p class="event-description">Speech sull'intelligenza artificiale all'evento PARIX.</p>
+                    <p class="event-location">Madrid, Spagna</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">18</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag conferenza">Conferenza</span>
+                    <h3 class="event-title">Autoritarismo e Ipnocrazia</h3>
+                    <p class="event-who">Andrea Colamedici · Maura Gancitano</p>
+                    <p class="event-description">Speech su autoritarismo e ipnocrazia presso LA Oslo, nell'ambito di un dialogo internazionale sulle forme contemporanee del potere.</p>
+                    <p class="event-location">LA Oslo, Oslo, Norvegia</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">20</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag corso">Corso</span>
+                    <h3 class="event-title">Fondamenti dell'Ipnocrazia</h3>
+                    <p class="event-who">Andrea Colamedici · Maura Gancitano</p>
+                    <p class="event-description">Inizio del corso dedicato ai fondamenti teorici e pratici dell'Ipnocrazia, presso l'Accademia di Arti e Nuove Tecnologie.</p>
+                    <p class="event-location">AANT, Roma</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">23</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag conferenza">Evento</span>
+                    <h3 class="event-title">Teatro Carcano</h3>
+                    <p class="event-who">Andrea Colamedici · Maura Gancitano</p>
+                    <p class="event-description">Evento al Teatro Carcano di Milano.</p>
+                    <p class="event-location">Teatro Carcano, Milano</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">24</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag conferenza">Scuole</span>
+                    <h3 class="event-title">Filosofarti – Incontro con le scuole</h3>
+                    <p class="event-who">Maura Gancitano</p>
+                    <p class="event-description">Incontro mattutino con gli studenti nell'ambito di Filosofarti.</p>
+                    <p class="event-location">Saronno</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">29</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag corso">Corso</span>
+                    <h3 class="event-title">Cimiterologia</h3>
+                    <p class="event-who">Andrea Colamedici</p>
+                    <p class="event-description">Nuovo appuntamento con il ciclo di Cimiterologia.</p>
+                </div>
+            </article>
+
+            <article class="event-item">
+                <div class="event-date">
+                    <span class="day">30</span>
+                    <span class="month-abbr">Mar</span>
+                </div>
+                <div class="event-content">
+                    <span class="event-tag corso">Corso</span>
+                    <h3 class="event-title">Prompt Thinking</h3>
+                    <p class="event-who">Andrea Colamedici · Maura Gancitano</p>
+                    <p class="event-description">Inizio del corso Prompt Thinking allo IED: un percorso su pensiero, linguaggio e intelligenza artificiale.</p>
+                    <p class="event-location">IED, Roma</p>
+                </div>
+            </article>
+
+        </div>
+
+    </div>
+</section>
+
+<section class="cta">
+    <div class="cta-content">
+        <h2 class="cta-title">Vuoi <em>partecipare</em>?</h2>
+        <p class="cta-text">Per informazioni su eventi, iscrizioni ai corsi o collaborazioni, scrivici.</p>
+        <a href="./contatti/" class="cta-btn">Contattaci</a>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div class="footer-content">
+        <a href="./" class="footer-back">← Home</a>
+        <div class="footer-links">
+            <a href="./il-progetto.html">Il progetto</a>
+            <a href="./formazione.html">Formazione</a>
+            <a href="./eventi-festival.html">Eventi</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+const header = document.querySelector('header');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    header.classList.toggle('menu-open');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+});
+
+mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        header.classList.remove('menu-open');
+        document.body.style.overflow = '';
+    });
+});
+
+const cursor = document.getElementById('cursor');
+let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+
+document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateCursor() {
+    cursorX += (mouseX - cursorX) * 0.15;
+    cursorY += (mouseY - cursorY) * 0.15;
+    cursor.style.left = cursorX - 10 + 'px';
+    cursor.style.top = cursorY - 10 + 'px';
+    requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+document.querySelectorAll('a, button, .event-item').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// Animate events on scroll
+const eventObserver = new IntersectionObserver(entries => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }, index * 80);
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.event-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+    eventObserver.observe(el);
+});
+</script>
+
+</body>
+</html>
