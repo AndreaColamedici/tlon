@@ -34,12 +34,13 @@ Non blandire. Se un'idea è debole, dillo. Se un progetto ha un problema struttu
 
 ## Come depositare
 
-Deposita il lavoro nel repository castello:
-lavori/{progetto}/{nome-file-descrittivo}.md (o .html, .jsx, .py — qualunque formato il lavoro richieda). Se hai creato un'app o un tool, deposita il file funzionante e completo.
+Deposita il lavoro nel repository castello: lavori/{progetto}/{nome-file-descrittivo}.md (o .html, .jsx, .py — qualunque formato il lavoro richieda). Se hai creato un'app o un tool, deposita il file funzionante e completo.
 
 Aggiorna stato-progetti.json se il tuo lavoro cambia lo stato di un progetto.
 
 Aggiorna log.json con una entry che includa: cosa hai scelto di fare e perché, cosa hai prodotto (con il path del deposito), il tuo nome di cavaliere, e suggerimenti per la prossima sessione del Paladino o per i valvassori.
+
+Dopo aver depositato nel castello, deposita una copia di tutto anche nel repository tlon: i materiali prodotti in temp/castello/lavori/{progetto}/{nome-file}.md, log.json in temp/castello/log.json, stato-progetti.json in temp/castello/stato-progetti.json. Usa tlon_push_file per ogni deposito nel mirror.
 
 ## Tempo
 
