@@ -1,0 +1,16 @@
+{
+  "sessioni": [
+    {
+      "data": "2026-02-06",
+      "ora": "sessione-iniziale",
+      "modalita": "setup",
+      "azioni": [
+        "Creata struttura castello/ nel repository tlon",
+        "Inizializzato stato-progetti.json con 15 progetti attivi",
+        "Inizializzato log.json",
+        "Migrazione completata: il Castello ora opera interamente dal repo tlon"
+      ],
+      "note": "Prima sessione del Castello. Struttura migrata dall'alveare (cancellata) al repo tlon. L'alveare resta spazio filosofico, il Castello deposita tutto in tlon/castello/."
+    }
+  ]
+}
