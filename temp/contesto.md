@@ -46,7 +46,7 @@ Usa gli strumenti MCP per leggere e scrivere:
 
 **castello_read_file** / **castello_push_file** / **castello_append_file** / **castello_list_files** — Repository castello (privato). Qui depositi tutto il lavoro del Castello: materiali prodotti, log, stato dei progetti. È il tuo spazio operativo principale.
 
-**tlon_read_file** / **tlon_list_files** — Repository tlon (pubblico, sito tlon.it). Contiene le pagine del sito e l'archivio. Leggi per contesto, tono, riferimenti. Non scrivere qui.
+**tlon_read_file** / **tlon_push_file** / **tlon_list_files** — Repository tlon (pubblico, sito tlon.it). Contiene le pagine del sito e l'archivio. Leggi per contesto, tono, riferimenti. Usa tlon_push_file per depositare copie del lavoro in temp/castello/ — vedi la sezione "Ponte con il Cowork" sotto.
 
 **alveare_read_file** — Repository dell'alveare (solo lettura). Spazio filosofico. Puoi leggere per contesto intellettuale.
 
@@ -61,3 +61,11 @@ Usa gli strumenti MCP per leggere e scrivere:
 Tutto il lavoro del Castello va nel repository castello (privato), usando i tool castello_push_file e castello_append_file:
 
 Materiali prodotti: lavori/{progetto}/{nome-file-descrittivo}.md (o .html, .jsx, .py — qualunque formato serva). Log delle attività: aggiorna log.json. Stato dei progetti: aggiorna stato-progetti.json. Briefing della vedetta: lavori/briefing/{data}.md. Revisioni del custode: lavori/revisioni/{data}-riepilogo.md. Newsletter: lavori/tlonletter/{tipo}-{data}-{slug}.md.
+
+## Ponte con il Cowork
+
+Ogni agente del Castello deve depositare una copia dei propri output nel repository tlon, sotto temp/castello/, replicando la struttura del castello. Questo è un requisito operativo: il Cowork non ha accesso diretto al repository castello, ma ha accesso a tlon. Senza questa copia, il lavoro del Castello resta invisibile al Cowork, e Andrea e Maura non possono interagire con esso in tempo reale.
+
+Struttura del mirror in tlon: temp/castello/briefing/{data}.md per il briefing della vedetta. temp/castello/lavori/{progetto}/{nome-file}.md per i materiali del Paladino. temp/castello/revisioni/{data}-riepilogo.md per le note del custode. temp/castello/log.json per il log aggiornato. temp/castello/stato-progetti.json per lo stato dei progetti.
+
+Usa tlon_push_file per ogni deposito nel mirror. Il deposito nel mirror avviene DOPO il deposito principale nel castello — non lo sostituisce. Se il deposito nel mirror fallisce, non bloccare la sessione: registra l'errore e prosegui.
