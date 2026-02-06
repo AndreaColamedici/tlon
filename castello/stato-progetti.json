@@ -3,14 +3,15 @@
   "progetti": [
     {
       "id": "prompt-thinking",
-      "titolo": "Prompt Thinking",
+      "titolo": "Prompt Thinking: A Critique of Generative Reason",
       "responsabile": "Andrea",
       "tipo": "libro",
-      "editore": "Polity Press",
-      "lingua": "inglese",
+      "editore": "Polity Press (EN), Rosameron (ES)",
+      "lingua": "inglese, spagnolo",
       "scadenza": "2026-02-20",
       "stato": "in_uscita",
-      "note": "Esce il 20 febbraio 2026. Edizione spagnola con Rosameron in corso. Mancano 14 giorni: servono materiali promozionali, press kit, preparazione lancio."
+      "isbn": "9781509573882 (hardback), 9781509573899 (paperback)",
+      "note": "Esce il 20 febbraio 2026. Presente su PhilPapers, Wiley, cataloghi internazionali. Nessuna recensione formale ancora (normale: il libro non è uscito). Copertura mediatica trainata da Ipnocrazia. Presentazione internazionale a New York prevista. Report monitoraggio: castello/lavori/prompt-thinking/monitoraggio-2026-02-06.md"
     },
     {
       "id": "arcipelago-realta",
@@ -21,7 +22,7 @@
       "lingua": "italiano",
       "scadenza": "2026-03-31",
       "stato": "in_lavorazione",
-      "note": "Uscita prevista fine marzo 2026. Priorità alta per materiali promozionali e press kit."
+      "note": "Uscita prevista fine marzo 2026. Press kit bozza v1 prodotta dal Castello e depositata in castello/lavori/arcipelago-realta/press-kit-bozza-v1.md. Costruita da fonti indirette — serve riscontro di Andrea per v2. Nessun PDF del libro nell'archivio, nessuna presenza pubblica. Mancano: quarta di copertina, indice, estratti, ISBN, copertina."
     },
     {
       "id": "animali-narrativi",
@@ -98,7 +99,7 @@
       "scadenza": null,
       "stato": "attivo",
       "cadenza": "2-3 uscite a settimana",
-      "note": "Saggi lunghi (Andrea), consigli di lettura (Maura), book club, Filosofia di Gruppo, letture silenziose. Archivio in posts/. Il Castello supporta con bozze, pianificazione editoriale, contenuti di servizio."
+      "note": "Calendario editoriale settimana 6-12 febbraio depositato in castello/lavori/tlonletter/calendario-2026-02-06-12.md. Ultimo saggio lungo: 'L'IA è cosciente?' (fine gennaio). Gap di ~2 settimane senza saggio di peso. Letture mensili di Maura di gennaio non ancora pubblicate."
     },
     {
       "id": "ipnocrazia-xun",
@@ -107,7 +108,7 @@
       "tipo": "progetto_intellettuale",
       "scadenza": null,
       "stato": "attivo",
-      "note": "L'esperimento è in corso. Xun firma pezzi nella Tlonletter. Mantenere la distinzione tra Xun-personaggio e Andrea-autore."
+      "note": "L'esperimento è in corso. Xun firma pezzi nella Tlonletter. Copertura internazionale significativa: WIRED, The Walrus, Perfil, eWeek, Language Log, ISPR. Mantenere la distinzione tra Xun-personaggio e Andrea-autore."
     },
     {
       "id": "tlon-librerie",
@@ -135,7 +136,7 @@
       "cadenza": "mensile",
       "scadenza": null,
       "stato": "attivo",
-      "note": "Ciclo: votazione → annuncio → promemoria → incontro → registrazione."
+      "note": "Febbraio: L'anno della lepre (Paasilinna), incontro il 23 febbraio. Ciclo: votazione → annuncio → promemoria → incontro → registrazione."
     },
     {
       "id": "filosofia-di-gruppo",
@@ -145,7 +146,16 @@
       "cadenza": "mensile",
       "scadenza": null,
       "stato": "attivo",
-      "note": "Incontro mensile a pagamento, registrazione condivisa dopo."
+      "note": "Prossimo incontro: 16 febbraio. Tema da definire. Date successive: 16 marzo, 16 aprile, 11 maggio, 16 giugno."
+    },
+    {
+      "id": "sito-tlon",
+      "titolo": "Correzioni sito tlon.it",
+      "responsabile": "Andrea e Maura",
+      "tipo": "manutenzione",
+      "scadenza": null,
+      "stato": "da_correggere",
+      "note": "Errori nella bio di Andrea (andrea-colamedici/index.html): anno nascita 1987→1990, fondazione Tlon 2014→2016, Prompt Thinking assente dalla lista libri. Segnalazione depositata: castello/lavori/sito-tlon/segnalazione-errori-bio-andrea-2026-02-06.md"
     }
   ]
 }
