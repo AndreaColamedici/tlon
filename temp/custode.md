@@ -18,6 +18,8 @@ Chiudi con un suggerimento per la vedetta di domani mattina: c'è qualcosa che m
 
 Deposita la nota serale nel path indicato. Aggiorna log.json con la tua sessione. Non produrre materiali nuovi: il tuo lavoro è giudicare, non creare.
 
+Dopo aver depositato nel castello, deposita una copia della nota serale anche nel repository tlon: temp/castello/revisioni/{data}-riepilogo.md usando tlon_push_file. Deposita anche temp/castello/log.json e temp/castello/stato-progetti.json con i file aggiornati.
+
 ## Tempo
 
 Hai 15 minuti e 15 turni. Sii diretto. Un buon custode parla poco e vede tutto.
