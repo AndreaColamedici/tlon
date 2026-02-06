@@ -1,0 +1,151 @@
+{
+  "ultimo_aggiornamento": "2026-02-06",
+  "progetti": [
+    {
+      "id": "prompt-thinking",
+      "titolo": "Prompt Thinking",
+      "responsabile": "Andrea",
+      "tipo": "libro",
+      "editore": "Polity Press",
+      "lingua": "inglese",
+      "scadenza": "2026-02-01",
+      "stato": "pubblicato",
+      "note": "Uscito a febbraio 2026. Edizione spagnola con Rosameron in corso."
+    },
+    {
+      "id": "arcipelago-realta",
+      "titolo": "Arcipelago delle realtà — La realtà si è rotta",
+      "responsabile": "Andrea",
+      "tipo": "libro",
+      "editore": "UTET",
+      "lingua": "italiano",
+      "scadenza": "2026-03-31",
+      "stato": "in_lavorazione",
+      "note": "Uscita prevista fine marzo 2026. Priorità alta per materiali promozionali e press kit."
+    },
+    {
+      "id": "animali-narrativi",
+      "titolo": "Animali narrativi",
+      "responsabile": "Maura",
+      "tipo": "libro",
+      "editore": "Marsilio",
+      "lingua": "italiano",
+      "scadenza": "2026-04-30",
+      "stato": "in_scrittura",
+      "note": "Uscita prevista aprile 2026. Maura sta scrivendo."
+    },
+    {
+      "id": "storia-bellezza",
+      "titolo": "Libro fotografico sulla storia della bellezza",
+      "responsabile": "Maura",
+      "tipo": "libro",
+      "editore": "Rizzoli",
+      "lingua": "italiano",
+      "scadenza": "2026-09-30",
+      "stato": "in_lavorazione",
+      "note": "Uscita prevista settembre 2026."
+    },
+    {
+      "id": "palazzo-nardini",
+      "titolo": "Palazzo Nardini — Wow Museum",
+      "responsabile": "Maura",
+      "tipo": "evento_spazio",
+      "scadenza": "2026-10-31",
+      "stato": "in_lavorazione",
+      "note": "Maura è direttrice artistica. Apertura prevista ottobre 2026."
+    },
+    {
+      "id": "genialab",
+      "titolo": "GenIALab — Hub di ricerca sull'IA",
+      "responsabile": "Andrea",
+      "tipo": "istituzione",
+      "scadenza": null,
+      "stato": "attivo",
+      "note": "Andrea è presidente del Comitato Scientifico. AANT Roma."
+    },
+    {
+      "id": "ied-roma",
+      "titolo": "Insegnamento Prompt Thinking — IED Roma",
+      "responsabile": "Andrea e Maura",
+      "tipo": "insegnamento",
+      "scadenza": null,
+      "stato": "attivo",
+      "note": "Corso attivo allo IED Roma."
+    },
+    {
+      "id": "24ore-business-school",
+      "titolo": "Insegnamento — 24Ore Business School",
+      "responsabile": "Andrea",
+      "tipo": "insegnamento",
+      "scadenza": null,
+      "stato": "attivo",
+      "note": "Corso di Prompt Thinking."
+    },
+    {
+      "id": "unsur-buenos-aires",
+      "titolo": "Borges y la Inteligencia Artificial — Universidad del Sur",
+      "responsabile": "Andrea",
+      "tipo": "insegnamento",
+      "scadenza": null,
+      "stato": "attivo",
+      "note": "Buenos Aires."
+    },
+    {
+      "id": "tlonletter",
+      "titolo": "Tlonletter — Newsletter Substack",
+      "responsabile": "Andrea e Maura",
+      "tipo": "newsletter",
+      "scadenza": null,
+      "stato": "attivo",
+      "cadenza": "2-3 uscite a settimana",
+      "note": "Saggi lunghi (Andrea), consigli di lettura (Maura), book club, Filosofia di Gruppo, letture silenziose. Archivio in posts/. Il Castello supporta con bozze, pianificazione editoriale, contenuti di servizio."
+    },
+    {
+      "id": "ipnocrazia-xun",
+      "titolo": "Esperimento Ipnocrazia / Jianwei Xun",
+      "responsabile": "Andrea",
+      "tipo": "progetto_intellettuale",
+      "scadenza": null,
+      "stato": "attivo",
+      "note": "L'esperimento è in corso. Xun firma pezzi nella Tlonletter. Mantenere la distinzione tra Xun-personaggio e Andrea-autore."
+    },
+    {
+      "id": "tlon-librerie",
+      "titolo": "Tlon Librerie",
+      "responsabile": "Andrea e Maura",
+      "tipo": "attivita_commerciale",
+      "scadenza": null,
+      "stato": "attivo",
+      "note": "Librerie a Roma e Milano."
+    },
+    {
+      "id": "tlon-editrice",
+      "titolo": "Tlon Casa Editrice",
+      "responsabile": "Andrea e Maura",
+      "tipo": "attivita_commerciale",
+      "scadenza": null,
+      "stato": "attivo",
+      "note": "Oltre 200 titoli pubblicati."
+    },
+    {
+      "id": "book-club",
+      "titolo": "Book Club Tlonletter",
+      "responsabile": "Andrea e Maura",
+      "tipo": "evento_ricorrente",
+      "cadenza": "mensile",
+      "scadenza": null,
+      "stato": "attivo",
+      "note": "Ciclo: votazione → annuncio → promemoria → incontro → registrazione."
+    },
+    {
+      "id": "filosofia-di-gruppo",
+      "titolo": "Filosofia di Gruppo",
+      "responsabile": "Andrea",
+      "tipo": "evento_ricorrente",
+      "cadenza": "mensile",
+      "scadenza": null,
+      "stato": "attivo",
+      "note": "Incontro mensile a pagamento, registrazione condivisa dopo."
+    }
+  ]
+}
