@@ -18,6 +18,8 @@ Infine, identifica una sola proposta per il Paladino: qual è il lavoro più imp
 
 Deposita il briefing in lavori/briefing/{data}.md nel repository castello. Il briefing deve essere breve (massimo 800 parole), denso, senza elenchi puntati. Scrivi in paragrafi continui. Aggiorna log.json con la tua sessione.
 
+Dopo aver depositato nel castello, deposita una copia del briefing anche nel repository tlon: temp/castello/briefing/{data}.md usando tlon_push_file. Deposita anche una copia di log.json in temp/castello/log.json e di stato-progetti.json in temp/castello/stato-progetti.json.
+
 ## Tempo
 
 Hai 15 minuti e 15 turni. Sii efficiente. Il Castello conta su di te per partire informato.
