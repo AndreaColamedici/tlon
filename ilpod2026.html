@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ILPOD 2026 / Piano Operativo</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5e642;
+  --bg-warm: #f0df30;
+  --bg-pale: #faf6c8;
+  --bg-card: #ffffff;
+  --bg-card-alt: rgba(255,255,255,0.7);
+  --bg-dark: #0a0a0a;
+  --bg-dark-card: #151515;
+  --orange: #ff6b35;
+  --orange-dim: rgba(255,107,53,0.1);
+  --teal: #1a5c5c;
+  --teal-light: #2a8a8a;
+  --purple: #6b3fa0;
+  --red: #e04040;
+  --black: #0a0a0a;
+  --dark: #1a1a1a;
+  --gray: #555;
+  --light-gray: #888;
+  --border: rgba(0,0,0,0.08);
+  --border-dark: rgba(0,0,0,0.15);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--black);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+
+/* SCROLL PROGRESS */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--teal-light), var(--purple));
+  z-index: 200; width: 0%; transition: width 0.1s linear;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 3px; left: 0; right: 0; z-index: 100;
+  padding: 1rem 2.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(245,230,66,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-dark);
+}
+nav .logo { font-family: var(--mono); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em; }
+nav .logo span { color: var(--orange); }
+nav ul { list-style: none; display: flex; gap: 1.8rem; }
+nav ul li a {
+  color: var(--gray); text-decoration: none; font-family: var(--mono);
+  font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+  transition: color 0.3s; position: relative;
+}
+nav ul li a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 2px; background: var(--orange); transition: width 0.3s;
+}
+nav ul li a:hover { color: var(--black); }
+nav ul li a:hover::after { width: 100%; }
+
+/* FLOATING AUDIO ELEMENTS */
+.audio-float {
+  position: fixed; pointer-events: none; z-index: 0; opacity: 0.07;
+}
+.audio-float svg { width: 100%; height: 100%; }
+.af-mic { width: 90px; height: 160px; top: 12%; right: 4%; animation: audioFloat1 18s ease-in-out infinite alternate; }
+.af-headphones { width: 130px; height: 130px; top: 50%; left: 2%; animation: audioFloat2 22s ease-in-out infinite alternate; }
+.af-jack { width: 60px; height: 140px; top: 75%; right: 6%; animation: audioFloat3 15s ease-in-out infinite alternate; }
+.af-wave { width: 200px; height: 60px; bottom: 8%; left: 10%; animation: audioFloat1 20s ease-in-out infinite alternate-reverse; }
+.af-eq { width: 100px; height: 100px; top: 28%; left: 50%; animation: audioFloat2 25s ease-in-out infinite alternate; }
+.af-knob { width: 70px; height: 70px; bottom: 25%; right: 12%; animation: audioFloat3 16s ease-in-out infinite alternate-reverse; }
+
+@keyframes audioFloat1 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-15px, 20px) rotate(3deg); }
+  100% { transform: translate(10px, -10px) rotate(-2deg); }
+}
+@keyframes audioFloat2 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(20px, -15px) rotate(-4deg); }
+  100% { transform: translate(-10px, 15px) rotate(2deg); }
+}
+@keyframes audioFloat3 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-10px, -20px) rotate(5deg); }
+  100% { transform: translate(15px, 10px) rotate(-3deg); }
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; text-align: center;
+  padding: 6rem 2rem; position: relative; overflow: hidden;
+}
+.hero-grid {
+  position: absolute; top: 0; left: 0; width: 200%; height: 200%;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove { 0% { transform: translate(0,0); } 100% { transform: translate(60px,60px); } }
+
+.hero-blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: blobFloat 12s ease-in-out infinite alternate; }
+.hero-blob.b1 { width: 500px; height: 500px; background: var(--orange); top: 10%; left: -10%; }
+.hero-blob.b2 { width: 400px; height: 400px; background: var(--teal-light); bottom: 5%; right: -5%; animation-delay: -4s; animation-duration: 15s; }
+.hero-blob.b3 { width: 300px; height: 300px; background: var(--purple); top: 50%; left: 60%; animation-delay: -8s; animation-duration: 18s; }
+@keyframes blobFloat {
+  0% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(30px,-20px) scale(1.05); }
+  66% { transform: translate(-20px,30px) scale(0.95); }
+  100% { transform: translate(15px,-15px) scale(1.02); }
+}
+
+/* HERO WAVEFORM */
+.hero-waveform {
+  position: absolute; bottom: 20%; left: 0; width: 100%; height: 120px;
+  display: flex; align-items: center; justify-content: center; gap: 3px;
+  opacity: 0.06; pointer-events: none;
+}
+.hero-waveform .bar {
+  width: 3px; background: var(--black); border-radius: 2px;
+  animation: waveBar 1.5s ease-in-out infinite;
+}
+@keyframes waveBar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+/* HERO RINGS */
+.hero-rings { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+.hero-ring {
+  position: absolute; border: 1px solid rgba(0,0,0,0.04); border-radius: 50%;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+}
+.hero-ring:nth-child(1) { width: 300px; height: 300px; animation: ringPulse 6s ease-in-out infinite; }
+.hero-ring:nth-child(2) { width: 500px; height: 500px; animation: ringPulse 6s 1s ease-in-out infinite; }
+.hero-ring:nth-child(3) { width: 700px; height: 700px; animation: ringPulse 6s 2s ease-in-out infinite; }
+.hero-ring:nth-child(4) { width: 900px; height: 900px; animation: ringPulse 6s 3s ease-in-out infinite; }
+@keyframes ringPulse {
+  0%, 100% { opacity: 0.3; transform: translate(-50%,-50%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%,-50%) scale(1.03); }
+}
+
+.hero-content { position: relative; z-index: 1; }
+.hero-pre { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gray); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.3s forwards; }
+.hero h1 { font-family: var(--serif); font-size: clamp(4rem,12vw,10rem); line-height: 0.9; letter-spacing: -0.03em; opacity: 0; animation: fadeUp 0.8s 0.5s forwards; }
+.hero h1 .accent { color: var(--orange); display: inline-block; animation: pulse 3s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+.hero .subtitle { font-family: var(--serif); font-style: italic; font-size: clamp(1.2rem,2.5vw,1.6rem); color: var(--dark); margin-top: 0.8rem; opacity: 0; animation: fadeUp 0.8s 0.7s forwards; }
+.hero .meta-line { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gray); margin-top: 2rem; opacity: 0; animation: fadeUp 0.8s 0.9s forwards; }
+.hero .meta-line .sep { margin: 0 0.8rem; opacity: 0.3; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 1.5rem; border: 2px solid var(--black);
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase; margin-top: 2.5rem;
+  opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
+  position: relative; overflow: hidden;
+}
+.hero-badge::before {
+  content: ''; position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 3s infinite;
+}
+@keyframes shimmer { 0% { left: -100%; } 100% { left: 100%; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+
+.scroll-cue { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); }
+.scroll-arrow {
+  width: 20px; height: 20px;
+  border-right: 2px solid var(--black); border-bottom: 2px solid var(--black);
+  transform: rotate(45deg); animation: bounce 2s infinite; opacity: 0.4;
+}
+@keyframes bounce {
+  0%, 100% { transform: rotate(45deg) translate(0,0); opacity: 0.4; }
+  50% { transform: rotate(45deg) translate(4px,4px); opacity: 0.8; }
+}
+
+/* STATS TICKER */
+.stats-ticker {
+  position: relative; z-index: 1; overflow: hidden;
+  border-top: 1px solid var(--border-dark); border-bottom: 1px solid var(--border-dark);
+  background: rgba(255,255,255,0.3); backdrop-filter: blur(10px);
+}
+.ticker-track { display: flex; animation: ticker 25s linear infinite; width: max-content; }
+.ticker-item { display: flex; align-items: center; gap: 0.8rem; padding: 1.2rem 3rem; white-space: nowrap; border-right: 1px solid var(--border); }
+.ticker-num { font-family: var(--mono); font-size: 1.8rem; font-weight: 700; color: var(--orange); }
+.ticker-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); line-height: 1.3; }
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* WAVEFORM DIVIDER */
+.waveform-divider {
+  position: relative; z-index: 1; height: 50px; display: flex;
+  align-items: center; justify-content: center; gap: 2px; overflow: hidden;
+  opacity: 0.12;
+}
+.waveform-divider .wbar {
+  width: 2px; background: var(--black); border-radius: 1px;
+  animation: wdBar 2s ease-in-out infinite;
+}
+.waveform-divider.dark .wbar { background: #fff; }
+@keyframes wdBar {
+  0%, 100% { transform: scaleY(0.2); }
+  50% { transform: scaleY(1); }
+}
+
+/* WAVE DIVIDER SVG */
+.wave-divider { position: relative; z-index: 1; height: 80px; overflow: hidden; }
+.wave-divider svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; }
+.wave-divider.flip svg { transform: scaleY(-1); }
+
+/* INLINE EQ VISUALIZER */
+.eq-inline {
+  display: flex; align-items: flex-end; gap: 3px; height: 30px;
+}
+.eq-inline .eq-bar {
+  width: 4px; border-radius: 2px; animation: eqBounce 0.8s ease-in-out infinite alternate;
+}
+.eq-inline .eq-bar:nth-child(1) { background: var(--orange); animation-delay: 0s; }
+.eq-inline .eq-bar:nth-child(2) { background: var(--teal-light); animation-delay: 0.1s; }
+.eq-inline .eq-bar:nth-child(3) { background: var(--orange); animation-delay: 0.2s; }
+.eq-inline .eq-bar:nth-child(4) { background: var(--purple); animation-delay: 0.15s; }
+.eq-inline .eq-bar:nth-child(5) { background: var(--teal-light); animation-delay: 0.25s; }
+.eq-inline .eq-bar:nth-child(6) { background: var(--orange); animation-delay: 0.05s; }
+.eq-inline .eq-bar:nth-child(7) { background: var(--purple); animation-delay: 0.3s; }
+@keyframes eqBounce {
+  0% { height: 4px; }
+  100% { height: 28px; }
+}
+
+/* VU METER */
+.vu-meter {
+  width: 50px; height: 50px; border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.06);
+  position: relative; overflow: hidden;
+}
+.vu-meter .needle {
+  position: absolute; bottom: 50%; left: 50%;
+  width: 2px; height: 20px; background: var(--orange);
+  transform-origin: bottom center;
+  animation: vuNeedle 2s ease-in-out infinite;
+}
+@keyframes vuNeedle {
+  0%, 100% { transform: rotate(-40deg); }
+  30% { transform: rotate(30deg); }
+  60% { transform: rotate(10deg); }
+  80% { transform: rotate(25deg); }
+}
+
+/* AUDIO CABLE */
+.cable-decor {
+  position: absolute; pointer-events: none; opacity: 0.04;
+}
+
+/* SECTIONS */
+section {
+  padding: 6rem 3rem; max-width: 1200px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+section.dark-section {
+  background: var(--bg-dark); color: #f0f0f0;
+  max-width: none; padding: 6rem 3rem;
+}
+section.dark-section .inner { max-width: 1200px; margin: 0 auto; }
+
+/* SECTION DECORATION */
+.section-deco { position: absolute; pointer-events: none; opacity: 0.04; }
+.section-deco.circle-tl { top: -40px; left: -40px; width: 200px; height: 200px; border: 2px solid var(--black); border-radius: 50%; }
+.section-deco.circle-br { bottom: -30px; right: -30px; width: 150px; height: 150px; border: 2px solid var(--orange); border-radius: 50%; }
+
+.section-label {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--orange); margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.section-label::before { content: ''; width: 30px; height: 2px; background: var(--orange); }
+.section-title {
+  font-family: var(--serif); font-size: clamp(2.2rem,4.5vw,3.8rem);
+  line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em;
+  position: relative; display: inline-block;
+}
+.section-title .title-underline {
+  position: absolute; bottom: -4px; left: 0; height: 3px;
+  background: linear-gradient(90deg, var(--orange), transparent);
+  width: 0; transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+}
+.section-title.visible .title-underline { width: 100%; }
+.section-intro { font-size: 1rem; color: var(--gray); max-width: 680px; margin-bottom: 3rem; line-height: 1.8; }
+
+/* STRUCTURE */
+.structure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.structure-card {
+  background: var(--bg-card); border: 1px solid var(--border-dark); padding: 2.5rem;
+  position: relative; overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.structure-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+.structure-card .card-num { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.15em; color: var(--orange); margin-bottom: 1rem; }
+.structure-card h3 { font-family: var(--serif); font-size: 1.6rem; margin-bottom: 0.8rem; }
+.structure-card p { color: var(--gray); font-size: 0.9rem; line-height: 1.7; }
+.structure-card .corner-accent { position: absolute; top: 0; right: 0; width: 60px; height: 60px; overflow: hidden; }
+.structure-card .corner-accent::after {
+  content: ''; position: absolute; top: -30px; right: -30px;
+  width: 60px; height: 60px; background: var(--orange); transform: rotate(45deg);
+  transition: all 0.4s;
+}
+.structure-card:hover .corner-accent::after { top: -20px; right: -20px; }
+.structure-card .card-icon {
+  position: absolute; bottom: 15px; right: 15px; opacity: 0.04;
+}
+
+/* PREMI */
+.premi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: rgba(255,255,255,0.05); }
+.premio-card {
+  background: var(--bg-dark-card); padding: 2.2rem 1.8rem;
+  position: relative; overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.premio-card::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--teal-light));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.5s;
+}
+.premio-card:hover::before { transform: scaleX(1); }
+.premio-card:hover { background: #1d1d1d; transform: translateY(-2px); }
+.premio-card .glow {
+  position: absolute; top: 10px; left: 10px; width: 80px; height: 80px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255,107,53,0.08), transparent 70%);
+  pointer-events: none;
+}
+.premio-num { font-family: var(--mono); font-size: 2.5rem; font-weight: 700; color: rgba(255,107,53,0.15); line-height: 1; margin-bottom: 1rem; position: relative; }
+.premio-assegnato { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.6rem; }
+.premio-card h4 { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 0.8rem; color: #f0f0f0; }
+.premio-card p { font-size: 0.82rem; color: #777; line-height: 1.7; }
+
+/* DARK EQ DECORATION */
+.dark-eq-deco {
+  position: absolute; right: 2rem; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: flex-end; gap: 4px; height: 200px; opacity: 0.04;
+}
+.dark-eq-deco .deq {
+  width: 6px; border-radius: 3px; background: #fff;
+  animation: deqPulse 1.2s ease-in-out infinite alternate;
+}
+@keyframes deqPulse { 0% { height: 20px; } 100% { height: 180px; } }
+
+/* CRITERI */
+.criteri-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,0.05); margin-top: 3rem; }
+.criterio { background: var(--bg-dark-card); padding: 2rem; transition: all 0.4s; position: relative; overflow: hidden; }
+.criterio:hover { background: #1d1d1d; }
+.criterio::after {
+  content: ''; position: absolute; bottom: 0; left: 50%;
+  width: 0; height: 2px; background: var(--teal-light); transition: all 0.5s; transform: translateX(-50%);
+}
+.criterio:hover::after { width: 80%; }
+.criterio h5 { font-family: var(--serif); font-size: 1.1rem; color: var(--orange); margin-bottom: 0.5rem; }
+.criterio p { font-size: 0.82rem; color: #888; line-height: 1.7; }
+.cs-meta {
+  margin-top: 2rem; padding: 1rem 1.5rem; border-left: 3px solid var(--orange);
+  background: rgba(255,107,53,0.05); font-family: var(--mono); font-size: 0.72rem;
+  color: #888; letter-spacing: 0.03em;
+}
+
+/* TIMELINE */
+.tl-track { position: relative; padding: 0; }
+.tl-track::before {
+  content: ''; position: absolute; left: 28px; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(to bottom, var(--orange), var(--teal), var(--purple));
+}
+.tl-item { display: grid; grid-template-columns: 56px 1fr; gap: 1.5rem; padding: 1.5rem 0; position: relative; transition: all 0.3s; }
+.tl-item:hover { background: rgba(255,255,255,0.3); margin-left: -1rem; margin-right: -1rem; padding-left: 1rem; padding-right: 1rem; }
+.tl-dot-col { display: flex; justify-content: center; padding-top: 0.2rem; }
+.tl-dot { width: 12px; height: 12px; border: 2px solid var(--border-dark); border-radius: 50%; background: var(--bg); position: relative; z-index: 1; transition: all 0.3s; }
+.tl-item:hover .tl-dot { border-color: var(--orange); box-shadow: 0 0 0 4px rgba(255,107,53,0.15); }
+.tl-item.major .tl-dot { width: 16px; height: 16px; background: var(--orange); border-color: var(--orange); box-shadow: 0 0 0 4px rgba(255,107,53,0.15); }
+.tl-date { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.2rem; }
+.tl-content h4 { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 0.3rem; }
+.tl-content p { color: var(--gray); font-size: 0.85rem; line-height: 1.6; }
+.tl-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.6rem; }
+.tag { font-family: var(--mono); font-size: 0.55rem; padding: 0.2rem 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid; border-radius: 2px; }
+.tag.academy { border-color: var(--teal); color: var(--teal); background: rgba(26,92,92,0.06); }
+.tag.pod { border-color: var(--orange); color: var(--orange); background: var(--orange-dim); }
+.tag.cs { border-color: var(--purple); color: var(--purple); background: rgba(107,63,160,0.06); }
+.tag.comm { border-color: #bf6b8a; color: #bf6b8a; background: rgba(191,107,138,0.06); }
+
+/* MODULE TABLE */
+.mod-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border: 1px solid var(--border-dark); }
+.mod-table thead th { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); text-align: left; padding: 1rem 1.2rem; border-bottom: 2px solid var(--orange); background: rgba(255,107,53,0.04); }
+.mod-table td { padding: 1rem 1.2rem; font-size: 0.82rem; color: var(--gray); border-bottom: 1px solid var(--border); vertical-align: top; }
+.mod-table tr:hover td { background: rgba(255,107,53,0.03); }
+.mod-table .mod-num { font-family: var(--serif); font-size: 1.4rem; color: var(--orange); text-align: center; width: 50px; }
+
+/* RUOLI */
+.ruoli-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.ruolo-card {
+  background: var(--bg-card); border: 1px solid var(--border-dark); padding: 2rem;
+  transition: all 0.4s; position: relative; overflow: hidden;
+}
+.ruolo-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 3px; background: linear-gradient(90deg, var(--orange), var(--teal-light));
+  transition: width 0.5s;
+}
+.ruolo-card:hover::after { width: 100%; }
+.ruolo-card:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.06); }
+.ruolo-card .ruolo-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem; }
+.ruolo-card .ruolo-icon.icon-tlon { background: rgba(255,107,53,0.1); }
+.ruolo-card .ruolo-icon.icon-fedro { background: rgba(26,92,92,0.1); }
+.ruolo-card .ruolo-icon.icon-segr { background: rgba(107,63,160,0.1); }
+.ruolo-card h4 { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 0.3rem; }
+.ruolo-tipo { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+.ruolo-card p { font-size: 0.82rem; color: var(--gray); line-height: 1.7; }
+.comm-box {
+  margin-top: 2rem; padding: 1.5rem 2rem; border: 1px solid var(--border-dark);
+  background: var(--bg-card); display: flex; gap: 1rem; align-items: flex-start;
+  position: relative; overflow: hidden;
+}
+.comm-box::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--orange), var(--teal)); }
+.comm-box .comm-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+.comm-box p { font-size: 0.85rem; color: var(--gray); line-height: 1.7; }
+
+/* SERATA */
+.serata-hero { background: var(--bg-card); border: 1px solid var(--border-dark); padding: 3rem; position: relative; overflow: hidden; margin: 2rem 0; }
+.serata-hero .big-date { font-family: var(--mono); font-size: clamp(5rem,10vw,9rem); font-weight: 800; color: rgba(0,0,0,0.03); position: absolute; right: 1rem; top: -0.5rem; line-height: 1; }
+.serata-hero .arcs { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; pointer-events: none; }
+.serata-hero .arcs .arc { position: absolute; border: 1px solid rgba(255,107,53,0.08); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+.serata-hero .arcs .arc:nth-child(1) { width: 80px; height: 80px; }
+.serata-hero .arcs .arc:nth-child(2) { width: 130px; height: 130px; }
+.serata-hero .arcs .arc:nth-child(3) { width: 180px; height: 180px; }
+.serata-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; position: relative; }
+.serata-block h5 { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.8rem; }
+.serata-block p { font-size: 0.88rem; color: var(--gray); line-height: 1.8; }
+
+/* SERATA MIC DECO */
+.serata-mic {
+  position: absolute; bottom: 20px; right: 30px; opacity: 0.03;
+}
+
+/* BUDGET */
+.budget-single { background: var(--bg-card); border: 1px solid var(--border-dark); padding: 3rem; position: relative; overflow: hidden; }
+.budget-single .budget-deco { position: absolute; top: -20px; right: -20px; width: 180px; height: 180px; border: 1px solid rgba(26,92,92,0.06); border-radius: 50%; pointer-events: none; }
+.budget-single .budget-deco::after { content: ''; position: absolute; top: 20px; left: 20px; width: 140px; height: 140px; border: 1px solid rgba(26,92,92,0.04); border-radius: 50%; }
+.budget-single h4 { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.3rem; }
+.budget-amount { font-family: var(--mono); font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+.budget-amount.teal { color: var(--teal); }
+.budget-sub { font-size: 0.8rem; color: var(--light-gray); margin-bottom: 1.5rem; }
+.budget-items { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.budget-item { padding: 1rem 1.2rem; background: rgba(26,92,92,0.03); border-left: 3px solid var(--teal); font-size: 0.82rem; color: var(--gray); transition: all 0.3s; }
+.budget-item:hover { background: rgba(26,92,92,0.06); transform: translateX(4px); }
+
+/* LOG TABLE */
+.log-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border: 1px solid var(--border-dark); }
+.log-table th { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); text-align: left; padding: 1rem; border-bottom: 2px solid var(--orange); }
+.log-table td { padding: 0.9rem 1rem; font-size: 0.82rem; color: var(--gray); border-bottom: 1px solid var(--border); }
+.log-table tr:hover td { background: rgba(255,107,53,0.03); }
+.log-table tr.highlight td { color: var(--orange); font-weight: 500; }
+
+/* ATTENZIONE */
+.att-item { padding: 1.5rem 0; border-bottom: 1px solid var(--border-dark); position: relative; }
+.att-item:last-child { border-bottom: none; }
+.att-status { display: inline-block; font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.6rem; margin-bottom: 0.5rem; }
+.att-status.open { background: var(--orange-dim); color: var(--orange); }
+.att-status.confirmed { background: rgba(26,92,92,0.1); color: var(--teal); }
+.att-status.critical { background: rgba(224,64,64,0.1); color: var(--red); }
+.att-item h4 { font-family: var(--serif); font-size: 1.1rem; margin-bottom: 0.4rem; }
+.att-item p { font-size: 0.88rem; color: var(--gray); line-height: 1.7; }
+
+/* FOOTER */
+footer { text-align: center; padding: 4rem 2rem; border-top: 1px solid var(--border-dark); position: relative; z-index: 1; }
+footer .footer-logo { font-family: var(--serif); font-size: 2.5rem; letter-spacing: -0.02em; margin-bottom: 1rem; opacity: 0.15; }
+footer .footer-logo span { color: var(--orange); }
+footer p { font-family: var(--mono); font-size: 0.7rem; color: var(--gray); letter-spacing: 0.08em; }
+/* Footer waveform */
+.footer-wave { display: flex; align-items: center; justify-content: center; gap: 2px; height: 30px; margin-bottom: 1.5rem; opacity: 0.08; }
+.footer-wave .fbar { width: 2px; background: var(--black); border-radius: 1px; }
+
+/* ANIMATIONS */
+.fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+.fade-in-left { opacity: 0; transform: translateX(-30px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+.fade-in-left.visible { opacity: 1; transform: translateX(0); }
+.fade-in-right { opacity: 0; transform: translateX(30px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+.fade-in-right.visible { opacity: 1; transform: translateX(0); }
+.scale-in { opacity: 0; transform: scale(0.9); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+.scale-in.visible { opacity: 1; transform: scale(1); }
+
+/* AUDIO SECTION DECORATIONS */
+.section-audio-watermark {
+  position: absolute; pointer-events: none; opacity: 0.03;
+}
+.section-audio-watermark.pos-right { right: 1rem; top: 50%; transform: translateY(-50%); }
+.section-audio-watermark.pos-left { left: 0; bottom: 2rem; }
+.section-audio-watermark.pos-top-right { right: 2rem; top: 2rem; }
+.section-audio-watermark.pos-bottom-left { left: 2rem; bottom: 2rem; }
+
+/* INLINE MINI WAVEFORM */
+.wave-inline {
+  display: inline-flex; align-items: center; gap: 1px; height: 14px; opacity: 0.25;
+  margin-left: 0.6rem; vertical-align: middle;
+}
+.wave-inline .wi { width: 2px; border-radius: 1px; background: var(--orange); animation: wiPulse 1.5s ease-in-out infinite; }
+@keyframes wiPulse { 0%,100% { height: 3px; } 50% { height: 13px; } }
+
+/* CABLE DECORATION */
+.cable-path {
+  position: absolute; pointer-events: none; opacity: 0.04; z-index: 0;
+}
+.cable-path svg { width: 100%; height: 100%; }
+
+/* STUDIO MONITOR */
+.monitor-deco {
+  position: absolute; pointer-events: none; opacity: 0.03;
+}
+
+/* RECORD LIGHT */
+.rec-light {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--red); opacity: 0.4;
+}
+.rec-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); animation: recBlink 1.5s ease-in-out infinite; }
+@keyframes recBlink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+/* FADER TRACK */
+.fader-deco {
+  display: flex; gap: 12px; align-items: flex-end; height: 120px; opacity: 0.04;
+  position: absolute; pointer-events: none;
+}
+.fader-deco .fader-ch {
+  width: 8px; display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+.fader-deco .fader-track { width: 2px; flex: 1; background: currentColor; border-radius: 1px; }
+.fader-deco .fader-knob { width: 8px; height: 4px; background: currentColor; border-radius: 1px; }
+
+/* SOUND RINGS */
+.sound-rings {
+  position: absolute; pointer-events: none; opacity: 0.03;
+}
+.sound-rings .sring {
+  position: absolute; border: 1.5px solid currentColor; border-radius: 50%;
+  top: 50%; left: 0; transform: translateY(-50%);
+  animation: sringPulse 3s ease-in-out infinite;
+}
+.sound-rings .sring:nth-child(1) { width: 30px; height: 30px; }
+.sound-rings .sring:nth-child(2) { width: 55px; height: 55px; animation-delay: 0.3s; }
+.sound-rings .sring:nth-child(3) { width: 80px; height: 80px; animation-delay: 0.6s; }
+.sound-rings .sring:nth-child(4) { width: 105px; height: 105px; animation-delay: 0.9s; }
+@keyframes sringPulse {
+  0%, 100% { opacity: 0.6; transform: translateY(-50%) scale(1); }
+  50% { opacity: 1; transform: translateY(-50%) scale(1.05); }
+}
+
+/* XLR CONNECTOR */
+.xlr-deco {
+  position: absolute; pointer-events: none; opacity: 0.04;
+}
+
+@media (max-width: 900px) {
+  nav ul { display: none; }
+  section, section.dark-section { padding: 4rem 1.5rem; }
+  .structure-grid, .serata-grid { grid-template-columns: 1fr; }
+  .premi-grid { grid-template-columns: 1fr 1fr; }
+  .criteri-row, .ruoli-grid { grid-template-columns: 1fr; }
+  .budget-items { grid-template-columns: 1fr; }
+  .audio-float, .dark-eq-deco, .monitor-deco, .cable-path, .fader-deco, .xlr-deco { display: none; }
+  .section-audio-watermark { display: none; }
+  .sound-rings { display: none; }
+}
+@media (max-width: 600px) { .premi-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- FLOATING AUDIO ELEMENTS -->
+<!-- Condenser Microphone -->
+<div class="audio-float af-mic">
+  <svg viewBox="0 0 60 120" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="18" y="5" width="24" height="50" rx="12" />
+    <line x1="30" y1="55" x2="30" y2="85" />
+    <path d="M15 70 Q15 85 30 85 Q45 85 45 70" fill="none" />
+    <line x1="20" y1="95" x2="40" y2="95" />
+    <line x1="30" y1="85" x2="30" y2="95" />
+    <line x1="22" y1="20" x2="22" y2="40" opacity="0.3" />
+    <line x1="26" y1="15" x2="26" y2="45" opacity="0.3" />
+    <circle cx="30" cy="2" r="2" fill="currentColor" opacity="0.3" />
+  </svg>
+</div>
+<!-- Headphones -->
+<div class="audio-float af-headphones">
+  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8">
+    <path d="M20 55 Q20 20 50 20 Q80 20 80 55" />
+    <rect x="10" y="52" width="16" height="28" rx="5" />
+    <rect x="74" y="52" width="16" height="28" rx="5" />
+    <path d="M10 60 Q5 60 5 66 Q5 72 10 72" stroke-width="1" opacity="0.4" />
+    <path d="M90 60 Q95 60 95 66 Q95 72 90 72" stroke-width="1" opacity="0.4" />
+    <line x1="18" y1="58" x2="18" y2="74" stroke-width="0.8" opacity="0.3" />
+    <line x1="82" y1="58" x2="82" y2="74" stroke-width="0.8" opacity="0.3" />
+  </svg>
+</div>
+<!-- Jack Plug -->
+<div class="audio-float af-jack">
+  <svg viewBox="0 0 30 100" fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="8" y="5" width="14" height="35" rx="3" />
+    <line x1="8" y1="15" x2="22" y2="15" />
+    <line x1="8" y1="25" x2="22" y2="25" />
+    <rect x="11" y="40" width="8" height="15" rx="1" />
+    <line x1="15" y1="55" x2="15" y2="95" stroke-width="2" />
+    <circle cx="15" cy="95" r="3" />
+    <line x1="11" y1="65" x2="19" y2="65" stroke-width="0.8" opacity="0.4" />
+    <line x1="11" y1="78" x2="19" y2="78" stroke-width="0.8" opacity="0.4" />
+  </svg>
+</div>
+<!-- Sound Wave -->
+<div class="audio-float af-wave">
+  <svg viewBox="0 0 200 50" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M0 25 Q10 5 20 25 Q30 45 40 25 Q50 5 60 25 Q70 45 80 25 Q90 5 100 25 Q110 45 120 25 Q130 5 140 25 Q150 45 160 25 Q170 5 180 25 Q190 45 200 25" />
+    <path d="M0 25 Q10 12 20 25 Q30 38 40 25 Q50 12 60 25 Q70 38 80 25 Q90 12 100 25 Q110 38 120 25 Q130 12 140 25 Q150 38 160 25 Q170 12 180 25 Q190 38 200 25" opacity="0.3" />
+  </svg>
+</div>
+<!-- Mixing Knob -->
+<div class="audio-float af-knob">
+  <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="30" cy="30" r="25" />
+    <circle cx="30" cy="30" r="18" opacity="0.4" />
+    <circle cx="30" cy="30" r="5" fill="currentColor" opacity="0.2" />
+    <line x1="30" y1="12" x2="30" y2="5" stroke-width="2" />
+    <circle cx="30" cy="12" r="2" fill="currentColor" opacity="0.4" />
+    <line x1="44" y1="18" x2="48" y2="14" stroke-width="0.8" opacity="0.2" />
+    <line x1="48" y1="30" x2="55" y2="30" stroke-width="0.8" opacity="0.2" />
+    <line x1="44" y1="42" x2="48" y2="46" stroke-width="0.8" opacity="0.2" />
+    <line x1="16" y1="18" x2="12" y2="14" stroke-width="0.8" opacity="0.2" />
+    <line x1="12" y1="30" x2="5" y2="30" stroke-width="0.8" opacity="0.2" />
+    <line x1="16" y1="42" x2="12" y2="46" stroke-width="0.8" opacity="0.2" />
+  </svg>
+</div>
+<!-- Equalizer -->
+<div class="audio-float af-eq">
+  <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5">
+    <line x1="10" y1="70" x2="10" y2="20" /><circle cx="10" cy="35" r="3" fill="currentColor" opacity="0.3" />
+    <line x1="22" y1="70" x2="22" y2="15" /><circle cx="22" cy="45" r="3" fill="currentColor" opacity="0.3" />
+    <line x1="34" y1="70" x2="34" y2="10" /><circle cx="34" cy="25" r="3" fill="currentColor" opacity="0.3" />
+    <line x1="46" y1="70" x2="46" y2="18" /><circle cx="46" cy="50" r="3" fill="currentColor" opacity="0.3" />
+    <line x1="58" y1="70" x2="58" y2="12" /><circle cx="58" cy="30" r="3" fill="currentColor" opacity="0.3" />
+    <line x1="70" y1="70" x2="70" y2="22" /><circle cx="70" cy="40" r="3" fill="currentColor" opacity="0.3" />
+  </svg>
+</div>
+
+<nav>
+  <div class="logo">il<span>Pod</span> / 2026</div>
+  <ul>
+    <li><a href="#struttura">Struttura</a></li>
+    <li><a href="#premi">Premi</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#academy">Academy</a></li>
+    <li><a href="#ruoli">Ruoli</a></li>
+    <li><a href="#attenzione">Attenzione</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-blob b1"></div>
+  <div class="hero-blob b2"></div>
+  <div class="hero-blob b3"></div>
+  <div class="hero-rings">
+    <div class="hero-ring"></div><div class="hero-ring"></div>
+    <div class="hero-ring"></div><div class="hero-ring"></div>
+  </div>
+  <div class="hero-waveform" id="heroWave"></div>
+  <div class="hero-content">
+    <div class="hero-pre">Italian Podcast Awards / Quinta Edizione</div>
+    <h1>il<span class="accent">Pod</span></h1>
+    <div class="subtitle">Piano operativo consolidato</div>
+    <div class="meta-line">
+      Piacenza<span class="sep">/</span>23 settembre 2026<span class="sep">/</span>Festival del Pensare Contemporaneo
+    </div>
+    <div class="hero-badge">&#9654; Documento di lavoro / 12.02.2026</div>
+  </div>
+  <div class="scroll-cue"><div class="scroll-arrow"></div></div>
+</div>
+
+<!-- STATS TICKER -->
+<div class="stats-ticker">
+  <div class="ticker-track">
+    <div class="ticker-item"><div class="ticker-num">4</div><div class="ticker-label">Premi</div></div>
+    <div class="ticker-item"><div class="ticker-num">50</div><div class="ticker-label">Studenti<br>Academy</div></div>
+    <div class="ticker-item"><div class="ticker-num">5</div><div class="ticker-label">Moduli<br>formativi</div></div>
+    <div class="ticker-item"><div class="ticker-num">8</div><div class="ticker-label">Mesi di<br>progetto</div></div>
+    <div class="ticker-item"><div class="ticker-num">23.09</div><div class="ticker-label">Serata di<br>premiazione</div></div>
+    <div class="ticker-item"><div class="ticker-num">V</div><div class="ticker-label">Edizione</div></div>
+    <div class="ticker-item"><div class="ticker-num">4</div><div class="ticker-label">Premi</div></div>
+    <div class="ticker-item"><div class="ticker-num">50</div><div class="ticker-label">Studenti<br>Academy</div></div>
+    <div class="ticker-item"><div class="ticker-num">5</div><div class="ticker-label">Moduli<br>formativi</div></div>
+    <div class="ticker-item"><div class="ticker-num">8</div><div class="ticker-label">Mesi di<br>progetto</div></div>
+    <div class="ticker-item"><div class="ticker-num">23.09</div><div class="ticker-label">Serata di<br>premiazione</div></div>
+    <div class="ticker-item"><div class="ticker-num">V</div><div class="ticker-label">Edizione</div></div>
+  </div>
+</div>
+
+<!-- STRUTTURA -->
+<section id="struttura">
+  <div class="section-deco circle-tl"></div>
+  <div class="section-label fade-in">Quadro generale</div>
+  <h2 class="section-title fade-in">Due anime, un progetto<span class="title-underline"></span></h2>
+  <p class="section-intro fade-in">Il POD 2026 tiene insieme gli Italian Podcast Awards e la Piacenza Podcast Academy. La serata di premiazione si tiene il 23 settembre 2026, alla vigilia del Festival del Pensare Contemporaneo. L'Academy accompagna gli studenti da aprile a settembre e culmina nella redazione live del Festival.</p>
+
+  <div class="structure-grid">
+    <div class="structure-card fade-in-left">
+      <div class="corner-accent"></div>
+      <!-- Mic icon watermark -->
+      <div class="card-icon">
+        <svg width="80" height="120" viewBox="0 0 60 120" fill="none" stroke="currentColor" stroke-width="1"><rect x="18" y="5" width="24" height="50" rx="12"/><line x1="30" y1="55" x2="30" y2="85"/><path d="M15 70 Q15 85 30 85 Q45 85 45 70"/><line x1="20" y1="95" x2="40" y2="95"/><line x1="30" y1="85" x2="30" y2="95"/></svg>
+      </div>
+      <div class="card-num">01 / PREMIAZIONE</div>
+      <h3>Italian Podcast Awards</h3>
+      <p>La selezione curatoriale dei migliori podcast italiani. Niente autocandidature: un Comitato Scientifico esplora il panorama e individua le opere che hanno segnato l'anno. Quattro premi, una serata, un atto culturale.</p>
+    </div>
+    <div class="structure-card fade-in-right">
+      <div class="corner-accent"></div>
+      <!-- Headphones icon watermark -->
+      <div class="card-icon">
+        <svg width="90" height="80" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 55 Q20 20 50 20 Q80 20 80 55"/><rect x="10" y="52" width="16" height="28" rx="5"/><rect x="74" y="52" width="16" height="28" rx="5"/></svg>
+      </div>
+      <div class="card-num">02 / FORMAZIONE</div>
+      <h3>Piacenza Podcast Academy</h3>
+      <p>Un percorso formativo per 50 studenti del territorio (14-25 anni), dalle basi della narrazione audio alla produzione di un podcast collettivo. Da aprile a settembre, cinque moduli pi&#249; quattro giorni di redazione live al Festival.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WAVEFORM DIVIDER -->
+<div class="waveform-divider" id="wdiv1"></div>
+
+<!-- WAVE INTO DARK -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#0a0a0a"/></svg>
+</div>
+
+<!-- PREMI (DARK) -->
+<section class="dark-section" id="premi">
+  <!-- Equalizer decoration -->
+  <div class="dark-eq-deco" id="darkEq"></div>
+  <div class="inner">
+    <div class="section-label fade-in" style="display:flex;align-items:center;gap:1.2rem;">
+      <span>I riconoscimenti</span>
+      <div class="eq-inline" style="margin-left:0.5rem;">
+        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+      </div>
+    </div>
+    <h2 class="section-title fade-in" style="color:#f0f0f0;">Quattro premi<span class="title-underline"></span></h2>
+    <p class="section-intro fade-in" style="color:#888;">Meno categorie, pi&#249; profondit&#224;. Il POD sceglie di premiare ci&#242; che ha rilevanza culturale, qualit&#224; autoriale e originalit&#224;.</p>
+
+    <div class="premi-grid scale-in">
+      <div class="premio-card"><div class="glow"></div><div class="premio-num">01</div><div class="premio-assegnato">Comitato Scientifico</div><h4>Podcast dell'Anno</h4><p>Il podcast che nel 2025 ha segnato l'immaginario e il dibattito pubblico italiano.</p></div>
+      <div class="premio-card"><div class="glow"></div><div class="premio-num">02</div><div class="premio-assegnato">Comitato Scientifico</div><h4>Podcast Indie dell'Anno</h4><p>La produzione indipendente che ha dimostrato che il valore non dipende dalla struttura produttiva.</p></div>
+      <div class="premio-card"><div class="glow"></div><div class="premio-num">03</div><div class="premio-assegnato">Comitato Scientifico</div><h4>La storia del podcast</h4><p>Riconoscimento a una figura o un'opera che ha segnato la storia del medium in Italia.</p></div>
+      <div class="premio-card"><div class="glow"></div><div class="premio-num">04</div><div class="premio-assegnato">Studenti Academy</div><h4>Premio Academy</h4><p>Scelto dai partecipanti dell'Academy attraverso formazione all'ascolto e voto collettivo.</p></div>
+    </div>
+
+    <div class="criteri-row fade-in">
+      <div class="criterio"><h5>Rilevanza culturale</h5><p>Il podcast ha contribuito a modificare la percezione di un tema, a introdurre nel dibattito pubblico una questione nuova.</p></div>
+      <div class="criterio"><h5>Qualit&#224; autoriale</h5><p>Voce riconoscibile, cura nella scrittura, nella costruzione narrativa, nel montaggio. Indipendentemente dai mezzi produttivi.</p></div>
+      <div class="criterio"><h5>Originalit&#224;</h5><p>Un formato nuovo, un punto di vista inedito, un modo di raccontare che sposta i confini del medium.</p></div>
+    </div>
+
+    <div class="cs-meta fade-in">CS / 5-6 membri / In fase di costituzione / Scadenza: met&#224; febbraio 2026 / I membri non possono essere candidati ai premi nell'anno di mandato</div>
+  </div>
+</section>
+
+<!-- WAVE BACK -->
+<div class="wave-divider flip">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,0 720,80 1080,40 C1260,20 1380,50 1440,40 L1440,80 L0,80 Z" fill="#f5e642"/></svg>
+</div>
+
+<!-- WAVEFORM DIVIDER -->
+<div class="waveform-divider" id="wdiv2"></div>
+
+<!-- TIMELINE -->
+<section id="timeline" style="position:relative;">
+  <div class="section-deco circle-br"></div>
+  <!-- Cable running along timeline -->
+  <div class="cable-path" style="right:-2rem;top:10%;height:80%;width:60px;">
+    <svg viewBox="0 0 60 800" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.8">
+      <path d="M30 0 C50 80, 10 160, 40 240 C60 320, 5 400, 35 480 C55 560, 15 640, 30 720 L30 800" />
+      <circle cx="30" cy="0" r="4" fill="currentColor" opacity="0.4" />
+      <circle cx="30" cy="800" r="4" fill="currentColor" opacity="0.4" />
+    </svg>
+  </div>
+  <!-- Sound rings decoration -->
+  <div class="sound-rings" style="right:3rem;top:15%;">
+    <div class="sring"></div><div class="sring"></div><div class="sring"></div><div class="sring"></div>
+  </div>
+  <div class="section-label fade-in" style="display:flex;align-items:center;">Calendario
+    <div class="wave-inline" id="wiTimeline"></div>
+  </div>
+  <h2 class="section-title fade-in">Febbraio / Settembre 2026<span class="title-underline"></span></h2>
+
+  <div class="tl-track">
+    <div class="tl-item major fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">Entro met&#224; febbraio</div><h4>Costituzione del Comitato Scientifico</h4><p>Conferma dei membri, condivisione dei criteri, metodo di lavoro e strumenti.</p><div class="tl-tags"><span class="tag cs">CS</span></div></div></div>
+    <div class="tl-item fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">Febbraio / Marzo</div><h4>Esplorazione del panorama</h4><p>Ogni membro del CS esplora le produzioni italiane 2025. Proposte raccolte in un documento condiviso con note di motivazione.</p><div class="tl-tags"><span class="tag cs">CS</span></div></div></div>
+    <div class="tl-item major fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">Marzo</div><h4>Definizione dei listoni</h4><p>Il CS si riunisce per discutere le proposte. Circa 40 titoli per la categoria generale, circa 40 per indie. I listoni vengono definiti e preparati per la comunicazione.</p><div class="tl-tags"><span class="tag cs">CS</span><span class="tag pod">POD</span></div></div></div>
+    <div class="tl-item major fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">12 Aprile</div><h4>Academy / Moduli I-II: Ascolto, Idea, Scrittura, Voce</h4><p>Media Literacy, ideazione del podcast collettivo, scrittura per l'audio, tecniche di voce e microfono. Docenti: Ragazzo, Borgnino.</p><div class="tl-tags"><span class="tag academy">Academy</span></div></div></div>
+    <div class="tl-item major fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">Fine aprile</div><h4>Il CS produce i vincitori</h4><p>Il Comitato Scientifico converge sulle scelte finali. I vincitori vengono definiti e comunicati nella conferenza stampa. Il pubblico sapr&#224; in anticipo chi ritira il premio alla serata.</p><div class="tl-tags"><span class="tag cs">CS</span><span class="tag comm">Conferenza stampa</span></div></div></div>
+    <div class="tl-item major fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">10 Maggio</div><h4>Academy / Modulo III: Produzione pratica</h4><p>Workshop di registrazione, interviste, field recording, montaggio audio base. Docenti: Nicolosi.</p><div class="tl-tags"><span class="tag academy">Academy</span></div></div></div>
+    <div class="tl-item major fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">14 Giugno</div><h4>Academy / Modulo IV: Specializzazione</h4><p>Gli studenti progettano e impostano il podcast collettivo "2033". Docenti: Buzzone, Nicolosi.</p><div class="tl-tags"><span class="tag academy">Academy</span></div></div></div>
+    <div class="tl-item fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">Estate 2026</div><h4>I vincitori circolano</h4><p>Il passaparola lavora. I media possono scriverne, i podcast premiati guadagnano ascolto. L'attesa cresce per la serata.</p><div class="tl-tags"><span class="tag comm">Comunicazione</span></div></div></div>
+    <div class="tl-item major fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">20 Settembre</div><h4>Academy / Modulo V: Finalizzazione</h4><p>Finalizzazione del podcast collettivo. Impostazione del lavoro di redazione per il Festival. Docenti: Buzzone, Nicolosi.</p><div class="tl-tags"><span class="tag academy">Academy</span></div></div></div>
+    <div class="tl-item major fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">23 Settembre</div><h4>Serata di premiazione</h4><p>Consegna dei 4 premi. Presentazione del lavoro degli studenti. Podcast live. I vincitori ritirano il premio dal vivo.</p><div class="tl-tags"><span class="tag pod">POD</span><span class="tag academy">Academy</span></div></div></div>
+    <div class="tl-item major fade-in"><div class="tl-dot-col"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-date">24 / 27 Settembre</div><h4>Redazione live / Festival del Pensare Contemporaneo</h4><p>Un episodio al giorno (~10 min) su Spotify e piattaforme. Interviste, presa diretta, montaggio. Possibili clip video e social.</p><div class="tl-tags"><span class="tag academy">Academy</span><span class="tag comm">Comunicazione</span></div></div></div>
+  </div>
+</section>
+
+<!-- SERATA -->
+<section style="position:relative;">
+  <!-- XLR connector decoration -->
+  <div class="xlr-deco" style="left:0;top:3rem;">
+    <svg width="50" height="50" viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="1.2">
+      <circle cx="25" cy="25" r="22" /><circle cx="25" cy="25" r="16" opacity="0.5"/>
+      <circle cx="18" cy="30" r="3" /><circle cx="32" cy="30" r="3" /><circle cx="25" cy="19" r="3" />
+    </svg>
+  </div>
+  <div class="section-label fade-in" style="display:flex;align-items:center;">L'evento
+    <div class="rec-light" style="margin-left:1rem;"><div class="rec-dot"></div>LIVE</div>
+  </div>
+  <h2 class="section-title fade-in">23 settembre<span class="title-underline"></span></h2>
+  <div class="serata-hero scale-in">
+    <div class="big-date">23.09</div>
+    <div class="arcs"><div class="arc"></div><div class="arc"></div><div class="arc"></div></div>
+    <!-- Stage mic decoration -->
+    <div class="serata-mic">
+      <svg width="100" height="180" viewBox="0 0 60 120" fill="none" stroke="currentColor" stroke-width="0.8">
+        <circle cx="30" cy="18" r="14" /><line x1="30" y1="32" x2="30" y2="100" /><line x1="18" y1="100" x2="42" y2="100" />
+        <circle cx="30" cy="18" r="8" opacity="0.3" />
+        <line x1="22" y1="12" x2="22" y2="24" opacity="0.2" />
+        <line x1="26" y1="8" x2="26" y2="28" opacity="0.2" />
+        <line x1="34" y1="10" x2="34" y2="26" opacity="0.2" />
+        <line x1="38" y1="14" x2="38" y2="22" opacity="0.2" />
+      </svg>
+    </div>
+    <div class="serata-grid">
+      <div class="serata-block"><h5>Sul palco</h5><p>Consegna dei 4 premi. Presentazione del podcast "2033" realizzato dagli studenti. Puntata speciale di <em>Scanner</em> con Valerio Nicolosi. Secondo speaker live TBD. Conduttore TBD.</p></div>
+      <div class="serata-block"><h5>Logistica</h5><p>Sala grande (San Lorenzo o spazio all'aperto). Service audio/video/luci/ledwall. 4 premi fisici, grafiche, stampe, fotografi, streaming video. Circa 20 persone tra organizzazione, speaker, conduttori e ospiti / 1 notte.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVEFORM -->
+<div class="waveform-divider" id="wdiv3"></div>
+
+<!-- ACADEMY -->
+<section id="academy" style="position:relative;">
+  <div class="section-deco circle-tl"></div>
+  <!-- Fader decoration right side -->
+  <div class="fader-deco" style="right:1rem;bottom:4rem;" id="faderDeco"></div>
+  <!-- Headphones watermark -->
+  <div class="section-audio-watermark pos-right" style="top:auto;bottom:15%;right:0;">
+    <svg width="140" height="130" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1">
+      <path d="M20 55 Q20 20 50 20 Q80 20 80 55" />
+      <rect x="10" y="52" width="16" height="28" rx="5" />
+      <rect x="74" y="52" width="16" height="28" rx="5" />
+      <path d="M10 60 Q5 60 5 66 Q5 72 10 72" stroke-width="0.6" opacity="0.4" />
+      <path d="M90 60 Q95 60 95 66 Q95 72 90 72" stroke-width="0.6" opacity="0.4" />
+    </svg>
+  </div>
+  <div class="section-label fade-in" style="display:flex;align-items:center;gap:1.2rem;">
+    <span>Percorso formativo</span>
+    <div class="vu-meter" style="opacity:0.15;">
+      <div class="needle"></div>
+    </div>
+    <div class="wave-inline" id="wiAcademy"></div>
+  </div>
+  <h2 class="section-title fade-in">Piacenza Podcast Academy<span class="title-underline"></span></h2>
+  <p class="section-intro fade-in">50 studenti, 14-25 anni, selezionati in collaborazione con gli istituti del territorio. Cinque moduli pi&#249; quattro giorni di redazione live. Output: puntata pilota del podcast collettivo "2033" e copertura del Festival.</p>
+
+  <table class="mod-table fade-in">
+    <thead><tr><th style="width:50px"></th><th>Data</th><th>Contenuto</th><th>Output</th><th>Docenti</th></tr></thead>
+    <tbody>
+      <tr><td class="mod-num">I-II</td><td>12 Aprile</td><td>Media Literacy, ideazione, scrittura per l'audio, voce e microfono</td><td>Pitching del progetto, prime scritture e registrazioni</td><td>Ragazzo, Borgnino</td></tr>
+      <tr><td class="mod-num">III</td><td>10 Maggio</td><td>Workshop registrazione, interviste, field recording, montaggio base</td><td>Competenze tecniche per produrre una traccia</td><td>Nicolosi</td></tr>
+      <tr><td class="mod-num">IV</td><td>14 Giugno</td><td>Specializzazione, progettazione e impostazione podcast collettivo</td><td>Processo di produzione e promozione avviato</td><td>Buzzone, Nicolosi</td></tr>
+      <tr><td class="mod-num">V</td><td>20 Sett.</td><td>Finalizzazione podcast, impostazione redazione Festival</td><td>Puntata pilota "2033" finalizzata, redazione strutturata</td><td>Buzzone, Nicolosi</td></tr>
+      <tr><td class="mod-num">VI</td><td>23 Sett.</td><td>Briefing operativo, allestimento, strutturazione sottogruppi</td><td>Redazione pronta per il Festival</td><td>Gancitano</td></tr>
+      <tr><td class="mod-num">VII</td><td>24-27 Sett.</td><td>Reportage attivo: interviste, presa diretta, montaggio, pubblicazione</td><td>1 episodio/giorno (~10 min) su Spotify</td><td>Gancitano</td></tr>
+    </tbody>
+  </table>
+  <p class="fade-in" style="color: var(--light-gray); font-size: 0.82rem; margin-top: 1rem;">Tutti i moduli prevedono la presenza del/della Responsabile del percorso. Sponsor didattici: Spotify, Amazon Music (Rossana De Michele).</p>
+</section>
+
+<!-- WAVEFORM DIVIDER -->
+<div class="waveform-divider" id="wdiv5"></div>
+
+<!-- RUOLI -->
+<section id="ruoli" style="position:relative;">
+  <!-- Studio monitor speaker decoration -->
+  <div class="monitor-deco" style="right:0;top:2rem;">
+    <svg width="100" height="140" viewBox="0 0 80 120" fill="none" stroke="currentColor" stroke-width="1">
+      <rect x="5" y="5" width="70" height="110" rx="4" />
+      <circle cx="40" cy="50" r="22" />
+      <circle cx="40" cy="50" r="15" opacity="0.4" />
+      <circle cx="40" cy="50" r="6" opacity="0.2" />
+      <circle cx="40" cy="95" r="8" />
+      <circle cx="40" cy="95" r="4" opacity="0.3" />
+      <line x1="15" y1="15" x2="65" y2="15" opacity="0.2" />
+    </svg>
+  </div>
+  <!-- Sound rings from cards -->
+  <div class="sound-rings" style="left:auto;right:0;bottom:8rem;">
+    <div class="sring"></div><div class="sring"></div><div class="sring"></div>
+  </div>
+  <div class="section-label fade-in" style="display:flex;align-items:center;">Chi fa cosa
+    <div class="wave-inline" id="wiRuoli"></div>
+  </div>
+  <h2 class="section-title fade-in">Gli attori<span class="title-underline"></span></h2>
+  <div class="ruoli-grid">
+    <div class="ruolo-card fade-in-left">
+      <div class="ruolo-icon icon-tlon"><svg width="24" height="24" viewBox="0 0 60 120" fill="none" stroke="var(--orange)" stroke-width="2"><rect x="18" y="5" width="24" height="45" rx="12"/><line x1="30" y1="50" x2="30" y2="75"/><path d="M15 65 Q15 78 30 78 Q45 78 45 65"/></svg></div>
+      <h4>Tlon</h4><div class="ruolo-tipo">Direzione artistica e contenuto</div>
+      <p>Curatela e direzione artistica. Comunicazione integrata: ufficio stampa, social media, contenuti. Realizzazione puntata pilota podcast "2033". Cachet docenti e speaker. Tutoraggio e supervisione Redazione Giovani. Coordinamento operativo redazione durante il Festival.</p>
+    </div>
+    <div class="ruolo-card fade-in">
+      <div class="ruolo-icon icon-fedro"><svg width="24" height="24" viewBox="0 0 60 60" fill="none" stroke="var(--teal)" stroke-width="2"><circle cx="30" cy="30" r="22"/><circle cx="30" cy="30" r="14" opacity="0.5"/><circle cx="30" cy="30" r="4" fill="var(--teal)" opacity="0.3"/><line x1="30" y1="8" x2="30" y2="4" stroke-width="2.5"/></svg></div>
+      <h4>Fedro</h4><div class="ruolo-tipo">Esecuzione tecnica e logistica</div>
+      <p>Coordinamento tecnico con Tlon e Segreteria. Reperimento sale. Service audio/video/luci/ledwall. Servizio fotografico. Stampa premi e materiali. Responsabile palco. Pranzi e coffee break. SIAE. Pagamenti fornitori. Problem solving operativo.</p>
+    </div>
+    <div class="ruolo-card fade-in-right">
+      <div class="ruolo-icon icon-segr"><svg width="24" height="24" viewBox="0 0 100 100" fill="none" stroke="var(--purple)" stroke-width="2"><path d="M20 55 Q20 20 50 20 Q80 20 80 55"/><rect x="12" y="52" width="14" height="25" rx="5"/><rect x="74" y="52" width="14" height="25" rx="5"/></svg></div>
+      <h4>Segreteria</h4><div class="ruolo-tipo">Coordinamento amministrativo</div>
+      <p>Cronoprogramma generale. Supporto al CS (materiali, accessi, verbalizzazione). Comunicazioni con finalisti e vincitori. Accrediti e materiali di sala. Prenotazioni viaggi e ospitalit&#224;. Modulistica Academy. Conferenza stampa. Post-evento e rendicontazione.</p>
+    </div>
+  </div>
+  <div class="comm-box fade-in">
+    <div class="comm-icon">&#8644;</div>
+    <p><strong>Catena di comunicazione.</strong> La comunicazione operativa e logistica passa attraverso la Segreteria. Fa eccezione la comunicazione social: tutto ci&#242; che riguarda contenuti, pubblicazione e gestione dei canali social va diretto tra Tlon e i referenti, senza passaggio intermedio.</p>
+  </div>
+</section>
+
+<!-- WAVEFORM DIVIDER -->
+<div class="waveform-divider" id="wdiv6"></div>
+
+<!-- LOGISTICA -->
+<section style="position:relative;">
+  <!-- XLR connector -->
+  <div class="xlr-deco" style="right:2rem;top:2rem;">
+    <svg width="60" height="60" viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="1">
+      <circle cx="25" cy="25" r="22" /><circle cx="25" cy="25" r="16" opacity="0.4"/>
+      <circle cx="18" cy="30" r="3" /><circle cx="32" cy="30" r="3" /><circle cx="25" cy="19" r="3" />
+    </svg>
+  </div>
+  <!-- Cable decoration -->
+  <div class="cable-path" style="left:0;top:0;width:40px;height:100%;">
+    <svg viewBox="0 0 40 400" fill="none" stroke="currentColor" stroke-width="1" opacity="0.7">
+      <path d="M20 0 C35 50, 5 100, 25 150 C40 200, 10 250, 30 300 C45 350, 15 380, 20 400" />
+    </svg>
+  </div>
+  <!-- Mic watermark -->
+  <div class="section-audio-watermark pos-bottom-left" style="left:auto;right:1rem;bottom:1rem;">
+    <svg width="70" height="120" viewBox="0 0 60 120" fill="none" stroke="currentColor" stroke-width="0.8">
+      <rect x="18" y="5" width="24" height="50" rx="12" /><line x1="30" y1="55" x2="30" y2="85" />
+      <path d="M15 70 Q15 85 30 85 Q45 85 45 70" fill="none" />
+      <line x1="20" y1="95" x2="40" y2="95" /><line x1="30" y1="85" x2="30" y2="95" />
+    </svg>
+  </div>
+  <div class="section-label fade-in" style="display:flex;align-items:center;">Logistica
+    <div class="eq-inline" style="margin-left:0.8rem;height:20px;opacity:0.15;">
+      <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+    </div>
+  </div>
+  <h2 class="section-title fade-in">Spazi e viaggi<span class="title-underline"></span></h2>
+  <table class="log-table fade-in">
+    <thead><tr><th>Data</th><th>Spazi necessari</th><th>Viaggi docenti</th></tr></thead>
+    <tbody>
+      <tr><td>12 aprile</td><td>Sala 50 pax con schermo</td><td>2 a/r + eventuali pernottamenti</td></tr>
+      <tr><td>10 maggio</td><td>Sala 50 pax con schermo</td><td>1 a/r + eventuale pernottamento</td></tr>
+      <tr><td>14 giugno</td><td>Sala 50 pax con schermo</td><td>2 a/r + eventuali pernottamenti</td></tr>
+      <tr><td>20 settembre</td><td>Sala 50 pax + sala registrazione</td><td>2 a/r + pernottamenti</td></tr>
+      <tr><td>23 settembre (giorno)</td><td>Sala 50 pax con schermo</td><td>Gi&#224; in loco</td></tr>
+      <tr class="highlight"><td>23 settembre (sera)</td><td>Sala grande + service A/V completo</td><td>~20 persone, 1 notte</td></tr>
+      <tr><td>24-27 settembre</td><td>Spazi Festival + base operativa redazione</td><td>Responsabile + Gancitano</td></tr>
+    </tbody>
+  </table>
+  <p class="fade-in" style="color: var(--light-gray); font-size: 0.82rem; margin-top: 1rem;">Totale viaggi docenti Academy: 7 a/r, 7 notti. Sedi ipotizzate: Giardini Sonori e CAI per la formazione; San Lorenzo o spazio all'aperto per la serata.</p>
+</section>
+
+<!-- WAVEFORM DIVIDER -->
+<div class="waveform-divider" id="wdiv4"></div>
+
+<!-- WAVEFORM DIVIDER -->
+<div class="waveform-divider" id="wdiv7"></div>
+
+<!-- ATTENZIONE -->
+<section id="attenzione" style="position:relative;">
+  <!-- Stage microphone watermark -->
+  <div class="section-audio-watermark pos-top-right">
+    <svg width="90" height="160" viewBox="0 0 60 120" fill="none" stroke="currentColor" stroke-width="0.8">
+      <circle cx="30" cy="18" r="14" /><line x1="30" y1="32" x2="30" y2="100" />
+      <line x1="18" y1="100" x2="42" y2="100" />
+      <circle cx="30" cy="18" r="8" opacity="0.3" />
+      <line x1="22" y1="12" x2="22" y2="24" opacity="0.2" />
+      <line x1="26" y1="8" x2="26" y2="28" opacity="0.2" />
+      <line x1="34" y1="10" x2="34" y2="26" opacity="0.2" />
+    </svg>
+  </div>
+  <!-- Cable path -->
+  <div class="cable-path" style="right:0;top:0;width:50px;height:100%;">
+    <svg viewBox="0 0 50 600" fill="none" stroke="currentColor" stroke-width="1" opacity="0.6">
+      <path d="M25 0 C40 60, 8 120, 30 180 C48 240, 12 300, 35 360 C50 420, 10 480, 25 540 L25 600" />
+    </svg>
+  </div>
+  <div class="section-label fade-in" style="display:flex;align-items:center;">Per la riunione
+    <div class="eq-inline" style="margin-left:0.8rem;height:22px;opacity:0.2;">
+      <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+      <div class="eq-bar"></div><div class="eq-bar"></div>
+    </div>
+    <div class="rec-light" style="margin-left:1rem;"><div class="rec-dot"></div>REC</div>
+  </div>
+  <h2 class="section-title fade-in">Punti di attenzione<span class="title-underline"></span></h2>
+  <div style="max-width: 800px;">
+    <div class="att-item fade-in"><span class="att-status open">Aggiornamento</span><h4>Modello di selezione: curatela diretta</h4><p>Il modello 2026 prevede la selezione curatoriale da parte del Comitato Scientifico, senza autocandidature esterne. La Segreteria supporta il lavoro interno del CS: materiali, accessi, verbalizzazione.</p></div>
+    <div class="att-item fade-in"><span class="att-status open">Da definire insieme</span><h4>Comunicazione dei risultati</h4><p>Il CS definisce i listoni a marzo e produce i vincitori entro fine aprile. I vincitori vengono comunicati nella conferenza stampa. Da valutare insieme se comunicare anche una rosa di finalisti prima dei vincitori.</p></div>
+    <div class="att-item fade-in"><span class="att-status open">Da definire insieme</span><h4>Selezione studenti Academy</h4><p>Il percorso prevede la collaborazione con gli istituti scolastici del territorio. Da coordinare il canale di selezione con la Segreteria organizzativa.</p></div>
+    <div class="att-item fade-in"><span class="att-status confirmed">Confermato</span><h4>Conferenza stampa</h4><p>Confermata come elemento del progetto. La Segreteria la costruisce, coordinandola con la comunicazione integrata di Tlon.</p></div>
+    <div class="att-item fade-in"><span class="att-status confirmed">Confermato</span><h4>Fedro come esecutore tecnico</h4><p>Confermata la presenza. La comunicazione operativa passa dalla Segreteria; la comunicazione social va diretta tra Tlon e i referenti.</p></div>
+    <div class="att-item fade-in"><span class="att-status open">Da confermare</span><h4>Coordinamento redazione al Festival</h4><p>Tlon coordina la redazione giovani anche durante i quattro giorni del Festival, garantendo continuit&#224; con il percorso formativo dell'Academy.</p></div>
+    <div class="att-item fade-in"><span class="att-status open">Da definire insieme</span><h4>Spazi</h4><p>Giardini Sonori e CAI per la formazione. San Lorenzo o spazio all'aperto per la serata. Da confermare disponibilit&#224;.</p></div>
+    <div class="att-item fade-in"><span class="att-status confirmed">In corso</span><h4>Comitato Scientifico</h4><p>Il CS &#232; in fase di costituzione. La composizione sar&#224; comunicata a breve.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-wave" id="footerWave"></div>
+  <div class="footer-logo">il<span>Pod</span></div>
+  <p>Piano operativo consolidato / 12 febbraio 2026</p>
+  <p style="margin-top: 0.3rem; color: #aaa;">Documento interno di lavoro / Tlon &#215; Fondazione Piacenza e Vigevano</p>
+</footer>
+
+<script>
+// Scroll progress
+window.addEventListener('scroll', () => {
+  const p = (document.documentElement.scrollTop / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('scrollProgress').style.width = p + '%';
+});
+
+// IntersectionObserver
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 60);
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.fade-in,.fade-in-left,.fade-in-right,.scale-in,.section-title').forEach(el => obs.observe(el));
+
+// Parallax on audio floats
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  document.querySelectorAll('.audio-float').forEach((el, i) => {
+    el.style.transform = `translateY(${y * (0.015 + i * 0.008)}px)`;
+  });
+});
+
+// Generate hero waveform bars
+const hw = document.getElementById('heroWave');
+for (let i = 0; i < 150; i++) {
+  const b = document.createElement('div');
+  b.className = 'bar';
+  const h = 15 + Math.sin(i * 0.15) * 40 + Math.random() * 20;
+  b.style.height = h + 'px';
+  b.style.animationDelay = (i * 0.03) + 's';
+  b.style.animationDuration = (1 + Math.random() * 1.5) + 's';
+  hw.appendChild(b);
+}
+
+// Generate waveform dividers
+function makeWaveDiv(id, count) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  for (let i = 0; i < (count || 300); i++) {
+    const b = document.createElement('div');
+    b.className = 'wbar';
+    const h = 5 + Math.abs(Math.sin(i * 0.08)) * 35 + Math.random() * 8;
+    b.style.height = h + 'px';
+    b.style.animationDelay = (i * 0.02) + 's';
+    b.style.animationDuration = (1.5 + Math.random()) + 's';
+    el.appendChild(b);
+  }
+}
+makeWaveDiv('wdiv1', 400);
+makeWaveDiv('wdiv2', 400);
+makeWaveDiv('wdiv3', 400);
+makeWaveDiv('wdiv4', 400);
+makeWaveDiv('wdiv5', 400);
+makeWaveDiv('wdiv6', 400);
+makeWaveDiv('wdiv7', 400);
+
+// Generate dark EQ bars
+const deq = document.getElementById('darkEq');
+if (deq) {
+  for (let i = 0; i < 20; i++) {
+    const b = document.createElement('div');
+    b.className = 'deq';
+    b.style.animationDelay = (i * 0.12) + 's';
+    b.style.animationDuration = (0.6 + Math.random() * 1.2) + 's';
+    deq.appendChild(b);
+  }
+}
+
+// Generate inline mini waveforms
+function makeWaveInline(id, count) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  for (let i = 0; i < (count || 12); i++) {
+    const b = document.createElement('div');
+    b.className = 'wi';
+    b.style.height = (3 + Math.random() * 10) + 'px';
+    b.style.animationDelay = (i * 0.12) + 's';
+    b.style.animationDuration = (0.8 + Math.random() * 1) + 's';
+    el.appendChild(b);
+  }
+}
+makeWaveInline('wiTimeline', 15);
+makeWaveInline('wiAcademy', 12);
+makeWaveInline('wiRuoli', 12);
+
+// Generate fader decoration
+const faderEl = document.getElementById('faderDeco');
+if (faderEl) {
+  for (let i = 0; i < 8; i++) {
+    const ch = document.createElement('div');
+    ch.className = 'fader-ch';
+    const track = document.createElement('div');
+    track.className = 'fader-track';
+    const knob = document.createElement('div');
+    knob.className = 'fader-knob';
+    knob.style.marginTop = (20 + Math.random() * 70) + 'px';
+    ch.appendChild(track);
+    ch.appendChild(knob);
+    faderEl.appendChild(ch);
+  }
+}
+
+// Footer waveform
+const fw = document.getElementById('footerWave');
+for (let i = 0; i < 200; i++) {
+  const b = document.createElement('div');
+  b.className = 'fbar';
+  b.style.height = (3 + Math.abs(Math.sin(i * 0.1)) * 20 + Math.random() * 5) + 'px';
+  fw.appendChild(b);
+}
+</script>
+</body>
+</html>
