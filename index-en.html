@@ -1114,10 +1114,9 @@
             content: '→';
         }
 
-        <!-- FEATURED -->
+       <!-- FEATURED -->
 <section class="evidenza" style="position:relative; overflow:hidden;">
 
-    <!-- ANIMATED DECORATIONS -->
     <style>
         .ev-deco-ring {
             position: absolute;
@@ -1196,14 +1195,14 @@
             z-index: 0;
             opacity: 0.04;
         }
-        .ultima-uscita {
+        .ultime-uscite {
             margin-top: 4rem;
             padding-top: 3rem;
             border-top: 1px solid rgba(255,255,255,0.15);
             position: relative;
             z-index: 1;
         }
-        .ultima-uscita-label {
+        .ultime-uscite-label {
             font-size: 0.65rem;
             font-weight: 600;
             letter-spacing: 0.4em;
@@ -1214,25 +1213,28 @@
             align-items: center;
             gap: 0.75rem;
         }
-        .ultima-uscita-label::before {
+        .ultime-uscite-label::before {
             content: '';
             width: 30px;
             height: 1px;
             background: rgba(255,255,255,0.4);
         }
-        .ultima-uscita-card {
+        .ultime-uscite-grid {
             display: grid;
-            grid-template-columns: 140px 1fr;
-            gap: 2.5rem;
-            align-items: center;
-            padding: 2.5rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .uu-card {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.1);
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
         }
-        .ultima-uscita-card::before {
+        .uu-card::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
@@ -1242,89 +1244,93 @@
             transform-origin: left;
             transition: transform 0.5s ease;
         }
-        .ultima-uscita-card:hover::before {
+        .uu-card:hover::before {
             transform: scaleX(1);
         }
-        .ultima-uscita-card:hover {
+        .uu-card:hover {
             border-color: rgba(255,255,255,0.3);
             background: rgba(255,255,255,0.07);
-            transform: translateY(-3px);
+            transform: translateY(-4px);
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
         }
-        .ultima-uscita-cover img {
-            width: 100%;
+        .uu-cover {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+        .uu-cover img {
+            width: 140px;
             display: block;
             box-shadow: 10px 10px 40px rgba(0,0,0,0.3);
             transform: perspective(800px) rotateY(-5deg);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .ultima-uscita-card:hover .ultima-uscita-cover img {
-            transform: perspective(800px) rotateY(-2deg) scale(1.03);
+        .uu-card:hover .uu-cover img {
+            transform: perspective(800px) rotateY(-2deg) scale(1.04);
         }
-        .ultima-uscita-info {
+        .uu-info {
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.4rem;
+            flex: 1;
         }
-        .ultima-uscita-tag {
-            display: inline-block;
-            width: fit-content;
-            padding: 0.3rem 0.8rem;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            font-size: 0.6rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.7);
-        }
-        .ultima-uscita-title {
+        .uu-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 1.6rem;
-            line-height: 1.2;
+            font-size: 1.2rem;
+            line-height: 1.25;
             color: var(--bianco);
         }
-        .ultima-uscita-author {
-            font-size: 0.85rem;
+        .uu-author {
+            font-size: 0.8rem;
             color: rgba(255,255,255,0.5);
             font-style: italic;
         }
-        .ultima-uscita-desc {
-            font-size: 0.9rem;
-            line-height: 1.7;
-            color: rgba(255,255,255,0.55);
-            margin-top: 0.25rem;
+        .uu-desc {
+            font-size: 0.82rem;
+            line-height: 1.65;
+            color: rgba(255,255,255,0.5);
+            margin-top: 0.5rem;
         }
-        .ultima-uscita-cta {
+        .uu-cta {
             display: inline-flex;
             align-items: center;
-            gap: 0.6rem;
-            font-size: 0.75rem;
+            gap: 0.5rem;
+            font-size: 0.7rem;
             font-weight: 500;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.6);
-            margin-top: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: auto;
+            padding-top: 1.25rem;
             transition: color 0.3s ease;
         }
-        .ultima-uscita-cta svg {
-            width: 16px; height: 16px;
+        .uu-cta svg {
+            width: 14px; height: 14px;
             transition: transform 0.3s ease;
         }
-        .ultima-uscita-card:hover .ultima-uscita-cta {
+        .uu-card:hover .uu-cta {
             color: var(--bianco);
         }
-        .ultima-uscita-card:hover .ultima-uscita-cta svg {
+        .uu-card:hover .uu-cta svg {
             transform: translateX(4px);
         }
         @media (max-width: 900px) {
-            .ultima-uscita-card {
-                grid-template-columns: 100px 1fr;
+            .ultime-uscite-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+            .uu-card {
+                flex-direction: row;
                 gap: 1.5rem;
                 padding: 1.5rem;
+                align-items: center;
             }
-            .ultima-uscita-title { font-size: 1.3rem; }
-            .ultima-uscita-desc { display: none; }
+            .uu-cover {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+            .uu-cover img { width: 90px; }
+            .uu-desc { display: none; }
         }
         @media (max-width: 768px) {
             .ev-deco-ring, .ev-dot, .ev-line-deco, .ev-constellation { display: none; }
@@ -1401,21 +1407,48 @@
         </div>
     </div>
 
-    <!-- LATEST RELEASE — EDIZIONI TLON -->
-    <div class="ultima-uscita reveal" style="position:relative; z-index:1;">
-        <p class="ultima-uscita-label">Latest Release — Edizioni Tlon</p>
-        <a href="https://shop.tlon.it/prodotto/le-voci-perdute-degli-dei-julian-jaynes/" class="ultima-uscita-card">
-            <div class="ultima-uscita-cover">
-                <img src="./assets/libri/Jaynes.jpg" alt="The Lost Voices of the Gods">
-            </div>
-            <div class="ultima-uscita-info">
-                <span class="ultima-uscita-tag">Edizioni Tlon</span>
-                <h3 class="ultima-uscita-title">Le voci perdute degli dèi</h3>
-                <p class="ultima-uscita-author">Julian Jaynes</p>
-                <p class="ultima-uscita-desc">Why did human beings once obey voices they believed to be divine? Julian Jaynes' groundbreaking work on the origin of consciousness and the bicameral mind, now in Italian for the first time.</p>
-                <span class="ultima-uscita-cta">Discover <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-            </div>
-        </a>
+    <!-- LATEST RELEASES — EDIZIONI TLON -->
+    <div class="ultime-uscite reveal" style="position:relative; z-index:1;">
+        <p class="ultime-uscite-label">Latest Releases — Edizioni Tlon</p>
+        <div class="ultime-uscite-grid">
+
+            <a href="https://shop.tlon.it/prodotto/le-voci-perdute-degli-dei-julian-jaynes/" class="uu-card">
+                <div class="uu-cover">
+                    <img src="./assets/libri/Jaynes.jpg" alt="The Lost Voices of the Gods">
+                </div>
+                <div class="uu-info">
+                    <h3 class="uu-title">Le voci perdute degli dèi</h3>
+                    <p class="uu-author">Julian Jaynes</p>
+                    <p class="uu-desc">The groundbreaking work on the origin of consciousness and the bicameral mind, now in Italian for the first time.</p>
+                    <span class="uu-cta">Discover <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                </div>
+            </a>
+
+            <a href="https://shop.tlon.it/prodotto/la-stella-nera-magia-e-potere-nell-era-di-putin-e-trump-gary-lachman/" class="uu-card">
+                <div class="uu-cover">
+                    <img src="./assets/libri/lachman.jpg" alt="The Dark Star">
+                </div>
+                <div class="uu-info">
+                    <h3 class="uu-title">La stella nera</h3>
+                    <p class="uu-author">Gary Lachman</p>
+                    <p class="uu-desc">Magic and power in the age of Putin and Trump: the influence of esotericism on contemporary geopolitics.</p>
+                    <span class="uu-cta">Discover <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                </div>
+            </a>
+
+            <a href="https://shop.tlon.it/prodotto/mozart-in-rock-il-genio-dal-classico-alla-cultura-pop-loredana-lipperini/" class="uu-card">
+                <div class="uu-cover">
+                    <img src="./assets/libri/Lipperini.jpg" alt="Mozart in Rock">
+                </div>
+                <div class="uu-info">
+                    <h3 class="uu-title">Mozart in rock</h3>
+                    <p class="uu-author">Loredana Lipperini</p>
+                    <p class="uu-desc">Genius from classical to pop culture: how Mozart continues to inspire music and mass culture today.</p>
+                    <span class="uu-cta">Discover <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                </div>
+            </a>
+
+        </div>
     </div>
 
 </section>
