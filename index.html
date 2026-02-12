@@ -2075,7 +2075,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Particelle luminose */
         .ev-dot {
             position: absolute;
             width: 4px; height: 4px;
@@ -2088,13 +2087,11 @@
         .ev-dot-2 { top: 70%; left: 35%; animation: evTwinkle 5s ease-in-out infinite 1s; width: 3px; height: 3px; }
         .ev-dot-3 { bottom: 25%; right: 10%; animation: evTwinkle 3.5s ease-in-out infinite 0.5s; }
         .ev-dot-4 { top: 35%; right: 30%; animation: evTwinkle 6s ease-in-out infinite 2s; width: 2px; height: 2px; }
-        .ev-dot-5 { bottom: 15%; left: 50%; animation: evTwinkle 4.5s ease-in-out infinite 1.5s; width: 3px; height: 3px; }
         @keyframes evTwinkle {
             0%, 100% { opacity: 0.15; transform: scale(1); }
             50% { opacity: 0.7; transform: scale(1.8); }
         }
 
-        /* Linea decorativa pulsante */
         .ev-line-deco {
             position: absolute;
             pointer-events: none;
@@ -2117,7 +2114,6 @@
             50% { opacity: 0.8; transform: scaleY(1.15); }
         }
 
-        /* Costellazione SVG di fondo */
         .ev-constellation {
             position: absolute;
             top: 0; left: 0;
@@ -2127,72 +2123,161 @@
             opacity: 0.04;
         }
 
-        /* Glow pulsante dietro il libro */
-        .ev-book-pulse {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(42,107,107,0.2) 0%, transparent 50%);
-            pointer-events: none;
-            animation: evBookPulse 4s ease-in-out infinite;
-            z-index: 0;
+        /* ULTIMA USCITA */
+        .ultima-uscita {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            position: relative;
+            z-index: 1;
         }
-        @keyframes evBookPulse {
-            0%, 100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); }
-            50% { opacity: 0.8; transform: translate(-50%,-50%) scale(1.08); }
+        .ultima-uscita-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .ultima-uscita-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: rgba(255,255,255,0.4);
+        }
+        .ultima-uscita-card {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 2.5rem;
+            align-items: center;
+            padding: 2.5rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .ultima-uscita-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.4), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        .ultima-uscita-card:hover::before {
+            transform: scaleX(1);
+        }
+        .ultima-uscita-card:hover {
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.07);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .ultima-uscita-cover {
+            position: relative;
+        }
+        .ultima-uscita-cover img {
+            width: 100%;
+            display: block;
+            box-shadow: 10px 10px 40px rgba(0,0,0,0.3);
+            transform: perspective(800px) rotateY(-5deg);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .ultima-uscita-card:hover .ultima-uscita-cover img {
+            transform: perspective(800px) rotateY(-2deg) scale(1.03);
+        }
+        .ultima-uscita-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .ultima-uscita-tag {
+            display: inline-block;
+            width: fit-content;
+            padding: 0.3rem 0.8rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+        }
+        .ultima-uscita-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.6rem;
+            line-height: 1.2;
+            color: var(--bianco);
+        }
+        .ultima-uscita-author {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            font-style: italic;
+        }
+        .ultima-uscita-desc {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.55);
+            margin-top: 0.25rem;
+        }
+        .ultima-uscita-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            margin-top: 0.75rem;
+            transition: color 0.3s ease;
+        }
+        .ultima-uscita-cta svg {
+            width: 16px; height: 16px;
+            transition: transform 0.3s ease;
+        }
+        .ultima-uscita-card:hover .ultima-uscita-cta {
+            color: var(--bianco);
+        }
+        .ultima-uscita-card:hover .ultima-uscita-cta svg {
+            transform: translateX(4px);
         }
 
-        /* Pagine fluttuanti */
-        .ev-page {
-            position: absolute;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.04;
+        @media (max-width: 900px) {
+            .ultima-uscita-card {
+                grid-template-columns: 100px 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            .ultima-uscita-title { font-size: 1.3rem; }
+            .ultima-uscita-desc { display: none; }
         }
-        .ev-page-1 {
-            top: 12%; left: 5%;
-            animation: evPageDrift 15s ease-in-out infinite;
-        }
-        .ev-page-2 {
-            bottom: 10%; right: 5%;
-            animation: evPageDrift 18s ease-in-out infinite reverse;
-        }
-        @keyframes evPageDrift {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(10px, -15px) rotate(3deg); }
-            50% { transform: translate(-5px, -25px) rotate(-2deg); }
-            75% { transform: translate(15px, -10px) rotate(4deg); }
-        }
-
         @media (max-width: 768px) {
-            .ev-deco-ring, .ev-dot, .ev-line-deco, .ev-constellation, .ev-page { display: none; }
+            .ev-deco-ring, .ev-dot, .ev-line-deco, .ev-constellation { display: none; }
         }
     </style>
 
-    <!-- Anelli -->
+    <!-- Decorazioni -->
     <div class="ev-deco-ring ev-ring-1"></div>
     <div class="ev-deco-ring ev-ring-2"></div>
     <div class="ev-deco-ring ev-ring-3"></div>
-
-    <!-- Particelle -->
     <div class="ev-dot ev-dot-1"></div>
     <div class="ev-dot ev-dot-2"></div>
     <div class="ev-dot ev-dot-3"></div>
     <div class="ev-dot ev-dot-4"></div>
-    <div class="ev-dot ev-dot-5"></div>
-
-    <!-- Linee decorative -->
     <div class="ev-line-deco ev-line-1"></div>
     <div class="ev-line-deco ev-line-2"></div>
-
-    <!-- Costellazione -->
     <svg class="ev-constellation" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
         <line x1="100" y1="80" x2="350" y2="200" stroke="white" stroke-width="0.5"/>
         <line x1="350" y1="200" x2="500" y2="120" stroke="white" stroke-width="0.5"/>
         <line x1="500" y1="120" x2="750" y2="250" stroke="white" stroke-width="0.5"/>
         <line x1="750" y1="250" x2="1000" y2="180" stroke="white" stroke-width="0.5"/>
-        <line x1="1000" y1="180" x2="1100" y2="350" stroke="white" stroke-width="0.5"/>
         <line x1="200" y1="400" x2="450" y2="350" stroke="white" stroke-width="0.5"/>
         <line x1="450" y1="350" x2="600" y2="450" stroke="white" stroke-width="0.5"/>
         <line x1="600" y1="450" x2="900" y2="400" stroke="white" stroke-width="0.5"/>
@@ -2201,57 +2286,34 @@
         <circle cx="500" cy="120" r="2" fill="white"/>
         <circle cx="750" cy="250" r="3" fill="white"/>
         <circle cx="1000" cy="180" r="2" fill="white"/>
-        <circle cx="1100" cy="350" r="2.5" fill="white"/>
         <circle cx="200" cy="400" r="2" fill="white"/>
         <circle cx="450" cy="350" r="2.5" fill="white"/>
         <circle cx="600" cy="450" r="2" fill="white"/>
         <circle cx="900" cy="400" r="3" fill="white"/>
     </svg>
 
-    <!-- Pagine fluttuanti -->
-    <svg class="ev-page ev-page-1" width="60" height="80" viewBox="0 0 60 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="5" y="0" width="50" height="75" rx="2" stroke="white" stroke-width="1" fill="none"/>
-        <line x1="15" y1="15" x2="45" y2="15" stroke="white" stroke-width="0.5"/>
-        <line x1="15" y1="25" x2="40" y2="25" stroke="white" stroke-width="0.5"/>
-        <line x1="15" y1="35" x2="42" y2="35" stroke="white" stroke-width="0.5"/>
-        <line x1="15" y1="45" x2="38" y2="45" stroke="white" stroke-width="0.5"/>
-        <line x1="15" y1="55" x2="44" y2="55" stroke="white" stroke-width="0.5"/>
-    </svg>
-    <svg class="ev-page ev-page-2" width="50" height="65" viewBox="0 0 50 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="3" y="0" width="44" height="62" rx="2" stroke="white" stroke-width="1" fill="none"/>
-        <line x1="12" y1="12" x2="38" y2="12" stroke="white" stroke-width="0.5"/>
-        <line x1="12" y1="20" x2="35" y2="20" stroke="white" stroke-width="0.5"/>
-        <line x1="12" y1="28" x2="37" y2="28" stroke="white" stroke-width="0.5"/>
-        <line x1="12" y1="36" x2="33" y2="36" stroke="white" stroke-width="0.5"/>
-    </svg>
-
-    <!-- CONTENUTO -->
+    <!-- CONTENUTO PRINCIPALE (invariato) -->
     <div class="section-header" style="position:relative; z-index:1;">
         <h2 class="section-title reveal">In evidenza</h2>
         <span class="section-num reveal">II</span>
     </div>
     <div class="evidenza-grid" style="position:relative; z-index:1;">
-        <a href="https://shop.tlon.it/prodotto/le-voci-perdute-degli-dei-julian-jaynes/" class="evidenza-main reveal">
-            <div class="evidenza-main-visual" style="position:relative;">
-                <div class="ev-book-pulse"></div>
+        <a href="https://shop.tlon.it/prodotto/botanica-della-meraviglia-andrea-colamedici-maura-gancitano/" class="evidenza-main reveal">
+            <div class="evidenza-main-visual">
                 <div class="evidenza-book-frame">
-                    <img src="./assets/libri/Jaynes.jpg" alt="Le voci perdute degli dèi" class="evidenza-book-cover">
+                    <img src="./assets/libri/botanica.jpg" alt="Botanica della meraviglia" class="evidenza-book-cover">
                 </div>
                 <div class="evidenza-book-glow"></div>
             </div>
             <div class="evidenza-main-content">
-                <span class="evidenza-label">Nuova uscita</span>
-                <h3 class="evidenza-main-title">Le voci perdute degli dèi</h3>
-                <p class="evidenza-authors">Julian Jaynes — Edizioni Tlon</p>
-                <p class="evidenza-excerpt">Perché un tempo gli esseri umani obbedivano a voci che credevano divine? Il capolavoro di Julian Jaynes sull'origine della coscienza e sulla mente bicamerale, finalmente in italiano.</p>
+                <span class="evidenza-label">Nuovo libro</span>
+                <h3 class="evidenza-main-title">Botanica della meraviglia</h3>
+                <p class="evidenza-authors">Maura Gancitano · Andrea Colamedici</p>
+                <p class="evidenza-excerpt">Come possiamo andare avanti quando tutto crolla? Un'indagine sullo spirito umano che documenta le pratiche di resistenza culturale tra le crepe dell'apocalisse.</p>
                 <span class="evidenza-cta">Scopri il libro <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </div>
         </a>
         <div class="evidenza-list">
-            <a href="https://shop.tlon.it/prodotto/botanica-della-meraviglia-andrea-colamedici-maura-gancitano/" class="evidenza-item reveal">
-                <h4 class="evidenza-item-title">Botanica della meraviglia</h4>
-                <p class="evidenza-item-meta">M. Gancitano, A. Colamedici — Mondadori</p>
-            </a>
             <a href="https://shop.tlon.it/prodotto/ipnocrazia-trump-musk-e-la-nuova-architettura-della-realta-janwei-xun/" class="evidenza-item reveal">
                 <h4 class="evidenza-item-title">Ipnocrazia</h4>
                 <p class="evidenza-item-meta">Jianwei Xun — Edizioni Tlon</p>
@@ -2270,6 +2332,24 @@
             </a>
         </div>
     </div>
+
+    <!-- ULTIMA USCITA EDIZIONI TLON -->
+    <div class="ultima-uscita reveal" style="position:relative; z-index:1;">
+        <p class="ultima-uscita-label">Ultima uscita Edizioni Tlon</p>
+        <a href="https://shop.tlon.it/prodotto/le-voci-perdute-degli-dei-julian-jaynes/" class="ultima-uscita-card">
+            <div class="ultima-uscita-cover">
+                <img src="./assets/libri/Jaynes.jpg" alt="Le voci perdute degli dèi">
+            </div>
+            <div class="ultima-uscita-info">
+                <span class="ultima-uscita-tag">Edizioni Tlon</span>
+                <h3 class="ultima-uscita-title">Le voci perdute degli dèi</h3>
+                <p class="ultima-uscita-author">Julian Jaynes</p>
+                <p class="ultima-uscita-desc">Perché un tempo gli esseri umani obbedivano a voci che credevano divine? Il capolavoro di Julian Jaynes sull'origine della coscienza e sulla mente bicamerale, finalmente in italiano.</p>
+                <span class="ultima-uscita-cta">Scopri <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </div>
+        </a>
+    </div>
+
 </section>
 
         <!-- LUOGHI -->
