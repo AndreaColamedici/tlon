@@ -1,1 +1,2505 @@
-{{PLACEHOLDER}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tlon — School of Philosophy and Imagination</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./evidenza.css">
+    <style>
+        :root {
+            --bianco: #ffffff;
+            --nero: #0a0a0a;
+            --ottanio: #2a6b6b;
+            --grigio: #6b6b6b;
+            --grigio-chiaro: #e5e5e5;
+            --crema: #f8f6f3;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bianco);
+            color: var(--nero);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1002;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bianco);
+            transition: background 0.3s ease;
+        }
+
+        header.menu-open {
+            background: var(--nero);
+        }
+
+        header.menu-open .logo img {
+            filter: invert(1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 28px;
+            width: auto;
+            transition: filter 0.3s ease;
+        }
+
+        header.scrolled .logo img {
+            filter: invert(1);
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+        }
+
+        /* LANGUAGE SWITCH */
+        .lang-switch {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-left: 2rem;
+            padding-left: 2rem;
+            border-left: 1px solid rgba(0,0,0,0.15);
+        }
+
+        .lang-switch a {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--nero);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .lang-switch a:hover,
+        .lang-switch a.active {
+            opacity: 1;
+        }
+
+        .lang-switch a.active {
+            color: var(--ottanio);
+        }
+
+        /* HAMBURGER */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1003;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #000;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .hamburger.active span {
+            background: var(--bianco);
+        }
+
+        /* MOBILE MENU */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nero);
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--bianco);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+        }
+
+        .mobile-menu.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu a:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
+        .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
+        .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
+
+        .mobile-menu a:hover {
+            color: var(--ottanio);
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 3rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 6rem;
+            align-items: end;
+            padding-bottom: 2rem;
+        }
+
+        .hero-main {
+            max-width: 900px;
+        }
+
+        .hero-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3.5rem, 9vw, 7rem);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2.5rem;
+            color: var(--nero);
+        }
+
+        .hero-title em {
+            font-style: italic;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--grigio);
+            max-width: 540px;
+        }
+
+        /* Fondatori */
+        .hero-founders {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .founder {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--grigio-chiaro);
+            transition: all 0.4s ease;
+            min-width: 280px;
+        }
+
+        .founder:hover {
+            border-color: var(--ottanio);
+            transform: translateX(-4px);
+        }
+
+        .founder-photo {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(154, 123, 79, 0.1);
+            border: 1px solid var(--ottanio);
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .founder-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .founder-initials {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            color: var(--ottanio);
+        }
+
+        .founder-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .founder-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            color: var(--nero);
+        }
+
+        .founder-role {
+            font-size: 0.75rem;
+            color: var(--grigio);
+        }
+
+        /* Scroll */
+        .hero-scroll {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--grigio);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--nero), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.2; transform: scaleY(1); }
+            50% { opacity: 0.6; transform: scaleY(1.1); }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+            .hero-founders {
+                flex-direction: row;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+            
+            .hero-label {
+                margin-top: 100px;
+            }
+            nav {
+                display: none;
+            }
+            .lang-switch { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu { display: flex; }
+            .hero {
+                padding: 0 1.5rem 3rem;
+            }
+            .hero-founders {
+                flex-direction: column;
+            }
+            .founder {
+                min-width: auto;
+            }
+        }
+    
+        /* ============ ECOSISTEMA ============ */
+        .ecosistema {
+            padding: 4rem 3rem 8rem;
+            background: var(--bianco);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ecosistema::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(42, 107, 107, 0.06) 0%, transparent 50%);
+        }
+
+        .eco-container {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eco-map {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+        }
+
+        .eco-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Orbite con rotazione */
+        .eco-orbits {
+            transform-origin: 400px 300px;
+        }
+
+        .eco-orbit {
+            fill: none;
+            stroke: rgba(42, 107, 107, 0.25);
+            stroke-width: 1;
+        }
+
+        .eco-orbit-1 { 
+            stroke-dasharray: 6, 10;
+            animation: rotateOrbit 120s linear infinite;
+            transform-origin: 400px 300px;
+        }
+        .eco-orbit-2 { 
+            stroke-dasharray: 4, 8;
+            animation: rotateOrbit 80s linear infinite reverse;
+            transform-origin: 400px 300px;
+        }
+        .eco-orbit-3 { 
+            stroke-dasharray: 2, 6;
+            animation: rotateOrbit 50s linear infinite;
+            transform-origin: 400px 300px;
+        }
+
+        @keyframes rotateOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Linee di connessione */
+        .eco-line {
+            stroke: url(#lineGradient);
+            stroke-width: 1;
+            opacity: 0.2;
+            transition: all 0.6s ease;
+        }
+
+        /* Nodi */
+        .eco-node {
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .eco-node-glow {
+            fill: var(--ottanio);
+            opacity: 0;
+            filter: blur(15px);
+            transition: all 0.5s ease;
+        }
+
+        .eco-node-bg {
+            fill: var(--bianco);
+            stroke: rgba(42, 107, 107, 0.4);
+            stroke-width: 1;
+            transition: all 0.4s ease;
+        }
+
+        .eco-node-ring {
+            fill: none;
+            stroke: rgba(42, 107, 107, 0.3);
+            stroke-width: 1;
+            transition: all 0.4s ease;
+        }
+
+        .eco-node-ring-outer {
+            fill: none;
+            stroke: rgba(42, 107, 107, 0.2);
+            stroke-width: 1;
+            stroke-dasharray: 3, 3;
+            animation: rotateRing 10s linear infinite;
+        }
+
+        .eco-node-inner .eco-node-ring-outer {
+            animation: rotateRing 8s linear infinite reverse;
+        }
+
+        .eco-node-outer {
+            animation: floatNode 6s ease-in-out infinite;
+        }
+
+        .eco-node-outer:nth-child(2) { animation-delay: -1s; }
+        .eco-node-outer:nth-child(3) { animation-delay: -2s; }
+        .eco-node-outer:nth-child(4) { animation-delay: -3s; }
+        .eco-node-outer:nth-child(5) { animation-delay: -4s; }
+        .eco-node-outer:nth-child(6) { animation-delay: -5s; }
+
+        @keyframes floatNode {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(0, -3px); }
+        }
+
+        @keyframes rotateRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .eco-node-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            fill: var(--nero);
+            text-anchor: middle;
+            dominant-baseline: middle;
+            transition: all 0.4s ease;
+        }
+
+        .eco-node-sub {
+            font-family: 'Instrument Serif', serif;
+            font-size: 8px;
+            font-style: italic;
+            fill: rgba(10, 10, 10, 0.5);
+            text-anchor: middle;
+            transition: all 0.4s ease;
+        }
+
+        /* Centro - Pianeta TLON - font uniformato */
+        .eco-node-center .eco-node-bg {
+            fill: var(--ottanio);
+            stroke: var(--ottanio);
+        }
+
+        .eco-node-center .eco-node-glow {
+            opacity: 0.3;
+            animation: centerPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes centerPulse {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.1); }
+        }
+
+        .eco-node-center .eco-node-ring {
+            stroke: rgba(42, 107, 107, 0.6);
+        }
+
+        .eco-node-center .eco-node-ring-outer {
+            stroke: rgba(42, 107, 107, 0.4);
+            animation: rotateRing 20s linear infinite;
+        }
+
+        .eco-node-label-center {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            fill: var(--bianco);
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        /* Hover states */
+        .eco-node:hover .eco-node-glow {
+            opacity: 0.6;
+        }
+
+        .eco-node:hover .eco-node-bg {
+            fill: var(--ottanio);
+            stroke: var(--ottanio);
+        }
+
+        .eco-node:hover .eco-node-ring {
+            stroke: var(--ottanio);
+            opacity: 0.7;
+        }
+
+        .eco-node:hover .eco-node-label {
+            fill: var(--bianco);
+        }
+
+        .eco-node:hover .eco-node-sub {
+            fill: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Particelle in movimento sulle orbite */
+        .eco-particle {
+            fill: var(--ottanio);
+            opacity: 0.6;
+        }
+
+        .eco-particle-1 {
+            offset-path: path('M 80,300 Q 240,80 400,180 T 720,300 Q 560,520 400,420 T 80,300');
+            animation: moveParticle 15s linear infinite;
+        }
+        .eco-particle-2 {
+            offset-path: path('M 720,300 Q 560,80 400,180 T 80,300 Q 240,520 400,420 T 720,300');
+            animation: moveParticle 18s linear infinite;
+        }
+        .eco-particle-3 {
+            offset-path: path('M 400,180 Q 600,240 620,420 T 400,420 Q 200,360 180,180 T 400,180');
+            animation: moveParticle 12s linear infinite reverse;
+        }
+        .eco-particle-4 {
+            animation: floatParticle1 8s ease-in-out infinite;
+        }
+        .eco-particle-5 {
+            animation: floatParticle2 10s ease-in-out infinite;
+        }
+        .eco-particle-6 {
+            animation: floatParticle3 7s ease-in-out infinite;
+        }
+
+        @keyframes moveParticle {
+            from { offset-distance: 0%; }
+            to { offset-distance: 100%; }
+        }
+
+        @keyframes floatParticle1 {
+            0%, 100% { transform: translate(150px, 200px); opacity: 0.4; }
+            50% { transform: translate(300px, 150px); opacity: 0.8; }
+        }
+        @keyframes floatParticle2 {
+            0%, 100% { transform: translate(500px, 400px); opacity: 0.3; }
+            50% { transform: translate(600px, 250px); opacity: 0.7; }
+        }
+        @keyframes floatParticle3 {
+            0%, 100% { transform: translate(280px, 380px); opacity: 0.5; }
+            50% { transform: translate(350px, 220px); opacity: 0.9; }
+        }
+
+        /* Caption */
+        .eco-caption {
+            text-align: center;
+            margin-top: 3rem;
+            font-family: 'Instrument Serif', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: rgba(10, 10, 10, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .ecosistema {
+                padding: 3rem 1rem 5rem;
+            }
+            .eco-node-label {
+                font-size: 7px;
+            }
+            .eco-node-label-center {
+                font-size: 9px;
+            }
+            .eco-node-sub {
+                display: none;
+            }
+            .eco-caption {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* ============ STATEMENT ============ */
+        .statement {
+            padding: 12rem 3rem;
+            background: var(--bianco);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .statement::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(to bottom, var(--grigio-chiaro), transparent);
+        }
+
+        .statement-text {
+            max-width: 900px;
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            line-height: 1.6;
+            text-align: center;
+            color: var(--nero);
+        }
+
+        .statement-text em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        /* ============ NEWS SECTION ============ */
+        .news-section {
+            padding: 6rem 3rem 8rem;
+            background: var(--nero);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(42, 107, 107, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(42, 107, 107, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .news-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 4rem;
+            align-items: end;
+            margin-bottom: 4rem;
+        }
+
+        .news-title-block {
+            position: relative;
+        }
+
+        .news-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .news-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--ottanio);
+        }
+
+        .news-main-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 400;
+            line-height: 0.95;
+            color: var(--bianco);
+            letter-spacing: -0.02em;
+        }
+
+        .news-main-title em {
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .news-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+
+        .news-stat-number {
+            font-family: 'Instrument Serif', serif;
+            font-size: 5rem;
+            font-weight: 400;
+            line-height: 1;
+            color: var(--ottanio);
+            position: relative;
+        }
+
+        .news-stat-number::after {
+            content: '';
+            position: absolute;
+            bottom: 0.5rem;
+            right: -1rem;
+            width: 8px;
+            height: 8px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .news-stat-label {
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .news-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .news-preview {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .news-item {
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s ease;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-item:hover {
+            padding-left: 1rem;
+        }
+
+        .news-item-date {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 0.75rem;
+        }
+
+        .news-item-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.35rem;
+            color: var(--bianco);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .news-item-meta {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .news-item-tag {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            background: rgba(42, 107, 107, 0.2);
+            border-radius: 3px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 0.75rem;
+        }
+
+        .news-cta-block {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: rgba(42, 107, 107, 0.08);
+            position: relative;
+        }
+
+        .news-cta-block::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border: 1px solid rgba(42, 107, 107, 0.2);
+            border-radius: 50%;
+            animation: expandRing 4s ease-out infinite;
+        }
+
+        .news-cta-block::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            border: 1px solid rgba(42, 107, 107, 0.3);
+            border-radius: 50%;
+            animation: expandRing 4s ease-out infinite 1s;
+        }
+
+        @keyframes expandRing {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        }
+
+        .news-cta-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            max-width: 280px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2.5rem;
+            background: var(--ottanio);
+            color: var(--bianco);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-cta-btn:hover {
+            background: var(--bianco);
+            color: var(--nero);
+            transform: translateY(-2px);
+        }
+
+        .news-cta-btn svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .news-cta-btn:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* Decorative elements */
+        .news-deco {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .news-deco-1 {
+            top: 10%;
+            right: 5%;
+            width: 120px;
+            height: 120px;
+            border: 1px solid rgba(42, 107, 107, 0.15);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .news-deco-2 {
+            bottom: 15%;
+            left: 3%;
+            width: 80px;
+            height: 80px;
+            border: 1px solid rgba(42, 107, 107, 0.2);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite reverse;
+        }
+
+        .news-deco-3 {
+            top: 40%;
+            left: 8%;
+            width: 6px;
+            height: 6px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .news-deco-4 {
+            bottom: 30%;
+            right: 12%;
+            width: 4px;
+            height: 4px;
+            background: var(--ottanio);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: twinkle 4s ease-in-out infinite 1s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.5); }
+        }
+
+        @media (max-width: 1024px) {
+            .news-header {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .news-stats {
+                align-items: flex-start;
+                flex-direction: row;
+                gap: 1rem;
+            }
+            .news-stat-number {
+                font-size: 3rem;
+            }
+            .news-content {
+                grid-template-columns: 1fr;
+            }
+            .news-preview {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .news-section {
+                padding: 4rem 1.5rem 5rem;
+            }
+            .news-main-title {
+                font-size: 2.5rem;
+            }
+            .news-preview,
+            .news-cta-block {
+                padding: 2rem;
+            }
+            .news-item-title {
+                font-size: 1.15rem;
+            }
+        }
+
+        /* ============ DIMENSIONI ============ */
+        .dimensioni {
+            padding: 8rem 3rem;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--grigio-chiaro);
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+        }
+
+        .section-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--ottanio);
+        }
+
+        .dimensioni-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            position: relative;
+        }
+
+        .dimensione {
+            padding: 2.5rem 2rem;
+            border-right: 1px solid var(--grigio-chiaro);
+            border-bottom: 1px solid var(--grigio-chiaro);
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dimensione:nth-child(3n) {
+            border-right: none;
+        }
+
+        .dimensione:nth-child(n+7) {
+            border-bottom: none;
+        }
+
+        .dimensione::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--ottanio);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dimensione:hover::before {
+            transform: scaleX(1);
+        }
+
+        .dimensione:hover {
+            background: var(--bianco);
+        }
+
+        .dimensione-num {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-style: italic;
+            color: var(--ottanio);
+            opacity: 0.3;
+            margin-bottom: 1.5rem;
+            transition: opacity 0.5s ease;
+        }
+
+        .dimensione:hover .dimensione-num {
+            opacity: 1;
+        }
+
+        .dimensione-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .dimensione-desc {
+            font-size: 0.85rem;
+            color: var(--grigio);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .dimensione-link {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--nero);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+
+        .dimensione:hover .dimensione-link {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dimensione-link::after {
+            content: '→';
+        }
+
+        /* ============ EVIDENZA ============ */
+        .evidenza {
+            padding: 8rem 3rem;
+            background: var(--ottanio);
+            color: var(--bianco);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .evidenza::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .evidenza::after {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+        }
+
+        .evidenza .section-header {
+            border-bottom-color: rgba(255,255,255,0.2);
+        }
+
+        .evidenza .section-title {
+            color: var(--bianco);
+        }
+
+        .evidenza-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .evidenza-main {
+            padding: 3rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .evidenza-main:hover {
+            border-color: var(--bianco);
+        }
+
+        .evidenza-main::before {
+            content: 'Novità';
+            position: absolute;
+            top: -12px;
+            left: 3rem;
+            background: var(--bianco);
+            padding: 0 1rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+        }
+
+        .evidenza-main-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .evidenza-main-title em {
+            font-style: italic;
+        }
+
+        .evidenza-excerpt {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 2.5rem;
+        }
+
+        .evidenza-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: var(--bianco);
+            color: var(--nero);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .evidenza-cta:hover {
+            background: var(--nero);
+            color: var(--bianco);
+        }
+
+        .evidenza-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .evidenza-item {
+            padding: 1.75rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .evidenza-item:first-child {
+            padding-top: 0;
+        }
+
+        .evidenza-item:hover {
+            padding-left: 1rem;
+            border-color: var(--bianco);
+        }
+
+        .evidenza-item-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .evidenza-item-meta {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* ============ LUOGHI ============ */
+        .luoghi {
+            padding: 8rem 3rem;
+            background: var(--bianco);
+        }
+
+        .luoghi-intro {
+            max-width: 500px;
+            margin-bottom: 4rem;
+        }
+
+        .luoghi-intro p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        .luoghi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border: 1px solid var(--grigio-chiaro);
+        }
+
+        .luogo {
+            padding: 3rem;
+            border-right: 1px solid var(--grigio-chiaro);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .luogo:last-child {
+            border-right: none;
+        }
+
+        .luogo:hover {
+            background: #fafafa;
+        }
+
+        .luogo-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--ottanio);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .luogo-marker::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            border: 1px solid var(--ottanio);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .luogo-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .luogo-type {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ottanio);
+            margin-bottom: 1.5rem;
+        }
+
+        .luogo-address {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--grigio);
+        }
+
+        .luogo-address a {
+            color: var(--nero);
+            border-bottom: 1px solid var(--grigio-chiaro);
+            transition: border-color 0.3s ease;
+        }
+
+        .luogo-address a:hover {
+            border-color: var(--ottanio);
+        }
+
+        /* ============ NEWSLETTER ============ */
+        .newsletter {
+            padding: 6rem 3rem;
+            background: #fafafa;
+            border-top: 1px solid var(--grigio-chiaro);
+        }
+
+        .newsletter-inner {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .newsletter-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .newsletter-desc {
+            font-size: 0.95rem;
+            color: var(--grigio);
+            margin-bottom: 2rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0;
+            border: 1px solid var(--grigio-chiaro);
+            background: var(--bianco);
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1.25rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--nero);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .newsletter-input::placeholder {
+            color: var(--grigio);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+        }
+
+        .newsletter-btn {
+            display: inline-block;
+            padding: 1.25rem 2rem;
+            background: var(--nero);
+            border: none;
+            color: var(--bianco);
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background: var(--ottanio);
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            padding: 4rem 3rem;
+            background: var(--ottanio);
+            color: var(--bianco);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 4rem;
+            align-items: start;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-tagline {
+            font-family: 'Instrument Serif', serif;
+            font-size: 0.95rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 5rem;
+        }
+
+        .footer-col h4 {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.6rem;
+            color: rgba(255,255,255,0.8);
+            transition: color 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--bianco);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-social a:hover {
+            color: var(--bianco);
+        }
+
+        footer-legal {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.35);
+            text-align: left;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            line-height: 1.8;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1200px) {
+            .dimensioni-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .evidenza-grid {
+                grid-template-columns: 1fr;
+            }
+            .luoghi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .luogo {
+                border-bottom: 1px solid var(--grigio-chiaro);
+            }
+            .luogo:nth-child(2n) {
+                border-right: none;
+            }
+            .luogo:nth-child(n+3) {
+                border-bottom: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .statement {
+                padding: 6rem 1.5rem;
+            }
+            .dimensioni,
+            .evidenza,
+            .luoghi {
+                padding: 5rem 1.5rem;
+            }
+            .dimensioni-grid {
+                grid-template-columns: 1fr;
+            }
+            .dimensione {
+                border-right: none;
+                border-bottom: 1px solid var(--grigio-chiaro);
+            }
+            .dimensione:last-child {
+                border-bottom: none;
+            }
+            .dimensione-link {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .luoghi-grid {
+                grid-template-columns: 1fr;
+            }
+            .luogo {
+                border-right: none;
+                border-bottom: 1px solid var(--grigio-chiaro);
+            }
+            .luogo:last-child {
+                border-bottom: none;
+            }
+            .newsletter {
+                padding: 4rem 1.5rem;
+            }
+            .newsletter-form {
+                flex-direction: column;
+                border: none;
+                gap: 1rem;
+            }
+            .newsletter-input {
+                border: 1px solid var(--grigio-chiaro);
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        /* ============ ANIMATIONS ============ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+
+  <header>
+    <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+    <nav>
+        <a href="./il-progetto-en.html">The Project</a>
+        <a href="./andrea-colamedici/en.html">Colamedici</a>
+        <a href="./maura-gancitano/en.html">Gancitano</a>
+        <a href="./edizioni-en.html">Publishing</a>
+        <a href="./librerie-en.html">Bookstores</a>
+        <a href="./formazione-en.html">Education</a>
+        <a href="./eventi-festival-en.html">Events</a>
+        <a href="./contatti/en.html">Contact</a>
+    </nav>
+    <div class="lang-switch">
+        <a href="./">IT</a>
+        <a href="./index-en.html" class="active">EN</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="./il-progetto-en.html">The Project</a>
+        <a href="./andrea-colamedici/en.html">Colamedici</a>
+        <a href="./maura-gancitano/en.html">Gancitano</a>
+        <a href="./edizioni-en.html">Publishing</a>
+        <a href="./librerie-en.html">Bookstores</a>
+        <a href="./formazione-en.html">Education</a>
+        <a href="./eventi-festival-en.html">Events</a>
+        <a href="./contatti/en.html">Contact</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-main">
+                <p class="hero-label">Philosophy and Imagination</p>
+                <h1 class="hero-title">Ideas, thought together, can create <em>a whole world</em></h1>
+                <p class="hero-desc">Tlon is a philosophical research and outreach project. Publishing house, bookstores, podcasts, festivals, education and cultural design: tools for personal and collective flourishing.</p>
+            </div>
+            <div class="hero-founders">
+                <a href="maura-gancitano/" class="founder">
+                    <div class="founder-photo">
+                     <img src="../assets/images/maura-gancitano.jpg" alt="Maura Gancitano">  
+                    </div>
+                    <div class="founder-info">
+                        <span class="founder-name">Maura Gancitano</span>
+                    </div>
+                </a>
+                <a href="andrea-colamedici/" class="founder">
+                    <div class="founder-photo">
+                     <img src="../assets/images/andrea-colamedici.jpg" alt="Andrea Colamedici">
+                         </div>
+                    <div class="founder-info">
+                        <span class="founder-name">Andrea Colamedici</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <div class="scroll-line"></div>
+            Scroll
+        </div>
+    </section>
+
+        <!-- STATEMENT -->
+        <section class="statement">
+            <p class="statement-text reveal">
+                An imaginary planet described by Borges. A new world created through the collective effort of imagination. Since 2015, we have been building <em>bridges between ideas and actions</em>.
+            </p>
+        </section>
+
+        <!-- ECOSISTEMA -->
+        <section class="ecosistema">
+            <div class="eco-container">
+                <div class="eco-map reveal">
+                    <svg class="eco-svg" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:rgba(42,107,107,0.02)"/>
+                                <stop offset="50%" style="stop-color:rgba(42,107,107,0.25)"/>
+                                <stop offset="100%" style="stop-color:rgba(42,107,107,0.02)"/>
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Rotating orbits -->
+                        <g class="eco-orbits" style="transform-origin: 400px 300px;">
+                            <ellipse class="eco-orbit eco-orbit-1" cx="400" cy="300" rx="320" ry="220"/>
+                            <ellipse class="eco-orbit eco-orbit-2" cx="400" cy="300" rx="180" ry="120"/>
+                            <ellipse class="eco-orbit eco-orbit-3" cx="400" cy="300" rx="90" ry="60"/>
+                        </g>
+                        
+                        <!-- Connection lines -->
+                        <g class="eco-lines">
+                            <line class="eco-line" x1="400" y1="300" x2="80" y2="300"/>
+                            <line class="eco-line" x1="400" y1="300" x2="720" y2="300"/>
+                            <line class="eco-line" x1="400" y1="300" x2="180" y2="120"/>
+                            <line class="eco-line" x1="400" y1="300" x2="620" y2="120"/>
+                            <line class="eco-line" x1="400" y1="300" x2="180" y2="480"/>
+                            <line class="eco-line" x1="400" y1="300" x2="620" y2="480"/>
+                            <line class="eco-line" x1="400" y1="300" x2="400" y2="180"/>
+                            <line class="eco-line" x1="400" y1="300" x2="400" y2="420"/>
+                            <line class="eco-line" x1="400" y1="300" x2="220" y2="300"/>
+                        </g>
+                        
+                        <!-- CENTER PLANET - TLON -->
+                        <g class="eco-node eco-node-center">
+                            <circle class="eco-node-glow" cx="400" cy="300" r="70"/>
+                            <circle class="eco-node-ring-outer" cx="400" cy="300" r="52"/>
+                            <circle class="eco-node-ring" cx="400" cy="300" r="42"/>
+                            <circle class="eco-node-bg" cx="400" cy="300" r="36"/>
+                            <text x="400" y="303" class="eco-node-label-center">TLON</text>
+                        </g>
+                        
+                        <!-- OUTER ORBIT -->
+<a href="./edizioni-en.html" class="eco-node eco-node-outer">
+    <circle class="eco-node-glow" cx="80" cy="300" r="48"/>
+    <circle class="eco-node-ring-outer" cx="80" cy="300" r="38"/>
+    <circle class="eco-node-ring" cx="80" cy="300" r="30"/>
+    <circle class="eco-node-bg" cx="80" cy="300" r="24"/>
+    <text x="80" y="298" class="eco-node-label">Publishing</text>
+</a>
+
+<a href="./eventi-festival-en.html" class="eco-node eco-node-outer">
+    <circle class="eco-node-glow" cx="720" cy="300" r="48"/>
+    <circle class="eco-node-ring-outer" cx="720" cy="300" r="38"/>
+    <circle class="eco-node-ring" cx="720" cy="300" r="30"/>
+    <circle class="eco-node-bg" cx="720" cy="300" r="24"/>
+    <text x="720" y="298" class="eco-node-label">Events</text>
+</a>
+
+<a href="./ilpod-en.html" class="eco-node eco-node-outer">
+    <circle class="eco-node-glow" cx="180" cy="120" r="48"/>
+    <circle class="eco-node-ring-outer" cx="180" cy="120" r="38"/>
+    <circle class="eco-node-ring" cx="180" cy="120" r="30"/>
+    <circle class="eco-node-bg" cx="180" cy="120" r="24"/>
+    <text x="180" y="118" class="eco-node-label">IlPod</text>
+</a>
+
+<a href="./formazione-en.html" class="eco-node eco-node-outer">
+    <circle class="eco-node-glow" cx="620" cy="120" r="48"/>
+    <circle class="eco-node-ring-outer" cx="620" cy="120" r="38"/>
+    <circle class="eco-node-ring" cx="620" cy="120" r="30"/>
+    <circle class="eco-node-bg" cx="620" cy="120" r="24"/>
+    <text x="620" y="118" class="eco-node-label">Education</text>
+</a>
+
+<a href="./ipnocrazia-en.html" class="eco-node eco-node-outer">
+    <circle class="eco-node-glow" cx="180" cy="480" r="48"/>
+    <circle class="eco-node-ring-outer" cx="180" cy="480" r="38"/>
+    <circle class="eco-node-ring" cx="180" cy="480" r="30"/>
+    <circle class="eco-node-bg" cx="180" cy="480" r="24"/>
+    <text x="180" y="478" class="eco-node-label">Hypnocracy</text>
+</a>
+
+<a href="./librerie-en.html" class="eco-node eco-node-outer">
+    <circle class="eco-node-glow" cx="620" cy="480" r="48"/>
+    <circle class="eco-node-ring-outer" cx="620" cy="480" r="38"/>
+    <circle class="eco-node-ring" cx="620" cy="480" r="30"/>
+    <circle class="eco-node-bg" cx="620" cy="480" r="24"/>
+    <text x="620" y="478" class="eco-node-label">Bookstores</text>
+</a>
+
+<!-- INNER ORBIT -->
+<a href="./il-progetto-en.html" class="eco-node eco-node-inner">
+    <circle class="eco-node-glow" cx="220" cy="300" r="42"/>
+    <circle class="eco-node-ring-outer" cx="220" cy="300" r="34"/>
+    <circle class="eco-node-ring" cx="220" cy="300" r="27"/>
+    <circle class="eco-node-bg" cx="220" cy="300" r="21"/>
+    <text x="220" y="298" class="eco-node-label">The Project</text>
+</a>
+
+<a href="https://www.tlonletter.it" target="_blank" class="eco-node eco-node-inner">
+    <circle class="eco-node-glow" cx="400" cy="180" r="42"/>
+    <circle class="eco-node-ring-outer" cx="400" cy="180" r="34"/>
+    <circle class="eco-node-ring" cx="400" cy="180" r="27"/>
+    <circle class="eco-node-bg" cx="400" cy="180" r="21"/>
+    <text x="400" y="178" class="eco-node-label">Newsletter</text>
+</a>
+
+<a href="./contatti/en.html" class="eco-node eco-node-inner">
+    <circle class="eco-node-glow" cx="400" cy="420" r="42"/>
+    <circle class="eco-node-ring-outer" cx="400" cy="420" r="34"/>
+    <circle class="eco-node-ring" cx="400" cy="420" r="27"/>
+    <circle class="eco-node-bg" cx="400" cy="420" r="21"/>
+    <text x="400" y="418" class="eco-node-label">Contact</text>
+</a>
+                        
+                        <!-- Moving particles -->
+                        <g class="eco-particles">
+                            <circle class="eco-particle eco-particle-1" r="2"/>
+                            <circle class="eco-particle eco-particle-2" r="2"/>
+                            <circle class="eco-particle eco-particle-3" r="2"/>
+                            <circle class="eco-particle eco-particle-4" r="1.5"/>
+                            <circle class="eco-particle eco-particle-5" r="1.5"/>
+                            <circle class="eco-particle eco-particle-6" r="1.5"/>
+                        </g>
+                    </svg>
+                </div>
+                <p class="eco-caption">An ecosystem where every dimension interweaves with the others</p>
+            </div>
+        </section>
+
+        <!-- NEWS -->
+        <section class="news-section">
+            <div class="news-deco news-deco-1"></div>
+            <div class="news-deco news-deco-2"></div>
+            <div class="news-deco news-deco-3"></div>
+            <div class="news-deco news-deco-4"></div>
+            
+            <div class="news-container">
+                <div class="news-header">
+                    <div class="news-title-block reveal">
+                        <p class="news-label">February — March 2026</p>
+                        <h2 class="news-main-title"><em>News</em></h2>
+                    </div>
+                    <div class="news-stats reveal">
+                        <span class="news-stat-number">24</span>
+                        <span class="news-stat-label">upcoming events</span>
+                    </div>
+                </div>
+                
+                <div class="news-content">
+                    <div class="news-preview">
+                        <div class="news-item reveal">
+                            <span class="news-item-tag">Festival</span>
+                            <span class="news-item-date">February 14 · Putignano</span>
+                            <h3 class="news-item-title">Putignano Carnival: Love and Carnival</h3>
+                            <p class="news-item-meta">Lectio magistralis · Andrea Colamedici</p>
+                        </div>
+                        <div class="news-item reveal">
+                            <span class="news-item-tag">Trip</span>
+                            <span class="news-item-date">Feb 24 — Mar 3 · New York</span>
+                            <h3 class="news-item-title">United Network</h3>
+                            <p class="news-item-meta">A. Colamedici · M. Gancitano</p>
+                        </div>
+                        <div class="news-item reveal">
+                            <span class="news-item-tag">Conference</span>
+                            <span class="news-item-date">March 12 · Florence</span>
+                            <h3 class="news-item-title">VOICES — European Festival of Journalism</h3>
+                            <p class="news-item-meta">Teatro del Maggio · Andrea Colamedici</p>
+                        </div>
+                        <div class="news-item reveal">
+                            <span class="news-item-tag">Course</span>
+                            <span class="news-item-date">March 30 · Rome</span>
+                            <h3 class="news-item-title">Prompt Thinking</h3>
+                            <p class="news-item-meta">IED Rome · A. Colamedici · M. Gancitano</p>
+                        </div>
+                    </div>
+                    
+                    <div class="news-cta-block reveal">
+                        <p class="news-cta-text">Conferences, festivals, presentations, courses and trips in Italy and worldwide</p>
+                        <a href="./news.html" class="news-cta-btn">
+                            All events
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIMENSIONI -->
+<section class="dimensioni" id="dimensioni">
+    <div class="section-header">
+        <h2 class="section-title reveal">Dimensions</h2>
+        <span class="section-num reveal">I</span>
+    </div>
+    <div class="dimensioni-grid">
+        <div class="dimensione reveal" id="dim-edizioni">
+            <span class="dimensione-num">01</span>
+            <h3 class="dimensione-title">Publishing</h3>
+            <p class="dimensione-desc">Philosophy, gender studies, social sciences, poetry, fiction.</p>
+            <a href="./edizioni-en.html" class="dimensione-link">Catalog</a>
+        </div>
+        <div class="dimensione reveal" id="dim-librerie">
+            <span class="dimensione-num">02</span>
+            <h3 class="dimensione-title">Bookstores</h3>
+            <p class="dimensione-desc">Rome and Venice: Teatro Tlon, National Gallery, Villa Medici, Giovanni Bookstore.</p>
+            <a href="./librerie-en.html" class="dimensione-link">Visit</a>
+        </div>
+        <div class="dimensione reveal" id="dim-podcast">
+            <span class="dimensione-num">03</span>
+            <h3 class="dimensione-title">Podcast</h3>
+            <p class="dimensione-desc">School of Philosophies, Thinking European, and other audio projects.</p>
+            <a href="./podcast-en.html" class="dimensione-link">Listen</a>
+        </div>
+        <div class="dimensione reveal" id="dim-festival">
+            <span class="dimensione-num">04</span>
+            <h3 class="dimensione-title">Events</h3>
+            <p class="dimensione-desc">Thinking Contemporary in Piacenza, Putignano Carnival, lectures, festivals.</p>
+            <a href="./eventi-festival-en.html" class="dimensione-link">Program</a>
+        </div>
+        <div class="dimensione reveal" id="dim-formazione">
+            <span class="dimensione-num">05</span>
+            <h3 class="dimensione-title">Education</h3>
+            <p class="dimensione-desc">Courses for universities, institutions, companies. In Italy and abroad.</p>
+            <a href="./formazione-en.html" class="dimensione-link">Discover</a>
+        </div>
+        <div class="dimensione reveal" id="dim-ricerca">
+            <span class="dimensione-num">06</span>
+            <h3 class="dimensione-title">Research</h3>
+            <p class="dimensione-desc">GenIALab, Generativa, Hypnocracy: artificial intelligence and philosophy.</p>
+            <a href="./ricerca-en.html" class="dimensione-link">Explore</a>
+        </div>
+        <div class="dimensione reveal" id="dim-progetto">
+            <span class="dimensione-num">07</span>
+            <h3 class="dimensione-title">The Project</h3>
+            <p class="dimensione-desc">The history, the mission, the founders. Everything Tlon is and wants to be.</p>
+            <a href="./il-progetto-en.html" class="dimensione-link">Discover</a>
+        </div>
+        <div class="dimensione reveal" id="dim-newsletter">
+            <span class="dimensione-num">08</span>
+            <h3 class="dimensione-title">Newsletter</h3>
+            <p class="dimensione-desc">Tlonletter: our weekly newsletter, on Substack.</p>
+            <a href="https://www.tlonletter.it" class="dimensione-link">Subscribe</a>
+        </div>
+        <div class="dimensione reveal" id="dim-contatti">
+            <span class="dimensione-num">09</span>
+            <h3 class="dimensione-title">Contact</h3>
+            <p class="dimensione-desc">Write to us for collaborations, events, education or to visit the bookstores.</p>
+            <a href="./contatti/en.html" class="dimensione-link">Write</a>
+        </div>
+    </div>
+</section>
+
+     <!-- EVIDENZA -->
+<section class="evidenza" style="position:relative; overflow:hidden;">
+
+    <style>
+        .ev-deco-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.08);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .ev-ring-1 {
+            width: 300px; height: 300px;
+            bottom: -80px; left: -60px;
+            animation: evFloat 12s ease-in-out infinite;
+        }
+        .ev-ring-2 {
+            width: 180px; height: 180px;
+            top: 15%; right: 8%;
+            border-style: dashed;
+            border-color: rgba(255,255,255,0.06);
+            animation: evSpin 40s linear infinite;
+        }
+        .ev-ring-3 {
+            width: 80px; height: 80px;
+            top: 60%; right: 20%;
+            animation: evFloat 8s ease-in-out infinite reverse;
+        }
+        @keyframes evFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-18px) rotate(4deg); }
+        }
+        @keyframes evSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .ev-dot {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .ev-dot-1 { top: 20%; left: 12%; animation: evTwinkle 4s ease-in-out infinite; }
+        .ev-dot-2 { top: 70%; left: 35%; animation: evTwinkle 5s ease-in-out infinite 1s; width: 3px; height: 3px; }
+        .ev-dot-3 { bottom: 25%; right: 10%; animation: evTwinkle 3.5s ease-in-out infinite 0.5s; }
+        .ev-dot-4 { top: 35%; right: 30%; animation: evTwinkle 6s ease-in-out infinite 2s; width: 2px; height: 2px; }
+        @keyframes evTwinkle {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.8); }
+        }
+        .ev-line-deco {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .ev-line-1 {
+            top: 0; left: 15%;
+            width: 1px; height: 120px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.12), transparent);
+            animation: evLinePulse 6s ease-in-out infinite;
+        }
+        .ev-line-2 {
+            bottom: 0; right: 25%;
+            width: 1px; height: 90px;
+            background: linear-gradient(to top, rgba(255,255,255,0.1), transparent);
+            animation: evLinePulse 7s ease-in-out infinite 2s;
+        }
+        @keyframes evLinePulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(1); }
+            50% { opacity: 0.8; transform: scaleY(1.15); }
+        }
+        .ev-constellation {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.04;
+        }
+
+        /* LATEST RELEASES */
+        .ultime-uscite {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            position: relative;
+            z-index: 1;
+        }
+        .ultime-uscite-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .ultime-uscite-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: rgba(255,255,255,0.4);
+        }
+        .ultime-uscite-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .uu-card {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .uu-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.4), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        .uu-card:hover::before {
+            transform: scaleX(1);
+        }
+        .uu-card:hover {
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.07);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .uu-cover {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+        .uu-cover img {
+            width: 140px;
+            display: block;
+            box-shadow: 10px 10px 40px rgba(0,0,0,0.3);
+            transform: perspective(800px) rotateY(-5deg);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .uu-card:hover .uu-cover img {
+            transform: perspective(800px) rotateY(-2deg) scale(1.04);
+        }
+        .uu-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            flex: 1;
+        }
+        .uu-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.2rem;
+            line-height: 1.25;
+            color: var(--bianco);
+        }
+        .uu-author {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            font-style: italic;
+        }
+        .uu-desc {
+            font-size: 0.82rem;
+            line-height: 1.65;
+            color: rgba(255,255,255,0.5);
+            margin-top: 0.5rem;
+        }
+        .uu-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-top: auto;
+            padding-top: 1.25rem;
+            transition: color 0.3s ease;
+        }
+        .uu-cta svg {
+            width: 14px; height: 14px;
+            transition: transform 0.3s ease;
+        }
+        .uu-card:hover .uu-cta {
+            color: var(--bianco);
+        }
+        .uu-card:hover .uu-cta svg {
+            transform: translateX(4px);
+        }
+        @media (max-width: 900px) {
+            .ultime-uscite-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+            .uu-card {
+                flex-direction: row;
+                gap: 1.5rem;
+                padding: 1.5rem;
+                align-items: center;
+            }
+            .uu-cover {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+            .uu-cover img { width: 90px; }
+            .uu-desc { display: none; }
+        }
+        @media (max-width: 768px) {
+            .ev-deco-ring, .ev-dot, .ev-line-deco, .ev-constellation { display: none; }
+        }
+    </style>
+
+    <!-- Decorazioni -->
+    <div class="ev-deco-ring ev-ring-1"></div>
+    <div class="ev-deco-ring ev-ring-2"></div>
+    <div class="ev-deco-ring ev-ring-3"></div>
+    <div class="ev-dot ev-dot-1"></div>
+    <div class="ev-dot ev-dot-2"></div>
+    <div class="ev-dot ev-dot-3"></div>
+    <div class="ev-dot ev-dot-4"></div>
+    <div class="ev-line-deco ev-line-1"></div>
+    <div class="ev-line-deco ev-line-2"></div>
+    <svg class="ev-constellation" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+        <line x1="100" y1="80" x2="350" y2="200" stroke="white" stroke-width="0.5"/>
+        <line x1="350" y1="200" x2="500" y2="120" stroke="white" stroke-width="0.5"/>
+        <line x1="500" y1="120" x2="750" y2="250" stroke="white" stroke-width="0.5"/>
+        <line x1="750" y1="250" x2="1000" y2="180" stroke="white" stroke-width="0.5"/>
+        <line x1="200" y1="400" x2="450" y2="350" stroke="white" stroke-width="0.5"/>
+        <line x1="450" y1="350" x2="600" y2="450" stroke="white" stroke-width="0.5"/>
+        <line x1="600" y1="450" x2="900" y2="400" stroke="white" stroke-width="0.5"/>
+        <circle cx="100" cy="80" r="2" fill="white"/>
+        <circle cx="350" cy="200" r="2.5" fill="white"/>
+        <circle cx="500" cy="120" r="2" fill="white"/>
+        <circle cx="750" cy="250" r="3" fill="white"/>
+        <circle cx="1000" cy="180" r="2" fill="white"/>
+        <circle cx="200" cy="400" r="2" fill="white"/>
+        <circle cx="450" cy="350" r="2.5" fill="white"/>
+        <circle cx="600" cy="450" r="2" fill="white"/>
+        <circle cx="900" cy="400" r="3" fill="white"/>
+    </svg>
+
+    <!-- CONTENUTO PRINCIPALE -->
+    <div class="section-header" style="position:relative; z-index:1;">
+        <h2 class="section-title reveal">Featured</h2>
+        <span class="section-num reveal">II</span>
+    </div>
+    <div class="evidenza-grid" style="position:relative; z-index:1;">
+        <a href="https://shop.tlon.it/prodotto/botanica-della-meraviglia-andrea-colamedici-maura-gancitano/" class="evidenza-main reveal">
+            <div class="evidenza-main-visual">
+                <div class="evidenza-book-frame">
+                    <img src="./assets/libri/botanica.jpg" alt="Botany of Wonder" class="evidenza-book-cover">
+                </div>
+                <div class="evidenza-book-glow"></div>
+            </div>
+            <div class="evidenza-main-content">
+                <span class="evidenza-label">New book</span>
+                <h3 class="evidenza-main-title">Botany of Wonder</h3>
+                <p class="evidenza-authors">Maura Gancitano · Andrea Colamedici</p>
+                <p class="evidenza-excerpt">How can we move forward when everything collapses? An investigation into the human spirit documenting practices of cultural resistance in the cracks of the apocalypse.</p>
+                <span class="evidenza-cta">Discover the book <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </div>
+        </a>
+        <div class="evidenza-list">
+            <a href="https://shop.tlon.it/prodotto/ipnocrazia-trump-musk-e-la-nuova-architettura-della-realta-janwei-xun/" class="evidenza-item reveal">
+                <h4 class="evidenza-item-title">Ipnocrazia</h4>
+                <p class="evidenza-item-meta">Jianwei Xun — Edizioni Tlon</p>
+            </a>
+            <a href="https://shop.tlon.it/prodotto/l-algoritmo-di-babele-storia-e-miti-dell-intelligenza-artificiale-andrea-colamedici-simone-arcagni/" class="evidenza-item reveal">
+                <h4 class="evidenza-item-title">The Algorithm of Babel</h4>
+                <p class="evidenza-item-meta">A. Colamedici, S. Arcagni — Solferino</p>
+            </a>
+            <a href="https://www.pensarecontemporaneo.it" class="evidenza-item reveal">
+                <h4 class="evidenza-item-title">Festival 2026: Crossings</h4>
+                <p class="evidenza-item-meta">Piacenza, September 24–27</p>
+            </a>
+            <a href="https://shop.tlon.it/edizioni-tlon/" class="evidenza-item reveal">
+                <h4 class="evidenza-item-title">Full Catalog</h4>
+                <p class="evidenza-item-meta">Edizioni Tlon →</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- ULTIME USCITE EDIZIONI TLON -->
+    <div class="ultime-uscite reveal" style="position:relative; z-index:1;">
+        <p class="ultime-uscite-label">Latest Releases — Edizioni Tlon</p>
+        <div class="ultime-uscite-grid">
+
+            <a href="https://shop.tlon.it/prodotto/le-voci-perdute-degli-dei-julian-jaynes/" class="uu-card">
+                <div class="uu-cover">
+                    <img src="./assets/libri/Jaynes.jpg" alt="The Lost Voices of the Gods">
+                </div>
+                <div class="uu-info">
+                    <h3 class="uu-title">The Lost Voices of the Gods</h3>
+                    <p class="uu-author">Julian Jaynes</p>
+                    <p class="uu-desc">antologia dei saggi più significativi di Julian Jaynes, lo psicologo statunitense che ha formulato una delle ipotesi più radicali e controverse sull’origine della coscienza.</p>
+                    <span class="uu-cta">Discover <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                </div>
+            </a>
+
+            <a href="https://shop.tlon.it/prodotto/la-stella-nera-magia-e-potere-nell-era-di-putin-e-trump-gary-lachman/" class="uu-card">
+                <div class="uu-cover">
+                    <img src="./assets/libri/Lachman.jpg" alt="The Dark Star">
+                </div>
+                <div class="uu-info">
+                    <h3 class="uu-title">The Dark Star</h3>
+                    <p class="uu-author">Gary Lachman</p>
+                    <p class="uu-desc">Magic and power in the age of Putin and Trump: the influence of esotericism on contemporary geopolitics.</p>
+                    <span class="uu-cta">Discover <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                </div>
+            </a>
+
+            <a href="https://shop.tlon.it/prodotto/mozart-in-rock-il-genio-dal-classico-alla-cultura-pop-loredana-lipperini/" class="uu-card">
+                <div class="uu-cover">
+                    <img src="./assets/libri/Lipperini.jpg" alt="Mozart in Rock">
+                </div>
+                <div class="uu-info">
+                    <h3 class="uu-title">Mozart in rock</h3>
+                    <p class="uu-author">Loredana Lipperini</p>
+                    <p class="uu-desc">Genius from classical to pop culture: how Mozart continues to inspire music and mass culture.</p>
+                    <span class="uu-cta">Discover <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+</section>
+
+        <!-- LUOGHI -->
+        <section class="luoghi" id="contatti">
+            <div class="section-header">
+                <h2 class="section-title reveal">Where to Find Us</h2>
+                <span class="section-num reveal">III</span>
+            </div>
+            <div class="luoghi-grid">
+                <div class="luogo reveal">
+                    <div class="luogo-marker"></div>
+                    <h3 class="luogo-name">Teatro Tlon Bookstore</h3>
+                    <p class="luogo-type">Rome Ostiense</p>
+                    <p class="luogo-address">
+                        Via Federico Nansen, 14<br>
+                        00154 Rome<br>
+                        <a href="mailto:libreriateatro@tlon.it">libreriateatro@tlon.it</a>
+                    </p>
+                </div>
+                <div class="luogo reveal">
+                    <div class="luogo-marker"></div>
+                    <h3 class="luogo-name">Tlon Aleph</h3>
+                    <p class="luogo-type">National Gallery</p>
+                    <p class="luogo-address">
+                        Viale delle Belle Arti, 131<br>
+                        00196 Rome<br>
+                        <a href="mailto:bookshoplagallerianazionale@tlon.it">bookshop@tlon.it</a>
+                    </p>
+                </div>
+                <div class="luogo reveal">
+                    <div class="luogo-marker"></div>
+                    <h3 class="luogo-name">Villa Medici</h3>
+                    <p class="luogo-type">French Academy</p>
+                    <p class="luogo-address">
+                        Viale Trinità dei Monti, 1<br>
+                        00187 Rome
+                    </p>
+                </div>
+                <div class="luogo reveal">
+                    <div class="luogo-marker"></div>
+                    <h3 class="luogo-name">Giovanni Bookstore</h3>
+                    <p class="luogo-type">Querini Stampalia</p>
+                    <p class="luogo-address">
+                        Campo Santa Maria Formosa<br>
+                        30122 Venezia
+                    </p>
+                </div>
+            </div>
+            <a href="https://shop.tlon.it/librerie-tlon/" class="dimensione-link">VISIT</a>
+        </section>
+
+        <!-- NEWSLETTER -->
+        <section class="newsletter" id="newsletter">
+            <div class="newsletter-inner reveal">
+                <h2 class="newsletter-title">Tlonletter</h2>
+                <p class="newsletter-desc">Our newsletter, on Substack.</p>
+                <a href="https://www.tlonletter.it" class="newsletter-btn" target="_blank">Subscribe</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+    <div class="footer-grid">
+        <div>
+            <div class="footer-brand">TLON</div>
+            <p class="footer-tagline">An imaginary planet. That exists.</p>
+        </div>
+        <div class="footer-links">
+            <div class="footer-col">
+                <h4>Project</h4>
+                <a href="./il-progetto-en.html">About Us</a>
+                <a href="./contatti/en.html">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Publishing</h4>
+                <a href="https://shop.tlon.it/edizioni-tlon/">Catalog</a>
+                <a href="https://shop.tlon.it/autori/">Authors</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Tlon Srl | Registered office: Via Nicolò da Pistoia, 12 — 00154 Rome | VAT: 13583341006 | REA: RM – 1458496</p>
+        <div class="footer-social">
+            <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
+            <a href="https://www.facebook.com/associazionetlon" target="_blank">Facebook</a>
+            <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const header = document.querySelector('header');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            header.classList.toggle('menu-open');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Chiudi menu quando si clicca un link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                header.classList.remove('menu-open');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
