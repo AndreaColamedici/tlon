@@ -138,7 +138,11 @@ body {
     background-size: cover;
     background-position: center 20%;
 }
-.ph-libri       { background: linear-gradient(135deg, #8a7a6a, #5a4a3a); }
+.ph-libri {
+    background-image: url(https://www.tlon.it/assets/images/libreria-2.jpg);
+    background-size: cover;
+    background-position: center;
+}
 .ph-tlon {
     background-image: url(https://www.tlon.it/assets/images/libreria-1.jpg);
     background-size: cover;
@@ -149,33 +153,32 @@ body {
     background-size: cover;
     background-position: center;
 }
-.ph-triennale   { background: linear-gradient(135deg, #8a8a6a, #5a5a3a); }
-.ph-podcast     { background: linear-gradient(135deg, #8a6a7a, #5a3a4a); }
+.ph-triennale {
+    background-image: url(https://images.prismic.io/triennale/12476a27-faad-43ee-bc26-342c2b938a9c_FF-promo-square.png?auto=compress,format&w=800);
+    background-size: cover;
+    background-position: center;
+}
+.ph-podcast {
+    background-image: url(https://www.tlon.it/assets/images/ilpod-teatro.jpg);
+    background-size: cover;
+    background-position: center;
+}
 .ph-uni {
     background-image: url(uni%20messina.jpeg);
     background-size: cover;
     background-position: center;
 }
-.ph-media       { background: linear-gradient(135deg, #8a7a7a, #5a3a3a); }
+.ph-media {
+    background-image: url(https://www.tlon.it/assets/images/maura-gancitano.jpg);
+    background-size: cover;
+    background-position: center 80%;
+}
 .ph-ny {
     background-image: url(new%20york.jpeg);
     background-size: cover;
     background-position: center;
 }
 .ph-direzione   { background: linear-gradient(135deg, #7a6a8a, #4a3a5a); }
-.ph-label {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(0.7rem, 1vw, 0.9rem);
-    color: rgba(255,255,255,0.3);
-    text-align: center;
-    pointer-events: none;
-    white-space: nowrap;
-    letter-spacing: 0.05em;
-    z-index: 1;
-}
 .section {
     padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem);
     max-width: 1200px;
@@ -421,7 +424,6 @@ body {
         </div>
     </a>
     <a href="libri.html" class="tile ph-libri">
-        <span class="ph-label">collage copertine</span>
         <div class="overlay">
             <div class="overlay-title">12 libri, 8 lingue</div>
             <div class="overlay-sub">Einaudi &middot; HarperCollins &middot; Mondadori &middot; Zanichelli</div>
@@ -440,14 +442,12 @@ body {
         </div>
     </a>
     <a href="#" class="tile ph-triennale">
-        <span class="ph-label">foto Triennale</span>
         <div class="overlay">
             <div class="overlay-title">Festa della Filosofia</div>
             <div class="overlay-sub">Triennale Milano e Roma &middot; Ideatrice</div>
         </div>
     </a>
     <a href="podcast.html" class="tile ph-podcast">
-        <span class="ph-label">foto podcast/media</span>
         <div class="overlay">
             <div class="overlay-title">Podcast &amp; Media</div>
             <div class="overlay-sub">Audible &middot; RaiPlaySound &middot; Vanity Fair</div>
@@ -460,7 +460,6 @@ body {
         </div>
     </a>
     <a href="ricerca.html" class="tile ph-media">
-        <span class="ph-label">foto pubblicazione</span>
         <div class="overlay">
             <div class="overlay-title">Pubblicazioni e ricerca</div>
             <div class="overlay-sub">HBR Italia &middot; Mondo Digitale &middot; Nuovi Argomenti</div>
