@@ -71,6 +71,8 @@ body {
     cursor: pointer;
     text-decoration: none;
     color: white;
+    background-size: cover;
+    background-position: center;
 }
 .tile:hover .tile-bg { transform: scale(1.04); }
 .tile-bg {
@@ -142,12 +144,24 @@ body {
     background-size: cover;
     background-position: center;
 }
-.ph-festival    { background: linear-gradient(135deg, #6a7a8a, #3a4a5a); }
+.ph-festival {
+    background-image: url(festival%20piacenza.jpg);
+    background-size: cover;
+    background-position: center;
+}
 .ph-triennale   { background: linear-gradient(135deg, #8a8a6a, #5a5a3a); }
 .ph-podcast     { background: linear-gradient(135deg, #8a6a7a, #5a3a4a); }
-.ph-uni         { background: linear-gradient(135deg, #6a8a8a, #3a5a5a); }
+.ph-uni {
+    background-image: url(uni%20messina.jpeg);
+    background-size: cover;
+    background-position: center;
+}
 .ph-media       { background: linear-gradient(135deg, #8a7a7a, #5a3a3a); }
-.ph-ny          { background: linear-gradient(135deg, #7a8a7a, #4a5a4a); }
+.ph-ny {
+    background-image: url(new%20york.jpeg);
+    background-size: cover;
+    background-position: center;
+}
 .ph-direzione   { background: linear-gradient(135deg, #7a6a8a, #4a3a5a); }
 .ph-label {
     position: absolute;
@@ -208,6 +222,10 @@ body {
     margin-bottom: 0.5rem;
     box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     transition: transform 0.3s;
+}
+.book-cover-inner img {
+    width: 100%; height: 100%;
+    object-fit: cover;
 }
 .book-cover-inner .img-ph {
     width: 100%; height: 100%;
@@ -410,7 +428,6 @@ body {
         </div>
     </a>
     <a href="#" class="tile ph-festival">
-        <span class="ph-label">foto festival Piacenza</span>
         <div class="overlay">
             <div class="overlay-title">Festival del Pensare Contemporaneo</div>
             <div class="overlay-sub">Piacenza &middot; Direttrice filosofica</div>
@@ -437,7 +454,6 @@ body {
         </div>
     </a>
     <a href="ricerca.html" class="tile ph-uni">
-        <span class="ph-label">foto conferenza</span>
         <div class="overlay">
             <div class="overlay-title">Universit&agrave; e insegnamento</div>
             <div class="overlay-sub">Columbia &middot; IED &middot; Konkoly &middot; Politecnico</div>
@@ -451,7 +467,6 @@ body {
         </div>
     </a>
     <a href="#" class="tile ph-ny">
-        <span class="ph-label">foto New York</span>
         <div class="overlay">
             <div class="overlay-title">The Botany of Wonder</div>
             <div class="overlay-sub">New York &middot; febbraio 2026</div>
@@ -512,42 +527,42 @@ body {
     </div>
     <div class="book-strip">
         <a href="#" class="book-card">
-            <div class="book-cover-inner"><div class="img-ph ph-libri">Botanica della meraviglia</div></div>
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2025/09/Botanica-della-meraviglia-Gancitano-Colamedici.png" alt="Botanica della meraviglia"></div>
             <div class="book-title">Botanica della meraviglia</div>
             <div class="book-meta">HarperCollins 2025 &middot; con A. Colamedici</div>
         </a>
         <a href="#" class="book-card">
-            <div class="book-cover-inner"><div class="img-ph" style="background:linear-gradient(135deg,#8a7a7a,#5a3a3a)">Erotica dei sentimenti</div></div>
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2024/01/erotica-dei-sentimenti_maura-gancitano_libreria-tlon.jpg" alt="Erotica dei sentimenti"></div>
             <div class="book-title">Erotica dei sentimenti</div>
             <div class="book-meta">Einaudi 2024</div>
         </a>
         <a href="#" class="book-card">
-            <div class="book-cover-inner"><div class="img-ph" style="background:linear-gradient(135deg,#7a8a8a,#3a5a5a)">Ma chi me lo fa fare?</div></div>
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2023/03/machimelofafare2.png" alt="Ma chi me lo fa fare?"></div>
             <div class="book-title">Ma chi me lo fa fare?</div>
             <div class="book-meta">HarperCollins 2023 &middot; con A. Colamedici</div>
         </a>
         <a href="#" class="book-card">
-            <div class="book-cover-inner"><div class="img-ph ph-libri">Specchio delle mie brame</div></div>
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2022/04/specchio-delle-mie-brame_maura-gancitano_libreria-tlon.jpg" alt="Specchio delle mie brame"></div>
             <div class="book-title">Specchio delle mie brame</div>
             <div class="book-meta">Einaudi 2022 &middot; Premio Rapallo</div>
         </a>
         <a href="#" class="book-card">
-            <div class="book-cover-inner"><div class="img-ph" style="background:linear-gradient(135deg,#8a7a8a,#5a3a5a)">Prendila con filosofia</div></div>
+            <div class="book-cover-inner"><img src="prendila%20con%20filosofia%20libro.webp" alt="Prendila con filosofia"></div>
             <div class="book-title">Prendila con filosofia</div>
             <div class="book-meta">HarperCollins 2021 &middot; con A. Colamedici</div>
         </a>
         <a href="#" class="book-card">
-            <div class="book-cover-inner"><div class="img-ph" style="background:linear-gradient(135deg,#6a6a8a,#3a3a5a)">L'alba dei nuovi d&egrave;i</div></div>
+            <div class="book-cover-inner"><img src="alba%20dei%20nuovi%20dei.jpg" alt="L'alba dei nuovi d&egrave;i"></div>
             <div class="book-title">L'alba dei nuovi d&egrave;i</div>
             <div class="book-meta">Mondadori 2021 &middot; con A. Colamedici</div>
         </a>
         <a href="#" class="book-card">
-            <div class="book-cover-inner"><div class="img-ph" style="background:linear-gradient(135deg,#7a6a8a,#4a3a5a)">Liberati della brava bambina</div></div>
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2020/02/liberati-dalla-brava-bambina_maura-gancitano_andrea-colamedici_libreria-tlon.jpg" alt="Liberati della brava bambina"></div>
             <div class="book-title">Liberati della brava bambina</div>
             <div class="book-meta">HarperCollins 2019 &middot; con A. Colamedici</div>
         </a>
         <a href="#" class="book-card">
-            <div class="book-cover-inner"><div class="img-ph" style="background:linear-gradient(135deg,#8a8a6a,#5a5a3a)">La societ&agrave; della performance</div></div>
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2019/02/SDP-IG-front-squarejpg.jpg" alt="La societ&agrave; della performance"></div>
             <div class="book-title">La societ&agrave; della performance</div>
             <div class="book-meta">Tlon 2018 &middot; con A. Colamedici</div>
         </a>
