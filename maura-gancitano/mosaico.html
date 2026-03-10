@@ -290,12 +290,63 @@ body {
     font-weight: 300; line-height: 1.4;
 }
 .footer {
-    padding: 2rem clamp(1.5rem, 4vw, 3rem);
-    border-top: 1px solid rgba(107,143,107,0.08);
-    display: flex; justify-content: space-between;
-    font-size: 0.65rem; color: var(--grigio); font-weight: 300;
+    background: var(--salvia-scuro);
+    color: rgba(255,255,255,0.7);
+    padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem) 1.5rem;
 }
-.footer a { color: var(--salvia); text-decoration: none; }
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.footer-brand {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 0.3rem;
+}
+.footer-tagline {
+    font-size: 0.7rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.5);
+}
+.footer-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+.footer-links a {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.footer-links a:hover { color: rgba(255,255,255,0.95); }
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.2rem;
+    font-size: 0.58rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.footer-legal span { margin: 0 0.4rem; }
+.footer-legal span.sep { color: rgba(255,255,255,0.2); }
 @media (max-width: 900px) {
     .mosaic {
         grid-template-columns: 1fr 1fr;
@@ -314,6 +365,8 @@ body {
     .tile { min-height: 160px; }
     .nav-right a.nav-section { display: none; }
     .activity-grid { grid-template-columns: 1fr; }
+    .footer-top { flex-direction: column; }
+    .footer-bottom { flex-direction: column; text-align: center; }
 }
 </style>
 </head>
@@ -531,8 +584,30 @@ body {
     </div>
 </section>
 <footer class="footer">
-    <span>&copy; 2026 Maura Gancitano</span>
-    <a href="contatti.html">Contatti</a>
+    <div class="footer-inner">
+        <div class="footer-top">
+            <div>
+                <div class="footer-brand">Maura Gancitano</div>
+                <div class="footer-tagline">Filosofa, pedagogista, scrittrice</div>
+            </div>
+            <div class="footer-links">
+                <a href="contatti.html">Contatti</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="cookie.html">Cookie Policy</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                &copy; 2026 Tlon Srl
+                <span class="sep">|</span>
+                Sede legale: Via Nicol&ograve; da Pistoia, 12 &mdash; 00154 Roma
+                <span class="sep">|</span>
+                P.IVA e C.F.: 13583341006
+                <span class="sep">|</span>
+                REA: RM &ndash; 1458496
+            </div>
+        </div>
+    </div>
 </footer>
 </body>
 </html>
