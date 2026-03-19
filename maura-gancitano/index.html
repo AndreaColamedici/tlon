@@ -52,74 +52,38 @@
         }
 
         nav { display: flex; gap: 3rem; }
-        nav a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--nero); opacity: 0.5; transition: opacity 0.3s ease; }
-        nav a:hover { opacity: 1; }
+        nav a { font-size: 0.9rem; font-weight: 500; transition: color 0.3s ease; }
+        nav a:hover { color: var(--ottanio); }
 
-        /* LANGUAGE SWITCHER */
-        .lang-switch {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            margin-left: 2rem;
-            padding-left: 2rem;
-            border-left: 1px solid var(--grigio-chiaro);
-        }
-
-        .lang-switch a {
-            font-size: 0.7rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--grigio);
-            opacity: 0.5;
-            transition: opacity 0.3s ease;
-        }
-
-        .lang-switch a:hover,
-        .lang-switch a.active {
-            opacity: 1;
-        }
-
-        .lang-switch a.active {
-            color: var(--ottanio);
-        }
-
-        /* HAMBURGER */
         .hamburger {
             display: none;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 32px;
-            height: 32px;
             cursor: pointer;
-            position: relative;
-            z-index: 1003;
+            gap: 0.4rem;
+            transition: filter 0.3s ease;
         }
 
         .hamburger span {
-            display: block;
             width: 24px;
             height: 2px;
             background: var(--nero);
-            margin: 3px 0;
             transition: all 0.3s ease;
         }
 
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+        header.menu-open .hamburger span {
+            background: var(--bianco);
         }
 
-        .hamburger.active span:nth-child(2) {
+        header.menu-open .hamburger span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        header.menu-open .hamburger span:nth-child(2) {
             opacity: 0;
         }
 
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-
-        .hamburger.active span {
-            background: var(--bianco);
+        header.menu-open .hamburger span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
         }
 
         /* MOBILE MENU */
@@ -131,482 +95,242 @@
             right: 0;
             bottom: 0;
             background: var(--nero);
-            z-index: 1000;
+            z-index: 1001;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 3rem;
+        }
+
+        .mobile-menu a { font-size: 1.5rem; color: var(--bianco); font-weight: 500; }
+
+        .mobile-menu.open { display: flex; }
+
+        /* MAIN LAYOUT */
+        main { margin-top: 80px; padding: 2rem 3rem; }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* HERO SECTION */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--grigio);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* PROJECTS SECTION */
+        .projects {
+            padding: 4rem 0;
+        }
+
+        .projects h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
-        .mobile-menu.active {
-            opacity: 1;
-            visibility: visible;
+        .project-card {
+            border: 1px solid var(--grigio-chiaro);
+            padding: 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        .mobile-menu a {
+        .project-card:hover {
+            border-color: var(--ottanio);
+            box-shadow: 0 8px 24px rgba(42, 107, 107, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .project-card h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-card p {
+            color: var(--grigio);
+            line-height: 1.6;
+        }
+
+        /* BIO SECTION */
+        .bio {
+            background: var(--nero);
+            color: var(--bianco);
+            padding: 4rem 3rem;
+            margin: 4rem 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .bio h2 {
             font-family: 'Instrument Serif', serif;
             font-size: 2rem;
-            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .bio p {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.8;
+            color: var(--grigio-chiaro);
+        }
+
+        .bio a {
+            color: var(--ottanio);
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .bio a:hover {
             color: var(--bianco);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
         }
-
-        .mobile-menu.active a {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
-        .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
-        .mobile-menu a:nth-child(3) { transition-delay: 0.2s; }
-        .mobile-menu a:nth-child(4) { transition-delay: 0.25s; }
-        .mobile-menu a:nth-child(5) { transition-delay: 0.3s; }
-        .mobile-menu a:nth-child(6) { transition-delay: 0.35s; }
-        .mobile-menu a:nth-child(7) { transition-delay: 0.4s; }
-        .mobile-menu a:nth-child(8) { transition-delay: 0.45s; }
-
-        .mobile-menu a:hover { color: var(--ottanio); }
-
-        main { padding-top: 80px; }
-
-        /* BIO HERO */
-        .bio-hero { min-height: 70vh; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; padding: 6rem 3rem; align-items: center; }
-        .bio-photo { position: relative; }
-        .bio-photo-frame { aspect-ratio: 3/4; background: linear-gradient(135deg, rgba(42, 107, 107, 0.08) 0%, rgba(42, 107, 107, 0.02) 100%); border: 1px solid var(--grigio-chiaro); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .bio-photo-frame::before { content: ''; position: absolute; top: 2rem; left: 2rem; right: 2rem; bottom: 2rem; border: 1px solid var(--ottanio); opacity: 0.3; }
-        .bio-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-        .bio-intro { max-width: 600px; }
-        .bio-label { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
-        .bio-label::before { content: ''; width: 40px; height: 1px; background: var(--ottanio); }
-        .bio-name { font-family: 'Instrument Serif', serif; font-size: clamp(3rem, 6vw, 5rem); font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 2rem; }
-        .bio-name em { font-style: italic; }
-        .bio-tagline { font-size: 1.25rem; line-height: 1.7; color: var(--grigio); margin-bottom: 2.5rem; }
-        .bio-tagline strong { color: var(--nero); font-weight: 600; }
-        .bio-meta { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; color: var(--grigio); }
-        .bio-meta span { display: flex; align-items: center; gap: 0.75rem; }
-        .bio-meta span::before { content: ''; width: 6px; height: 6px; background: var(--ottanio); border-radius: 50%; }
-        .bio-meta strong { color: var(--nero); font-weight: 600; }
-
-        /* BIO CONTENT */
-        .bio-content { padding: 6rem 3rem; background: var(--bianco); }
-        .bio-section { max-width: 900px; margin: 0 auto 6rem; }
-        .bio-section:last-child { margin-bottom: 0; }
-        .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--grigio-chiaro); }
-        .section-title { font-family: 'Instrument Serif', serif; font-size: 2.5rem; font-weight: 400; letter-spacing: -0.02em; }
-        .section-num { font-family: 'Instrument Serif', serif; font-size: 1.25rem; font-style: italic; color: var(--ottanio); }
-        .bio-text { font-size: 1.1rem; line-height: 2; color: var(--nero); }
-        .bio-text p { margin-bottom: 1.5rem; }
-        .bio-text p:last-child { margin-bottom: 0; }
-        .bio-text strong { font-weight: 600; }
-
-        /* LIBRI */
-        .libro-categoria { margin-bottom: 3rem; }
-        .libro-categoria:last-child { margin-bottom: 0; }
-        .categoria-title { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
-        .categoria-title::after { content: ''; flex: 1; height: 1px; background: var(--grigio-chiaro); }
-        .libro { display: grid; grid-template-columns: 60px 1fr auto; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--grigio-chiaro); align-items: baseline; }
-        .libro:last-child { border-bottom: none; }
-        .libro-anno { font-family: 'Instrument Serif', serif; font-size: 1rem; font-style: italic; color: var(--ottanio); }
-        .libro-info { display: flex; flex-direction: column; gap: 0.25rem; }
-        .libro-titolo { font-family: 'Instrument Serif', serif; font-size: 1.25rem; font-weight: 400; }
-        .libro-sottotitolo { font-size: 0.9rem; color: var(--grigio); }
-        .libro-editore { font-size: 0.85rem; color: var(--grigio); text-align: right; }
-        .libro-premio { display: inline-block; margin-top: 0.5rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ottanio); padding: 0.25rem 0.5rem; border: 1px solid var(--ottanio); }
-
-        /* TRADUZIONI */
-        .traduzioni-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
-        .traduzione-item { padding: 1.5rem; border: 1px solid var(--grigio-chiaro); transition: border-color 0.3s ease; }
-        .traduzione-item:hover { border-color: var(--ottanio); }
-        .traduzione-titolo { font-family: 'Instrument Serif', serif; font-size: 1.1rem; margin-bottom: 0.75rem; }
-        .traduzione-lingue { font-size: 0.85rem; color: var(--grigio); line-height: 1.6; }
-        .traduzione-note { font-size: 0.8rem; color: var(--ottanio); margin-top: 0.5rem; font-style: italic; }
-
-        /* PODCAST */
-        .podcast-grid { display: grid; gap: 1.5rem; }
-        .podcast-item { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; padding: 2rem; border: 1px solid var(--grigio-chiaro); transition: border-color 0.3s ease; }
-        .podcast-item:hover { border-color: var(--ottanio); }
-        .podcast-title { font-family: 'Instrument Serif', serif; font-size: 1.5rem; font-weight: 400; }
-        .podcast-meta { font-size: 0.85rem; color: var(--ottanio); margin-top: 0.5rem; }
-        .podcast-desc { font-size: 0.95rem; line-height: 1.8; color: var(--grigio); }
-
-        /* LISTA VOCI */
-        .lista-voci { display: flex; flex-direction: column; gap: 0; }
-        .voce-item { display: grid; grid-template-columns: 1fr auto; gap: 2rem; padding: 1rem 0; border-bottom: 1px solid var(--grigio-chiaro); align-items: baseline; }
-        .voce-item:last-child { border-bottom: none; }
-        .voce-titolo { font-size: 1rem; line-height: 1.6; color: var(--nero); }
-        .voce-titolo em { font-style: italic; }
-        .voce-titolo strong { font-weight: 600; }
-        .voce-dettaglio { font-size: 0.85rem; color: var(--grigio); text-align: right; white-space: nowrap; }
-        .lista-semplice { display: flex; flex-direction: column; gap: 0; }
-        .lista-semplice .voce-item { grid-template-columns: 1fr; }
-        .pubblicazioni-categoria { margin-bottom: 3rem; }
-        .pubblicazioni-categoria:last-child { margin-bottom: 0; }
-
-        /* SPECCHIO FEATURE */
-        .specchio-feature { background: var(--nero); color: var(--bianco); position: relative; overflow: hidden; }
-        .specchio-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; }
-        .specchio-bg-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Instrument Serif', serif; font-size: 25vw; font-style: italic; color: rgba(42, 107, 107, 0.06); white-space: nowrap; pointer-events: none; }
-        .specchio-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(42, 107, 107, 0.15) 0%, transparent 70%); animation: specchioFloat 12s ease-in-out infinite; }
-        .specchio-glow:nth-child(2) { top: -200px; right: -100px; }
-        .specchio-glow:nth-child(3) { bottom: -300px; left: -100px; animation-delay: -6s; }
-        @keyframes specchioFloat { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; } 50% { transform: translate(20px, -20px) scale(1.1); opacity: 1; } }
-        .specchio-content { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; padding: 8rem 3rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
-        .specchio-left { display: flex; flex-direction: column; justify-content: center; }
-        .specchio-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
-        .specchio-label::before { content: ''; width: 30px; height: 1px; background: var(--ottanio); }
-        .specchio-title { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; line-height: 1.1; margin-bottom: 1rem; }
-        .specchio-title em { font-style: italic; color: var(--ottanio); }
-        .specchio-subtitle { font-family: 'Instrument Serif', serif; font-size: 1.5rem; font-style: italic; color: rgba(255,255,255,0.5); margin-bottom: 2rem; }
-        .specchio-desc { font-size: 1.1rem; line-height: 1.9; color: rgba(255,255,255,0.7); margin-bottom: 2rem; }
-        .specchio-desc strong { color: var(--bianco); font-weight: 500; }
-        .specchio-premio { display: inline-flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; border: 1px solid var(--ottanio); background: rgba(42, 107, 107, 0.1); margin-bottom: 2rem; }
-        .specchio-premio-icon { font-size: 1.25rem; }
-        .specchio-premio-text { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ottanio); }
-        .specchio-right { display: flex; flex-direction: column; gap: 2rem; }
-        .specchio-quote { padding: 3rem; border-left: 3px solid var(--ottanio); background: rgba(255,255,255,0.02); }
-        .specchio-quote p { font-family: 'Instrument Serif', serif; font-size: 1.4rem; font-style: italic; line-height: 1.6; color: rgba(255,255,255,0.9); margin-bottom: 1.5rem; }
-        .specchio-quote cite { font-size: 0.85rem; font-style: normal; color: var(--ottanio); letter-spacing: 0.1em; text-transform: uppercase; }
-        .specchio-traduzioni { padding: 2rem; border: 1px solid rgba(255,255,255,0.1); }
-        .specchio-traduzioni-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 1rem; }
-        .specchio-traduzioni-list { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-        .specchio-traduzioni-list span { padding: 0.5rem 1rem; font-size: 0.85rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
-        .specchio-traduzioni-list span:hover { border-color: var(--ottanio); background: rgba(42, 107, 107, 0.1); }
-        .specchio-cta { display: inline-flex; align-items: center; gap: 1rem; padding: 1.25rem 2.5rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--bianco); border: 1px solid rgba(255,255,255,0.3); transition: all 0.4s ease; align-self: flex-start; }
-        .specchio-cta:hover { background: var(--ottanio); border-color: var(--ottanio); }
-        .specchio-cta svg { width: 16px; height: 16px; transition: transform 0.3s ease; }
-        .specchio-cta:hover svg { transform: translateX(4px); }
 
         /* FOOTER */
-        footer { padding: 4rem 3rem; border-top: 1px solid var(--grigio-chiaro); }
-        .footer-nav { display: flex; justify-content: space-between; align-items: center; }
-        .footer-back { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grigio); display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s ease; }
-        .footer-back:hover { color: var(--nero); }
-        .footer-back::before { content: '←'; }
-        .footer-other { text-align: right; }
-        .footer-other-label { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grigio); margin-bottom: 0.5rem; }
-        .footer-other-name { font-family: 'Instrument Serif', serif; font-size: 1.5rem; }
-        .footer-other-name a { transition: color 0.3s ease; }
-        .footer-other-name a:hover { color: var(--ottanio); }
+        footer {
+            background: var(--nero);
+            color: var(--bianco);
+            padding: 2rem 3rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--ottanio);
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--bianco);
+        }
 
         /* RESPONSIVE */
-        @media (max-width: 1100px) { .specchio-content { grid-template-columns: 1fr; gap: 4rem; } }
-        @media (max-width: 900px) {
-            header { padding: 1rem 1.5rem; }
-            nav { display: none; }
-            .hamburger { display: flex; }
-            .mobile-menu { display: flex; }
-            .lang-switch { display: none; }
-            .bio-hero { grid-template-columns: 1fr; gap: 3rem; }
-            .bio-photo { order: -1; max-width: 400px; margin: 0 auto; }
-            .podcast-item { grid-template-columns: 1fr; gap: 1rem; }
-            .libro { grid-template-columns: 1fr; gap: 0.5rem; }
-            .libro-anno { font-size: 0.85rem; }
-            .libro-editore { text-align: left; }
-            .voce-item { grid-template-columns: 1fr; gap: 0.5rem; }
-            .voce-dettaglio { text-align: left; }
-            .specchio-content { padding: 5rem 1.5rem; }
-        }
-        @media (max-width: 600px) {
-            .bio-hero, .bio-content { padding-left: 1.5rem; padding-right: 1.5rem; }
-            footer { padding: 2rem 1.5rem; }
-            .footer-nav { flex-direction: column; gap: 2rem; text-align: center; }
-            .footer-other { text-align: center; }
-        }
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
 
-        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
+            nav { display: none; }
+
+            .hamburger { display: flex; }
+
+            main { margin-top: 60px; padding: 1rem 1.5rem; }
+
+            .hero h1 { font-size: 2rem; }
+
+            .projects h2 { font-size: 1.75rem; }
+
+            .bio {
+                padding: 2rem 1.5rem;
+                margin: 2rem 0;
+            }
+        }
     </style>
 </head>
 <body>
-
     <header>
-        <a href="../" class="logo"><img src="../assets/images/tlon-logo.png" alt="Tlon"></a>
-        <nav>
-            <a href="../il-progetto.html">Il Progetto</a>
-            <a href="../andrea-colamedici/">Colamedici</a>
-            <a href="../maura-gancitano/">Gancitano</a>
-            <a href="../edizioni.html">Edizioni</a>
-            <a href="../librerie.html">Librerie</a>
-            <a href="../formazione.html">Formazione</a>
-            <a href="../eventi-festival.html">Eventi</a>
-            <a href="../contatti/">Contatti</a>
-        </nav>
-        <div class="lang-switch">
-            <a href="./index.html" class="active">IT</a>
-            <a href="./en.html">EN</a>
+        <div class="logo">
+            <img src="https://tlon.it/logo.svg" alt="Tlon Logo">
         </div>
-        <div class="hamburger" id="hamburger">
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#projects">Progetti</a>
+            <a href="#bio">Bio</a>
+            <a href="#contact">Contatti</a>
+        </nav>
+        <div class="hamburger">
             <span></span>
             <span></span>
             <span></span>
         </div>
     </header>
 
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="../il-progetto.html">Il Progetto</a>
-        <a href="../andrea-colamedici/">Colamedici</a>
-        <a href="../maura-gancitano/">Gancitano</a>
-        <a href="../edizioni.html">Edizioni</a>
-        <a href="../librerie.html">Librerie</a>
-        <a href="../formazione.html">Formazione</a>
-        <a href="../eventi-festival.html">Eventi</a>
-        <a href="../contatti/">Contatti</a>
+    <div class="mobile-menu">
+        <a href="#home">Home</a>
+        <a href="#projects">Progetti</a>
+        <a href="#bio">Bio</a>
+        <a href="#contact">Contatti</a>
     </div>
 
     <main>
-        <section class="bio-hero">
-            <div class="bio-photo">
-                <div class="bio-photo-frame">
-                    <img src="../assets/images/maura-gancitano.jpg" alt="Maura Gancitano">
-                </div>
-            </div>
-            <div class="bio-intro">
-                <span class="bio-label">Fondatrice</span>
-                <h1 class="bio-name">Maura <em>Gancitano</em></h1>
-                <p class="bio-tagline"><strong>Filosofa</strong>, pedagogista e scrittrice. Co-fondatrice di <em>Tlon</em>, si occupa di parità di genere, educazione sentimentale, spazi pubblici digitali, comunicazione e progettazione culturale.</p>
-                <div class="bio-meta">
-                    <span>Mazara del Vallo, 1985</span>
-                    <span>Direttrice filosofica, <strong>Festival del Pensare Contemporaneo</strong></span>
-                    <span><strong>Premio Rapallo 2022</strong></span>
-                </div>
-            </div>
-        </section>
-
-        <div class="bio-content">
-            <section class="bio-section reveal">
-                <div class="section-header">
-                    <h2 class="section-title">Biografia</h2>
-                    <span class="section-num">I</span>
-                </div>
-                <div class="bio-text">
-                    <p>Maura Gancitano è <strong>filosofa, pedagogista e scrittrice</strong>. Ha conseguito una laurea in <strong>filosofia politica</strong> all'Università Vita-Salute San Raffaele di Milano e una laurea magistrale in <strong>Scienze Pedagogiche e della Progettazione Educativa</strong> presso l'Università di Foggia, con una tesi in Filosofia dell'educazione dal titolo <em>«Il dispositivo narrativo tra vincolo e possibilità. Genealogia critica e prospettive micropedagogiche sui processi di soggettivazione contemporanei»</em>. Nel 2015 ha fondato <em>Tlon</em> insieme ad Andrea Colamedici, con cui cura la rubrica «Prendila con Filosofia» per <em>Vanity Fair</em>.</p>
-                    <p>Ha collaborato con <strong>La Repubblica</strong>, <em>La Stampa</em>, <em>Linus</em>, <strong>Radio 1</strong>, <strong>Radio 24</strong> e <em>Radio Freccia</em>. È stata inserita da Vanity Fair Italia, Francia e Spagna nella lista «Generazione futuro», tra gli artisti, attivisti e pionieri che stanno disegnando il futuro dell'Europa, e nella lista <strong>Unstoppable Women</strong> di StartUpItalia, le 150 donne da seguire nel mondo dell'innovazione in Italia.</p>
-                    <p>I suoi libri sono tradotti in <strong>otto lingue</strong>. Con il saggio <em>Specchio delle mie brame. La prigione della bellezza</em> (Einaudi 2022) ha vinto il <strong>Premio Rapallo</strong>, ex aequo con Bianca Pitzorno. Ha tenuto incontri in università e istituzioni italiane e internazionali, tra cui Politecnico di Milano, IED Milano, Università Cattolica, Bicocca, Roma Tre, LUISS, Università di Trento, Perugia, Columbia University e Konkoly Observatory dell'Accademia delle Scienze ungherese.</p>
-                </div>
+        <div class="container">
+            <section class="hero" id="home">
+                <h1>Maura Gancitano</h1>
+                <p>Filosofa, autrice e curatrice. Cofondatrice di Tlon, una piattaforma per la ricerca e la contaminazione culturale.</p>
             </section>
 
-            <section class="bio-section reveal">
-                <div class="section-header">
-                    <h2 class="section-title">Libri</h2>
-                    <span class="section-num">II</span>
-                </div>
-                <div class="libro-categoria">
-                    <div class="categoria-title">Opere individuali</div>
-                    <div class="libro"><span class="libro-anno">2024</span><div class="libro-info"><span class="libro-titolo">Erotica dei sentimenti</span><span class="libro-sottotitolo">Per una nuova educazione sentimentale</span></div><span class="libro-editore">Einaudi</span></div>
-                    <div class="libro"><span class="libro-anno">2024</span><div class="libro-info"><span class="libro-titolo">Perché studiare filosofia (non) è noioso</span><span class="libro-sottotitolo">Ora buca</span></div><span class="libro-editore">Mondadori</span></div>
-                    <div class="libro"><span class="libro-anno">2022</span><div class="libro-info"><span class="libro-titolo">Specchio delle mie brame</span><span class="libro-sottotitolo">La prigione della bellezza</span><span class="libro-premio">Premio Rapallo 2022</span></div><span class="libro-editore">Einaudi</span></div>
-                </div>
-                <div class="libro-categoria">
-                    <div class="categoria-title">Con Andrea Colamedici</div>
-                    <div class="libro"><span class="libro-anno">2025</span><div class="libro-info"><span class="libro-titolo">Botanica della meraviglia</span></div><span class="libro-editore">HarperCollins</span></div>
-                    <div class="libro"><span class="libro-anno">2023</span><div class="libro-info"><span class="libro-titolo">Ma chi me lo fa fare?</span><span class="libro-sottotitolo">Come il lavoro ci ha illuso: la fine dell'incantesimo</span></div><span class="libro-editore">HarperCollins</span></div>
-                    <div class="libro"><span class="libro-anno">2022</span><div class="libro-info"><span class="libro-titolo">Il gioco del pensiero</span></div><span class="libro-editore">Zanichelli</span></div>
-                    <div class="libro"><span class="libro-anno">2021</span><div class="libro-info"><span class="libro-titolo">L'alba dei nuovi dèi</span><span class="libro-sottotitolo">Da Platone ai big data</span></div><span class="libro-editore">Mondadori</span></div>
-                    <div class="libro"><span class="libro-anno">2021</span><div class="libro-info"><span class="libro-titolo">Prendila con filosofia</span><span class="libro-sottotitolo">Manuale di fioritura personale</span></div><span class="libro-editore">HarperCollins</span></div>
-                    <div class="libro"><span class="libro-anno">2019</span><div class="libro-info"><span class="libro-titolo">Liberati della brava bambina</span><span class="libro-sottotitolo">Otto storie per fiorire</span></div><span class="libro-editore">HarperCollins</span></div>
-                    <div class="libro"><span class="libro-anno">2018</span><div class="libro-info"><span class="libro-titolo">La società della performance</span><span class="libro-sottotitolo">Come uscire dalla caverna</span></div><span class="libro-editore">Tlon</span></div>
-                    <div class="libro"><span class="libro-anno">2017</span><div class="libro-info"><span class="libro-titolo">Lezioni di meraviglia</span><span class="libro-sottotitolo">Viaggi tra filosofia e immaginazione</span></div><span class="libro-editore">Tlon</span></div>
-                    <div class="libro"><span class="libro-anno">2016</span><div class="libro-info"><span class="libro-titolo">Tu non sei Dio</span><span class="libro-sottotitolo">Fenomenologia della spiritualità contemporanea</span></div><span class="libro-editore">Tlon</span></div>
-                </div>
-            </section>
-
-            <section class="bio-section reveal">
-                <div class="section-header">
-                    <h2 class="section-title">Traduzioni</h2>
-                    <span class="section-num">III</span>
-                </div>
-                <div class="traduzioni-grid">
-                    <div class="traduzione-item"><div class="traduzione-titolo">Botanica della meraviglia</div><div class="traduzione-lingue">Inglese (edizione limitata, Salotto NYC 2026), Spagnolo (in corso), Francese (in corso)</div><div class="traduzione-note">Diritti in lingua inglese disponibili</div></div>
-                    <div class="traduzione-item"><div class="traduzione-titolo">Specchio delle mie brame</div><div class="traduzione-lingue">Spagnolo, Cinese, Cinese (Taiwan), Portoghese, Coreano, Rumeno, Francese (in corso)</div></div>
-                    <div class="traduzione-item"><div class="traduzione-titolo">Liberati della brava bambina</div><div class="traduzione-lingue">Cinese, Coreano</div></div>
-                    <div class="traduzione-item"><div class="traduzione-titolo">Prendila con filosofia</div><div class="traduzione-lingue">Cinese, Spagnolo, Polacco, Coreano</div></div>
-                    <div class="traduzione-item"><div class="traduzione-titolo">Perché studiare filosofia (non) è noioso</div><div class="traduzione-lingue">Spagnolo</div></div>
-                    <div class="traduzione-item"><div class="traduzione-titolo">La società della performance</div><div class="traduzione-lingue">Cinese (in corso)</div></div>
-                    <div class="traduzione-item"><div class="traduzione-titolo">Ma chi me lo fa fare?</div><div class="traduzione-lingue">Cinese (in corso)</div></div>
-                </div>
-            </section>
-
-            <section class="bio-section reveal">
-                <div class="section-header">
-                    <h2 class="section-title">Podcast</h2>
-                    <span class="section-num">IV</span>
-                </div>
-                <div class="podcast-grid">
-                    <div class="podcast-item"><div><div class="podcast-title">Scuola di Filosofie</div><div class="podcast-meta">Audible · con Andrea Colamedici</div></div><div class="podcast-desc">Un percorso in due stagioni attraverso i grandi pensatori del Novecento, dalla fenomenologia all'esistenzialismo, dalla filosofia della mente alla teoria critica, per applicare le loro intuizioni alla vita quotidiana.</div></div>
-                    <div class="podcast-item"><div><div class="podcast-title">Pensare Europeo</div><div class="podcast-meta">Parlamento Europeo · con Andrea Colamedici</div></div><div class="podcast-desc">Un ciclo di incontri per potenziare il senso di appartenenza alla comunità europea, mettendo in connessione eurodeputati con filosofi, attivisti, storici e artisti italiani.</div></div>
-                    <div class="podcast-item"><div><div class="podcast-title">Meno per meno</div><div class="podcast-meta">RaiPlaySound · con Niccolò Fabi</div></div><div class="podcast-desc">Dieci incontri che partono dalle canzoni scelte da Niccolò Fabi per celebrare i suoi 25 anni di carriera, trasformando i testi in scintille per affrontare tematiche disparate.</div></div>
-                    <div class="podcast-item"><div><div class="podcast-title">Tlon – Il podcast</div><div class="podcast-meta">Tutte le piattaforme</div></div><div class="podcast-desc">Interviste, conversazioni e contributi dagli eventi e dai festival Tlon, per restare aggiornati sulle iniziative del progetto e scoprire i temi della divulgazione filosofica.</div></div>
-                </div>
-            </section>
-
-            <section class="bio-section reveal">
-                <div class="section-header">
-                    <h2 class="section-title">Insegnamento e conferenze</h2>
-                    <span class="section-num">V</span>
-                </div>
-                <div class="lista-voci">
-                    <div class="voce-item"><span class="voce-titolo">Seminario <em>When Work Becomes Identity: The Philosophical Roots of Academic Burnout</em> – Konkoly Observatory, Accademia delle Scienze ungherese (online, Budapest)</span><span class="voce-dettaglio">2026</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Conferenza <em>Culture Digitali Adesso</em> – Accademia di Belle Arti di Firenze</span><span class="voce-dettaglio">2026</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Lezione <em>Scrittura come fioritura</em> – Università Cattolica del Sacro Cuore, Milano (online)</span><span class="voce-dettaglio">2026</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Lezione alla LUISS, Roma (con Andrea Colamedici)</span><span class="voce-dettaglio">2026</span></div>
-                    <div class="voce-item"><span class="voce-titolo"><strong>Prompt Thinking</strong> – IED Roma</span><span class="voce-dettaglio">2022–in corso</span></div>
-                    <div class="voce-item"><span class="voce-titolo"><em>Dalla scrittura al digitale: la crepa che abitiamo</em> – Università di Foggia (con Andrea Colamedici)</span><span class="voce-dettaglio">2021–2022</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Masterclass sugli stereotipi di genere – Università di Messina / Taobuk</span><span class="voce-dettaglio">2025</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Corso Competenze Trasversali – Università di Bari</span><span class="voce-dettaglio">2025</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Seminario <em>Social Emotional Learning e formazione degli insegnanti</em> – Università di Verona</span><span class="voce-dettaglio">2025</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Seminario <em>Wellbeing: contesti e traiettorie di un framework generativo</em> – Università di Padova (sede di Rovigo)</span><span class="voce-dettaglio">2025</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Spring School <em>Filosofia e trasformazione digitale</em> – Università di Udine</span><span class="voce-dettaglio">2023, 2024</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Convegno <em>Donne e Scienza</em> – CNR Genova</span><span class="voce-dettaglio">2024</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Convegno <em>Gender Cultures</em> – IULM Milano</span><span class="voce-dettaglio">2024</span></div>
-                    <div class="voce-item"><span class="voce-titolo">ICS Exchange Conference, keynote su <em>Prompt Thinking</em> – Università di Foggia</span><span class="voce-dettaglio">2024</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Convegno sull'intelligenza artificiale nel turismo – Università di Oristano</span><span class="voce-dettaglio">2024</span></div>
-                    <div class="voce-item"><span class="voce-titolo"><em>Quanto è naturale l'Intelligenza Artificiale?</em> – Circolo dei Lettori di Torino con SIpEIA</span><span class="voce-dettaglio">2023</span></div>
-                    <div class="voce-item"><span class="voce-titolo">Workshop <em>Sostenibilità umana: superare la società della performance e immaginare nuovi modelli</em> – Università di Padova</span><span class="voce-dettaglio">2023</span></div>
-                </div>
-            </section>
-
-            <section class="bio-section reveal">
-                <div class="section-header">
-                    <h2 class="section-title">Comitati scientifici</h2>
-                    <span class="section-num">VI</span>
-                </div>
-                <div class="lista-voci">
-                    <div class="voce-item"><span class="voce-titolo"><strong>Fondazione WoW</strong></span><span class="voce-dettaglio">Direttrice scientifica</span></div>
-                    <div class="voce-item"><span class="voce-titolo"><strong>Fondazione Lotus</strong> di Elisa Toffoli</span><span class="voce-dettaglio"></span></div>
-                    <div class="voce-item"><span class="voce-titolo"><strong>United Network</strong></span><span class="voce-dettaglio"></span></div>
-                    <div class="voce-item"><span class="voce-titolo"><strong>geniaLAB</strong> di AANT</span><span class="voce-dettaglio"></span></div>
-                    <div class="voce-item"><span class="voce-titolo"><strong>Rizzoli Education</strong></span><span class="voce-dettaglio"></span></div>
-                    <div class="voce-item"><span class="voce-titolo">Collana <em>Intrecci</em> – Firenze University Press (con Università di Siena)</span><span class="voce-dettaglio"></span></div>
-                    <div class="voce-item"><span class="voce-titolo">Conferenza internazionale <em>Visual Education / ASTERA</em> – Università di Foggia</span><span class="voce-dettaglio"></span></div>
-                </div>
-            </section>
-
-            <section class="bio-section reveal">
-                <div class="section-header">
-                    <h2 class="section-title">Direzione artistica</h2>
-                    <span class="section-num">VII</span>
-                </div>
-                <div class="lista-voci">
-                    <div class="voce-item"><span class="voce-titolo"><strong>Festival del Pensare Contemporaneo</strong> di Piacenza</span><span class="voce-dettaglio">Direttrice filosofica</span></div>
-                    <div class="voce-item"><span class="voce-titolo"><strong>Festa della Filosofia</strong> presso le Triennali di Milano e Roma</span><span class="voce-dettaglio">Ideatrice</span></div>
-                    <div class="voce-item"><span class="voce-titolo"><em>ilPod – Italian Podcast Awards</em></span><span class="voce-dettaglio">Ideatrice</span></div>
-                </div>
-            </section>
-
-            <section class="bio-section reveal">
-                <div class="section-header">
-                    <h2 class="section-title">Pubblicazioni</h2>
-                    <span class="section-num">VIII</span>
-                </div>
-                <div class="pubblicazioni-categoria">
-                    <div class="categoria-title">Articoli su rivista</div>
-                    <div class="lista-voci">
-                        <div class="voce-item"><span class="voce-titolo"><em>Educare lo sguardo nell'epoca della saturazione. Visual Education, IA generativa e strategie critiche di apprendimento</em> (con Andrea Colamedici) – Atti Astrea 2025, Il Capoverso</span><span class="voce-dettaglio">2025</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Filosofare artificiale: minaccia o opportunità per il pensiero?</em> – Mondo Digitale</span><span class="voce-dettaglio">2025</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Oltre la tirannia dell'urgenza: per una nuova cultura del tempo</em> – in <em>I valori della scienza tra Etica, immaginari e carriere. Atti del convegno annuale Donne e Scienza 2024</em>, Università di Genova</span><span class="voce-dettaglio">in corso</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Una rivoluzione umanocentrica. Come l'intelligenza artificiale ridefinisce il lavoro e l'interazione umana</em> – Harvard Business Review Italia</span><span class="voce-dettaglio">2024</span></div>
-                        <div class="voce-item"><span class="voce-titolo">Atti del Convegno <em>Donne e Scienza</em></span><span class="voce-dettaglio">2024</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Egemonia culturale o cancel culture?</em> – Vita e Pensiero</span><span class="voce-dettaglio">2023</span></div>
-                        <div class="voce-item"><span class="voce-titolo">Nuovi Argomenti n. 41 (<em>Non ancora trentenni</em>)</span><span class="voce-dettaglio"></span></div>
-                        <div class="voce-item"><span class="voce-titolo">Nuovi Argomenti n. 77</span><span class="voce-dettaglio"></span></div>
+            <section class="projects" id="projects">
+                <h2>Progetti</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>Tlon</h3>
+                        <p>Una piattaforma per la ricerca e la contaminazione culturale, fondata nel 2012. Tlon pubblica articoli, interviste e video su filosofia, arte, letteratura e scienza.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>Libri</h3>
+                        <p>Autrice di diversi libri tra cui "Orchidee di Carta" e "Etica e Ricerca". I suoi scritti affrontano temi di filosofia, etica e teoria culturale.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>Insegnamento</h3>
+                        <p>Insegna presso diverse università italiane. I suoi corsi affrontano la filosofia contemporanea, la ricerca culturale e i nuovi media.</p>
                     </div>
                 </div>
-                <div class="pubblicazioni-categoria">
-                    <div class="categoria-title">Contributi in volumi collettanei</div>
-                    <div class="lista-voci">
-                        <div class="voce-item"><span class="voce-titolo"><em>Sostenibilità e sviluppo sostenibile. Una lettura transdisciplinare</em> – UTET</span><span class="voce-dettaglio">2025</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Le parole sono uno sciame d'api</em> – Sperling & Kupfer</span><span class="voce-dettaglio">2025</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Franco Battiato. La musica del tempo</em> – Oblomov</span><span class="voce-dettaglio">2025</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>È il pensiero che conta</em> – AA.VV., IlSole24ore</span><span class="voce-dettaglio">2025</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Un anno di storie 2024</em> – Treccani</span><span class="voce-dettaglio">2023</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Che traccia hai scelto</em> – UTET</span><span class="voce-dettaglio">2023</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Adesso tocca a noi</em> – Fondazione Terra Santa</span><span class="voce-dettaglio">2022</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Out of time. Ripartire dalla natura</em> – Biennale Donna Ferrara</span><span class="voce-dettaglio">2022</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Riabitare il mondo</em> – Quodlibet</span><span class="voce-dettaglio">2021</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Io dico io</em> – Silvana Editoriale per la Galleria Nazionale</span><span class="voce-dettaglio">2021</span></div>
-                    </div>
-                </div>
-                <div class="pubblicazioni-categoria">
-                    <div class="categoria-title">Prefazioni e postfazioni</div>
-                    <div class="lista-voci">
-                        <div class="voce-item"><span class="voce-titolo"><em>Dance me to the end of the world. 30 esercizi performativi a Corvetto</em> di Sotterraneo – Il Saggiatore</span><span class="voce-dettaglio">2025</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Misurare il salto delle rane</em> di Gabriele Di Luca – Cue Press</span><span class="voce-dettaglio">2025</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Se dormo con gli occhiali, vedo meglio i sogni?</em> di Claude Ponti – Babalibri</span><span class="voce-dettaglio">2025</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Mor. Storia per le mie madri</em> di Serena Garagnani – ADD Editore</span><span class="voce-dettaglio">2024</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>L'amore in più</em> di Élisabeth Badinter – Tlon</span><span class="voce-dettaglio">2024</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Intrepide</em> di Laura Donadoni – HarperCollins</span><span class="voce-dettaglio">2023</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Il mito della bellezza</em> di Naomi Wolf – Tlon</span><span class="voce-dettaglio">2022</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>La Torcia</em> di Marion Zimmer Bradley – HarperCollins</span><span class="voce-dettaglio">2021</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>L'amore è un sintomo</em> di Leonardo Mendolicchio – Tlon</span><span class="voce-dettaglio">2021</span></div>
-                        <div class="voce-item"><span class="voce-titolo"><em>Eroine</em> di Marina Pierri – Tlon</span><span class="voce-dettaglio">2020</span></div>
-                    </div>
-                </div>
+            </section>
+
+            <section class="bio" id="bio">
+                <h2>Chi Sono</h2>
+                <p>Sono una filosofa, autrice e curatrice culturale. Mi dedico allo studio della ricerca e della contaminazione culturale, credendo che la cultura sia una pratica condivisa di dialogo e trasformazione.</p>
+                <p>Insieme a diversi collaboratori, ho co-fondato Tlon nel 2012, una piattaforma dedicata alla pubblicazione e alla diffusione di contenuti culturali di qualità.</p>
+                <p>I miei interessi spaziano dalla filosofia contemporanea all'arte, dalla letteratura alle nuove forme di espressione mediale. Credo nel potere della ricerca critica come strumento di cambiamento sociale.</p>
+                <p>Puoi scoprire di più sul mio lavoro visitando <a href="https://mauragancitano.com">mauragancitano.com</a>.</p>
             </section>
         </div>
-
-        <section class="specchio-feature reveal">
-            <div class="specchio-bg">
-                <span class="specchio-bg-text">Specchio</span>
-                <div class="specchio-glow"></div>
-                <div class="specchio-glow"></div>
-            </div>
-            <div class="specchio-content">
-                <div class="specchio-left">
-                    <span class="specchio-label">Premio Rapallo 2022</span>
-                    <h2 class="specchio-title">Specchio delle <em>mie brame</em></h2>
-                    <p class="specchio-subtitle">La prigione della bellezza</p>
-                    <p class="specchio-desc">Un'indagine filosofica sulla <strong>dittatura della bellezza</strong> e sul rapporto tra corpo, identità e potere. Un libro che ha attraversato i confini italiani, tradotto in sette lingue, e che ha vinto il <strong>Premio Rapallo 2022</strong> ex aequo con Bianca Pitzorno.</p>
-                    <p class="specchio-desc">Perché ci sentiamo <em>mai abbastanza</em>? Perché il corpo delle donne è diventato un campo di battaglia? Maura Gancitano esplora le radici culturali e filosofiche di un'ossessione contemporanea, offrendo strumenti per liberarsene.</p>
-                    <div class="specchio-premio"><span class="specchio-premio-icon">✦</span><span class="specchio-premio-text">Premio Rapallo 2022</span></div>
-                    <a href="https://shop.tlon.it" target="_blank" class="specchio-cta"><span>Acquista il libro</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-                </div>
-                <div class="specchio-right">
-                    <div class="specchio-quote"><p>«Il corpo femminile è diventato il luogo in cui si gioca una partita che non riguarda mai davvero le donne, ma il potere di chi le guarda.»</p><cite>— Specchio delle mie brame</cite></div>
-                    <div class="specchio-traduzioni"><div class="specchio-traduzioni-label">Traduzioni internazionali</div><div class="specchio-traduzioni-list"><span>Spagnolo</span><span>Cinese</span><span>Cinese (Taiwan)</span><span>Portoghese</span><span>Coreano</span><span>Rumeno</span><span>Francese (in corso)</span></div></div>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <footer>
-        <div class="footer-nav">
-            <a href="../" class="footer-back">Torna alla home</a>
-            <div class="footer-other">
-                <div class="footer-other-label">L'altro fondatore</div>
-                <div class="footer-other-name"><a href="../andrea-colamedici/">Andrea Colamedici</a></div>
-            </div>
-        </div>
+    <footer id="contact">
+        <p>© 2024 Maura Gancitano. Tutti i diritti riservati.</p>
+        <p><a href="https://tlon.it">Tlon.it</a> | <a href="https://mauragancitano.com">mauragancitano.com</a></p>
     </footer>
 
     <script>
-        const reveals = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-        reveals.forEach(el => observer.observe(el));
-
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobileMenu');
+        const hamburger = document.querySelector('.hamburger');
+        const mobileMenu = document.querySelector('.mobile-menu');
         const header = document.querySelector('header');
 
         hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
             header.classList.toggle('menu-open');
-            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
         });
 
-        mobileMenu.querySelectorAll('a').forEach(link => {
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
             link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('active');
+                mobileMenu.classList.remove('open');
                 header.classList.remove('menu-open');
-                document.body.style.overflow = '';
             });
         });
     </script>
