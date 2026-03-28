@@ -116,9 +116,20 @@
         .cta-title { font-family: 'Instrument Serif', serif; font-size: clamp(1.6rem, 3.5vw, 2.2rem); color: var(--nero); margin-bottom: 0.75rem; font-weight: 400; }
         .cta-title em { font-style: italic; color: var(--ottanio); }
         .cta-desc { font-size: 0.95rem; line-height: 1.75; color: var(--grigio); margin-bottom: 1.25rem; }
-        .cta-btn { display: inline-block; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--bianco); background: var(--verde-salvia); padding: 1rem 2.5rem; border-radius: 6px; transition: all 0.3s ease; }
+        .cta-limited { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ottanio); margin-bottom: 2rem; font-weight: 500; }
+
+        .iscrizione-form { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-field { position: relative; }
+        .form-field.full { grid-column: 1 / -1; }
+        .form-field input { width: 100%; padding: 1.1rem 1rem 0.7rem; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--nero); background: var(--verde-chiaro); border: 1px solid var(--verde-acqua); border-radius: 6px; outline: none; transition: all 0.3s ease; }
+        .form-field input:focus { border-color: var(--ottanio); background: var(--bianco); }
+        .form-field label { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--grigio); pointer-events: none; transition: all 0.3s ease; }
+        .form-field input:focus + label, .form-field input:not(:placeholder-shown) + label { top: 0.55rem; transform: translateY(0); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ottanio); }
+
+        .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1.1rem 2.2rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bianco); background: var(--verde-salvia); border: none; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
         .cta-btn:hover { background: var(--ottanio); }
-        .cta-posti { display: block; margin-top: 0.75rem; font-size: 0.75rem; color: var(--grigio); letter-spacing: 0.05em; }
+        .cta-btn svg { stroke: var(--bianco); }
 
         footer { background: var(--nero); color: var(--bianco); padding: 3.5rem 3rem 1.5rem; position: relative; z-index: 1; }
         .footer-grid { display: flex; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 2.5rem; }
@@ -128,4 +139,169 @@
         .footer-col h4 { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 1.25rem; color: rgba(255,255,255,0.35); }
         .footer-col a { display: block; font-size: 0.85rem; margin-bottom: 0.6rem; color: rgba(255,255,255,0.55); transition: color 0.3s ease; }
         .footer-col a:hover { color: var(--bianco); }
-        .footer-bottom { display: flex; justify-content: space
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+        .footer-bottom p { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+        .footer-social { display: flex; gap: 1.5rem; }
+        .footer-social a { font-size: 0.7rem; color: rgba(255,255,255,0.35); letter-spacing: 0.1em; text-transform: uppercase; }
+        .footer-social a:hover { color: var(--bianco); }
+
+        @media (max-width: 1024px) { .content-grid { grid-template-columns: 1fr; gap: 3rem; } .details-sidebar { position: static; } }
+        @media (max-width: 768px) { header { padding: 1rem 1.5rem; } nav { display: none; } .hamburger { display: flex; } .mobile-menu { display: flex; } .hero { padding: 3rem 1.5rem; min-height: 75vh; } .hero-title { font-size: clamp(2.8rem, 12vw, 4.5rem); } .content-section { padding: 3rem 1.5rem; } .form-row { grid-template-columns: 1fr; } .illustri-section, .quote-section, .cta-section { padding: 3rem 1.5rem; } footer { padding: 2.5rem 1.5rem 1.5rem; } .footer-links { gap: 2rem; } .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; } .cypress, .piramide { display: none; } .candles-container { gap: 60px; } }
+    </style>
+</head>
+<body>
+    <div class="atmosphere">
+        <div class="cypress cypress-1"></div>
+        <div class="cypress cypress-2"></div>
+        <div class="cypress cypress-3"></div>
+        <div class="cypress cypress-4"></div>
+        <div class="piramide"></div>
+        <div class="candles-container">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+        </div>
+    </div>
+
+    <header>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+        <nav>
+            <a href="./il-progetto.html">Il Progetto</a>
+            <a href="./andrea-colamedici/">Colamedici</a>
+            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="./edizioni.html">Edizioni</a>
+            <a href="./librerie.html">Librerie</a>
+            <a href="./formazione.html">Formazione</a>
+            <a href="./eventi-festival.html">Eventi</a>
+            <a href="./contatti/">Contatti</a>
+            <div class="lang-switch">
+                <a href="./cimiterologia.html" class="active">IT</a>
+                <a href="./cimiterologia-en.html">EN</a>
+            </div>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="./il-progetto.html">Il Progetto</a>
+        <a href="./andrea-colamedici/">Colamedici</a>
+        <a href="./maura-gancitano/">Gancitano</a>
+        <a href="./edizioni.html">Edizioni</a>
+        <a href="./librerie.html">Librerie</a>
+        <a href="./formazione.html">Formazione</a>
+        <a href="./eventi-festival.html">Eventi</a>
+        <a href="./contatti/">Contatti</a>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <span class="hero-label">✝ Memento Mori ✝</span>
+                <h1 class="hero-title">Cimiterologia</h1>
+                <p class="hero-subtitle">Allargarsi la vita attraversando la Morte</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="content-grid">
+                <div class="content-text">
+                    <p class="content-intro">All'ombra della Piramide Cestia, dove i gatti si assopiscono sulle tombe di Gramsci e Keats, dove riposano Shelley e Camilleri, si apre uno degli ingressi più inaspettati alla filosofia: il <strong>Cimitero Acattolico di Roma</strong>, un giardino di trecento anni che custodisce il silenzio nel cuore di Testaccio, a Roma.</p>
+                    <p class="content-desc">La Cimiterologia è un ciclo di incontri sulla morte e sul morire mediante l'attraversamento consapevole dei cimiteri. Nato il 12 gennaio 2025 dalla collaborazione tra Andrea Colamedici e la direttrice del cimitero Yvonne A. Mazurek, questo percorso trasforma il tabù in pratica filosofica, in un modo per <em>allargare la vita attraversando la morte</em>, con il corpo e con le parole.</p>
+                    <p class="content-desc">Gli incontri si svolgono nella piccola cappella costruita nel 1898 dall'architetto tedesco Andreas Holzinger, alternando momenti di ascolto, silenzio e dialogo con attraversamenti intimi e consapevoli del cimitero.</p>
+                    <p class="content-desc">È richiesta una donazione di 15€ al cimitero: nessun relatore riceve un compenso, tutto va al cimitero (come noi, del resto).</p>
+                </div>
+                <aside class="details-sidebar">
+                    <div class="detail-card date-card">
+                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                        <div class="detail-content"><span class="detail-label">Prossimo appuntamento</span><span class="detail-value">29 marzo 2026</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+                        <div class="detail-content"><span class="detail-label">Orario e durata</span><span class="detail-value">Ore 10.30</span><span class="detail-note">Circa 2 ore</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                        <div class="detail-content"><span class="detail-label">Luogo</span><span class="detail-value">Cimitero Acattolico</span><span class="detail-note">Via Caio Cestio 6, Roma</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+                        <div class="detail-content"><span class="detail-label">Conduce</span><span class="detail-value">Andrea Colamedici</span><span class="detail-note">Filosofo, fondatore di Tlon</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                        <div class="detail-content"><span class="detail-label">Donazione</span><span class="detail-value">15€</span><span class="detail-note">Interamente devoluta al cimitero</span></div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section class="illustri-section">
+            <span class="illustri-label">Tra altri 6000 "stranieri", qui riposano</span>
+            <div class="illustri-grid">
+                <div class="illustre-item legend"><span class="illustre-name">John Keats</span></div>
+                <div class="illustre-item legend"><span class="illustre-name">Antonio Gramsci</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Percy Bysshe Shelley</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Andrea Camilleri</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Amelia Rosselli</span></div>
+                <div class="illustre-item"><span class="illustre-name">Dario Bellezza</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Giorgio Napolitano</span></div>
+                <div class="illustre-item featured"><span class="illustre-name">Luce d'Eramo</span></div>
+                <div class="illustre-item"><span class="illustre-name">Carlo Emilio Gadda</span></div>
+                <div class="illustre-item"><span class="illustre-name">Gregory Corso</span></div>
+            </div>
+        </section>
+
+        <section class="quote-section">
+            <div class="quote-container">
+                <blockquote class="quote-text"><span class="quote-mark">"</span>Possiamo allargare la vita attraversando la morte.<span class="quote-mark">"</span></blockquote>
+                <cite class="quote-author">— Andrea Colamedici</cite>
+            </div>
+        </section>
+
+        <section class="cta-section" id="iscrizione">
+            <div class="cta-container">
+                <span class="cta-label">Prossimo incontro</span>
+                <h2 class="cta-title">Domenica <em>29 marzo</em></h2>
+                <p class="cta-desc">Ore 10.30 al Cimitero Acattolico di Roma. 30 posti disponibili.</p>
+                <p class="cta-limited">30 posti</p>
+                
+                <form class="iscrizione-form" method="GET" action="https://script.google.com/macros/s/AKfycbwTCxz0FQlGnHfolfgfyDC693mwrxYySnM0Q3mPXriu_qWZN8XHna-uS3EJV2xmWOhGzw/exec" target="_blank">
+                    <div class="form-row">
+                        <div class="form-field"><input type="text" id="nome" name="nome" required placeholder=" "><label for="nome">Nome</label></div>
+                        <div class="form-field"><input type="text" id="cognome" name="cognome" required placeholder=" "><label for="cognome">Cognome</label></div>
+                    </div>
+                    <div class="form-field full"><input type="email" id="email" name="email" required placeholder=" "><label for="email">Email</label></div>
+                    <button type="submit" class="cta-btn"><span>Iscriviti</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div><div class="footer-brand">TLON</div><p class="footer-tagline">Un pianeta immaginario. Che esiste.</p></div>
+            <div class="footer-links">
+                <div class="footer-col"><h4>Progetto</h4><a href="./il-progetto.html">Chi siamo</a><a href="./contatti/">Contatti</a></div>
+                <div class="footer-col"><h4>Edizioni</h4><a href="https://shop.tlon.it/edizioni-tlon/">Catalogo</a></div>
+                <div class="footer-col"><h4>Attività</h4><a href="./eventi-festival.html">Eventi</a><a href="./formazione.html">Formazione</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Tlon Srl</p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/tlon.it/" target="_blank">Instagram</a>
+                <a href="https://www.youtube.com/c/AssociazioneTlon/videos" target="_blank">YouTube</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
