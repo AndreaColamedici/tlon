@@ -1,0 +1,1340 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutto ciò che è stato tagliato per arrivare fin qui · Mattatoio di Testaccio</title>
+<style>
+  :root {
+    --paper: #F4F1EA;
+    --paper-2: #EDE8DD;
+    --ink: #1C1C1C;
+    --ink-deep: #0F0E0C;
+    --body: #3A3A3A;
+    --meta: #8A8580;
+    --meta-dark: #6B665F;
+    --rule: #C9C4BA;
+    --red: #8B1A1A;
+    --red-deep: #5C0F0F;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.55;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: 0;
+    background: none;
+    color: inherit;
+  }
+
+  /* ============ TYPE ============ */
+  .label {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: var(--meta);
+    font-weight: 400;
+  }
+  .tick {
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: currentColor;
+    vertical-align: middle;
+    margin-right: 12px;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.06;
+    letter-spacing: -0.01em;
+  }
+  p { color: var(--body); }
+
+  /* ============ STICKY HEADER ============ */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(244, 241, 234, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+    transition: transform 320ms ease, background 320ms ease, color 320ms ease, border-color 320ms ease;
+  }
+  .site-header.dark {
+    background: rgba(15, 14, 12, 0.78);
+    color: var(--paper);
+    border-bottom-color: rgba(202, 196, 186, 0.18);
+  }
+  .site-header.dark .site-mark,
+  .site-header.dark .site-section { color: rgba(244, 241, 234, 0.65); }
+  .site-header.dark .site-title { color: var(--paper); }
+
+  .header-inner {
+    display: grid;
+    grid-template-columns: 1.6fr 2fr 1fr;
+    align-items: center;
+    padding: 13px 32px 11px;
+    gap: 28px;
+  }
+  .site-mark {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--meta);
+  }
+  .site-title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    text-align: center;
+    letter-spacing: 0.005em;
+  }
+  .site-section {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-align: right;
+    color: var(--meta);
+  }
+  .progress-bar {
+    height: 1px;
+    background: transparent;
+  }
+  .progress-bar > div {
+    height: 100%;
+    width: 0%;
+    background: var(--red);
+    transition: width 80ms linear;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section { position: relative; }
+  .frame {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 64px;
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 1100ms cubic-bezier(.2,.8,.2,1), transform 1100ms cubic-bezier(.2,.8,.2,1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    background: var(--ink-deep);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 60%, rgba(139, 26, 26, 0.18), transparent 60%),
+      radial-gradient(ellipse at 80% 30%, rgba(150, 110, 70, 0.16), transparent 55%),
+      linear-gradient(180deg, var(--ink-deep) 0%, #161412 60%, var(--ink-deep) 100%);
+    z-index: 0;
+    transform: translateZ(0);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.6;
+    mix-blend-mode: overlay;
+  }
+  .hero .frame {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-top: 130px;
+    padding-bottom: 80px;
+  }
+  .hero-eyebrow {
+    color: rgba(244, 241, 234, 0.62);
+    margin-bottom: 38px;
+  }
+  .hero-eyebrow .tick { background: rgba(244, 241, 234, 0.62); }
+  .hero-title {
+    font-size: clamp(44px, 7.2vw, 110px);
+    color: var(--paper);
+    line-height: 1.02;
+    letter-spacing: -0.018em;
+    max-width: 1180px;
+    margin-bottom: 44px;
+  }
+  .hero-thesis {
+    font-style: italic;
+    font-size: clamp(18px, 1.7vw, 24px);
+    color: rgba(244, 241, 234, 0.84);
+    max-width: 760px;
+    margin-bottom: 64px;
+    line-height: 1.5;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top: 1px solid rgba(244, 241, 234, 0.22);
+    padding-top: 26px;
+    color: rgba(244, 241, 234, 0.62);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .scroll-prompt {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: rgba(244, 241, 234, 0.55);
+    text-align: center;
+    animation: pulseDown 2.4s ease-in-out infinite;
+  }
+  @keyframes pulseDown {
+    0%, 100% { transform: translate(-50%, 0); opacity: 0.55; }
+    50% { transform: translate(-50%, 8px); opacity: 1; }
+  }
+  .scroll-prompt .arr { font-size: 16px; display: block; margin-top: 6px; }
+
+  /* ============ LUOGO ============ */
+  .luogo {
+    background: var(--paper);
+    padding: 140px 0 120px;
+  }
+  .luogo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .luogo-text h2 {
+    font-size: clamp(32px, 4.6vw, 64px);
+    margin: 26px 0 32px;
+    max-width: 700px;
+  }
+  .luogo-text p {
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    max-width: 540px;
+  }
+  .luogo-img {
+    aspect-ratio: 4 / 5;
+    background: var(--paper-2);
+    background-size: cover;
+    background-position: center;
+    background-image: var(--img-mattatoio, none);
+    position: relative;
+    overflow: hidden;
+  }
+  .luogo-img.no-photo { background: linear-gradient(135deg, #322820 0%, #4F3E2E 50%, #2E2519 100%); }
+  .luogo-img.no-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='750' viewBox='0 0 600 750'><defs><pattern id='b' width='80' height='28' patternUnits='userSpaceOnUse'><rect width='38' height='12' x='0' y='0' fill='%23593E26' opacity='0.45'/><rect width='38' height='12' x='42' y='0' fill='%23493521' opacity='0.45'/><rect width='38' height='12' x='20' y='14' fill='%234E3A26' opacity='0.45'/></pattern></defs><rect width='600' height='450' fill='url(%23b)' opacity='0.95'/><path d='M 0 450 L 600 450 L 600 750 L 0 750 Z' fill='%23231A11' opacity='0.6'/><path d='M 100 200 L 100 450 M 200 200 L 200 450 M 300 150 L 300 450 M 400 200 L 400 450 M 500 200 L 500 450' stroke='%23F4F1EA' stroke-width='1' opacity='0.18'/></svg>");
+    opacity: 0.95;
+  }
+  .luogo-img .img-cap {
+    position: absolute;
+    bottom: 18px;
+    left: 22px;
+    color: rgba(244, 241, 234, 0.78);
+    z-index: 2;
+  }
+
+  /* ============ TESI MANIFESTO ============ */
+  .tesi {
+    background: var(--ink-deep);
+    color: var(--paper);
+    padding: 140px 0 140px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tesi::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(139, 26, 26, 0.12), transparent 65%);
+  }
+  .tesi .frame { position: relative; z-index: 1; }
+  .tesi .label { color: rgba(244, 241, 234, 0.6); }
+  .tesi .label .tick { background: rgba(244, 241, 234, 0.6); }
+  .tesi h2 {
+    color: var(--paper);
+    font-size: clamp(32px, 5.4vw, 78px);
+    line-height: 1.05;
+    margin: 38px 0 36px;
+    max-width: 1100px;
+  }
+  .tesi p {
+    color: rgba(244, 241, 234, 0.84);
+    font-size: 18px;
+    line-height: 1.65;
+    max-width: 760px;
+    font-style: italic;
+  }
+
+  /* ============ PIANTA INTERATTIVA ============ */
+  .pianta-sec {
+    background: var(--paper);
+    padding: 140px 0 140px;
+  }
+  .pianta-sec h2 {
+    font-size: clamp(32px, 4.6vw, 64px);
+    margin: 28px 0 18px;
+    max-width: 800px;
+  }
+  .pianta-sec .lede {
+    font-style: italic;
+    color: var(--body);
+    max-width: 640px;
+    margin-bottom: 56px;
+    font-size: 17px;
+  }
+  .plan-wrap {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    padding: 40px 36px 44px;
+  }
+  .plan-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: default;
+  }
+  .plan-svg .room-hot { cursor: pointer; transition: opacity 200ms ease; }
+  .plan-svg .room-hot rect { transition: fill 240ms ease; }
+  .plan-svg .room-hot:hover rect { fill: #5C0F0F; }
+  .plan-svg .room-hot:hover .room-label,
+  .plan-svg .room-hot:hover .room-meta { fill: #F4F1EA; }
+  .plan-preview {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    border-top: 1px solid var(--rule);
+    padding-top: 22px;
+    min-height: 76px;
+  }
+  .plan-preview .pp-eyebrow { color: var(--meta); }
+  .plan-preview .pp-title {
+    font-style: italic;
+    color: var(--ink);
+    font-size: 26px;
+    line-height: 1.18;
+  }
+  .plan-preview .pp-title .pp-roman { color: var(--red); margin-right: 12px; }
+  .plan-preview .pp-text { color: var(--body); font-size: 15px; max-width: 760px; }
+  .plan-preview .pp-cta {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-top: 6px;
+  }
+
+  /* ============ STANZE FULL-BLEED ============ */
+  .room {
+    min-height: 100vh;
+    position: relative;
+    background: var(--ink-deep);
+    color: var(--paper);
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    overflow: hidden;
+  }
+  .room.flip { grid-template-columns: 1fr 1.05fr; }
+  .room .room-image {
+    position: relative;
+    overflow: hidden;
+    background-color: #1A1714;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 70vh;
+  }
+  .room.flip .room-image { order: 2; }
+  .room .room-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.5;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+  .room .room-image .img-cap {
+    position: absolute;
+    bottom: 22px;
+    left: 26px;
+    z-index: 3;
+    color: rgba(244, 241, 234, 0.78);
+  }
+  .room .room-content {
+    padding: 110px 70px 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--ink-deep);
+    position: relative;
+  }
+  .room.flip .room-content { order: 1; }
+  .room .room-eyebrow { color: rgba(244, 241, 234, 0.6); margin-bottom: 28px; }
+  .room .room-eyebrow .tick { background: rgba(244, 241, 234, 0.6); }
+  .room .big-roman {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--red);
+    font-size: clamp(78px, 9.5vw, 150px);
+    line-height: 0.86;
+    margin-bottom: 18px;
+  }
+  .room h2 {
+    color: var(--paper);
+    font-size: clamp(34px, 4.4vw, 62px);
+    line-height: 1.05;
+    margin-bottom: 28px;
+    max-width: 580px;
+  }
+  .room .figura {
+    font-style: italic;
+    color: rgba(244, 241, 234, 0.78);
+    border-left: 2px solid var(--red);
+    padding-left: 16px;
+    margin-bottom: 28px;
+    max-width: 540px;
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+  .room .descrizione {
+    color: rgba(244, 241, 234, 0.86);
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 36px;
+  }
+
+  .room-extra {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 26px;
+    max-width: 600px;
+  }
+  .specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(244, 241, 234, 0.18);
+    border-bottom: 1px solid rgba(244, 241, 234, 0.18);
+  }
+  .specs .cell {
+    padding: 14px 18px 16px 0;
+    border-right: 1px solid rgba(244, 241, 234, 0.12);
+  }
+  .specs .cell:nth-child(3n) { border-right: 0; padding-right: 0; }
+  .specs .cell:nth-child(n+4) {
+    border-top: 1px solid rgba(244, 241, 234, 0.12);
+    padding-top: 14px;
+  }
+  .specs .k {
+    font-family: var(--sans);
+    font-size: 9px;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: rgba(244, 241, 234, 0.55);
+    margin-bottom: 5px;
+  }
+  .specs .v {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--paper);
+    line-height: 1.35;
+  }
+
+  .events { padding-top: 8px; }
+  .events .ev {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 18px;
+    padding: 12px 0;
+    border-top: 1px solid rgba(244, 241, 234, 0.14);
+    font-size: 14px;
+  }
+  .events .ev:last-child { border-bottom: 1px solid rgba(244, 241, 234, 0.14); }
+  .events .ev .when {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(244, 241, 234, 0.6);
+    padding-top: 2px;
+  }
+  .events .ev .what {
+    font-style: italic;
+    color: var(--paper);
+    line-height: 1.4;
+  }
+  .events .ev .what em {
+    font-style: normal;
+    color: rgba(244, 241, 234, 0.65);
+    display: block;
+    margin-top: 3px;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  /* Mood-specific gradients (placeholders) */
+  .room-image.mood-I.no-photo {
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(220, 170, 110, 0.55) 0%, rgba(120, 80, 50, 0.35) 35%, transparent 65%),
+      linear-gradient(180deg, #2C2017 0%, #3A2A1E 30%, #211710 80%, #150E08 100%);
+  }
+  .room-image.mood-I.no-photo::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 6%;
+    transform: translateX(-50%);
+    width: 28%;
+    height: 80%;
+    background: linear-gradient(180deg, rgba(232, 196, 150, 0.18) 0%, rgba(232, 196, 150, 0.45) 30%, rgba(180, 130, 80, 0.5) 60%, rgba(80, 55, 35, 0.7) 100%);
+    border-radius: 4% 4% 50% 50% / 1% 1% 12% 12%;
+    filter: blur(8px);
+    z-index: 1;
+  }
+  .room-image.mood-II.no-photo {
+    background:
+      radial-gradient(ellipse at 50% 38%, rgba(255, 200, 130, 0.22) 0%, transparent 55%),
+      linear-gradient(160deg, #3D2C1F 0%, #4A3525 50%, #2E2017 100%);
+  }
+  .room-image.mood-II.no-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><g fill='none' stroke='%23F4E3C8' stroke-width='1.2' opacity='0.32'><path d='M 0 300 L 800 320'/><path d='M 60 360 L 740 360'/><path d='M 100 420 L 700 420'/></g><g fill='%23211710' opacity='0.55'><rect x='200' y='340' width='110' height='40'/><rect x='350' y='340' width='110' height='40'/><rect x='500' y='340' width='110' height='40'/></g><g fill='none' stroke='%23F4E3C8' stroke-width='0.8' opacity='0.22'><path d='M 0 130 L 800 150'/><path d='M 0 80 L 800 100'/></g><rect x='100' y='180' width='80' height='100' fill='%23150E08' opacity='0.7'/><rect x='620' y='180' width='80' height='100' fill='%23150E08' opacity='0.7'/></svg>");
+    background-size: cover;
+    z-index: 1;
+  }
+  .room-image.mood-III.no-photo {
+    background:
+      radial-gradient(ellipse at 30% 70%, rgba(220, 170, 100, 0.32) 0%, transparent 35%),
+      radial-gradient(ellipse at 75% 65%, rgba(220, 170, 100, 0.22) 0%, transparent 32%),
+      linear-gradient(180deg, #1F1610 0%, #2C1F15 50%, #1A130D 100%);
+  }
+  .room-image.mood-III.no-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><defs><pattern id='br' width='40' height='14' patternUnits='userSpaceOnUse'><rect width='18' height='6' fill='%23593E26' opacity='0.65'/><rect x='20' y='0' width='18' height='6' fill='%234A3220' opacity='0.65'/><rect x='10' y='8' width='18' height='6' fill='%23533A23' opacity='0.65'/></pattern></defs><path d='M 0 0 Q 400 -60 800 0 L 800 230 Q 400 280 0 230 Z' fill='url(%23br)'/><rect x='160' y='340' width='160' height='90' fill='%23F4E3C8' opacity='0.22' rx='2'/><rect x='480' y='340' width='160' height='90' fill='%23F4E3C8' opacity='0.18' rx='2'/></svg>");
+    background-size: cover;
+    z-index: 1;
+  }
+  .room-image.mood-IV.no-photo {
+    background:
+      radial-gradient(ellipse at 50% 75%, rgba(240, 200, 140, 0.30) 0%, transparent 50%),
+      linear-gradient(180deg, #2A2018 0%, #3A2C1F 60%, #1F1610 100%);
+  }
+  .room-image.mood-IV.no-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><defs><pattern id='shelves' width='60' height='30' patternUnits='userSpaceOnUse'><rect width='52' height='22' x='2' y='2' fill='%23E0CBA0' opacity='0.16' stroke='%23F4E3C8' stroke-width='0.4' stroke-opacity='0.22'/></pattern></defs><rect x='40' y='80' width='250' height='400' fill='url(%23shelves)'/><rect x='510' y='80' width='250' height='400' fill='url(%23shelves)'/><rect x='320' y='350' width='160' height='130' fill='%23150E08' opacity='0.6'/><circle cx='370' cy='370' r='10' fill='%23F4E3C8' opacity='0.5'/><circle cx='430' cy='370' r='10' fill='%23F4E3C8' opacity='0.5'/></svg>");
+    background-size: cover;
+    z-index: 1;
+  }
+  .room-image.mood-V.no-photo {
+    background:
+      linear-gradient(180deg, #DCD6CB 0%, #EFEAE1 30%, #F4F1EA 60%, #DCD6CB 100%);
+  }
+  .room-image.mood-V.no-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect x='0' y='0' width='800' height='600' fill='%23F4F1EA'/><g fill='%23E0DCD0' opacity='0.65'><rect x='100' y='180' width='40' height='220'/><rect x='180' y='180' width='40' height='220'/><rect x='260' y='180' width='40' height='220'/><rect x='340' y='180' width='40' height='220'/><rect x='500' y='180' width='40' height='220'/><rect x='580' y='180' width='40' height='220'/><rect x='660' y='180' width='40' height='220'/></g><rect x='250' y='430' width='300' height='80' fill='%23C9D5DA' opacity='0.7' rx='2'/><rect x='350' y='80' width='100' height='10' fill='%23B8C2C7' opacity='0.6'/></svg>");
+    background-size: cover;
+    z-index: 1;
+  }
+  .room-image.mood-V.no-photo + .room-content { /* keep dark side */ }
+  .room.mood-V-room .room-image .img-cap { color: rgba(28, 28, 28, 0.7); }
+  .room-image.mood-VI.no-photo {
+    background:
+      linear-gradient(180deg, #553E2E 0%, #845C3D 30%, #C8896A 55%, #E2A57F 75%, #4A3422 100%);
+  }
+  .room-image.mood-VI.no-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect x='0' y='0' width='160' height='600' fill='%231F1610' opacity='0.85'/><rect x='160' y='0' width='12' height='600' fill='%232C2017'/><path d='M 480 380 Q 580 320 700 360 L 700 600 L 480 600 Z' fill='%231F1610' opacity='0.7'/><circle cx='620' cy='340' r='40' fill='%23F2BE85' opacity='0.4'/></svg>");
+    background-size: cover;
+    z-index: 1;
+  }
+
+  /* ============ PROGRAMMA COMPLESSIVO ============ */
+  .programma {
+    background: var(--paper);
+    padding: 140px 0 140px;
+  }
+  .programma h2 {
+    font-size: clamp(32px, 4.6vw, 64px);
+    margin: 28px 0 24px;
+    max-width: 760px;
+  }
+  .programma .lede {
+    font-style: italic;
+    color: var(--body);
+    max-width: 640px;
+    margin-bottom: 56px;
+    font-size: 17px;
+  }
+  .timeline { border-top: 1px solid var(--ink); }
+  .timeline .row {
+    display: grid;
+    grid-template-columns: 200px 1fr 1.6fr;
+    gap: 36px;
+    align-items: baseline;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--rule);
+    transition: background 200ms ease;
+  }
+  .timeline .row:hover { background: var(--paper-2); }
+  .timeline .row .when {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .timeline .row .what {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+  .timeline .row .where {
+    color: var(--body);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  /* ============ CREDITI ============ */
+  .crediti {
+    background: var(--paper-2);
+    padding: 120px 0 100px;
+    border-top: 1px solid var(--rule);
+  }
+  .crediti h2 {
+    font-size: clamp(28px, 3.6vw, 46px);
+    margin: 28px 0 56px;
+  }
+  .crediti-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 36px 48px;
+  }
+  .crediti-grid .col h4 {
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: var(--meta);
+    font-style: normal;
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+  .crediti-grid .col p {
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+  .crediti-grid .col p .name { font-style: italic; color: var(--ink); }
+
+  /* ============ FOOTER ============ */
+  footer.foot {
+    background: var(--ink-deep);
+    color: rgba(244, 241, 234, 0.62);
+    padding: 38px 0 42px;
+  }
+  footer.foot .frame {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  /* ============ MODAL GALLERY ============ */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 14, 12, 0.94);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox .lb-content {
+    max-width: 1280px;
+    width: 100%;
+    color: var(--paper);
+  }
+  .lightbox .lb-image {
+    aspect-ratio: 16 / 10;
+    background-size: cover;
+    background-position: center;
+    background-color: #2A2017;
+  }
+  .lightbox .lb-close {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .lightbox .lb-meta {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    color: rgba(244, 241, 234, 0.7);
+  }
+
+  /* ============ CURSOR HINT ============ */
+  .cursor-hint {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    background: var(--red);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 2px;
+    transform: translate(14px, 14px);
+    opacity: 0;
+    transition: opacity 180ms ease;
+  }
+  .cursor-hint.show { opacity: 1; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1024px) {
+    .frame { padding: 0 32px; }
+    .header-inner { grid-template-columns: 1fr 1fr; padding: 12px 20px; }
+    .site-title { display: none; }
+    .luogo-grid { grid-template-columns: 1fr; gap: 40px; }
+    .luogo-img { aspect-ratio: 4/3; max-width: 720px; }
+    .room { grid-template-columns: 1fr; }
+    .room.flip { grid-template-columns: 1fr; }
+    .room.flip .room-image { order: 1; }
+    .room.flip .room-content { order: 2; }
+    .room .room-image { min-height: 50vh; }
+    .room .room-content { padding: 60px 32px 70px; }
+    .timeline .row { grid-template-columns: 1fr; gap: 8px; padding: 22px 0; }
+    .crediti-grid { grid-template-columns: repeat(2, 1fr); }
+    .specs { grid-template-columns: repeat(2, 1fr); }
+    .specs .cell { border-right: 1px solid rgba(244, 241, 234, 0.12); }
+    .specs .cell:nth-child(3n) { border-right: 1px solid rgba(244, 241, 234, 0.12); }
+    .specs .cell:nth-child(2n) { border-right: 0; }
+    .specs .cell:nth-child(n+3) {
+      border-top: 1px solid rgba(244, 241, 234, 0.12);
+      padding-top: 14px;
+    }
+  }
+  @media (max-width: 600px) {
+    .frame { padding: 0 22px; }
+    .hero .frame { padding-top: 100px; padding-bottom: 60px; }
+    .crediti-grid { grid-template-columns: 1fr; }
+    .specs { grid-template-columns: 1fr; }
+    .specs .cell { border-right: 0 !important; }
+    .specs .cell + .cell {
+      border-top: 1px solid rgba(244, 241, 234, 0.12);
+      padding-top: 14px;
+    }
+    .events .ev { grid-template-columns: 1fr; gap: 4px; }
+    .room .descrizione { font-size: 16px; }
+    .timeline .row { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <span class="site-mark">IED Roma · Prompt Thinking · MMXXVI</span>
+    <span class="site-title"><em>Tutto ciò che è stato tagliato per arrivare fin qui</em></span>
+    <span class="site-section" id="sectionLabel">— Soglia —</span>
+  </div>
+  <div class="progress-bar"><div id="progress"></div></div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" data-section="Soglia" id="hero">
+  <div class="hero-bg"></div>
+  <div class="frame">
+    <div class="hero-eyebrow"><span class="tick"></span><span class="label">Mattatoio di Testaccio · Roma · 14 nov 2026 — 28 feb 2027</span></div>
+    <h1 class="hero-title"><em>Tutto ciò che è stato tagliato<br>per arrivare fin qui.</em></h1>
+    <p class="hero-thesis">Una mostra collettiva in sei stanze. Cosa è stato rimosso perché questa immagine, questo oggetto, questo suono, questo gesto potesse esistere. Cosa abbiamo dovuto smettere di vedere per vedere quello che vediamo adesso.</p>
+    <div class="hero-meta">
+      <span class="label">A cura di Andrea Colamedici e dell'intelligenza co-curatoriale</span>
+      <span class="label">IED Roma · MMXXVI</span>
+    </div>
+  </div>
+  <a class="scroll-prompt" href="#luogo">
+    <span class="label">Comincia il percorso</span>
+    <span class="arr">↓</span>
+  </a>
+</section>
+
+<!-- ============ LUOGO ============ -->
+<section class="luogo" data-section="Il luogo" id="luogo">
+  <div class="frame">
+    <div class="luogo-grid">
+      <div class="luogo-text reveal">
+        <span class="label"><span class="tick"></span>I.   Il luogo</span>
+        <h2><em>Mattatoio di Testaccio.<br>Piazza Orazio Giustiniani 4, Roma.</em></h2>
+        <p>L'edificio fu costruito tra il 1888 e il 1891 su progetto di Gioacchino Ersoch e funzionò come macello municipale fino al 1975. Oggi è un centro culturale gestito dall'Azienda Speciale Palaexpo. La Pelanda, l'antico spazio di pelatura dei suini, è uno dei suoi padiglioni più riconoscibili.</p>
+        <p>Accanto si alza il Monte dei Cocci, antica discarica romana di anfore d'olio, monumento accidentale di tutto ciò che si è dovuto rompere per consumare. Roma ha sempre saputo che il visibile ha un retro, e questo posto lo confessa.</p>
+      </div>
+      <div class="luogo-img no-photo reveal" id="luogoImg" data-room="luogo">
+        <span class="img-cap label">Mattatoio di Testaccio · Roma · placeholder</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESI ============ -->
+<section class="tesi" data-section="La tesi" id="tesi">
+  <div class="frame reveal">
+    <span class="label"><span class="tick"></span>II.   La tesi curatoriale</span>
+    <h2><em>Tutto ciò che è stato tagliato per arrivare fin qui.</em></h2>
+    <p>Ogni stanza chiede a chi vi entra, artista e visitatore, di rispondere alla stessa domanda con strumenti diversi. Cosa è stato rimosso perché questa immagine, questo oggetto, questo suono, questo gesto potesse esistere. Cosa abbiamo dovuto smettere di vedere per vedere quello che vediamo adesso.</p>
+  </div>
+</section>
+
+<!-- ============ PIANTA INTERATTIVA ============ -->
+<section class="pianta-sec" data-section="La pianta" id="pianta">
+  <div class="frame reveal">
+    <span class="label"><span class="tick"></span>III.   La pianta interattiva</span>
+    <h2><em>Sei stanze. Un percorso.</em></h2>
+    <p class="lede">Passate il puntatore sulle stanze per leggerle in anteprima. Cliccate per entrare nella stanza.</p>
+
+    <div class="plan-wrap">
+      <svg class="plan-svg" viewBox="0 0 1100 620" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="cocci" width="40" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 0 18 Q 10 8, 20 16 Q 30 4, 40 18" fill="none" stroke="#8A8580" stroke-width="0.6" opacity="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Monte dei Cocci -->
+        <rect x="0" y="0" width="1100" height="80" fill="url(#cocci)" opacity="0.6"/>
+        <text x="20" y="22" font-family="Helvetica" font-size="9" letter-spacing="2" fill="#8A8580">MONTE DEI COCCI · LUNGOTEVERE</text>
+        <path d="M 20 50 Q 100 28, 200 48 T 380 46 T 580 50 T 780 46 T 1000 50 L 1080 50 L 1080 78 L 20 78 Z" fill="#C9C4BA" opacity="0.55" stroke="#1C1C1C" stroke-width="0.7"/>
+
+        <!-- Outer wall -->
+        <rect x="60" y="100" width="980" height="460" fill="none" stroke="#1C1C1C" stroke-width="1.6"/>
+
+        <!-- Courtyard -->
+        <rect x="380" y="220" width="340" height="220" fill="none" stroke="#C9C4BA" stroke-width="0.8" stroke-dasharray="2 4"/>
+        <text x="550" y="338" text-anchor="middle" font-family="Helvetica" font-size="9" letter-spacing="2" fill="#8A8580">CORTILE CENTRALE</text>
+        <text x="550" y="354" text-anchor="middle" font-family="Georgia" font-style="italic" font-size="11" fill="#8A8580">soglia · attraversamento</text>
+
+        <!-- La Pelanda -->
+        <rect x="740" y="120" width="280" height="420" fill="#EDE8DD" stroke="#1C1C1C" stroke-width="1.2"/>
+        <text x="880" y="140" text-anchor="middle" font-family="Helvetica" font-size="9" letter-spacing="2" fill="#8A8580">LA PELANDA · PADIGLIONE EST</text>
+
+        <!-- Room I -->
+        <g class="room-hot" data-room="I" data-anchor="#stanza-I" data-title="L'attesa del coltello">
+          <rect x="760" y="160" width="240" height="110" fill="#8B1A1A" opacity="0.92"/>
+          <text x="780" y="195" font-family="Georgia" font-style="italic" font-size="14" fill="#F4F1EA" class="room-label">I</text>
+          <text x="880" y="220" text-anchor="middle" font-family="Georgia" font-style="italic" font-size="11" fill="#F4F1EA" class="room-label">L'attesa del coltello</text>
+          <text x="880" y="240" text-anchor="middle" font-family="Helvetica" font-size="7.5" letter-spacing="1.2" fill="#F4F1EA" opacity="0.85" class="room-meta">SOGLIA · 95 m²</text>
+        </g>
+
+        <!-- Room II -->
+        <g class="room-hot" data-room="II" data-anchor="#stanza-II" data-title="Officine del nascondere">
+          <rect x="760" y="280" width="240" height="110" fill="#8B1A1A" opacity="0.92"/>
+          <text x="780" y="315" font-family="Georgia" font-style="italic" font-size="14" fill="#F4F1EA" class="room-label">II</text>
+          <text x="880" y="340" text-anchor="middle" font-family="Georgia" font-style="italic" font-size="11" fill="#F4F1EA" class="room-label">Officine del nascondere</text>
+          <text x="880" y="360" text-anchor="middle" font-family="Helvetica" font-size="7.5" letter-spacing="1.2" fill="#F4F1EA" opacity="0.85" class="room-meta">OFFICINA · 130 m²</text>
+        </g>
+
+        <!-- Room III -->
+        <g class="room-hot" data-room="III" data-anchor="#stanza-III" data-title="Bestiario dei resti">
+          <rect x="760" y="400" width="240" height="110" fill="#8B1A1A" opacity="0.92"/>
+          <text x="780" y="435" font-family="Georgia" font-style="italic" font-size="14" fill="#F4F1EA" class="room-label">III</text>
+          <text x="880" y="460" text-anchor="middle" font-family="Georgia" font-style="italic" font-size="11" fill="#F4F1EA" class="room-label">Bestiario dei resti</text>
+          <text x="880" y="480" text-anchor="middle" font-family="Helvetica" font-size="7.5" letter-spacing="1.2" fill="#F4F1EA" opacity="0.85" class="room-meta">LIVELLO INFERIORE · 110 m²</text>
+        </g>
+
+        <!-- West pavilion -->
+        <rect x="80" y="120" width="280" height="420" fill="#EDE8DD" stroke="#1C1C1C" stroke-width="1.2"/>
+        <text x="220" y="140" text-anchor="middle" font-family="Helvetica" font-size="9" letter-spacing="2" fill="#8A8580">PADIGLIONE OVEST</text>
+
+        <!-- Room IV -->
+        <g class="room-hot" data-room="IV" data-anchor="#stanza-IV" data-title="L'archivio autorizzato">
+          <rect x="100" y="170" width="240" height="170" fill="#8B1A1A" opacity="0.92"/>
+          <text x="120" y="205" font-family="Georgia" font-style="italic" font-size="14" fill="#F4F1EA" class="room-label">IV</text>
+          <text x="220" y="252" text-anchor="middle" font-family="Georgia" font-style="italic" font-size="11" fill="#F4F1EA" class="room-label">L'archivio autorizzato</text>
+          <text x="220" y="272" text-anchor="middle" font-family="Helvetica" font-size="7.5" letter-spacing="1.2" fill="#F4F1EA" opacity="0.85" class="room-meta">DOCUMENTI · 145 m²</text>
+        </g>
+
+        <!-- Room V -->
+        <g class="room-hot" data-room="V" data-anchor="#stanza-V" data-title="Liturgia del lavabo">
+          <rect x="100" y="350" width="240" height="170" fill="#8B1A1A" opacity="0.92"/>
+          <text x="120" y="385" font-family="Georgia" font-style="italic" font-size="14" fill="#F4F1EA" class="room-label">V</text>
+          <text x="220" y="432" text-anchor="middle" font-family="Georgia" font-style="italic" font-size="11" fill="#F4F1EA" class="room-label">Liturgia del lavabo</text>
+          <text x="220" y="452" text-anchor="middle" font-family="Helvetica" font-size="7.5" letter-spacing="1.2" fill="#F4F1EA" opacity="0.85" class="room-meta">CERIMONIA · 145 m²</text>
+        </g>
+
+        <!-- Room VI -->
+        <g class="room-hot" data-room="VI" data-anchor="#stanza-VI" data-title="Quello che cammina fuori">
+          <rect x="60" y="92" width="980" height="22" fill="#8B1A1A" opacity="0.92"/>
+          <text x="80" y="108" font-family="Georgia" font-style="italic" font-size="14" fill="#F4F1EA" class="room-label">VI</text>
+          <text x="540" y="108" text-anchor="middle" font-family="Georgia" font-style="italic" font-size="11" fill="#F4F1EA" class="room-label">Quello che cammina fuori · perimetro nord, in parte all'esterno</text>
+        </g>
+
+        <!-- Entrance -->
+        <rect x="500" y="555" width="100" height="10" fill="#F4F1EA"/>
+        <line x1="500" y1="560" x2="600" y2="560" stroke="#1C1C1C" stroke-width="1.2"/>
+        <text x="550" y="585" text-anchor="middle" font-family="Helvetica" font-size="8" letter-spacing="1.6" fill="#8A8580">INGRESSO · PIAZZA ORAZIO GIUSTINIANI 4</text>
+
+        <!-- Path -->
+        <path d="M 550 555 L 550 470 L 700 470 L 700 215 L 758 215" stroke="#8B1A1A" stroke-width="1.2" fill="none" opacity="0.7"/>
+        <polygon points="758,215 750,211 750,219" fill="#8B1A1A" opacity="0.7"/>
+      </svg>
+
+      <div class="plan-preview" id="planPreview">
+        <span class="pp-eyebrow label">Anteprima · passa sopra una stanza</span>
+        <div class="pp-title"><span class="pp-roman">—</span><span id="ppTitleText">Le sei stanze</span></div>
+        <div class="pp-text" id="ppText">Cortile centrale, ingresso da Piazza Orazio Giustiniani. La Pelanda accoglie le prime tre stanze, il padiglione ovest la quarta e la quinta, il perimetro nord la sesta che si apre verso il Monte dei Cocci.</div>
+        <span class="pp-cta" id="ppCta"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STANZA I ============ -->
+<section class="room" data-section="Stanza I · L'attesa del coltello" id="stanza-I">
+  <div class="room-image mood-I no-photo reveal" data-room="I">
+    <span class="img-cap label">Stanza I · placeholder</span>
+  </div>
+  <div class="room-content reveal">
+    <div class="room-eyebrow"><span class="tick"></span><span class="label">Stanza I · La Pelanda · livello d'ingresso</span></div>
+    <div class="big-roman">I.</div>
+    <h2><em>L'attesa del coltello.</em></h2>
+    <p class="figura">Profumiera, scenografa, sound designer. Chi sa lavorare con la temperatura del prima.</p>
+    <p class="descrizione">La sala che precede l'atto. Sospensione, profilo dell'animale ancora intero, l'aria che si fa irrespirabile prima del gesto. Il visitatore entra in una temperatura emotiva fatta di luce bassa, di un odore studiato che si sposta lentamente, di un suono che non si riesce ad ascoltare per intero.</p>
+
+    <div class="room-extra">
+      <div class="specs">
+        <div class="cell"><div class="k">Superficie</div><div class="v">95 m²</div></div>
+        <div class="cell"><div class="k">Illuminazione</div><div class="v">artificiale, 80 lux, dominante calda</div></div>
+        <div class="cell"><div class="k">Materiali</div><div class="v">travertino, ferro patinato, tessuto pesante</div></div>
+        <div class="cell"><div class="k">Permanenza</div><div class="v">8–12 minuti</div></div>
+        <div class="cell"><div class="k">Accessibilità</div><div class="v">accesso da cortile, pavimento livellato</div></div>
+        <div class="cell"><div class="k">Capienza</div><div class="v">14 persone</div></div>
+      </div>
+      <div class="events">
+        <div class="ev"><div class="when">14 nov 2026 · 19.00</div><div class="what">Apertura · soglia inaugurale<em>Performance d'ingresso a cura del gruppo che abita la stanza.</em></div></div>
+        <div class="ev"><div class="when">7 feb 2027 · 18.00</div><div class="what">Visita olfattiva guidata<em>Riconoscimento bendato dei tre odori della stanza.</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STANZA II ============ -->
+<section class="room flip" data-section="Stanza II · Officine del nascondere" id="stanza-II">
+  <div class="room-image mood-II no-photo reveal" data-room="II">
+    <span class="img-cap label">Stanza II · placeholder</span>
+  </div>
+  <div class="room-content reveal">
+    <div class="room-eyebrow"><span class="tick"></span><span class="label">Stanza II · La Pelanda · livello centrale</span></div>
+    <div class="big-roman">II.</div>
+    <h2><em>Officine del nascondere.</em></h2>
+    <p class="figura">Fotografo del lavoro, illustratore, fashion designer di abiti da officina, autrice di fumetto industriale. Chi guarda le mani.</p>
+    <p class="descrizione">Le mani che fanno il lavoro che il visibile rimuove. La stanza ospita banchi, attrezzi, gesti documentati o ricostruiti. È un'officina lenta, dove ogni oggetto in mostra conserva il segno della mano che l'ha prodotto. Al visitatore non si chiede di interagire. Gli si chiede di guardare le mani.</p>
+
+    <div class="room-extra">
+      <div class="specs">
+        <div class="cell"><div class="k">Superficie</div><div class="v">130 m²</div></div>
+        <div class="cell"><div class="k">Illuminazione</div><div class="v">mista, 320 lux, neutra fredda</div></div>
+        <div class="cell"><div class="k">Materiali</div><div class="v">legno grezzo, metallo brunito, lino</div></div>
+        <div class="cell"><div class="k">Permanenza</div><div class="v">15–22 minuti</div></div>
+        <div class="cell"><div class="k">Accessibilità</div><div class="v">rampa interna 6%, sedute integrate</div></div>
+        <div class="cell"><div class="k">Capienza</div><div class="v">24 persone</div></div>
+      </div>
+      <div class="events">
+        <div class="ev"><div class="when">21 nov 2026 · 16.00</div><div class="what">Dimostrazione di mestiere<em>Tre artigiane mostrano gesti di lavorazione raramente visibili.</em></div></div>
+        <div class="ev"><div class="when">17 gen 2027 · 11.00</div><div class="what">Workshop di sguardo<em>Tre ore davanti a un solo tavolo. Non si fa, si guarda.</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STANZA III ============ -->
+<section class="room" data-section="Stanza III · Bestiario dei resti" id="stanza-III">
+  <div class="room-image mood-III no-photo reveal" data-room="III">
+    <span class="img-cap label">Stanza III · placeholder</span>
+  </div>
+  <div class="room-content reveal">
+    <div class="room-eyebrow"><span class="tick"></span><span class="label">Stanza III · La Pelanda · livello inferiore</span></div>
+    <div class="big-roman">III.</div>
+    <h2><em>Bestiario dei resti.</em></h2>
+    <p class="figura">Industrial designer, pasticcera d'avanguardia, autore di videogiochi sui bug, orefice del rifuso. Chi tratta lo scarto come oro.</p>
+    <p class="descrizione">Quello che cade dal tavolo, e che il tavolo finge di non aver mai avuto. La stanza scende sotto il livello del cortile, dove gli scarti del macello cadevano davvero. I materiali sono lo scarto recuperato, l'osso, la cartilagine, il refuso, il pixel marcio. Le opere chiedono di fermarsi davanti a quello che di solito si toglie dallo sguardo.</p>
+
+    <div class="room-extra">
+      <div class="specs">
+        <div class="cell"><div class="k">Superficie</div><div class="v">110 m²</div></div>
+        <div class="cell"><div class="k">Illuminazione</div><div class="v">spot direzionali, 140 lux, su tavoli</div></div>
+        <div class="cell"><div class="k">Materiali</div><div class="v">cemento grezzo, vetro spesso, scarti</div></div>
+        <div class="cell"><div class="k">Permanenza</div><div class="v">12–18 minuti</div></div>
+        <div class="cell"><div class="k">Accessibilità</div><div class="v">ascensore interno, accesso integrale</div></div>
+        <div class="cell"><div class="k">Capienza</div><div class="v">18 persone</div></div>
+      </div>
+      <div class="events">
+        <div class="ev"><div class="when">5 dic 2026 · 20.00</div><div class="what">Cena d'avanzo · 24 coperti<em>Pranzo composto interamente con tagli rifiutati e quinto quarto.</em></div></div>
+        <div class="ev"><div class="when">14 feb 2027 · 19.30</div><div class="what">Sessione di gioco aperto<em>Demo di un videogioco senza vittoria, prodotto in residenza.</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STANZA IV ============ -->
+<section class="room flip" data-section="Stanza IV · L'archivio autorizzato" id="stanza-IV">
+  <div class="room-image mood-IV no-photo reveal" data-room="IV">
+    <span class="img-cap label">Stanza IV · placeholder</span>
+  </div>
+  <div class="room-content reveal">
+    <div class="room-eyebrow"><span class="tick"></span><span class="label">Stanza IV · Padiglione Ovest · ala superiore</span></div>
+    <div class="big-roman">IV.</div>
+    <h2><em>L'archivio autorizzato.</em></h2>
+    <p class="figura">Autrice di archivi falsi, sound artist di voci ritrovate, designer di font, fotografo di messa in scena. Chi sa fingere il vero.</p>
+    <p class="descrizione">La memoria che ha avuto il permesso di rimanere scritta. Documenti che hanno passato la dogana, registri timbrati, testimonianze coerenti con la versione ufficiale del vero. La stanza è un archivio di carta e di voce. Il visitatore consulta. Sospetta. Riconsulta. Qualcosa stride.</p>
+
+    <div class="room-extra">
+      <div class="specs">
+        <div class="cell"><div class="k">Superficie</div><div class="v">145 m²</div></div>
+        <div class="cell"><div class="k">Illuminazione</div><div class="v">tavoli a 4000 K, 220 lux</div></div>
+        <div class="cell"><div class="k">Materiali</div><div class="v">faggio, cuoio, carta non acida</div></div>
+        <div class="cell"><div class="k">Permanenza</div><div class="v">25–35 minuti</div></div>
+        <div class="cell"><div class="k">Accessibilità</div><div class="v">tavoli a doppia altezza, audio</div></div>
+        <div class="cell"><div class="k">Capienza</div><div class="v">22 persone</div></div>
+      </div>
+      <div class="events">
+        <div class="ev"><div class="when">28 nov 2026 · 18.00</div><div class="what">Lettura pubblica di documenti<em>Tre voci leggono per due ore documenti senza dichiarare quali sono veri.</em></div></div>
+        <div class="ev"><div class="when">23 gen 2027 · 17.00</div><div class="what">Tavola rotonda · l'archivio come finzione<em>Storica, paleografa, font designer in dialogo.</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STANZA V ============ -->
+<section class="room mood-V-room" data-section="Stanza V · Liturgia del lavabo" id="stanza-V">
+  <div class="room-image mood-V no-photo reveal" data-room="V">
+    <span class="img-cap label" style="color: rgba(28,28,28,0.7);">Stanza V · placeholder</span>
+  </div>
+  <div class="room-content reveal">
+    <div class="room-eyebrow"><span class="tick"></span><span class="label">Stanza V · Padiglione Ovest · ala inferiore</span></div>
+    <div class="big-roman">V.</div>
+    <h2><em>Liturgia del lavabo.</em></h2>
+    <p class="figura">Costumista cerimoniale, animatrice del rito, architetta di spa o templi, fashion designer di uniformi. Chi conosce la doppia faccia dell'eleganza.</p>
+    <p class="descrizione">La violenza diventa rito, il rito diventa eleganza, l'eleganza si fa morale. La stanza si presenta candida, profumata, ordinata, accogliente. Vi accade qualcosa che si racconta come purezza. La pulizia, qui, è il problema. Il visitatore esce con la sensazione di essere stato lavato di qualcosa che non sapeva di portare addosso.</p>
+
+    <div class="room-extra">
+      <div class="specs">
+        <div class="cell"><div class="k">Superficie</div><div class="v">145 m²</div></div>
+        <div class="cell"><div class="k">Illuminazione</div><div class="v">diffusa, 6500 K, 380 lux</div></div>
+        <div class="cell"><div class="k">Materiali</div><div class="v">marmo bianco, cotone bianco, acqua</div></div>
+        <div class="cell"><div class="k">Permanenza</div><div class="v">10–16 minuti</div></div>
+        <div class="cell"><div class="k">Accessibilità</div><div class="v">superficie continua, soglia rasata</div></div>
+        <div class="cell"><div class="k">Capienza</div><div class="v">16 persone</div></div>
+      </div>
+      <div class="events">
+        <div class="ev"><div class="when">19 dic 2026 · 19.30</div><div class="what">Cerimonia inaugurale · ingresso uno alla volta<em>Performance liturgica progettata dal gruppo che abita la stanza.</em></div></div>
+        <div class="ev"><div class="when">31 gen 2027 · 16.00</div><div class="what">Lectio · l'eleganza come dispositivo morale<em>Conferenza di un'invitata in dialogo con la curatela.</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STANZA VI ============ -->
+<section class="room flip" data-section="Stanza VI · Quello che cammina fuori" id="stanza-VI">
+  <div class="room-image mood-VI no-photo reveal" data-room="VI">
+    <span class="img-cap label">Stanza VI · placeholder</span>
+  </div>
+  <div class="room-content reveal">
+    <div class="room-eyebrow"><span class="tick"></span><span class="label">Stanza VI · Perimetro nord · in parte all'aperto</span></div>
+    <div class="big-roman">VI.</div>
+    <h2><em>Quello che cammina fuori.</em></h2>
+    <p class="figura">Coreografa, tatuatrice, body painter, performer, autrice di fumetti, creatore di marchi. Chi disegna i sopravvissuti.</p>
+    <p class="descrizione">Cosa attraversa la soglia in direzione contraria al lavoro, cosa esce dal Mattatoio dopo essere stato lavorato e prende forma di vivente, di sopravvissuto, di fantasma. La stanza si svolge lungo il muro perimetrale e in parte all'aperto, sui ciottoli che danno sul Monte dei Cocci. Le opere camminano. Il visitatore le segue.</p>
+
+    <div class="room-extra">
+      <div class="specs">
+        <div class="cell"><div class="k">Superficie</div><div class="v">interno 60 m² · esterno 240 m² lineari</div></div>
+        <div class="cell"><div class="k">Illuminazione</div><div class="v">naturale di giorno, 1800 K dopo il tramonto</div></div>
+        <div class="cell"><div class="k">Materiali</div><div class="v">corpo, pelle, inchiostro, carta sottile</div></div>
+        <div class="cell"><div class="k">Permanenza</div><div class="v">20–30 minuti, mobile</div></div>
+        <div class="cell"><div class="k">Accessibilità</div><div class="v">terreno irregolare, accompagnamento</div></div>
+        <div class="cell"><div class="k">Capienza</div><div class="v">esterno illimitato</div></div>
+      </div>
+      <div class="events">
+        <div class="ev"><div class="when">14 nov 2026 · 21.00</div><div class="what">Camminata inaugurale · al tramonto<em>Performance corale di chiusura della prima giornata.</em></div></div>
+        <div class="ev"><div class="when">10 gen 2027 · 11.30</div><div class="what">Marcatura del corpo · sessione aperta<em>Una tatuatrice in residenza, segni in tre soggetti volontari.</em></div></div>
+        <div class="ev"><div class="when">28 feb 2027 · 18.00</div><div class="what">Camminata di chiusura<em>Tutti i sopravvissuti escono dal Mattatoio insieme.</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROGRAMMA COMPLESSIVO ============ -->
+<section class="programma" data-section="Programma" id="programma">
+  <div class="frame reveal">
+    <span class="label"><span class="tick"></span>IV.   Programma pubblico complessivo</span>
+    <h2><em>Quattro mesi di apertura. Tre tempi forti.</em></h2>
+    <p class="lede">La mostra apre il 14 novembre 2026 con una soglia inaugurale collettiva e si chiude il 28 febbraio 2027 con una camminata che attraversa tutte le stanze al contrario. Tra i due estremi, ogni stanza tiene un proprio palinsesto, e la curatela introduce tre tempi che lavorano l'intero edificio.</p>
+    <div class="timeline">
+      <div class="row"><span class="when">14 nov 2026 · 19.00</span><span class="what">Soglia inaugurale</span><span class="where">Apertura simultanea delle sei stanze. Performance d'ingresso da parte di tutti i sei gruppi.</span></div>
+      <div class="row"><span class="when">14 dic 2026 · 19.00</span><span class="what">Notte dei tre divieti</span><span class="where">Lectio collettiva sulle tre interdizioni della tesi curatoriale, tra le stanze IV e V.</span></div>
+      <div class="row"><span class="when">25 gen 2027 · 15.00</span><span class="where"></span><span class="what">Carosello dei mestieri</span><span class="where">Sei artigiani romani mostrano i propri gesti di lavoro accanto alle opere della stanza II.</span></div>
+      <div class="row"><span class="when">28 feb 2027 · 17.30</span><span class="what">Camminata di chiusura</span><span class="where">Si percorre la mostra al contrario, da VI a I, alla luce del tramonto.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CREDITI ============ -->
+<section class="crediti" data-section="Crediti" id="crediti">
+  <div class="frame reveal">
+    <span class="label"><span class="tick"></span>V.   Crediti</span>
+    <h2><em>Chi tiene insieme la mostra.</em></h2>
+    <div class="crediti-grid">
+      <div class="col"><h4>A cura di</h4><p><span class="name">Andrea Colamedici</span> e dell'intelligenza co-curatoriale impiegata in aula.</p></div>
+      <div class="col"><h4>Studenti coinvolti</h4><p>Venti studenti dello IED Roma, divisi in sei gruppi (A, B, C, D, E, F), corso Prompt Thinking, MMXXVI.</p></div>
+      <div class="col"><h4>Sede</h4><p><span class="name">Mattatoio</span><br>Piazza Orazio Giustiniani 4, 00153 Roma. Azienda Speciale Palaexpo.</p></div>
+      <div class="col"><h4>Programma pubblico</h4><p>Coordinamento didattico IED Roma, in dialogo con i partner culturali del territorio Testaccio.</p></div>
+      <div class="col"><h4>Architettura storica</h4><p>Edificio progettato da <span class="name">Gioacchino Ersoch</span>, 1888–1891.</p></div>
+      <div class="col"><h4>Adiacenza</h4><p>Monte dei Cocci, antica discarica romana di anfore d'olio.</p></div>
+      <div class="col"><h4>Tipografia</h4><p>Georgia italica, e Helvetica per le etichette tracked-out.</p></div>
+      <div class="col"><h4>Stato</h4><p>Mockup curatoriale per uso didattico interno. Le foto delle stanze possono essere caricate nella cartella images/ con i nomi stanza-1.jpg fino a stanza-6.jpg.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="frame">
+    <span class="label">IED Roma · Prompt Thinking · MMXXVI</span>
+    <span class="label" style="font-style: italic;">Tutto ciò che è stato tagliato per arrivare fin qui</span>
+    <span class="label">Mattatoio di Testaccio</span>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">Chiudi · Esc</button>
+  <div class="lb-content">
+    <div class="lb-image" id="lbImage"></div>
+    <div class="lb-meta">
+      <span class="label" id="lbCap">Stanza I · L'attesa del coltello</span>
+      <span class="label" id="lbHint">premi Esc o clicca fuori per chiudere</span>
+    </div>
+  </div>
+</div>
+
+<!-- Cursor hint -->
+<div class="cursor-hint" id="cursorHint">Apri la stanza</div>
+
+<script>
+(function () {
+  const $ = (s, p) => (p || document).querySelector(s);
+  const $$ = (s, p) => [...((p || document).querySelectorAll(s))];
+
+  // ===== Photo loading: try to load images/stanza-N.jpg, fall back to placeholder =====
+  const photoMap = {
+    'I': 'images/stanza-1.jpg',
+    'II': 'images/stanza-2.jpg',
+    'III': 'images/stanza-3.jpg',
+    'IV': 'images/stanza-4.jpg',
+    'V': 'images/stanza-5.jpg',
+    'VI': 'images/stanza-6.jpg',
+    'luogo': 'images/luogo.jpg'
+  };
+  $$('[data-room]').forEach(el => {
+    const r = el.dataset.room;
+    const url = photoMap[r];
+    if (!url) return;
+    const test = new Image();
+    test.onload = () => {
+      el.classList.remove('no-photo');
+      el.style.backgroundImage = `url('${url}')`;
+    };
+    test.onerror = () => {
+      // keep placeholder
+    };
+    test.src = url;
+  });
+
+  // ===== Sticky header: progress bar and section indicator =====
+  const progress = $('#progress');
+  const sectionLabel = $('#sectionLabel');
+  const header = $('#siteHeader');
+  const sections = $$('section[data-section]');
+  function onScroll() {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    progress.style.width = (max > 0 ? (scrolled / max) * 100 : 0) + '%';
+
+    // current section by viewport center
+    const center = scrolled + window.innerHeight / 2;
+    let current = sections[0];
+    for (const s of sections) {
+      if (s.offsetTop <= center) current = s;
+    }
+    if (current) {
+      sectionLabel.textContent = '— ' + current.dataset.section + ' —';
+      const isDark = current.classList.contains('hero')
+        || current.classList.contains('tesi')
+        || current.classList.contains('room')
+        || current.tagName === 'FOOTER';
+      header.classList.toggle('dark', isDark);
+    }
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ===== Reveal on scroll =====
+  const reveals = $$('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => io.observe(r));
+
+  // ===== Plan interactivity =====
+  const previews = {
+    'I':   { title: "L'attesa del coltello", text: "La sala che precede l'atto. Profumiera, scenografa, sound designer. Chi sa lavorare con la temperatura del prima.", cta: "→ Entra nella stanza" },
+    'II':  { title: "Officine del nascondere", text: "Le mani che fanno il lavoro che il visibile rimuove. Banchi, attrezzi, gesti documentati. Chi guarda le mani.", cta: "→ Entra nella stanza" },
+    'III': { title: "Bestiario dei resti", text: "Quello che cade dal tavolo. Lo scarto come materia primaria. Chi tratta lo scarto come oro.", cta: "→ Entra nella stanza" },
+    'IV':  { title: "L'archivio autorizzato", text: "La memoria che ha avuto il permesso di rimanere scritta. Documenti, registri. Chi sa fingere il vero.", cta: "→ Entra nella stanza" },
+    'V':   { title: "Liturgia del lavabo", text: "La violenza diventa rito, il rito diventa eleganza. Chi conosce la doppia faccia dell'eleganza.", cta: "→ Entra nella stanza" },
+    'VI':  { title: "Quello che cammina fuori", text: "Sopravvissuti, fantasmi, forme che escono dal Mattatoio. Si svolge in parte all'aperto, verso il Monte dei Cocci.", cta: "→ Entra nella stanza" }
+  };
+  const ppRoman = $('.pp-roman', $('#planPreview'));
+  const ppText = $('#ppText');
+  const ppTitle = $('#ppTitleText');
+  const ppCta = $('#ppCta');
+  const ppEyebrow = $('.pp-eyebrow', $('#planPreview'));
+  const cursorHint = $('#cursorHint');
+
+  $$('.room-hot').forEach(g => {
+    const room = g.dataset.room;
+    g.addEventListener('mouseenter', () => {
+      const p = previews[room];
+      if (!p) return;
+      ppEyebrow.textContent = 'Stanza ' + room;
+      ppRoman.textContent = room + '.';
+      ppTitle.textContent = p.title;
+      ppText.textContent = p.text;
+      ppCta.textContent = p.cta;
+      cursorHint.classList.add('show');
+    });
+    g.addEventListener('mouseleave', () => {
+      cursorHint.classList.remove('show');
+    });
+    g.addEventListener('click', () => {
+      const anchor = g.dataset.anchor;
+      if (anchor) {
+        const target = $(anchor);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Move cursor hint near pointer
+  document.addEventListener('mousemove', (e) => {
+    cursorHint.style.left = e.clientX + 'px';
+    cursorHint.style.top = e.clientY + 'px';
+  });
+
+  // ===== Click on room images to open lightbox =====
+  const lb = $('#lightbox');
+  const lbImage = $('#lbImage');
+  const lbCap = $('#lbCap');
+  $$('.room-image').forEach(el => {
+    el.addEventListener('click', () => {
+      const r = el.dataset.room;
+      const room = el.closest('.room');
+      const titleEl = room ? room.querySelector('h2') : null;
+      const title = titleEl ? titleEl.textContent.replace('.', '') : 'Mattatoio';
+      lbCap.textContent = 'Stanza ' + r + ' · ' + title;
+      // mirror background
+      const bg = window.getComputedStyle(el).backgroundImage;
+      lbImage.style.backgroundImage = bg && bg !== 'none' ? bg : 'linear-gradient(135deg, #322820, #4F3E2E)';
+      lb.classList.add('open');
+    });
+  });
+  $('#lbClose').addEventListener('click', () => lb.classList.remove('open'));
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.classList.remove('open'); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lb.classList.remove('open'); });
+
+  // ===== Subtle parallax on room images =====
+  const roomImages = $$('.room-image');
+  document.addEventListener('scroll', () => {
+    roomImages.forEach(ri => {
+      const rect = ri.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inView) return;
+      const offset = rect.top * 0.04;
+      ri.style.backgroundPosition = `center calc(50% + ${offset}px)`;
+    });
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
