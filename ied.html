@@ -157,6 +157,277 @@ h1, h2, h3, h4 {
 }
 .btn.ghost:hover { background: var(--ink); color: var(--paper); }
 
+.esame {
+  padding: 120px 0 110px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+.esame h2 {
+  font-size: clamp(38px, 5.6vw, 84px);
+  margin: 26px 0 26px;
+  max-width: 1100px;
+}
+.esame .esame-lede {
+  font-style: italic;
+  color: var(--ink);
+  font-size: clamp(18px, 1.5vw, 22px);
+  max-width: 900px;
+  margin-bottom: 64px;
+  line-height: 1.55;
+}
+
+.esame-blocks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  margin-bottom: 96px;
+}
+.esame-card {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  padding: 32px 32px 30px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.esame-card .esame-num {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--red);
+  font-size: 30px;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.esame-card h3 {
+  font-size: 24px;
+  font-style: italic;
+  margin-bottom: 14px;
+  line-height: 1.18;
+  max-width: 320px;
+}
+.esame-card p {
+  color: var(--body);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.movimenti { margin-bottom: 96px; }
+.movimenti-title {
+  font-size: clamp(28px, 3.6vw, 46px);
+  margin-bottom: 12px;
+}
+.movimenti-lede {
+  font-style: italic;
+  color: var(--body);
+  font-size: 17px;
+  margin-bottom: 36px;
+  max-width: 720px;
+}
+.movimenti-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.mov {
+  padding: 28px 28px 32px 28px;
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mov:last-child { border-right: 0; }
+.mov .mov-roman {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--red);
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.mov h4 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink);
+  font-weight: 400;
+  line-height: 1.18;
+  margin-bottom: 6px;
+}
+.mov p {
+  color: var(--body);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.divieti {
+  background: var(--ink-deep);
+  color: var(--paper);
+  margin: 0 -56px 96px;
+  padding: 64px 56px 70px;
+  position: relative;
+  overflow: hidden;
+}
+.divieti::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(139, 26, 26, 0.16), transparent 65%);
+  pointer-events: none;
+}
+.divieti > * { position: relative; z-index: 1; }
+.divieti .divieti-eyebrow { color: rgba(244, 241, 234, 0.6); margin-bottom: 14px; display: inline-block; }
+.divieti .divieti-eyebrow .tick { background: rgba(244, 241, 234, 0.6); }
+.divieti h3 {
+  color: var(--paper);
+  font-size: clamp(28px, 3.6vw, 46px);
+  line-height: 1.1;
+  margin-bottom: 12px;
+  max-width: 800px;
+}
+.divieti .divieti-lede {
+  color: rgba(244, 241, 234, 0.78);
+  font-style: italic;
+  font-size: 16px;
+  margin-bottom: 36px;
+  max-width: 720px;
+}
+.divieti-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(244, 241, 234, 0.22);
+  border-bottom: 1px solid rgba(244, 241, 234, 0.22);
+}
+.div-cell {
+  padding: 28px 28px 32px 28px;
+  border-right: 1px solid rgba(244, 241, 234, 0.16);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.div-cell:last-child { border-right: 0; }
+.div-cell .div-num {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--red-hot);
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.div-cell h4 {
+  color: var(--paper);
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.2;
+}
+.div-cell p {
+  color: rgba(244, 241, 234, 0.78);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.deliverable { margin-bottom: 96px; }
+.deliverable .deliv-eyebrow { display: inline-block; margin-bottom: 14px; }
+.deliverable h3 {
+  font-size: clamp(28px, 3.6vw, 46px);
+  margin-bottom: 12px;
+  max-width: 900px;
+}
+.deliverable .deliv-lede {
+  font-style: italic;
+  color: var(--body);
+  font-size: 17px;
+  margin-bottom: 36px;
+  max-width: 720px;
+}
+.deliv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--ink);
+}
+.dcell {
+  padding: 26px 28px 30px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--paper);
+  transition: background 200ms ease;
+}
+.dcell:hover { background: var(--paper-2); }
+.dcell:nth-child(3n) { border-right: 0; }
+.dcell:nth-last-child(-n+3) { border-bottom: 1px solid var(--ink); }
+.dcell .droman {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--red);
+  font-size: 24px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.dcell h4 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.dcell p {
+  color: var(--body);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.scheda { }
+.scheda h3 {
+  font-size: clamp(28px, 3.6vw, 46px);
+  margin: 14px 0 12px;
+  max-width: 800px;
+}
+.scheda .scheda-lede {
+  font-style: italic;
+  color: var(--body);
+  font-size: 17px;
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+.scheda-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.scell {
+  padding: 22px 26px 24px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.scell:nth-child(3n) { border-right: 0; }
+.scell:nth-last-child(-n+3) { border-bottom: 0; }
+.scell .sk {
+  font-family: var(--sans);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--meta);
+  margin-bottom: 8px;
+}
+.scell .sv {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
 .tesi {
   background: var(--ink-deep);
   color: var(--paper);
@@ -456,12 +727,39 @@ h1, h2, h3, h4 {
   .assegnazioni { grid-template-columns: repeat(2, 1fr); gap: 28px; }
   .la-mostra .lm-grid { grid-template-columns: 1fr; gap: 36px; }
   .programma-min .row { grid-template-columns: 1fr; gap: 6px; }
+  .esame-blocks { grid-template-columns: 1fr; gap: 22px; }
+  .movimenti-grid { grid-template-columns: repeat(2, 1fr); }
+  .mov { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .mov:nth-child(2n) { border-right: 0; }
+  .mov:nth-last-child(-n+2) { border-bottom: 0; }
+  .divieti { margin: 0 -32px 80px; padding: 56px 32px 60px; }
+  .divieti-grid { grid-template-columns: 1fr; }
+  .div-cell { border-right: 0; border-bottom: 1px solid rgba(244, 241, 234, 0.16); }
+  .div-cell:last-child { border-bottom: 0; }
+  .deliv-grid { grid-template-columns: repeat(2, 1fr); }
+  .dcell:nth-child(3n) { border-right: 1px solid var(--rule); }
+  .dcell:nth-child(2n) { border-right: 0; }
+  .scheda-grid { grid-template-columns: repeat(2, 1fr); }
+  .scell:nth-child(3n) { border-right: 1px solid var(--rule); }
+  .scell:nth-child(2n) { border-right: 0; }
 }
 @media (max-width: 600px) {
   .frame { padding: 0 22px; }
   .hero { padding: 70px 0 50px; }
   .assegnazioni { grid-template-columns: 1fr; }
   .card .card-group { font-size: 30px; }
+  .movimenti-grid { grid-template-columns: 1fr; }
+  .mov { border-right: 0; }
+  .mov:nth-child(2n) { border-right: 0; }
+  .mov:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .mov:last-child { border-bottom: 0; }
+  .divieti { margin: 0 -22px 64px; padding: 44px 22px 50px; }
+  .deliv-grid { grid-template-columns: 1fr; }
+  .dcell { border-right: 0 !important; border-bottom: 1px solid var(--rule); }
+  .dcell:last-child { border-bottom: 1px solid var(--ink); }
+  .scheda-grid { grid-template-columns: 1fr; }
+  .scell { border-right: 0 !important; border-bottom: 1px solid var(--rule); }
+  .scell:last-child { border-bottom: 0; }
 }
 </style>
 </head>
@@ -481,19 +779,148 @@ h1, h2, h3, h4 {
     <h1><em>Sei gruppi.<br>Sei stanze.<br>Una mostra.</em></h1>
     <p class="lede">Quadro finale dell'assegnazione delle stanze ai sei gruppi del corso. Ogni stanza è un vincolo dentro cui inventare un'artista. Da qui parte il lavoro.</p>
     <div class="cta">
-      <a href="#assegnazioni" class="btn">Vai alle assegnazioni ↓</a>
-      <a href="mostra_mattatoio.html" class="btn ghost">Esplora la mostra →</a>
+      <a href="#esame" class="btn">Come funziona l'esame ↓</a>
+      <a href="#assegnazioni" class="btn ghost">Vai alle assegnazioni →</a>
     </div>
     <div class="meta">
-      <span class="label">A cura di Andrea Colamedici e dell'intelligenza co-curatoriale</span>
+      <span class="label">A cura di Andrea Colamedici e Maura Gancitano</span>
       <span class="label">IED Roma · Prompt Thinking · MMXXVI</span>
     </div>
   </div>
 </section>
 
+<section class="esame" id="esame">
+  <div class="frame">
+    <span class="label reveal"><span class="tick"></span>I.   L'esame</span>
+    <h2 class="reveal"><em>Costruirete un artista.<br>Lo metterete in mostra.</em></h2>
+    <p class="esame-lede reveal">Ogni gruppo, da tre a quattro persone, lavora a un proprio artista contemporaneo. Una biografia, un corpus di opere, una sala. Insieme, i sei artisti compongono la mostra al Mattatoio. Il deliverable è un PDF da affinare nelle ultime due lezioni e portare all'esame.</p>
+
+    <div class="esame-blocks reveal">
+      <div class="esame-card">
+        <span class="esame-num">A.</span>
+        <h3>Sei gruppi, sei artisti.</h3>
+        <p>Ogni gruppo costruisce un solo artista, con la propria biografia, la propria voce, il proprio corpus. Nessun gruppo lavora da solo: la sala assegnata determina il vincolo. La mostra esiste solo se le sei figure dialogano tra loro.</p>
+      </div>
+      <div class="esame-card">
+        <span class="esame-num">B.</span>
+        <h3>Una sala a testa.</h3>
+        <p>La stanza estratta a sorte è il vincolo curatoriale dentro cui l'artista deve nascere. Non si illustra il tema della stanza. Si parte dalla stanza per inventare un artista che la abita per necessità, non per affinità.</p>
+      </div>
+      <div class="esame-card">
+        <span class="esame-num">C.</span>
+        <h3>Un PDF d'esame.</h3>
+        <p>Il deliverable è un PDF curato, in sei sezioni, che diventa la proposta di esposizione del gruppo. È quello che si porta all'esame e quello che la curatela leggerà.</p>
+      </div>
+    </div>
+
+    <div class="movimenti reveal">
+      <h3 class="movimenti-title"><em>Quattro movimenti.</em></h3>
+      <p class="movimenti-lede">In ordine. Ognuno fonda il successivo. L'ordine inverso produce cliché.</p>
+      <div class="movimenti-grid">
+        <div class="mov">
+          <span class="mov-roman">I.</span>
+          <h4>Frattura</h4>
+          <p>Da dove viene questo artista. Cosa ha perso, cosa cerca. Una frattura biografica, linguistica, geografica, storica. Una lingua materna persa, un trauma generazionale, una soglia attraversata male. Lo stile viene dopo.</p>
+        </div>
+        <div class="mov">
+          <span class="mov-roman">II.</span>
+          <h4>Maieutica</h4>
+          <p>Una conversazione lunga con l'IA, almeno quaranta minuti, in cui l'IA interroga il gruppo. Non chiedete liste, non scegliete tra opzioni. Lasciate emergere un artista che da soli non avreste potuto inventare.</p>
+        </div>
+        <div class="mov">
+          <span class="mov-roman">III.</span>
+          <h4>Test di realtà</h4>
+          <p>Cosa il vostro artista non farebbe mai, e perché. Tre righe scritte insieme nel gruppo. È il filtro decisivo tra un personaggio e un'identità.</p>
+        </div>
+        <div class="mov">
+          <span class="mov-roman">IV.</span>
+          <h4>Corpus</h4>
+          <p>Solo ora opere, biografia, materiali. L'IA produce, il gruppo cura. Tre opere coerenti oggi, da otto a dodici all'esame, ognuna con la sua scheda completa.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divieti reveal">
+      <span class="label divieti-eyebrow"><span class="tick"></span>I tre divieti</span>
+      <h3><em>I cliché che l'IA produce per default.</em></h3>
+      <p class="divieti-lede">Tre forme che l'intelligenza artificiale genera da sola, ogni volta. Riconoscerle è già metà del lavoro.</p>
+      <div class="divieti-grid">
+        <div class="div-cell">
+          <span class="div-num">i.</span>
+          <h4>Morti misteriosamente giovani.</h4>
+          <p>Il romanticismo della morte precoce è pigrizia narrativa travestita da profondità.</p>
+        </div>
+        <div class="div-cell">
+          <span class="div-num">ii.</span>
+          <h4>Scoperti postumi in soffitte.</h4>
+          <p>Il topos del genio sconosciuto trovato per caso è un cliché novecentesco già esaurito.</p>
+        </div>
+        <div class="div-cell">
+          <span class="div-num">iii.</span>
+          <h4>Un solo nome esotico, senza biografia.</h4>
+          <p>Yumiko, Kala, Tariq da soli. L'esoticità senza radici è estetica del consumo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="deliverable reveal">
+      <span class="label deliv-eyebrow"><span class="tick"></span>Il PDF d'esame</span>
+      <h3><em>Sei consegne. Una proposta di esposizione.</em></h3>
+      <p class="deliv-lede">Quello che oggi impostate, quello che nelle prossime due lezioni affinerete, quello che porterete all'esame.</p>
+      <div class="deliv-grid">
+        <div class="dcell">
+          <span class="droman">I.</span>
+          <h4>Frontespizio</h4>
+          <p>Nome dell'artista, sala assegnata nella mostra, gruppo curatoriale.</p>
+        </div>
+        <div class="dcell">
+          <span class="droman">II.</span>
+          <h4>Biografia critica</h4>
+          <p>Una pagina. La frattura, il percorso, la posizione. Scritta come si scrive un'introduzione a un catalogo.</p>
+        </div>
+        <div class="dcell">
+          <span class="droman">III.</span>
+          <h4>Statement</h4>
+          <p>Mezza pagina, prima persona dell'artista. La sua voce, mai filtrata dal curatore.</p>
+        </div>
+        <div class="dcell">
+          <span class="droman">IV.</span>
+          <h4>Corpus</h4>
+          <p>Da otto a dodici opere all'esame. Oggi tre. Ogni opera con scheda completa e immagine.</p>
+        </div>
+        <div class="dcell">
+          <span class="droman">V.</span>
+          <h4>Allestimento</h4>
+          <p>Titolo della sala, testo di parete, pianta o vista d'insieme. L'opera nello spazio.</p>
+        </div>
+        <div class="dcell">
+          <span class="droman">VI.</span>
+          <h4>Piano di comunicazione</h4>
+          <p>Comunicato stampa, due post per i social, mail di invito al vernissage.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="scheda reveal">
+      <span class="label"><span class="tick"></span>La scheda opera</span>
+      <h3><em>Ogni opera ha sei voci.</em></h3>
+      <p class="scheda-lede">Sembra burocrazia. È il momento in cui un artista costruito bene si distingue da uno costruito male.</p>
+      <div class="scheda-grid">
+        <div class="scell"><div class="sk">Titolo</div><div class="sv">Nome dell'opera, lingua scelta dall'artista</div></div>
+        <div class="scell"><div class="sk">Anno</div><div class="sv">Anno reale di realizzazione, coerente con la biografia</div></div>
+        <div class="scell"><div class="sk">Tecnica</div><div class="sv">Materiale, supporto, metodo, edizione</div></div>
+        <div class="scell"><div class="sk">Dimensioni</div><div class="sv">Misure precise dell'opera o dell'installazione</div></div>
+        <div class="scell"><div class="sk">Didascalia</div><div class="sv">Una frase di contesto, neutra come da catalogo</div></div>
+        <div class="scell"><div class="sk">Testo di parete</div><div class="sv">Quattro o cinque righe che il visitatore legge in mostra</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <section class="tesi">
   <div class="frame">
-    <span class="label"><span class="tick"></span>I.   La tesi della mostra</span>
+    <span class="label"><span class="tick"></span>II.   La tesi della mostra</span>
     <h2><em>Tutto ciò che è stato tagliato per arrivare fin qui.</em></h2>
     <p>Ogni stanza chiede a chi vi entra, artista e visitatore, di rispondere alla stessa domanda con strumenti diversi. Cosa è stato rimosso perché questa immagine, questo oggetto, questo suono, questo gesto potesse esistere. Cosa abbiamo dovuto smettere di vedere per vedere quello che vediamo adesso.</p>
     <div class="links">
@@ -506,7 +933,7 @@ h1, h2, h3, h4 {
 
 <section class="risultati" id="assegnazioni">
   <div class="frame">
-    <span class="label reveal"><span class="tick"></span>II.   Le sei assegnazioni</span>
+    <span class="label reveal"><span class="tick"></span>III.   Le sei assegnazioni</span>
     <h2 class="reveal"><em>Le stanze hanno trovato i gruppi.</em></h2>
     <p class="subtitle reveal">Cliccate sul gruppo per andare alla stanza che gli è stata assegnata. Da lì leggete la descrizione curatoriale, la scheda tecnica, il programma pubblico, e il tipo di figura artistica che la stanza chiede di inventare.</p>
 
@@ -622,7 +1049,7 @@ h1, h2, h3, h4 {
   <div class="frame">
     <div class="lm-grid">
       <div class="reveal">
-        <span class="label"><span class="tick"></span>III.   La mostra</span>
+        <span class="label"><span class="tick"></span>IV.   La mostra</span>
         <h2><em>Una mostra collettiva al Mattatoio di Testaccio.</em></h2>
         <p>Mattatoio, Piazza Orazio Giustiniani 4, Roma. L'edificio fu costruito tra il 1888 e il 1891 su progetto di Gioacchino Ersoch e funzionò come macello municipale fino al 1975. Oggi è un centro culturale di Azienda Speciale Palaexpo.</p>
         <p>La mostra apre il 14 novembre 2026 e si chiude il 28 febbraio 2027. Sei stanze, sei gruppi, sei figure artistiche da inventare. La visita è un percorso, dall'attesa del coltello fino a quello che cammina fuori.</p>
@@ -638,7 +1065,7 @@ h1, h2, h3, h4 {
 
 <section class="programma-min" id="programma">
   <div class="frame">
-    <span class="label"><span class="tick"></span>IV.   Programma pubblico complessivo</span>
+    <span class="label"><span class="tick"></span>V.   Programma pubblico complessivo</span>
     <h2><em>Quattro mesi di apertura. Tre tempi forti.</em></h2>
     <div class="timeline">
       <div class="row"><span class="when">14 nov 2026 · 19.00</span><span class="what">Soglia inaugurale</span><span class="where">Apertura simultanea delle sei stanze. Performance d'ingresso da parte di tutti i sei gruppi.</span></div>
@@ -651,9 +1078,9 @@ h1, h2, h3, h4 {
 
 <footer class="foot">
   <div class="frame">
-    <span class="label">IED Roma · Prompt Thinking · MMXXVI</span>
+    <span class="label">A cura di Andrea Colamedici e Maura Gancitano</span>
     <span class="label" style="font-style: italic;">Tutto ciò che è stato tagliato per arrivare fin qui</span>
-    <span class="label">Mattatoio di Testaccio</span>
+    <span class="label">IED Roma · MMXXVI · Mattatoio di Testaccio</span>
   </div>
 </footer>
 
