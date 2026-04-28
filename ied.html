@@ -657,48 +657,6 @@ h1, h2, h3, h4 {
   flex-wrap: wrap;
 }
 
-.programma-min {
-  padding: 90px 0 96px;
-  background: var(--paper);
-}
-.programma-min h2 {
-  font-size: clamp(30px, 4.2vw, 54px);
-  margin: 22px 0 28px;
-  max-width: 720px;
-}
-.programma-min .timeline {
-  border-top: 1px solid var(--ink);
-  margin-top: 8px;
-}
-.programma-min .row {
-  display: grid;
-  grid-template-columns: 200px 1fr 1.6fr;
-  gap: 28px;
-  align-items: baseline;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--rule);
-  transition: background 200ms ease;
-}
-.programma-min .row:hover { background: var(--paper-2); }
-.programma-min .when {
-  font-family: var(--sans);
-  font-size: 10.5px;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: var(--ink);
-}
-.programma-min .what {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 19px;
-  color: var(--ink);
-}
-.programma-min .where {
-  color: var(--body);
-  font-size: 14.5px;
-  line-height: 1.55;
-}
-
 .foot {
   background: var(--ink-deep);
   color: rgba(244, 241, 234, 0.7);
@@ -726,7 +684,6 @@ h1, h2, h3, h4 {
   .site-title { display: none; }
   .assegnazioni { grid-template-columns: repeat(2, 1fr); gap: 28px; }
   .la-mostra .lm-grid { grid-template-columns: 1fr; gap: 36px; }
-  .programma-min .row { grid-template-columns: 1fr; gap: 6px; }
   .esame-blocks { grid-template-columns: 1fr; gap: 22px; }
   .movimenti-grid { grid-template-columns: repeat(2, 1fr); }
   .mov { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
@@ -926,7 +883,6 @@ h1, h2, h3, h4 {
     <div class="links">
       <a href="mostra_mattatoio.html">→ Visita la mostra completa</a>
       <a href="mostra_mattatoio.html#pianta">→ Pianta interattiva del Mattatoio</a>
-      <a href="mostra_mattatoio.html#programma">→ Programma pubblico</a>
     </div>
   </div>
 </section>
@@ -935,7 +891,7 @@ h1, h2, h3, h4 {
   <div class="frame">
     <span class="label reveal"><span class="tick"></span>III.   Le sei assegnazioni</span>
     <h2 class="reveal"><em>Le stanze hanno trovato i gruppi.</em></h2>
-    <p class="subtitle reveal">Cliccate sul gruppo per andare alla stanza che gli è stata assegnata. Da lì leggete la descrizione curatoriale, la scheda tecnica, il programma pubblico, e il tipo di figura artistica che la stanza chiede di inventare.</p>
+    <p class="subtitle reveal">Cliccate sul gruppo per andare alla stanza che gli è stata assegnata. Da lì leggete la descrizione curatoriale, la scheda tecnica, e il tipo di figura artistica che la stanza chiede di inventare.</p>
 
     <div class="assegnazioni">
 
@@ -1052,26 +1008,13 @@ h1, h2, h3, h4 {
         <span class="label"><span class="tick"></span>IV.   La mostra</span>
         <h2><em>Una mostra collettiva al Mattatoio di Testaccio.</em></h2>
         <p>Mattatoio, Piazza Orazio Giustiniani 4, Roma. L'edificio fu costruito tra il 1888 e il 1891 su progetto di Gioacchino Ersoch e funzionò come macello municipale fino al 1975. Oggi è un centro culturale di Azienda Speciale Palaexpo.</p>
-        <p>La mostra apre il 14 novembre 2026 e si chiude il 28 febbraio 2027. Sei stanze, sei gruppi, sei figure artistiche da inventare. La visita è un percorso, dall'attesa del coltello fino a quello che cammina fuori.</p>
+        <p>Sei stanze, sei gruppi, sei figure artistiche da inventare. La visita è un percorso, dall'attesa del coltello fino a quello che cammina fuori.</p>
         <div class="lm-cta">
           <a href="mostra_mattatoio.html" class="btn">→ Entra nella mostra</a>
           <a href="mostra_mattatoio.html#pianta" class="btn ghost">Vedi la pianta interattiva</a>
         </div>
       </div>
       <div class="lm-img reveal"></div>
-    </div>
-  </div>
-</section>
-
-<section class="programma-min" id="programma">
-  <div class="frame">
-    <span class="label"><span class="tick"></span>V.   Programma pubblico complessivo</span>
-    <h2><em>Quattro mesi di apertura. Tre tempi forti.</em></h2>
-    <div class="timeline">
-      <div class="row"><span class="when">14 nov 2026 · 19.00</span><span class="what">Soglia inaugurale</span><span class="where">Apertura simultanea delle sei stanze. Performance d'ingresso da parte di tutti i sei gruppi.</span></div>
-      <div class="row"><span class="when">14 dic 2026 · 19.00</span><span class="what">Notte dei tre divieti</span><span class="where">Lectio collettiva sulle tre interdizioni della tesi curatoriale, tra le stanze IV e V.</span></div>
-      <div class="row"><span class="when">25 gen 2027 · 15.00</span><span class="what">Carosello dei mestieri</span><span class="where">Sei artigiani romani mostrano i propri gesti di lavoro accanto alle opere della stanza II.</span></div>
-      <div class="row"><span class="when">28 feb 2027 · 17.30</span><span class="what">Camminata di chiusura</span><span class="where">Si percorre la mostra al contrario, da VI a I, alla luce del tramonto.</span></div>
     </div>
   </div>
 </section>
