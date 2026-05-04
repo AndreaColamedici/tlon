@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Come si scrive un buon prompt — Prompt Thinking · IED 2026</title>
+<meta name="description" content="Una mappa critica tra tecnica e pratica filosofica. Corso Prompt Thinking, IED 2026. Andrea Colamedici e Maura Gancitano.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F4EFE6;
+    --cream-2: #EFE9DD;
+    --paper: #EFE8DA;
+    --ink: #1F1F1B;
+    --charcoal: #2A2924;
+    --charcoal-2: #1B1A16;
+    --dim: #5C5447;
+    --muted: #8A7E68;
+    --rule: #D9D2C5;
+    --rule-2: #C9BFA9;
+    --ochre: #B8763A;
+    --ochre-2: #A06832;
+    --rust: #8B4A20;
+    --ember: #C9842D;
+    --burn: #7A2E12;
+    --serif: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Courier New', ui-monospace, monospace;
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+  body {
+    font-family: var(--sans);
+    font-weight: 400;
+    background: var(--cream);
+    color: var(--charcoal);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  ::selection { background: rgba(184, 118, 58, 0.28); color: var(--ink); }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: var(--cream-2); }
+  ::-webkit-scrollbar-thumb { background: var(--rule-2); border: 2px solid var(--cream-2); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ochre); }
+
+  /* Focus */
+  :focus-visible {
+    outline: 2px solid var(--ochre);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Links */
+  a {
+    color: inherit;
+    text-decoration: none;
+    background-image: linear-gradient(var(--ochre), var(--ochre));
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    padding-bottom: 0.05em;
+    transition: background-size 0.4s var(--ease), color 0.25s ease;
+  }
+  a:hover {
+    color: var(--ochre);
+    background-size: 100% 2px;
+  }
+  .section--dark a {
+    background-image: linear-gradient(var(--ember), var(--ember));
+  }
+  .section--dark a:hover { color: var(--ember); }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 2px;
+    z-index: 100;
+    background: rgba(184, 118, 58, 0.08);
+  }
+  .progress-bar__fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--ochre), var(--ember));
+    width: 0;
+    transition: width 0.05s linear;
+  }
+
+  /* Side rail navigation */
+  .rail {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .rail.is-visible { opacity: 1; pointer-events: auto; }
+  .rail__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--rule);
+    cursor: pointer;
+    transition: all 0.3s var(--ease);
+    position: relative;
+    border: none;
+    padding: 0;
+  }
+  .rail__dot:hover { background: var(--ochre); transform: scale(1.4); }
+  .rail__dot.is-active { background: var(--ochre); transform: scale(1.3); }
+  .rail__dot::after {
+    content: attr(data-label);
+    position: absolute;
+    right: calc(100% + 0.85rem);
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--ochre);
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: var(--cream);
+    padding: 0.3rem 0.6rem;
+    border-radius: 2px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .rail__dot:hover::after { opacity: 1; }
+  @media (max-width: 900px) { .rail { display: none; } }
+
+  /* Section */
+  .section {
+    min-height: 100vh;
+    padding: clamp(4rem, 9vh, 7rem) clamp(1.5rem, 5vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .section--dark {
+    background: var(--charcoal);
+    color: var(--cream);
+  }
+  .section--dark .body-text { color: var(--cream); }
+  .section--paper { background: var(--cream-2); }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+  .container--narrow { max-width: 900px; }
+
+  /* Section watermark numeral */
+  .watermark {
+    position: absolute;
+    top: -0.05em;
+    right: clamp(-2rem, -2vw, -1rem);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(11rem, 22vw, 22rem);
+    line-height: 0.8;
+    color: var(--rule);
+    opacity: 0.55;
+    z-index: 1;
+    pointer-events: none;
+    user-select: none;
+    font-weight: 400;
+  }
+  .section--dark .watermark { color: var(--charcoal-2); opacity: 1; }
+  @media (max-width: 700px) { .watermark { font-size: 10rem; right: -0.5rem; opacity: 0.35; } }
+
+  /* Components */
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.36em;
+    font-weight: 600;
+    color: var(--ochre);
+    text-transform: uppercase;
+    margin-bottom: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: var(--ochre);
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 5.8vw, 4.8rem);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    margin-bottom: 1.75rem;
+    color: var(--ink);
+  }
+  .section-title.italic { font-style: italic; }
+  .section--dark .section-title { color: var(--cream); }
+  .body-text {
+    font-size: clamp(1rem, 1.1vw, 1.13rem);
+    line-height: 1.72;
+    max-width: 68ch;
+    color: var(--charcoal);
+    font-weight: 400;
+  }
+  .body-text + .body-text { margin-top: 1.1rem; }
+  .body-text strong { font-weight: 600; color: var(--ink); }
+  .citation {
+    font-family: var(--sans);
+    font-style: italic;
+    font-size: 0.825rem;
+    color: var(--dim);
+    margin-top: 3rem;
+    line-height: 1.7;
+    max-width: 76ch;
+  }
+  .citation a {
+    background-image: linear-gradient(var(--rule-2), var(--rule-2));
+  }
+  .citation a:hover {
+    color: var(--ochre);
+    background-image: linear-gradient(var(--ochre), var(--ochre));
+  }
+  .section--dark .citation { color: var(--ember); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    background: var(--charcoal);
+    background-image:
+      radial-gradient(ellipse at 18% 22%, rgba(201, 132, 45, 0.10), transparent 55%),
+      radial-gradient(ellipse at 88% 78%, rgba(201, 132, 45, 0.06), transparent 60%),
+      linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-2) 100%);
+    color: var(--cream);
+    padding: clamp(3rem, 6vh, 5rem) clamp(1.5rem, 5vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(244, 239, 230, 0.012) 0, rgba(244, 239, 230, 0.012) 1px, transparent 1px, transparent 2px);
+    pointer-events: none;
+  }
+  .hero__top {
+    position: absolute;
+    top: 2.5rem; left: 0; right: 0;
+    padding: 0 clamp(1.5rem, 5vw, 5rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    z-index: 2;
+  }
+  .hero__numeral {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--ember);
+    font-weight: 500;
+  }
+  .hero__course {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.36em;
+    color: var(--ember);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .hero__inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; width: 100%; }
+  .hero__title {
+    font-family: var(--serif);
+    font-size: clamp(3.4rem, 10vw, 8.5rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.028em;
+    color: var(--cream);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+  }
+  .hero__cursor {
+    display: inline-block;
+    width: 0.085em;
+    height: 0.78em;
+    background: var(--ember);
+    margin-left: 0.06em;
+    animation: blink 1.1s ease-in-out infinite;
+    vertical-align: -0.05em;
+    box-shadow: 0 0 12px rgba(201, 132, 45, 0.5);
+  }
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  .hero__subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.4rem, 2.7vw, 2.25rem);
+    color: var(--ember);
+    margin-top: 1.4rem;
+    line-height: 1.3;
+    max-width: 30ch;
+    font-weight: 500;
+  }
+  .hero__divider {
+    width: 4rem;
+    height: 2px;
+    background: var(--ember);
+    margin-top: 3rem;
+  }
+  .hero__signature {
+    font-family: var(--sans);
+    font-size: 1rem;
+    color: var(--cream);
+    margin-top: 1.5rem;
+    font-weight: 500;
+  }
+  .hero__institution {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+  }
+  .hero__scroll {
+    position: absolute;
+    bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 600;
+    animation: drop 2.4s ease-in-out infinite;
+    transition: opacity 0.6s ease;
+    z-index: 2;
+  }
+  .hero__scroll.is-hidden { opacity: 0; }
+  @keyframes drop {
+    0%, 100% { transform: translate(-50%, 0); opacity: 0.7; }
+    50% { transform: translate(-50%, 0.4rem); opacity: 1; }
+  }
+
+  /* Drop cap */
+  .dropcap {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--ochre);
+    float: left;
+    font-size: 5.2em;
+    line-height: 0.85;
+    padding: 0.05em 0.12em 0 0;
+    margin-top: 0.05em;
+  }
+
+  /* Pull quote */
+  .pullquote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.9rem, 4.3vw, 3.4rem);
+    color: var(--rust);
+    line-height: 1.18;
+    margin: 1.5rem 0 2.75rem;
+    padding-left: 2rem;
+    position: relative;
+    font-weight: 500;
+  }
+  .pullquote::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 3px;
+    background: linear-gradient(180deg, var(--ochre), var(--rust));
+  }
+
+  /* Grids */
+  .grid {
+    display: grid;
+    gap: 1.4rem;
+    margin-top: 3rem;
+  }
+  .grid--3 { grid-template-columns: repeat(3, 1fr); }
+  .grid--2x2 { grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
+  @media (max-width: 800px) {
+    .grid--3, .grid--2x2 { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--ochre);
+    padding: 1.85rem 1.7rem 1.7rem;
+    transition: transform 0.4s var(--ease), box-shadow 0.4s ease, border-color 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 0%, rgba(201, 132, 45, 0.12), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease);
+    pointer-events: none;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 42px rgba(31,31,27,0.10);
+    border-top-color: var(--ember);
+  }
+  .card:hover::before { opacity: 1; }
+  .card__numeral {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--ochre);
+    line-height: 1;
+    font-weight: 500;
+  }
+  .card__tag {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+  .card__title {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: var(--ink);
+    margin: 0.6rem 0 0.7rem;
+    font-weight: 500;
+  }
+  .card__body {
+    font-size: 0.92rem;
+    line-height: 1.62;
+    color: var(--charcoal);
+  }
+
+  /* Two-col */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 1rem;
+  }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; gap: 2rem; } }
+
+  /* Code panel */
+  .panel {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 1.7rem 1.85rem;
+    font-family: var(--mono);
+    font-size: 0.86rem;
+    line-height: 1.75;
+    position: relative;
+    box-shadow: 0 14px 36px rgba(31,31,27,0.10);
+  }
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ember), transparent);
+  }
+  .panel__label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.36em;
+    color: var(--ember);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .panel pre {
+    font-family: inherit;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .panel .tag { color: var(--ember); }
+  .panel .com { color: var(--muted); font-style: italic; }
+  .panel .ref { color: var(--ember); font-style: italic; }
+
+  /* Stat */
+  .stat {
+    background: var(--charcoal);
+    background-image:
+      radial-gradient(ellipse at 30% 20%, rgba(201, 132, 45, 0.18), transparent 55%),
+      linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-2) 100%);
+    color: var(--cream);
+    padding: 2.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 340px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 18px 50px rgba(31,31,27,0.14);
+  }
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 1rem; left: 1rem;
+    width: 2rem; height: 2px;
+    background: var(--ember);
+  }
+  .stat::after {
+    content: '';
+    position: absolute;
+    bottom: 1rem; right: 1rem;
+    width: 2rem; height: 2px;
+    background: var(--ember);
+  }
+  .stat__num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(5.5rem, 11vw, 10rem);
+    color: var(--ember);
+    line-height: 0.95;
+    font-weight: 500;
+    text-shadow: 0 0 40px rgba(201, 132, 45, 0.18);
+  }
+  .stat__unit {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    color: var(--ember);
+    margin-top: 0.5rem;
+  }
+  .stat__caption {
+    font-size: 0.86rem;
+    color: var(--cream);
+    text-align: center;
+    margin-top: 1.4rem;
+    line-height: 1.55;
+    max-width: 30ch;
+  }
+
+  /* Steps */
+  .steps {
+    display: grid;
+    gap: 1.6rem;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 2.75rem;
+  }
+  @media (max-width: 800px) { .steps { grid-template-columns: 1fr; } }
+  .step { position: relative; padding-top: 1.5rem; }
+  .step::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2.5rem;
+    height: 2px;
+    background: var(--ochre);
+  }
+  .step__num {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ochre);
+    font-size: 1.95rem;
+    line-height: 1;
+    font-weight: 500;
+  }
+  .step__title {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    color: var(--ink);
+    margin: 0.45rem 0 0.7rem;
+    font-weight: 500;
+  }
+  .step__body {
+    font-size: 0.92rem;
+    line-height: 1.62;
+    color: var(--charcoal);
+  }
+
+  /* Officina interactive */
+  .officina { margin-top: 2.25rem; }
+  .officina__tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    flex-wrap: wrap;
+  }
+  .officina__tab {
+    background: none;
+    border: none;
+    padding: 0.95rem 0.25rem;
+    margin-right: 2.4rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.22rem;
+    color: var(--muted);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.25s ease;
+    font-weight: 500;
+  }
+  .officina__tab:hover { color: var(--rust); }
+  .officina__tab.is-active { color: var(--ink); }
+  .officina__tab.is-active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 2px;
+    background: var(--ochre);
+  }
+  .officina__tab .num { color: var(--ochre); margin-right: 0.4rem; }
+  .officina__panel {
+    background: var(--charcoal);
+    background-image:
+      radial-gradient(ellipse at 0% 0%, rgba(201, 132, 45, 0.10), transparent 55%);
+    color: var(--cream);
+    padding: 2.1rem 2.35rem;
+    font-family: var(--mono);
+    font-size: 1.02rem;
+    line-height: 1.72;
+    min-height: 240px;
+    transition: opacity 0.3s ease;
+    position: relative;
+    box-shadow: 0 18px 44px rgba(31,31,27,0.12);
+  }
+  .officina__panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ember), transparent);
+  }
+  .officina__note {
+    margin-top: 1.4rem;
+    font-family: var(--sans);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--dim);
+    line-height: 1.65;
+  }
+  .officina__panel .new {
+    background: rgba(201, 132, 45, 0.24);
+    color: var(--ember);
+    padding: 0.05em 0.25em;
+    border-radius: 1px;
+    transition: background 0.4s ease;
+  }
+
+  /* Image prompt */
+  .img-prompt {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 2.5rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 900px) { .img-prompt { grid-template-columns: 1fr; } }
+  .img-list { list-style: none; }
+  .img-list li {
+    display: grid;
+    grid-template-columns: 1.8rem 7.5rem 1fr;
+    gap: 1rem;
+    padding: 0.85rem 0.4rem;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    transition: background 0.25s ease, padding 0.25s ease;
+    align-items: baseline;
+  }
+  .img-list li:hover, .img-list li.is-active {
+    background: var(--paper);
+    padding-left: 0.7rem;
+  }
+  .img-list .num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--ochre);
+    font-weight: 500;
+  }
+  .img-list .term {
+    font-family: var(--serif);
+    font-size: 1.12rem;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .img-list .desc {
+    font-size: 0.84rem;
+    color: var(--dim);
+    font-style: italic;
+  }
+  .img-example {
+    font-family: var(--sans);
+    font-size: 0.96rem;
+    line-height: 1.85;
+  }
+  .img-example .group {
+    transition: background 0.28s ease;
+    padding: 0.1em 0.2em;
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 0.05rem;
+  }
+  .img-example .group .tag {
+    color: var(--ember);
+    font-style: italic;
+    font-size: 0.78em;
+    margin-left: 0.35em;
+    opacity: 0.85;
+  }
+  .img-example .group.is-highlight {
+    background: rgba(201, 132, 45, 0.32);
+  }
+  .img-example .group.is-highlight .tag {
+    opacity: 1;
+  }
+  .img-example .row { display: block; padding: 0.05rem 0; }
+
+  /* Antipattern */
+  .antipattern {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 2.6rem;
+    margin-top: 2.75rem;
+  }
+  @media (max-width: 800px) { .antipattern { grid-template-columns: 1fr; } }
+  .ap-item {
+    display: grid;
+    grid-template-columns: 2.2rem 1fr;
+    gap: 0.75rem;
+    border-left: 3px solid var(--ochre);
+    padding: 0.45rem 0 0.45rem 1.2rem;
+    transition: border-color 0.3s ease, padding 0.3s ease;
+  }
+  .ap-item:hover {
+    border-left-color: var(--rust);
+    padding-left: 1.4rem;
+  }
+  .ap-item .num {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ochre);
+    font-size: 1.5rem;
+    line-height: 1.05;
+    font-weight: 500;
+  }
+  .ap-item .title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: var(--ink);
+    margin-bottom: 0.45rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .ap-item .body {
+    font-size: 0.88rem;
+    line-height: 1.62;
+    color: var(--charcoal);
+  }
+
+  /* Attrito */
+  .attrito-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+    margin-top: 3rem;
+  }
+  @media (max-width: 900px) { .attrito-grid { grid-template-columns: 1fr; } }
+  .att-card {
+    padding: 2.2rem 2.2rem;
+    cursor: pointer;
+    transition: all 0.4s var(--ease);
+    border: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .att-card.specchio { background: var(--paper); }
+  .att-card.attrito { background: var(--charcoal); color: var(--cream); border-color: var(--charcoal); }
+  .att-card.attrito::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--ember), transparent);
+  }
+  .att-card:not(.is-active) { filter: saturate(0.6) brightness(0.96); opacity: 0.62; }
+  .att-card.is-active {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 46px rgba(31,31,27,0.13);
+  }
+  .att-card.attrito.is-active { box-shadow: 0 20px 46px rgba(31,31,27,0.24); }
+  .att__label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.36em;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .specchio .att__label { color: var(--muted); }
+  .attrito .att__label { color: var(--ember); }
+  .att__quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.25rem, 1.9vw, 1.6rem);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+  .specchio .att__quote { color: var(--dim); }
+  .attrito .att__quote { color: var(--cream); }
+  .att__caption {
+    font-size: 0.93rem;
+    line-height: 1.6;
+  }
+  .specchio .att__caption { color: var(--dim); }
+  .attrito .att__caption { color: var(--cream); }
+
+  /* Sproni */
+  .sproni {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 3.5rem;
+    row-gap: 0.4rem;
+    margin-top: 3rem;
+  }
+  @media (max-width: 800px) { .sproni { grid-template-columns: 1fr; column-gap: 0; } }
+  .sprone {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .sprone.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .sprone:hover { background: var(--cream-2); }
+  .sprone .num {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ochre);
+    font-size: 1.45rem;
+    font-weight: 500;
+  }
+  .sprone .text {
+    font-size: 1rem;
+    color: var(--charcoal);
+    line-height: 1.5;
+  }
+  .sproni-closing {
+    margin-top: 3.5rem;
+    text-align: center;
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--rust);
+    font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+    line-height: 1.4;
+    max-width: 70ch;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 500;
+    position: relative;
+    padding: 1.5rem 0;
+  }
+  .sproni-closing::before, .sproni-closing::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3rem;
+    height: 1px;
+    background: var(--ochre);
+  }
+  .sproni-closing::before { top: 0; }
+  .sproni-closing::after { bottom: 0; }
+
+  /* Bibliografia */
+  .biblio { margin-top: 2.75rem; }
+  .biblio__cat {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.36em;
+    color: var(--ochre);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 1.7rem 0 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .biblio__cat::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: var(--ochre);
+  }
+  .biblio__cat:first-of-type { margin-top: 0; }
+  .biblio__item {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--charcoal);
+    padding-left: 1.1rem;
+    margin-bottom: 0.4rem;
+    position: relative;
+  }
+  .biblio__item::before {
+    content: '·';
+    position: absolute;
+    left: 0.2rem;
+    color: var(--ochre);
+    font-weight: 600;
+  }
+
+  /* Footer */
+  footer {
+    padding: 4rem clamp(1.5rem, 5vw, 5rem);
+    background: var(--charcoal);
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(201, 132, 45, 0.06), transparent 60%);
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    text-align: center;
+    line-height: 1.7;
+  }
+  footer .em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ember);
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+  footer .mark {
+    font-family: var(--serif);
+    color: var(--ember);
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  footer a {
+    background-image: linear-gradient(var(--muted), var(--muted));
+  }
+  footer a:hover { color: var(--ember); background-image: linear-gradient(var(--ember), var(--ember)); }
+
+  /* Reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="progress-bar"><div class="progress-bar__fill" id="progress"></div></div>
+
+<nav class="rail" id="rail" aria-label="Navigazione sezioni"></nav>
+
+<!-- HERO -->
+<section class="hero" id="s1" data-rail="copertina">
+  <div class="hero__top">
+    <span class="hero__numeral">01</span>
+    <span class="hero__course">Corso · Primavera 2026</span>
+  </div>
+  <div class="hero__inner">
+    <h1 class="hero__title">Come si scrive<br>un buon prompt.<span class="hero__cursor"></span></h1>
+    <p class="hero__subtitle">Una mappa critica tra tecnica e pratica filosofica.</p>
+    <div class="hero__divider"></div>
+    <p class="hero__signature">Andrea Colamedici e Maura Gancitano</p>
+    <p class="hero__institution"><a href="https://www.ied.it/" target="_blank" rel="noopener">Istituto Europeo di Design</a></p>
+  </div>
+  <p class="hero__scroll" id="heroScroll">scorri</p>
+</section>
+
+<!-- 02 PREMESSA -->
+<section class="section reveal" id="s2" data-rail="premessa">
+  <span class="watermark">II</span>
+  <div class="container container--narrow">
+    <p class="eyebrow">Premessa</p>
+    <h2 class="section-title italic">Prima della tecnica, una domanda.</h2>
+    <p class="pullquote">Cosa intendiamo per «buono»?</p>
+    <p class="body-text"><span class="dropcap">U</span>n prompt efficace ottiene esattamente ciò che chiede. Un prompt fertile genera ciò che non sapevamo di cercare. La maggior parte della letteratura tecnica ottimizza il primo registro. <a href="https://www.politybooks.com/bookdetail?book_slug=prompt-thinking-a-critique-of-generative-reason--9781509573882" target="_blank" rel="noopener">Prompt Thinking</a> custodisce il secondo. Le sezioni che seguono tengono insieme i due piani: prima la grammatica condivisa dalla ricerca, poi il salto che la rovescia.</p>
+  </div>
+</section>
+
+<!-- 03 FONDAMENTI -->
+<section class="section reveal" id="s3" data-rail="fondamenti">
+  <span class="watermark">III</span>
+  <div class="container">
+    <p class="eyebrow">Fondamenti</p>
+    <h2 class="section-title">Chiarezza, contesto, vincoli.</h2>
+    <p class="body-text">Tutta la letteratura ufficiale, da <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Anthropic</a> a <a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" rel="noopener">OpenAI</a> a <a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank" rel="noopener">Google</a>, converge su tre fondamenti. La differenza fra un prompt che funziona e uno che fallisce passa quasi sempre da uno di questi tre piani. Un prompt senza contratto di output è una preghiera; un prompt con contratto è una commissione.</p>
+    <div class="grid grid--3">
+      <div class="card">
+        <p class="card__numeral">I</p>
+        <h3 class="card__title">Chiarezza</h3>
+        <p class="card__body">Scrivi cosa vuoi senza supporre che il modello indovini. La specificità non è povertà del linguaggio, è precisione del desiderio.</p>
+      </div>
+      <div class="card">
+        <p class="card__numeral">II</p>
+        <h3 class="card__title">Contesto</h3>
+        <p class="card__body">Dichiara chi sei, per chi scrivi, su quale materia ti muovi. Il contesto orienta il modello come orienta un interlocutore umano.</p>
+      </div>
+      <div class="card">
+        <p class="card__numeral">III</p>
+        <h3 class="card__title">Vincoli</h3>
+        <p class="card__body">Definisci forma, lunghezza, registro, ciò che è ammesso e ciò che non lo è. Il contratto di output è l'atto fondante di un prompt serio.</p>
+      </div>
+    </div>
+    <p class="citation"><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Anthropic, Prompting best practices</a> · <a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" rel="noopener">OpenAI, Prompt engineering guide</a> · <a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank" rel="noopener">Google, Prompt design strategies</a></p>
+  </div>
+</section>
+
+<!-- 04 FEW-SHOT -->
+<section class="section reveal" id="s4" data-rail="few-shot">
+  <span class="watermark">IV</span>
+  <div class="container">
+    <p class="eyebrow">Tecnica · 01</p>
+    <h2 class="section-title">Mostra invece di dire.</h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text"><a href="https://en.wikipedia.org/wiki/Tom_Brown_(machine_learning_researcher)" target="_blank" rel="noopener">Tom Brown</a> e colleghi nel 2020 hanno mostrato che bastano <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">pochi esempi per insegnare a un modello un compito</a> senza riaddestrarlo. <a href="https://www.jasonwei.net/" target="_blank" rel="noopener">Jason Wei</a> ha confermato nel 2022 che da due a cinque esempi ben scelti aumentano l'accuratezza in modo non lineare.</p>
+        <p class="body-text">Mostrare un esempio del tipo di risposta che desideri trasmette ciò che cento aggettivi non comunicano. Il few-shot è il gesto pedagogico più antico applicato alle macchine: si insegna per esempi, non per definizioni.</p>
+      </div>
+      <div>
+        <div class="panel">
+          <p class="panel__label">Esempio minimo</p>
+<pre>Trasforma il titolo in un sottotitolo conciso.
+
+<span class="ref">Titolo: La crisi della verità nel digitale.</span>
+Sottotitolo: Quando il vero perde peso.
+
+<span class="ref">Titolo: La fine del lavoro umano.</span>
+Sottotitolo: Cosa resta quando i compiti se ne vanno.
+
+<span class="ref">Titolo: Il ritorno della filosofia pubblica.</span>
+<span class="com">Sottotitolo:</span></pre>
+        </div>
+      </div>
+    </div>
+    <p class="citation">Brown et al., <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener"><em>Language Models are Few-Shot Learners</em></a>, NeurIPS 2020 · Wei et al., <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener"><em>Chain-of-Thought Prompting</em></a>, NeurIPS 2022</p>
+  </div>
+</section>
+
+<!-- 05 COT -->
+<section class="section reveal" id="s5" data-rail="ragionamento">
+  <span class="watermark">V</span>
+  <div class="container">
+    <p class="eyebrow">Tecnica · 02</p>
+    <h2 class="section-title">Concedi spazio al ragionamento.</h2>
+    <p class="body-text">Quando si chiede al modello di rispondere passo dopo passo, l'accuratezza su problemi complessi cresce in modo significativo. <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">Wei e colleghi nel 2022</a> hanno documentato miglioramenti dell'ordine del trenta-cinquanta per cento sui benchmark di ragionamento aritmetico e logico. La logica è semplice: senza spazio per pensare, il modello restituisce la prima risposta plausibile; con spazio, articola e si corregge.</p>
+    <div class="steps">
+      <div class="step">
+        <p class="step__num">1.</p>
+        <h3 class="step__title">Formula base</h3>
+        <p class="step__body">Aggiungi «Ragiona passo dopo passo» alla fine del prompt.</p>
+      </div>
+      <div class="step">
+        <p class="step__num">2.</p>
+        <h3 class="step__title">Formula guidata</h3>
+        <p class="step__body">Indica i passaggi richiesti: identifica il problema, isola le variabili, valuta le opzioni, decidi.</p>
+      </div>
+      <div class="step">
+        <p class="step__num">3.</p>
+        <h3 class="step__title">Formula strutturata</h3>
+        <p class="step__body">Usa tag espliciti come &lt;ragionamento&gt; e &lt;risposta&gt; per separare il pensiero dalla conclusione.</p>
+      </div>
+    </div>
+    <p class="citation">Wei et al., <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener"><em>Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</em></a> (arXiv 2201.11903, 2022)</p>
+  </div>
+</section>
+
+<!-- 06 STRUTTURA -->
+<section class="section reveal" id="s6" data-rail="struttura">
+  <span class="watermark">VI</span>
+  <div class="container">
+    <p class="eyebrow">Tecnica · 03</p>
+    <h2 class="section-title">Struttura il prompt come un documento.</h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text">Il principio è invariante: la struttura riduce l'ambiguità, e l'ambiguità è la prima causa di output deboli. Claude è stato addestrato a riconoscere <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags" target="_blank" rel="noopener">i tag XML come dispositivi di organizzazione</a>, ma per gran parte degli usi quotidiani funzionano altrettanto bene delimitatori in linguaggio naturale, sezioni con due punti, intestazioni, virgolette di blocco. La forma cambia, l'idea resta: separare le istruzioni dai dati, i dati dagli esempi, gli esempi dai vincoli.</p>
+      </div>
+      <div>
+        <div class="panel">
+          <p class="panel__label">Prompt strutturato</p>
+<pre><span class="tag">&lt;istruzioni&gt;</span>
+  Sintetizza il documento in
+  300 parole, registro saggistico.
+<span class="tag">&lt;/istruzioni&gt;</span>
+
+<span class="tag">&lt;documento&gt;</span>
+  <span class="com">…testo del documento…</span>
+<span class="tag">&lt;/documento&gt;</span>
+
+<span class="tag">&lt;vincoli&gt;</span>
+  Niente elenchi puntati.
+  Citazioni solo verificabili.
+<span class="tag">&lt;/vincoli&gt;</span></pre>
+        </div>
+      </div>
+    </div>
+    <p class="citation"><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags" target="_blank" rel="noopener">Anthropic, <em>Use XML tags to structure your prompts</em></a> · <a href="https://www.philschmid.de/gemini-3-prompt-practices" target="_blank" rel="noopener">Schmid, <em>Gemini 3 Prompting Practices</em></a> (2026)</p>
+  </div>
+</section>
+
+<!-- 07 OFFICINA -->
+<section class="section section--paper reveal" id="s7" data-rail="officina">
+  <span class="watermark">VII</span>
+  <div class="container">
+    <p class="eyebrow">Officina</p>
+    <h2 class="section-title">La stessa richiesta, tre volte.</h2>
+    <p class="body-text">Si impara a scrivere prompt come si impara a scrivere: riscrivendo. Tre versioni dello stesso brief, dalla forma più povera a quella più viva. Premi le linguette per vedere come cresce il prompt; le aggiunte si accendono in ocra.</p>
+    <div class="officina">
+      <div class="officina__tabs" role="tablist">
+        <button class="officina__tab is-active" data-version="I" role="tab" aria-selected="true"><span class="num">I.</span> Povera</button>
+        <button class="officina__tab" data-version="II" role="tab" aria-selected="false"><span class="num">II.</span> Decente</button>
+        <button class="officina__tab" data-version="III" role="tab" aria-selected="false"><span class="num">III.</span> Viva</button>
+      </div>
+      <div class="officina__panel" id="officinaPanel" aria-live="polite"></div>
+      <p class="officina__note" id="officinaNote"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 IMMAGINI -->
+<section class="section reveal" id="s8" data-rail="immagini">
+  <span class="watermark">VIII</span>
+  <div class="container">
+    <p class="eyebrow">Multimodale</p>
+    <h2 class="section-title">Prompt per le immagini.</h2>
+    <p class="body-text">Scrivere a un modello che genera immagini è una pratica diversa: una composizione descritta in parole. La <a href="https://cookbook.openai.com/examples/generate_images_with_gpt_image" target="_blank" rel="noopener">letteratura del 2026</a> converge su una sequenza ricorrente, sette nuclei in ordine di precedenza decrescente. Un riferimento visivo allegato vale più di trenta aggettivi. Passa il puntatore sui nuclei a sinistra per vedere come si traducono nell'esempio.</p>
+    <div class="img-prompt">
+      <ul class="img-list" id="imgList">
+        <li data-tag="soggetto"><span class="num">1</span><span class="term">Soggetto</span><span class="desc">chi o cosa è in scena</span></li>
+        <li data-tag="medium"><span class="num">2</span><span class="term">Medium</span><span class="desc">fotografia, illustrazione, pittura, render</span></li>
+        <li data-tag="stile"><span class="num">3</span><span class="term">Stile</span><span class="desc">alla maniera di un autore reale</span></li>
+        <li data-tag="illuminazione"><span class="num">4</span><span class="term">Illuminazione</span><span class="desc">naturale, di studio, controluce</span></li>
+        <li data-tag="composizione"><span class="num">5</span><span class="term">Composizione</span><span class="desc">inquadratura, decentramento, profondità</span></li>
+        <li data-tag="palette"><span class="num">6</span><span class="term">Palette</span><span class="desc">gamma cromatica e contrasto</span></li>
+        <li data-tag="atmosfera"><span class="num">7</span><span class="term">Atmosfera</span><span class="desc">il sentimento dell'immagine</span></li>
+      </ul>
+      <div class="panel img-example" id="imgExample">
+        <p class="panel__label">Esempio</p>
+        <span class="row"><span class="group" data-tag="soggetto">Ritratto a mezzo busto di una giovane lettrice<span class="tag">[soggetto]</span></span></span>
+        <span class="row"><span class="group" data-tag="medium">fotografia analogica medio formato<span class="tag">[medium]</span></span></span>
+        <span class="row"><span class="group" data-tag="stile">alla maniera di Saul Leiter<span class="tag">[stile]</span></span></span>
+        <span class="row"><span class="group" data-tag="illuminazione">luce di finestra al tramonto<span class="tag">[illuminazione]</span></span></span>
+        <span class="row"><span class="group" data-tag="composizione">composizione decentrata sulla destra<span class="tag">[composizione]</span></span></span>
+        <span class="row"><span class="group" data-tag="palette">palette terrosa<span class="tag">[palette]</span></span></span>
+        <span class="row"><span class="group" data-tag="atmosfera">atmosfera di lentezza domestica<span class="tag">[atmosfera]</span></span></span>
+      </div>
+    </div>
+    <p class="citation"><a href="https://cookbook.openai.com/examples/generate_images_with_gpt_image" target="_blank" rel="noopener">OpenAI, <em>GPT Image Models Prompting Guide</em></a> · <a href="https://docs.midjourney.com/docs/prompts" target="_blank" rel="noopener">Midjourney, <em>Best Prompting Practices</em></a> (2026) · <a href="http://www.saulleiterfoundation.org/" target="_blank" rel="noopener">Saul Leiter Foundation</a></p>
+  </div>
+</section>
+
+<!-- 09 MODELLI -->
+<section class="section reveal" id="s9" data-rail="modelli">
+  <span class="watermark">IX</span>
+  <div class="container">
+    <p class="eyebrow">Strumenti</p>
+    <h2 class="section-title">Ogni modello ha la sua voce.</h2>
+    <p class="body-text">I modelli linguistici si distinguono nella prestazione e ancor più nel temperamento. Cambiare modello secondo il compito è il primo gesto di consapevolezza dopo aver imparato a fare prompt. Le caratterizzazioni che seguono sono operative, non assolute, e cambiano a ogni rilascio.</p>
+    <div class="grid grid--2x2">
+      <div class="card">
+        <h3 class="card__title"><a href="https://www.anthropic.com/claude" target="_blank" rel="noopener">Claude</a></h3>
+        <p class="card__tag">Anthropic</p>
+        <p class="card__body">La prosa più naturale fra i grandi modelli. Lavora bene con documenti lunghi, riscritture, dialogo filosofico. Forte nel rispettare istruzioni di voce e tono.</p>
+      </div>
+      <div class="card">
+        <h3 class="card__title"><a href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT</a></h3>
+        <p class="card__tag">OpenAI</p>
+        <p class="card__body">Il generalista più versatile. Eccelle nell'esplorazione, nel brainstorming, nella generazione multimodale integrata. La scelta più sicura quando non si sa quale modello scegliere.</p>
+      </div>
+      <div class="card">
+        <h3 class="card__title"><a href="https://gemini.google.com/" target="_blank" rel="noopener">Gemini</a></h3>
+        <p class="card__tag">Google DeepMind</p>
+        <p class="card__body">Il multimodale solido. Contesti molto lunghi, immagini, dati. Si integra nei flussi di Google Workspace. Eccellente nei compiti di ragionamento strutturato.</p>
+      </div>
+      <div class="card">
+        <h3 class="card__title"><a href="https://www.deepseek.com/" target="_blank" rel="noopener">DeepSeek</a></h3>
+        <p class="card__tag">Hangzhou DeepSeek</p>
+        <p class="card__body">Il pensiero economico. Ragionamento accessibile a costi decisamente inferiori. Utile per esercizi di volume e per chi ha budget limitati.</p>
+      </div>
+    </div>
+    <p class="citation">Benchmark e profili da: <a href="https://www.tominsider.org/chatgpt-vs-claude-vs-deepseek-vs-gemini-2026/" target="_blank" rel="noopener">Tech-Insider</a> · <a href="https://improvado.io/blog/claude-vs-chatgpt-vs-gemini-vs-deepseek" target="_blank" rel="noopener">Improvado</a> · <a href="https://www.buildfastwithai.com/blogs/best-ai-models-april-2026-comparison" target="_blank" rel="noopener">BuildFastWithAI</a> (rilevazioni 2026)</p>
+  </div>
+</section>
+
+<!-- 10 PERSONA -->
+<section class="section reveal" id="s10" data-rail="persona">
+  <span class="watermark">X</span>
+  <div class="container">
+    <p class="eyebrow">Ciò che la ricerca smentisce</p>
+    <h2 class="section-title italic">Il mito della persona.</h2>
+    <div class="two-col">
+      <div class="stat">
+        <div class="stat__num">≈ 0</div>
+        <p class="stat__caption">Effetto medio dell'aggiunta di una persona sull'accuratezza di compiti fattuali.</p>
+      </div>
+      <div>
+        <p class="body-text">«Sei un esperto di...» non funziona quanto si crede. <a href="https://aclanthology.org/2024.findings-emnlp.555/" target="_blank" rel="noopener">Lo studio di Zheng e colleghi del 2024</a>, presentato a EMNLP Findings, ha analizzato centosessantadue personae su quattro famiglie di modelli e duemilaquattrocentodieci domande fattuali. L'aggiunta di una persona ha effetti nulli, e in diversi casi lievemente negativi, sull'accuratezza delle risposte.</p>
+        <p class="body-text">La persona modula lo stile, non il sapere. Usala per orientare il registro, la voce, il tono di una scrittura. Non aspettarti che renda il modello più competente sul dominio. È un cosmetico, non un trapianto di sapere.</p>
+      </div>
+    </div>
+    <p class="citation">Zheng et al., <a href="https://aclanthology.org/2024.findings-emnlp.555/" target="_blank" rel="noopener"><em>When 'A Helpful Assistant' Is Not Really Helpful</em></a>, EMNLP Findings 2024</p>
+  </div>
+</section>
+
+<!-- 11 ANTIPATTERN -->
+<section class="section section--paper reveal" id="s11" data-rail="antipattern">
+  <span class="watermark">XI</span>
+  <div class="container">
+    <p class="eyebrow">Antipattern</p>
+    <h2 class="section-title">Cinque errori che la ricerca documenta.</h2>
+    <div class="antipattern">
+      <div class="ap-item">
+        <div class="num">I</div>
+        <div>
+          <p class="title">La cortesia eccessiva</p>
+          <p class="body">Le formule di garbo diluiscono l'istruzione e aumentano la verbosità della risposta. La macchina risponde in tono, non in sostanza.</p>
+        </div>
+      </div>
+      <div class="ap-item">
+        <div class="num">II</div>
+        <div>
+          <p class="title">La negazione</p>
+          <p class="body">Dire «non inventare» obbliga il modello a processare l'idea di inventare. La formulazione positiva, «usa solo dati verificati», funziona meglio.</p>
+        </div>
+      </div>
+      <div class="ap-item">
+        <div class="num">III</div>
+        <div>
+          <p class="title">La vaghezza</p>
+          <p class="body">Scaricare sul modello una decisione che dovrebbe essere tua. Se non sai cosa vuoi, non lo saprà nemmeno lui.</p>
+        </div>
+      </div>
+      <div class="ap-item">
+        <div class="num">IV</div>
+        <div>
+          <p class="title">Il sovraccarico</p>
+          <p class="body">Compiti multipli affastellati in un unico prompt frammentano la qualità. Meglio incatenare prompt distinti.</p>
+        </div>
+      </div>
+      <div class="ap-item">
+        <div class="num">V</div>
+        <div>
+          <p class="title">L'accettazione del primo output</p>
+          <p class="body">La fretta di accettare la prima risposta è il modo più diffuso di sprecare un buon modello. L'iterazione è la sostanza, non il rifinimento.</p>
+        </div>
+      </div>
+    </div>
+    <p class="citation">Sintesi da: <a href="https://www.lakera.ai/blog/prompt-engineering-guide" target="_blank" rel="noopener">Lakera, <em>The Ultimate Guide to Prompt Engineering</em></a> · <a href="https://arxiv.org/abs/2406.06608" target="_blank" rel="noopener">Schulhoff et al., <em>The Prompt Report</em></a> (2024)</p>
+  </div>
+</section>
+
+<!-- 12 ALLUCINAZIONE -->
+<section class="section reveal" id="s12" data-rail="allucinazione">
+  <span class="watermark">XII</span>
+  <div class="container">
+    <p class="eyebrow">Letteratura critica</p>
+    <h2 class="section-title italic">L'allucinazione è strutturale.</h2>
+    <div class="two-col">
+      <div class="stat">
+        <div class="stat__num">17–33<span class="stat__unit">%</span></div>
+        <p class="stat__caption">tasso di allucinazione misurato dallo Stanford RegLab sugli strumenti legali IA con retrieval-augmented generation, 2024.</p>
+      </div>
+      <div>
+        <p class="body-text">Un modello linguistico genera testo plausibile, e la plausibilità coincide solo qualche volta con la verità. Le citazioni inventate, gli autori inesistenti, le date sbagliate, sono prodotti naturali del modello quando si avventura fuori dalla sua zona di solidità.</p>
+        <p class="body-text">Nel giugno 2023, nel <a href="https://www.courtlistener.com/docket/63107798/mata-v-avianca-inc/" target="_blank" rel="noopener">caso Mata contro Avianca</a>, l'avvocato Steven Schwartz è stato sanzionato dal giudice Castel della Corte distrettuale di New York per aver presentato un memoriale con sei sentenze interamente fabbricate da ChatGPT, fra cui Varghese contro China Southern Airlines, mai esistita. <a href="https://reglab.stanford.edu/publications/hallucination-free-assessing-the-reliability-of-leading-ai-legal-research-tools/" target="_blank" rel="noopener">Lo studio Stanford RegLab del 2024</a> ha quantificato il fenomeno: anche i sistemi che dichiarano di evitare le allucinazioni allucinano fra il diciassette e il trentatré per cento delle interrogazioni.</p>
+        <p class="body-text">La regola operativa per chi studia: ogni citazione, ogni nome proprio, ogni data, va verificata fuori dal modello prima di citarla. Il modello aiuta a pensare; non aiuta a sapere.</p>
+      </div>
+    </div>
+    <p class="citation"><a href="https://www.courtlistener.com/docket/63107798/mata-v-avianca-inc/" target="_blank" rel="noopener">Mata v. Avianca, S.D.N.Y. 2023</a> · Magesh et al., <a href="https://arxiv.org/abs/2405.20362" target="_blank" rel="noopener"><em>Hallucination-Free? Assessing the Reliability of Leading AI Legal Research Tools</em></a> (Stanford RegLab, arXiv 2405.20362, 2024) · <a href="https://www.lakera.ai/blog/guide-to-hallucinations-in-large-language-models" target="_blank" rel="noopener">Lakera, <em>Guide to Hallucinations in LLMs</em></a> (2026)</p>
+  </div>
+</section>
+
+<!-- 13 IL SALTO -->
+<section class="section section--dark reveal" id="s13" data-rail="il salto">
+  <span class="watermark">XIII</span>
+  <div class="container container--narrow">
+    <p class="eyebrow">Il salto</p>
+    <h2 class="section-title italic">Dal prompt-istruzione<br>al prompt-pensiero.</h2>
+    <div style="width: 4rem; height: 2px; background: var(--ember); margin: 2.5rem 0;"></div>
+    <p class="body-text" style="font-size: clamp(1.05rem, 1.3vw, 1.22rem); max-width: 70ch;">La tecnica fin qui descritta tratta il prompt come comando: input ottimizzato per output prevedibile. <a href="https://www.politybooks.com/bookdetail?book_slug=prompt-thinking-a-critique-of-generative-reason--9781509573882" target="_blank" rel="noopener">Prompt Thinking</a> propone un'altra grammatica. Il prompt diventa gesto di pensiero: una domanda che apre invece di chiudere, una forma che ammette resistenza, uno spazio in cui il sapere si costruisce nella relazione fra umano e macchina. La stessa frase, scritta come comando o come domanda filosofica, genera mondi diversi.</p>
+    <p class="citation">Jianwei Xun, <a href="https://www.politybooks.com/bookdetail?book_slug=prompt-thinking-a-critique-of-generative-reason--9781509573882" target="_blank" rel="noopener"><em>Prompt Thinking. A Critique of Generative Reason</em></a> (Polity, 2026)</p>
+  </div>
+</section>
+
+<!-- 14 ATTRITO -->
+<section class="section reveal" id="s14" data-rail="attrito">
+  <span class="watermark">XIV</span>
+  <div class="container">
+    <p class="eyebrow">Pratica</p>
+    <h2 class="section-title italic">L'attrito come metodo.</h2>
+    <p class="body-text">Una delle pratiche centrali di Prompt Thinking è il prompt contrastivo: chiedere al modello di obiettare, di smentire, di trovare il punto debole della tua tesi. Chi cerca conferme ottiene specchi; chi cerca attrito ottiene pensiero. Il prompt è anche un esercizio di onestà intellettuale: pone le domande che non vorremmo sentire, e accoglie le risposte che ci spostano.</p>
+    <div class="attrito-grid" id="attritoToggle">
+      <div class="att-card specchio" data-mode="specchio" tabindex="0">
+        <p class="att__label">Lo specchio</p>
+        <p class="att__quote">«Approfondisci la mia tesi.»</p>
+        <p class="att__caption">Il modello restituisce ciò che già pensi, in forma più articolata. Esci con la sensazione di essere stato confermato.</p>
+      </div>
+      <div class="att-card attrito is-active" data-mode="attrito" tabindex="0">
+        <p class="att__label">L'attrito</p>
+        <p class="att__quote">«Trova le tre obiezioni più forti.»</p>
+        <p class="att__caption">Il modello costruisce il contraddittorio. Esci con un pensiero più affilato di quello con cui sei entrato.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 SINTESI -->
+<section class="section section--paper reveal" id="s15" data-rail="sintesi">
+  <span class="watermark">XV</span>
+  <div class="container">
+    <p class="eyebrow">Sintesi</p>
+    <h2 class="section-title italic">I dieci sproni.</h2>
+    <div class="sproni" id="sproni">
+      <div class="sprone"><span class="num">01</span><span class="text">Definisci il contratto di output prima del prompt.</span></div>
+      <div class="sprone"><span class="num">02</span><span class="text">Sii specifico, concreto, contestuale.</span></div>
+      <div class="sprone"><span class="num">03</span><span class="text">Mostra esempi: il few-shot vince sulla descrizione.</span></div>
+      <div class="sprone"><span class="num">04</span><span class="text">Concedi spazio al ragionamento.</span></div>
+      <div class="sprone"><span class="num">05</span><span class="text">Struttura con marcatori espliciti.</span></div>
+      <div class="sprone"><span class="num">06</span><span class="text">Riformula in positivo: «usa», non «non usare».</span></div>
+      <div class="sprone"><span class="num">07</span><span class="text">La persona stilizza, non istruisce.</span></div>
+      <div class="sprone"><span class="num">08</span><span class="text">Itera: il primo prompt è un'ipotesi.</span></div>
+      <div class="sprone"><span class="num">09</span><span class="text">Pratica il prompt contrastivo: cerca attrito.</span></div>
+      <div class="sprone"><span class="num">10</span><span class="text">Tratta il prompt come pratica filosofica.</span></div>
+    </div>
+    <p class="sproni-closing">Un buon prompt è una domanda ben posta. Una domanda ben posta è già metà della risposta.</p>
+  </div>
+</section>
+
+<!-- 16 BIBLIOGRAFIA -->
+<section class="section reveal" id="s16" data-rail="bibliografia">
+  <span class="watermark">XVI</span>
+  <div class="container">
+    <p class="eyebrow">Riferimenti</p>
+    <h2 class="section-title">Bibliografia essenziale.</h2>
+    <div class="biblio">
+      <p class="biblio__cat">Letteratura tecnica accademica</p>
+      <p class="biblio__item">Brown T. et al., <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener"><em>Language Models are Few-Shot Learners</em></a>, NeurIPS 2020 (arXiv 2005.14165).</p>
+      <p class="biblio__item">Wei J. et al., <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener"><em>Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</em></a>, NeurIPS 2022 (arXiv 2201.11903).</p>
+      <p class="biblio__item">Schulhoff S. et al., <a href="https://arxiv.org/abs/2406.06608" target="_blank" rel="noopener"><em>The Prompt Report. A Systematic Survey of Prompting Techniques</em></a>, 2024 (arXiv 2406.06608).</p>
+      <p class="biblio__item">Zheng M. et al., <a href="https://aclanthology.org/2024.findings-emnlp.555/" target="_blank" rel="noopener"><em>When «A Helpful Assistant» Is Not Really Helpful</em></a>, EMNLP Findings 2024.</p>
+
+      <p class="biblio__cat">Documentazione ufficiale e guide tecniche</p>
+      <p class="biblio__item">Anthropic, <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Prompting best practices</a> e <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags" target="_blank" rel="noopener">Use XML tags to structure your prompts</a>.</p>
+      <p class="biblio__item">OpenAI, <a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" rel="noopener">Prompt engineering guide</a> e <a href="https://cookbook.openai.com/examples/generate_images_with_gpt_image" target="_blank" rel="noopener">GPT Image Models Prompting Guide</a>.</p>
+      <p class="biblio__item">Google, <a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank" rel="noopener">Prompt design strategies, Gemini API</a>.</p>
+      <p class="biblio__item">Schmid P., <a href="https://www.philschmid.de/gemini-3-prompt-practices" target="_blank" rel="noopener"><em>Gemini 3 Prompting. Best Practices for General Usage</em></a> (philschmid.de, 2026).</p>
+
+      <p class="biblio__cat">Letteratura critica e casi documentati</p>
+      <p class="biblio__item"><a href="https://www.courtlistener.com/docket/63107798/mata-v-avianca-inc/" target="_blank" rel="noopener">Mata v. Avianca, Inc., S.D.N.Y. 1:22-cv-01461</a> (2023), sentenza sulle citazioni fabbricate da ChatGPT.</p>
+      <p class="biblio__item">Magesh V. et al., <a href="https://arxiv.org/abs/2405.20362" target="_blank" rel="noopener"><em>Hallucination-Free? Assessing the Reliability of Leading AI Legal Research Tools</em></a>, Stanford RegLab 2024 (arXiv 2405.20362).</p>
+      <p class="biblio__item"><a href="https://www.lakera.ai/blog/guide-to-hallucinations-in-large-language-models" target="_blank" rel="noopener">Lakera, <em>Guide to Hallucinations in Large Language Models</em></a> (lakera.ai, 2026).</p>
+
+      <p class="biblio__cat">Riferimento filosofico</p>
+      <p class="biblio__item">Xun J., <a href="https://www.politybooks.com/bookdetail?book_slug=prompt-thinking-a-critique-of-generative-reason--9781509573882" target="_blank" rel="noopener"><em>Prompt Thinking. A Critique of Generative Reason</em></a>, Polity Press, Theory Redux, 2026.</p>
+      <p class="biblio__item">Xun J., <em>Ipnocrazia. Trump, Musk e la nuova architettura della realtà</em>, 2024.</p>
+
+      <p class="biblio__cat">Riferimenti culturali citati</p>
+      <p class="biblio__item"><a href="http://www.saulleiterfoundation.org/" target="_blank" rel="noopener">Saul Leiter Foundation</a>, archivio del fotografo statunitense (1923–2013).</p>
+      <p class="biblio__item"><a href="http://www.brunomunari.it/" target="_blank" rel="noopener">Associazione Bruno Munari</a>, dedicata al designer e teorico (1907–1998).</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="mark">∎</p>
+  <p class="em">Prompt Thinking</p>
+  <p style="margin-top: 0.6rem;">Andrea Colamedici e Maura Gancitano · <a href="https://www.ied.it/" target="_blank" rel="noopener">Istituto Europeo di Design</a> · Primavera 2026</p>
+</footer>
+
+<script>
+  // Progress bar + hero scroll hint
+  const progressBar = document.getElementById('progress');
+  const heroScroll = document.getElementById('heroScroll');
+  function updateProgress() {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = (scrolled / total) * 100;
+    progressBar.style.width = pct + '%';
+    if (heroScroll) heroScroll.classList.toggle('is-hidden', scrolled > 80);
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // Reveal on scroll
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-revealed');
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Side rail dots
+  const railEl = document.getElementById('rail');
+  const sectionsForRail = document.querySelectorAll('[data-rail]');
+  sectionsForRail.forEach((s) => {
+    const dot = document.createElement('button');
+    dot.className = 'rail__dot';
+    dot.dataset.target = s.id;
+    dot.dataset.label = s.dataset.rail;
+    dot.setAttribute('aria-label', 'Vai a ' + s.dataset.rail);
+    dot.addEventListener('click', () => {
+      document.getElementById(s.id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    railEl.appendChild(dot);
+  });
+  const allDots = document.querySelectorAll('.rail__dot');
+  const railObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        allDots.forEach(d => d.classList.toggle('is-active', d.dataset.target === e.target.id));
+      }
+    });
+  }, { threshold: 0.5 });
+  sectionsForRail.forEach(s => railObserver.observe(s));
+  // Show rail after first scroll
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) railEl.classList.add('is-visible');
+    else railEl.classList.remove('is-visible');
+  }, { passive: true });
+
+  // Sproni cascade
+  const sproni = document.querySelectorAll('.sprone');
+  const sintesiSection = document.getElementById('s15');
+  if (sintesiSection) {
+    const sproniObs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        sproni.forEach((s, i) => {
+          setTimeout(() => s.classList.add('is-revealed'), i * 90);
+        });
+        sproniObs.disconnect();
+      }
+    }, { threshold: 0.18 });
+    sproniObs.observe(sintesiSection);
+  }
+
+  // Officina interactive
+  const versions = {
+    I: {
+      text: 'Scrivimi una presentazione per il mio progetto di tesi su IA e creatività.',
+      note: 'Manca il pubblico, la lunghezza, il registro, i vincoli. Il modello tira a indovinare e restituisce un testo generico.'
+    },
+    II: {
+      text: 'Scrivi <span class="new">200 parole</span> di presentazione per una <span class="new">tesi di design grafico</span> sul rapporto tra IA e creatività. <span class="new">Tono saggistico, pubblico generalista.</span>',
+      note: 'Compaiono lunghezza, registro, pubblico. Il risultato è già utilizzabile, mancano la voce e il pensiero.'
+    },
+    III: {
+      text: '<span class="new">Sei un curatore che apre una mostra di design.</span> Presenti una tesi sul rapporto tra IA e creatività nel design grafico. Pubblico: visitatori non tecnici. 200 parole, tono saggistico, <span class="new">prossimità alla scrittura di Bruno Munari</span>. <span class="new">Prima di scrivere, isola i tre nuclei della tesi e scegli quello più potente.</span> <span class="new">Alla fine, indica una possibile obiezione che potrebbe rovesciare la tua tesi.</span>',
+      note: 'Ruolo, pubblico, lunghezza, registro, riferimento reale, ragionamento esplicito, prompt contrastivo. Il modello pensa con te, non per te.'
+    }
+  };
+  const officinaPanel = document.getElementById('officinaPanel');
+  const officinaNote = document.getElementById('officinaNote');
+  function setVersion(v) {
+    officinaPanel.style.opacity = '0';
+    setTimeout(() => {
+      officinaPanel.innerHTML = versions[v].text;
+      officinaNote.textContent = versions[v].note;
+      officinaPanel.style.opacity = '1';
+    }, 180);
+  }
+  setVersion('I');
+  document.querySelectorAll('.officina__tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.officina__tab').forEach(t => {
+        t.classList.remove('is-active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('is-active');
+      tab.setAttribute('aria-selected', 'true');
+      setVersion(tab.dataset.version);
+    });
+  });
+
+  // Image prompt highlight
+  const imgList = document.querySelectorAll('#imgList li');
+  const imgGroups = document.querySelectorAll('#imgExample .group');
+  function highlightTag(tag) {
+    imgGroups.forEach(g => g.classList.toggle('is-highlight', g.dataset.tag === tag));
+    imgList.forEach(l => l.classList.toggle('is-active', l.dataset.tag === tag));
+  }
+  function clearHighlight() {
+    imgGroups.forEach(g => g.classList.remove('is-highlight'));
+    imgList.forEach(l => l.classList.remove('is-active'));
+  }
+  imgList.forEach(li => {
+    li.addEventListener('mouseenter', () => highlightTag(li.dataset.tag));
+    li.addEventListener('mouseleave', clearHighlight);
+    li.addEventListener('click', () => highlightTag(li.dataset.tag));
+  });
+  imgGroups.forEach(g => {
+    g.addEventListener('mouseenter', () => highlightTag(g.dataset.tag));
+    g.addEventListener('mouseleave', clearHighlight);
+  });
+
+  // Attrito toggle
+  const attCards = document.querySelectorAll('.att-card');
+  attCards.forEach(card => {
+    card.addEventListener('click', () => {
+      attCards.forEach(c => c.classList.remove('is-active'));
+      card.classList.add('is-active');
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
+
+  // Keyboard nav
+  const sections = Array.from(document.querySelectorAll('.hero, .section'));
+  function currentSectionIndex() {
+    const y = window.scrollY + window.innerHeight / 3;
+    for (let i = sections.length - 1; i >= 0; i--) {
+      if (sections[i].offsetTop <= y) return i;
+    }
+    return 0;
+  }
+  function scrollToSection(i) {
+    if (i < 0 || i >= sections.length) return;
+    sections[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON') return;
+    const i = currentSectionIndex();
+    if (e.key === 'j' || e.key === 'ArrowDown' || e.key === 'PageDown') {
+      e.preventDefault(); scrollToSection(i + 1);
+    } else if (e.key === 'k' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault(); scrollToSection(i - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (e.key === 'End') {
+      e.preventDefault(); window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+    }
+  });
+</script>
+</body>
+</html>
