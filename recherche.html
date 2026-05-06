@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex,nofollow">
-    <title>Recherche — Bookclub Tlon</title>
+    <title>Un viaggio nella Recherche — Bookclub Tlon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -12,183 +12,310 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --nero: #0a0a0a;
-            --bianco: #ffffff;
-            --ottanio: #2a6b6b;
-            --grigio: rgba(255,255,255,0.55);
-            --soffio: rgba(255,255,255,0.08);
+            --crema: #fbf3e2;
+            --crema-scura: #f3e8cf;
+            --inchiostro: #2a1d14;
+            --inchiostro-soft: #6b5944;
+            --linea: rgba(42,29,20,0.12);
+
+            --rosa: #d94a6f;
+            --verde: #6aa867;
+            --oro: #d9a31f;
+            --terracotta: #c25b3e;
+            --lilla: #8a73c0;
+            --pavone: #2d8aa6;
+            --senape: #b88419;
         }
 
         html, body {
-            background: var(--nero);
-            color: var(--bianco);
+            background: var(--crema);
+            color: var(--inchiostro);
             font-family: 'Inter', sans-serif;
             font-weight: 300;
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
         }
 
-        a { color: var(--bianco); text-decoration: none; border-bottom: 1px solid var(--ottanio); transition: color .3s, border-color .3s; }
-        a:hover { color: var(--ottanio); }
-
-        .wrap {
-            max-width: 760px;
-            margin: 0 auto;
-            padding: 6rem 1.5rem 8rem;
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 12% 8%, rgba(217,74,111,0.08), transparent 50%),
+                radial-gradient(circle at 92% 18%, rgba(217,163,31,0.10), transparent 55%),
+                radial-gradient(circle at 50% 95%, rgba(45,138,166,0.08), transparent 55%);
+            pointer-events: none;
+            z-index: 0;
         }
 
+        .wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 5rem 1.6rem 6rem;
+        }
+
+        a {
+            color: var(--inchiostro);
+            text-decoration: none;
+            border-bottom: 1px solid currentColor;
+            transition: color .25s, border-color .25s;
+        }
+        a:hover { color: var(--rosa); border-color: var(--rosa); }
+
+        /* HEADER */
         header.kicker {
+            display: inline-block;
             font-size: 0.7rem;
-            letter-spacing: 0.35em;
+            letter-spacing: 0.32em;
             text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 2.5rem;
+            color: var(--terracotta);
+            background: rgba(194,91,62,0.10);
+            padding: 0.4rem 0.9rem;
+            border-radius: 999px;
+            margin-bottom: 2.2rem;
         }
 
         h1.titolo {
             font-family: 'Instrument Serif', serif;
             font-weight: 400;
-            font-size: clamp(2.6rem, 7vw, 4.8rem);
-            line-height: 1.05;
+            font-size: clamp(2.8rem, 7.5vw, 5.2rem);
+            line-height: 1;
             letter-spacing: -0.01em;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
-        h1.titolo em { font-style: italic; color: var(--ottanio); }
+        h1.titolo em { font-style: italic; color: var(--rosa); }
+        h1.titolo .stella { color: var(--oro); font-style: normal; }
 
         p.sottotitolo {
             font-family: 'Instrument Serif', serif;
             font-style: italic;
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            color: var(--grigio);
-            margin-bottom: 3.5rem;
+            font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+            color: var(--inchiostro-soft);
+            margin-bottom: 3rem;
+            max-width: 600px;
         }
 
         section.intro p {
             font-size: 1.05rem;
-            margin-bottom: 1.2rem;
-            color: rgba(255,255,255,0.85);
+            margin-bottom: 1.1rem;
+            color: var(--inchiostro);
         }
 
-        hr.linea {
-            border: 0;
-            height: 1px;
-            background: var(--soffio);
-            margin: 5rem 0 4rem;
+        /* CALENDARIO */
+        section.calendario {
+            background: var(--crema-scura);
+            border-radius: 18px;
+            padding: 2.4rem 2rem;
+            margin: 3.5rem 0 4rem;
+            box-shadow: 0 20px 50px -30px rgba(42,29,20,0.25);
         }
 
-        article.volume {
-            margin-bottom: 4.5rem;
-        }
-
-        article.volume .num {
-            font-family: 'Instrument Serif', serif;
-            font-style: italic;
-            color: var(--ottanio);
-            font-size: 1rem;
-            letter-spacing: 0.1em;
-            display: block;
-            margin-bottom: 0.6rem;
-        }
-
-        article.volume h2 {
+        section.calendario h2 {
             font-family: 'Instrument Serif', serif;
             font-weight: 400;
-            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-            line-height: 1.2;
+            font-size: 1.7rem;
             margin-bottom: 0.4rem;
         }
-        article.volume h2 em { font-style: italic; }
+        section.calendario h2 em { font-style: italic; color: var(--terracotta); }
+        section.calendario .periodo {
+            font-size: 0.78rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--inchiostro-soft);
+            margin-bottom: 1.6rem;
+        }
 
-        article.volume .titolo-orig {
+        ul.tappe { list-style: none; padding: 0; }
+        ul.tappe li {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.7rem 0;
+            border-top: 1px solid var(--linea);
+            font-size: 0.95rem;
+        }
+        ul.tappe li:last-child { border-bottom: 1px solid var(--linea); }
+        ul.tappe li .quando {
             font-family: 'Instrument Serif', serif;
             font-style: italic;
-            color: var(--grigio);
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
+            color: var(--terracotta);
+            min-width: 12rem;
+        }
+        ul.tappe li .cosa { flex: 1; }
+
+        /* VOLUME */
+        article.volume {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2.4rem;
+            align-items: start;
+            padding: 3rem 0;
+            border-top: 1px solid var(--linea);
+        }
+        article.volume:first-of-type { border-top: 0; padding-top: 1.5rem; }
+
+        .cover {
+            display: block;
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            border-radius: 4px;
+            overflow: hidden;
+            background: var(--crema-scura);
+            box-shadow:
+                0 1px 0 rgba(42,29,20,0.2),
+                0 25px 40px -15px rgba(42,29,20,0.35);
+            transform: rotate(-1.2deg);
+            transition: transform .4s ease;
+        }
+        article.volume:nth-of-type(even) .cover { transform: rotate(1.2deg); }
+        .cover:hover { transform: rotate(0) scale(1.03); }
+        .cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
         }
 
-        article.volume .meta {
+        .info .num {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            letter-spacing: 0.06em;
+            display: inline-block;
+            padding: 0.25rem 0.8rem;
+            border-radius: 999px;
+            margin-bottom: 0.9rem;
+            color: white;
+        }
+
+        .info h2 {
+            font-family: 'Instrument Serif', serif;
+            font-weight: 400;
+            font-size: clamp(1.7rem, 3.6vw, 2.3rem);
+            line-height: 1.15;
+            margin-bottom: 0.3rem;
+        }
+        .info h2 em { font-style: italic; }
+
+        .info .titolo-orig {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--inchiostro-soft);
+            font-size: 1rem;
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .info .lettura {
             font-size: 0.78rem;
             letter-spacing: 0.18em;
             text-transform: uppercase;
-            color: var(--ottanio);
-            margin-bottom: 1.2rem;
+            color: var(--inchiostro-soft);
+            margin-bottom: 0.5rem;
         }
 
-        article.volume .blocco {
-            border-left: 1px solid var(--soffio);
-            padding: 0.2rem 0 0.2rem 1.6rem;
-            margin: 1.6rem 0;
+        .info .incontro {
+            display: inline-block;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            padding: 0.3rem 0.9rem;
+            border-radius: 999px;
+            margin-bottom: 1.4rem;
+        }
+        .info .incontro.svolto {
+            background: rgba(106,168,103,0.18);
+            color: #406b3f;
+        }
+        .info .incontro.in-arrivo {
+            background: rgba(45,138,166,0.15);
+            color: #1f6379;
+        }
+        .info .incontro.futuro {
+            background: rgba(184,132,25,0.15);
+            color: #845d10;
         }
 
-        article.volume .blocco h3 {
+        .blocco {
+            border-left: 3px solid;
+            padding: 0.4rem 0 0.4rem 1.2rem;
+            margin: 1.3rem 0;
+        }
+        .blocco h3 {
             font-family: 'Inter', sans-serif;
             font-weight: 500;
             font-size: 0.7rem;
             letter-spacing: 0.25em;
             text-transform: uppercase;
-            color: var(--bianco);
-            margin-bottom: 0.8rem;
-            opacity: 0.85;
+            margin-bottom: 0.7rem;
         }
+        .blocco p, .blocco li { color: var(--inchiostro); }
 
-        article.volume .blocco p,
-        article.volume .blocco li {
-            color: rgba(255,255,255,0.8);
-        }
-
-        ul.elenco {
-            list-style: none;
-            padding: 0;
-        }
+        ul.elenco { list-style: none; padding: 0; }
         ul.elenco li {
             padding: 0.55rem 0;
-            border-bottom: 1px dashed var(--soffio);
+            border-bottom: 1px dashed var(--linea);
+            font-size: 0.95rem;
         }
         ul.elenco li:last-child { border-bottom: 0; }
         ul.elenco li .data {
             display: inline-block;
-            font-size: 0.72rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--ottanio);
-            margin-right: 0.8rem;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--inchiostro-soft);
+            margin-right: 0.7rem;
             min-width: 7rem;
         }
 
         audio {
             width: 100%;
             margin-top: 0.4rem;
-            filter: invert(0.85) hue-rotate(180deg);
         }
 
         .placeholder {
-            color: var(--grigio);
+            color: var(--inchiostro-soft);
             font-style: italic;
         }
 
-        article.volume.in-arrivo h2,
-        article.volume.in-arrivo .titolo-orig { opacity: 0.55; }
-        article.volume.in-arrivo .stato {
-            display: inline-block;
-            margin-top: 0.4rem;
-            font-size: 0.72rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--grigio);
-            border: 1px solid var(--soffio);
-            padding: 0.35rem 0.8rem;
-        }
+        /* COLORI PER VOLUME */
+        .v1 .num { background: var(--rosa); }
+        .v1 .blocco { border-color: var(--rosa); }
+        .v1 .blocco h3 { color: var(--rosa); }
+
+        .v2 .num { background: var(--verde); }
+        .v2 .blocco { border-color: var(--verde); }
+        .v2 .blocco h3 { color: var(--verde); }
+
+        .v3 .num { background: var(--oro); }
+        .v3 .blocco { border-color: var(--oro); }
+        .v3 .blocco h3 { color: var(--oro); }
+
+        .v4 .num { background: var(--terracotta); }
+        .v4 .blocco { border-color: var(--terracotta); }
+        .v4 .blocco h3 { color: var(--terracotta); }
+
+        .v5 .num { background: var(--lilla); }
+        .v5 .blocco { border-color: var(--lilla); }
+        .v5 .blocco h3 { color: var(--lilla); }
+
+        .v6 .num { background: var(--pavone); }
+        .v6 .blocco { border-color: var(--pavone); }
+        .v6 .blocco h3 { color: var(--pavone); }
+
+        .v7 .num { background: var(--senape); }
+        .v7 .blocco { border-color: var(--senape); }
+        .v7 .blocco h3 { color: var(--senape); }
 
         footer {
-            margin-top: 7rem;
+            margin-top: 5rem;
             padding-top: 2rem;
-            border-top: 1px solid var(--soffio);
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
+            border-top: 1px solid var(--linea);
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: var(--grigio);
+            color: var(--inchiostro-soft);
             text-align: center;
         }
         footer em {
@@ -196,12 +323,19 @@
             font-style: italic;
             text-transform: none;
             letter-spacing: 0;
-            color: var(--ottanio);
+            color: var(--rosa);
         }
 
-        @media (max-width: 600px) {
-            .wrap { padding: 4rem 1.2rem 5rem; }
-            ul.elenco li .data { display: block; margin-bottom: 0.2rem; }
+        @media (max-width: 720px) {
+            .wrap { padding: 3rem 1.2rem 4rem; }
+            article.volume {
+                grid-template-columns: 1fr;
+                gap: 1.4rem;
+                padding: 2.2rem 0;
+            }
+            .cover { max-width: 200px; }
+            ul.tappe li { flex-direction: column; gap: 0.1rem; }
+            ul.tappe li .quando { min-width: 0; }
         }
     </style>
 </head>
@@ -211,119 +345,167 @@
 
     <header class="kicker">Bookclub Tlon · pagina riservata</header>
 
-    <h1 class="titolo">Alla ricerca<br><em>del tempo perduto</em></h1>
-    <p class="sottotitolo">Un percorso di lettura lungo, condiviso, volume per volume.</p>
+    <h1 class="titolo">Un viaggio<br>nella <em>Recherche</em></h1>
+    <p class="sottotitolo">Marzo 2026 – Settembre 2027. Diciannove mesi per attraversare insieme tutti e sette i volumi della <em>Recherche du temps perdu</em> di Marcel Proust.</p>
 
     <section class="intro">
-        <p>Questa pagina raccoglie i materiali del nostro bookclub dedicato alla <em>Recherche</em> di Marcel Proust. È una pagina riservata a chi partecipa al gruppo: il link circola in chat e nessuno la trova navigando il sito.</p>
-        <p>Qui troverete le registrazioni degli incontri, i link alle newsletter che ho dedicato in passato a ciascun volume, e tutto ciò che vorremo via via aggiungere — citazioni, mappe, appunti, suggerimenti di letture parallele.</p>
+        <p>Questa pagina è uno spazio condiviso del bookclub. Qui troverete le registrazioni delle serate, i link alle newsletter che ho dedicato in passato a ciascun volume, e tutto ciò che vorremo via via aggiungere — passi dei libri, approfondimenti, interrogativi, suggerimenti di letture parallele.</p>
+        <p>Alla fine della lettura di ogni volume ci si vede su Zoom per una serata di confronto. Tutto il resto, in mezzo, accade in chat.</p>
     </section>
 
-    <hr class="linea">
+    <!-- ════════════════════════════════════════════════════════════
+         CALENDARIO COMPLESSIVO
+         ════════════════════════════════════════════════════════════ -->
+    <section class="calendario">
+        <h2>Il <em>calendario</em></h2>
+        <p class="periodo">Marzo 2026 → Settembre 2027</p>
+        <ul class="tappe">
+            <li><span class="quando">Marzo 2026</span><span class="cosa">Dalla parte di Swann · 1 mese</span></li>
+            <li><span class="quando">Aprile – Giugno 2026</span><span class="cosa">All'ombra delle fanciulle in fiore · 3 mesi</span></li>
+            <li><span class="quando">Luglio – Ottobre 2026</span><span class="cosa">I Guermantes · 4 mesi</span></li>
+            <li><span class="quando">Novembre 2026 – Gennaio 2027</span><span class="cosa">Sodoma e Gomorra · 3 mesi</span></li>
+            <li><span class="quando">Febbraio – Aprile 2027</span><span class="cosa">La prigioniera · 3 mesi</span></li>
+            <li><span class="quando">Maggio – Giugno 2027</span><span class="cosa">Albertine scomparsa · 2 mesi</span></li>
+            <li><span class="quando">Luglio – Settembre 2027</span><span class="cosa">Il tempo ritrovato · 3 mesi</span></li>
+        </ul>
+    </section>
 
     <!-- ════════════════════════════════════════════════════════════
          VOLUME I — Dalla parte di Swann
          ════════════════════════════════════════════════════════════ -->
-    <article class="volume">
-        <span class="num">Volume I</span>
-        <h2>Dalla parte di <em>Swann</em></h2>
-        <span class="titolo-orig">Du côté de chez Swann · 1913</span>
+    <article class="volume v1">
+        <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-i-dalla-parte-di-swann-marcel-proust/" target="_blank" rel="noopener" style="border:0">
+            <img src="https://www.oscarmondadori.it/content/uploads/2024/07/978880479593GRA.webp" alt="Copertina Mondadori — Dalla parte di Swann" loading="lazy">
+        </a>
+        <div class="info">
+            <span class="num">Volume I</span>
+            <h2>Dalla parte di <em>Swann</em></h2>
+            <span class="titolo-orig">Du côté de chez Swann · 1913</span>
+            <p class="lettura">Lettura · Marzo 2026</p>
+            <span class="incontro svolto">Primo incontro · 4 maggio 2026 · svolto</span>
 
-        <p class="meta">Primo incontro · già svolto</p>
-
-        <!-- REGISTRAZIONE AUDIO
-             Quando hai il file, sostituisci il blocco placeholder qui sotto con:
-             <audio controls preload="metadata" src="URL_O_PERCORSO_FILE"></audio>
-             Oppure incorpora il player di Spotify / SoundCloud / Drive. -->
-        <div class="blocco">
-            <h3>Registrazione</h3>
-            <p class="placeholder">In arrivo: l'audio dell'incontro sarà caricato qui.</p>
-        </div>
-
-        <!-- NEWSLETTER PRECEDENTI
-             Per aggiungere una voce, copia una <li> e cambia link, titolo e data. -->
-        <div class="blocco">
-            <h3>Newsletter su questo volume</h3>
-            <ul class="elenco">
-                <li class="placeholder">In arrivo: i link alle newsletter dedicate a Swann.</li>
+            <!-- REGISTRAZIONE AUDIO -->
+            <div class="blocco">
+                <h3>Registrazione</h3>
+                <p class="placeholder">In arrivo: l'audio dell'incontro sarà caricato qui.</p>
                 <!-- ESEMPIO:
-                <li><span class="data">Marzo 2024</span><a href="https://www.tlonletter.it/...">Titolo della newsletter</a></li>
+                <audio controls preload="metadata" src="URL_FILE_AUDIO"></audio>
+                <p><a href="URL_DRIVE_O_SPOTIFY">Ascolta anche qui</a></p>
                 -->
-            </ul>
-        </div>
+            </div>
 
-        <!-- APPUNTI / NOTE A LATERE (opzionale)
-        <div class="blocco">
-            <h3>Note</h3>
-            <p>...</p>
+            <!-- NEWSLETTER PRECEDENTI -->
+            <div class="blocco">
+                <h3>Newsletter su Swann</h3>
+                <ul class="elenco">
+                    <li class="placeholder">In arrivo: i link alle newsletter dedicate al primo volume.</li>
+                    <!-- ESEMPIO:
+                    <li><span class="data">Marzo 2024</span><a href="https://www.tlonletter.it/...">Titolo della newsletter</a></li>
+                    -->
+                </ul>
+            </div>
         </div>
-        -->
     </article>
 
     <!-- ════════════════════════════════════════════════════════════
          VOLUME II — All'ombra delle fanciulle in fiore
          ════════════════════════════════════════════════════════════ -->
-    <article class="volume">
-        <span class="num">Volume II</span>
-        <h2>All'ombra delle <em>fanciulle in fiore</em></h2>
-        <span class="titolo-orig">À l'ombre des jeunes filles en fleurs · 1919</span>
+    <article class="volume v2">
+        <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-ii-allombra-delle-fanciulle-in-fiore-marcel-proust/" target="_blank" rel="noopener" style="border:0">
+            <img src="https://www.oscarmondadori.it/content/uploads/2025/03/978880480383HIG.webp" alt="Copertina Mondadori — All'ombra delle fanciulle in fiore" loading="lazy">
+        </a>
+        <div class="info">
+            <span class="num">Volume II</span>
+            <h2>All'ombra delle <em>fanciulle in fiore</em></h2>
+            <span class="titolo-orig">À l'ombre des jeunes filles en fleurs · 1919</span>
+            <p class="lettura">Lettura · Aprile – Giugno 2026</p>
+            <span class="incontro in-arrivo">Secondo incontro · intorno al 25 agosto 2026</span>
 
-        <p class="meta">Secondo incontro · fine agosto 2026</p>
-
-        <div class="blocco">
-            <h3>Materiali</h3>
-            <p class="placeholder">In preparazione.</p>
+            <div class="blocco">
+                <h3>Materiali</h3>
+                <p class="placeholder">In preparazione.</p>
+            </div>
         </div>
     </article>
 
     <!-- ════════════════════════════════════════════════════════════
          VOLUME III — I Guermantes
          ════════════════════════════════════════════════════════════ -->
-    <article class="volume in-arrivo">
-        <span class="num">Volume III</span>
-        <h2>I <em>Guermantes</em></h2>
-        <span class="titolo-orig">Le Côté de Guermantes · 1920–1921</span>
-        <span class="stato">In arrivo</span>
+    <article class="volume v3">
+        <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-iii-la-parte-di-guermantes-marcel-proust/" target="_blank" rel="noopener" style="border:0">
+            <img src="https://www.oscarmondadori.it/content/uploads/2025/08/978880481291HIG.webp" alt="Copertina Mondadori — I Guermantes" loading="lazy">
+        </a>
+        <div class="info">
+            <span class="num">Volume III</span>
+            <h2>I <em>Guermantes</em></h2>
+            <span class="titolo-orig">Le Côté de Guermantes · 1920–1921</span>
+            <p class="lettura">Lettura · Luglio – Ottobre 2026</p>
+            <span class="incontro futuro">Terzo incontro · fine ottobre 2026</span>
+        </div>
     </article>
 
     <!-- ════════════════════════════════════════════════════════════
          VOLUME IV — Sodoma e Gomorra
          ════════════════════════════════════════════════════════════ -->
-    <article class="volume in-arrivo">
-        <span class="num">Volume IV</span>
-        <h2>Sodoma e <em>Gomorra</em></h2>
-        <span class="titolo-orig">Sodome et Gomorrhe · 1921–1922</span>
-        <span class="stato">In arrivo</span>
+    <article class="volume v4">
+        <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-iv-sodoma-e-gomorra-marcel-proust/" target="_blank" rel="noopener" style="border:0">
+            <img src="https://www.oscarmondadori.it/content/uploads/2024/07/978880479673GRA.webp" alt="Copertina Mondadori — Sodoma e Gomorra" loading="lazy">
+        </a>
+        <div class="info">
+            <span class="num">Volume IV</span>
+            <h2>Sodoma e <em>Gomorra</em></h2>
+            <span class="titolo-orig">Sodome et Gomorrhe · 1921–1922</span>
+            <p class="lettura">Lettura · Novembre 2026 – Gennaio 2027</p>
+            <span class="incontro futuro">Quarto incontro · fine gennaio 2027</span>
+        </div>
     </article>
 
     <!-- ════════════════════════════════════════════════════════════
          VOLUME V — La prigioniera
          ════════════════════════════════════════════════════════════ -->
-    <article class="volume in-arrivo">
-        <span class="num">Volume V</span>
-        <h2>La <em>prigioniera</em></h2>
-        <span class="titolo-orig">La Prisonnière · 1923</span>
-        <span class="stato">In arrivo</span>
+    <article class="volume v5">
+        <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-v-la-prigioniera-marcel-proust/" target="_blank" rel="noopener" style="border:0">
+            <img src="https://www.oscarmondadori.it/content/uploads/2025/10/978880481332HIG.webp" alt="Copertina Mondadori — La prigioniera" loading="lazy">
+        </a>
+        <div class="info">
+            <span class="num">Volume V</span>
+            <h2>La <em>prigioniera</em></h2>
+            <span class="titolo-orig">La Prisonnière · 1923</span>
+            <p class="lettura">Lettura · Febbraio – Aprile 2027</p>
+            <span class="incontro futuro">Quinto incontro · fine aprile 2027</span>
+        </div>
     </article>
 
     <!-- ════════════════════════════════════════════════════════════
          VOLUME VI — Albertine scomparsa
          ════════════════════════════════════════════════════════════ -->
-    <article class="volume in-arrivo">
-        <span class="num">Volume VI</span>
-        <h2>Albertine <em>scomparsa</em></h2>
-        <span class="titolo-orig">Albertine disparue · 1925</span>
-        <span class="stato">In arrivo</span>
+    <article class="volume v6">
+        <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-vi-albertine-scomparsa-marcel-proust/" target="_blank" rel="noopener" style="border:0">
+            <img src="https://www.oscarmondadori.it/content/uploads/2020/12/978880473840HIG.webp" alt="Copertina Mondadori — Albertine scomparsa" loading="lazy">
+        </a>
+        <div class="info">
+            <span class="num">Volume VI</span>
+            <h2>Albertine <em>scomparsa</em></h2>
+            <span class="titolo-orig">Albertine disparue · 1925</span>
+            <p class="lettura">Lettura · Maggio – Giugno 2027</p>
+            <span class="incontro futuro">Sesto incontro · fine giugno 2027</span>
+        </div>
     </article>
 
     <!-- ════════════════════════════════════════════════════════════
          VOLUME VII — Il tempo ritrovato
          ════════════════════════════════════════════════════════════ -->
-    <article class="volume in-arrivo">
-        <span class="num">Volume VII</span>
-        <h2>Il tempo <em>ritrovato</em></h2>
-        <span class="titolo-orig">Le Temps retrouvé · 1927</span>
-        <span class="stato">In arrivo</span>
+    <article class="volume v7">
+        <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-vii-il-tempo-ritrovato-marcel-proust/" target="_blank" rel="noopener" style="border:0">
+            <img src="https://www.oscarmondadori.it/content/uploads/2024/09/978880479768HIG.webp" alt="Copertina Mondadori — Il tempo ritrovato" loading="lazy">
+        </a>
+        <div class="info">
+            <span class="num">Volume VII</span>
+            <h2>Il tempo <em>ritrovato</em></h2>
+            <span class="titolo-orig">Le Temps retrouvé · 1927</span>
+            <p class="lettura">Lettura · Luglio – Settembre 2027</p>
+            <span class="incontro futuro">Settimo incontro · fine settembre 2027</span>
+        </div>
     </article>
 
     <footer>
