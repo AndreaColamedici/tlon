@@ -86,7 +86,6 @@
             margin-bottom: 1rem;
         }
         h1.titolo em { font-style: italic; color: var(--rosa); }
-        h1.titolo .stella { color: var(--oro); font-style: normal; }
 
         p.sottotitolo {
             font-family: 'Instrument Serif', serif;
@@ -141,7 +140,7 @@
             font-family: 'Instrument Serif', serif;
             font-style: italic;
             color: var(--terracotta);
-            min-width: 12rem;
+            min-width: 13rem;
         }
         ul.tappe li .cosa { flex: 1; }
 
@@ -255,9 +254,10 @@
 
         ul.elenco { list-style: none; padding: 0; }
         ul.elenco li {
-            padding: 0.55rem 0;
+            padding: 0.6rem 0;
             border-bottom: 1px dashed var(--linea);
-            font-size: 0.95rem;
+            font-size: 0.96rem;
+            line-height: 1.5;
         }
         ul.elenco li:last-child { border-bottom: 0; }
         ul.elenco li .data {
@@ -265,8 +265,14 @@
             font-family: 'Instrument Serif', serif;
             font-style: italic;
             color: var(--inchiostro-soft);
-            margin-right: 0.7rem;
-            min-width: 7rem;
+            margin-right: 0.5rem;
+        }
+        ul.elenco li .fonte {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--inchiostro-soft);
+            margin-top: 0.15rem;
+            letter-spacing: 0.04em;
         }
 
         audio {
@@ -308,6 +314,36 @@
         .v7 .blocco { border-color: var(--senape); }
         .v7 .blocco h3 { color: var(--senape); }
 
+        /* SGUARDI SU PROUST */
+        section.sguardi {
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--linea);
+        }
+        section.sguardi h2 {
+            font-family: 'Instrument Serif', serif;
+            font-weight: 400;
+            font-size: clamp(1.9rem, 4vw, 2.6rem);
+            margin-bottom: 0.4rem;
+        }
+        section.sguardi h2 em { font-style: italic; color: var(--lilla); }
+        section.sguardi .occhiello {
+            font-size: 0.78rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--inchiostro-soft);
+            margin-bottom: 1.8rem;
+        }
+        section.sguardi ul.elenco li {
+            padding: 0.95rem 0;
+        }
+        section.sguardi ul.elenco li .titolo-risorsa {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.15rem;
+            line-height: 1.3;
+        }
+        section.sguardi ul.elenco li .titolo-risorsa em { font-style: italic; }
+
         footer {
             margin-top: 5rem;
             padding-top: 2rem;
@@ -346,7 +382,7 @@
     <header class="kicker">Bookclub Tlon · pagina riservata</header>
 
     <h1 class="titolo">Un viaggio<br>nella <em>Recherche</em></h1>
-    <p class="sottotitolo">Marzo 2026 – Settembre 2027. Diciannove mesi per attraversare insieme tutti e sette i volumi della <em>Recherche du temps perdu</em> di Marcel Proust.</p>
+    <p class="sottotitolo">Marzo 2026 – Novembre 2027. Un piano di lettura lungo per attraversare insieme tutti e sette i volumi della <em>Recherche du temps perdu</em> di Marcel Proust.</p>
 
     <section class="intro">
         <p>Questa pagina è uno spazio condiviso del bookclub. Qui troverete le registrazioni delle serate, i link alle newsletter che ho dedicato in passato a ciascun volume, e tutto ciò che vorremo via via aggiungere — passi dei libri, approfondimenti, interrogativi, suggerimenti di letture parallele.</p>
@@ -354,19 +390,19 @@
     </section>
 
     <!-- ════════════════════════════════════════════════════════════
-         CALENDARIO COMPLESSIVO
+         CALENDARIO COMPLESSIVO (aggiornato al ritmo reale)
          ════════════════════════════════════════════════════════════ -->
     <section class="calendario">
         <h2>Il <em>calendario</em></h2>
-        <p class="periodo">Marzo 2026 → Settembre 2027</p>
+        <p class="periodo">Marzo 2026 → Novembre 2027</p>
         <ul class="tappe">
-            <li><span class="quando">Marzo 2026</span><span class="cosa">Dalla parte di Swann · 1 mese</span></li>
-            <li><span class="quando">Aprile – Giugno 2026</span><span class="cosa">All'ombra delle fanciulle in fiore · 3 mesi</span></li>
-            <li><span class="quando">Luglio – Ottobre 2026</span><span class="cosa">I Guermantes · 4 mesi</span></li>
-            <li><span class="quando">Novembre 2026 – Gennaio 2027</span><span class="cosa">Sodoma e Gomorra · 3 mesi</span></li>
-            <li><span class="quando">Febbraio – Aprile 2027</span><span class="cosa">La prigioniera · 3 mesi</span></li>
-            <li><span class="quando">Maggio – Giugno 2027</span><span class="cosa">Albertine scomparsa · 2 mesi</span></li>
-            <li><span class="quando">Luglio – Settembre 2027</span><span class="cosa">Il tempo ritrovato · 3 mesi</span></li>
+            <li><span class="quando">Marzo – Aprile 2026</span><span class="cosa">Dalla parte di Swann · 2 mesi</span></li>
+            <li><span class="quando">Maggio – Agosto 2026</span><span class="cosa">All'ombra delle fanciulle in fiore · 4 mesi</span></li>
+            <li><span class="quando">Settembre – Dicembre 2026</span><span class="cosa">I Guermantes · 4 mesi</span></li>
+            <li><span class="quando">Gennaio – Marzo 2027</span><span class="cosa">Sodoma e Gomorra · 3 mesi</span></li>
+            <li><span class="quando">Aprile – Giugno 2027</span><span class="cosa">La prigioniera · 3 mesi</span></li>
+            <li><span class="quando">Luglio – Agosto 2027</span><span class="cosa">Albertine scomparsa · 2 mesi</span></li>
+            <li><span class="quando">Settembre – Novembre 2027</span><span class="cosa">Il tempo ritrovato · 3 mesi</span></li>
         </ul>
     </section>
 
@@ -381,27 +417,23 @@
             <span class="num">Volume I</span>
             <h2>Dalla parte di <em>Swann</em></h2>
             <span class="titolo-orig">Du côté de chez Swann · 1913</span>
-            <p class="lettura">Lettura · Marzo 2026</p>
+            <p class="lettura">Lettura · Marzo – Aprile 2026</p>
             <span class="incontro svolto">Primo incontro · 4 maggio 2026 · svolto</span>
 
             <!-- REGISTRAZIONE AUDIO -->
             <div class="blocco">
                 <h3>Registrazione</h3>
                 <p class="placeholder">In arrivo: l'audio dell'incontro sarà caricato qui.</p>
-                <!-- ESEMPIO:
-                <audio controls preload="metadata" src="URL_FILE_AUDIO"></audio>
-                <p><a href="URL_DRIVE_O_SPOTIFY">Ascolta anche qui</a></p>
-                -->
             </div>
 
             <!-- NEWSLETTER PRECEDENTI -->
             <div class="blocco">
                 <h3>Newsletter su Swann</h3>
                 <ul class="elenco">
-                    <li class="placeholder">In arrivo: i link alle newsletter dedicate al primo volume.</li>
-                    <!-- ESEMPIO:
-                    <li><span class="data">Marzo 2024</span><a href="https://www.tlonletter.it/...">Titolo della newsletter</a></li>
-                    -->
+                    <li><a href="https://www.tlonletter.it/p/cosa-nasconde-combray-dalla-parte" target="_blank" rel="noopener">Cosa nasconde Combray? — Dalla parte di Swann #1</a></li>
+                    <li><a href="https://www.tlonletter.it/p/che-amore-e-quello-di-swann-recherche" target="_blank" rel="noopener">Che amore è quello di Swann? — Recherche #2</a></li>
+                    <li><a href="https://www.tlonletter.it/p/arriva-gilberte-recherche-3-link" target="_blank" rel="noopener">Arriva Gilberte — Recherche #3 (con il link per la serata)</a></li>
+                    <li><a href="https://www.tlonletter.it/p/i-quaderni-di-james-joyce-e-il-trasloco" target="_blank" rel="noopener">I quaderni di James Joyce e il trasloco</a></li>
                 </ul>
             </div>
         </div>
@@ -418,7 +450,7 @@
             <span class="num">Volume II</span>
             <h2>All'ombra delle <em>fanciulle in fiore</em></h2>
             <span class="titolo-orig">À l'ombre des jeunes filles en fleurs · 1919</span>
-            <p class="lettura">Lettura · Aprile – Giugno 2026</p>
+            <p class="lettura">Lettura · Maggio – Agosto 2026</p>
             <span class="incontro in-arrivo">Secondo incontro · intorno al 25 agosto 2026</span>
 
             <div class="blocco">
@@ -439,8 +471,8 @@
             <span class="num">Volume III</span>
             <h2>I <em>Guermantes</em></h2>
             <span class="titolo-orig">Le Côté de Guermantes · 1920–1921</span>
-            <p class="lettura">Lettura · Luglio – Ottobre 2026</p>
-            <span class="incontro futuro">Terzo incontro · fine ottobre 2026</span>
+            <p class="lettura">Lettura · Settembre – Dicembre 2026</p>
+            <span class="incontro futuro">Terzo incontro · fine dicembre 2026</span>
         </div>
     </article>
 
@@ -455,8 +487,8 @@
             <span class="num">Volume IV</span>
             <h2>Sodoma e <em>Gomorra</em></h2>
             <span class="titolo-orig">Sodome et Gomorrhe · 1921–1922</span>
-            <p class="lettura">Lettura · Novembre 2026 – Gennaio 2027</p>
-            <span class="incontro futuro">Quarto incontro · fine gennaio 2027</span>
+            <p class="lettura">Lettura · Gennaio – Marzo 2027</p>
+            <span class="incontro futuro">Quarto incontro · fine marzo 2027</span>
         </div>
     </article>
 
@@ -471,8 +503,8 @@
             <span class="num">Volume V</span>
             <h2>La <em>prigioniera</em></h2>
             <span class="titolo-orig">La Prisonnière · 1923</span>
-            <p class="lettura">Lettura · Febbraio – Aprile 2027</p>
-            <span class="incontro futuro">Quinto incontro · fine aprile 2027</span>
+            <p class="lettura">Lettura · Aprile – Giugno 2027</p>
+            <span class="incontro futuro">Quinto incontro · fine giugno 2027</span>
         </div>
     </article>
 
@@ -487,8 +519,8 @@
             <span class="num">Volume VI</span>
             <h2>Albertine <em>scomparsa</em></h2>
             <span class="titolo-orig">Albertine disparue · 1925</span>
-            <p class="lettura">Lettura · Maggio – Giugno 2027</p>
-            <span class="incontro futuro">Sesto incontro · fine giugno 2027</span>
+            <p class="lettura">Lettura · Luglio – Agosto 2027</p>
+            <span class="incontro futuro">Sesto incontro · fine agosto 2027</span>
         </div>
     </article>
 
@@ -503,10 +535,32 @@
             <span class="num">Volume VII</span>
             <h2>Il tempo <em>ritrovato</em></h2>
             <span class="titolo-orig">Le Temps retrouvé · 1927</span>
-            <p class="lettura">Lettura · Luglio – Settembre 2027</p>
-            <span class="incontro futuro">Settimo incontro · fine settembre 2027</span>
+            <p class="lettura">Lettura · Settembre – Novembre 2027</p>
+            <span class="incontro futuro">Settimo incontro · fine novembre 2027</span>
         </div>
     </article>
+
+    <!-- ════════════════════════════════════════════════════════════
+         SGUARDI SU PROUST — risorse trasversali
+         ════════════════════════════════════════════════════════════ -->
+    <section class="sguardi">
+        <p class="occhiello">Sguardi su Proust</p>
+        <h2>Letture e <em>ascolti</em> a margine</h2>
+        <ul class="elenco">
+            <li>
+                <span class="titolo-risorsa"><a href="https://www.youtube.com/watch?v=zShXIDeqrhg" target="_blank" rel="noopener">Alessandro Baricco legge e racconta Proust</a></span>
+                <span class="fonte">Video · YouTube</span>
+            </li>
+            <li>
+                <span class="titolo-risorsa"><a href="https://allaenne.sns.it/video/non-era-nemmeno-il-mio-tipo-sentimenti-e-risentimenti-proustiani/" target="_blank" rel="noopener">Maurizio Ferraris · "Non era nemmeno il mio tipo. Sentimenti e risentimenti proustiani"</a></span>
+                <span class="fonte">Lezione · alla Enne, Scuola Normale Superiore</span>
+            </li>
+            <li>
+                <span class="titolo-risorsa"><a href="https://shop.tlon.it/wp-content/uploads/2021/03/AnneCarsonESTRATTO.pdf" target="_blank" rel="noopener">Anne Carson · <em>The Albertine Workout</em> (estratto)</a></span>
+                <span class="fonte">PDF · Tlon Edizioni</span>
+            </li>
+        </ul>
+    </section>
 
     <footer>
         <p>Bookclub <em>Tlon</em> · pagina riservata</p>
