@@ -64,7 +64,6 @@
         }
         a:hover { color: var(--rosa); border-color: var(--rosa); }
 
-        /* HEADER */
         header.kicker {
             display: inline-block;
             font-size: 0.7rem;
@@ -102,7 +101,6 @@
             color: var(--inchiostro);
         }
 
-        /* CALENDARIO */
         section.calendario {
             background: var(--crema-scura);
             border-radius: 18px;
@@ -144,7 +142,6 @@
         }
         ul.tappe li .cosa { flex: 1; }
 
-        /* VOLUME */
         article.volume {
             display: grid;
             grid-template-columns: 200px 1fr;
@@ -224,18 +221,9 @@
             border-radius: 999px;
             margin-bottom: 1.4rem;
         }
-        .info .incontro.svolto {
-            background: rgba(106,168,103,0.18);
-            color: #406b3f;
-        }
-        .info .incontro.in-arrivo {
-            background: rgba(45,138,166,0.15);
-            color: #1f6379;
-        }
-        .info .incontro.futuro {
-            background: rgba(184,132,25,0.15);
-            color: #845d10;
-        }
+        .info .incontro.svolto { background: rgba(106,168,103,0.18); color: #406b3f; }
+        .info .incontro.in-arrivo { background: rgba(45,138,166,0.15); color: #1f6379; }
+        .info .incontro.futuro { background: rgba(184,132,25,0.15); color: #845d10; }
 
         .blocco {
             border-left: 3px solid;
@@ -278,6 +266,7 @@
         audio {
             width: 100%;
             margin-top: 0.4rem;
+            border-radius: 6px;
         }
 
         .placeholder {
@@ -285,36 +274,28 @@
             font-style: italic;
         }
 
-        /* COLORI PER VOLUME */
         .v1 .num { background: var(--rosa); }
         .v1 .blocco { border-color: var(--rosa); }
         .v1 .blocco h3 { color: var(--rosa); }
-
         .v2 .num { background: var(--verde); }
         .v2 .blocco { border-color: var(--verde); }
         .v2 .blocco h3 { color: var(--verde); }
-
         .v3 .num { background: var(--oro); }
         .v3 .blocco { border-color: var(--oro); }
         .v3 .blocco h3 { color: var(--oro); }
-
         .v4 .num { background: var(--terracotta); }
         .v4 .blocco { border-color: var(--terracotta); }
         .v4 .blocco h3 { color: var(--terracotta); }
-
         .v5 .num { background: var(--lilla); }
         .v5 .blocco { border-color: var(--lilla); }
         .v5 .blocco h3 { color: var(--lilla); }
-
         .v6 .num { background: var(--pavone); }
         .v6 .blocco { border-color: var(--pavone); }
         .v6 .blocco h3 { color: var(--pavone); }
-
         .v7 .num { background: var(--senape); }
         .v7 .blocco { border-color: var(--senape); }
         .v7 .blocco h3 { color: var(--senape); }
 
-        /* SGUARDI SU PROUST */
         section.sguardi {
             margin-top: 5rem;
             padding-top: 3rem;
@@ -334,9 +315,7 @@
             color: var(--inchiostro-soft);
             margin-bottom: 1.8rem;
         }
-        section.sguardi ul.elenco li {
-            padding: 0.95rem 0;
-        }
+        section.sguardi ul.elenco li { padding: 0.95rem 0; }
         section.sguardi ul.elenco li .titolo-risorsa {
             font-family: 'Instrument Serif', serif;
             font-size: 1.15rem;
@@ -389,9 +368,6 @@
         <p>Alla fine della lettura di ogni volume ci si vede su Zoom per una serata di confronto. Tutto il resto, in mezzo, accade in chat.</p>
     </section>
 
-    <!-- ════════════════════════════════════════════════════════════
-         CALENDARIO COMPLESSIVO (aggiornato al ritmo reale)
-         ════════════════════════════════════════════════════════════ -->
     <section class="calendario">
         <h2>Il <em>calendario</em></h2>
         <p class="periodo">Marzo 2026 → Novembre 2027</p>
@@ -406,9 +382,6 @@
         </ul>
     </section>
 
-    <!-- ════════════════════════════════════════════════════════════
-         VOLUME I — Dalla parte di Swann
-         ════════════════════════════════════════════════════════════ -->
     <article class="volume v1">
         <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-i-dalla-parte-di-swann-marcel-proust/" target="_blank" rel="noopener" style="border:0">
             <img src="https://www.oscarmondadori.it/content/uploads/2024/07/978880479593GRA.webp" alt="Copertina Mondadori — Dalla parte di Swann" loading="lazy">
@@ -420,13 +393,12 @@
             <p class="lettura">Lettura · Marzo – Aprile 2026</p>
             <span class="incontro svolto">Primo incontro · 4 maggio 2026 · svolto</span>
 
-            <!-- REGISTRAZIONE AUDIO -->
             <div class="blocco">
                 <h3>Registrazione</h3>
-                <p class="placeholder">In arrivo: l'audio dell'incontro sarà caricato qui.</p>
+                <audio controls preload="metadata" src="assets/recherche/audio/01-swann-2026-05-04.mp3"></audio>
+                <p style="font-size:0.8rem;color:var(--inchiostro-soft);margin-top:0.5rem;font-style:italic">Incontro Zoom del 4 maggio 2026 · circa 1h 37'</p>
             </div>
 
-            <!-- NEWSLETTER PRECEDENTI -->
             <div class="blocco">
                 <h3>Newsletter su Swann</h3>
                 <ul class="elenco">
@@ -439,9 +411,6 @@
         </div>
     </article>
 
-    <!-- ════════════════════════════════════════════════════════════
-         VOLUME II — All'ombra delle fanciulle in fiore
-         ════════════════════════════════════════════════════════════ -->
     <article class="volume v2">
         <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-ii-allombra-delle-fanciulle-in-fiore-marcel-proust/" target="_blank" rel="noopener" style="border:0">
             <img src="https://www.oscarmondadori.it/content/uploads/2025/03/978880480383HIG.webp" alt="Copertina Mondadori — All'ombra delle fanciulle in fiore" loading="lazy">
@@ -460,9 +429,6 @@
         </div>
     </article>
 
-    <!-- ════════════════════════════════════════════════════════════
-         VOLUME III — I Guermantes
-         ════════════════════════════════════════════════════════════ -->
     <article class="volume v3">
         <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-iii-la-parte-di-guermantes-marcel-proust/" target="_blank" rel="noopener" style="border:0">
             <img src="https://www.oscarmondadori.it/content/uploads/2025/08/978880481291HIG.webp" alt="Copertina Mondadori — I Guermantes" loading="lazy">
@@ -476,9 +442,6 @@
         </div>
     </article>
 
-    <!-- ════════════════════════════════════════════════════════════
-         VOLUME IV — Sodoma e Gomorra
-         ════════════════════════════════════════════════════════════ -->
     <article class="volume v4">
         <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-iv-sodoma-e-gomorra-marcel-proust/" target="_blank" rel="noopener" style="border:0">
             <img src="https://www.oscarmondadori.it/content/uploads/2024/07/978880479673GRA.webp" alt="Copertina Mondadori — Sodoma e Gomorra" loading="lazy">
@@ -492,9 +455,6 @@
         </div>
     </article>
 
-    <!-- ════════════════════════════════════════════════════════════
-         VOLUME V — La prigioniera
-         ════════════════════════════════════════════════════════════ -->
     <article class="volume v5">
         <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-v-la-prigioniera-marcel-proust/" target="_blank" rel="noopener" style="border:0">
             <img src="https://www.oscarmondadori.it/content/uploads/2025/10/978880481332HIG.webp" alt="Copertina Mondadori — La prigioniera" loading="lazy">
@@ -508,9 +468,6 @@
         </div>
     </article>
 
-    <!-- ════════════════════════════════════════════════════════════
-         VOLUME VI — Albertine scomparsa
-         ════════════════════════════════════════════════════════════ -->
     <article class="volume v6">
         <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-vi-albertine-scomparsa-marcel-proust/" target="_blank" rel="noopener" style="border:0">
             <img src="https://www.oscarmondadori.it/content/uploads/2020/12/978880473840HIG.webp" alt="Copertina Mondadori — Albertine scomparsa" loading="lazy">
@@ -524,9 +481,6 @@
         </div>
     </article>
 
-    <!-- ════════════════════════════════════════════════════════════
-         VOLUME VII — Il tempo ritrovato
-         ════════════════════════════════════════════════════════════ -->
     <article class="volume v7">
         <a class="cover" href="https://www.oscarmondadori.it/libri/alla-ricerca-del-tempo-perduto-vii-il-tempo-ritrovato-marcel-proust/" target="_blank" rel="noopener" style="border:0">
             <img src="https://www.oscarmondadori.it/content/uploads/2024/09/978880479768HIG.webp" alt="Copertina Mondadori — Il tempo ritrovato" loading="lazy">
@@ -540,9 +494,6 @@
         </div>
     </article>
 
-    <!-- ════════════════════════════════════════════════════════════
-         SGUARDI SU PROUST — risorse trasversali
-         ════════════════════════════════════════════════════════════ -->
     <section class="sguardi">
         <p class="occhiello">Sguardi su Proust</p>
         <h2>Letture e <em>ascolti</em> a margine</h2>
