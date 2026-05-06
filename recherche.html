@@ -101,6 +101,62 @@
             color: var(--inchiostro);
         }
 
+        /* CHAT CALLOUT */
+        aside.chat-callout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(45,138,166,0.13), rgba(217,74,111,0.10));
+            border: 1px solid rgba(45,138,166,0.20);
+            border-radius: 22px;
+            padding: 1.8rem 2rem;
+            margin: 2.5rem 0 1.5rem;
+            box-shadow: 0 20px 50px -30px rgba(45,138,166,0.4);
+        }
+        .chat-callout-text { flex: 1; min-width: 240px; }
+        .chat-callout-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--pavone);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .chat-callout-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.35rem, 2.6vw, 1.7rem);
+            line-height: 1.2;
+            margin-bottom: 0.4rem;
+        }
+        .chat-callout-title em { font-style: italic; color: var(--pavone); }
+        .chat-callout-sub {
+            font-size: 0.95rem;
+            color: var(--inchiostro-soft);
+            line-height: 1.55;
+        }
+        .chat-callout-cta {
+            display: inline-block;
+            background: var(--pavone);
+            color: white !important;
+            border: none !important;
+            padding: 0.95rem 1.5rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            letter-spacing: 0.06em;
+            font-weight: 500;
+            transition: transform .25s, background .25s, box-shadow .25s;
+            box-shadow: 0 8px 18px -8px rgba(45,138,166,0.6);
+            white-space: nowrap;
+        }
+        .chat-callout-cta:hover {
+            background: #1f6379;
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -10px rgba(45,138,166,0.7);
+        }
+
         section.calendario {
             background: var(--crema-scura);
             border-radius: 18px;
@@ -351,6 +407,12 @@
             .cover { max-width: 200px; }
             ul.tappe li { flex-direction: column; gap: 0.1rem; }
             ul.tappe li .quando { min-width: 0; }
+            aside.chat-callout {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1.5rem 1.4rem;
+            }
+            .chat-callout-cta { width: 100%; text-align: center; }
         }
     </style>
 </head>
@@ -364,9 +426,21 @@
     <p class="sottotitolo">Marzo 2026 – Novembre 2027. Un piano di lettura lungo per attraversare insieme tutti e sette i volumi della <em>Recherche du temps perdu</em> di Marcel Proust.</p>
 
     <section class="intro">
-        <p>Questa pagina è uno spazio condiviso del bookclub. Qui troverete le registrazioni delle serate, i link alle newsletter che ho dedicato in passato a ciascun volume, e tutto ciò che vorremo via via aggiungere — passi dei libri, approfondimenti, interrogativi, suggerimenti di letture parallele.</p>
-        <p>Alla fine della lettura di ogni volume ci si vede su Zoom per una serata di confronto. Tutto il resto, in mezzo, accade in chat.</p>
+        <p>Questa pagina è una piccola biblioteca condivisa del bookclub. Qui troverete le registrazioni delle serate di confronto, i link alle newsletter dedicate ai vari volumi, e i materiali a margine che decideremo di tenere a portata di mano: video, lezioni, saggi, suggerimenti di lettura paralleli a Proust.</p>
+        <p>Le conversazioni vere — passi che ci hanno colpito, citazioni, domande, scintille — vivono altrove. Vivono nella chat Telegram. Alla fine della lettura di ogni volume ci si vede su Zoom per una serata di confronto.</p>
     </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         CHAT TELEGRAM — il cuore della conversazione
+         ════════════════════════════════════════════════════════════ -->
+    <aside class="chat-callout">
+        <div class="chat-callout-text">
+            <p class="chat-callout-eyebrow">Dove succede tutto</p>
+            <p class="chat-callout-title">La conversazione vive nella <em>chat Telegram</em></p>
+            <p class="chat-callout-sub">È lì che il bookclub respira giorno per giorno: passi che ci hanno colpito, domande, scoperte, scintille a margine.</p>
+        </div>
+        <a class="chat-callout-cta" href="https://t.me/+wQoR7Nws0is0MWQ0" target="_blank" rel="noopener">Entra nella chat →</a>
+    </aside>
 
     <section class="calendario">
         <h2>Il <em>calendario</em></h2>
@@ -421,11 +495,6 @@
             <span class="titolo-orig">À l'ombre des jeunes filles en fleurs · 1919</span>
             <p class="lettura">Lettura · Maggio – Agosto 2026</p>
             <span class="incontro in-arrivo">Secondo incontro · intorno al 25 agosto 2026</span>
-
-            <div class="blocco">
-                <h3>Materiali</h3>
-                <p class="placeholder">In preparazione.</p>
-            </div>
         </div>
     </article>
 
