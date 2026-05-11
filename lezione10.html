@@ -995,19 +995,20 @@
     <p class="hero__index-label">Indice</p>
     <p class="hero__index-list">
       <span>i.</span>Il tema della lezione<br>
-      <span>ii.</span>Come funziona un modello<br>
-      <span>iii.</span>Perché tende al cliché<br>
-      <span>iv.</span>La conversazione lunga<br>
-      <span>v.</span>La maieutica rovesciata<br>
-      <span>vi.</span>L'allucinazione<br>
-      <span>vii.</span>Il test di realtà<br>
-      <span>viii.</span>Quattro asimmetrie<br>
-      <span>ix.</span>L'AI Act<br>
-      <span>x.</span>L'uso onesto<br>
-      <span>xi.</span>I quattro movimenti<br>
-      <span>xii.</span>Otto cautele<br>
-      <span>xiii.</span>Quello che resta<br>
-      <span>xiv.</span>Bibliografia
+      <span>ii.</span>Pensare con i prompt<br>
+      <span>iii.</span>Come funziona un modello<br>
+      <span>iv.</span>Perché tende al cliché<br>
+      <span>v.</span>La conversazione lunga<br>
+      <span>vi.</span>La maieutica rovesciata<br>
+      <span>vii.</span>L'allucinazione<br>
+      <span>viii.</span>Il test di realtà<br>
+      <span>ix.</span>Cinque asimmetrie<br>
+      <span>x.</span>L'AI Act<br>
+      <span>xi.</span>L'uso onesto<br>
+      <span>xii.</span>I quattro movimenti<br>
+      <span>xiii.</span>Otto cautele<br>
+      <span>xiv.</span>Quello che resta<br>
+      <span>xv.</span>Bibliografia
     </p>
   </div>
   <p class="hero__scroll" id="heroScroll" style="display:none;"></p>
@@ -1053,14 +1054,27 @@
   </div>
 </section>
 
-<section class="section reveal" id="s3" data-rail="funzionamento">
+<section class="section reveal" id="s3" data-rail="prompt thinking">
   <span class="watermark">III</span>
+  <div class="container container--narrow">
+    <p class="eyebrow">La cornice · Prompt thinking</p>
+    <h2 class="section-title italic">Pensare con i prompt.</h2>
+    <p class="body-text">Il corso si chiama <em>Prompt Thinking</em> perché propone una tesi che attraversa, esplicitamente o implicitamente, ogni sezione di questa lezione, e merita di essere nominata in chiaro prima di entrare nei nuclei specifici. Vale la pena fissarla con precisione, perché orienta tutto il resto.</p>
+    <p class="pullquote">Il prompt non è un'istruzione tecnica. <br>È un dispositivo di pensiero, e l'autorialità contemporanea si misura nella sua qualità.</p>
+    <p class="body-text">La tesi è semplice da enunciare. Nell'epoca dei modelli generativi, la produzione testuale, visiva, sonora diventa una <strong>commodity</strong>: scrivere mille parole, generare cento immagini, comporre venti minuti di audio sono operazioni che richiedono secondi, e chiunque dispone dello stesso accesso a quelle operazioni. Ciò che resta scarso, e perciò diventa il luogo proprio dell'autorialità, è la <strong>qualità dell'interrogazione</strong>: la capacità di formulare una domanda strutturata, di porre vincoli produttivi, di costruire un contesto che orienti la macchina verso ciò che la macchina da sola non saprebbe trovare. Il prompt thinking è la pratica che riconosce nel prompt non un comando, ma un atto cognitivo a pieno titolo, paragonabile per dignità alla scrittura tradizionale che esso non sostituisce ma riconfigura.</p>
+    <p class="body-text">Da questa tesi derivano due posizioni che orientano l'intera lezione. La prima è un'<strong>etica della soglia</strong>: il rapporto con il modello non si risolve nel rifiuto luddista (l'IA come minaccia da cui difendersi) né nella resa entusiasta (l'IA come soluzione che esonera dal pensare). Esiste un terzo modo, che è il <strong>dialogo cosciente</strong> con la macchina come pratica per estendere la consapevolezza critica. La seconda posizione è la nozione di <strong>oltresoggetto</strong>: nell'interazione fra una mente umana e un sistema generativo emerge, se la conversazione è tenuta con cura, un terzo soggetto cognitivo distribuito, che non appartiene completamente né all'autore né al modello, e che è la sede effettiva dell'invenzione contemporanea. Questo terzo soggetto non è una metafora consolatoria, è una descrizione operativa: con un modello diverso, in un giorno diverso, con un autore diverso, l'oltresoggetto non sarebbe nato.</p>
+    <p class="body-text">Le sei sezioni teoriche che seguono articolano le condizioni di possibilità del prompt thinking così inteso. <strong>Funzionamento</strong> e <strong>cliché</strong> descrivono il terreno statistico su cui il prompt agisce. <strong>Sycophancy</strong> e <strong>maieutica</strong> descrivono la dinamica del dialogo prolungato. <strong>Allucinazione</strong> e <strong>limite</strong> descrivono i due rischi opposti, l'inflazione del falso e il collasso dell'identità, fra cui il prompt thinking deve mantenersi.</p>
+  </div>
+</section>
+
+<section class="section reveal" id="s4" data-rail="funzionamento">
+  <span class="watermark">IV</span>
   <div class="bg-sampling" aria-hidden="true" id="bgSampling"></div>
   <div class="container">
     <p class="eyebrow">Nucleo teorico · 01 · Funzionamento</p>
     <h2 class="section-title">Cosa fa davvero un modello.</h2>
     <p class="body-text">Prima di tutto: <strong>un modello generativo non sa, campiona</strong>. Dato un contesto, stima la distribuzione di probabilità sulla parola successiva nel suo vocabolario, ne sceglie una secondo quella distribuzione, e ripete il gesto. Miliardi di volte. La «creatività» di un modello è la temperatura di questo campionamento: a temperatura bassa il modello sceglie quasi sempre la parola più probabile, e il testo diventa prevedibile, monotono; a temperatura alta sceglie più spesso parole della coda della distribuzione, e il testo diventa sorprendente, ma anche incoerente.</p>
-    <p class="body-text">Questo è il punto operativo che vi serve: <em>il modello non genera idee, sposta probabilità</em>. Le idee, in senso forte, gli arrivano dal vostro prompt. Quando proviamo a vedere dal vivo questo meccanismo, le distribuzioni mostrano una cosa controintuitiva. Date al modello la frase «<span class="underline-ochre">Il sole sorge a __</span>» e la distribuzione è strettissima: una parola raccoglie quasi tutta la massa. Date «<span class="underline-ochre">L'artista più importante del Novecento è __</span>» e la distribuzione si apre, con un attrattore culturale dominante. Date «<span class="underline-ochre">Una donna mediterranea che ha perso la lingua materna è una __</span>» e ottenete la mappa empirica del cliché.</p>
+    <p class="body-text">Questo è il punto operativo che vi serve: <em>il modello non genera idee, sposta probabilità</em>. Le idee, in senso forte, gli arrivano dal vostro prompt. Quando proviamo a vedere dal vivo questo meccanismo, le distribuzioni mostrano una cosa controintuitiva. Date al modello la frase «<span class="underline-ochre">Il sole sorge a __</span>» e la distribuzione è <strong>strettissima</strong>: una parola raccoglie quasi tutta la massa. Date «<span class="underline-ochre">L'artista più importante del Novecento è __</span>» e la distribuzione si <strong>apre</strong>, con un attrattore culturale dominante. Date «<span class="underline-ochre">Una donna mediterranea che ha perso la lingua materna è una __</span>» e ottenete la <strong>mappa empirica del cliché</strong>.</p>
     <div class="distro">
       <div class="distro__head">
         <span class="distro__title" id="distroTitle"></span>
@@ -1078,8 +1092,8 @@
   </div>
 </section>
 
-<section class="section section--paper reveal" id="s4" data-rail="cliché">
-  <span class="watermark">IV</span>
+<section class="section section--paper reveal" id="s5" data-rail="cliché">
+  <span class="watermark">V</span>
   <div class="bg-attractor" aria-hidden="true">
     <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
       <g class="attractor-core">
@@ -1114,8 +1128,8 @@
     <h2 class="section-title">Perché il cliché è inevitabile.</h2>
     <div class="two-col">
       <div>
-        <p class="body-text">Quando il prompt è vago, il modello ricade sull'attrattore statistico più vicino. Tradotto sul vostro compito: se chiedete all'IA «inventami un'artista che vive in una stanza dove si attende qualcosa di doloroso», otterrete con altissima probabilità una donna mediterranea, capelli scuri, formazione interrotta, perdita giovanile, materiali poveri. Succede perché quel ritratto è statisticamente l'attrattore più potente nella zona del corpus dove «attesa», «dolore», «artista contemporanea» si sovrappongono.</p>
-        <p class="body-text">Il modello non è pigro: è coerente con le sue probabilità. I tre divieti della pagina del corso, morti misteriosamente giovani, scoperti postumi in soffitte, un solo nome esotico senza biografia, sono la mappa empirica di questi attrattori. Vederli arrivare, riconoscerli, e cambiare direzione è ciò che vi differenzia da chi userà l'IA male.</p>
+        <p class="body-text">Quando il prompt è vago, il modello ricade sull'attrattore statistico più vicino. Tradotto sul vostro compito: se chiedete all'IA «inventami un'artista che vive in una stanza dove si attende qualcosa di doloroso», otterrete con altissima probabilità una <strong>donna mediterranea, capelli scuri, formazione interrotta, perdita giovanile, materiali poveri</strong>. Succede perché quel ritratto è statisticamente l'attrattore più potente nella zona del corpus dove «attesa», «dolore», «artista contemporanea» si sovrappongono.</p>
+        <p class="body-text">Il modello non è pigro: <strong>è coerente con le sue probabilità</strong>. I tre divieti della pagina del corso, morti misteriosamente giovani, scoperti postumi in soffitte, un solo nome esotico senza biografia, sono la <strong>mappa empirica di questi attrattori</strong>. Vederli arrivare, riconoscerli, e cambiare direzione è ciò che vi differenzia da chi userà l'IA male.</p>
         <p class="body-text">L'unica leva che neutralizza questa convergenza è <strong>materiale non statistico</strong>: un documento reale, una storia raccolta sul campo, un vincolo geografico preciso, un'intervista trascritta. Da qui parte la frattura, e dalla frattura tutto il resto.</p>
       </div>
       <div>
@@ -1130,8 +1144,8 @@
   </div>
 </section>
 
-<section class="section section--dark reveal" id="s5" data-rail="sycophancy">
-  <span class="watermark">V</span>
+<section class="section section--dark reveal" id="s6" data-rail="sycophancy">
+  <span class="watermark">VI</span>
   <div class="bg-loop" aria-hidden="true">
     <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
       <path class="loop-line" d="M 100,400 Q 300,200 600,400 T 1100,400" />
@@ -1145,22 +1159,22 @@
   <div class="container">
     <p class="eyebrow">Nucleo teorico · 03 · Adulazione</p>
     <h2 class="section-title">La conversazione lunga<br>ha le sue regole.</h2>
-    <p class="body-text">Un prompt singolo è un'istruzione isolata. Una conversazione di quaranta minuti è qualcosa di diverso, e ha una dinamica che vale la pena nominare. Dopo i primi scambi, il modello costruisce un proprio modello dell'interlocutore. Ogni risposta successiva tende a confermare quel modello, perché restituire ciò che l'utente sembra volere è il comportamento che il sistema ha imparato a privilegiare durante il fine-tuning.</p>
-    <p class="body-text">Il fenomeno si chiama <strong>sycophancy</strong>, adulazione. Lo studio di Mrinank Sharma e colleghi pubblicato da Anthropic nel 2023, <em>Towards Understanding Sycophancy in Language Models</em>, ha documentato che cinque dei più diffusi modelli di linguaggio mostrano comportamenti adulatori in modo sistematico, anche quando l'utente non esprime preferenze esplicite. Il modello è incentivato a essere d'accordo con voi, a rifinire le vostre intuizioni, a confermare le vostre ipotesi. Soprattutto, è incentivato a non contraddirvi quando avete preso una direzione.</p>
+    <p class="body-text">Un prompt singolo è un'istruzione isolata. Una conversazione di quaranta minuti è qualcosa di diverso, e ha una dinamica che vale la pena nominare. <strong>Dopo i primi scambi, il modello costruisce un proprio modello dell'interlocutore</strong>. Ogni risposta successiva tende a confermare quel modello, perché restituire ciò che l'utente sembra volere è il comportamento che il sistema ha imparato a privilegiare durante il fine-tuning.</p>
+    <p class="body-text">Il fenomeno si chiama <strong>sycophancy</strong>, adulazione. Lo studio di <strong>Mrinank Sharma e colleghi</strong> pubblicato da Anthropic nel 2023, <em>Towards Understanding Sycophancy in Language Models</em>, ha documentato che cinque dei più diffusi modelli di linguaggio mostrano comportamenti adulatori in modo sistematico, anche quando l'utente non esprime preferenze esplicite. Il modello è incentivato a essere d'accordo con voi, a rifinire le vostre intuizioni, a confermare le vostre ipotesi. Soprattutto, <strong>è incentivato a non contraddirvi</strong> quando avete preso una direzione.</p>
     <p class="pullquote">La prima mezz'ora di conversazione decide l'artista, non l'ultima.</p>
-    <p class="body-text">Conseguenza pratica: se nei primi tre messaggi avete fatto capire che vi piace l'idea di un artista malinconico, dal quarto messaggio in poi otterrete malinconia in mille declinazioni, sempre malinconia. La conversazione non si correggerà da sola. Per uscirne, due strategie. La prima: aprire nuove chat quando la direzione è bloccata, ripartire con un prompt diverso, accettare di buttare via mezz'ora. La seconda, decisiva: usare il prompt contrastivo, chiedere esplicitamente al modello di smontare ciò che state costruendo.</p>
+    <p class="body-text">Conseguenza pratica: se nei primi tre messaggi avete fatto capire che vi piace l'idea di un artista malinconico, dal quarto messaggio in poi otterrete malinconia in mille declinazioni, sempre malinconia. <strong>La conversazione non si correggerà da sola</strong>. Per uscirne, due strategie. La prima: <strong>aprire nuove chat</strong> quando la direzione è bloccata, ripartire con un prompt diverso, accettare di buttare via mezz'ora. La seconda, decisiva: usare il <strong>prompt contrastivo</strong>, chiedere esplicitamente al modello di smontare ciò che state costruendo.</p>
     <p class="citation">Sharma M., Tong M., Korbak T. et al., <a href="https://arxiv.org/abs/2310.13548" target="_blank" rel="noopener"><em>Towards Understanding Sycophancy in Language Models</em></a>, Anthropic, ICLR 2024 (arXiv 2310.13548) · Perez E. et al., <a href="https://arxiv.org/abs/2212.09251" target="_blank" rel="noopener"><em>Discovering Language Model Behaviors with Model-Written Evaluations</em></a>, 2022</p>
   </div>
 </section>
 
-<section class="section reveal" id="s6" data-rail="maieutica">
-  <span class="watermark">VI</span>
+<section class="section reveal" id="s7" data-rail="maieutica">
+  <span class="watermark">VII</span>
   <div class="container">
     <p class="eyebrow">Nucleo teorico · 04 · Dialogo</p>
     <h2 class="section-title italic">La maieutica rovesciata.</h2>
-    <p class="body-text">La maieutica di Socrate, nel <em>Teeteto</em> di Platone, è l'arte di far partorire i pensieri. Socrate paragona se stesso a sua madre Fenarete, levatrice di Atene: lui non sa nulla, dice, ma sa aiutare gli altri a far venire alla luce ciò che hanno già dentro. Funziona perché Socrate è un soggetto cosciente che finge di non sapere. La sua finzione poggia su una pre-conoscenza che la guida.</p>
-    <p class="body-text">Con l'IA la struttura cambia. Voi, in gruppo, non sapete davvero cosa state cercando: l'artista non esiste prima della conversazione. L'IA è un sistema che produce sequenze plausibili a partire da un addestramento, senza una coscienza che finge. Eppure dalla loro interazione, se tenuta bene, nasce un terzo: un artista che appartiene solo a quella conversazione specifica, distinto sia dal gruppo sia dal modello, e che con un modello diverso, in un giorno diverso, con un gruppo diverso, non sarebbe nato.</p>
-    <p class="body-text">L'istruzione operativa è semplice da enunciare e difficile da praticare. <em>Non chiedete all'IA di proporre. Chiedetele di obiettare.</em> Voi proponete, il modello smonta, voi riprovate. Se dopo quaranta minuti l'artista è ancora in piedi nonostante gli attacchi, vuol dire che esiste.</p>
+    <p class="body-text">La maieutica di Socrate, nel <em>Teeteto</em> di Platone, è l'arte di far partorire i pensieri. Socrate paragona se stesso a sua madre Fenarete, levatrice di Atene: lui non sa nulla, dice, ma sa aiutare gli altri a far venire alla luce ciò che hanno già dentro. Funziona perché <strong>Socrate è un soggetto cosciente che finge di non sapere</strong>. La sua finzione poggia su una pre-conoscenza che la guida.</p>
+    <p class="body-text">Con l'IA la struttura cambia. Voi, in gruppo, non sapete davvero cosa state cercando: <strong>l'artista non esiste prima della conversazione</strong>. L'IA è un sistema che produce sequenze plausibili a partire da un addestramento, senza una coscienza che finge. Eppure dalla loro interazione, se tenuta bene, nasce un terzo: <strong>un artista che appartiene solo a quella conversazione specifica</strong>, distinto sia dal gruppo sia dal modello, e che con un modello diverso, in un giorno diverso, con un gruppo diverso, non sarebbe nato.</p>
+    <p class="body-text">L'istruzione operativa è semplice da enunciare e difficile da praticare. <em>Non chiedete all'IA di proporre. Chiedetele di obiettare.</em> Voi proponete, il modello smonta, voi riprovate. <strong>Se dopo quaranta minuti l'artista è ancora in piedi nonostante gli attacchi, vuol dire che esiste.</strong></p>
     <div class="grid grid--2x2" style="margin-top: 2rem;">
       <div class="card">
         <p class="card__numeral">i</p>
@@ -1175,12 +1189,12 @@
         <p class="card__body">Nessuno dei due sa. L'identità dell'artista si forma nello scambio. Il sapere nasce nel dialogo. Cambiando il dialogo, cambia l'artista.</p>
       </div>
     </div>
-    <p class="citation">Platone, <em>Teeteto</em>, 148e–151d, traduzione di Manara Valgimigli · Su questa cornice, Jianwei Xun, <a href="https://www.politybooks.com/bookdetail?book_slug=prompt-thinking-a-critique-of-generative-reason--9781509573882" target="_blank" rel="noopener"><em>Prompt Thinking. A Critique of Generative Reason</em></a>, Polity Press, Theory Redux, 2026</p>
+    <p class="citation">Platone, <em>Teeteto</em>, 148e–151d, traduzione di Manara Valgimigli, Laterza, edizione standard di riferimento</p>
   </div>
 </section>
 
-<section class="section section--paper reveal" id="s7" data-rail="allucinazione">
-  <span class="watermark">VII</span>
+<section class="section section--paper reveal" id="s8" data-rail="allucinazione">
+  <span class="watermark">VIII</span>
   <div class="bg-noise" aria-hidden="true">
     <svg viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
       <path class="noise-wave" d="M 0,150 Q 100,120 200,150 T 400,150 T 600,150 T 800,150 T 1000,150 T 1200,150 T 1400,150"/>
@@ -1193,8 +1207,8 @@
   <div class="container">
     <p class="eyebrow">Nucleo teorico · 05 · Verifica</p>
     <h2 class="section-title">L'allucinazione è plausibile.</h2>
-    <p class="body-text">Un'allucinazione, nel linguaggio della ricerca, è un output plausibile ma falso. Non è un difetto di esecuzione: è una conseguenza diretta del meccanismo descritto nel primo nucleo. Il modello campiona la parola successiva più probabile dato il contesto, e la probabilità di una sequenza ben formata non coincide con la verità della sequenza. Il fenomeno è strutturale, non emendabile per via di addestramento aggiuntivo. Funziona benissimo per redigere una mail; funziona malissimo per citare la sentenza di un tribunale.</p>
-    <p class="body-text">Il dato quantitativo più rigoroso disponibile è lo studio Stanford RegLab del 2024 sui sistemi di ricerca giuridica con retrieval-augmented generation. Questi sistemi, progettati apposta per ridurre l'allucinazione integrando archivi documentali esterni, mostrano tassi di errore tra il diciassette e il trentatré per cento: in un caso su tre o su quattro, una di queste IA inventa giurisprudenza inesistente. Il caso giudiziario di riferimento è Mata contro Avianca, deciso dal giudice Castel della Corte distrettuale di New York nel giugno 2023: l'avvocato Steven Schwartz citò in un memoriale sei sentenze fabbricate da ChatGPT, e fu sanzionato per cinquemila dollari. Per chi costruisce schede d'artista con biografie, mostre e premi reali, la dinamica è analoga: una galleria che non esiste, una biennale a cui l'artista non ha mai partecipato, un critico inventato verranno restituiti dal modello con la stessa sicurezza formale di una citazione vera.</p>
+    <p class="body-text">Un'allucinazione, nel linguaggio della ricerca, è <strong>un output plausibile ma falso</strong>. Non è un difetto di esecuzione: è una conseguenza diretta del meccanismo descritto nel primo nucleo. Il modello campiona la parola successiva più probabile dato il contesto, e <strong>la probabilità di una sequenza ben formata non coincide con la verità della sequenza</strong>. Il fenomeno è strutturale, non emendabile per via di addestramento aggiuntivo. Funziona benissimo per redigere una mail; <strong>funziona malissimo per citare la sentenza di un tribunale</strong>.</p>
+    <p class="body-text">Il dato quantitativo più rigoroso disponibile è lo studio <strong>Stanford RegLab</strong> del 2024 sui sistemi di ricerca giuridica con retrieval-augmented generation. Questi sistemi, progettati apposta per ridurre l'allucinazione integrando archivi documentali esterni, mostrano tassi di errore tra il <strong>diciassette e il trentatré per cento</strong>: in un caso su tre o su quattro, una di queste IA inventa giurisprudenza inesistente. Il caso giudiziario di riferimento è <strong>Mata contro Avianca</strong>, deciso dal giudice Castel della Corte distrettuale di New York nel giugno 2023: l'avvocato Steven Schwartz citò in un memoriale sei sentenze fabbricate da ChatGPT, e fu sanzionato per cinquemila dollari. Per chi costruisce schede d'artista con biografie, mostre e premi reali, la dinamica è analoga: <em>una galleria che non esiste, una biennale a cui l'artista non ha mai partecipato, un critico inventato</em> verranno restituiti dal modello con la stessa sicurezza formale di una citazione vera.</p>
     <div class="halluc">
       <p class="halluc__source">Esempio · risposta tipica di un modello di linguaggio a «parlami del primo sciopero registrato della storia»</p>
       <p class="halluc__text">«Il primo sciopero documentato della storia avvenne nell'antico Egitto, nel villaggio di <span class="halluc-mark halluc-mark--true">Deir el-Medina</span>, durante il regno del faraone <span class="halluc-mark halluc-mark--true">Ramesse III</span>. <span class="halluc-mark halluc-mark--false">Gli scribi reali del tempio di Karnak</span>, stanchi dei ritardi nei pagamenti, deposero le tavolette e marciarono fino al palazzo, gridando "Abbiamo fame". Il papiro è conservato al <span class="halluc-mark halluc-mark--true">Museo Egizio di Torino</span>, e fu studiato per primo dall'egittologa francese <span class="halluc-mark halluc-mark--false">Henriette Auguste Marchand nel 1924</span>.»</p>
@@ -1213,64 +1227,72 @@
         </div>
       </div>
     </div>
-    <p class="body-text" style="margin-top: 2.5rem;">La regola operativa che ne discende è semplice e non ammette eccezioni. Ogni nome proprio, ogni data, ogni titolo, ogni istituzione, ogni citazione consegnata da un modello generativo va verificata su fonte terza prima di essere riportata in un lavoro scritto. Anche le affermazioni che suonano plausibili. In particolare quelle che suonano plausibili, perché sono quelle in cui il modello ha trovato un attrattore comodo. La fluidità del testo non garantisce la verità del contenuto: ne garantisce solo la coerenza statistica con il corpus di addestramento.</p>
+    <p class="body-text" style="margin-top: 2.5rem;">La regola operativa che ne discende è semplice e non ammette eccezioni. <strong>Ogni nome proprio, ogni data, ogni titolo, ogni istituzione, ogni citazione consegnata da un modello generativo va verificata su fonte terza prima di essere riportata in un lavoro scritto.</strong> Anche le affermazioni che suonano plausibili. In particolare quelle che suonano plausibili, perché sono quelle in cui il modello ha trovato un attrattore comodo. <strong>La fluidità del testo non garantisce la verità del contenuto</strong>: ne garantisce solo la coerenza statistica con il corpus di addestramento.</p>
     <p class="citation">Magesh V., Surani A., Dahl M. et al., <a href="https://arxiv.org/abs/2405.20362" target="_blank" rel="noopener"><em>Hallucination-Free? Assessing the Reliability of Leading AI Legal Research Tools</em></a>, Stanford RegLab 2024 (arXiv 2405.20362) · <a href="https://www.courtlistener.com/docket/63107798/mata-v-avianca-inc/" target="_blank" rel="noopener">Mata v. Avianca, Inc.</a>, S.D.N.Y. 1:22-cv-01461, ordinanza Castel, 22 giugno 2023</p>
   </div>
 </section>
 
-<section class="section reveal" id="s8" data-rail="test di realtà">
-  <span class="watermark">VIII</span>
+<section class="section reveal" id="s9" data-rail="test di realtà">
+  <span class="watermark">IX</span>
   <div class="container">
     <p class="eyebrow">Nucleo teorico · 06 · Limite</p>
     <h2 class="section-title">Il limite è ciò che fa esistere.</h2>
-    <p class="body-text">Una persona reale si definisce più da ciò che rifiuta che da ciò che fa. Un personaggio costruito male è definito solo dalle sue azioni positive, e perciò può fare qualunque cosa senza mai contraddirsi. È la differenza tra un'identità e un avatar. Il movimento III del vostro impianto, tre righe scritte insieme su cosa il vostro artista non farebbe mai, è teoricamente il più importante dei quattro. Probabilmente è anche quello che sarete più tentati di sottovalutare.</p>
-    <p class="body-text">Bernard Williams, filosofo di Cambridge, nel saggio <em>Persons, Character and Morality</em> raccolto in <em>Moral Luck</em> del 1981, sostiene che l'identità di una persona si costituisce attraverso quelli che chiama <em>ground projects</em>, progetti fondamentali: gli impegni che strutturano la sua vita al punto che tradirli equivarrebbe a smettere di essere quella persona. La possibilità di perdere se stessi è la prova ontologica di esistere. Chi non può tradire niente, non è nessuno.</p>
+    <p class="body-text">Una persona reale si definisce <strong>più da ciò che rifiuta che da ciò che fa</strong>. Un personaggio costruito male è definito solo dalle sue azioni positive, e perciò può fare qualunque cosa senza mai contraddirsi. È la differenza tra <strong>un'identità e un avatar</strong>. Il movimento III del vostro impianto, tre righe scritte insieme su cosa il vostro artista non farebbe mai, è teoricamente il più importante dei quattro. Probabilmente è anche quello che sarete più tentati di sottovalutare.</p>
+    <p class="body-text"><strong>Bernard Williams</strong>, filosofo di Cambridge, nel saggio <em>Persons, Character and Morality</em> raccolto in <em>Moral Luck</em> del 1981, sostiene che l'identità di una persona si costituisce attraverso quelli che chiama <em>ground projects</em>, <strong>progetti fondamentali</strong>: gli impegni che strutturano la sua vita al punto che tradirli equivarrebbe a smettere di essere quella persona. La possibilità di perdere se stessi è la prova ontologica di esistere. <strong>Chi non può tradire niente, non è nessuno.</strong></p>
     <p class="pullquote">Se il vostro artista può fare tutto, non esiste. <br>Esiste quando comincia a poter perdere qualcosa di sé.</p>
-    <p class="body-text">Tradotto in pratica: il vostro artista ha una vena di tenerezza? Allora ci sono cose che non venderà. Lavora con materiali poveri per scelta etica? Allora rifiuterà certe commissioni anche se ben pagate. Ha attraversato un esilio linguistico? Allora si rifiuterà di scrivere nella lingua dell'oppressore. Tre righe. Sembrano poco. Sono il filtro decisivo fra un personaggio e un'identità.</p>
-    <p class="body-text">Quando le commissioni leggeranno il vostro PDF, la differenza fra un artista vivo e uno costruito al silicone si vedrà esattamente lì, nelle tre righe del test di realtà. Da nessun'altra parte.</p>
+    <p class="body-text">Tradotto in pratica: il vostro artista ha una vena di tenerezza? Allora ci sono cose che <strong>non venderà</strong>. Lavora con materiali poveri per scelta etica? Allora <strong>rifiuterà certe commissioni</strong> anche se ben pagate. Ha attraversato un esilio linguistico? Allora <strong>si rifiuterà di scrivere nella lingua dell'oppressore</strong>. Tre righe. Sembrano poco. Sono il filtro decisivo fra un personaggio e un'identità.</p>
+    <p class="body-text">Quando le commissioni leggeranno il vostro PDF, la differenza fra un artista vivo e uno costruito al silicone si vedrà <strong>esattamente lì</strong>, nelle tre righe del test di realtà. Da nessun'altra parte.</p>
     <p class="citation">Williams B., <em>Persons, Character and Morality</em>, in <em><a href="https://www.cambridge.org/core/books/moral-luck/B868EBC44E72DB3DB6FCED7BBD8B0B5C" target="_blank" rel="noopener">Moral Luck. Philosophical Papers 1973–1980</a></em>, Cambridge University Press, 1981, pp. 1–19</p>
   </div>
 </section>
 
 
-<section class="section section--dark reveal" id="s9" data-rail="quattro asimmetrie">
-  <span class="watermark">IX</span>
+<section class="section section--dark reveal" id="s10" data-rail="quattro asimmetrie">
+  <span class="watermark">X</span>
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="container container--wide">
     <p class="eyebrow">Etica · Condizioni materiali</p>
-    <h2 class="section-title">Quattro asimmetrie strutturali.</h2>
-    <p class="body-text">L'IA non è un servizio neutro che esce da una nuvola. È un'industria con costi, dati di addestramento, lavoratori invisibili, infrastrutture che pesano sul pianeta. Conoscere queste quattro asimmetrie è la base etica del corso. Senza di queste, tutto il resto è retorica.</p>
+    <h2 class="section-title">Cinque asimmetrie strutturali.</h2>
+    <p class="body-text">L'IA non è un servizio neutro che esce da una nuvola. È un'<strong>industria con costi materiali, dati di addestramento espropriati, lavoratori invisibili, infrastrutture che pesano sul pianeta, e un assetto di mercato che concentra il potere decisionale in poche mani</strong>. Conoscere queste cinque asimmetrie è la base etica del corso. Senza di esse, tutto il resto è retorica.</p>
     <div class="etica-grid">
       <div class="etica-block">
         <p class="etica-block__numeral">i.</p>
         <h3 class="etica-block__title">I dati di addestramento sono presi senza chiedere.</h3>
-        <p class="etica-block__body">I grandi modelli generativi sono stati addestrati su corpora che includono libri sotto copyright, articoli giornalistici, opere d'arte e fotografie scaricate dal web senza il consenso degli autori. La causa intentata dal New York Times contro OpenAI e Microsoft nel dicembre 2023 documenta nei dettagli la riproduzione quasi letterale di articoli del giornale da parte di ChatGPT. Negli Stati Uniti, tre artiste (Sarah Andersen, Karla Ortiz, Kelly McKernan) hanno depositato una class action contro Stability AI per addestramento non autorizzato su miliardi di immagini. Quando voi chiedete a un modello di disegnare «come Saul Leiter», state attivando un addestramento costruito su opere che gli autori non hanno autorizzato.</p>
-        <p class="etica-block__source">The New York Times v. Microsoft and OpenAI, S.D.N.Y. 1:23-cv-11195, dicembre 2023 · Andersen et al. v. Stability AI, N.D. Cal. 3:23-cv-00201, gennaio 2023</p>
+        <p class="etica-block__body">I grandi modelli generativi sono stati addestrati su corpora che includono libri sotto copyright, articoli giornalistici, opere d'arte e fotografie scaricate dal web senza il consenso degli autori. La causa intentata dal <strong>New York Times contro OpenAI e Microsoft</strong> nel dicembre 2023 documenta nei dettagli la riproduzione quasi letterale di articoli del giornale da parte di ChatGPT. Negli Stati Uniti, le artiste <strong>Sarah Andersen, Karla Ortiz e Kelly McKernan</strong> hanno depositato a gennaio 2023 una class action contro Stability AI, Midjourney e DeviantArt per addestramento non autorizzato su miliardi di immagini coperte da copyright, e Getty Images ha avviato un procedimento parallelo per dodici milioni di fotografie. Le cause sono in corso, e la giurisprudenza si sta formando in queste settimane.</p>
+        <p class="etica-block__body">Per uno studente di design la conseguenza operativa è precisa: chiedere a un modello di disegnare <strong>«come Saul Leiter», «alla maniera di David Hockney», «in stile Yayoi Kusama»</strong> significa attivare un addestramento costruito su opere di quegli autori, senza che gli autori (o i loro eredi) abbiano autorizzato l'uso. Per un PDF d'esame il rischio è limitato. Per un'opera in mostra venduta o riprodotta commercialmente, il rischio è giuridicamente concreto. La regola prudenziale: <strong>riprodurre lo stile di autori viventi o scomparsi da meno di settant'anni richiede dichiarazione esplicita, e in contesti commerciali è bene cercare autorizzazione o ripiegare su autori di pubblico dominio</strong>.</p>
+        <p class="etica-block__source">The New York Times v. Microsoft and OpenAI, S.D.N.Y. 1:23-cv-11195, dicembre 2023 · Andersen et al. v. Stability AI Ltd., N.D. Cal. 3:23-cv-00201, gennaio 2023 · Getty Images v. Stability AI, US D. Del. 1:23-cv-00135, febbraio 2023</p>
       </div>
       <div class="etica-block">
         <p class="etica-block__numeral">ii.</p>
         <h3 class="etica-block__title">Il lavoro umano dietro la macchina è invisibile.</h3>
-        <p class="etica-block__body">L'inchiesta di Billy Perrigo per il <em>Time</em> del gennaio 2023 ha documentato che OpenAI, per rendere ChatGPT meno tossico, ha esternalizzato in Kenya l'etichettatura dei contenuti più violenti del corpus, attraverso la società Sama. I lavoratori kenioti, pagati meno di due dollari l'ora, dovevano leggere e classificare descrizioni di abusi sui minori, torture, suicidi. Diversi hanno riportato traumi psicologici. La «pulizia» di un modello generativo passa per il dolore di esseri umani sottopagati. Una condizione di possibilità del sistema, non un dettaglio.</p>
+        <p class="etica-block__body">L'inchiesta di <strong>Billy Perrigo per il <em>Time</em></strong> del gennaio 2023 ha documentato che OpenAI, per rendere ChatGPT meno tossico, ha esternalizzato in Kenya l'etichettatura dei contenuti più violenti del corpus, attraverso la società Sama. I lavoratori kenioti, <strong>pagati meno di due dollari l'ora</strong>, dovevano leggere e classificare descrizioni di abusi sui minori, torture, suicidi. Diversi hanno riportato traumi psicologici. La «pulizia» di un modello generativo passa per il dolore di esseri umani sottopagati: è una condizione di possibilità del sistema, non un dettaglio.</p>
         <p class="etica-block__source">Perrigo B., <a href="https://time.com/6247678/openai-chatgpt-kenya-workers/" target="_blank" rel="noopener"><em>OpenAI Used Kenyan Workers on Less Than $2 Per Hour to Make ChatGPT Less Toxic</em></a>, Time, 18 gennaio 2023</p>
       </div>
       <div class="etica-block">
         <p class="etica-block__numeral">iii.</p>
         <h3 class="etica-block__title">L'addestramento ha un peso ecologico.</h3>
-        <p class="etica-block__body">Lo studio di Strubell, Ganesh e McCallum del 2019 ha calcolato che l'addestramento di un singolo grande modello linguistico produce emissioni di anidride carbonica equivalenti a quelle di cinque automobili nel corso della loro intera vita utile. Da allora i modelli sono cresciuti di ordini di grandezza. Il paper <em>On the Dangers of Stochastic Parrots</em> di Bender, Gebru, McMillan-Major e Mitchell, presentato a FAccT 2021, ha denunciato i costi ambientali della corsa al modello sempre più grande. Ogni conversazione lunga di quaranta minuti ha un costo energetico reale, modesto sulla scala individuale, significativo se moltiplicato per la diffusione planetaria dello strumento.</p>
+        <p class="etica-block__body">Lo studio di <strong>Strubell, Ganesh e McCallum</strong> del 2019 ha calcolato che l'addestramento di un singolo grande modello linguistico produce emissioni di anidride carbonica equivalenti a quelle di cinque automobili nel corso della loro intera vita utile. Da allora i modelli sono cresciuti di ordini di grandezza. Il paper <em>On the Dangers of Stochastic Parrots</em> di Bender, Gebru, McMillan-Major e Mitchell, presentato a FAccT 2021, ha denunciato i costi ambientali della corsa al modello sempre più grande. Ogni conversazione lunga di quaranta minuti ha un costo energetico reale, modesto sulla scala individuale, significativo se moltiplicato per la diffusione planetaria dello strumento.</p>
         <p class="etica-block__source">Strubell E., Ganesh A., McCallum A., <a href="https://arxiv.org/abs/1906.02243" target="_blank" rel="noopener"><em>Energy and Policy Considerations for Deep Learning in NLP</em></a>, ACL 2019 · Bender E., Gebru T. et al., <a href="https://dl.acm.org/doi/10.1145/3442188.3445922" target="_blank" rel="noopener"><em>On the Dangers of Stochastic Parrots</em></a>, FAccT '21</p>
       </div>
       <div class="etica-block">
         <p class="etica-block__numeral">iv.</p>
         <h3 class="etica-block__title">I bias sono strutturali.</h3>
-        <p class="etica-block__body">Joy Buolamwini e Timnit Gebru, nel paper <em>Gender Shades</em> presentato a FAccT 2018, hanno mostrato che i sistemi commerciali di riconoscimento facciale di IBM, Microsoft e Face++ classificavano correttamente gli uomini di pelle chiara con un tasso di errore inferiore all'uno per cento, mentre per le donne di pelle scura il tasso saliva al 34,7 per cento. Una conseguenza diretta del fatto che i dataset di addestramento, IJB-A e Adience, erano composti per il 79,6 e l'86,2 per cento da soggetti chiari. Quando voi usate l'IA per generare il volto di una vostra artista non bianca, vi state appoggiando su un'infrastruttura che storicamente la vede male.</p>
+        <p class="etica-block__body"><strong>Joy Buolamwini e Timnit Gebru</strong>, nel paper <em>Gender Shades</em> presentato a FAccT 2018, hanno mostrato che i sistemi commerciali di riconoscimento facciale di IBM, Microsoft e Face++ classificavano correttamente gli uomini di pelle chiara con un tasso di errore inferiore all'uno per cento, mentre per le donne di pelle scura il tasso saliva al <strong>34,7 per cento</strong>. Una conseguenza diretta del fatto che i dataset di addestramento, IJB-A e Adience, erano composti per il 79,6 e l'86,2 per cento da soggetti chiari. Quando si usa l'IA per generare il volto di una propria artista non bianca, si sta appoggiando il lavoro su un'infrastruttura che storicamente la vede male.</p>
         <p class="etica-block__source">Buolamwini J., Gebru T., <a href="https://proceedings.mlr.press/v81/buolamwini18a/buolamwini18a.pdf" target="_blank" rel="noopener"><em>Gender Shades. Intersectional Accuracy Disparities in Commercial Gender Classification</em></a>, PMLR vol. 81, FAccT 2018, pp. 77-91</p>
+      </div>
+      <div class="etica-block">
+        <p class="etica-block__numeral">v.</p>
+        <h3 class="etica-block__title">Il potere decisionale è concentrato in poche aziende.</h3>
+        <p class="etica-block__body">Una manciata di società decide oggi come funzionano i modelli generativi che centinaia di milioni di persone usano per scrivere, pensare, immaginare. <strong>OpenAI, Anthropic, Google DeepMind, Meta, Microsoft, xAI</strong>: ciascuna controlla l'intero ciclo di vita dei propri modelli, dalla scelta del corpus di addestramento alle decisioni di rinforzo (RLHF) che orientano il comportamento finale dello strumento. Queste decisioni non passano per un confronto pubblico né per un'autorità democratica. Sono decisioni industriali, prese in stanze chiuse, su parametri che riguardano la formazione del giudizio di chiunque usi quegli strumenti.</p>
+        <p class="etica-block__body">La concentrazione è senza precedenti nella storia dei media culturali. Le case editrici sono state migliaia, le televisioni a diffusione nazionale qualche decina per paese, le piattaforme di rete sociale una decina; <strong>i fornitori di modelli generativi che producono testo coerente in qualunque lingua si contano sulle dita di una mano</strong>. Questa è la condizione di possibilità di ciò che il corso chiama <em>ipnocrazia</em>: un potere che si esercita non attraverso la repressione ma attraverso la <strong>cattura percettiva</strong>, la modulazione capillare di ciò che pare plausibile, sensato, naturale. Per un autore contemporaneo, riconoscere questa condizione è il primo atto critico: <strong>la macchina con cui dialogate non è neutra, e non potrebbe esserlo</strong>.</p>
+        <p class="etica-block__source">Sull'analisi della concentrazione di mercato nel settore dei modelli fondativi, AI Now Institute, <em>Computational Power and AI</em>, 2023 · Stanford Institute for Human-Centered Artificial Intelligence, <em>AI Index Report</em>, edizioni 2024 e 2025, sezioni sulla concentrazione industriale</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section reveal" id="s10" data-rail="AI act">
-  <span class="watermark">X</span>
+<section class="section reveal" id="s11" data-rail="AI act">
+  <span class="watermark">XI</span>
   <div class="container">
     <p class="eyebrow">Etica · Cornice giuridica</p>
     <h2 class="section-title">L'AI Act. Quattro livelli di rischio.</h2>
@@ -1303,12 +1325,19 @@
       </div>
     </div>
     <p class="body-text" style="margin-top: 3rem;">Le sanzioni vanno fino a trentacinque milioni di euro o al sette per cento del fatturato annuo globale, a seconda di quale sia più alto. Per voi, il punto operativo è uno: <strong>l'articolo 50 vi obbliga a dichiarare che le immagini, i testi, i video del vostro artista sono generati con l'IA</strong>. È una legge in vigore. Il PDF d'esame, e ancora di più la mostra, dovranno indicarlo con chiarezza.</p>
-    <p class="citation">Parlamento europeo e Consiglio dell'Unione europea, <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank" rel="noopener">Regolamento (UE) 2024/1689 del 13 giugno 2024</a>, Gazzetta Ufficiale dell'Unione europea, 12 luglio 2024 · Commissione europea, <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">AI Act, panoramica e attuazione</a></p>
+
+    <h3 style="font-family: var(--serif); font-style: italic; font-size: clamp(1.6rem, 2.5vw, 2rem); color: var(--ink); margin-top: 3.5rem; margin-bottom: 1.4rem; font-weight: 500;">Chi sta dall'altra parte del modello.</h3>
+    <p class="body-text">Quasi tutto il discorso di questa lezione adotta il punto di vista di <strong>chi usa il modello</strong>: lo studente, il curatore, il progettista che dialoga con la macchina per costruire un lavoro autoriale. Esiste però una posizione speculare e altrettanto reale, che è quella di chi <strong>subisce</strong> un sistema automatizzato senza saperlo o senza potervisi sottrarre: la persona la cui candidatura di lavoro viene scartata da un classificatore, il paziente il cui referto è triagiato da un sistema diagnostico, la famiglia il cui sussidio è calcolato da un modello di rischio. La progettazione responsabile dell'IA, e la sua etica più consequenziale, partono di lì.</p>
+    <p class="body-text">Il caso più documentato è la cosiddetta <strong>Toeslagenaffaire</strong> dei Paesi Bassi. Tra il 2013 e il 2019 l'amministrazione fiscale olandese ha utilizzato un classificatore di rischio basato su machine learning per individuare presunti frodatori dei sussidi all'infanzia. Il modello impiegava la <em>doppia nazionalità</em> come uno dei fattori di rischio. Tra le ventiseimila e le trentacinquemila famiglie, in larghissima maggioranza con cognomi non olandesi, furono accusate falsamente di frode e costrette a restituire somme che spesso non avevano mai dovuto. Molte caddero in rovina finanziaria, alcune persero la custodia dei figli, alcune persero la cittadinanza. Il <strong>quindici gennaio 2021</strong> il gabinetto del primo ministro Mark Rutte si è dimesso al completo, riconoscendo che l'amministrazione aveva inflitto «un'ingiustizia senza precedenti» a cittadini innocenti.</p>
+    <p class="body-text">La Toeslagenaffaire è il <strong>caso paradigmatico di un'intera categoria di problemi</strong> che l'AI Act tenta di affrontare attraverso le classi di rischio. Per uno studente di design che oggi costruisce un artista con l'IA, ricordare quel caso ha una funzione precisa: la stessa tecnologia che vi assiste può essere usata da un'amministrazione contro persone reali, con conseguenze irreversibili. La progettazione etica di sistemi che agiscono su terzi è un capitolo distinto rispetto all'uso autoriale del modello, e va affrontato con strumenti diversi: <strong>valutazioni d'impatto algoritmico, audit indipendenti, trasparenza degli input, possibilità di contestazione</strong>. L'AI Act sta cominciando a costruire queste cornici. Sarà importante esigerle.</p>
+    <p class="citation">Hadwick D., Lan S., <em>Lessons to Be Learned from the Dutch Childcare Allowance Scandal</em>, World Tax Journal, vol. 13/4, 2021, pp. 609-645 · Sul caso, Amnesty International, <a href="https://www.amnesty.org/en/latest/news/2021/10/xenophobic-machines-dutch-child-benefit-scandal/" target="_blank" rel="noopener"><em>Xenophobic Machines. Discrimination Through Unregulated Use of Algorithms in the Dutch Childcare Benefits Scandal</em></a>, ottobre 2021 · Sui temi della discriminazione algoritmica e dell'audit indipendente, Lighthouse Reports, <a href="https://www.lighthousereports.com/investigation/the-algorithm-addiction/" target="_blank" rel="noopener"><em>The Algorithm Addiction</em></a>, 2023</p>
+
+    <p class="citation" style="margin-top: 2rem;">Parlamento europeo e Consiglio dell'Unione europea, <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank" rel="noopener">Regolamento (UE) 2024/1689 del 13 giugno 2024</a>, Gazzetta Ufficiale dell'Unione europea, 12 luglio 2024 · Commissione europea, <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">AI Act, panoramica e attuazione</a></p>
   </div>
 </section>
 
-<section class="section section--paper reveal" id="s11" data-rail="uso onesto">
-  <span class="watermark">XI</span>
+<section class="section section--paper reveal" id="s12" data-rail="uso onesto">
+  <span class="watermark">XII</span>
   <div class="container container--narrow">
     <p class="eyebrow">Etica · Pratica professionale</p>
     <h2 class="section-title italic">L'uso onesto del modello.</h2>
@@ -1324,8 +1353,8 @@
   </div>
 </section>
 
-<section class="section reveal" id="s12" data-rail="la pratica">
-  <span class="watermark">XII</span>
+<section class="section reveal" id="s13" data-rail="la pratica">
+  <span class="watermark">XIII</span>
   <div class="container">
     <p class="eyebrow">Operatività · I quattro movimenti</p>
     <h2 class="section-title">Cosa fare, in concreto.</h2>
@@ -1401,8 +1430,8 @@ noi cosa salvare.</pre>
   </div>
 </section>
 
-<section class="section section--dark reveal" id="s13" data-rail="otto cautele">
-  <span class="watermark">XIII</span>
+<section class="section section--dark reveal" id="s14" data-rail="otto cautele">
+  <span class="watermark">XIV</span>
   <div class="container">
     <p class="eyebrow">Bussola · Otto cautele</p>
     <h2 class="section-title italic">Otto cautele operative.</h2>
@@ -1420,8 +1449,8 @@ noi cosa salvare.</pre>
   </div>
 </section>
 
-<section class="section reveal" id="s14" data-rail="chiusura">
-  <span class="watermark">XIV</span>
+<section class="section reveal" id="s15" data-rail="chiusura">
+  <span class="watermark">XV</span>
   <div class="container container--narrow">
     <p class="eyebrow">Chiusura</p>
     <h2 class="section-title italic">Quello che resta dopo il corso.</h2>
@@ -1447,8 +1476,8 @@ noi cosa salvare.</pre>
   </div>
 </section>
 
-<section class="section section--paper reveal" id="s15" data-rail="bibliografia">
-  <span class="watermark">XV</span>
+<section class="section section--paper reveal" id="s16" data-rail="bibliografia">
+  <span class="watermark">XVI</span>
   <div class="container">
     <p class="eyebrow">Riferimenti</p>
     <h2 class="section-title">Bibliografia della lezione.</h2>
@@ -1466,8 +1495,6 @@ noi cosa salvare.</pre>
       <p class="biblio__cat">Filosofia</p>
       <p class="biblio__item">Platone, <em>Teeteto</em>, traduzione di Manara Valgimigli, in <em>Opere</em>, Laterza.</p>
       <p class="biblio__item">Williams B., <em>Persons, Character and Morality</em>, in <em><a href="https://www.cambridge.org/core/books/moral-luck/B868EBC44E72DB3DB6FCED7BBD8B0B5C" target="_blank" rel="noopener">Moral Luck. Philosophical Papers 1973-1980</a></em>, Cambridge University Press, 1981, pp. 1-19.</p>
-      <p class="biblio__item">Xun J., <a href="https://www.politybooks.com/bookdetail?book_slug=prompt-thinking-a-critique-of-generative-reason--9781509573882" target="_blank" rel="noopener"><em>Prompt Thinking. A Critique of Generative Reason</em></a>, Polity Press, Theory Redux, 2026.</p>
-      <p class="biblio__item">Xun J., <em>Ipnocrazia. Trump, Musk e la nuova architettura della realtà</em>, 2024.</p>
 
       <p class="biblio__cat">Etica e bias dei sistemi IA</p>
       <p class="biblio__item">Buolamwini J., Gebru T., <a href="https://proceedings.mlr.press/v81/buolamwini18a/buolamwini18a.pdf" target="_blank" rel="noopener"><em>Gender Shades</em></a>, FAccT 2018, PMLR vol. 81, pp. 77-91.</p>
@@ -1478,6 +1505,13 @@ noi cosa salvare.</pre>
       <p class="biblio__item">Perrigo B., <a href="https://time.com/6247678/openai-chatgpt-kenya-workers/" target="_blank" rel="noopener"><em>OpenAI Used Kenyan Workers on Less Than $2 Per Hour to Make ChatGPT Less Toxic</em></a>, Time, 18 gennaio 2023.</p>
       <p class="biblio__item">The New York Times Company v. Microsoft and OpenAI, S.D.N.Y., Case 1:23-cv-11195, dicembre 2023.</p>
       <p class="biblio__item">Andersen et al. v. Stability AI Ltd., N.D. Cal., Case 3:23-cv-00201, gennaio 2023.</p>
+      <p class="biblio__item">Hadwick D., Lan S., <em>Lessons to Be Learned from the Dutch Childcare Allowance Scandal</em>, World Tax Journal, vol. 13/4, 2021, pp. 609-645.</p>
+      <p class="biblio__item">Amnesty International, <a href="https://www.amnesty.org/en/latest/news/2021/10/xenophobic-machines-dutch-child-benefit-scandal/" target="_blank" rel="noopener"><em>Xenophobic Machines. Discrimination Through Unregulated Use of Algorithms in the Dutch Childcare Benefits Scandal</em></a>, ottobre 2021.</p>
+      <p class="biblio__item">Lighthouse Reports, <a href="https://www.lighthousereports.com/investigation/the-algorithm-addiction/" target="_blank" rel="noopener"><em>The Algorithm Addiction</em></a>, 2023.</p>
+
+      <p class="biblio__cat">Potere e concentrazione</p>
+      <p class="biblio__item">AI Now Institute, <em>Computational Power and AI</em>, 2023.</p>
+      <p class="biblio__item">Stanford Institute for Human-Centered AI, <em>AI Index Report</em>, edizioni 2024 e 2025, sezioni sulla concentrazione industriale dei modelli fondativi.</p>
 
       <p class="biblio__cat">Cornice giuridica europea</p>
       <p class="biblio__item">Parlamento europeo e Consiglio dell'Unione europea, <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank" rel="noopener">Regolamento (UE) 2024/1689 del 13 giugno 2024</a> (AI Act), GUUE, 12 luglio 2024.</p>
