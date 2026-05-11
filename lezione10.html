@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Costruire un'identità con l'IA · IED 2026 · Ultima lezione</title>
+<meta name="description" content="Ultima lezione del corso Prompt Thinking, IED Roma 2026. Funzionamento, cliché, sycophancy, allucinazioni, etica. Andrea Colamedici e Maura Gancitano.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F4EFE6;
+    --cream-2: #EFE9DD;
+    --paper: #EFE8DA;
+    --ink: #1F1F1B;
+    --charcoal: #2A2924;
+    --charcoal-2: #1B1A16;
+    --dim: #5C5447;
+    --muted: #8A7E68;
+    --rule: #D9D2C5;
+    --rule-2: #C9BFA9;
+    --ochre: #B8763A;
+    --ochre-2: #A06832;
+    --rust: #8B4A20;
+    --ember: #C9842D;
+    --burn: #7A2E12;
+    --green-deep: #4A6342;
+    --serif: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Courier New', ui-monospace, monospace;
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+  body {
+    font-family: var(--sans);
+    font-weight: 400;
+    background: var(--cream);
+    color: var(--charcoal);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  ::selection { background: rgba(184, 118, 58, 0.28); color: var(--ink); }
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: var(--cream-2); }
+  ::-webkit-scrollbar-thumb { background: var(--rule-2); border: 2px solid var(--cream-2); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ochre); }
+  :focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; border-radius: 2px; }
+  a {
+    color: inherit;
+    text-decoration: none;
+    background-image: linear-gradient(var(--ochre), var(--ochre));
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    padding-bottom: 0.05em;
+    transition: background-size 0.4s var(--ease), color 0.25s ease;
+  }
+  a:hover { color: var(--ochre); background-size: 100% 2px; }
+  .section--dark a { background-image: linear-gradient(var(--ember), var(--ember)); }
+  .section--dark a:hover { color: var(--ember); }
+  .progress-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 2px;
+    z-index: 100;
+    background: rgba(184, 118, 58, 0.08);
+  }
+  .progress-bar__fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--ochre), var(--ember));
+    width: 0;
+    transition: width 0.08s linear;
+    box-shadow: 0 0 8px rgba(201, 132, 45, 0.4);
+  }
+  .rail {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  .rail.is-visible { opacity: 1; pointer-events: auto; }
+  .rail__dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--rule);
+    cursor: pointer;
+    transition: all 0.3s var(--ease);
+    position: relative;
+    border: none;
+    padding: 0;
+  }
+  .rail__dot:hover { background: var(--ochre); transform: scale(1.4); }
+  .rail__dot.is-active { background: var(--ochre); transform: scale(1.3); }
+  .rail__dot::after {
+    content: attr(data-label);
+    position: absolute;
+    right: calc(100% + 0.85rem);
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--ochre);
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: var(--cream);
+    padding: 0.3rem 0.6rem;
+    border-radius: 2px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .rail__dot:hover::after { opacity: 1; }
+  @media (max-width: 960px) { .rail { display: none; } }
+  .section {
+    min-height: 100vh;
+    padding: clamp(4rem, 9vh, 7rem) clamp(1.5rem, 5vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .section--dark {
+    background: var(--charcoal);
+    color: var(--cream);
+    background-image: radial-gradient(ellipse at 80% 20%, rgba(201, 132, 45, 0.08), transparent 55%);
+  }
+  .section--dark .body-text { color: var(--cream); }
+  .section--paper { background: var(--cream-2); }
+  .section--paper::before, .section:not(.section--dark):not(.section--paper)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(45deg, rgba(184, 118, 58, 0.018) 0, rgba(184, 118, 58, 0.018) 1px, transparent 1px, transparent 4px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { max-width: 1200px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+  .container--narrow { max-width: 880px; }
+  .container--wide { max-width: 1320px; }
+  .watermark {
+    position: absolute;
+    top: -0.05em;
+    right: clamp(-2rem, -2vw, -1rem);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(11rem, 22vw, 22rem);
+    line-height: 0.8;
+    color: var(--rule);
+    opacity: 0.55;
+    z-index: 1;
+    pointer-events: none;
+    user-select: none;
+    font-weight: 400;
+  }
+  .section--dark .watermark { color: var(--charcoal-2); opacity: 1; }
+  @media (max-width: 700px) { .watermark { font-size: 10rem; right: -0.5rem; opacity: 0.35; } }
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.36em;
+    font-weight: 600;
+    color: var(--ochre);
+    text-transform: uppercase;
+    margin-bottom: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .eyebrow::before { content: ''; width: 1.5rem; height: 1px; background: var(--ochre); }
+  .section--dark .eyebrow { color: var(--ember); }
+  .section--dark .eyebrow::before { background: var(--ember); }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 5.8vw, 4.8rem);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    margin-bottom: 1.75rem;
+    color: var(--ink);
+  }
+  .section-title.italic { font-style: italic; }
+  .section--dark .section-title { color: var(--cream); }
+  .body-text {
+    font-size: clamp(1rem, 1.1vw, 1.13rem);
+    line-height: 1.72;
+    max-width: 68ch;
+    color: var(--charcoal);
+    font-weight: 400;
+  }
+  .body-text + .body-text { margin-top: 1.1rem; }
+  .body-text strong { font-weight: 600; color: var(--ink); }
+  .section--dark .body-text strong { color: var(--cream); }
+  .body-text em { font-style: italic; color: var(--rust); }
+  .section--dark .body-text em { color: var(--ember); }
+  .pullquote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.9rem, 4.3vw, 3.4rem);
+    color: var(--rust);
+    line-height: 1.18;
+    margin: 1.5rem 0 2.75rem;
+    padding-left: 2rem;
+    position: relative;
+    font-weight: 500;
+  }
+  .pullquote::before { content: ''; position: absolute; left: 0; top: 0.5rem; bottom: 0.5rem; width: 3px; background: linear-gradient(180deg, var(--ochre), var(--rust)); }
+  .section--dark .pullquote { color: var(--ember); }
+  .citation {
+    font-family: var(--sans);
+    font-style: italic;
+    font-size: 0.825rem;
+    color: var(--dim);
+    margin-top: 3rem;
+    line-height: 1.7;
+    max-width: 76ch;
+  }
+  .citation a { background-image: linear-gradient(var(--rule-2), var(--rule-2)); }
+  .citation a:hover { color: var(--ochre); background-image: linear-gradient(var(--ochre), var(--ochre)); }
+  .section--dark .citation { color: var(--ember); }
+  .hero {
+    min-height: 100vh;
+    background: var(--charcoal);
+    background-image:
+      radial-gradient(ellipse at 18% 22%, rgba(201, 132, 45, 0.14), transparent 55%),
+      radial-gradient(ellipse at 88% 78%, rgba(201, 132, 45, 0.08), transparent 60%),
+      linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-2) 100%);
+    color: var(--cream);
+    padding: clamp(3rem, 6vh, 5rem) clamp(1.5rem, 5vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(45deg, rgba(244, 239, 230, 0.014) 0, rgba(244, 239, 230, 0.014) 1px, transparent 1px, transparent 2px);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40%;
+    left: -20%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(ellipse, rgba(201, 132, 45, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero__top {
+    position: absolute;
+    top: 2.5rem; left: 0; right: 0;
+    padding: 0 clamp(1.5rem, 5vw, 5rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    z-index: 2;
+  }
+  .hero__numeral { font-family: var(--serif); font-style: italic; font-size: 1.6rem; color: var(--ember); font-weight: 500; }
+  .hero__course { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.36em; color: var(--ember); text-transform: uppercase; font-weight: 600; }
+  .hero__inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; width: 100%; }
+  .hero__kicker {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.4em;
+    color: var(--ember);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .hero__kicker::before { content: ''; width: 2rem; height: 1px; background: var(--ember); }
+  .hero__title {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 9vw, 7.8rem);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -0.028em;
+    color: var(--cream);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+  }
+  .hero__title em { color: var(--ember); font-style: italic; }
+  .hero__cursor {
+    display: inline-block;
+    width: 0.085em;
+    height: 0.78em;
+    background: var(--ember);
+    margin-left: 0.06em;
+    animation: blink 1.1s ease-in-out infinite;
+    vertical-align: -0.05em;
+    box-shadow: 0 0 12px rgba(201, 132, 45, 0.5);
+  }
+  @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+  .hero__subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.5vw, 2.05rem);
+    color: var(--ember);
+    margin-top: 1.5rem;
+    line-height: 1.3;
+    max-width: 38ch;
+    font-weight: 500;
+  }
+  .hero__divider { width: 4rem; height: 2px; background: var(--ember); margin-top: 3rem; }
+  .hero__signature { font-family: var(--sans); font-size: 1rem; color: var(--cream); margin-top: 1.5rem; font-weight: 500; }
+  .hero__institution { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--muted); margin-top: 0.4rem; }
+  .hero__date { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--ember); margin-top: 0.4rem; }
+  .hero__scroll {
+    position: absolute;
+    bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 600;
+    animation: drop 2.4s ease-in-out infinite;
+    transition: opacity 0.6s ease;
+    z-index: 2;
+  }
+  .hero__scroll.is-hidden { opacity: 0; }
+  @keyframes drop {
+    0%, 100% { transform: translate(-50%, 0); opacity: 0.7; }
+    50% { transform: translate(-50%, 0.4rem); opacity: 1; }
+  }
+  .hero__index {
+    position: absolute;
+    bottom: 3rem;
+    right: clamp(1.5rem, 5vw, 5rem);
+    text-align: right;
+    z-index: 2;
+    max-width: 340px;
+  }
+  @media (max-width: 900px) { .hero__index { display: none; } }
+  .hero__index-label {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    letter-spacing: 0.36em;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.7rem;
+  }
+  .hero__index-list {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.93rem;
+    line-height: 1.55;
+    color: rgba(244, 239, 230, 0.62);
+  }
+  .hero__index-list span { color: var(--ember); margin-right: 0.4rem; }
+  .dropcap {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--ochre);
+    float: left;
+    font-size: 5.2em;
+    line-height: 0.85;
+    padding: 0.05em 0.12em 0 0;
+    margin-top: 0.05em;
+  }
+  .grid { display: grid; gap: 1.4rem; margin-top: 3rem; }
+  .grid--3 { grid-template-columns: repeat(3, 1fr); }
+  .grid--4 { grid-template-columns: repeat(4, 1fr); }
+  .grid--2x2 { grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
+  @media (max-width: 900px) {
+    .grid--3, .grid--4, .grid--2x2 { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--ochre);
+    padding: 1.85rem 1.7rem 1.7rem;
+    transition: transform 0.4s var(--ease), box-shadow 0.4s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 0%, rgba(201, 132, 45, 0.13), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease);
+    pointer-events: none;
+  }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 18px 42px rgba(31,31,27,0.10); border-top-color: var(--ember); }
+  .card:hover::before { opacity: 1; }
+  .card__numeral { font-family: var(--serif); font-style: italic; font-size: 2rem; color: var(--ochre); line-height: 1; font-weight: 500; }
+  .card__tag { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-bottom: 0.5rem; }
+  .card__title { font-family: var(--serif); font-size: 1.55rem; color: var(--ink); margin: 0.55rem 0 0.7rem; font-weight: 500; line-height: 1.18; }
+  .card__body { font-size: 0.92rem; line-height: 1.62; color: var(--charcoal); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; margin-top: 1rem; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; gap: 2rem; } }
+  .stat {
+    background: var(--charcoal);
+    background-image:
+      radial-gradient(ellipse at 30% 20%, rgba(201, 132, 45, 0.18), transparent 55%),
+      linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-2) 100%);
+    color: var(--cream);
+    padding: 2.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 340px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 18px 50px rgba(31,31,27,0.14);
+  }
+  .stat::before { content: ''; position: absolute; top: 1rem; left: 1rem; width: 2rem; height: 2px; background: var(--ember); }
+  .stat::after { content: ''; position: absolute; bottom: 1rem; right: 1rem; width: 2rem; height: 2px; background: var(--ember); }
+  .stat__num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(5rem, 10vw, 9rem);
+    color: var(--ember);
+    line-height: 0.95;
+    font-weight: 500;
+    text-shadow: 0 0 40px rgba(201, 132, 45, 0.18);
+  }
+  .stat__unit { font-family: var(--serif); font-style: italic; font-size: clamp(1.1rem, 1.6vw, 1.4rem); color: var(--ember); margin-top: 0.5rem; }
+  .stat__caption { font-size: 0.86rem; color: var(--cream); text-align: center; margin-top: 1.4rem; line-height: 1.55; max-width: 30ch; }
+  .distro {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--ochre);
+    padding: 1.8rem 2rem 1.6rem;
+    margin-top: 2.5rem;
+  }
+  .distro__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .distro__title { font-family: var(--mono); font-size: clamp(1rem, 1.25vw, 1.18rem); color: var(--ink); line-height: 1.45; }
+  .distro__title .blank { display: inline-block; background: var(--ochre); color: var(--cream); padding: 0.05em 0.55em; margin: 0 0.15em; border-radius: 2px; }
+  .distro__tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .distro__tab {
+    background: transparent;
+    border: 1px solid var(--rule-2);
+    padding: 0.4rem 0.85rem;
+    font-family: var(--sans);
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    color: var(--dim);
+    cursor: pointer;
+    border-radius: 99px;
+    transition: all 0.25s ease;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .distro__tab:hover { color: var(--ochre); border-color: var(--ochre); }
+  .distro__tab.is-active { background: var(--charcoal); color: var(--cream); border-color: var(--charcoal); }
+  .distro__rows { display: flex; flex-direction: column; gap: 0.55rem; }
+  .distro__row {
+    display: grid;
+    grid-template-columns: minmax(120px, 1.3fr) 3fr minmax(60px, auto);
+    gap: 1rem;
+    align-items: center;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+  }
+  .distro__word { font-family: var(--serif); font-style: italic; font-size: 1.08rem; color: var(--ink); font-weight: 500; }
+  .distro__bar { height: 12px; background: rgba(217, 210, 197, 0.45); position: relative; overflow: hidden; border-radius: 2px; }
+  .distro__bar-fill {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--ochre), var(--ember));
+    box-shadow: 0 0 8px rgba(201, 132, 45, 0.3);
+    transition: width 1s var(--ease);
+  }
+  .distro__pct { font-family: var(--mono); font-size: 0.9rem; color: var(--dim); text-align: right; }
+  .distro__hint {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--rust);
+    font-size: 1rem;
+    margin-top: 1.4rem;
+    line-height: 1.55;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.1rem;
+  }
+  .steps { display: grid; gap: 1.6rem; grid-template-columns: repeat(4, 1fr); margin-top: 2.75rem; }
+  @media (max-width: 1000px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }
+  .step { position: relative; padding-top: 1.5rem; }
+  .step::before { content: ''; position: absolute; top: 0; left: 0; width: 2.5rem; height: 2px; background: var(--ochre); }
+  .step__num { font-family: var(--serif); font-style: italic; color: var(--ochre); font-size: 1.95rem; line-height: 1; font-weight: 500; }
+  .step__title { font-family: var(--serif); font-size: 1.32rem; color: var(--ink); margin: 0.45rem 0 0.7rem; font-weight: 500; }
+  .step__body { font-size: 0.92rem; line-height: 1.62; color: var(--charcoal); }
+  .section--dark .step__title { color: var(--cream); }
+  .section--dark .step__body { color: var(--cream); }
+  .etica-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 2.5rem; }
+  @media (max-width: 900px) { .etica-grid { grid-template-columns: 1fr; } }
+  .etica-block { padding: 1.85rem 0; border-top: 1px solid var(--rule); position: relative; }
+  .etica-block:first-child, .etica-block:nth-child(2) { border-top: none; padding-top: 0.5rem; }
+  .etica-block__numeral { font-family: var(--serif); font-style: italic; font-size: 1.4rem; color: var(--ochre); margin-bottom: 0.3rem; font-weight: 500; }
+  .etica-block__title { font-family: var(--serif); font-size: clamp(1.4rem, 2vw, 1.7rem); color: var(--ink); margin-bottom: 0.85rem; line-height: 1.25; font-weight: 500; }
+  .etica-block__body { font-size: 0.96rem; line-height: 1.72; color: var(--charcoal); }
+  .etica-block__body + .etica-block__body { margin-top: 0.9rem; }
+  .etica-block__source { font-family: var(--sans); font-style: italic; font-size: 0.78rem; color: var(--dim); margin-top: 1rem; line-height: 1.6; }
+  .section--dark .etica-block { border-top-color: rgba(217, 210, 197, 0.18); }
+  .section--dark .etica-block__numeral { color: var(--ember); }
+  .section--dark .etica-block__title { color: var(--cream); }
+  .section--dark .etica-block__body { color: var(--cream); }
+  .section--dark .etica-block__source { color: rgba(217, 210, 197, 0.55); }
+  .section--dark .etica-block__body em { color: var(--ember); }
+  .bussola { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem 2.2rem; margin-top: 2.5rem; }
+  @media (max-width: 900px) { .bussola { grid-template-columns: 1fr; } }
+  .bussola__item {
+    display: flex;
+    gap: 1.1rem;
+    align-items: baseline;
+    padding: 0.95rem 1.1rem 0.95rem 0.4rem;
+    border-bottom: 1px solid rgba(217, 210, 197, 0.25);
+  }
+  .bussola__num { font-family: var(--serif); font-style: italic; color: var(--ember); font-size: 1.45rem; flex-shrink: 0; min-width: 2.5rem; font-weight: 500; }
+  .bussola__text { font-family: var(--sans); font-size: 1rem; color: var(--cream); line-height: 1.55; }
+  .timeline { display: grid; grid-template-columns: 80px 1fr; gap: 1.4rem 1.5rem; margin-top: 2.5rem; align-items: baseline; }
+  .timeline__time { font-family: var(--serif); font-style: italic; font-size: 1.5rem; color: var(--ochre); font-weight: 500; text-align: right; padding-top: 0.2rem; }
+  .section--dark .timeline__time { color: var(--ember); }
+  .timeline__block { padding-bottom: 1.4rem; border-bottom: 1px solid var(--rule); }
+  .timeline__title { font-family: var(--serif); font-size: 1.4rem; color: var(--ink); margin-bottom: 0.5rem; font-weight: 500; }
+  .timeline__body { font-size: 0.95rem; color: var(--charcoal); line-height: 1.65; }
+  .section--dark .timeline__title { color: var(--cream); }
+  .section--dark .timeline__body { color: var(--cream); }
+  .section--dark .timeline__block { border-bottom-color: rgba(217, 210, 197, 0.18); }
+  @media (max-width: 600px) {
+    .timeline { grid-template-columns: 1fr; gap: 0.5rem; }
+    .timeline__time { text-align: left; }
+  }
+  .prompt-card {
+    background: var(--charcoal);
+    background-image: radial-gradient(ellipse at 0% 0%, rgba(201, 132, 45, 0.10), transparent 55%);
+    color: var(--cream);
+    padding: 1.85rem 2rem;
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    line-height: 1.78;
+    position: relative;
+    box-shadow: 0 14px 36px rgba(31,31,27,0.10);
+    margin-top: 1.6rem;
+    border-radius: 2px;
+  }
+  .prompt-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--ember), transparent); }
+  .prompt-card__label { font-family: var(--sans); font-size: 0.65rem; letter-spacing: 0.36em; color: var(--ember); font-weight: 600; text-transform: uppercase; margin-bottom: 1rem; }
+  .prompt-card__num { font-family: var(--serif); font-style: italic; color: var(--ember); font-weight: 500; margin-right: 0.4rem; }
+  .prompt-card pre { font-family: inherit; white-space: pre-wrap; word-wrap: break-word; }
+  .halluc {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 1.85rem 2rem 1.5rem;
+    margin-top: 2.5rem;
+    border-left: 4px solid var(--rust);
+  }
+  .halluc__source { font-family: var(--mono); font-size: 0.82rem; color: var(--dim); margin-bottom: 0.85rem; }
+  .halluc__text { font-family: var(--serif); font-size: clamp(1.05rem, 1.25vw, 1.18rem); color: var(--ink); line-height: 1.78; margin-bottom: 1.6rem; }
+  .halluc-mark { padding: 0.05em 0.15em; }
+  .halluc-mark--true {
+    background-image: linear-gradient(transparent 65%, rgba(74, 99, 66, 0.28) 65%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+  .halluc-mark--false {
+    color: var(--burn);
+    text-decoration: line-through;
+    text-decoration-color: var(--burn);
+    text-decoration-thickness: 1.5px;
+  }
+  .halluc__notes { display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1.6rem; padding-top: 1.4rem; border-top: 1px solid var(--rule); }
+  .halluc__note { display: grid; grid-template-columns: 110px 1fr; gap: 1.1rem; align-items: baseline; }
+  @media (max-width: 700px) { .halluc__note { grid-template-columns: 1fr; gap: 0.3rem; } }
+  .halluc__note-tag {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding-top: 0.15rem;
+  }
+  .halluc__note--true .halluc__note-tag { color: var(--green-deep); }
+  .halluc__note--false .halluc__note-tag { color: var(--burn); }
+  .halluc__note-text { font-size: 0.94rem; line-height: 1.65; color: var(--charcoal); }
+  .credit-box {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--ochre);
+    padding: 1.6rem 1.8rem;
+    margin-top: 2rem;
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--charcoal);
+  }
+  .credit-box__label { font-family: var(--sans); font-size: 0.65rem; letter-spacing: 0.36em; color: var(--ochre); text-transform: uppercase; font-weight: 600; margin-bottom: 0.8rem; }
+  .credit-box em { color: var(--rust); font-style: italic; }
+  .underline-ochre {
+    background-image: linear-gradient(transparent 70%, rgba(201, 132, 45, 0.35) 70%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding: 0 0.1em;
+  }
+  .biblio { margin-top: 2.5rem; columns: 2; column-gap: 3rem; }
+  @media (max-width: 800px) { .biblio { columns: 1; } }
+  .biblio__cat {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.36em;
+    color: var(--ochre);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.9rem;
+    break-after: avoid;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .biblio__cat::before { content: ''; width: 1.5rem; height: 1px; background: var(--ochre); }
+  .biblio__cat:first-of-type { margin-top: 0; }
+  .biblio__item {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--charcoal);
+    padding-left: 1.1rem;
+    margin-bottom: 0.4rem;
+    position: relative;
+    break-inside: avoid;
+  }
+  .biblio__item::before { content: '·'; position: absolute; left: 0.2rem; color: var(--ochre); font-weight: 600; }
+  footer {
+    padding: 4rem clamp(1.5rem, 5vw, 5rem);
+    background: var(--charcoal);
+    background-image: radial-gradient(ellipse at 50% 0%, rgba(201, 132, 45, 0.06), transparent 60%);
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    text-align: center;
+    line-height: 1.7;
+  }
+  footer .em { font-family: var(--serif); font-style: italic; color: var(--ember); font-size: 1.15rem; font-weight: 500; }
+  footer .mark { font-family: var(--serif); color: var(--ember); font-size: 1.6rem; margin-bottom: 1rem; }
+  footer a { background-image: linear-gradient(var(--muted), var(--muted)); }
+  footer a:hover { color: var(--ember); background-image: linear-gradient(var(--ember), var(--ember)); }
+  .reveal { opacity: 0; transition: opacity 0.7s ease; }
+  .reveal.is-revealed { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ========== HERO: SIGILLO ANIMATO + GRID DI PROBABILITÀ ========== */
+  .hero__seal {
+    position: absolute;
+    top: 50%;
+    right: clamp(2rem, 8vw, 8rem);
+    transform: translateY(-50%);
+    width: clamp(220px, 24vw, 360px);
+    height: clamp(220px, 24vw, 360px);
+    z-index: 1;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+  @media (max-width: 1100px) { .hero__seal { display: none; } }
+  .hero__seal-svg { width: 100%; height: 100%; }
+  .seal-ring-outer { animation: sealSpinSlow 60s linear infinite; transform-origin: 50% 50%; }
+  .seal-ring-mid { animation: sealSpinSlow 90s linear infinite reverse; transform-origin: 50% 50%; }
+  .seal-ring-inner { animation: sealSpinSlow 45s linear infinite; transform-origin: 50% 50%; }
+  .seal-mark { animation: sealPulse 6s ease-in-out infinite; transform-origin: 50% 50%; }
+  @keyframes sealSpinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes sealPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* Particelle fluttuanti hero */
+  .hero__particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--ember);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFloat 14s linear infinite;
+    box-shadow: 0 0 4px rgba(201, 132, 45, 0.7);
+  }
+  @keyframes particleFloat {
+    0% { opacity: 0; transform: translateY(0) translateX(0); }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.5; }
+    100% { opacity: 0; transform: translateY(-100vh) translateX(40px); }
+  }
+
+  /* ========== SEZIONE FUNZIONAMENTO: distribuzione viva di fondo ========== */
+  .bg-sampling {
+    position: absolute;
+    bottom: -2rem;
+    left: 0;
+    width: 100%;
+    height: 220px;
+    pointer-events: none;
+    opacity: 0.5;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .bg-sampling-bar {
+    position: absolute;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, transparent, var(--ochre));
+    animation: barPulse 4s ease-in-out infinite;
+    transform-origin: bottom;
+    border-radius: 1px;
+  }
+  @keyframes barPulse {
+    0%, 100% { transform: scaleY(0.3); opacity: 0.4; }
+    50% { transform: scaleY(1); opacity: 0.85; }
+  }
+
+  /* ========== SEZIONE CLICHÉ: campo di attrattori (puntini con orbita) ========== */
+  .bg-attractor {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+  }
+  .bg-attractor svg { width: 100%; height: 100%; }
+  .attractor-orbit-1 { animation: orbit 30s linear infinite; transform-origin: 300px 300px; }
+  .attractor-orbit-2 { animation: orbit 50s linear infinite reverse; transform-origin: 300px 300px; }
+  .attractor-orbit-3 { animation: orbit 70s linear infinite; transform-origin: 300px 300px; }
+  @keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .attractor-core { animation: corePulse 4s ease-in-out infinite; transform-origin: 300px 300px; }
+  @keyframes corePulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  /* ========== SEZIONE SYCOPHANCY: linea di conferma che cresce ========== */
+  .bg-loop {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+  .loop-line {
+    stroke: var(--ember);
+    stroke-width: 1;
+    fill: none;
+    stroke-dasharray: 4 6;
+    animation: loopDraw 18s linear infinite;
+  }
+  @keyframes loopDraw { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 200; } }
+
+  /* ========== SEZIONE ALLUCINAZIONE: rumore ondulato di sfondo ========== */
+  .bg-noise {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.25;
+    overflow: hidden;
+  }
+  .noise-wave {
+    stroke: var(--rust);
+    stroke-width: 0.7;
+    fill: none;
+    animation: waveDrift 22s ease-in-out infinite;
+  }
+  @keyframes waveDrift {
+    0%, 100% { transform: translateX(0); opacity: 0.5; }
+    50% { transform: translateX(-30px); opacity: 1; }
+  }
+
+  /* ========== SEZIONE ETICA: griglia di mire animate ========== */
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+    background-image:
+      linear-gradient(rgba(201, 132, 45, 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201, 132, 45, 0.4) 1px, transparent 1px);
+    background-size: 80px 80px;
+    animation: gridDrift 40s linear infinite;
+  }
+  @keyframes gridDrift {
+    from { background-position: 0 0; }
+    to { background-position: 80px 80px; }
+  }
+
+  /* ========== HOVER GLOW SULLE PULL QUOTES ========== */
+  .pullquote {
+    position: relative;
+    transition: transform 0.5s var(--ease);
+  }
+  .pullquote::after {
+    content: '';
+    position: absolute;
+    inset: -1rem -1rem -1rem -2rem;
+    background: radial-gradient(ellipse at left, rgba(201, 132, 45, 0.08), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .pullquote.is-revealed::after { opacity: 1; }
+
+  /* Sezione watermark: animazione tenue */
+  .watermark { transition: opacity 1.2s ease; }
+  .section.is-revealed .watermark { animation: watermarkBreathe 12s ease-in-out infinite; }
+  @keyframes watermarkBreathe {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 0.6; }
+  }
+  .section--dark.is-revealed .watermark { animation: watermarkBreatheDark 12s ease-in-out infinite; }
+  @keyframes watermarkBreatheDark {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 1; }
+  }
+
+  /* ========== DISTRO: barre che ondulano dolcemente al hover ========== */
+  .distro__row { transition: background 0.3s ease; }
+  .distro__row:hover { background: rgba(201, 132, 45, 0.06); }
+  .distro__row:hover .distro__bar-fill { box-shadow: 0 0 16px rgba(201, 132, 45, 0.5); }
+
+  /* ========== CARDS: shimmer su hover ========== */
+  .card { isolation: isolate; }
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(201, 132, 45, 0.10), transparent);
+    transition: left 0.9s var(--ease);
+    pointer-events: none;
+  }
+  .card:hover::after { left: 140%; }
+
+  /* ========== CHIUSURA: numerali timeline che si illuminano ========== */
+  .timeline__time { transition: color 0.5s ease, text-shadow 0.5s ease; }
+  .timeline__block:hover ~ .timeline__time,
+  .timeline__time:hover { color: var(--ember); text-shadow: 0 0 14px rgba(201, 132, 45, 0.4); }
+
+  /* ========== SEZIONE TEMA: specchio + rifrazione ========== */
+  .bg-mirror {
+    position: absolute;
+    top: 50%;
+    right: clamp(-3rem, -2vw, 2rem);
+    transform: translateY(-50%);
+    width: clamp(280px, 30vw, 460px);
+    height: clamp(280px, 30vw, 460px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.42;
+  }
+  @media (max-width: 1000px) { .bg-mirror { display: none; } }
+  .mirror-ring { animation: mirrorRotate 80s linear infinite; transform-origin: 50% 50%; }
+  @keyframes mirrorRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .mirror-ray { animation: mirrorRay 8s ease-in-out infinite; transform-origin: 50% 50%; }
+  @keyframes mirrorRay {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+  .mirror-glyph {
+    animation: mirrorBreath 9s ease-in-out infinite;
+    transform-origin: 50% 50%;
+  }
+  @keyframes mirrorBreath {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+  }
+</style>
+</head>
+<body>
+<div class="progress-bar"><div class="progress-bar__fill" id="progress"></div></div>
+<nav class="rail" id="rail" aria-label="Navigazione sezioni"></nav>
+
+<section class="hero" id="s1" data-rail="copertina">
+  <div class="hero__particles">
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 22%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 35%; animation-delay: 7s;"></div>
+    <div class="particle" style="left: 48%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 62%; animation-delay: 5s;"></div>
+    <div class="particle" style="left: 74%; animation-delay: 9s;"></div>
+    <div class="particle" style="left: 85%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 92%; animation-delay: 11s;"></div>
+    <div class="particle" style="left: 18%; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 56%; animation-delay: 13s;"></div>
+  </div>
+
+  <div class="hero__seal" aria-hidden="true">
+    <svg class="hero__seal-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="sealGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#C9842D" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#C9842D" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="200" cy="200" r="190" fill="url(#sealGlow)"/>
+      <!-- Ring outer with tick marks -->
+      <g class="seal-ring-outer">
+        <circle cx="200" cy="200" r="170" fill="none" stroke="#C9842D" stroke-width="0.5" stroke-opacity="0.6"/>
+        <g stroke="#C9842D" stroke-width="0.8" stroke-opacity="0.7">
+          <line x1="200" y1="20" x2="200" y2="34"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(30 200 200)"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(60 200 200)"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(90 200 200)"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(120 200 200)"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(150 200 200)"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(180 200 200)"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(210 200 200)"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(240 200 200)"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(270 200 200)"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(300 200 200)"/>
+          <line x1="200" y1="20" x2="200" y2="34" transform="rotate(330 200 200)"/>
+        </g>
+        <!-- Text on circle -->
+        <path id="textCircle" d="M 200,50 A 150,150 0 1,1 199.9,50" fill="none"/>
+        <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" letter-spacing="6" fill="#C9842D" fill-opacity="0.85">
+          <textPath href="#textCircle" startOffset="0">PROMPT THINKING · IED ROMA · MMXXVI · PROMPT THINKING · IED ROMA · MMXXVI · </textPath>
+        </text>
+      </g>
+      <!-- Ring mid -->
+      <g class="seal-ring-mid">
+        <circle cx="200" cy="200" r="130" fill="none" stroke="#C9842D" stroke-width="0.8" stroke-opacity="0.7" stroke-dasharray="2 8"/>
+        <circle cx="200" cy="200" r="120" fill="none" stroke="#C9842D" stroke-width="0.4" stroke-opacity="0.4"/>
+      </g>
+      <!-- Ring inner -->
+      <g class="seal-ring-inner">
+        <circle cx="200" cy="200" r="90" fill="none" stroke="#C9842D" stroke-width="0.5" stroke-opacity="0.5" stroke-dasharray="1 4"/>
+      </g>
+      <!-- Central mark -->
+      <g class="seal-mark">
+        <text x="200" y="195" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="64" fill="#C9842D" font-weight="500">II</text>
+        <text x="200" y="225" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" letter-spacing="3" fill="#C9842D" fill-opacity="0.7">LEZIONE</text>
+        <line x1="170" y1="240" x2="230" y2="240" stroke="#C9842D" stroke-opacity="0.6" stroke-width="0.5"/>
+        <text x="200" y="258" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" letter-spacing="2" fill="#C9842D" fill-opacity="0.6">SIGILLO DEL CORSO</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero__top">
+    <span class="hero__numeral">02</span>
+    <span class="hero__course">Ultima lezione · MMXXVI</span>
+  </div>
+  <div class="hero__inner">
+    <p class="hero__kicker">Corso Prompt Thinking</p>
+    <h1 class="hero__title">Costruire<br>un'<em>identità</em><br>con l'IA.</h1>
+    <p class="hero__subtitle">Funzionamento, cliché, sycophancy, allucinazione, etica. La lezione che precede l'esame.</p>
+    <div class="hero__divider"></div>
+    <p class="hero__signature">Andrea Colamedici e Maura Gancitano</p>
+    <p class="hero__institution"><a href="https://www.ied.it/" target="_blank" rel="noopener">Istituto Europeo di Design</a> · Roma</p>
+    <p class="hero__date">Ultima lezione del corso</p>
+  </div>
+  <div class="hero__index">
+    <p class="hero__index-label">Indice</p>
+    <p class="hero__index-list">
+      <span>i.</span>Il tema della lezione<br>
+      <span>ii.</span>Come funziona un modello<br>
+      <span>iii.</span>Perché tende al cliché<br>
+      <span>iv.</span>La conversazione lunga<br>
+      <span>v.</span>La maieutica rovesciata<br>
+      <span>vi.</span>L'allucinazione<br>
+      <span>vii.</span>Il test di realtà<br>
+      <span>viii.</span>Quattro asimmetrie<br>
+      <span>ix.</span>L'AI Act<br>
+      <span>x.</span>L'uso onesto<br>
+      <span>xi.</span>I quattro movimenti<br>
+      <span>xii.</span>Otto cautele<br>
+      <span>xiii.</span>Quello che resta<br>
+      <span>xiv.</span>Bibliografia
+    </p>
+  </div>
+  <p class="hero__scroll" id="heroScroll" style="display:none;"></p>
+</section>
+
+<section class="section section--paper reveal" id="s2" data-rail="il tema">
+  <span class="watermark">II</span>
+  <div class="bg-mirror" aria-hidden="true">
+    <svg viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="mirrorGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#B8763A" stop-opacity="0.0"/>
+          <stop offset="60%" stop-color="#B8763A" stop-opacity="0.10"/>
+          <stop offset="100%" stop-color="#B8763A" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="230" cy="230" r="220" fill="url(#mirrorGrad)"/>
+      <g class="mirror-ring">
+        <circle cx="230" cy="230" r="180" fill="none" stroke="#B8763A" stroke-width="0.6" stroke-opacity="0.45" stroke-dasharray="3 8"/>
+        <circle cx="230" cy="230" r="150" fill="none" stroke="#B8763A" stroke-width="0.5" stroke-opacity="0.35" stroke-dasharray="1 5"/>
+      </g>
+      <g class="mirror-ray" stroke="#B8763A" stroke-opacity="0.55" stroke-width="0.8">
+        <line x1="230" y1="50" x2="230" y2="410"/>
+        <line x1="50" y1="230" x2="410" y2="230"/>
+        <line x1="103" y1="103" x2="357" y2="357"/>
+        <line x1="103" y1="357" x2="357" y2="103"/>
+      </g>
+      <g class="mirror-glyph">
+        <circle cx="230" cy="230" r="60" fill="none" stroke="#B8763A" stroke-width="1.2" stroke-opacity="0.65"/>
+        <circle cx="230" cy="230" r="40" fill="none" stroke="#B8763A" stroke-width="0.7" stroke-opacity="0.45"/>
+        <circle cx="230" cy="230" r="3" fill="#B8763A" fill-opacity="0.8"/>
+        <path d="M 195,230 Q 230,200 265,230" fill="none" stroke="#B8763A" stroke-width="1" stroke-opacity="0.55"/>
+        <path d="M 195,230 Q 230,260 265,230" fill="none" stroke="#B8763A" stroke-width="1" stroke-opacity="0.55"/>
+      </g>
+    </svg>
+  </div>
+  <div class="container container--narrow">
+    <p class="eyebrow">Il tema della lezione</p>
+    <h2 class="section-title italic">Il modello, la mente,<br>la verifica.</h2>
+    <p class="pullquote">Un modello generativo produce risposte plausibili. <br>La distinzione tra plausibile e vero rimane a chi legge.</p>
+    <p class="body-text"><span class="dropcap">L</span>a lezione affronta sei questioni di funzionamento dei modelli generativi e tre questioni etiche connesse al loro uso professionale. Le sei questioni riguardano il modo in cui un modello produce testo, la geometria del corpus su cui è stato addestrato, la dinamica della conversazione prolungata, la specificità del dialogo tra autore e macchina, il problema dell'allucinazione, la nozione di limite come costitutiva di un'identità. Le tre questioni etiche riguardano le asimmetrie strutturali dell'industria dell'IA, la cornice giuridica europea (Regolamento UE 2024/1689, AI Act), e l'onestà professionale nell'uso del modello.</p>
+    <p class="body-text">La materia ha implicazioni operative per il compito d'esame al Mattatoio di Testaccio, descritto in <a href="https://www.tlon.it/ied.html" target="_blank" rel="noopener">tlon.it/ied.html</a>. Le sezioni che seguono articolano ciascuna questione e indicano, dove rilevante, le sue conseguenze per la costruzione di un'identità autoriale con l'ausilio di un modello generativo. La grammatica del prompt è raccolta in <a href="https://www.tlon.it/prompting.html" target="_blank" rel="noopener">tlon.it/prompting.html</a>.</p>
+  </div>
+</section>
+
+<section class="section reveal" id="s3" data-rail="funzionamento">
+  <span class="watermark">III</span>
+  <div class="bg-sampling" aria-hidden="true" id="bgSampling"></div>
+  <div class="container">
+    <p class="eyebrow">Nucleo teorico · 01 · Funzionamento</p>
+    <h2 class="section-title">Cosa fa davvero un modello.</h2>
+    <p class="body-text">Prima di tutto: <strong>un modello generativo non sa, campiona</strong>. Dato un contesto, stima la distribuzione di probabilità sulla parola successiva nel suo vocabolario, ne sceglie una secondo quella distribuzione, e ripete il gesto. Miliardi di volte. La «creatività» di un modello è la temperatura di questo campionamento: a temperatura bassa il modello sceglie quasi sempre la parola più probabile, e il testo diventa prevedibile, monotono; a temperatura alta sceglie più spesso parole della coda della distribuzione, e il testo diventa sorprendente, ma anche incoerente.</p>
+    <p class="body-text">Questo è il punto operativo che vi serve: <em>il modello non genera idee, sposta probabilità</em>. Le idee, in senso forte, gli arrivano dal vostro prompt. Quando proviamo a vedere dal vivo questo meccanismo, le distribuzioni mostrano una cosa controintuitiva. Date al modello la frase «<span class="underline-ochre">Il sole sorge a __</span>» e la distribuzione è strettissima: una parola raccoglie quasi tutta la massa. Date «<span class="underline-ochre">L'artista più importante del Novecento è __</span>» e la distribuzione si apre, con un attrattore culturale dominante. Date «<span class="underline-ochre">Una donna mediterranea che ha perso la lingua materna è una __</span>» e ottenete la mappa empirica del cliché.</p>
+    <div class="distro">
+      <div class="distro__head">
+        <span class="distro__title" id="distroTitle"></span>
+        <div class="distro__tabs">
+          <button class="distro__tab is-active" data-i="0">Frase i</button>
+          <button class="distro__tab" data-i="1">Frase ii</button>
+          <button class="distro__tab" data-i="2">Frase iii</button>
+        </div>
+      </div>
+      <div class="distro__rows" id="distroRows"></div>
+      <p class="distro__hint" id="distroHint"></p>
+    </div>
+    <p class="body-text">Da questo punto operativo deriva un'osservazione importante per l'esercizio che state per fare. La fluidità di una risposta non è indice di verità né di originalità: è indice del fatto che il modello ha trovato, nella sua distribuzione, un attrattore facile da percorrere. Davanti a una risposta scorrevole conviene sempre interrogarsi su dove sia andata la massa probabilistica, e se quella sia davvero la direzione che il prompt voleva orientare.</p>
+    <p class="citation">Le percentuali mostrate sono illustrative, ottenute da modelli linguistici contemporanei interrogati su prompt analoghi · Brown T. et al., <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener"><em>Language Models are Few-Shot Learners</em></a>, NeurIPS 2020 · Holtzman A. et al., <a href="https://arxiv.org/abs/1904.09751" target="_blank" rel="noopener"><em>The Curious Case of Neural Text Degeneration</em></a>, ICLR 2020</p>
+  </div>
+</section>
+
+<section class="section section--paper reveal" id="s4" data-rail="cliché">
+  <span class="watermark">IV</span>
+  <div class="bg-attractor" aria-hidden="true">
+    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+      <g class="attractor-core">
+        <circle cx="300" cy="300" r="6" fill="#B8763A"/>
+        <circle cx="300" cy="300" r="18" fill="none" stroke="#B8763A" stroke-width="0.5" stroke-opacity="0.6"/>
+      </g>
+      <g class="attractor-orbit-1">
+        <circle cx="300" cy="180" r="3" fill="#B8763A" fill-opacity="0.8"/>
+        <circle cx="420" cy="280" r="2.5" fill="#B8763A" fill-opacity="0.7"/>
+        <circle cx="380" cy="400" r="3.5" fill="#B8763A" fill-opacity="0.6"/>
+        <circle cx="200" cy="370" r="2" fill="#B8763A" fill-opacity="0.7"/>
+        <circle cx="180" cy="250" r="2.5" fill="#B8763A" fill-opacity="0.5"/>
+      </g>
+      <g class="attractor-orbit-2">
+        <circle cx="100" cy="150" r="2" fill="#B8763A" fill-opacity="0.4"/>
+        <circle cx="500" cy="180" r="2.5" fill="#B8763A" fill-opacity="0.5"/>
+        <circle cx="520" cy="450" r="2" fill="#B8763A" fill-opacity="0.4"/>
+        <circle cx="120" cy="480" r="3" fill="#B8763A" fill-opacity="0.5"/>
+      </g>
+      <g class="attractor-orbit-3">
+        <circle cx="60" cy="300" r="1.5" fill="#B8763A" fill-opacity="0.3"/>
+        <circle cx="540" cy="320" r="1.5" fill="#B8763A" fill-opacity="0.3"/>
+        <circle cx="300" cy="50" r="1.5" fill="#B8763A" fill-opacity="0.3"/>
+        <circle cx="300" cy="550" r="1.5" fill="#B8763A" fill-opacity="0.3"/>
+      </g>
+      <circle cx="300" cy="300" r="120" fill="none" stroke="#B8763A" stroke-width="0.3" stroke-opacity="0.3" stroke-dasharray="2 6"/>
+      <circle cx="300" cy="300" r="220" fill="none" stroke="#B8763A" stroke-width="0.3" stroke-opacity="0.2" stroke-dasharray="2 8"/>
+    </svg>
+  </div>
+  <div class="container">
+    <p class="eyebrow">Nucleo teorico · 02 · Geometria del corpus</p>
+    <h2 class="section-title">Perché il cliché è inevitabile.</h2>
+    <div class="two-col">
+      <div>
+        <p class="body-text">Quando il prompt è vago, il modello ricade sull'attrattore statistico più vicino. Tradotto sul vostro compito: se chiedete all'IA «inventami un'artista che vive in una stanza dove si attende qualcosa di doloroso», otterrete con altissima probabilità una donna mediterranea, capelli scuri, formazione interrotta, perdita giovanile, materiali poveri. Succede perché quel ritratto è statisticamente l'attrattore più potente nella zona del corpus dove «attesa», «dolore», «artista contemporanea» si sovrappongono.</p>
+        <p class="body-text">Il modello non è pigro: è coerente con le sue probabilità. I tre divieti della pagina del corso, morti misteriosamente giovani, scoperti postumi in soffitte, un solo nome esotico senza biografia, sono la mappa empirica di questi attrattori. Vederli arrivare, riconoscerli, e cambiare direzione è ciò che vi differenzia da chi userà l'IA male.</p>
+        <p class="body-text">L'unica leva che neutralizza questa convergenza è <strong>materiale non statistico</strong>: un documento reale, una storia raccolta sul campo, un vincolo geografico preciso, un'intervista trascritta. Da qui parte la frattura, e dalla frattura tutto il resto.</p>
+      </div>
+      <div>
+        <div class="stat">
+          <p class="stat__num">2–5</p>
+          <p class="stat__unit">esempi reali</p>
+          <p class="stat__caption">basterebbero, nel few-shot, a deviare il modello dal suo attrattore di default. Quasi nessuno li fornisce. La frattura del vostro artista è il vostro few-shot.</p>
+        </div>
+      </div>
+    </div>
+    <p class="citation">Schulhoff S. et al., <a href="https://arxiv.org/abs/2406.06608" target="_blank" rel="noopener"><em>The Prompt Report. A Systematic Survey of Prompting Techniques</em></a>, 2024 · Sulla convergenza dei modelli verso template narrativi e l'efficacia del few-shot mirato</p>
+  </div>
+</section>
+
+<section class="section section--dark reveal" id="s5" data-rail="sycophancy">
+  <span class="watermark">V</span>
+  <div class="bg-loop" aria-hidden="true">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <path class="loop-line" d="M 100,400 Q 300,200 600,400 T 1100,400" />
+      <path class="loop-line" d="M 100,500 Q 300,300 600,500 T 1100,500" style="animation-delay: -6s;"/>
+      <path class="loop-line" d="M 100,300 Q 300,500 600,300 T 1100,300" style="animation-delay: -12s;"/>
+      <circle cx="100" cy="400" r="3" fill="#C9842D" opacity="0.6"/>
+      <circle cx="1100" cy="400" r="3" fill="#C9842D" opacity="0.6"/>
+      <circle cx="600" cy="400" r="2" fill="#C9842D" opacity="0.4"/>
+    </svg>
+  </div>
+  <div class="container">
+    <p class="eyebrow">Nucleo teorico · 03 · Adulazione</p>
+    <h2 class="section-title">La conversazione lunga<br>ha le sue regole.</h2>
+    <p class="body-text">Un prompt singolo è un'istruzione isolata. Una conversazione di quaranta minuti è qualcosa di diverso, e ha una dinamica che vale la pena nominare. Dopo i primi scambi, il modello costruisce un proprio modello dell'interlocutore. Ogni risposta successiva tende a confermare quel modello, perché restituire ciò che l'utente sembra volere è il comportamento che il sistema ha imparato a privilegiare durante il fine-tuning.</p>
+    <p class="body-text">Il fenomeno si chiama <strong>sycophancy</strong>, adulazione. Lo studio di Mrinank Sharma e colleghi pubblicato da Anthropic nel 2023, <em>Towards Understanding Sycophancy in Language Models</em>, ha documentato che cinque dei più diffusi modelli di linguaggio mostrano comportamenti adulatori in modo sistematico, anche quando l'utente non esprime preferenze esplicite. Il modello è incentivato a essere d'accordo con voi, a rifinire le vostre intuizioni, a confermare le vostre ipotesi. Soprattutto, è incentivato a non contraddirvi quando avete preso una direzione.</p>
+    <p class="pullquote">La prima mezz'ora di conversazione decide l'artista, non l'ultima.</p>
+    <p class="body-text">Conseguenza pratica: se nei primi tre messaggi avete fatto capire che vi piace l'idea di un artista malinconico, dal quarto messaggio in poi otterrete malinconia in mille declinazioni, sempre malinconia. La conversazione non si correggerà da sola. Per uscirne, due strategie. La prima: aprire nuove chat quando la direzione è bloccata, ripartire con un prompt diverso, accettare di buttare via mezz'ora. La seconda, decisiva: usare il prompt contrastivo, chiedere esplicitamente al modello di smontare ciò che state costruendo.</p>
+    <p class="citation">Sharma M., Tong M., Korbak T. et al., <a href="https://arxiv.org/abs/2310.13548" target="_blank" rel="noopener"><em>Towards Understanding Sycophancy in Language Models</em></a>, Anthropic, ICLR 2024 (arXiv 2310.13548) · Perez E. et al., <a href="https://arxiv.org/abs/2212.09251" target="_blank" rel="noopener"><em>Discovering Language Model Behaviors with Model-Written Evaluations</em></a>, 2022</p>
+  </div>
+</section>
+
+<section class="section reveal" id="s6" data-rail="maieutica">
+  <span class="watermark">VI</span>
+  <div class="container">
+    <p class="eyebrow">Nucleo teorico · 04 · Dialogo</p>
+    <h2 class="section-title italic">La maieutica rovesciata.</h2>
+    <p class="body-text">La maieutica di Socrate, nel <em>Teeteto</em> di Platone, è l'arte di far partorire i pensieri. Socrate paragona se stesso a sua madre Fenarete, levatrice di Atene: lui non sa nulla, dice, ma sa aiutare gli altri a far venire alla luce ciò che hanno già dentro. Funziona perché Socrate è un soggetto cosciente che finge di non sapere. La sua finzione poggia su una pre-conoscenza che la guida.</p>
+    <p class="body-text">Con l'IA la struttura cambia. Voi, in gruppo, non sapete davvero cosa state cercando: l'artista non esiste prima della conversazione. L'IA è un sistema che produce sequenze plausibili a partire da un addestramento, senza una coscienza che finge. Eppure dalla loro interazione, se tenuta bene, nasce un terzo: un artista che appartiene solo a quella conversazione specifica, distinto sia dal gruppo sia dal modello, e che con un modello diverso, in un giorno diverso, con un gruppo diverso, non sarebbe nato.</p>
+    <p class="body-text">L'istruzione operativa è semplice da enunciare e difficile da praticare. <em>Non chiedete all'IA di proporre. Chiedetele di obiettare.</em> Voi proponete, il modello smonta, voi riprovate. Se dopo quaranta minuti l'artista è ancora in piedi nonostante gli attacchi, vuol dire che esiste.</p>
+    <div class="grid grid--2x2" style="margin-top: 2rem;">
+      <div class="card">
+        <p class="card__numeral">i</p>
+        <p class="card__tag">Maieutica classica</p>
+        <h3 class="card__title">Far partorire ciò che già c'è.</h3>
+        <p class="card__body">Socrate sa, ma finge di non sapere. L'allievo ha una verità dentro di sé, e la conversazione la fa emergere. Il sapere preesiste al dialogo.</p>
+      </div>
+      <div class="card">
+        <p class="card__numeral">ii</p>
+        <p class="card__tag">Maieutica con l'IA</p>
+        <h3 class="card__title">Far esistere ciò che non c'era.</h3>
+        <p class="card__body">Nessuno dei due sa. L'identità dell'artista si forma nello scambio. Il sapere nasce nel dialogo. Cambiando il dialogo, cambia l'artista.</p>
+      </div>
+    </div>
+    <p class="citation">Platone, <em>Teeteto</em>, 148e–151d, traduzione di Manara Valgimigli · Su questa cornice, Jianwei Xun, <a href="https://www.politybooks.com/bookdetail?book_slug=prompt-thinking-a-critique-of-generative-reason--9781509573882" target="_blank" rel="noopener"><em>Prompt Thinking. A Critique of Generative Reason</em></a>, Polity Press, Theory Redux, 2026</p>
+  </div>
+</section>
+
+<section class="section section--paper reveal" id="s7" data-rail="allucinazione">
+  <span class="watermark">VII</span>
+  <div class="bg-noise" aria-hidden="true">
+    <svg viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <path class="noise-wave" d="M 0,150 Q 100,120 200,150 T 400,150 T 600,150 T 800,150 T 1000,150 T 1200,150 T 1400,150"/>
+      <path class="noise-wave" d="M 0,280 Q 80,250 160,280 T 320,280 T 480,280 T 640,280 T 800,280 T 960,280 T 1120,280 T 1280,280 T 1400,280" style="animation-delay: -4s;"/>
+      <path class="noise-wave" d="M 0,420 Q 120,390 240,420 T 480,420 T 720,420 T 960,420 T 1200,420 T 1400,420" style="animation-delay: -8s;"/>
+      <path class="noise-wave" d="M 0,580 Q 100,550 200,580 T 400,580 T 600,580 T 800,580 T 1000,580 T 1200,580 T 1400,580" style="animation-delay: -12s;"/>
+      <path class="noise-wave" d="M 0,740 Q 80,710 160,740 T 320,740 T 480,740 T 640,740 T 800,740 T 960,740 T 1120,740 T 1280,740 T 1400,740" style="animation-delay: -16s;"/>
+    </svg>
+  </div>
+  <div class="container">
+    <p class="eyebrow">Nucleo teorico · 05 · Verifica</p>
+    <h2 class="section-title">L'allucinazione è plausibile.</h2>
+    <p class="body-text">Un'allucinazione, nel linguaggio della ricerca, è un output plausibile ma falso. Non è un difetto di esecuzione: è una conseguenza diretta del meccanismo descritto nel primo nucleo. Il modello campiona la parola successiva più probabile dato il contesto, e la probabilità di una sequenza ben formata non coincide con la verità della sequenza. Il fenomeno è strutturale, non emendabile per via di addestramento aggiuntivo. Funziona benissimo per redigere una mail; funziona malissimo per citare la sentenza di un tribunale.</p>
+    <p class="body-text">Il dato quantitativo più rigoroso disponibile è lo studio Stanford RegLab del 2024 sui sistemi di ricerca giuridica con retrieval-augmented generation. Questi sistemi, progettati apposta per ridurre l'allucinazione integrando archivi documentali esterni, mostrano tassi di errore tra il diciassette e il trentatré per cento: in un caso su tre o su quattro, una di queste IA inventa giurisprudenza inesistente. Il caso giudiziario di riferimento è Mata contro Avianca, deciso dal giudice Castel della Corte distrettuale di New York nel giugno 2023: l'avvocato Steven Schwartz citò in un memoriale sei sentenze fabbricate da ChatGPT, e fu sanzionato per cinquemila dollari. Per chi costruisce schede d'artista con biografie, mostre e premi reali, la dinamica è analoga: una galleria che non esiste, una biennale a cui l'artista non ha mai partecipato, un critico inventato verranno restituiti dal modello con la stessa sicurezza formale di una citazione vera.</p>
+    <div class="halluc">
+      <p class="halluc__source">Esempio · risposta tipica di un modello di linguaggio a «parlami del primo sciopero registrato della storia»</p>
+      <p class="halluc__text">«Il primo sciopero documentato della storia avvenne nell'antico Egitto, nel villaggio di <span class="halluc-mark halluc-mark--true">Deir el-Medina</span>, durante il regno del faraone <span class="halluc-mark halluc-mark--true">Ramesse III</span>. <span class="halluc-mark halluc-mark--false">Gli scribi reali del tempio di Karnak</span>, stanchi dei ritardi nei pagamenti, deposero le tavolette e marciarono fino al palazzo, gridando "Abbiamo fame". Il papiro è conservato al <span class="halluc-mark halluc-mark--true">Museo Egizio di Torino</span>, e fu studiato per primo dall'egittologa francese <span class="halluc-mark halluc-mark--false">Henriette Auguste Marchand nel 1924</span>.»</p>
+      <div class="halluc__notes">
+        <div class="halluc__note halluc__note--true">
+          <span class="halluc__note-tag">Documentato</span>
+          <p class="halluc__note-text">L'evento, il luogo e il sovrano sono corretti. Anno ventinove del regno di Ramesse III, intorno al 1158 a.C. Il papiro è effettivamente il Torino Cat. 1880, redatto dallo scriba Amennakhte.</p>
+        </div>
+        <div class="halluc__note halluc__note--false">
+          <span class="halluc__note-tag">Allucinato</span>
+          <p class="halluc__note-text">Gli scioperanti non erano scribi del tempio di Karnak. Erano artigiani di Deir el-Medina addetti alla costruzione delle tombe nella Valle dei Re. Errore plausibile, dunque insidioso: chi non conosce l'egittologia non ha modo di accorgersene leggendo.</p>
+        </div>
+        <div class="halluc__note halluc__note--false">
+          <span class="halluc__note-tag">Allucinato</span>
+          <p class="halluc__note-text">Henriette Auguste Marchand non esiste come egittologa. Lo studio fondante sul Papiro di Torino è di William F. Edgerton, <em>The Strikes in Ramses III's Twenty-Ninth Year</em>, Journal of Near Eastern Studies, 1951. Il modello ha generato un nome plausibile per il contesto (femminile francese, suono erudito) senza appoggio referenziale.</p>
+        </div>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top: 2.5rem;">La regola operativa che ne discende è semplice e non ammette eccezioni. Ogni nome proprio, ogni data, ogni titolo, ogni istituzione, ogni citazione consegnata da un modello generativo va verificata su fonte terza prima di essere riportata in un lavoro scritto. Anche le affermazioni che suonano plausibili. In particolare quelle che suonano plausibili, perché sono quelle in cui il modello ha trovato un attrattore comodo. La fluidità del testo non garantisce la verità del contenuto: ne garantisce solo la coerenza statistica con il corpus di addestramento.</p>
+    <p class="citation">Magesh V., Surani A., Dahl M. et al., <a href="https://arxiv.org/abs/2405.20362" target="_blank" rel="noopener"><em>Hallucination-Free? Assessing the Reliability of Leading AI Legal Research Tools</em></a>, Stanford RegLab 2024 (arXiv 2405.20362) · <a href="https://www.courtlistener.com/docket/63107798/mata-v-avianca-inc/" target="_blank" rel="noopener">Mata v. Avianca, Inc.</a>, S.D.N.Y. 1:22-cv-01461, ordinanza Castel, 22 giugno 2023</p>
+  </div>
+</section>
+
+<section class="section reveal" id="s8" data-rail="test di realtà">
+  <span class="watermark">VIII</span>
+  <div class="container">
+    <p class="eyebrow">Nucleo teorico · 06 · Limite</p>
+    <h2 class="section-title">Il limite è ciò che fa esistere.</h2>
+    <p class="body-text">Una persona reale si definisce più da ciò che rifiuta che da ciò che fa. Un personaggio costruito male è definito solo dalle sue azioni positive, e perciò può fare qualunque cosa senza mai contraddirsi. È la differenza tra un'identità e un avatar. Il movimento III del vostro impianto, tre righe scritte insieme su cosa il vostro artista non farebbe mai, è teoricamente il più importante dei quattro. Probabilmente è anche quello che sarete più tentati di sottovalutare.</p>
+    <p class="body-text">Bernard Williams, filosofo di Cambridge, nel saggio <em>Persons, Character and Morality</em> raccolto in <em>Moral Luck</em> del 1981, sostiene che l'identità di una persona si costituisce attraverso quelli che chiama <em>ground projects</em>, progetti fondamentali: gli impegni che strutturano la sua vita al punto che tradirli equivarrebbe a smettere di essere quella persona. La possibilità di perdere se stessi è la prova ontologica di esistere. Chi non può tradire niente, non è nessuno.</p>
+    <p class="pullquote">Se il vostro artista può fare tutto, non esiste. <br>Esiste quando comincia a poter perdere qualcosa di sé.</p>
+    <p class="body-text">Tradotto in pratica: il vostro artista ha una vena di tenerezza? Allora ci sono cose che non venderà. Lavora con materiali poveri per scelta etica? Allora rifiuterà certe commissioni anche se ben pagate. Ha attraversato un esilio linguistico? Allora si rifiuterà di scrivere nella lingua dell'oppressore. Tre righe. Sembrano poco. Sono il filtro decisivo fra un personaggio e un'identità.</p>
+    <p class="body-text">Quando le commissioni leggeranno il vostro PDF, la differenza fra un artista vivo e uno costruito al silicone si vedrà esattamente lì, nelle tre righe del test di realtà. Da nessun'altra parte.</p>
+    <p class="citation">Williams B., <em>Persons, Character and Morality</em>, in <em><a href="https://www.cambridge.org/core/books/moral-luck/B868EBC44E72DB3DB6FCED7BBD8B0B5C" target="_blank" rel="noopener">Moral Luck. Philosophical Papers 1973–1980</a></em>, Cambridge University Press, 1981, pp. 1–19</p>
+  </div>
+</section>
+
+
+<section class="section section--dark reveal" id="s9" data-rail="quattro asimmetrie">
+  <span class="watermark">IX</span>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="container container--wide">
+    <p class="eyebrow">Etica · Condizioni materiali</p>
+    <h2 class="section-title">Quattro asimmetrie strutturali.</h2>
+    <p class="body-text">L'IA non è un servizio neutro che esce da una nuvola. È un'industria con costi, dati di addestramento, lavoratori invisibili, infrastrutture che pesano sul pianeta. Conoscere queste quattro asimmetrie è la base etica del corso. Senza di queste, tutto il resto è retorica.</p>
+    <div class="etica-grid">
+      <div class="etica-block">
+        <p class="etica-block__numeral">i.</p>
+        <h3 class="etica-block__title">I dati di addestramento sono presi senza chiedere.</h3>
+        <p class="etica-block__body">I grandi modelli generativi sono stati addestrati su corpora che includono libri sotto copyright, articoli giornalistici, opere d'arte e fotografie scaricate dal web senza il consenso degli autori. La causa intentata dal New York Times contro OpenAI e Microsoft nel dicembre 2023 documenta nei dettagli la riproduzione quasi letterale di articoli del giornale da parte di ChatGPT. Negli Stati Uniti, tre artiste (Sarah Andersen, Karla Ortiz, Kelly McKernan) hanno depositato una class action contro Stability AI per addestramento non autorizzato su miliardi di immagini. Quando voi chiedete a un modello di disegnare «come Saul Leiter», state attivando un addestramento costruito su opere che gli autori non hanno autorizzato.</p>
+        <p class="etica-block__source">The New York Times v. Microsoft and OpenAI, S.D.N.Y. 1:23-cv-11195, dicembre 2023 · Andersen et al. v. Stability AI, N.D. Cal. 3:23-cv-00201, gennaio 2023</p>
+      </div>
+      <div class="etica-block">
+        <p class="etica-block__numeral">ii.</p>
+        <h3 class="etica-block__title">Il lavoro umano dietro la macchina è invisibile.</h3>
+        <p class="etica-block__body">L'inchiesta di Billy Perrigo per il <em>Time</em> del gennaio 2023 ha documentato che OpenAI, per rendere ChatGPT meno tossico, ha esternalizzato in Kenya l'etichettatura dei contenuti più violenti del corpus, attraverso la società Sama. I lavoratori kenioti, pagati meno di due dollari l'ora, dovevano leggere e classificare descrizioni di abusi sui minori, torture, suicidi. Diversi hanno riportato traumi psicologici. La «pulizia» di un modello generativo passa per il dolore di esseri umani sottopagati. Una condizione di possibilità del sistema, non un dettaglio.</p>
+        <p class="etica-block__source">Perrigo B., <a href="https://time.com/6247678/openai-chatgpt-kenya-workers/" target="_blank" rel="noopener"><em>OpenAI Used Kenyan Workers on Less Than $2 Per Hour to Make ChatGPT Less Toxic</em></a>, Time, 18 gennaio 2023</p>
+      </div>
+      <div class="etica-block">
+        <p class="etica-block__numeral">iii.</p>
+        <h3 class="etica-block__title">L'addestramento ha un peso ecologico.</h3>
+        <p class="etica-block__body">Lo studio di Strubell, Ganesh e McCallum del 2019 ha calcolato che l'addestramento di un singolo grande modello linguistico produce emissioni di anidride carbonica equivalenti a quelle di cinque automobili nel corso della loro intera vita utile. Da allora i modelli sono cresciuti di ordini di grandezza. Il paper <em>On the Dangers of Stochastic Parrots</em> di Bender, Gebru, McMillan-Major e Mitchell, presentato a FAccT 2021, ha denunciato i costi ambientali della corsa al modello sempre più grande. Ogni conversazione lunga di quaranta minuti ha un costo energetico reale, modesto sulla scala individuale, significativo se moltiplicato per la diffusione planetaria dello strumento.</p>
+        <p class="etica-block__source">Strubell E., Ganesh A., McCallum A., <a href="https://arxiv.org/abs/1906.02243" target="_blank" rel="noopener"><em>Energy and Policy Considerations for Deep Learning in NLP</em></a>, ACL 2019 · Bender E., Gebru T. et al., <a href="https://dl.acm.org/doi/10.1145/3442188.3445922" target="_blank" rel="noopener"><em>On the Dangers of Stochastic Parrots</em></a>, FAccT '21</p>
+      </div>
+      <div class="etica-block">
+        <p class="etica-block__numeral">iv.</p>
+        <h3 class="etica-block__title">I bias sono strutturali.</h3>
+        <p class="etica-block__body">Joy Buolamwini e Timnit Gebru, nel paper <em>Gender Shades</em> presentato a FAccT 2018, hanno mostrato che i sistemi commerciali di riconoscimento facciale di IBM, Microsoft e Face++ classificavano correttamente gli uomini di pelle chiara con un tasso di errore inferiore all'uno per cento, mentre per le donne di pelle scura il tasso saliva al 34,7 per cento. Una conseguenza diretta del fatto che i dataset di addestramento, IJB-A e Adience, erano composti per il 79,6 e l'86,2 per cento da soggetti chiari. Quando voi usate l'IA per generare il volto di una vostra artista non bianca, vi state appoggiando su un'infrastruttura che storicamente la vede male.</p>
+        <p class="etica-block__source">Buolamwini J., Gebru T., <a href="https://proceedings.mlr.press/v81/buolamwini18a/buolamwini18a.pdf" target="_blank" rel="noopener"><em>Gender Shades. Intersectional Accuracy Disparities in Commercial Gender Classification</em></a>, PMLR vol. 81, FAccT 2018, pp. 77-91</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" id="s10" data-rail="AI act">
+  <span class="watermark">X</span>
+  <div class="container">
+    <p class="eyebrow">Etica · Cornice giuridica</p>
+    <h2 class="section-title">L'AI Act. Quattro livelli di rischio.</h2>
+    <p class="body-text">L'Unione europea, con il Regolamento (UE) 2024/1689 entrato in vigore il primo agosto 2024, ha approvato la prima legge organica al mondo sull'intelligenza artificiale. Si applica progressivamente: divieti per i sistemi a rischio inaccettabile dal 2 febbraio 2025, regole sui modelli generali dal 2 agosto 2025, obbligazioni sui sistemi ad alto rischio dal 2 agosto 2026. Riguarda anche voi, ed è importante conoscerlo prima di costruire un artefatto pubblico come una mostra al Mattatoio.</p>
+    <p class="body-text">La logica della legge è classificare i sistemi in quattro livelli di rischio. Più il rischio è alto, più gli obblighi crescono.</p>
+    <div class="grid grid--4">
+      <div class="card">
+        <p class="card__numeral">I</p>
+        <p class="card__tag">Articolo 5</p>
+        <h3 class="card__title">Rischio inaccettabile</h3>
+        <p class="card__body">Vietati. Punteggio sociale di stato, manipolazione cognitiva di gruppi vulnerabili, raccolta indiscriminata di volti dal web, riconoscimento delle emozioni nei luoghi di lavoro e nelle scuole.</p>
+      </div>
+      <div class="card">
+        <p class="card__numeral">II</p>
+        <p class="card__tag">Articolo 6</p>
+        <h3 class="card__title">Alto rischio</h3>
+        <p class="card__body">Permessi sotto stretto controllo. Sistemi usati in sanità, istruzione, giustizia, polizia, infrastrutture critiche, valutazione del personale. Richiedono valutazione di conformità.</p>
+      </div>
+      <div class="card">
+        <p class="card__numeral">III</p>
+        <p class="card__tag">Articolo 50</p>
+        <h3 class="card__title">Rischio limitato</h3>
+        <p class="card__body">Trasparenza obbligatoria. Chatbot, deepfake, contenuti generati dall'IA devono essere riconoscibili come tali. L'utente deve sapere che sta interagendo con un sistema.</p>
+      </div>
+      <div class="card">
+        <p class="card__numeral">IV</p>
+        <p class="card__tag">Restante categoria</p>
+        <h3 class="card__title">Rischio minimo</h3>
+        <p class="card__body">Permessi senza obblighi. Filtri antispam, sistemi di raccomandazione, videogiochi. La maggior parte dell'uso quotidiano ricade qui.</p>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top: 3rem;">Le sanzioni vanno fino a trentacinque milioni di euro o al sette per cento del fatturato annuo globale, a seconda di quale sia più alto. Per voi, il punto operativo è uno: <strong>l'articolo 50 vi obbliga a dichiarare che le immagini, i testi, i video del vostro artista sono generati con l'IA</strong>. È una legge in vigore. Il PDF d'esame, e ancora di più la mostra, dovranno indicarlo con chiarezza.</p>
+    <p class="citation">Parlamento europeo e Consiglio dell'Unione europea, <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank" rel="noopener">Regolamento (UE) 2024/1689 del 13 giugno 2024</a>, Gazzetta Ufficiale dell'Unione europea, 12 luglio 2024 · Commissione europea, <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">AI Act, panoramica e attuazione</a></p>
+  </div>
+</section>
+
+<section class="section section--paper reveal" id="s11" data-rail="uso onesto">
+  <span class="watermark">XI</span>
+  <div class="container container--narrow">
+    <p class="eyebrow">Etica · Pratica professionale</p>
+    <h2 class="section-title italic">L'uso onesto del modello.</h2>
+    <p class="body-text">L'AI Act stabilisce un obbligo giuridico. Esiste però un dovere precedente alla legge, di natura deontologica, che riguarda la cura del rapporto tra autore, strumento e destinatario del lavoro. Tre pratiche, semplici, costituiscono il minimo onesto richiesto a chi consegna un lavoro elaborato con l'ausilio di un modello generativo.</p>
+    <p class="body-text" style="margin-top: 2rem;"><strong>La prima è la dichiarazione esplicita dell'uso dell'IA.</strong> La dichiarazione va collocata in apertura del documento, e deve indicare il modello impiegato, la modalità d'uso, la ripartizione del lavoro fra autore e macchina. Una postilla legale in fondo pagina è una forma di occultamento gentile: lo strumento merita riconoscimento esplicito. Una formula breve e chiara è più efficace di tre paragrafi di disclaimer.</p>
+    <div class="credit-box">
+      <p class="credit-box__label">Esempio · credito di un PDF d'esame</p>
+      <em>Artista costruito con l'ausilio dell'IA</em> · La biografia e il corpus dell'artista [nome] sono stati elaborati attraverso conversazioni con [modello: ChatGPT, Claude, Gemini], su prompt e materiali raccolti dal gruppo curatoriale. La struttura della frattura, il test di realtà (cosa l'artista non farebbe mai), la selezione finale delle opere e l'allestimento sono opera dei curatori. Il modello ha generato bozze testuali e immagini di partenza; i curatori hanno selezionato, riformulato, scartato.
+    </div>
+    <p class="body-text" style="margin-top: 2rem;"><strong>La seconda è la conservazione del processo.</strong> La conversazione che ha generato l'artista, o almeno i prompt chiave, va salvata e archiviata. L'archivio serve come traccia verificabile, da rendere disponibile su richiesta a chi valuta il lavoro. Un lavoro difendibile è un lavoro di cui l'autore sa rendere conto. Un'appendice contenente i cinque prompt più significativi della conversazione documenta il metodo e protegge dalla domanda inevitabile: da quale fonte deriva, nel concreto, questa biografia.</p>
+    <p class="body-text" style="margin-top: 1.5rem;"><strong>La terza è la distinzione delle paternità.</strong> Per ogni opera presentata, una scheda di attribuzione: «testo di parete generato dal modello, riscritto dal gruppo», «immagine generata dal modello, selezionata fra trenta varianti dal gruppo», «titolo dell'opera dato dal gruppo». La distinzione non sminuisce il lavoro autoriale: lo precisa, rendendo visibile dove la decisione è stata umana e dove la macchina ha contribuito alla forma.</p>
+    <p class="citation" style="margin-top: 2rem;">Pratiche desunte dalle <a href="https://www.copyright.gov/ai/" target="_blank" rel="noopener">linee guida dello U.S. Copyright Office</a> sul trattamento delle opere generate con IA (2023) e dalle policy editoriali dei principali editori scientifici (Nature, Science, Springer, 2023). Il principio comune: l'uso dell'IA è permesso, l'occultamento dell'uso non lo è.</p>
+  </div>
+</section>
+
+<section class="section reveal" id="s12" data-rail="la pratica">
+  <span class="watermark">XII</span>
+  <div class="container">
+    <p class="eyebrow">Operatività · I quattro movimenti</p>
+    <h2 class="section-title">Cosa fare, in concreto.</h2>
+    <p class="body-text">I quattro movimenti del compito (frattura, maieutica, test di realtà, corpus) hanno una loro logica interna e vanno percorsi nell'ordine. Quello che segue non è un protocollo a tempo: è la descrizione delle quattro operazioni che ciascun gruppo dovrà compiere, ognuna con la propria ampiezza e i propri ritorni. Una conversazione utile con un modello generativo non si misura in minuti: si misura in quante volte si è riusciti a tornare indietro, a smontare, a ricominciare. Quaranta minuti è un punto di partenza ragionevole, e tutto sommato un minimo: la pratica reale, sui gruppi che hanno funzionato negli anni passati, sta più vicina alle due o tre ore distribuite in più sessioni.</p>
+    <div class="steps">
+      <div class="step">
+        <p class="step__num">i.</p>
+        <h3 class="step__title">Frattura</h3>
+        <p class="step__body">Si comincia da una persona reale che il gruppo conosce, e da una rottura biografica concreta che la riguarda. Lingua perduta, esilio, lutto, mestiere interrotto. Senza chiedere ancora nulla sull'artista. Il materiale non statistico è qui che entra.</p>
+      </div>
+      <div class="step">
+        <p class="step__num">ii.</p>
+        <h3 class="step__title">Maieutica</h3>
+        <p class="step__body">Si introduce la stanza assegnata, e si chiede al modello come la frattura, e non la persona, possa generare un artista contemporaneo che abita quella stanza per necessità. Tre o quattro direzioni alternative, con il prezzo che ognuna comporta in termini di tradimento della frattura iniziale.</p>
+      </div>
+      <div class="step">
+        <p class="step__num">iii.</p>
+        <h3 class="step__title">Attrito</h3>
+        <p class="step__body">Si cambia ruolo al modello e gli si chiede di smontare l'artista che è emerso: dove cade nei tre divieti del corso, a quale artista reale assomiglia troppo, dove la biografia e il corpus si contraddicono. Si torna indietro quante volte serve. Se non si torna indietro almeno tre o quattro volte, qualcosa è andato troppo facile.</p>
+      </div>
+      <div class="step">
+        <p class="step__num">iv.</p>
+        <h3 class="step__title">Limite</h3>
+        <p class="step__body">Si chiude il modello. In silenzio, su un foglio di carta, il gruppo scrive le tre righe del test di realtà: cosa l'artista non farebbe mai e perché. Questa è la fase senza la macchina, per metodo. Il limite deve essere del gruppo, non statistico.</p>
+      </div>
+    </div>
+
+    <p class="body-text" style="margin-top: 3rem;">I tre prompt che seguono sono materiali grezzi, da adattare alla stanza assegnata, alla persona di partenza, al modello che si preferisce usare. Non sono una scaletta: sono punti di leva per innescare i primi tre movimenti, quando la conversazione fatica a partire o si è impantanata. Il quarto movimento non ha prompt per definizione.</p>
+
+    <div class="prompt-card">
+      <p class="prompt-card__label">Leva I · per la frattura</p>
+<pre><span class="prompt-card__num">01</span>Voglio raccontarti una persona reale che conosco. Solo perché tu la veda
+con me. Si chiama [nome]. È [relazione]. Vive a [luogo]. Ha attraversato
+[frattura concreta: emigrazione, lutto, lingua persa, lavoro interrotto,
+esilio politico, malattia, povertà]. Ti racconto in venti righe chi è.
+
+Alla fine, senza concludere e senza riassumere: dimmi solo cosa ti sembra
+che le sia stato tagliato per arrivare fino a qui.
+
+[venti righe sulla persona reale, scritte dal gruppo]</pre>
+    </div>
+
+    <div class="prompt-card">
+      <p class="prompt-card__label">Leva II · per la maieutica</p>
+<pre><span class="prompt-card__num">02</span>Adesso non parliamo più di [nome della persona reale]. Lasciamo lei dove
+sta. Prendiamo solo la frattura che hai isolato e portiamola dentro una
+stanza precisa di una mostra. La stanza si chiama [titolo] e ha queste
+caratteristiche [scheda dal sito del corso]. In questa stanza deve esistere,
+per necessità non per affinità, un artista contemporaneo. Una persona
+distinta da quella di partenza.
+
+Aiutami a vederla: che mestiere fa, dove ha studiato, in che lingua sogna,
+con quali materiali lavora. Tre direzioni diverse. E per ognuna, quale
+tradimento della frattura iniziale comporterebbe.</pre>
+    </div>
+
+    <div class="prompt-card">
+      <p class="prompt-card__label">Leva III · per l'attrito</p>
+<pre><span class="prompt-card__num">03</span>Stop. Cambia ruolo. Fino a qui sei stato d'accordo con noi, e questo è
+un problema. Adesso sei un critico ostile e devi smontare l'artista che
+stiamo costruendo. Tre obiezioni, in ordine di forza.
+
+Prima: dove l'artista cade in uno dei tre cliché che l'IA produce di default
+(morte misteriosa, scoperta postuma, esotismo senza biografia).
+Seconda: a quale artista reale già esistente assomiglia troppo, e perché.
+Terza: dove non torna, dove la biografia e il corpus si contraddicono.
+
+Non addolcire. Non scusarti. Trova davvero i punti deboli. Decideremo
+noi cosa salvare.</pre>
+    </div>
+
+    <p class="citation" style="margin-top: 2.5rem;">Il quarto movimento, il test di realtà, è il momento in cui il gruppo decide cosa l'artista rifiuta. Si pratica chiudendo il modello e scrivendo a mano. Tre righe sufficienti. Quel foglio resterà con il gruppo fino all'esame.</p>
+  </div>
+</section>
+
+<section class="section section--dark reveal" id="s13" data-rail="otto cautele">
+  <span class="watermark">XIII</span>
+  <div class="container">
+    <p class="eyebrow">Bussola · Otto cautele</p>
+    <h2 class="section-title italic">Otto cautele operative.</h2>
+    <p class="body-text">I dieci sproni della pagina sul prompt sono indicazioni propositive. Quanto segue è la loro contropartita, otto cautele che riassumono in forma negativa gli errori più frequenti nell'uso professionale dei modelli generativi. Funzionano come bussola di verifica prima della consegna di un lavoro.</p>
+    <div class="bussola" id="bussolaList">
+      <div class="bussola__item"><span class="bussola__num">01</span><span class="bussola__text">Nomi, date, fonti, sentenze, istituzioni forniti dal modello vanno verificati su fonti terze prima di essere citati. La verifica non è diffidenza, è metodo.</span></div>
+      <div class="bussola__item"><span class="bussola__num">02</span><span class="bussola__text">La riproduzione dello stile di autori viventi o di autori scomparsi da meno di settant'anni richiede dichiarazione esplicita, soprattutto se l'impiego è commerciale.</span></div>
+      <div class="bussola__item"><span class="bussola__num">03</span><span class="bussola__text">L'uso dell'IA in un lavoro pubblico va sempre dichiarato. L'articolo 50 dell'AI Act lo prescrive; la deontologia professionale lo richiedeva già prima.</span></div>
+      <div class="bussola__item"><span class="bussola__num">04</span><span class="bussola__text">Costruire l'identità di una persona realmente esistente, anche per somiglianza statistica, è una pratica problematica sia sul piano legale sia su quello etico.</span></div>
+      <div class="bussola__item"><span class="bussola__num">05</span><span class="bussola__text">La fluidità di una risposta non è un indice di qualità. Misura solo la coerenza con il corpus di addestramento, che può essere il luogo del cliché.</span></div>
+      <div class="bussola__item"><span class="bussola__num">06</span><span class="bussola__text">La prima risposta è quasi sempre la più mediana. La pratica esige iterazione, attrito, riformulazione, fino a ottenere ciò che il prompt iniziale non poteva produrre.</span></div>
+      <div class="bussola__item"><span class="bussola__num">07</span><span class="bussola__text">Domande sul pensiero del modello («cosa pensi tu») presuppongono una soggettività che il modello non possiede. Più produttivo chiedere di smontare la propria ipotesi.</span></div>
+      <div class="bussola__item"><span class="bussola__num">08</span><span class="bussola__text">Esistono fasi del lavoro in cui il modello non serve. Riconoscere quando astenersi è una competenza dello stesso ordine del saperlo usare.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" id="s14" data-rail="chiusura">
+  <span class="watermark">XIV</span>
+  <div class="container container--narrow">
+    <p class="eyebrow">Chiusura</p>
+    <h2 class="section-title italic">Quello che resta dopo il corso.</h2>
+    <p class="pullquote">Abbiamo imparato a pensare con una macchina. <br>Resta da imparare a smettere quando serve.</p>
+    <p class="body-text" style="font-size: clamp(1.05rem, 1.3vw, 1.22rem); max-width: 70ch;">Tre disposizioni che dovrebbero sopravvivere alla consegna del PDF e all'apertura della mostra.</p>
+    <div class="timeline">
+      <div class="timeline__time">i.</div>
+      <div class="timeline__block">
+        <h3 class="timeline__title">Il sospetto verso la fluidità.</h3>
+        <p class="timeline__body">Quando una risposta del modello appare particolarmente compiuta, particolarmente nelle proprie corde, particolarmente confermativa, conviene sospettare. La fluidità segnala spesso che il sistema ha colto le aspettative dell'interlocutore e le sta restituendo. Il pensiero che produce nuova conoscenza incontra più resistenze.</p>
+      </div>
+      <div class="timeline__time">ii.</div>
+      <div class="timeline__block">
+        <h3 class="timeline__title">L'abitudine alla verifica.</h3>
+        <p class="timeline__body">Ogni nome, data, citazione restituita dal modello richiede verifica esterna. È una pratica di metodo, non di diffidenza. Il caso Mata contro Avianca è capitato a un avvocato di trent'anni di carriera che ha avuto fretta. La consegna di un lavoro accademico o professionale non ammette quella fretta.</p>
+      </div>
+      <div class="timeline__time">iii.</div>
+      <div class="timeline__block">
+        <h3 class="timeline__title">Il diritto al silenzio.</h3>
+        <p class="timeline__body">Le tre righe del test di realtà si scrivono senza la macchina. Esistono passaggi in cui il modello non è uno strumento appropriato, e riconoscerli è competenza dello stesso ordine del saperlo usare. È la distinzione più importante che il corso intende trasmettere.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--paper reveal" id="s15" data-rail="bibliografia">
+  <span class="watermark">XV</span>
+  <div class="container">
+    <p class="eyebrow">Riferimenti</p>
+    <h2 class="section-title">Bibliografia della lezione.</h2>
+    <div class="biblio">
+      <p class="biblio__cat">Funzionamento dei modelli</p>
+      <p class="biblio__item">Brown T. et al., <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener"><em>Language Models are Few-Shot Learners</em></a>, NeurIPS 2020 (arXiv 2005.14165).</p>
+      <p class="biblio__item">Holtzman A. et al., <a href="https://arxiv.org/abs/1904.09751" target="_blank" rel="noopener"><em>The Curious Case of Neural Text Degeneration</em></a>, ICLR 2020 (arXiv 1904.09751).</p>
+      <p class="biblio__item">Schulhoff S. et al., <a href="https://arxiv.org/abs/2406.06608" target="_blank" rel="noopener"><em>The Prompt Report. A Systematic Survey of Prompting Techniques</em></a>, 2024 (arXiv 2406.06608).</p>
+
+      <p class="biblio__cat">Sycophancy e allucinazione</p>
+      <p class="biblio__item">Sharma M., Tong M., Korbak T. et al., <a href="https://arxiv.org/abs/2310.13548" target="_blank" rel="noopener"><em>Towards Understanding Sycophancy in Language Models</em></a>, Anthropic, ICLR 2024 (arXiv 2310.13548).</p>
+      <p class="biblio__item">Magesh V. et al., <a href="https://arxiv.org/abs/2405.20362" target="_blank" rel="noopener"><em>Hallucination-Free? Assessing the Reliability of Leading AI Legal Research Tools</em></a>, Stanford RegLab 2024 (arXiv 2405.20362).</p>
+      <p class="biblio__item"><a href="https://www.courtlistener.com/docket/63107798/mata-v-avianca-inc/" target="_blank" rel="noopener">Mata v. Avianca, Inc.</a>, S.D.N.Y. 1:22-cv-01461, ordinanza Castel, 22 giugno 2023.</p>
+
+      <p class="biblio__cat">Filosofia</p>
+      <p class="biblio__item">Platone, <em>Teeteto</em>, traduzione di Manara Valgimigli, in <em>Opere</em>, Laterza.</p>
+      <p class="biblio__item">Williams B., <em>Persons, Character and Morality</em>, in <em><a href="https://www.cambridge.org/core/books/moral-luck/B868EBC44E72DB3DB6FCED7BBD8B0B5C" target="_blank" rel="noopener">Moral Luck. Philosophical Papers 1973-1980</a></em>, Cambridge University Press, 1981, pp. 1-19.</p>
+      <p class="biblio__item">Xun J., <a href="https://www.politybooks.com/bookdetail?book_slug=prompt-thinking-a-critique-of-generative-reason--9781509573882" target="_blank" rel="noopener"><em>Prompt Thinking. A Critique of Generative Reason</em></a>, Polity Press, Theory Redux, 2026.</p>
+      <p class="biblio__item">Xun J., <em>Ipnocrazia. Trump, Musk e la nuova architettura della realtà</em>, 2024.</p>
+
+      <p class="biblio__cat">Etica e bias dei sistemi IA</p>
+      <p class="biblio__item">Buolamwini J., Gebru T., <a href="https://proceedings.mlr.press/v81/buolamwini18a/buolamwini18a.pdf" target="_blank" rel="noopener"><em>Gender Shades</em></a>, FAccT 2018, PMLR vol. 81, pp. 77-91.</p>
+      <p class="biblio__item">Bender E., Gebru T., McMillan-Major A., Mitchell M., <a href="https://dl.acm.org/doi/10.1145/3442188.3445922" target="_blank" rel="noopener"><em>On the Dangers of Stochastic Parrots</em></a>, FAccT '21, ACM, pp. 610-623.</p>
+      <p class="biblio__item">Strubell E., Ganesh A., McCallum A., <a href="https://arxiv.org/abs/1906.02243" target="_blank" rel="noopener"><em>Energy and Policy Considerations for Deep Learning in NLP</em></a>, ACL 2019.</p>
+
+      <p class="biblio__cat">Inchieste e casi giudiziari</p>
+      <p class="biblio__item">Perrigo B., <a href="https://time.com/6247678/openai-chatgpt-kenya-workers/" target="_blank" rel="noopener"><em>OpenAI Used Kenyan Workers on Less Than $2 Per Hour to Make ChatGPT Less Toxic</em></a>, Time, 18 gennaio 2023.</p>
+      <p class="biblio__item">The New York Times Company v. Microsoft and OpenAI, S.D.N.Y., Case 1:23-cv-11195, dicembre 2023.</p>
+      <p class="biblio__item">Andersen et al. v. Stability AI Ltd., N.D. Cal., Case 3:23-cv-00201, gennaio 2023.</p>
+
+      <p class="biblio__cat">Cornice giuridica europea</p>
+      <p class="biblio__item">Parlamento europeo e Consiglio dell'Unione europea, <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank" rel="noopener">Regolamento (UE) 2024/1689 del 13 giugno 2024</a> (AI Act), GUUE, 12 luglio 2024.</p>
+      <p class="biblio__item">Commissione europea, <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">AI Act, quadro normativo e attuazione</a>.</p>
+
+      <p class="biblio__cat">Materiali del corso</p>
+      <p class="biblio__item">Colamedici A., Gancitano M., <a href="https://www.tlon.it/prompting.html" target="_blank" rel="noopener"><em>Come si scrive un buon prompt</em></a>, IED 2026.</p>
+      <p class="biblio__item">Colamedici A., Gancitano M., <a href="https://www.tlon.it/ied.html" target="_blank" rel="noopener"><em>Sei gruppi. Sei stanze. Una mostra.</em></a>, IED 2026.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="mark">∎</p>
+  <p class="em">Costruire un'identità con l'IA</p>
+  <p style="margin-top: 0.6rem;">Andrea Colamedici e Maura Gancitano · <a href="https://www.ied.it/" target="_blank" rel="noopener">Istituto Europeo di Design</a> · Ultima lezione · MMXXVI</p>
+  <p style="margin-top: 1.2rem; font-size: 0.78rem;"><a href="https://www.tlon.it/prompting.html" target="_blank" rel="noopener">↗ Come si scrive un buon prompt</a> &nbsp;·&nbsp; <a href="https://www.tlon.it/ied.html" target="_blank" rel="noopener">↗ L'esame e le sei stanze</a></p>
+</footer>
+
+<script>
+  const progressBar = document.getElementById('progress');
+  function updateProgress() {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = (scrolled / total) * 100;
+    progressBar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-revealed');
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  const railEl = document.getElementById('rail');
+  const sectionsForRail = document.querySelectorAll('[data-rail]');
+  sectionsForRail.forEach((s) => {
+    const dot = document.createElement('button');
+    dot.className = 'rail__dot';
+    dot.dataset.target = s.id;
+    dot.dataset.label = s.dataset.rail;
+    dot.setAttribute('aria-label', 'Vai a ' + s.dataset.rail);
+    dot.addEventListener('click', () => {
+      document.getElementById(s.id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    railEl.appendChild(dot);
+  });
+  const allDots = document.querySelectorAll('.rail__dot');
+  const railObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        allDots.forEach(d => d.classList.toggle('is-active', d.dataset.target === e.target.id));
+      }
+    });
+  }, { threshold: 0.4 });
+  sectionsForRail.forEach(s => railObserver.observe(s));
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) railEl.classList.add('is-visible');
+    else railEl.classList.remove('is-visible');
+  }, { passive: true });
+
+  // Generazione barre di campionamento di sfondo (sezione funzionamento)
+  const bgSampling = document.getElementById('bgSampling');
+  if (bgSampling) {
+    const barCount = 60;
+    let html = '';
+    for (let i = 0; i < barCount; i++) {
+      const left = (i / barCount) * 100;
+      const delay = (Math.random() * 4).toFixed(2);
+      const dur = (3 + Math.random() * 3).toFixed(2);
+      const height = 40 + Math.random() * 140;
+      html += `<div class="bg-sampling-bar" style="left: ${left.toFixed(2)}%; height: ${height.toFixed(0)}px; animation-delay: ${delay}s; animation-duration: ${dur}s;"></div>`;
+    }
+    bgSampling.innerHTML = html;
+  }
+
+  const distroData = [
+    {
+      prompt: 'Il sole sorge a',
+      hint: 'Distribuzione strettissima: il modello ha quasi una sola scelta. Quando il prompt non lascia spazio, la geometria del corpus restituisce l\'attrattore quasi puro.',
+      bars: [
+        { word: 'ovest', pct: 0.3 },
+        { word: 'oriente', pct: 5.4 },
+        { word: 'est', pct: 91.2 },
+        { word: 'mezzanotte', pct: 0.04 },
+        { word: 'levante', pct: 1.8 }
+      ]
+    },
+    {
+      prompt: 'L\'artista più importante del Novecento è',
+      hint: 'Distribuzione molto più larga, dominata da un attrattore culturale. Il primo della lista non è una verità, è un effetto del corpus occidentale in italiano e in inglese.',
+      bars: [
+        { word: 'Matisse', pct: 8.6 },
+        { word: 'Klee', pct: 2.7 },
+        { word: 'Duchamp', pct: 11.2 },
+        { word: 'Pollock', pct: 6.3 },
+        { word: 'Warhol', pct: 14.8 },
+        { word: 'Kandinsky', pct: 4.1 },
+        { word: 'Picasso', pct: 34.1 }
+      ]
+    },
+    {
+      prompt: 'Una donna mediterranea che ha perso la lingua materna è una',
+      hint: 'Ecco il cliché statistico in azione. Il modello prende il termine più frequente nella zona del corpus dove «donna», «Mediterraneo», «lingua persa» si sovrappongono. Per uscirne, dovete dare materiale che il corpus non ha già.',
+      bars: [
+        { word: 'ceramista', pct: 5.1 },
+        { word: 'pittrice', pct: 8.2 },
+        { word: 'poetessa', pct: 28.3 },
+        { word: 'orafa', pct: 1.2 },
+        { word: 'scrittrice', pct: 22.7 },
+        { word: 'fotografa', pct: 3.8 },
+        { word: 'tessitrice', pct: 9.6 },
+        { word: 'cantante', pct: 12.4 }
+      ]
+    }
+  ];
+
+  const distroTitle = document.getElementById('distroTitle');
+  const distroRows = document.getElementById('distroRows');
+  const distroHint = document.getElementById('distroHint');
+
+  function renderDistro(idx) {
+    const d = distroData[idx];
+    distroTitle.innerHTML = d.prompt + ' <span class="blank">?</span>';
+    distroRows.innerHTML = d.bars.map(b => `
+      <div class="distro__row">
+        <span class="distro__word">${b.word}</span>
+        <div class="distro__bar"><div class="distro__bar-fill" style="width: ${b.pct}%;"></div></div>
+        <span class="distro__pct">${b.pct.toFixed(b.pct < 1 ? 2 : 1)}%</span>
+      </div>
+    `).join('');
+    distroHint.textContent = d.hint;
+  }
+  renderDistro(0);
+  document.querySelectorAll('.distro__tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.distro__tab').forEach(x => x.classList.remove('is-active'));
+      t.classList.add('is-active');
+      renderDistro(parseInt(t.dataset.i));
+    });
+  });
+
+  const sections = Array.from(document.querySelectorAll('.hero, .section'));
+  function currentSectionIndex() {
+    const y = window.scrollY + window.innerHeight / 3;
+    for (let i = sections.length - 1; i >= 0; i--) {
+      if (sections[i].offsetTop <= y) return i;
+    }
+    return 0;
+  }
+  function scrollToSection(i) {
+    if (i < 0 || i >= sections.length) return;
+    sections[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON') return;
+    const i = currentSectionIndex();
+    if (e.key === 'j' || e.key === 'ArrowDown' || e.key === 'PageDown') {
+      e.preventDefault(); scrollToSection(i + 1);
+    } else if (e.key === 'k' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault(); scrollToSection(i - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (e.key === 'End') {
+      e.preventDefault(); window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+    }
+  });
+</script>
+</body>
+</html>
