@@ -1,338 +1,796 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maura Gancitano — Tlon</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bianco: #ffffff;
-            --nero: #0a0a0a;
-            --ottanio: #2a6b6b;
-            --grigio: #6b6b6b;
-            --grigio-chiaro: #e5e5e5;
-        }
-
-        html { scroll-behavior: smooth; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { font-size: 16px; }
-        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bianco); color: var(--nero); -webkit-font-smoothing: antialiased; }
-        ::selection { background: var(--nero); color: var(--bianco); }
-        a { color: inherit; text-decoration: none; }
-
-        /* HEADER */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1002;
-            padding: 1.5rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--bianco);
-            border-bottom: 1px solid var(--grigio-chiaro);
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-
-        header.menu-open {
-            background: var(--nero);
-            border-bottom-color: var(--nero);
-        }
-
-        .logo { display: flex; align-items: center; }
-        .logo img { height: 28px; width: auto; transition: filter 0.3s ease; }
-
-        header.menu-open .logo img {
-            filter: invert(1);
-        }
-
-        nav { display: flex; gap: 3rem; }
-        nav a { font-size: 0.9rem; font-weight: 500; transition: color 0.3s ease; }
-        nav a:hover { color: var(--ottanio); }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 0.4rem;
-            transition: filter 0.3s ease;
-        }
-
-        .hamburger span {
-            width: 24px;
-            height: 2px;
-            background: var(--nero);
-            transition: all 0.3s ease;
-        }
-
-        header.menu-open .hamburger span {
-            background: var(--bianco);
-        }
-
-        header.menu-open .hamburger span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        header.menu-open .hamburger span:nth-child(2) {
-            opacity: 0;
-        }
-
-        header.menu-open .hamburger span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -7px);
-        }
-
-        /* MOBILE MENU */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--nero);
-            z-index: 1001;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 3rem;
-        }
-
-        .mobile-menu a { font-size: 1.5rem; color: var(--bianco); font-weight: 500; }
-
-        .mobile-menu.open { display: flex; }
-
-        /* MAIN LAYOUT */
-        main { margin-top: 80px; padding: 2rem 3rem; }
-
-        .container { max-width: 1200px; margin: 0 auto; }
-
-        /* HERO SECTION */
-        .hero {
-            text-align: center;
-            padding: 4rem 0;
-        }
-
-        .hero h1 {
-            font-family: 'Instrument Serif', serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            color: var(--grigio);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        /* PROJECTS SECTION */
-        .projects {
-            padding: 4rem 0;
-        }
-
-        .projects h2 {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            border: 1px solid var(--grigio-chiaro);
-            padding: 2rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .project-card:hover {
-            border-color: var(--ottanio);
-            box-shadow: 0 8px 24px rgba(42, 107, 107, 0.1);
-            transform: translateY(-4px);
-        }
-
-        .project-card h3 {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .project-card p {
-            color: var(--grigio);
-            line-height: 1.6;
-        }
-
-        /* BIO SECTION */
-        .bio {
-            background: var(--nero);
-            color: var(--bianco);
-            padding: 4rem 3rem;
-            margin: 4rem 0;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .bio h2 {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .bio p {
-            max-width: 600px;
-            margin: 0 auto 1.5rem;
-            line-height: 1.8;
-            color: var(--grigio-chiaro);
-        }
-
-        .bio a {
-            color: var(--ottanio);
-            text-decoration: underline;
-            transition: color 0.3s ease;
-        }
-
-        .bio a:hover {
-            color: var(--bianco);
-        }
-
-        /* FOOTER */
-        footer {
-            background: var(--nero);
-            color: var(--bianco);
-            padding: 2rem 3rem;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
-        footer a {
-            color: var(--ottanio);
-            text-decoration: underline;
-            transition: color 0.3s ease;
-        }
-
-        footer a:hover {
-            color: var(--bianco);
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            header {
-                padding: 1rem 1.5rem;
-            }
-
-            nav { display: none; }
-
-            .hamburger { display: flex; }
-
-            main { margin-top: 60px; padding: 1rem 1.5rem; }
-
-            .hero h1 { font-size: 2rem; }
-
-            .projects h2 { font-size: 1.75rem; }
-
-            .bio {
-                padding: 2rem 1.5rem;
-                margin: 2rem 0;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maura Gancitano — Filosofa, scrittrice, co-fondatrice di Tlon</title>
+<meta name="description" content="Maura Gancitano è filosofa, pedagogista e scrittrice. Co-fondatrice di Tlon, autrice di dodici libri tradotti in otto lingue, direttrice filosofica del Festival del Pensare Contemporaneo di Piacenza.">
+<meta name="author" content="Maura Gancitano">
+<meta name="keywords" content="Maura Gancitano, filosofa, scrittrice, Tlon, Festival del Pensare Contemporaneo, Festa della Filosofia, ilPod, Einaudi, HarperCollins, filosofia contemporanea">
+<link rel="canonical" href="https://mauragancitano.com/">
+<link rel="alternate" hreflang="it" href="https://mauragancitano.com/">
+<link rel="alternate" hreflang="en" href="https://mauragancitano.com/en/">
+<link rel="alternate" hreflang="es" href="https://mauragancitano.com/es/">
+<link rel="alternate" hreflang="zh" href="https://mauragancitano.com/zh/">
+<link rel="alternate" hreflang="x-default" href="https://mauragancitano.com/">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Maura Gancitano — Filosofa, scrittrice, co-fondatrice di Tlon">
+<meta property="og:description" content="Filosofa, pedagogista e scrittrice. Co-fondatrice di Tlon. Dodici libri tradotti in otto lingue. Direttrice filosofica del Festival del Pensare Contemporaneo.">
+<meta property="og:url" content="https://mauragancitano.com/">
+<meta property="og:image" content="https://www.tlon.it/assets/images/maura-gancitano.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="it_IT">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:site_name" content="Maura Gancitano">
+<meta property="profile:first_name" content="Maura">
+<meta property="profile:last_name" content="Gancitano">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Maura Gancitano — Filosofa, scrittrice, co-fondatrice di Tlon">
+<meta name="twitter:description" content="Filosofa, pedagogista e scrittrice. Co-fondatrice di Tlon. Dodici libri tradotti in otto lingue.">
+<meta name="twitter:image" content="https://www.tlon.it/assets/images/maura-gancitano.jpg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Maura Gancitano",
+  "url": "https://mauragancitano.com",
+  "image": "https://www.tlon.it/assets/images/maura-gancitano.jpg",
+  "jobTitle": "Filosofa, pedagogista, scrittrice",
+  "description": "Co-fondatrice di Tlon, autrice di dodici libri tradotti in otto lingue, direttrice filosofica del Festival del Pensare Contemporaneo di Piacenza, ideatrice della Festa della Filosofia e di ilPod.",
+  "birthPlace": {
+    "@type": "Place",
+    "name": "Mazara del Vallo, Italia"
+  },
+  "affiliation": {
+    "@type": "Organization",
+    "name": "Tlon",
+    "url": "https://tlon.it"
+  },
+  "alumniOf": [
+    {"@type": "CollegeOrUniversity", "name": "Columbia University"},
+    {"@type": "CollegeOrUniversity", "name": "IED Roma"}
+  ],
+  "award": [
+    "Premio Rapallo 2022",
+    "Vanity Fair Generazione Futuro",
+    "StartUpItalia Unstoppable Women"
+  ],
+  "knowsLanguage": ["it", "en", "es"],
+  "sameAs": [
+    "https://tlon.it",
+    "https://it.wikipedia.org/wiki/Maura_Gancitano"
+  ]
+}
+</script>
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Botanica della meraviglia",
+    "author": [
+      {"@type": "Person", "name": "Maura Gancitano"},
+      {"@type": "Person", "name": "Andrea Colamedici"}
+    ],
+    "publisher": {"@type": "Organization", "name": "HarperCollins"},
+    "datePublished": "2025",
+    "image": "https://shop.tlon.it/wp-content/uploads/2025/09/Botanica-della-meraviglia-Gancitano-Colamedici.png"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Erotica dei sentimenti",
+    "author": {"@type": "Person", "name": "Maura Gancitano"},
+    "publisher": {"@type": "Organization", "name": "Einaudi"},
+    "datePublished": "2024",
+    "image": "https://shop.tlon.it/wp-content/uploads/2024/08/erotica_sentimenti_maura-gancitano_libreria-tlon_D.jpg"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Ma chi me lo fa fare?",
+    "author": [
+      {"@type": "Person", "name": "Maura Gancitano"},
+      {"@type": "Person", "name": "Andrea Colamedici"}
+    ],
+    "publisher": {"@type": "Organization", "name": "HarperCollins"},
+    "datePublished": "2023",
+    "image": "https://shop.tlon.it/wp-content/uploads/2023/03/machimelofafare2.png"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Specchio delle mie brame",
+    "author": {"@type": "Person", "name": "Maura Gancitano"},
+    "publisher": {"@type": "Organization", "name": "Einaudi"},
+    "datePublished": "2022",
+    "award": "Premio Rapallo 2022",
+    "image": "https://shop.tlon.it/wp-content/uploads/2022/04/specchio-delle-mie-brame_maura-gancitano_libreria-tlon.jpg"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Prendila con filosofia",
+    "author": [
+      {"@type": "Person", "name": "Maura Gancitano"},
+      {"@type": "Person", "name": "Andrea Colamedici"}
+    ],
+    "publisher": {"@type": "Organization", "name": "HarperCollins"},
+    "datePublished": "2021"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "L'alba dei nuovi dèi",
+    "author": [
+      {"@type": "Person", "name": "Maura Gancitano"},
+      {"@type": "Person", "name": "Andrea Colamedici"}
+    ],
+    "publisher": {"@type": "Organization", "name": "Mondadori"},
+    "datePublished": "2021"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Liberati della brava bambina",
+    "author": [
+      {"@type": "Person", "name": "Maura Gancitano"},
+      {"@type": "Person", "name": "Andrea Colamedici"}
+    ],
+    "publisher": {"@type": "Organization", "name": "HarperCollins"},
+    "datePublished": "2019"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "La società della performance",
+    "author": [
+      {"@type": "Person", "name": "Maura Gancitano"},
+      {"@type": "Person", "name": "Andrea Colamedici"}
+    ],
+    "publisher": {"@type": "Organization", "name": "Tlon"},
+    "datePublished": "2018"
+  }
+]
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Maura Gancitano",
+  "url": "https://mauragancitano.com",
+  "inLanguage": ["it", "en", "es", "zh"]
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --salvia: #6b8f6b;
+    --salvia-scuro: #4a6b4a;
+    --salvia-chiaro: #8aab8a;
+    --crema: #f8f6f2;
+    --nero: #1a1a1a;
+    --grigio: #6b6b6b;
+}
+html { scroll-behavior: smooth; }
+body {
+    background: var(--crema);
+    font-family: 'Inter', sans-serif;
+    color: var(--nero);
+    overflow-x: hidden;
+}
+.nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem clamp(1.2rem, 3vw, 2.5rem);
+    background: rgba(248, 246, 242, 0.85);
+    backdrop-filter: blur(14px);
+}
+.nav-logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1rem;
+    color: var(--salvia-scuro);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+}
+.nav-right {
+    display: flex; gap: 1.5rem; align-items: center;
+}
+.nav-right a {
+    font-size: 0.7rem; font-weight: 400;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--grigio); text-decoration: none;
+    transition: color 0.3s;
+}
+.nav-right a:hover { color: var(--salvia-scuro); }
+.nav-lang {
+    display: flex; gap: 0.5rem;
+    padding-left: 1rem;
+    border-left: 1px solid rgba(107,143,107,0.2);
+}
+.nav-lang a { font-size: 0.6rem; font-weight: 500; color: #aaa; }
+.nav-lang a.active { color: var(--salvia-scuro); }
+.mosaic {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 3px;
+}
+.tile {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    background-size: cover;
+    background-position: center;
+}
+.tile:hover .tile-bg { transform: scale(1.04); }
+.tile-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.7s ease;
+}
+.tile .overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: clamp(0.7rem, 1.5vw, 1.3rem);
+    background: linear-gradient(transparent, rgba(0,0,0,0.6));
+    color: white;
+    z-index: 2;
+}
+.tile .overlay-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(0.8rem, 1.3vw, 1.1rem);
+    line-height: 1.2;
+}
+.tile .overlay-sub {
+    font-size: clamp(0.5rem, 0.7vw, 0.65rem);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    opacity: 0.85;
+    margin-top: 0.15rem;
+}
+.tile-hero {
+    grid-row: 1 / 4;
+    grid-column: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.tile-hero .overlay {
+    background: linear-gradient(transparent 20%, rgba(0,0,0,0.6));
+    padding: clamp(1.5rem, 4vw, 3rem);
+}
+.tile-hero .hero-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    line-height: 1.05;
+    margin-bottom: 0.5rem;
+}
+.tile-hero .hero-name em { font-style: italic; }
+.tile-hero .hero-sub {
+    font-size: clamp(0.6rem, 0.9vw, 0.75rem);
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 0.6rem;
+}
+.tile-hero .hero-bio {
+    font-size: clamp(0.75rem, 1vw, 0.9rem);
+    font-weight: 300;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.85);
+    max-width: 380px;
+}
+.ph-portrait {
+    background-image: url(https://www.tlon.it/assets/images/maura-gancitano.jpg);
+    background-size: cover;
+    background-position: center 20%;
+}
+.ph-libri {
+    background-image: url(https://www.tlon.it/assets/images/libreria-2.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.ph-tlon {
+    background-image: url(https://www.tlon.it/assets/images/libreria-1.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.ph-festival {
+    background-image: url(festival%20piacenza.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.ph-triennale {
+    background-image: url(https://www.fondazionedisardegna.it/media/52/45076349316974/contemporanea_890x560.jpeg);
+    background-size: cover;
+    background-position: center;
+}
+.ph-podcast {
+    background-image: url(https://www.tlon.it/assets/images/ilpod-teatro.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.ph-uni {
+    background-image: url(uni%20messina.jpeg);
+    background-size: cover;
+    background-position: center;
+}
+.ph-media {
+    background-image: url(https://www.metacommunications.it/wp-content/uploads/2023/08/un-illustrazione-digitale-di-una-cuffia-con-uno-sfondo-colorato.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.ph-ny {
+    background-image: url(new%20york.jpeg);
+    background-size: cover;
+    background-position: center;
+}
+.section {
+    padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(107,143,107,0.12);
+    padding-bottom: 0.8rem;
+}
+.section-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+.section-title em { font-style: italic; color: var(--salvia-scuro); }
+.section-link {
+    font-size: 0.65rem; font-weight: 400;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--salvia); text-decoration: none;
+}
+.book-strip {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+}
+.book-strip::-webkit-scrollbar { height: 3px; }
+.book-strip::-webkit-scrollbar-thumb { background: var(--salvia-chiaro); border-radius: 2px; }
+.book-card {
+    flex-shrink: 0;
+    width: 150px;
+    scroll-snap-align: start;
+    text-decoration: none;
+    color: var(--nero);
+}
+.book-card:hover .book-cover-inner { transform: translateY(-4px); }
+.book-cover-inner {
+    width: 150px; height: 225px;
+    border-radius: 2px; overflow: hidden;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform 0.3s;
+}
+.book-cover-inner img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+.book-cover-inner .img-ph {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Instrument Serif', serif;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 0.8rem;
+    line-height: 1.3;
+}
+.book-card .book-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 0.85rem; line-height: 1.25;
+}
+.book-card .book-meta {
+    font-size: 0.6rem; color: var(--grigio);
+    font-weight: 300; margin-top: 0.1rem;
+}
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+}
+.activity-card {
+    padding: 1.2rem 1.4rem;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid rgba(107,143,107,0.06);
+    text-decoration: none;
+    color: var(--nero);
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+.activity-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.05); transform: translateY(-2px); }
+.activity-card .ac-label {
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--salvia);
+    margin-bottom: 0.4rem;
+}
+.activity-card .ac-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+}
+.activity-card .ac-desc {
+    font-size: 0.72rem;
+    color: var(--grigio);
+    font-weight: 300;
+    line-height: 1.5;
+}
+.podcast-strip {
+    display: flex;
+    gap: 1.2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+.pod-card {
+    flex-shrink: 0;
+    display: flex; gap: 1rem; align-items: center;
+    padding: 1rem 1.2rem;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid rgba(107,143,107,0.06);
+    text-decoration: none; color: var(--nero);
+    min-width: 280px;
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+.pod-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.05); transform: translateY(-2px); }
+.pod-thumb {
+    width: 54px; height: 54px;
+    border-radius: 8px; overflow: hidden; flex-shrink: 0;
+}
+.pod-thumb .img-ph {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Instrument Serif', serif;
+    font-size: 1rem; color: rgba(255,255,255,0.7);
+}
+.pod-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 0.9rem; margin-bottom: 0.15rem;
+}
+.pod-desc {
+    font-size: 0.65rem; color: var(--grigio);
+    font-weight: 300; line-height: 1.4;
+}
+.footer {
+    background: var(--salvia-scuro);
+    color: rgba(255,255,255,0.7);
+    padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem) 1.5rem;
+}
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.footer-brand {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 0.3rem;
+}
+.footer-tagline {
+    font-size: 0.7rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.5);
+}
+.footer-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+.footer-links a {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.footer-links a:hover { color: rgba(255,255,255,0.95); }
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.2rem;
+    font-size: 0.58rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.footer-legal span { margin: 0 0.4rem; }
+.footer-legal span.sep { color: rgba(255,255,255,0.2); }
+@media (max-width: 900px) {
+    .mosaic {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 2fr repeat(5, 1fr);
+        height: auto; min-height: 100vh;
+    }
+    .tile-hero { grid-row: 1 / 3; grid-column: 1 / 3; }
+}
+@media (max-width: 550px) {
+    .mosaic {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+    }
+    .tile-hero { grid-row: auto; grid-column: auto; min-height: 70vh; }
+    .tile { min-height: 160px; }
+    .nav-right a.nav-section { display: none; }
+    .activity-grid { grid-template-columns: 1fr; }
+    .footer-top { flex-direction: column; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+}
+</style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="https://tlon.it/logo.svg" alt="Tlon Logo">
+<nav class="nav" aria-label="Navigazione principale">
+    <a href="#" class="nav-logo">Maura Gancitano</a>
+    <div class="nav-right">
+        <a href="libri.html" class="nav-section">Libri</a>
+        <a href="ricerca.html" class="nav-section">Ricerca</a>
+        <a href="podcast.html" class="nav-section">Podcast</a>
+        <a href="contatti.html" class="nav-section">Contatti</a>
+        <div class="nav-lang" aria-label="Seleziona lingua">
+            <a href="#" class="active" aria-current="page" lang="it">IT</a>
+            <a href="en/" lang="en">EN</a>
+            <a href="es/" lang="es">ES</a>
+            <a href="zh/" lang="zh">ZH</a>
         </div>
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#projects">Progetti</a>
-            <a href="#bio">Bio</a>
-            <a href="#contact">Contatti</a>
-        </nav>
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </header>
-
-    <div class="mobile-menu">
-        <a href="#home">Home</a>
-        <a href="#projects">Progetti</a>
-        <a href="#bio">Bio</a>
-        <a href="#contact">Contatti</a>
     </div>
-
-    <main>
-        <div class="container">
-            <section class="hero" id="home">
-                <h1>Maura Gancitano</h1>
-                <p>Filosofa, autrice e curatrice. Cofondatrice di Tlon, una piattaforma per la ricerca e la contaminazione culturale.</p>
-            </section>
-
-            <section class="projects" id="projects">
-                <h2>Progetti</h2>
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <h3>Tlon</h3>
-                        <p>Una piattaforma per la ricerca e la contaminazione culturale, fondata nel 2012. Tlon pubblica articoli, interviste e video su filosofia, arte, letteratura e scienza.</p>
-                    </div>
-                    <div class="project-card">
-                        <h3>Libri</h3>
-                        <p>Autrice di diversi libri tra cui "Orchidee di Carta" e "Etica e Ricerca". I suoi scritti affrontano temi di filosofia, etica e teoria culturale.</p>
-                    </div>
-                    <div class="project-card">
-                        <h3>Insegnamento</h3>
-                        <p>Insegna presso diverse università italiane. I suoi corsi affrontano la filosofia contemporanea, la ricerca culturale e i nuovi media.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="bio" id="bio">
-                <h2>Chi Sono</h2>
-                <p>Sono una filosofa, autrice e curatrice culturale. Mi dedico allo studio della ricerca e della contaminazione culturale, credendo che la cultura sia una pratica condivisa di dialogo e trasformazione.</p>
-                <p>Insieme a diversi collaboratori, ho co-fondato Tlon nel 2012, una piattaforma dedicata alla pubblicazione e alla diffusione di contenuti culturali di qualità.</p>
-                <p>I miei interessi spaziano dalla filosofia contemporanea all'arte, dalla letteratura alle nuove forme di espressione mediale. Credo nel potere della ricerca critica come strumento di cambiamento sociale.</p>
-                <p>Puoi scoprire di più sul mio lavoro visitando <a href="https://mauragancitano.com">mauragancitano.com</a>.</p>
-            </section>
+</nav>
+<main>
+<div class="mosaic" role="region" aria-label="Maura Gancitano — panoramica">
+    <a href="#" class="tile tile-hero ph-portrait">
+        <div class="overlay">
+            <h1 class="hero-name">Maura <em>Gancitano</em></h1>
+            <p class="hero-sub">Filosofa &middot; Pedagogista &middot; Scrittrice</p>
+            <p class="hero-bio">Co-fondatrice di Tlon. Dodici libri tradotti in otto lingue. Direttrice filosofica del Festival del Pensare Contemporaneo. Ideatrice della Festa della Filosofia e di ilPod.</p>
         </div>
-    </main>
-
-    <footer id="contact">
-        <p>© 2024 Maura Gancitano. Tutti i diritti riservati.</p>
-        <p><a href="https://tlon.it">Tlon.it</a> | <a href="https://mauragancitano.com">mauragancitano.com</a></p>
-    </footer>
-
-    <script>
-        const hamburger = document.querySelector('.hamburger');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const header = document.querySelector('header');
-
-        hamburger.addEventListener('click', () => {
-            mobileMenu.classList.toggle('open');
-            header.classList.toggle('menu-open');
-        });
-
-        // Close mobile menu when a link is clicked
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('open');
-                header.classList.remove('menu-open');
-            });
-        });
-    </script>
+    </a>
+    <a href="libri.html" class="tile ph-libri" aria-label="12 libri tradotti in 8 lingue — Einaudi, HarperCollins, Mondadori, Zanichelli">
+        <div class="overlay">
+            <div class="overlay-title">12 libri, 8 lingue</div>
+            <div class="overlay-sub">Einaudi &middot; HarperCollins &middot; Mondadori &middot; Zanichelli</div>
+        </div>
+    </a>
+    <a href="#" class="tile ph-festival" aria-label="Festival del Pensare Contemporaneo — Piacenza, direttrice filosofica">
+        <div class="overlay">
+            <div class="overlay-title">Festival del Pensare Contemporaneo</div>
+            <div class="overlay-sub">Piacenza &middot; Direttrice filosofica</div>
+        </div>
+    </a>
+    <a href="https://tlon.it" class="tile ph-tlon" target="_blank" rel="noopener" aria-label="Tlon — progetto culturale co-fondato nel 2015">
+        <div class="overlay">
+            <div class="overlay-title">Tlon</div>
+            <div class="overlay-sub">Progetto culturale &middot; co-fondatrice &middot; 2015</div>
+        </div>
+    </a>
+    <a href="https://tlon.it" class="tile ph-triennale" target="_blank" rel="noopener" aria-label="Progetti Tlon — Festa della Filosofia, ilPod, Festival">
+        <div class="overlay">
+            <div class="overlay-title">Progetti Tlon</div>
+            <div class="overlay-sub">Festa della Filosofia &middot; ilPod &middot; Festival</div>
+        </div>
+    </a>
+    <a href="podcast.html" class="tile ph-podcast" aria-label="Podcast e media — Audible, RaiPlaySound, Vanity Fair">
+        <div class="overlay">
+            <div class="overlay-title">Podcast &amp; Media</div>
+            <div class="overlay-sub">Audible &middot; RaiPlaySound &middot; Vanity Fair</div>
+        </div>
+    </a>
+    <a href="ricerca.html" class="tile ph-uni" aria-label="Università e insegnamento — Columbia, IED, Konkoly, Politecnico">
+        <div class="overlay">
+            <div class="overlay-title">Universit&agrave; e insegnamento</div>
+            <div class="overlay-sub">Columbia &middot; IED &middot; Konkoly &middot; Politecnico</div>
+        </div>
+    </a>
+    <a href="ricerca.html" class="tile ph-media" aria-label="Pubblicazioni e ricerca — HBR Italia, Mondo Digitale, Nuovi Argomenti">
+        <div class="overlay">
+            <div class="overlay-title">Pubblicazioni e ricerca</div>
+            <div class="overlay-sub">HBR Italia &middot; Mondo Digitale &middot; Nuovi Argomenti</div>
+        </div>
+    </a>
+    <a href="#" class="tile ph-ny" aria-label="News — aggiornamenti, eventi, uscite">
+        <div class="overlay">
+            <div class="overlay-title">News</div>
+            <div class="overlay-sub">Aggiornamenti &middot; eventi &middot; uscite</div>
+        </div>
+    </a>
+</div>
+<section class="section" id="attivita">
+    <div class="section-header">
+        <h2 class="section-title"><em>Attivit&agrave;</em></h2>
+    </div>
+    <div class="activity-grid">
+        <article class="activity-card">
+            <div class="ac-label">Direzione artistica</div>
+            <h3 class="ac-title">Festival del Pensare Contemporaneo</h3>
+            <p class="ac-desc">Direttrice filosofica del festival di Piacenza, dedicato alla filosofia come strumento per leggere il presente.</p>
+        </article>
+        <article class="activity-card">
+            <div class="ac-label">Ideazione</div>
+            <h3 class="ac-title">Festa della Filosofia</h3>
+            <p class="ac-desc">Ideatrice del format alla Triennale di Milano e di Roma, che porta la filosofia fuori dalle aule accademiche.</p>
+        </article>
+        <article class="activity-card">
+            <div class="ac-label">Ideazione</div>
+            <h3 class="ac-title">ilPod &ndash; Italian Podcast Awards</h3>
+            <p class="ac-desc">Ideatrice del premio dedicato al mondo del podcasting italiano.</p>
+        </article>
+        <article class="activity-card">
+            <div class="ac-label">Comitati scientifici</div>
+            <h3 class="ac-title">Fondazione WoW, AANT, Rizzoli Education</h3>
+            <p class="ac-desc">Direttrice scientifica della Fondazione WoW. Membro di comitati per United Network, geniaLAB di AANT, Rizzoli Education, collana Intrecci (Firenze University Press).</p>
+        </article>
+        <article class="activity-card">
+            <div class="ac-label">Insegnamento</div>
+            <h3 class="ac-title">Universit&agrave; e istituzioni</h3>
+            <p class="ac-desc">Corso Prompt Thinking allo IED Roma dal 2022. Lezioni e seminari a Columbia University, Konkoly Observatory, Politecnico di Milano, LUISS, Cattolica, Bicocca, Trento, Foggia, Verona, Padova, Udine, Bari.</p>
+        </article>
+        <article class="activity-card">
+            <div class="ac-label">Pubblicazioni</div>
+            <h3 class="ac-title">Ricerca accademica</h3>
+            <p class="ac-desc">Articoli per Harvard Business Review Italia, Mondo Digitale, Vita e Pensiero, Nuovi Argomenti. Contributi in volumi UTET, Treccani, Sperling &amp; Kupfer, IlSole24ore, Quodlibet.</p>
+        </article>
+        <article class="activity-card">
+            <div class="ac-label">Riconoscimenti</div>
+            <h3 class="ac-title">Premio Rapallo 2022</h3>
+            <p class="ac-desc">Per Specchio delle mie brame (Einaudi), ex aequo con Bianca Pitzorno. Vanity Fair &laquo;Generazione futuro&raquo; (Italia, Francia, Spagna). StartUpItalia &laquo;Unstoppable Women&raquo;.</p>
+        </article>
+        <article class="activity-card">
+            <div class="ac-label">Media</div>
+            <h3 class="ac-title">Collaborazioni</h3>
+            <p class="ac-desc">Rubrica &laquo;Prendila con Filosofia&raquo; su Vanity Fair con Andrea Colamedici. Collaborazioni con La Repubblica, La Stampa, Linus, Radio 1, Radio 24, Radio Freccia.</p>
+        </article>
+    </div>
+</section>
+<section class="section" id="libri">
+    <div class="section-header">
+        <h2 class="section-title"><em>Libri</em></h2>
+        <a href="libri.html" class="section-link">Tutti i libri &rarr;</a>
+    </div>
+    <div class="book-strip">
+        <a href="#" class="book-card">
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2025/09/Botanica-della-meraviglia-Gancitano-Colamedici.png" alt="Copertina di Botanica della meraviglia di Maura Gancitano e Andrea Colamedici" loading="lazy"></div>
+            <div class="book-title">Botanica della meraviglia</div>
+            <div class="book-meta">HarperCollins 2025 &middot; con A. Colamedici</div>
+        </a>
+        <a href="#" class="book-card">
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2024/08/erotica_sentimenti_maura-gancitano_libreria-tlon_D.jpg" alt="Copertina di Erotica dei sentimenti di Maura Gancitano" loading="lazy"></div>
+            <div class="book-title">Erotica dei sentimenti</div>
+            <div class="book-meta">Einaudi 2024</div>
+        </a>
+        <a href="#" class="book-card">
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2023/03/machimelofafare2.png" alt="Copertina di Ma chi me lo fa fare? di Maura Gancitano e Andrea Colamedici" loading="lazy"></div>
+            <div class="book-title">Ma chi me lo fa fare?</div>
+            <div class="book-meta">HarperCollins 2023 &middot; con A. Colamedici</div>
+        </a>
+        <a href="#" class="book-card">
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2022/04/specchio-delle-mie-brame_maura-gancitano_libreria-tlon.jpg" alt="Copertina di Specchio delle mie brame di Maura Gancitano — Premio Rapallo 2022" loading="lazy"></div>
+            <div class="book-title">Specchio delle mie brame</div>
+            <div class="book-meta">Einaudi 2022 &middot; Premio Rapallo</div>
+        </a>
+        <a href="#" class="book-card">
+            <div class="book-cover-inner"><img src="prendila%20con%20filosofia%20libro.webp" alt="Copertina di Prendila con filosofia di Maura Gancitano e Andrea Colamedici" loading="lazy"></div>
+            <div class="book-title">Prendila con filosofia</div>
+            <div class="book-meta">HarperCollins 2021 &middot; con A. Colamedici</div>
+        </a>
+        <a href="#" class="book-card">
+            <div class="book-cover-inner"><img src="alba%20dei%20nuovi%20dei.jpg" alt="Copertina di L'alba dei nuovi dèi di Maura Gancitano e Andrea Colamedici" loading="lazy"></div>
+            <div class="book-title">L'alba dei nuovi d&egrave;i</div>
+            <div class="book-meta">Mondadori 2021 &middot; con A. Colamedici</div>
+        </a>
+        <a href="#" class="book-card">
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2020/02/liberati-dalla-brava-bambina_maura-gancitano_andrea-colamedici_libreria-tlon.jpg" alt="Copertina di Liberati della brava bambina di Maura Gancitano e Andrea Colamedici" loading="lazy"></div>
+            <div class="book-title">Liberati della brava bambina</div>
+            <div class="book-meta">HarperCollins 2019 &middot; con A. Colamedici</div>
+        </a>
+        <a href="#" class="book-card">
+            <div class="book-cover-inner"><img src="https://shop.tlon.it/wp-content/uploads/2019/02/SDP-IG-front-squarejpg.jpg" alt="Copertina di La società della performance di Maura Gancitano e Andrea Colamedici" loading="lazy"></div>
+            <div class="book-title">La societ&agrave; della performance</div>
+            <div class="book-meta">Tlon 2018 &middot; con A. Colamedici</div>
+        </a>
+    </div>
+</section>
+<section class="section" id="podcast">
+    <div class="section-header">
+        <h2 class="section-title"><em>Podcast</em></h2>
+        <a href="podcast.html" class="section-link">Ascolta &rarr;</a>
+    </div>
+    <div class="podcast-strip">
+        <a href="#" class="pod-card">
+            <div class="pod-thumb"><div class="img-ph ph-podcast">SF</div></div>
+            <div>
+                <div class="pod-name">Scuola di Filosofie</div>
+                <div class="pod-desc">Audible &middot; con Andrea Colamedici</div>
+            </div>
+        </a>
+        <a href="#" class="pod-card">
+            <div class="pod-thumb"><div class="img-ph ph-libri">M&times;M</div></div>
+            <div>
+                <div class="pod-name">Meno per meno</div>
+                <div class="pod-desc">RaiPlaySound &middot; con Niccol&ograve; Fabi</div>
+            </div>
+        </a>
+        <a href="#" class="pod-card">
+            <div class="pod-thumb"><div class="img-ph ph-festival">PE</div></div>
+            <div>
+                <div class="pod-name">Pensare Europeo</div>
+                <div class="pod-desc">Parlamento Europeo &middot; con Andrea Colamedici</div>
+            </div>
+        </a>
+        <a href="#" class="pod-card">
+            <div class="pod-thumb"><div class="img-ph ph-tlon">T</div></div>
+            <div>
+                <div class="pod-name">Tlon &ndash; Il podcast</div>
+                <div class="pod-desc">Tutte le piattaforme</div>
+            </div>
+        </a>
+    </div>
+</section>
+</main>
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-top">
+            <div>
+                <div class="footer-brand">Maura Gancitano</div>
+                <div class="footer-tagline">Filosofa, pedagogista, scrittrice</div>
+            </div>
+            <nav class="footer-links" aria-label="Link legali">
+                <a href="contatti.html">Contatti</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="cookie.html">Cookie Policy</a>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                &copy; 2026 Tlon Srl
+                <span class="sep">|</span>
+                Sede legale: Via Nicol&ograve; da Pistoia, 12 &mdash; 00154 Roma
+                <span class="sep">|</span>
+                P.IVA e C.F.: 13583341006
+                <span class="sep">|</span>
+                REA: RM &ndash; 1458496
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
