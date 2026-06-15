@@ -58,6 +58,18 @@
   .overture .title{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(56px,13vw,168px);line-height:.92;letter-spacing:-.035em;
     margin:6px 0 0;opacity:0;animation:fade 2s .8s forwards;}
   .overture .title em{font-style:italic;font-weight:300;}
+
+  /* la e del plurale respira tra le due intelligenze */
+  .breathe{font-style:italic;font-weight:300;will-change:color;
+    animation:respiro 7s ease-in-out infinite;}
+  @keyframes respiro{
+    0%,100%{color:var(--machine);text-shadow:0 0 28px rgba(91,124,224,.45);}
+    50%{color:var(--feeling);text-shadow:0 0 28px rgba(224,137,74,.45);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .breathe{animation:none;color:var(--meet);text-shadow:none;}
+  }
+
   .overture .sub{font-family:"Fraunces",serif;font-style:italic;font-weight:300;font-size:clamp(18px,2.6vw,27px);color:var(--soft);
     margin-top:38px;max-width:24ch;line-height:1.4;opacity:0;animation:fade 1.6s 1.3s forwards;}
   .overture .cue{margin-top:64px;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--soft);opacity:0;animation:fade 1.6s 1.9s forwards;}
@@ -208,7 +220,7 @@
   #gate.hide{opacity:0;pointer-events:none;}
   #gate .g-pre{font-family:"Fraunces",serif;font-style:italic;font-weight:300;font-size:clamp(18px,4vw,32px);color:var(--paper);line-height:1;}
   #gate .g-title{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(48px,12vw,128px);line-height:.9;letter-spacing:-.035em;color:var(--paper);margin:4px 0 34px;}
-  #gate .g-title em{font-style:italic;font-weight:300;color:var(--meet);}
+  #gate .g-title em{font-style:italic;font-weight:300;}
   #gate .g-label{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--soft);margin-bottom:18px;}
   #gate .g-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
   #gate input{font-family:"Space Mono",monospace;font-size:15px;letter-spacing:.1em;padding:14px 22px;border-radius:40px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--paper);outline:none;width:240px;text-align:center;transition:border-color .3s;}
@@ -224,7 +236,7 @@
 
 <div id="gate">
   <div class="g-pre">Il Festival delle</div>
-  <div class="g-title">intelligenz<em>e</em></div>
+  <div class="g-title">intelligenz<em class="breathe">e</em></div>
   <div class="g-label">Inserisci il codice d'accesso</div>
   <div class="g-row">
     <input id="g-input" type="password" autocomplete="off" spellcheck="false" placeholder="codice" aria-label="Codice d'accesso">
@@ -243,7 +255,7 @@
   <section class="overture">
     <div class="place">Rubiera · Comune · primavera 2027</div>
     <div class="pre">Il Festival delle</div>
-    <h1 class="title">intelligenz<em>e</em></h1>
+    <h1 class="title">intelligenz<em class="breathe">e</em></h1>
     <div class="sub">Capire le macchine, conoscere le emozioni.</div>
     <div class="cue">scorri<i></i></div>
   </section>
