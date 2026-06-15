@@ -196,9 +196,38 @@
     *{animation:none!important;}
     .reveal{opacity:1;transform:none;}
   }
+
+  /* ---------- ACCESS GATE ---------- */
+  body.locked{overflow:hidden;}
+  #gate{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 38%,#0e2418,#06100B 72%);text-align:center;padding:30px;transition:opacity .6s;}
+  #gate.hide{opacity:0;pointer-events:none;}
+  #gate .g-pre{font-family:"Fraunces",serif;font-style:italic;font-weight:400;font-size:clamp(18px,4vw,32px);color:var(--paper);line-height:1;}
+  #gate .g-terra{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(56px,14vw,150px);line-height:.84;letter-spacing:-.03em;color:var(--paper);margin-bottom:34px;}
+  #gate .g-terra b{color:var(--lime);text-shadow:0 0 40px rgba(201,242,91,.5);}
+  #gate .g-label{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--soft);margin-bottom:16px;}
+  #gate .g-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  #gate input{font-family:"Space Mono",monospace;font-size:15px;letter-spacing:.12em;padding:14px 20px;border-radius:40px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--paper);outline:none;width:230px;text-align:center;}
+  #gate input:focus{border-color:var(--lime);}
+  #gate button{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:14px 26px;border-radius:40px;border:none;background:var(--lime);color:#06100b;font-weight:700;cursor:pointer;transition:.3s;}
+  #gate button:hover{transform:translateY(-2px);box-shadow:0 12px 32px -8px var(--lime);}
+  #gate .g-err{color:#FB7185;font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;margin-top:16px;height:14px;opacity:0;transition:opacity .3s;}
+  #gate.shake .g-row{animation:shake .42s;}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
 </style>
 </head>
 <body>
+
+<div id="gate">
+  <div class="g-pre">Tlon per</div>
+  <div class="g-terra">TERRA<b>!</b></div>
+  <div class="g-label">Inserisci il codice d'accesso</div>
+  <div class="g-row">
+    <input id="g-input" type="password" autocomplete="off" spellcheck="false" placeholder="codice" aria-label="Codice d'accesso">
+    <button id="g-btn">Entra</button>
+  </div>
+  <div class="g-err" id="g-err">Codice non valido</div>
+</div>
 
 <div id="bar"></div>
 <div class="live"><span class="dot"></span>Tlon per TERRA!</div>
@@ -349,6 +378,23 @@
 </div>
 
 <script>
+/* ---------- access gate ---------- */
+(function(){
+  const gate=document.getElementById('gate');
+  const inp=document.getElementById('g-input'),btn=document.getElementById('g-btn'),err=document.getElementById('g-err');
+  function djb2(s){let h=5381;for(let i=0;i<s.length;i++)h=((h*33)+s.charCodeAt(i))>>>0;return h;}
+  const OK=3916118600;
+  function unlock(){gate.classList.add('hide');document.body.classList.remove('locked');setTimeout(()=>{gate.style.display='none';},650);}
+  if(sessionStorage.getItem('terra26')==='1'){gate.style.display='none';}
+  else{document.body.classList.add('locked');setTimeout(()=>{if(inp)inp.focus();},250);}
+  function go(){
+    if(djb2((inp.value||'').trim().toLowerCase())===OK){sessionStorage.setItem('terra26','1');unlock();}
+    else{err.style.opacity='1';gate.classList.add('shake');setTimeout(()=>gate.classList.remove('shake'),440);}
+  }
+  if(btn)btn.addEventListener('click',go);
+  if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter')go();});
+})();
+
 /* ---------- scroll progress ---------- */
 const bar=document.getElementById('bar');
 addEventListener('scroll',()=>{
