@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spazio Tlon · TERRA! 2026</title>
+<title>Tlon per TERRA!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -62,6 +62,7 @@
   /* ---------- HERO ---------- */
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:3;padding:120px 28px 80px;max-width:1180px;margin:0 auto;}
   .hero .kick{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--lime);margin-bottom:26px;opacity:0;animation:rise 1s .1s forwards;}
+  .preword{font-family:"Fraunces",serif;font-style:italic;font-weight:400;font-size:clamp(20px,4vw,46px);color:var(--paper);line-height:1;margin-bottom:2px;opacity:0;animation:rise 1s .12s forwards;}
   .terra{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(80px,21vw,290px);line-height:.82;letter-spacing:-.03em;
     background:linear-gradient(120deg,#ECF3EC 20%,#9be7c0 50%,#ECF3EC 80%);-webkit-background-clip:text;background-clip:text;color:transparent;
     background-size:200% auto;animation:shine 7s linear infinite,rise 1.1s .15s both;}
@@ -87,6 +88,8 @@
   .manifesto{max-width:900px;margin:0 auto 40px;padding:0 28px;}
   .manifesto p{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(22px,2.9vw,33px);line-height:1.32;letter-spacing:-.01em;}
   .manifesto p b{font-weight:600;color:var(--lime);font-style:italic;}
+  .manifesto .arc{font-family:"Inter",sans-serif;font-weight:400;font-size:clamp(15px,1.7vw,18px);line-height:1.64;color:#cfe0d4;margin-top:24px;max-width:780px;}
+  .manifesto .arc b{color:var(--lime);font-weight:600;font-style:normal;}
 
   /* ---------- MARQUEE ---------- */
   .marquee{overflow:hidden;white-space:nowrap;margin:60px 0 90px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);}
@@ -98,7 +101,7 @@
 
   /* ---------- SERATE ---------- */
   .serate{max-width:1180px;margin:0 auto;padding:0 28px 40px;}
-  .card{--acc:#c9f25b;position:relative;display:grid;grid-template-columns:130px 1fr;gap:30px;
+  .card{--acc:#c9f25b;position:relative;display:grid;grid-template-columns:104px 1fr 172px;gap:28px;
     background:var(--glass);border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:38px 38px 34px;margin-bottom:26px;
     backdrop-filter:blur(10px);overflow:hidden;transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .5s,box-shadow .5s;}
   .card::before{content:"";position:absolute;inset:0;border-radius:24px;padding:1px;
@@ -109,16 +112,28 @@
   .card:hover::before{opacity:1;}
   .card:hover::after{opacity:1;}
 
-  .card .num{font-family:"Fraunces",serif;font-weight:600;font-size:96px;line-height:.85;color:var(--acc);position:relative;}
+  .card .num{font-family:"Fraunces",serif;font-weight:600;font-size:90px;line-height:.85;color:var(--acc);position:relative;}
   .card .num small{display:block;font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--soft);margin-top:14px;line-height:1.6;}
   .card .when{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);margin-bottom:10px;}
-  .card h3{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(32px,4.6vw,58px);line-height:.98;letter-spacing:-.025em;margin-bottom:16px;}
+  .card h3{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(30px,4.2vw,54px);line-height:.98;letter-spacing:-.025em;margin-bottom:16px;}
   .card .voci{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
   .card .voci span{font-size:12.5px;font-weight:500;padding:5px 13px;border-radius:30px;border:1px solid var(--line);color:var(--paper);background:rgba(255,255,255,.03);transition:.3s;}
   .card:hover .voci span{border-color:color-mix(in srgb,var(--acc) 50%,transparent);}
-  .card p.abs{font-size:15.5px;line-height:1.62;color:#cfe0d4;max-width:62ch;}
+  .card p.abs{font-size:15px;line-height:1.6;color:#cfe0d4;max-width:58ch;}
   .card .books{margin-top:16px;font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.02em;color:var(--soft);line-height:1.8;}
   .card .books b{color:var(--paper);font-weight:400;}
+
+  /* ---------- FLOATING COVERS ---------- */
+  .covers{position:relative;align-self:center;height:210px;}
+  .cover-img,.cover-ph{position:absolute;width:122px;height:182px;border-radius:7px;object-fit:cover;
+    box-shadow:0 18px 44px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06);will-change:transform;transition:box-shadow .5s;}
+  .cover-img.c1,.cover-ph.c1{left:0;top:20px;--r:-7deg;animation:floaty 7s ease-in-out infinite;}
+  .cover-img.c2,.cover-ph.c2{right:0;top:2px;--r:6deg;z-index:2;animation:floaty 8.4s ease-in-out infinite 1.1s;}
+  .card:hover .cover-img,.card:hover .cover-ph{box-shadow:0 26px 64px rgba(0,0,0,.6),0 0 44px -8px var(--acc);}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--r,0deg));}50%{transform:translateY(-15px) rotate(var(--r,0deg));}}
+  .cover-ph{display:flex;flex-direction:column;justify-content:flex-end;padding:13px;background:linear-gradient(160deg,color-mix(in srgb,var(--acc) 34%,#0b1610),#0b1610);border:1px solid color-mix(in srgb,var(--acc) 42%,transparent);}
+  .cover-ph b{font-family:"Fraunces",serif;font-weight:600;font-size:13.5px;color:var(--paper);line-height:1.12;}
+  .cover-ph small{font-family:"Space Mono",monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-top:8px;}
 
   /* reveal */
   .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);}
@@ -162,16 +177,20 @@
   .m-person{margin-bottom:22px;}
   .m-person h4{font-family:"Fraunces",serif;font-weight:600;font-size:22px;color:var(--paper);margin-bottom:5px;}
   .m-person p,.m-book p{font-size:14.5px;line-height:1.62;color:#cfe0d4;}
-  .m-book{margin-bottom:24px;padding-left:18px;border-left:2px solid var(--acc);}
+  .m-book{display:flex;gap:18px;align-items:flex-start;margin-bottom:24px;padding-left:18px;border-left:2px solid var(--acc);}
+  .m-book .mc{width:78px;flex:0 0 78px;height:116px;object-fit:cover;border-radius:5px;box-shadow:0 12px 28px rgba(0,0,0,.5);}
+  .m-book .mbt{flex:1;}
   .m-book h4{font-family:"Fraunces",serif;font-weight:600;font-size:21px;color:var(--paper);margin-bottom:4px;line-height:1.1;}
   .m-meta{font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.03em;color:var(--soft);margin-bottom:9px;}
   @media (max-width:720px){.sheet{padding:34px 22px 40px;}.m-title{font-size:30px;}}
 
   @media (max-width:720px){
     .stats{grid-template-columns:repeat(2,1fr);}
-    .card{grid-template-columns:1fr;gap:14px;padding:28px 24px;}
-    .card .num{font-size:64px;}
+    .card{grid-template-columns:1fr;gap:16px;padding:28px 24px;}
+    .card .num{font-size:62px;}
     #glow{display:none;}
+    .covers{height:auto;display:flex;gap:16px;justify-content:flex-start;margin-top:8px;}
+    .cover-img,.cover-ph{position:static;width:96px;height:142px;animation:none!important;transform:none!important;}
   }
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;}
@@ -182,7 +201,7 @@
 <body>
 
 <div id="bar"></div>
-<div class="live"><span class="dot"></span>Spazio Tlon · TERRA! 2026</div>
+<div class="live"><span class="dot"></span>Tlon per TERRA!</div>
 <canvas id="stars"></canvas>
 <div class="aurora"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div></div>
 <div id="glow"></div>
@@ -190,6 +209,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="kick">Festa nazionale di Alleanza Verdi Sinistra</div>
+  <div class="preword">Tlon per</div>
   <div class="terra" data-tilt>TERRA<span class="bang">!</span></div>
   <h2>Sette dialoghi a due (e tre) voci, in cui la festa pensa ad alta voce.</h2>
   <div class="meta">
@@ -214,6 +234,7 @@
 <div class="manifesto reveal">
   <div class="label">Il programma</div>
   <p>Ogni sera un dialogo nasce attorno ai libri delle Edizioni Tlon e a chi li ha scritti, prende un nodo del presente e lo apre davanti al pubblico con <b>il rigore di un'aula e la temperatura di una piazza</b>. Una scommessa semplice e ambiziosa: che alzare il livello e parlare a tutti siano lo stesso gesto.</p>
+  <p class="arc">Sette sere disegnano un arco. Si comincia dalla mente, da chi decide cosa è normale, e si finisce nel rifiuto di voltarsi dall'altra parte; nel mezzo il canone che sceglie chi ricordare, il mondo ridotto a contenuto, i corpi che lo Stato non vuole educare, il lavoro travestito da passione, il Sud e le sue streghe tra incanto e disincanto. Ogni sera è un dialogo attorno a due libri e alle voci che li hanno scritti, perché <b>pensare insieme è già un modo di resistere</b>.</p>
 </div>
 
 <!-- MARQUEE -->
@@ -311,13 +332,13 @@
   <div class="label" style="justify-content:center;">La scommessa</div>
   <h2>Che la filosofia possa <b>prendere posizione</b>, e che il pensiero sia una pratica <b>pubblica e collettiva</b>.</h2>
   <div class="sign">
-    Spazio Tlon a TERRA! 2026<br>
+    Tlon per TERRA! 2026<br>
     conduzione <b>Andrea Colamedici</b> · <b>Maura Gancitano</b><br>
     Città dell'Altra Economia, Roma · 7—13 settembre
   </div>
 </section>
 
-<footer>Spazio Tlon a TERRA! 2026 · a cura di Edizioni Tlon</footer>
+<footer>Tlon per TERRA! 2026 · a cura di Edizioni Tlon</footer>
 
 <div id="modal" class="modal" aria-hidden="true">
   <div class="veil" data-close></div>
@@ -415,7 +436,8 @@ function frame(){
 addEventListener('resize',sz); sz();
 if(!matchMedia('(prefers-reduced-motion:reduce)').matches) frame();
 
-/* ---------- serata details: tag, bio, libri ---------- */
+/* ---------- serata details: copertine, tag, bio, libri ---------- */
+const COV="https://shop.tlon.it/wp-content/uploads/";
 const DETAILS={
  1:{acc:"#C9F25B",when:"Domenica 7 settembre · 18.45—20",title:"La libertà è terapeutica",
    tags:["diritti","salute mentale","neurodivergenza","genere"],
@@ -425,8 +447,8 @@ const DETAILS={
     {n:"Giulia Bergamaschi",b:"Dottoranda in Filosofia della psichiatria all'Università di Bologna, lavora sul Movimento della Neurodiversità e sul ruolo sociale del sapere psichiatrico. Collabora con Ātman Journal e con la piattaforma Ritiri Filosofici."}
    ],
    libri:[
-    {t:"La psicologia è politica",m:"Marocchini, Dibennardo · Tlon, 2026",d:"La psicologia non è mai stata neutra. Attraverso cinque assi (razzializzazione, classe, genere, soggettività LGBTQIA+, neurodivergenza) ricostruisce come la disciplina abbia prodotto stigma travestito da oggettività statistica, e ripensa la cura come atto anche politico."},
-    {t:"La terapia non ci salverà",m:"Giulia Bergamaschi · Tlon",d:"Il linguaggio psicologico ha colonizzato quello della sofferenza, fino a farci dire «trauma» o «ansia» per ogni cosa. La terapia non è la risposta a tutto e può anche far male: il libro rivendica amicizia, comunità e affetti come spazi di cura reciproca."}
+    {t:"La psicologia è politica",m:"Marocchini, Dibennardo · Tlon, 2026",c:COV+"2026/04/LA-PSICOLOGIA-E-POLITICA-1.jpg",d:"La psicologia non è mai stata neutra. Attraverso cinque assi (razzializzazione, classe, genere, soggettività LGBTQIA+, neurodivergenza) ricostruisce come la disciplina abbia prodotto stigma travestito da oggettività statistica, e ripensa la cura come atto anche politico."},
+    {t:"La terapia non ci salverà",m:"Giulia Bergamaschi · Tlon",c:null,d:"Il linguaggio psicologico ha colonizzato quello della sofferenza, fino a farci dire «trauma» o «ansia» per ogni cosa. La terapia non è la risposta a tutto e può anche far male: il libro rivendica amicizia, comunità e affetti come spazi di cura reciproca."}
    ]},
  2:{acc:"#3FD9A4",when:"Lunedì 8 settembre · 18.45—20",title:"Le donne non si cancellano",
    tags:["cultura","scuola","femminismo","arte"],
@@ -435,8 +457,8 @@ const DETAILS={
     {n:"Greta Boldorini",b:"Critica e storica dell'arte, specializzata in arte contemporanea. Nel 2017 ha curato la prima retrospettiva sulla fotografa femminista Agnese De Donato. È legata all'Università di Padova."}
    ],
    libri:[
-    {t:"«L'ha scritto lei, ma…»",m:"Johnny L. Bertolio · Tlon, 2026 · prefazione di Maura Gancitano",d:"Come le autrici siano state espulse dai programmi scolastici fin dalle riforme dell'Italia post-unitaria, e perché non basti aggiungere qualche nome: il libro propone di passare da una logica di addizione a una di moltiplicazione del canone. Il titolo è ispirato a Joanna Russ."},
-    {t:"Vecchie maestre. Donne, arte e ideologia",m:"Rozsika Parker, Griselda Pollock · cura di Greta Boldorini · Tlon, 2025",d:"Prima edizione italiana del classico femminista del 1981 («Old Mistresses»), che dimostra come la storia dell'arte sia stata costruita strategicamente sull'esclusione delle artiste, mettendo in questione i presupposti stessi della disciplina."}
+    {t:"«L'ha scritto lei, ma…»",m:"Johnny L. Bertolio · Tlon, 2026 · prefazione di Maura Gancitano",c:COV+"2026/03/LHA-SCRITTO-LEI-MA.jpg",d:"Come le autrici siano state espulse dai programmi scolastici fin dalle riforme dell'Italia post-unitaria, e perché non basti aggiungere qualche nome: il libro propone di passare da una logica di addizione a una di moltiplicazione del canone. Il titolo è ispirato a Joanna Russ."},
+    {t:"Vecchie maestre. Donne, arte e ideologia",m:"Rozsika Parker, Griselda Pollock · cura di Greta Boldorini · Tlon, 2025",c:COV+"2025/09/VECCHIE-MAESTRE.jpg",d:"Prima edizione italiana del classico femminista del 1981 («Old Mistresses»), che dimostra come la storia dell'arte sia stata costruita strategicamente sull'esclusione delle artiste, mettendo in questione i presupposti stessi della disciplina."}
    ]},
  3:{acc:"#39BDF8",when:"Martedì 9 settembre · 18.45—20",title:"La realtà non è in vendita",
    tags:["intelligenza artificiale","media","attenzione","tecnologia"],
@@ -445,8 +467,8 @@ const DETAILS={
     {n:"Francesco Marino",b:"Giornalista e digital strategist di cultura digitale e intelligenza artificiale; ha scritto per Italian.Tech/La Repubblica, Wired e Il Tascabile. Cura la newsletter «Turisti della realtà». Autore di «Scelti per te» (Castelvecchi, 2021)."}
    ],
    libri:[
-    {t:"Conversazioni con la macchina",m:"Valentina Tanni · Tlon, 2025",d:"Artisti che con l'intelligenza artificiale costruiscono alleanze impreviste, trattandola come partner e specchio invece che come rivale, e sostituendo la logica servo-padrone con un paradigma della relazione."},
-    {t:"Turisti della realtà",m:"Francesco Marino · Tlon, 2025 · prefazione di Maccio Capatonda",d:"Siamo diventati turisti del mondo, addestrati a catturare e condividere invece che ad abitare, e a convertire ogni esperienza in contenuto da produrre e monetizzare."}
+    {t:"Conversazioni con la macchina",m:"Valentina Tanni · Tlon, 2025",c:COV+"2025/03/Valentina-Tanni-web-conversazioni-con-la-macchina.jpg",d:"Artisti che con l'intelligenza artificiale costruiscono alleanze impreviste, trattandola come partner e specchio invece che come rivale, e sostituendo la logica servo-padrone con un paradigma della relazione."},
+    {t:"Turisti della realtà",m:"Francesco Marino · Tlon, 2025 · prefazione di Maccio Capatonda",c:COV+"2025/05/Turisti-della-realta-_-Francesco-Marino.jpg",d:"Siamo diventati turisti del mondo, addestrati a catturare e condividere invece che ad abitare, e a convertire ogni esperienza in contenuto da produrre e monetizzare."}
    ]},
  4:{acc:"#A78BFA",when:"Mercoledì 10 settembre · 18.45—20",title:"Vietato educare",
    tags:["diritti","scuola","corpi","adolescenza"],
@@ -455,8 +477,8 @@ const DETAILS={
     {n:"Celeste Costantino",b:"Attivista, autrice e politica (1979), laureata in filosofia. Deputata nella XVII legislatura, oggi vicepresidente della Fondazione Una Nessuna Centomila. Nel 2013 lanciò la prima proposta di legge per l'educazione sentimentale a scuola."}
    ],
    libri:[
-    {t:"Difendere l'adolescenza",m:"Michele Arena · Tlon, 2026",d:"Gli adolescenti come una delle categorie più discriminate, schiacciata da un mondo adulto che pretende di proteggerli controllandoli."},
-    {t:"Senza legge",m:"Celeste Costantino, Giulia Minoli, Monica Pasquino · Tlon, 2025",d:"Anni di battaglie e resistenze istituzionali sull'educazione sessuo-affettiva, dalla scuola al Parlamento; il genere come categoria scientifica contro la retorica costruita dell'«ideologia gender»."}
+    {t:"Difendere l'adolescenza",m:"Michele Arena · Tlon, 2026",c:null,d:"Gli adolescenti come una delle categorie più discriminate, schiacciata da un mondo adulto che pretende di proteggerli controllandoli."},
+    {t:"Senza legge",m:"Celeste Costantino, Giulia Minoli, Monica Pasquino · Tlon, 2025",c:COV+"2025/08/SENZA-LEGGE_sito.jpg",d:"Anni di battaglie e resistenze istituzionali sull'educazione sessuo-affettiva, dalla scuola al Parlamento; il genere come categoria scientifica contro la retorica costruita dell'«ideologia gender»."}
    ]},
  5:{acc:"#FBBF3C",when:"Giovedì 11 settembre · 18.45—20",title:"La passione non paga l'affitto",
    tags:["lavoro","precarietà","giovani","diritti"],
@@ -466,8 +488,8 @@ const DETAILS={
     {n:"Filippo Lubrano",b:"Ingegnere, giornalista e consulente d'innovazione, autore di «Antropologia per Intelligenze Artificiali» (D Editore, 2023)."}
    ],
    libri:[
-    {t:"Showpero. Manifesto selvaggio contro il talento",m:"Niccolò Fettarappa, Lorenzo Maragoni · Tlon, 2025",d:"Una performance teatrale travestita da saggio, fatta di manifesti, parodie e invettive, che smonta il mito dell'autorealizzazione attraverso il lavoro e l'autosfruttamento sorridente."},
-    {t:"Infondata sul lavoro",m:"Filippo Lubrano · Tlon",d:"La tesi provocatoria che potremmo smettere di lavorare e ancora non lo facciamo, e una critica del lavoro che arriva da chi quel mondo lo conosce dall'interno."}
+    {t:"Showpero. Manifesto selvaggio contro il talento",m:"Niccolò Fettarappa, Lorenzo Maragoni · Tlon, 2025",c:COV+"2025/04/SHOWPERO-_-Maragoni-Fettarappa.jpg",d:"Una performance teatrale travestita da saggio, fatta di manifesti, parodie e invettive, che smonta il mito dell'autorealizzazione attraverso il lavoro e l'autosfruttamento sorridente."},
+    {t:"Infondata sul lavoro",m:"Filippo Lubrano · Tlon",c:null,d:"La tesi provocatoria che potremmo smettere di lavorare e ancora non lo facciamo, e una critica del lavoro che arriva da chi quel mondo lo conosce dall'interno."}
    ]},
  6:{acc:"#F472B6",when:"Venerdì 12 settembre · 18.45—20",title:"Il potere è un incantesimo",
    tags:["Sud","migrazioni","mafie","femminismo"],
@@ -476,8 +498,8 @@ const DETAILS={
     {n:"Mariano Tomatis",b:"Scrittore e ricercatore, indaga da anni la storia dell'illusionismo e della parapsicologia; insegna «magia della mente» al Circolo Amici della Magia di Torino. Teorizza una magia gentile, conviviale e antifascista, e pensa il gesto magico come atto politico."}
    ],
    libri:[
-    {t:"Femminismo terrone. Per un'alleanza dei margini",m:"Claudia Fauzia, Valentina Amenta · Tlon, 2024",d:"Con una lente decoloniale e di genere rivendica il Meridione come luogo di resistenza e di pensiero, sovvertendo l'asse Nord-Sud su cui si regge la narrazione dominante."},
-    {t:"Il mio libro di magia",m:"Mariano Tomatis · Tlon, 2024",d:"Dieci lezioni e trenta giochi di prestigio per una magia gentile che libera dagli stereotipi e dalle norme di genere: la magia come gesto politico e antifascista."}
+    {t:"Femminismo terrone. Per un'alleanza dei margini",m:"Claudia Fauzia, Valentina Amenta · Tlon, 2024",c:COV+"2024/09/FEMMINISMO-TERRONE.jpg",d:"Con una lente decoloniale e di genere rivendica il Meridione come luogo di resistenza e di pensiero, sovvertendo l'asse Nord-Sud su cui si regge la narrazione dominante."},
+    {t:"Il mio libro di magia",m:"Mariano Tomatis · Tlon, 2024",c:COV+"2024/11/LIBRODIMAGIA_Tomatis.jpg",d:"Dieci lezioni e trenta giochi di prestigio per una magia gentile che libera dagli stereotipi e dalle norme di genere: la magia come gesto politico e antifascista."}
    ]},
  7:{acc:"#FB7185",when:"Sabato 13 settembre · 18.45—20",title:"Marte può aspettare, Gaza no",
    tags:["Gaza","pace","diritti","disuguaglianza"],
@@ -486,10 +508,21 @@ const DETAILS={
     {n:"Irene Doda",b:"Giornalista (1994), ha scritto per Wired Italia, L'Indiscreto e la rivista Emma; si occupa di tecnologia, potere e ideologie della Silicon Valley."}
    ],
    libri:[
-    {t:"Fuga dall'indifferenza",m:"Emanuela Pala · Tlon",d:"Dalla testimonianza diretta sulla Global Sumud Flotilla, il rifiuto di voltarsi dall'altra parte di fronte al presente di Gaza, mentre le élite rimandano la giustizia a un futuro lontano."},
-    {t:"L'utopia dei miliardari",m:"Irene Doda · Tlon, 2024",d:"Smonta il lungotermismo, l'ideologia con cui miliardari della Silicon Valley e filosofi di Oxford trasformano il futuro remoto in un alibi per ignorare le ingiustizie immediate. È indicato come il primo testo italiano sul tema."}
+    {t:"Fuga dall'indifferenza",m:"Emanuela Pala · Tlon",c:null,d:"Dalla testimonianza diretta sulla Global Sumud Flotilla, il rifiuto di voltarsi dall'altra parte di fronte al presente di Gaza, mentre le élite rimandano la giustizia a un futuro lontano."},
+    {t:"L'utopia dei miliardari",m:"Irene Doda · Tlon, 2024",c:COV+"2024/01/Mockup-Lutopia-dei-miliardari.jpg",d:"Smonta il lungotermismo, l'ideologia con cui miliardari della Silicon Valley e filosofi di Oxford trasformano il futuro remoto in un alibi per ignorare le ingiustizie immediate. È indicato come il primo testo italiano sul tema."}
    ]}
 };
+
+function phMarkup(b){return '<b>'+b.t+'</b><small>Edizioni Tlon</small>';}
+function coverEl(b,cls){
+  if(b.c){
+    const im=document.createElement('img');
+    im.className='cover-img '+cls; im.src=b.c; im.alt=b.t; im.loading='lazy';
+    im.onerror=function(){const d=document.createElement('div');d.className='cover-ph '+cls;d.innerHTML=phMarkup(b);im.replaceWith(d);};
+    return im;
+  }
+  const d=document.createElement('div'); d.className='cover-ph '+cls; d.innerHTML=phMarkup(b); return d;
+}
 
 function buildHTML(d){
   let h='<div class="m-when">'+d.when+'</div>';
@@ -498,7 +531,10 @@ function buildHTML(d){
   h+='<div class="m-label">Le voci in dialogo</div>';
   d.voci.forEach(v=>{h+='<div class="m-person"><h4>'+v.n+'</h4><p>'+v.b+'</p></div>';});
   h+='<div class="m-label">I libri in discussione</div>';
-  d.libri.forEach(b=>{h+='<div class="m-book"><h4>'+b.t+'</h4><div class="m-meta">'+b.m+'</div><p>'+b.d+'</p></div>';});
+  d.libri.forEach(b=>{
+    const img=b.c?'<img class="mc" src="'+b.c+'" alt="" loading="lazy" onerror="this.remove()">':'';
+    h+='<div class="m-book">'+img+'<div class="mbt"><h4>'+b.t+'</h4><div class="m-meta">'+b.m+'</div><p>'+b.d+'</p></div></div>';
+  });
   return h;
 }
 
@@ -512,6 +548,10 @@ document.querySelectorAll('.serate .card').forEach((c,i)=>{
     const absEl=col.querySelector('.abs'); col.insertBefore(tg,absEl);
     const cue=document.createElement('div'); cue.className='more'; cue.innerHTML='Le bio e i libri <span>&rarr;</span>'; col.appendChild(cue);
   }
+  const cov=document.createElement('div'); cov.className='covers';
+  if(d.libri[0]) cov.appendChild(coverEl(d.libri[0],'c1'));
+  if(d.libri[1]) cov.appendChild(coverEl(d.libri[1],'c2'));
+  c.appendChild(cov);
   c.addEventListener('click',()=>openModal(id));
 });
 function openModal(id){const d=DETAILS[id];if(!d)return;modal.style.setProperty('--acc',d.acc);sheetInner.innerHTML=buildHTML(d);modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';const sh=modal.querySelector('.sheet');if(sh)sh.scrollTop=0;}
