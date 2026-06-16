@@ -59,7 +59,6 @@
     margin:6px 0 0;opacity:0;animation:fade 2s .8s forwards;}
   .overture .title em{font-style:italic;font-weight:300;}
 
-  /* la e del plurale respira tra le due intelligenze */
   .breathe{font-style:italic;font-weight:300;will-change:color;
     animation:respiro 7s ease-in-out infinite;}
   @keyframes respiro{
@@ -69,7 +68,6 @@
   @media (prefers-reduced-motion:reduce){
     .breathe{animation:none;color:var(--meet);text-shadow:none;}
   }
-
   .overture .sub{font-family:"Fraunces",serif;font-style:italic;font-weight:300;font-size:clamp(18px,2.6vw,27px);color:var(--soft);
     margin-top:38px;max-width:24ch;line-height:1.4;opacity:0;animation:fade 1.6s 1.3s forwards;}
   .overture .cue{margin-top:64px;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--soft);opacity:0;animation:fade 1.6s 1.9s forwards;}
@@ -133,6 +131,7 @@
   .stop .day{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--meet);margin-bottom:16px;}
   .stop h4{font-family:"Fraunces",serif;font-weight:400;font-size:24px;line-height:1.08;margin-bottom:18px;letter-spacing:-.01em;}
   .stop p{font-size:14.5px;line-height:1.62;color:#c0bacb;font-weight:300;margin-bottom:9px;}
+  .stop p b{color:var(--paper);font-weight:500;}
   .tagA{color:var(--machine);font-weight:600;font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;}
   .tagB{color:var(--feeling);font-weight:600;font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;}
 
@@ -220,7 +219,7 @@
   #gate.hide{opacity:0;pointer-events:none;}
   #gate .g-pre{font-family:"Fraunces",serif;font-style:italic;font-weight:300;font-size:clamp(18px,4vw,32px);color:var(--paper);line-height:1;}
   #gate .g-title{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(48px,12vw,128px);line-height:.9;letter-spacing:-.035em;color:var(--paper);margin:4px 0 34px;}
-  #gate .g-title em{font-style:italic;font-weight:300;}
+  #gate .g-title em{font-style:italic;font-weight:300;color:var(--meet);}
   #gate .g-label{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--soft);margin-bottom:18px;}
   #gate .g-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
   #gate input{font-family:"Space Mono",monospace;font-size:15px;letter-spacing:.1em;padding:14px 22px;border-radius:40px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--paper);outline:none;width:240px;text-align:center;transition:border-color .3s;}
@@ -319,7 +318,7 @@
     <div class="top rise">
       <div class="eyebrow">I tre giorni</div>
       <h2>Una prima edizione che nasce per crescere.</h2>
-      <p>Tre giorni concentrati e ad alta densità, pensati fin dall'inizio come il primo capitolo di qualcosa che torna ogni anno e si allarga. La Corte Ospitale e gli spazi civici del centro reggono l'intero impianto: la città ha già tutto ciò che serve per ospitare un festival, e per farlo diventare suo.</p>
+      <p>Tre giorni concentrati e ad alta densità, pensati fin dall'inizio come il primo capitolo di qualcosa che torna ogni anno e si allarga. Si comincia con il pensiero e si finisce con la musica: dai laboratori e i dialoghi al podcast live in piazza, fino al concerto che chiude il festival. La Corte Ospitale e gli spazi civici del centro reggono l'intero impianto: la città ha già tutto ciò che serve per ospitare un festival, e per farlo diventare suo.</p>
     </div>
     <div class="line rise">
       <div class="rail"></div>
@@ -337,14 +336,15 @@
           <h4>I due percorsi al lavoro</h4>
           <p><span class="tagA">A</span> Laboratori e formazione per docenti, genitori, educatori.</p>
           <p><span class="tagB">B</span> Percorsi attivi nelle scuole e negli spazi civici.</p>
-          <p>La sera, un evento di piazza aperto a tutti.</p>
+          <p>La sera, un <b>podcast live</b> in piazza: il pensiero orale, in diretta, davanti al pubblico.</p>
         </div>
         <div class="stop">
           <div class="node"></div>
-          <div class="day">Domenica</div>
-          <h4>Ciò che resta</h4>
+          <div class="day">Domenica · fino a sera</div>
+          <h4>Dalla parola alla musica</h4>
           <p><span class="tagA">A</span> Restituzione e materiali per chi educa.</p>
           <p><span class="tagB">B</span> Momento conclusivo aperto alle famiglie.</p>
+          <p>A chiudere, un <b>concerto</b> in piazza: l'intelligenza che si fa corpo ed emozione, festa di tutta la città.</p>
         </div>
       </div>
     </div>
@@ -605,7 +605,7 @@ const DETAILS={
      "<b>Percorsi attivi nelle scuole</b>, costruiti con gli istituti del territorio, in orario scolastico e oltre.",
      "<b>Esperienze negli spazi civici</b>: momenti partecipati, non frontali.",
      "<b>Apertura serale comune</b> con il percorso A, per dare al festival il suo respiro pubblico.",
-     "<b>Momento conclusivo</b> la domenica, aperto alle famiglie."
+     "<b>Concerto di chiusura</b> la domenica in piazza, festa aperta a tutta la città."
    ]}
 };
 const modal=document.getElementById('modal'),sheetInner=document.getElementById('sheet-inner');
