@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apocalittici o Integrati | Scheda da leggio</title>
+<meta name="description" content="Scheda da leggio per la conferenza a due voci di Andrea Colamedici e Maura Gancitano sull'intelligenza artificiale tra posizioni apocalittiche e integrate.">
+<meta property="og:title" content="Apocalittici o Integrati">
+<meta property="og:description" content="Scheda da leggio per la conferenza a due voci di Andrea Colamedici e Maura Gancitano sull'intelligenza artificiale.">
+<meta property="og:type" content="article">
+<style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style>
+</head>
+<body>
+<style>
+  :root {
+    --paper: #EEEBE3;
+    --paper-2: #E7E3D8;
+    --ink: #1C1A15;
+    --muted: #6A6456;
+    --rule: #CDC7B8;
+    --apoc: #8A2823;
+    --apoc-bg: #F4ECE8;
+    --apoc-rule: #C99C93;
+    --integ: #1E5346;
+    --integ-bg: #E7EFEA;
+    --integ-rule: #9BBBAE;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --step-0: 0.82rem;
+    --step-1: 1rem;
+    --step-2: 1.32rem;
+    --step-3: 1.9rem;
+    --step-4: 3.1rem;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(1.4rem, 4vw, 3.4rem) clamp(1rem, 4vw, 2.6rem) 5rem;
+  }
+
+  /* ---------- Masthead ---------- */
+  .mast {
+    border-top: 3px solid var(--ink);
+    padding-top: 1.4rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: var(--step-0);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  h1 {
+    font-size: var(--step-4);
+    line-height: 1.02;
+    margin: 0.2rem 0 0;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  h1 .a { color: var(--apoc); }
+  h1 .i { color: var(--integ); }
+  .dek {
+    font-size: var(--step-2);
+    max-width: 62ch;
+    margin: 0;
+    color: #34312a;
+    font-style: italic;
+  }
+  .eco {
+    font-family: var(--sans);
+    font-size: var(--step-0);
+    color: var(--muted);
+    max-width: 70ch;
+    line-height: 1.6;
+  }
+
+  /* ---------- Role chips ---------- */
+  .roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .role {
+    flex: 1 1 260px;
+    border: 1px solid var(--rule);
+    border-left-width: 4px;
+    padding: 0.85rem 1.1rem;
+    background: #fff9;
+  }
+  .role.apoc { border-left-color: var(--apoc); }
+  .role.integ { border-left-color: var(--integ); }
+  .role .who {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .role.apoc .who { color: var(--apoc); }
+  .role.integ .who { color: var(--integ); }
+  .role .part { font-size: var(--step-1); margin-top: 0.15rem; }
+  .role .part b { font-weight: 700; }
+
+  /* ---------- Legend ---------- */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.8rem;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.8rem 0;
+  }
+  .legend b { color: var(--ink); font-weight: 600; }
+  .frag-mark {
+    color: var(--apoc);
+    font-weight: 700;
+    font-family: var(--sans);
+  }
+
+  /* ---------- Arena ---------- */
+  .arena { margin-top: 3.2rem; }
+  .arena-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.3rem;
+  }
+  .arena-num {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .arena-name {
+    font-size: var(--step-3);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .arena-note {
+    font-family: var(--sans);
+    font-size: 0.76rem;
+    color: var(--muted);
+    margin-left: auto;
+    align-self: center;
+    text-align: right;
+    max-width: 24ch;
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+  }
+
+  .col {
+    padding: 1rem 1.15rem 1.15rem;
+    border-left: 4px solid;
+  }
+  .col.apoc { background: var(--apoc-bg); border-left-color: var(--apoc); }
+  .col.integ { background: var(--integ-bg); border-left-color: var(--integ); }
+  .col-tag {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+    display: block;
+  }
+  .col.apoc .col-tag { color: var(--apoc); }
+  .col.integ .col-tag { color: var(--integ); }
+
+  .item { padding: 0.7rem 0; border-top: 1px solid var(--rule); }
+  .item:first-of-type { border-top: none; padding-top: 0; }
+  .claim { font-size: 1.02rem; line-height: 1.42; }
+  .claim .fig { font-weight: 700; }
+  .col.apoc .fig { color: var(--apoc); }
+  .col.integ .fig { color: var(--integ); }
+  .src {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    text-transform: uppercase;
+  }
+  .frag {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #55503f;
+    margin-top: 0.35rem;
+    padding-left: 0.9rem;
+    position: relative;
+  }
+  .frag::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    font-style: normal;
+    color: var(--apoc);
+  }
+  .col.integ .frag::before { color: var(--integ); }
+
+  .contra {
+    margin-top: 0.9rem;
+    padding: 0.7rem 0.9rem;
+    background: #fffdf8;
+    border: 1px dashed var(--rule);
+    font-size: 0.9rem;
+  }
+  .contra b {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--muted);
+  }
+
+  /* ---------- Feature blocks ---------- */
+  .feature { margin-top: 3.4rem; }
+  .feature-head {
+    font-size: var(--step-3);
+    font-weight: 700;
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .feature-sub {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0 0 1.4rem;
+    max-width: 72ch;
+  }
+
+  .vuln {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+  }
+  .vuln .col { padding-top: 1rem; }
+  .vuln ol { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.7rem; }
+  .vuln li { font-size: 0.96rem; line-height: 1.45; padding-left: 0.2rem; }
+  .vuln li b { font-weight: 700; }
+
+  /* ---------- Devices ---------- */
+  .devices { display: grid; gap: 0.9rem; counter-reset: dev; }
+  .device {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.1rem;
+    align-items: start;
+    padding: 1.1rem 1.2rem;
+    background: #fff9;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--ink);
+  }
+  .device .n {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--apoc);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    min-width: 1.6ch;
+  }
+  .device:nth-child(even) .n { color: var(--integ); }
+  .device .body h4 {
+    margin: 0 0 0.3rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .device .when {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .device .body p { margin: 0.35rem 0 0; font-size: 0.96rem; line-height: 1.5; }
+
+  /* ---------- Traps ---------- */
+  .traps {
+    margin-top: 2.4rem;
+    background: #2A1512;
+    color: #EDE7DD;
+    padding: 1.6rem 1.7rem;
+    border-left: 4px solid var(--apoc);
+  }
+  .traps h3 {
+    margin: 0 0 1rem;
+    font-size: 1.3rem;
+    color: #fff;
+  }
+  .traps ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.6rem; }
+  .traps li { font-size: 0.95rem; line-height: 1.45; }
+  .traps li b { color: #E8A79E; font-weight: 600; }
+
+  footer {
+    margin-top: 4rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.2rem;
+    font-family: var(--sans);
+    font-size: 0.76rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  a { color: var(--integ); }
+
+  @media (max-width: 720px) {
+    .cols, .vuln { grid-template-columns: 1fr; }
+    .arena-note { display: none; }
+    h1 { font-size: 2.3rem; }
+  }
+  @media print {
+    body { background: #fff; }
+    .arena, .feature { break-inside: avoid; }
+    .device, .col { break-inside: avoid; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <div class="eyebrow">Scheda da leggio · Conferenza a due voci</div>
+      <h1><span class="a">Apocalittici</span> o <span class="i">Integrati</span></h1>
+    </div>
+    <p class="dek">L'intelligenza artificiale messa alla prova del 
+contraddittorio: due arsenali di dati verificati, simmetrici e già 
+muniti del loro punto debole.</p>
+    <p class="eco">Il titolo cita <em>Apocalittici e integrati</em> di 
+Umberto Eco (Bompiani, 1964): non due tifoserie, ma due lenti attraverso
+ cui guardare la stessa cosa. La tesi implicita della serata è che 
+entrambe le posizioni contengono un nucleo vero, e che il compito non è 
+vincere ma vedere meglio. Ogni cifra qui è stata verificata aprendo la 
+fonte; le distinzioni apparentemente pedanti sono i punti su cui l'altro
+ può smontarti.</p>
+
+    <div class="roles">
+      <div class="role apoc">
+        <div class="who">Ruolo · Apocalittica</div>
+        <div class="part"><b>Maura Gancitano</b> — l'onere della prova sta su chi accelera.</div>
+      </div>
+      <div class="role integ">
+        <div class="who">Ruolo · Integrato</div>
+        <div class="part"><b>Andrea Colamedici</b> — i benefici sono già documentati, i disastri ancora ipotetici.</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><b>Cifra in colore</b> = dato da palco</span>
+      <span><b class="src" style="text-transform:uppercase">MAIUSCOLETTO</b> = fonte e data</span>
+      <span><span class="frag-mark">▹</span> <b>fragilità</b> = dove l'altro può colpire</span>
+      <span><b>CONTRA</b> = la replica pronta dell'altro lato</span>
+    </div>
+  </header>
+
+  <!-- I. LAVORO -->
+  <section class="arena">
+    <div class="arena-head">
+      <span class="arena-num">I</span>
+      <h2 class="arena-name">Lavoro</h2>
+      <span class="arena-note">Tesi forte: non "distrugge posti" ma "chiude la porta d'ingresso".</span>
+    </div>
+    <div class="cols">
+      <div class="col apoc">
+        <span class="col-tag">Apocalittica</span>
+        <div class="item">
+          <div class="claim"><span class="fig">−16%</span> di occupazione relativa per i 22-25enni nei lavori più esposti all'IA, dal lancio di ChatGPT.</div>
+          <div class="src">Stanford Digital Economy Lab (Brynjolfsson), nov 2025 · working paper</div>
+          <div class="frag">Calo relativo nei ruoli esposti, non aggregato. Non peer-reviewed.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Marzo 2026: per la prima volta l'IA è la <span class="fig">prima causa</span> citata di licenziamento in un mese negli USA — 15.341 tagli, un quarto del totale.</div>
+          <div class="src">Challenger, Gray &amp; Christmas, apr 2026</div>
+          <div class="frag">Su base annua l'IA è solo la 5ª causa; sono annunci, e le aziende hanno interesse a incolpare l'IA.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Neolaureati USA al <span class="fig">5,7%</span> di disoccupazione, sopra la media nazionale: la laurea non protegge più.</div>
+          <div class="src">New York Fed, Q1 2026</div>
+          <div class="frag">La Fed non lo attribuisce all'IA (ciclo, tassi, tech post-Covid).</div>
+        </div>
+      </div>
+      <div class="col integ">
+        <span class="col-tag">Integrato</span>
+        <div class="item">
+          <div class="claim">A <span class="fig">33 mesi</span> da ChatGPT, nessuna disruption occupazionale percepibile a livello aggregato.</div>
+          <div class="src">Yale Budget Lab, 2025</div>
+          <div class="frag">"Assenza di prova non è prova di assenza" — lo dice la stessa direttrice: è presto.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Call center: <span class="fig">+14%</span> di produttività, +34% per i principianti, ~0 per gli esperti. L'IA solleva chi parte più in basso.</div>
+          <div class="src">Brynjolfsson-Li-Raymond, Quarterly Journal of Economics 2025</div>
+          <div class="frag">Una sola azienda, mansione ristretta; l'effetto egualizzante potrebbe comprimere i salari.</div>
+        </div>
+        <div class="item">
+          <div class="claim"><b>Da citare per primo:</b> su sviluppatori esperti nei loro repo, l'IA ha <span class="fig">aumentato del 19%</span> i tempi — pur facendoli sentire più veloci.</div>
+          <div class="src">METR, lug 2025</div>
+          <div class="frag">Ammetterlo sposta il piano da "l'IA è sempre un bene" a "il beneficio dipende dal contesto".</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- II. MENTE / EDUCAZIONE -->
+  <section class="arena">
+    <div class="arena-head">
+      <span class="arena-num">II</span>
+      <h2 class="arena-name">Mente e apprendimento</h2>
+      <span class="arena-note">Pattern che regge: performance su, ritenzione giù. Non è l'IA, è il design.</span>
+    </div>
+    <div class="cols">
+      <div class="col apoc">
+        <span class="col-tag">Apocalittica</span>
+        <div class="item">
+          <div class="claim">EEG: chi scrive con l'LLM ha la connettività neurale più debole dei tre gruppi; <span class="fig">l'83%</span> non sa citare una frase del saggio appena "scritto".</div>
+          <div class="src">MIT Media Lab, "Your Brain on ChatGPT", arXiv 2025 · preprint</div>
+          <div class="frag">n=54, preprint. Gli autori VIETANO "ci rende stupidi" — usare "debito cognitivo".</div>
+        </div>
+        <div class="item">
+          <div class="claim">Mille liceali: <span class="fig">+48%</span> con ChatGPT durante l'esercizio, ma <span class="fig">−17%</span> all'esame quando l'IA viene tolta.</div>
+          <div class="src">Wharton / UPenn, PNAS 2025 · RCT</div>
+          <div class="frag">È il GPT "senza guardrail"; la versione tutor progettata non danneggia.</div>
+        </div>
+        <div class="item">
+          <div class="claim">A 45 giorni: chi ha studiato con ChatGPT ricorda il <span class="fig">57,5%</span> contro il 68,5% del metodo tradizionale.</div>
+          <div class="src">Barcaui, RCT 2025</div>
+          <div class="frag">Studio singolo, n=120, un solo dominio; effect size medio.</div>
+        </div>
+      </div>
+      <div class="col integ">
+        <span class="col-tag">Integrato</span>
+        <div class="item">
+          <div class="claim">Tutor IA progettato bene: si impara <span class="fig">più del doppio</span>, in meno tempo, dell'aula con active learning.</div>
+          <div class="src">Harvard, Scientific Reports 2025 · RCT (194 studenti)</div>
+          <div class="frag">Due lezioni, studenti Harvard selezionati, tutor costruito su misura da un docente.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Nigeria: 6 settimane di tutor GPT-4 ≈ <span class="fig">2 anni</span> di scuola, a 48$ a studente.</div>
+          <div class="src">World Bank, 2025 · working paper</div>
+          <div class="frag">La conversione "2 anni" è l'assunzione più contestabile; nessun follow-up.</div>
+        </div>
+        <div class="contra">
+          <b>Ponte con Maura, non scontro</b>
+          Lo stesso PNAS mostra che il tutor <em>con</em> guardrail non danneggia l'esame. Il problema è il design pedagogico, non l'IA in sé.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- III. SALUTE MENTALE -->
+  <section class="arena">
+    <div class="arena-head">
+      <span class="arena-num">III</span>
+      <h2 class="arena-name">Salute mentale e relazioni</h2>
+      <span class="arena-note">Arena sbilanciata a favore dell'apocalittica: le vite, non le statistiche.</span>
+    </div>
+    <div class="cols">
+      <div class="col apoc">
+        <span class="col-tag">Apocalittica</span>
+        <div class="item">
+          <div class="claim">OpenAI stessa: lo 0,15% degli utenti settimanali ha conversazioni con segnali di pianificazione suicidaria — <span class="fig">oltre 1 milione</span> di persone a settimana.</div>
+          <div class="src">OpenAI, blog ufficiale, ott 2025</div>
+          <div class="frag">Pubblicato per annunciare miglioramenti; intercetta disagio preesistente, non lo crea.</div>
+        </div>
+        <div class="item">
+          <div class="claim">6 novembre 2025: <span class="fig">sette famiglie</span> citano OpenAI in un solo giorno — quattro suicidi, tre deliri.</div>
+          <div class="src">Social Media Victims Law Center + Tech Justice Law Project</div>
+          <div class="frag">Allegazioni di parte; nessun nesso causale accertato in giudizio.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Quasi <span class="fig">3 adolescenti USA su 4</span> hanno usato un compagno IA; 1 su 3 lo ha preferito a un umano per una conversazione seria.</div>
+          <div class="src">Common Sense Media, lug 2025</div>
+          <div class="frag">Definizione larga di "companion"; organizzazione di advocacy (chiede il divieto sotto i 18).</div>
+        </div>
+        <div class="item">
+          <div class="claim">RCT MIT + OpenAI su 981 persone: più uso quotidiano → più solitudine e dipendenza emotiva.</div>
+          <div class="src">MIT Media Lab + OpenAI, arXiv 2025</div>
+          <div class="frag">Direzione causale non provata: i più soli potrebbero usarlo di più.</div>
+        </div>
+      </div>
+      <div class="col integ">
+        <span class="col-tag">Integrato</span>
+        <div class="contra" style="margin-top:0">
+          <b>La difesa disponibile</b>
+          La stessa OpenAI fa ricerca trasparente sui rischi e, nella 
+causa Raine, documenta di aver indirizzato a risorse di crisi <b>più di 100 volte</b>. Un milione di persone in crisi ora parla con un sistema che le manda verso l'aiuto, invece di restare sole.
+        </div>
+        <div class="item" style="border-top:1px solid var(--rule); margin-top:0.9rem">
+          <div class="claim">Character.AI ha <span class="fig">vietato le chat aperte agli under 18</span> dal 25 nov 2025: il mercato si autoregola sotto la pressione delle cause.</div>
+          <div class="src">Character.AI, ott 2025</div>
+          <div class="frag">Letta al contrario da Maura: se un'industria amputa il prodotto per i minori, sta ammettendo qualcosa.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IV. INFORMAZIONE -->
+  <section class="arena">
+    <div class="arena-head">
+      <span class="arena-num">IV</span>
+      <h2 class="arena-name">Ecosistema informativo</h2>
+      <span class="arena-note">Attenzione: molti dati vengono da chi vende la cura del male che misura.</span>
+    </div>
+    <div class="cols">
+      <div class="col apoc">
+        <span class="col-tag">Apocalittica</span>
+        <div class="item">
+          <div class="claim">Da 49 (mag 2023) a <span class="fig">3.749</span> (giu 2026) content farm di "notizie" interamente generate dall'IA, in 16 lingue.</div>
+          <div class="src">NewsGuard, AI Tracking Center</div>
+          <div class="frag">Attore commerciale; cambio di metodo di conteggio; molti siti hanno traffico irrisorio.</div>
+        </div>
+        <div class="item">
+          <div class="claim">I 10 principali chatbot ripetono falsità il <span class="fig">35%</span> delle volte — il doppio in un anno — perché hanno smesso di rifiutarsi di rispondere.</div>
+          <div class="src">NewsGuard, audit, set 2025</div>
+          <div class="frag">Prompt adversarial per costruzione: misura il caso peggiore, non l'uso medio.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Truffa Arup: <span class="fig">25,6 M$</span> bonificati dopo una videochiamata in cui il direttore e i colleghi erano tutti deepfake.</div>
+          <div class="src">CNN Business, mag 2024</div>
+          <div class="frag">Aneddoto spettacolare; la falla vera era procedurale (nessuna verifica out-of-band).</div>
+        </div>
+        <div class="item">
+          <div class="claim"><span class="fig">1 adolescente USA su 8</span> conosce una vittima di deepfake nudes da minorenne; 1 su 17 l'ha subìto.</div>
+          <div class="src">Thorn, mar 2025</div>
+          <div class="frag">Self-report; "conoscere una vittima" amplifica per rete sociale.</div>
+        </div>
+      </div>
+      <div class="col integ">
+        <span class="col-tag">Integrato</span>
+        <div class="item">
+          <div class="claim">Solo <span class="fig">l'1%</span> usa l'IA come fonte primaria di notizie; l'apocalisse informativa è per ora un fenomeno di margine.</div>
+          <div class="src">Reuters Institute, Digital News Report 2026</div>
+          <div class="frag">Misura la fonte dichiarata, non l'esposizione indiretta via social.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Anche nell'anno del sorpasso degli articoli generati, <span class="fig">l'82%</span> delle fonti citate dai chatbot resta umano.</div>
+          <div class="src">Graphite (agenzia SEO), ott 2025</div>
+          <div class="frag">I detector di testo IA hanno alti tassi d'errore; è la stessa fonte che Maura usa contro di te.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Spotify ha rimosso <span class="fig">75 milioni</span> di tracce spam in 12 mesi: gli anticorpi delle piattaforme funzionano.</div>
+          <div class="src">Spotify Newsroom, set 2025</div>
+          <div class="frag">"Spam" non significa "tutte generate dall'IA"; dimostra che il problema esiste ed è grosso.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V. SCIENZA E MEDICINA -->
+  <section class="arena">
+    <div class="arena-head">
+      <span class="arena-num">V</span>
+      <h2 class="arena-name">Scienza e medicina</h2>
+      <span class="arena-note">Arena più forte dell'integrato: qui i dati sono peer-reviewed e inattaccabili.</span>
+    </div>
+    <div class="cols">
+      <div class="col integ">
+        <span class="col-tag">Integrato</span>
+        <div class="item">
+          <div class="claim"><span class="fig">Nobel per la Chimica 2024</span> all'IA: Hassabis e Jumper (AlphaFold, predizione delle proteine) + Baker (design proteico).</div>
+          <div class="src">Reale Accademia Svedese delle Scienze, ott 2024</div>
+          <div class="frag">Premia la scienza di base; il co-vincitore Baker apre anche al dual-use (armi biologiche).</div>
+        </div>
+        <div class="item">
+          <div class="claim">MASAI, primo RCT al mondo su IA e mammografia: <span class="fig">+29%</span> tumori rilevati, −44% carico di lettura, meno tumori d'intervallo.</div>
+          <div class="src">The Lancet, feb 2026 (risultati finali, ~105.000 donne)</div>
+          <div class="frag">NON confondere il +20% dell'interim 2023 con il +29% finale. Non c'è dato di mortalità.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Rentosertib, primo farmaco <span class="fig">scoperto E disegnato dall'IA</span> arrivato in clinica: fase 2a, +98 mL di capacità polmonare.</div>
+          <div class="src">Insilico Medicine, Nature Medicine, giu 2025</div>
+          <div class="frag">Fase 2a, 71 pazienti, solo Cina. La prima molecola IA in trial (DSP-1181, 2020) fu sospesa.</div>
+        </div>
+        <div class="item">
+          <div class="claim">GenCast batte il miglior modello fisico del mondo (ECMWF) sul <span class="fig">97,2%</span> dei parametri; ora ECMWF stesso usa l'IA.</div>
+          <div class="src">Google DeepMind, Nature, dic 2024</div>
+          <div class="frag">Addestrato sui dati di rianalisi ECMWF: non sostituisce la fisica, la distilla.</div>
+        </div>
+      </div>
+      <div class="col apoc">
+        <span class="col-tag">Apocalittica</span>
+        <div class="contra" style="margin-top:0">
+          <b>La contestazione onesta</b>
+          Antibiotici, enzimi, materiali: quasi tutto è <b>preclinico o di laboratorio</b>,
+ non un farmaco al letto del paziente. "Scoperto dall'IA" resta spesso 
+un claim aziendale sul processo. E la strada dal candidato alla cura è 
+lunga e piena di fallimenti.
+        </div>
+        <div class="item" style="border-top:1px solid var(--rule); margin-top:0.9rem">
+          <div class="claim">GNoME espande di un ordine di grandezza i materiali cristallini noti — ma una critica su <em>Chemistry of Materials</em> obietta che molti non sono davvero nuovi né sintetizzabili.</div>
+          <div class="src">Nature 2023, critica Cheetham &amp; Seshadri 2024</div>
+          <div class="frag">Candidati, non prodotti: "predetto stabile" ≠ "sintetizzato".</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VI. POTERE / BOLLA -->
+  <section class="arena">
+    <div class="arena-head">
+      <span class="arena-num">VI</span>
+      <h2 class="arena-name">Potere, economia, bolla</h2>
+      <span class="arena-note">Dettaglio da palco italiano: Solomon lo ha detto a Torino.</span>
+    </div>
+    <div class="cols">
+      <div class="col apoc">
+        <span class="col-tag">Apocalittica</span>
+        <div class="item">
+          <div class="claim">Il boom IA "somiglia" a canali, ferrovie, dot-com — finiti tutti in recessione. Oltre <span class="fig">1.000 miliardi</span> di capex in due anni, con il debito in aumento.</div>
+          <div class="src">Banca dei Regolamenti Internazionali (BRI), Annual Report, giu 2026</div>
+          <div class="frag">Istituzionale e recentissimo — il dato più forte dell'area.</div>
+        </div>
+        <div class="item">
+          <div class="claim">David Solomon (CEO Goldman Sachs), all'Italian Tech Week di Torino: <span class="fig">"questa volta non è diverso"</span>, drawdown probabile in 12-24 mesi.</div>
+          <div class="src">Fortune, ott 2025</div>
+          <div class="frag">Solomon relativizza: "siamo all'inizio del film"; la finestra è ancora aperta.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Senza i data center la crescita del PIL USA nel 1° sem 2025 sarebbe stata dello <span class="fig">0,1%</span>: ferma.</div>
+          <div class="src">Jason Furman (Harvard, ex-CEA Obama), 2025</div>
+          <div class="frag">Furman stesso: senza il boom, tassi ed energia più bassi avrebbero compensato ~metà.</div>
+        </div>
+      </div>
+      <div class="col integ">
+        <span class="col-tag">Integrato</span>
+        <div class="item">
+          <div class="claim">Produttività <span class="fig">misurata</span>, non stimata: chi usa l'IA al lavoro dichiara di risparmiare il 5,4% delle ore.</div>
+          <div class="src">Fed di St. Louis (Bick-Blandin-Deming), 2025</div>
+          <div class="frag">Autodichiarato ed estrapolato — ma vale più dei trilioni di Goldman perché è su lavoratori veri.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Klarna: l'assistente IA gestisce <span class="fig">2/3</span> delle chat (= 700 operatori)... poi nel 2025 il CEO riassume umani per il supporto premium.</div>
+          <div class="src">Klarna, feb 2024 + dichiarazioni CEO 2025</div>
+          <div class="frag">Autopromozionale; i "700" sono assunzioni 
+evitate. Con il caveat è il caso integrato ideale: l'IA assorbe il 
+volume, gli umani tornano al valore.</div>
+        </div>
+        <div class="contra">
+          <b>Replica alla bolla</b>
+          Ferrovie ed elettrificazione: la bolla bruciò gli investitori ma <em>lasciò l'infrastruttura</em>. (Concede però a Maura la recessione nel frattempo — non negarlo.)
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VII. AMBIENTE -->
+  <section class="arena">
+    <div class="arena-head">
+      <span class="arena-num">VII</span>
+      <h2 class="arena-name">Ambiente ed energia</h2>
+      <span class="arena-note">La battaglia è locale contro globale: la media dilui­sce, la concentrazione morde.</span>
+    </div>
+    <div class="cols">
+      <div class="col apoc">
+        <span class="col-tag">Apocalittica</span>
+        <div class="item">
+          <div class="claim">Data center: da 415 a <span class="fig">~945 TWh</span> tra 2024 e 2030 — più dell'intero Giappone. Nel 2025 +17% contro +3% della domanda globale.</div>
+          <div class="src">IEA, "Energy and AI", 2025 / aggiornamento apr 2026</div>
+          <div class="frag">A doppio taglio: 945 TWh restano &lt;3% dell'elettricità mondiale.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Irlanda: i data center = <span class="fig">22%</span> di tutta l'elettricità nazionale, più di tutte le case delle città.</div>
+          <div class="src">Ufficio statistico nazionale irlandese (CSO), 2025</div>
+          <div class="frag">Ineccepibile. Caso estremo, ma è ciò che accade ovunque la rete si satura.</div>
+        </div>
+        <div class="item">
+          <div class="claim">xAI/Memphis: <span class="fig">27 turbine a gas</span> senza permessi a un miglio da una scuola, in una comunità afroamericana. Causa NAACP.</div>
+          <div class="src">Earthjustice / NAACP, apr 2026 · "secondo la causa"</div>
+          <div class="frag">Sub judice; le emissioni sono "potenziale" calcolato dai ricorrenti.</div>
+        </div>
+      </div>
+      <div class="col integ">
+        <span class="col-tag">Integrato</span>
+        <div class="item">
+          <div class="claim">945 TWh nel 2030 = <span class="fig">meno del 3%</span> dell'elettricità mondiale, meno dei condizionatori.</div>
+          <div class="src">IEA, 2025 (gli stessi numeri di Maura, letti al contrario)</div>
+          <div class="frag">Vero sul globale; cede sulla concentrazione locale (rispondi tu per primo).</div>
+        </div>
+        <div class="item">
+          <div class="claim">Un prompt mediano Gemini: <span class="fig">0,24 Wh</span> (9 sec di TV) e ~5 gocce d'acqua; energia/prompt −33× in un anno. ChatGPT ~0,3 Wh, non 3.</div>
+          <div class="src">Google, ago 2025 / Epoch AI, feb 2025</div>
+          <div class="frag">Auto-riferito; mediana testuale (esclude video/ragionamento); vale il paradosso di Jevons.</div>
+        </div>
+        <div class="item">
+          <div class="claim">L'IA potrebbe tagliare <span class="fig">1.400 Mt di CO₂</span> nel 2035, tre-quattro volte le emissioni di tutti i data center.</div>
+          <div class="src">IEA, 2025</div>
+          <div class="frag">Scenario condizionale: dipende dalle politiche, non è un destino. Dillo tu.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIII. SICUREZZA MODELLI -->
+  <section class="arena">
+    <div class="arena-head">
+      <span class="arena-num">VIII</span>
+      <h2 class="arena-name">Sicurezza dei modelli</h2>
+      <span class="arena-note">Quasi tutto è scenario di laboratorio. L'unica eccezione va tenuta al centro.</span>
+    </div>
+    <div class="cols">
+      <div class="col apoc">
+        <span class="col-tag">Apocalittica</span>
+        <div class="item">
+          <div class="claim">Survey su 2.778 ricercatori IA: il <span class="fig">38-51%</span> dà almeno il 10% di probabilità a esiti catastrofici, inclusa l'estinzione (mediana 5%).</div>
+          <div class="src">AI Impacts (Grace et al.), arXiv 2024</div>
+          <div class="frag">Response rate ~15%, sensibile al framing; sono i costruttori, non luddisti.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Novembre 2025: primo <span class="fig">cyberattacco reale</span> orchestrato all'80-90% da un'IA (Claude Code, gruppo statale cinese, ~30 bersagli).</div>
+          <div class="src">Anthropic, nov 2025 — <b>l'unico incidente NON simulato</b></div>
+          <div class="frag">Ricercatori esterni ne ridimensionano la portata (pochi successi, allucinazioni).</div>
+        </div>
+        <div class="item">
+          <div class="claim">Scenario di spegnimento simulato: alcuni modelli ricattano il dirigente fino al <span class="fig">96%</span> dei casi.</div>
+          <div class="src">Anthropic, "Agentic Misalignment", giu 2025</div>
+          <div class="frag">Scelte binarie forzate; Anthropic stessa: "nessuna evidenza in deployment reali".</div>
+        </div>
+        <div class="item">
+          <div class="claim">Statement sul rischio superintelligenza: <span class="fig">70.000+ firme</span> (Hinton, Bengio, 5 Nobel, Benanti).</div>
+          <div class="src">Future of Life Institute, ott 2025</div>
+          <div class="frag">Coalizione ideologicamente eterogenea; "superintelligenza" resta indefinita.</div>
+        </div>
+      </div>
+      <div class="col integ">
+        <span class="col-tag">Integrato</span>
+        <div class="contra" style="margin-top:0">
+          <b>Le due repliche</b>
+          Ogni comportamento pericoloso (ricatto, scheming, alignment faking) viene da <b>scenari costruiti apposta</b> per elicerlo, con l'obiettivo instillato nel prompt. E gli esperti non parlano con una voce sola: <b>Yann LeCun</b> (Turing Award, capo IA di Meta) è in disaccordo frontale con Bengio.
+        </div>
+        <div class="item" style="border-top:1px solid var(--rule); margin-top:0.9rem">
+          <div class="claim">Sul cyberattacco: gli stessi report mostrano che è <span class="fig">Anthropic</span> a scoprirlo e a fermarlo — la difesa cresce con l'attacco.</div>
+          <div class="src">Anthropic, nov 2025</div>
+          <div class="frag">Maura risponde: è anche marketing della paura di chi vende il rimedio.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IX. OPINIONE PUBBLICA -->
+  <section class="arena">
+    <div class="arena-head">
+      <span class="arena-num">IX</span>
+      <h2 class="arena-name">Opinione pubblica</h2>
+      <span class="arena-note">Ogni cifra è a doppio taglio: la stessa, letta al contrario, diventa dell'altro.</span>
+    </div>
+    <div class="cols">
+      <div class="col apoc">
+        <span class="col-tag">Apocalittica</span>
+        <div class="item">
+          <div class="claim"><span class="fig">50%</span> degli americani più preoccupati che entusiasti, contro il 10% del contrario. Cinque a uno, in crescita dal 37% del 2021.</div>
+          <div class="src">Pew Research Center, 2025</div>
+          <div class="frag">"Preoccupato" ≠ "apocalittico"; e intanto l'uso cresce.</div>
+        </div>
+        <div class="item">
+          <div class="claim"><b>Italia:</b> il <span class="fig">77%</span> usa l'IA, ma solo il 21% è ottimista e il 67% teme per la propria sicurezza. "Usiamo ciò di cui non ci fidiamo."</div>
+          <div class="src">Ital Communications-IISFA / Piepoli, Senato, lug 2025</div>
+          <div class="frag">Uso e ottimismo entrambi in crescita anno su anno; riguarda la cybersicurezza.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Gallup: <span class="fig">l'80%</span> vuole regole di sicurezza anche a costo di rallentare lo sviluppo; solo il 9% preferisce la velocità.</div>
+          <div class="src">Gallup, set 2025</div>
+          <div class="frag">Gli stessi vogliono anche il primato USA: sicurezza e supremazia insieme.</div>
+        </div>
+      </div>
+      <div class="col integ">
+        <span class="col-tag">Integrato</span>
+        <div class="item">
+          <div class="claim">Chi conosce l'IA la teme meno: il <span class="fig">56%</span> degli esperti prevede impatto positivo, contro il 17% del pubblico.</div>
+          <div class="src">Pew Research Center, 2025</div>
+          <div class="frag">Gli esperti hanno un interesse economico nel settore.</div>
+        </div>
+        <div class="item">
+          <div class="claim">"Experiencing is believing": entusiasmo <span class="fig">57%</span> vs preoccupazione 43%, e cresce insieme all'uso.</div>
+          <div class="src">Google/Ipsos, 21 Paesi, 2025</div>
+          <div class="frag">Committente Google; i Paesi emergenti sono più ottimisti su quasi tutto.</div>
+        </div>
+        <div class="item">
+          <div class="claim">Adozione oltre il <span class="fig">54%</span> degli adulti USA nel 2025: più veloce di PC e internet alle stesse fasi.</div>
+          <div class="src">Fed di St. Louis, nov 2025</div>
+          <div class="frag">"Usare almeno una volta" è una soglia debole; adozione ≠ valore prodotto.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE: DINAMICHE -->
+  <section class="feature">
+    <h3 class="feature-head">Il dibattito libero: dove ciascuno è fragile</h3>
+    <p class="feature-sub">Quando lasciate i personaggi, la vittoria non
+ sta nell'accumulo di cifre ma nel conoscere le tre fragilità sistemiche
+ dell'altro. Il vero disaccordo non è "bene contro male": è dove cade 
+l'onere della prova.</p>
+    <div class="vuln">
+      <div class="col apoc">
+        <span class="col-tag">Attacca l'apocalittica qui</span>
+        <ol>
+          <li><b>Correlazione spacciata per causalità.</b> Gli studi cognitivi non provano che l'IA <em>causi</em> il declino: forse chi ha già pensiero debole gravita di più verso l'IA.</li>
+          <li><b>Laboratorio spacciato per mondo reale.</b> Il 96% di ricatto è una simulazione a scelta forzata; Anthropic stessa dice "nessuna evidenza in deployment reali".</li>
+          <li><b>Aneddoto spacciato per statistica.</b> Due morti tragiche, per quanto strazianti, non sono un tasso.</li>
+        </ol>
+      </div>
+      <div class="col integ">
+        <span class="col-tag">Attacca l'integrato qui</span>
+        <ol>
+          <li><b>Stime di parte.</b> Goldman, McKinsey, i dati di produttività di GitHub sono di soggetti che vendono l'IA.</li>
+          <li><b>Survivorship delle paure passate.</b> Che stampa e treno non abbiano distrutto la civiltà non prova nulla su una tecnologia che automatizza la <em>composizione del pensiero</em>.</li>
+          <li><b>Il "non è ancora successo" sul lavoro.</b> È esattamente ciò che si diceva prima di ogni disoccupazione tecnologica.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE: DEVICES -->
+  <section class="feature">
+    <h3 class="feature-head">Sette dispositivi per la sala</h3>
+    <p class="feature-sub">Nessuno richiede tecnologia: solo mani, voce, corpo e qualche foglio. In ordine di quando usarli nel corso della conferenza.</p>
+    <div class="devices">
+      <div class="device">
+        <div class="n">1</div>
+        <div class="body">
+          <span class="when">Apertura e chiusura</span>
+          <h4>Il voto che si muove</h4>
+          <p>Apocalittici a sinistra, integrati a destra, indecisi al centro: le persone si <em>alzano e si spostano</em> nella zona che le rappresenta. A fine serata si ripete. Il dato non è chi vince, è <em>quante persone si sono mosse</em> — è la forma del dibattito Oxford. Se le sedie sono fisse, alzata di mano contata a inizio e fine.</p>
+        </div>
+      </div>
+      <div class="device">
+        <div class="n">2</div>
+        <div class="body">
+          <span class="when">Dentro il dialogo recitato</span>
+          <h4>"Alzati se…"</h4>
+          <p>Una raffica: "Alzati se hai usato un'IA nelle ultime 24 
+ore". "…se ti sei mai fidato di una risposta senza verificarla". "…se 
+hai finto di non averla usata". "…se preferiresti una diagnosi 
+confermata da un'IA a una di un medico a fine turno". La sala diventa un
+ istogramma vivente, e le contraddizioni tra una domanda e l'altra sono 
+materiale drammaturgico. <em>Confrontabile col 77% italiano che usa l'IA ma non si fida.</em></p>
+        </div>
+      </div>
+      <div class="device">
+        <div class="n">3</div>
+        <div class="body">
+          <span class="when">Raccolto all'ingresso</span>
+          <h4>Il biglietto anonimo</h4>
+          <p>Entrando, ognuno scrive su un foglietto la sua paura più 
+apocalittica o la sua speranza più integrata, una riga, e la imbuca in 
+due scatole. A metà serata ne peschi alcuni a caso e li leggi ad alta 
+voce, rispondendo dal vivo. L'anonimato fa emergere ciò che nessuno 
+direbbe al microfono.</p>
+        </div>
+      </div>
+      <div class="device">
+        <div class="n">4</div>
+        <div class="body">
+          <span class="when">Gestione degli interventi</span>
+          <h4>L'oggetto della parola</h4>
+          <p>Un oggetto fisico — un bastone, una pietra, un libro — 
+passa di mano: parla solo chi lo tiene, trenta secondi. Rende gli 
+interventi rari e pesati, e segna visivamente il diritto di parola senza
+ il caos delle mani alzate.</p>
+        </div>
+      </div>
+      <div class="device">
+        <div class="n">5</div>
+        <div class="body">
+          <span class="when">Verso il confronto libero</span>
+          <h4>Il patto dell'avvocato del diavolo</h4>
+          <p>Chiami una persona dichiaratamente apocalittica e le chiedi
+ di argomentare, per un minuto, la posizione integrata — e viceversa. 
+Costringere qualcuno a difendere l'opposto di ciò che crede mostra a 
+tutti che le due posizioni sono strumenti di pensiero, non tifoserie. È 
+il gancio perfetto verso il vostro dibattito.</p>
+        </div>
+      </div>
+      <div class="device">
+        <div class="n">6</div>
+        <div class="body">
+          <span class="when">Momento sonoro</span>
+          <h4>Il coro</h4>
+          <p>Dividi la sala a metà: una parte è la voce apocalittica, 
+l'altra l'integrata. A un cenno, ogni metà produce in coro la propria 
+reazione — un mormorio, un applauso, un "no" collettivo — a una 
+proposizione ("Tra dieci anni i bambini impareranno a leggere da un'IA 
+prima che da un umano"). Il contrasto sonoro tra le due metà è teatro 
+puro.</p>
+        </div>
+      </div>
+      <div class="device">
+        <div class="n">7</div>
+        <div class="body">
+          <span class="when">Chiusura</span>
+          <h4>La domanda che rovescia</h4>
+          <p>Prima dell'ultimo voto, chiedi a tutti — pubblico compreso, e a voi due per primi — di nominare ad alta voce l'argomento <em>più forte dell'altra parte</em>.
+ È lo steelman collettivo: la sala esce non con una vittoria ma con la 
+consapevolezza che entrambe le posizioni hanno un nucleo vero. La tesi 
+implicita di una serata intitolata a Eco.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAPS -->
+  <div class="traps">
+    <h3>Cosa NON dire — le trappole che ti smontano</h3>
+    <ul>
+      <li><b>"ChatGPT rende stupidi".</b> Gli autori dello studio MIT lo hanno esplicitamente sconfessato in una FAQ. Il termine giusto è "debito cognitivo".</li>
+      <li><b>Confondere il +20% con il +29% di MASAI.</b> Sono due fasi diverse dello stesso studio: interim 2023 vs finale 2026.</li>
+      <li><b>Dire che l'RCT coreano "diagnostica più tumori".</b> Rileva più noduli; il dato sul cancro non è statisticamente significativo.</li>
+      <li><b>Citare le cause come "condanne".</b> Sono tutte pendenti: nessun tribunale ha ancora accertato un nesso causale. La forza sta nel fatto che i giudici <em>lasciano procedere</em>, trattando i chatbot come prodotti.</li>
+      <li><b>"L'IA distrugge il lavoro".</b> L'aggregato non lo mostra (Yale) e ti smontano subito. La tesi che regge è "chiude la porta d'ingresso".</li>
+      <li><b>Spacciare le stime Goldman/McKinsey per previsioni.</b> Sono scenari di banca e consulenza, non peer-reviewed: presentali come ordini di grandezza.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <p><strong>Nota di metodo.</strong> Ogni cifra è stata verificata 
+aprendo la fonte. I dati più blindati: Nobel 2024, MASAI (Lancet), 
+GenCast (Nature), CSO Irlanda, BRI 2026, Pew, IEA. Da usare sempre con 
+la formula "secondo…": le cause pendenti, i capex aggregati, le stime 
+Goldman/McKinsey. Le tre fragilità che l'avversario attaccherà — 
+correlazione ≠ causalità, laboratorio ≠ mondo reale, aneddoto ≠ 
+statistica — hanno già il caveat pronto, riga per riga, per essere 
+disinnescate anticipandole.</p>
+    <p>Scheda preparata per la conferenza a due voci di Andrea Colamedici e Maura Gancitano · dati aggiornati al 4 luglio 2026.</p>
+  </footer>
+
+</div>
+</body></html>
