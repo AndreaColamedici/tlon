@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <title>Il Pod — Italian Podcast Awards — Tlon</title>
     <meta name="description" content="Il mondo del podcasting è un motore culturale con un potenziale enorme. Ogni anno celebriamo i contenuti più interessanti per valorizzare e far crescere questo medium, rafforzando la comunità di chi…">
     <link rel="canonical" href="https://www.tlon.it/ilpod.html">
@@ -25,9 +28,7 @@
     <meta name="twitter:title" content="Il Pod — Italian Podcast Awards — Tlon">
     <meta name="twitter:description" content="Il mondo del podcasting è un motore culturale con un potenziale enorme. Ogni anno celebriamo i contenuti più interessanti per valorizzare e far crescere questo medium, rafforzando la comunità di chi…">
     <meta name="twitter:image" content="https://www.tlon.it/assets/images/ilpod-teatro.jpg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <style>
         :root {
             --bianco: #ffffff;
@@ -94,7 +95,12 @@
 
         nav {
             display: flex;
-            gap: 3rem;
+            flex-wrap: nowrap;
+            gap: clamp(1.1rem, 2.2vw, 3rem);
+        }
+
+        nav a {
+            white-space: nowrap;
         }
 
         nav a {
@@ -1236,6 +1242,7 @@
             }
         }
     </style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
 </head>
 <body>
 
@@ -1251,7 +1258,7 @@
     <a href="./eventi-festival.html">Eventi</a>
     <a href="./contatti/">Contatti</a>
 </nav>
-        <button class="hamburger" id="hamburger" aria-label="Menu">
+        <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
             <span></span>
             <span></span>
             <span></span>
@@ -1650,6 +1657,7 @@
             hamburger.addEventListener('click', () => {
                 hamburger.classList.toggle('active');
                 mobileMenu.classList.toggle('active');
+                hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
                 header.classList.toggle('menu-open');
                 document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
             });

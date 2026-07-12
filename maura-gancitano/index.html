@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <title>Maura Gancitano — Tlon</title>
     <meta name="description" content="Filosofa, pedagogista e scrittrice. Co-fondatrice di Tlon, si occupa di parità di genere, educazione sentimentale, spazi pubblici digitali, comunicazione e progettazione culturale.">
-    <link rel="canonical" href="https://www.tlon.it/maura-gancitano/index.html">
-    <link rel="alternate" hreflang="it" href="https://www.tlon.it/maura-gancitano/index.html">
+    <link rel="canonical" href="https://www.tlon.it/maura-gancitano/">
+    <link rel="alternate" hreflang="it" href="https://www.tlon.it/maura-gancitano/">
     <link rel="alternate" hreflang="en" href="https://www.tlon.it/maura-gancitano/en.html">
-    <link rel="alternate" hreflang="x-default" href="https://www.tlon.it/maura-gancitano/index.html">
+    <link rel="alternate" hreflang="x-default" href="https://www.tlon.it/maura-gancitano/">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -17,7 +20,7 @@
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:title" content="Maura Gancitano — Tlon">
     <meta property="og:description" content="Filosofa, pedagogista e scrittrice. Co-fondatrice di Tlon, si occupa di parità di genere, educazione sentimentale, spazi pubblici digitali, comunicazione e progettazione culturale.">
-    <meta property="og:url" content="https://www.tlon.it/maura-gancitano/index.html">
+    <meta property="og:url" content="https://www.tlon.it/maura-gancitano/">
     <meta property="og:image" content="https://www.tlon.it/assets/images/maura-gancitano.jpg">
 
     <!-- Twitter -->
@@ -25,9 +28,7 @@
     <meta name="twitter:title" content="Maura Gancitano — Tlon">
     <meta name="twitter:description" content="Filosofa, pedagogista e scrittrice. Co-fondatrice di Tlon, si occupa di parità di genere, educazione sentimentale, spazi pubblici digitali, comunicazione e progettazione culturale.">
     <meta name="twitter:image" content="https://www.tlon.it/assets/images/maura-gancitano.jpg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <style>
         :root {
             --bianco: #ffffff;
@@ -175,6 +176,18 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+        }
+        .mobile-menu-lang {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+        .mobile-menu-lang a {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-style: normal;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
         }
 
         .mobile-menu.active a {
@@ -342,6 +355,21 @@
         .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
     </style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://www.tlon.it/maura-gancitano/#person",
+      "name": "Maura Gancitano",
+      "url": "https://www.tlon.it/maura-gancitano/",
+      "image": "https://www.tlon.it/assets/images/maura-gancitano.jpg",
+      "jobTitle": "Filosofa, pedagogista e scrittrice",
+      "worksFor": {"@id": "https://www.tlon.it/#organization", "@type": "Organization", "name": "Tlon", "url": "https://www.tlon.it/"},
+      "sameAs": ["https://www.tlon.it/maura-gancitano/en.html"]
+    }
+    </script>
 </head>
 <body>
 
@@ -361,7 +389,7 @@
             <a href="./index.html" class="active">IT</a>
             <a href="./en.html">EN</a>
         </div>
-        <div class="hamburger" id="hamburger">
+        <div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="Apri il menu" aria-expanded="false" aria-controls="mobileMenu">
             <span></span>
             <span></span>
             <span></span>
@@ -377,6 +405,7 @@
         <a href="../formazione.html">Formazione</a>
         <a href="../eventi-festival.html">Eventi</a>
         <a href="../contatti/">Contatti</a>
+        <div class="mobile-menu-lang"><a href="./index.html" class="active">IT</a><a href="./en.html">EN</a></div>
     </div>
 
     <main>
@@ -618,6 +647,7 @@
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
             header.classList.toggle('menu-open');
             document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
         });

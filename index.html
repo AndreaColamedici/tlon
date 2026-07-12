@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <title>Tlon — Scuola di Filosofia e Immaginazione</title>
     <meta name="description" content="Tlon è un progetto di ricerca e divulgazione filosofica. Casa editrice, librerie, podcast, festival, formazione e progettazione culturale: strumenti per la fioritura personale e collettiva.">
-    <link rel="canonical" href="https://www.tlon.it/index.html">
-    <link rel="alternate" hreflang="it" href="https://www.tlon.it/index.html">
+    <link rel="canonical" href="https://www.tlon.it/">
+    <link rel="alternate" hreflang="it" href="https://www.tlon.it/">
     <link rel="alternate" hreflang="en" href="https://www.tlon.it/index-en.html">
-    <link rel="alternate" hreflang="x-default" href="https://www.tlon.it/index.html">
+    <link rel="alternate" hreflang="es" href="https://www.tlon.it/index-es.html">
+    <link rel="alternate" hreflang="x-default" href="https://www.tlon.it/">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -17,17 +22,15 @@
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:title" content="Tlon — Scuola di Filosofia e Immaginazione">
     <meta property="og:description" content="Tlon è un progetto di ricerca e divulgazione filosofica. Casa editrice, librerie, podcast, festival, formazione e progettazione culturale: strumenti per la fioritura personale e collettiva.">
-    <meta property="og:url" content="https://www.tlon.it/index.html">
-    <meta property="og:image" content="https://www.tlon.it/assets/images/tlon-logo.png">
+    <meta property="og:url" content="https://www.tlon.it/">
+    <meta property="og:image" content="https://www.tlon.it/assets/images/og-tlon.png">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Tlon — Scuola di Filosofia e Immaginazione">
     <meta name="twitter:description" content="Tlon è un progetto di ricerca e divulgazione filosofica. Casa editrice, librerie, podcast, festival, formazione e progettazione culturale: strumenti per la fioritura personale e collettiva.">
-    <meta name="twitter:image" content="https://www.tlon.it/assets/images/tlon-logo.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="twitter:image" content="https://www.tlon.it/assets/images/og-tlon.png">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <link rel="stylesheet" href="./evidenza.css">
     <style>
         :root {
@@ -110,7 +113,12 @@
 
         nav {
             display: flex;
-            gap: 3rem;
+            flex-wrap: nowrap;
+            gap: clamp(1.1rem, 2.2vw, 3rem);
+        }
+
+        nav a {
+            white-space: nowrap;
         }
 
         nav a {
@@ -227,6 +235,18 @@
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
         }
+        .mobile-menu-lang {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+        .mobile-menu-lang a {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-style: normal;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
 
         .mobile-menu.active a {
             opacity: 1;
@@ -252,7 +272,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 0 3rem 4rem;
+            padding: 6.5rem 3rem 4rem;
             position: relative;
         }
 
@@ -428,7 +448,7 @@
             .hamburger { display: flex; }
             .mobile-menu { display: flex; }
             .hero {
-                padding: 0 1.5rem 3rem;
+                padding: 5.5rem 1.5rem 3rem;
             }
             .hero-founders {
                 flex-direction: column;
@@ -1727,6 +1747,46 @@
         }
 
     </style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.tlon.it/#organization",
+          "name": "Tlon",
+          "legalName": "TLON S.r.l.",
+          "url": "https://www.tlon.it/",
+          "logo": "https://www.tlon.it/assets/images/tlon-logo.png",
+          "description": "Progetto di ricerca e divulgazione filosofica: casa editrice, librerie, podcast, festival, formazione e progettazione culturale.",
+          "foundingDate": "2015",
+          "founder": [
+            {"@type": "Person", "name": "Andrea Colamedici", "url": "https://www.tlon.it/andrea-colamedici/"},
+            {"@type": "Person", "name": "Maura Gancitano", "url": "https://www.tlon.it/maura-gancitano/"}
+          ],
+          "address": {"@type": "PostalAddress", "streetAddress": "Via Nicol\u00f2 da Pistoia, 12", "postalCode": "00154", "addressLocality": "Roma", "addressCountry": "IT"},
+          "vatID": "IT13583341006",
+          "sameAs": [
+            "https://www.instagram.com/tlon.it/",
+            "https://www.facebook.com/associazionetlon",
+            "https://www.youtube.com/c/AssociazioneTlon",
+            "https://shop.tlon.it/",
+            "https://www.tlonletter.it/"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.tlon.it/#website",
+          "url": "https://www.tlon.it/",
+          "name": "Tlon",
+          "publisher": {"@id": "https://www.tlon.it/#organization"},
+          "inLanguage": "it"
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
 
@@ -1746,7 +1806,7 @@
         <a href="./" class="active">IT</a>
         <a href="./index-en.html">EN</a>
     </div>
-    <div class="hamburger" id="hamburger">
+    <div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="Apri il menu" aria-expanded="false" aria-controls="mobileMenu">
         <span></span>
         <span></span>
         <span></span>
@@ -1762,6 +1822,7 @@
         <a href="./formazione.html">Formazione</a>
         <a href="./eventi-festival.html">Eventi</a>
         <a href="./contatti/">Contatti</a>
+        <div class="mobile-menu-lang"><a href="./" class="active">IT</a><a href="./index-en.html">EN</a></div>
     </div>
 
     <section class="hero">
@@ -2481,7 +2542,7 @@
                     <p class="luogo-address">
                         Viale delle Belle Arti, 131<br>
                         00196 Roma<br>
-                        <a href="mailto:bookshoplagallerianazionale@tlon.it">bookshop@tlon.it</a>
+                        <a href="mailto:bookshoplagallerianazionale@tlon.it">bookshoplagallerianazionale@tlon.it</a>
                     </p>
                 </div>
                 <div class="luogo reveal">
@@ -2554,8 +2615,12 @@
         hamburger.addEventListener('click', function() {
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
             header.classList.toggle('menu-open');
             document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+        hamburger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hamburger.click(); }
         });
 
         // Chiudi menu quando si clicca un link

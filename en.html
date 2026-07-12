@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <title>Tlon — School of Philosophy and Imagination</title>
     <meta name="description" content="A publishing house, a network of bookstores, festivals, podcasts, training programs. Philosophy as a tool for living better and thinking critically about the contemporary world.">
-    <link rel="canonical" href="https://www.tlon.it/en.html">
-    <link rel="alternate" hreflang="en" href="https://www.tlon.it/en.html">
-    <link rel="alternate" hreflang="x-default" href="https://www.tlon.it/en.html">
+    <link rel="canonical" href="https://www.tlon.it/index-en.html">
+    <link rel="alternate" hreflang="en" href="https://www.tlon.it/index-en.html">
+    <link rel="alternate" hreflang="x-default" href="https://www.tlon.it/index-en.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -16,17 +19,15 @@
     <meta property="og:locale:alternate" content="it_IT">
     <meta property="og:title" content="Tlon — School of Philosophy and Imagination">
     <meta property="og:description" content="A publishing house, a network of bookstores, festivals, podcasts, training programs. Philosophy as a tool for living better and thinking critically about the contemporary world.">
-    <meta property="og:url" content="https://www.tlon.it/en.html">
-    <meta property="og:image" content="https://www.tlon.it/assets/images/tlon-logo.png">
+    <meta property="og:url" content="https://www.tlon.it/index-en.html">
+    <meta property="og:image" content="https://www.tlon.it/assets/images/og-tlon-en.png">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Tlon — School of Philosophy and Imagination">
     <meta name="twitter:description" content="A publishing house, a network of bookstores, festivals, podcasts, training programs. Philosophy as a tool for living better and thinking critically about the contemporary world.">
-    <meta name="twitter:image" content="https://www.tlon.it/assets/images/tlon-logo.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="twitter:image" content="https://www.tlon.it/assets/images/og-tlon-en.png">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <style>
         :root {
             --bianco: #ffffff;
@@ -126,7 +127,12 @@
 
         nav {
             display: flex;
-            gap: 3rem;
+            flex-wrap: nowrap;
+            gap: clamp(1.1rem, 2.2vw, 3rem);
+        }
+
+        nav a {
+            white-space: nowrap;
         }
 
         nav a {
@@ -244,6 +250,18 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+        }
+        .mobile-menu-lang {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+        .mobile-menu-lang a {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-style: normal;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
         }
 
         .mobile-menu.active a {
@@ -887,6 +905,7 @@
             }
         }
     </style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
 </head>
 <body>
 
@@ -908,7 +927,7 @@
             <a href="./index.html">IT</a>
             <a href="./en.html" class="active">EN</a>
         </div>
-        <button class="hamburger" id="hamburger" aria-label="Menu">
+        <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
             <span></span>
             <span></span>
             <span></span>
@@ -924,6 +943,7 @@
         <a href="./formazione-en.html">Education</a>
         <a href="./eventi-festival-en.html">Events</a>
         <a href="./contatti/en.html">Contact</a>
+        <div class="mobile-menu-lang"><a href="./index.html">IT</a><a href="./en.html" class="active">EN</a></div>
     </div>
 
     <main>
@@ -1174,6 +1194,7 @@
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         mobileMenu.classList.toggle('active');
+        hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
         header.classList.toggle('menu-open');
         document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
     });

@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <title>Andrea Colamedici — Tlon</title>
     <meta name="description" content="Philosopher, publisher and artist. Co-founder of Tlon, he works on philosophy of artificial intelligence, media theory and cemetery studies.">
     <link rel="canonical" href="https://www.tlon.it/andrea-colamedici/en.html">
@@ -25,9 +28,7 @@
     <meta name="twitter:title" content="Andrea Colamedici — Tlon">
     <meta name="twitter:description" content="Philosopher, publisher and artist. Co-founder of Tlon, he works on philosophy of artificial intelligence, media theory and cemetery studies.">
     <meta name="twitter:image" content="https://www.tlon.it/assets/images/andrea-colamedici.jpg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <style>
         :root {
             --bianco: #ffffff;
@@ -106,7 +107,12 @@
 
         nav {
             display: flex;
-            gap: 3rem;
+            flex-wrap: nowrap;
+            gap: clamp(1.1rem, 2.2vw, 3rem);
+        }
+
+        nav a {
+            white-space: nowrap;
         }
 
         nav a {
@@ -200,6 +206,18 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+        }
+        .mobile-menu-lang {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+        .mobile-menu-lang a {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-style: normal;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
         }
 
         .mobile-menu.active a {
@@ -966,6 +984,22 @@
             transform: translateY(0);
         }
     </style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://www.tlon.it/andrea-colamedici/#person",
+      "name": "Andrea Colamedici",
+      "url": "https://www.tlon.it/andrea-colamedici/",
+      "image": "https://www.tlon.it/assets/images/andrea-colamedici.jpg",
+      "jobTitle": "Philosopher, publisher and artist",
+      "birthPlace": "Roma",
+      "worksFor": {"@id": "https://www.tlon.it/#organization", "@type": "Organization", "name": "Tlon", "url": "https://www.tlon.it/"},
+      "sameAs": ["https://www.tlon.it/andrea-colamedici/en.html"]
+    }
+    </script>
 </head>
 <body>
 
@@ -985,7 +1019,7 @@
             <a href="./index.html">IT</a>
             <a href="./en.html" class="active">EN</a>
         </div>
-        <div class="hamburger" id="hamburger">
+        <div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="Apri il menu" aria-expanded="false" aria-controls="mobileMenu">
             <span></span>
             <span></span>
             <span></span>
@@ -1001,6 +1035,7 @@
         <a href="../formazione.html">Education</a>
         <a href="../eventi-festival.html">Events</a>
         <a href="../contatti/">Contact</a>
+        <div class="mobile-menu-lang"><a href="./index.html">IT</a><a href="./en.html" class="active">EN</a></div>
     </div>
 
     <main>
@@ -1347,6 +1382,7 @@
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
             header.classList.toggle('menu-open');
             document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
         });

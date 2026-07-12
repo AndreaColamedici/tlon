@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <title>Events and Festivals — Tlon</title>
     <meta name="description" content="Philosophical direction, curation, conception. We bring thought to places where something unexpected can happen: theaters, public squares, festivals, bookstores. Wherever people can gather to think…">
     <link rel="canonical" href="https://www.tlon.it/eventi-festival-en.html">
@@ -18,16 +21,14 @@
     <meta property="og:title" content="Events and Festivals — Tlon">
     <meta property="og:description" content="Philosophical direction, curation, conception. We bring thought to places where something unexpected can happen: theaters, public squares, festivals, bookstores. Wherever people can gather to think…">
     <meta property="og:url" content="https://www.tlon.it/eventi-festival-en.html">
-    <meta property="og:image" content="https://www.tlon.it/assets/images/tlon-logo.png">
+    <meta property="og:image" content="https://www.tlon.it/assets/images/og-tlon-en.png">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Events and Festivals — Tlon">
     <meta name="twitter:description" content="Philosophical direction, curation, conception. We bring thought to places where something unexpected can happen: theaters, public squares, festivals, bookstores. Wherever people can gather to think…">
-    <meta name="twitter:image" content="https://www.tlon.it/assets/images/tlon-logo.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="twitter:image" content="https://www.tlon.it/assets/images/og-tlon-en.png">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <style>
         :root { --bianco: #ffffff; --nero: #0a0a0a; --ottanio: #2a6b6b; --grigio: #6b6b6b; --grigio-chiaro: #e5e5e5; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -64,6 +65,18 @@
         .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--nero); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; }
         .mobile-menu.active { opacity: 1; visibility: visible; }
         .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--bianco); opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease; }
+        .mobile-menu-lang {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+        .mobile-menu-lang a {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-style: normal;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
         .mobile-menu.active a { opacity: 1; transform: translateY(0); }
         .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
         .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
@@ -350,6 +363,7 @@
         <a href="./formazione-en.html">Education</a>
         <a href="./eventi-festival-en.html">Events</a>
         <a href="./contatti/en.html">Contact</a>
+        <div class="mobile-menu-lang"><a href="./eventi-festival.html">IT</a><a href="./eventi-festival-en.html" class="active">EN</a></div>
     </div>
 
     <main>
@@ -742,8 +756,12 @@
         hamburger.addEventListener('click', function() {
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
             header.classList.toggle('menu-open');
             document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+        hamburger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hamburger.click(); }
         });
 
         document.querySelectorAll('.mobile-menu a').forEach(link => {

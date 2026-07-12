@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <title>Contatti — Tlon</title>
     <meta name="description" content="Tlon è un organismo con molte anime: una casa editrice, una rete di librerie, un centro di formazione, un laboratorio di ricerca. Ogni anima ha il proprio indirizzo: scegli quello giusto per la tua…">
     <link rel="canonical" href="https://www.tlon.it/contatti.html">
@@ -17,16 +20,14 @@
     <meta property="og:title" content="Contatti — Tlon">
     <meta property="og:description" content="Tlon è un organismo con molte anime: una casa editrice, una rete di librerie, un centro di formazione, un laboratorio di ricerca. Ogni anima ha il proprio indirizzo: scegli quello giusto per la tua…">
     <meta property="og:url" content="https://www.tlon.it/contatti.html">
-    <meta property="og:image" content="https://www.tlon.it/assets/images/tlon-logo.png">
+    <meta property="og:image" content="https://www.tlon.it/assets/images/og-tlon.png">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Contatti — Tlon">
     <meta name="twitter:description" content="Tlon è un organismo con molte anime: una casa editrice, una rete di librerie, un centro di formazione, un laboratorio di ricerca. Ogni anima ha il proprio indirizzo: scegli quello giusto per la tua…">
-    <meta name="twitter:image" content="https://www.tlon.it/assets/images/tlon-logo.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="twitter:image" content="https://www.tlon.it/assets/images/og-tlon.png">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <style>
         :root {
             --bianco: #ffffff;
@@ -94,7 +95,12 @@
 
         nav {
             display: flex;
-            gap: 3rem;
+            flex-wrap: nowrap;
+            gap: clamp(1.1rem, 2.2vw, 3rem);
+        }
+
+        nav a {
+            white-space: nowrap;
         }
 
         nav a {
@@ -519,6 +525,7 @@
             }
         }
     </style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
 </head>
 <body>
     <header>

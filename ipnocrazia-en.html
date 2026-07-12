@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <title>Hypnocracy — Tlon</title>
     <meta name="description" content="Hypnocracy: a book, a performance, a demonstration. Signed by the fictitious philosopher Jianwei Xun and written by Andrea Colamedici with artificial intelligence, it proved its own thesis on the manipulation of reality by becoming a global case in 2025.">
     <link rel="canonical" href="https://www.tlon.it/ipnocrazia-en.html">
@@ -27,9 +30,7 @@
     <meta name="twitter:description" content="Signed by a philosopher who does not exist and written with artificial intelligence, Hypnocracy demonstrated its own thesis on the manipulation of reality by becoming a global case.">
     <meta name="twitter:image" content="https://www.tlon.it/assets/images/ipnocrazia-en.jpg">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <style>
         :root {
             --bianco: #ffffff;
@@ -67,6 +68,18 @@
         .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--nero); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .mobile-menu.active { opacity: 1; pointer-events: auto; }
         .mobile-menu a { font-family: 'Instrument Serif', serif; font-size: 2rem; color: var(--bianco); opacity: 0; transform: translateY(20px); transition: all 0.4s ease, opacity 0.4s ease, transform 0.4s ease; }
+        .mobile-menu-lang {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+        .mobile-menu-lang a {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-style: normal;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
         .mobile-menu.active a { opacity: 1; transform: translateY(0); }
         .mobile-menu a:nth-child(1) { transition-delay: 0.1s; }
         .mobile-menu a:nth-child(2) { transition-delay: 0.15s; }
@@ -250,6 +263,7 @@
             .footer-nav { flex-direction: column; gap: 2rem; }
         }
     </style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
 </head>
 <body>
 
@@ -285,6 +299,7 @@
         <a href="./formazione-en.html">Education</a>
         <a href="./eventi-festival-en.html">Events</a>
         <a href="./contatti/en.html">Contact</a>
+        <div class="mobile-menu-lang"><a href="./ipnocrazia.html">IT</a><a href="./ipnocrazia-en.html" class="active">EN</a></div>
     </div>
 
     <main>
@@ -616,6 +631,10 @@
         hamburger.addEventListener('click', function() {
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
+        });
+        hamburger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hamburger.click(); }
         });
 
         document.querySelectorAll('.mobile-menu a').forEach(link => {
