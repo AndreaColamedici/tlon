@@ -71,8 +71,6 @@ section.blocco{margin-top:clamp(56px,9vw,110px);border-top:2px solid var(--text)
 .cella{border-top:1px solid var(--divider);padding:20px clamp(16px,2vw,28px) 26px 0}
 .cella h3{margin-bottom:14px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-700)}
 .cella p{font-size:15px;line-height:1.6}
-.nota{margin-top:16px;padding-top:14px;border-top:2px solid var(--text);font-size:14px;line-height:1.6}
-.link{display:inline-block;margin-top:12px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-underline-offset:4px}
 
 ul.persone{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));flex:1 1 520px;min-width:0}
 ul.persone li{border-top:1px solid var(--divider);padding:16px 20px 18px 0;display:flex;align-items:baseline;gap:12px}
@@ -94,7 +92,12 @@ ul.persone span{font-size:clamp(1rem,1.6vw,1.15rem);font-weight:600;letter-spaci
 .via .slot{margin-bottom:10px;display:block;flex:none}
 .via p{font-size:15px;line-height:1.6}
 
-.vuoto{border-top:1px solid var(--divider);border-bottom:1px solid var(--divider);padding:20px 0;font-size:clamp(1rem,1.8vw,1.15rem);color:var(--n700);max-width:52ch;list-style:none;margin:0}
+ul.voci{list-style:none;margin:0;padding:0}
+ul.voci li{border-top:1px solid var(--divider);padding:20px 0 24px;max-width:62ch}
+ul.voci .chi{display:block;margin-bottom:8px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+ul.voci .titolo-voce{font-size:clamp(1.05rem,1.8vw,1.25rem);font-weight:800;letter-spacing:-.02em;text-underline-offset:4px}
+ul.voci p{margin-top:10px;font-size:15px;line-height:1.6}
+ul.voci li.vuoto{border-bottom:1px solid var(--divider);padding:20px 0;font-size:clamp(1rem,1.8vw,1.15rem);color:var(--n700);max-width:52ch}
 
 .poster{background:var(--accent);color:var(--bg);margin-top:clamp(56px,9vw,110px);scroll-margin-top:70px}
 .poster .wrap{padding-top:clamp(48px,8vw,100px);padding-bottom:clamp(48px,8vw,100px)}
@@ -151,8 +154,6 @@ main{padding-bottom:clamp(20px,4vw,40px)}
         <div class="cella">
           <h3>Il piano materiale</h3>
           <p>Valutare insieme bandi e progetti, per dare al gruppo gambe e risorse. Si comincia dalla candidatura al bando Building Narrative Power dell'European AI &amp; Society Fund, con la prima fase in scadenza il 31 agosto: da Monterano si esce con l'ossatura scritta. L'officina però continua oltre il primo bando.</p>
-          <p class="nota">Grant fino a 150.000 euro per organizzazioni europee, per costruire il potere narrativo delle comunità e sviluppare e testare strategie narrative su tre temi: i data centre che alimentano l'IA, l'IA e i giovani, l'IA e il lavoro. Vogliono lavoro radicato in un contesto nazionale, linguistico o comunitario specifico, con un pubblico chiaramente definito.</p>
-          <a class="link" href="https://europeanaifund.org/building-narrative-power-funding-and-learning-programme/" target="_blank" rel="noopener">Il bando →</a>
         </div>
       </div>
     </div>
@@ -228,8 +229,13 @@ main{padding-bottom:clamp(20px,4vw,40px)}
 
   <section class="blocco" id="materiali">
     <div class="etichetta"><h2>Materiali</h2></div>
-    <ul class="corpo" style="list-style:none;margin:0;padding:0">
-      <li class="vuoto">Ancora niente qui. Chi vuole proporre una lettura la mandi ad Andrea.</li>
+    <ul class="voci corpo">
+      <li>
+        <span class="chi">il bando</span>
+        <a class="titolo-voce" href="https://europeanaifund.org/building-narrative-power-funding-and-learning-programme/" target="_blank" rel="noopener">Building Narrative Power — European AI &amp; Society Fund</a>
+        <p>Grant fino a 150.000 euro per organizzazioni europee, per costruire il potere narrativo delle comunità e sviluppare e testare strategie narrative su tre temi: i data centre che alimentano l'IA, l'IA e i giovani, l'IA e il lavoro. Vogliono lavoro radicato in un contesto nazionale, linguistico o comunitario specifico, con un pubblico chiaramente definito.</p>
+      </li>
+      <li class="vuoto">Chi vuole proporre una lettura la mandi ad Andrea.</li>
     </ul>
   </section>
 
