@@ -92,12 +92,15 @@ ul.persone span{font-size:clamp(1rem,1.6vw,1.15rem);font-weight:600;letter-spaci
 .via .slot{margin-bottom:10px;display:block;flex:none}
 .via p{font-size:15px;line-height:1.6}
 
-ul.voci{list-style:none;margin:0;padding:0}
-ul.voci li{border-top:1px solid var(--divider);padding:20px 0 24px;max-width:62ch}
-ul.voci .chi{display:block;margin-bottom:8px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
-ul.voci .titolo-voce{font-size:clamp(1.05rem,1.8vw,1.25rem);font-weight:800;letter-spacing:-.02em;text-underline-offset:4px}
-ul.voci p{margin-top:10px;font-size:15px;line-height:1.6}
-ul.voci li.vuoto{border-bottom:1px solid var(--divider);padding:20px 0;font-size:clamp(1rem,1.8vw,1.15rem);color:var(--n700);max-width:52ch}
+.sub{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-700);margin-bottom:4px}
+ul.bandi{list-style:none;margin:0 0 clamp(28px,4vw,44px);padding:0}
+ul.bandi li{border-top:1px solid var(--divider);padding:18px 0 22px;display:flex;flex-wrap:wrap;gap:6px 16px}
+ul.bandi .quando{flex:0 0 96px;padding-top:4px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+ul.bandi .voce{flex:1 1 320px;min-width:0}
+ul.bandi a{font-size:clamp(1.05rem,1.8vw,1.25rem);font-weight:800;letter-spacing:-.02em;text-underline-offset:4px}
+ul.bandi p{margin-top:8px;font-size:15px;line-height:1.6;max-width:56ch}
+ul.letture{list-style:none;margin:0;padding:0}
+ul.letture li{border-top:1px solid var(--divider);border-bottom:1px solid var(--divider);padding:20px 0;font-size:clamp(1rem,1.8vw,1.15rem);color:var(--n700);max-width:52ch}
 
 .poster{background:var(--accent);color:var(--bg);margin-top:clamp(56px,9vw,110px);scroll-margin-top:70px}
 .poster .wrap{padding-top:clamp(48px,8vw,100px);padding-bottom:clamp(48px,8vw,100px)}
@@ -229,14 +232,36 @@ main{padding-bottom:clamp(20px,4vw,40px)}
 
   <section class="blocco" id="materiali">
     <div class="etichetta"><h2>Materiali</h2></div>
-    <ul class="voci corpo">
-      <li>
-        <span class="chi">il bando</span>
-        <a class="titolo-voce" href="https://europeanaifund.org/building-narrative-power-funding-and-learning-programme/" target="_blank" rel="noopener">Building Narrative Power — European AI &amp; Society Fund</a>
-        <p>Grant fino a 150.000 euro per organizzazioni europee, per costruire il potere narrativo delle comunità e sviluppare e testare strategie narrative su tre temi: i data centre che alimentano l'IA, l'IA e i giovani, l'IA e il lavoro. Vogliono lavoro radicato in un contesto nazionale, linguistico o comunitario specifico, con un pubblico chiaramente definito.</p>
-      </li>
-      <li class="vuoto">Chi vuole proporre una lettura la mandi ad Andrea.</li>
-    </ul>
+    <div class="corpo">
+      <p class="sub">Bandi</p>
+      <ul class="bandi">
+        <li>
+          <span class="quando">31 agosto</span>
+          <div class="voce">
+            <a href="https://europeanaifund.org/building-narrative-power-funding-and-learning-programme/" target="_blank" rel="noopener">Building Narrative Power</a>
+            <p>European AI &amp; Society Fund. Costruire il potere narrativo delle comunità su data centre, lavoro e giovani. Prima fase in scadenza, seconda a novembre, avvio febbraio 2027.</p>
+          </div>
+        </li>
+        <li>
+          <span class="quando">30 settembre</span>
+          <div class="voce">
+            <a href="https://commission.europa.eu/funding-and-tenders/find-funding/eu-funding-programmes/citizens-equality-rights-and-values-programme/citizens-equality-rights-and-values-programme-overview_en" target="_blank" rel="noopener">CERV</a>
+            <p>Il programma europeo per diritti, democrazia e partecipazione civica. Ammette esplicitamente i think tank, finanzia di norma al novanta per cento. Prossima finestra civica a dicembre.</p>
+          </div>
+        </li>
+        <li>
+          <span class="quando">inizio 2027</span>
+          <div class="voce">
+            <a href="https://culture.ec.europa.eu/creative-europe/creative-europe-culture-strand/european-cooperation-projects" target="_blank" rel="noopener">Europa Creativa</a>
+            <p>European Cooperation Projects. Cooperazione culturale transnazionale, con l'intelligenza artificiale tra le priorità dal 2026. Da costruire con i partner europei nei prossimi mesi.</p>
+          </div>
+        </li>
+      </ul>
+      <p class="sub">Letture</p>
+      <ul class="letture">
+        <li>Chi vuole proporre una lettura la mandi ad Andrea.</li>
+      </ul>
+    </div>
   </section>
 
 </main>
