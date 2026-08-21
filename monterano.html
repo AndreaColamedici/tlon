@@ -100,7 +100,9 @@ ul.bandi .voce{flex:1 1 320px;min-width:0}
 ul.bandi a{font-size:clamp(1.05rem,1.8vw,1.25rem);font-weight:800;letter-spacing:-.02em;text-underline-offset:4px}
 ul.bandi p{margin-top:8px;font-size:15px;line-height:1.6;max-width:56ch}
 ul.letture{list-style:none;margin:0;padding:0}
-ul.letture li{border-top:1px solid var(--divider);border-bottom:1px solid var(--divider);padding:20px 0;font-size:clamp(1rem,1.8vw,1.15rem);color:var(--n700);max-width:52ch}
+ul.letture li{border-top:1px solid var(--divider);padding:20px 0;font-size:clamp(1rem,1.8vw,1.15rem);color:var(--n700);max-width:52ch}
+ul.letture li:last-child{border-bottom:1px solid var(--divider)}
+ul.letture a{font-weight:800;letter-spacing:-.02em;text-underline-offset:4px}
 
 .poster{background:var(--accent);color:var(--bg);margin-top:clamp(56px,9vw,110px);scroll-margin-top:70px}
 .poster .wrap{padding-top:clamp(48px,8vw,100px);padding-bottom:clamp(48px,8vw,100px)}
@@ -144,7 +146,7 @@ main{padding-bottom:clamp(20px,4vw,40px)}
   <section class="blocco" id="perche">
     <div class="etichetta"><h2>Perché Monterano</h2></div>
     <div class="corpo">
-      <p class="claim">Monterano tiene insieme tre piani.</p>
+      <p class="claim">Si parte da una visione di futuro condivisa. I tre piani sono il modo in cui quella visione si mette a terra.</p>
       <div class="celle">
         <div class="cella">
           <h3>Il piano delle idee</h3>
@@ -152,7 +154,7 @@ main{padding-bottom:clamp(20px,4vw,40px)}
         </div>
         <div class="cella">
           <h3>Il piano della comunità</h3>
-          <p>Riflettere insieme su come si costruisce una comunità oggi: cosa la fa nascere, cosa la tiene insieme nel tempo, cosa hanno da insegnarci le forme che già conosciamo, la festa di paese, il ritiro, la scuola, i luoghi da cui veniamo. Monterano è insieme il luogo di questa riflessione e il suo primo esperimento.</p>
+          <p>Riflettere insieme su come si costruisce una comunità oggi: cosa la fa nascere, cosa la tiene insieme nel tempo, come si governa e come si moltiplica, cosa hanno da insegnarci le forme che già conosciamo, la festa di paese, il ritiro, la scuola, i luoghi da cui veniamo. Monterano è insieme il luogo di questa riflessione e il suo primo esperimento.</p>
         </div>
         <div class="cella">
           <h3>Il piano materiale</h3>
@@ -182,18 +184,20 @@ main{padding-bottom:clamp(20px,4vw,40px)}
       <div class="giorno">
         <h3>Venerdì 21</h3>
         <div class="riga"><span class="slot">sera</span><p>Arrivi e cena a casa. Giro di apertura: con quale domanda arriva ognuno.</p></div>
+        <div class="riga"><span class="slot">dopo cena</span><p>La visione di futuro, tratteggiata insieme. Prima sessione in modalità jam: un campo dichiarato all'inizio, chi conduce dà gli attacchi, il turno gira.</p></div>
       </div>
       <div class="giorno">
         <h3>Sabato 22</h3>
         <div class="riga"><span class="slot">colazione</span><p>A casa.</p></div>
-        <div class="riga"><span class="slot">mattina</span><p>Il quadro: diagnosi condivisa e mappa del campo.</p></div>
+        <div class="riga"><span class="slot">mattina</span><p>La comunità: come si tiene insieme, come si governa, come si moltiplica.</p></div>
+        <div class="riga"><span class="slot">a seguire</span><p>Federica racconta l'Anti-Authoritarian Toolkit di D-HUB, dieci volumi di tattiche democratiche. Un'ora e mezza, con una domanda in fondo: cosa funziona qui, e quale volume manca.</p></div>
         <div class="riga"><span class="slot">pranzo</span><p>Da Antichi Sapori, in paese.</p></div>
-        <div class="riga"><span class="slot">pomeriggio</span><p>La scelta strategica e la forma del gruppo.</p></div>
+        <div class="riga"><span class="slot">pomeriggio</span><p>Verticale sull'IA aperta, pubblica, collettiva: costruire un altro immaginario di cosa l'intelligenza artificiale può essere.</p></div>
         <div class="riga"><span class="slot">cena</span><p>Dal Sorcetto: cena lunga e letture ad alta voce.</p></div>
       </div>
       <div class="giorno">
         <h3>Domenica 23</h3>
-        <div class="riga"><span class="slot">mattina</span><p>Scrittura: l'ossatura del progetto comune.</p></div>
+        <div class="riga"><span class="slot">mattina</span><p>La messa a terra, a tavoli paralleli: il bando europeo, la piattaforma, la pressione pubblica sull'IA. Un'ora finale in plenaria per rileggere quello che è uscito.</p></div>
         <div class="riga"><span class="slot">pranzo</span><p>A casa.</p></div>
         <div class="riga"><span class="slot">pomeriggio</span><p>Compiti, calendario alla rovescia, chiusura.</p></div>
         <div class="riga"><span class="slot">sera</span><p>Chi vuole scende in paese per il Palio delle Contrade: la Corsa del Bigonzo lungo il corso, poi cena alla festa.</p></div>
@@ -259,7 +263,8 @@ main{padding-bottom:clamp(20px,4vw,40px)}
       </ul>
       <p class="sub">Letture</p>
       <ul class="letture">
-        <li>Chi vuole proporre una lettura la mandi ad Andrea.</li>
+        <li><a href="https://antiauthoritarian.com/" target="_blank" rel="noopener">Anti-Authoritarian Toolkit</a>, D-HUB. Dieci volumi liberi su come opera il potere autoritario e su come si risponde. Ne parliamo sabato mattina con Federica.</li>
+        <li>Chi vuole proporre un'altra lettura la mandi ad Andrea.</li>
       </ul>
     </div>
   </section>
