@@ -32,8 +32,10 @@ MESI_EN = ['January','February','March','April','May','June','July',
 
 
 def campo(fm, chiave, default=''):
-    m = re.search(r'^%s:\s*(.*)$' % chiave, fm, re.M)
-    return m.group(1).strip().strip('"') if m else default
+    # `[ \t]*` e non `\s*`: quest'ultimo scavalcherebbe il ritorno a capo su un
+    # campo vuoto, catturando il valore della riga successiva
+    m = re.search(r'^%s:[ \t]*(.*)$' % chiave, fm, re.M)
+    return m.group(1).strip().strip('"').strip("'") if m else default
 
 
 def pulisci(v):
@@ -56,7 +58,8 @@ def leggi_record():
         if campo(fm, 'verifica') != 'confermato':
             continue
         url = campo(fm, 'url')
-        if not url:
+        # una rassegna raccoglie fonti terze: i domini di casa restano fuori
+        if campo(fm, 'autopubblicazione'):
             continue
         data = campo(fm, 'data')
         out.append({
@@ -71,9 +74,16 @@ def leggi_record():
             'titolo': campo(fm, 'titolo'),
             'url': url,
             'rilevanza': campo(fm, 'rilevanza'),
+            'senza_data': bool(campo(fm, 'data_incerta')),
         })
-    out.sort(key=lambda r: r['data'], reverse=True)
-    return out
+    out.sort(key=lambda r: ((1 if r['senza_data'] else 0), 
+                            r['testata'].lower() if r['senza_data'] else ''),
+             reverse=False)
+    datati = sorted([r for r in out if not r['senza_data']],
+                    key=lambda r: r['data'], reverse=True)
+    perenni = sorted([r for r in out if r['senza_data']],
+                     key=lambda r: r['testata'].lower())
+    return datati + perenni
 
 
 def data_estesa(data, mesi):
@@ -89,7 +99,9 @@ def riga(r, lang):
     mesi = MESI_IT if lang == 'it' else MESI_EN
     tipi = TIPI_IT if lang == 'it' else TIPI_EN
     meta = []
-    if r['autore']:
+    # molti siti dichiarano sé stessi come autore: non ha senso ripetere la testata
+    if r['autore'] and r['autore'].lower().strip() not in (r['testata'].lower().strip(),
+                                                           'redazione', 'non specificato'):
         meta.append(html.escape(r['autore']))
     if r['sede']:
         meta.append(html.escape(r['sede']))
@@ -98,7 +110,7 @@ def riga(r, lang):
         '<div class="voce-data">{data}</div>'
         '<div class="voce-corpo">'
         '<div class="voce-testata">{testata}</div>'
-        '<a class="voce-titolo" href="{url}" target="_blank" rel="noopener">{titolo}</a>'
+        '{titolo_reso}'
         '{meta}'
         '</div>'
         '<div class="voce-tag"><span class="tag-lingua">{lingua_label}</span>'
@@ -106,10 +118,14 @@ def riga(r, lang):
         '</li>'
     ).format(
         lingua=r['lingua'], tipo=r['tipo'],
-        data=html.escape(data_estesa(r['data'], mesi)),
+        data=('&mdash;' if r['senza_data'] else html.escape(data_estesa(r['data'], mesi))),
         testata=html.escape(r['testata']),
-        url=html.escape(r['url'], quote=True),
-        titolo=html.escape(r['titolo']) or html.escape(r['testata']),
+        titolo_reso=(
+            '<a class="voce-titolo" href="%s" target="_blank" rel="noopener">%s</a>'
+            % (html.escape(r['url'], quote=True), html.escape(r['titolo']) or html.escape(r['testata']))
+            if r['url'] else
+            '<span class="voce-titolo voce-titolo--muto">%s</span>'
+            % (html.escape(r['titolo']) or html.escape(r['testata']))),
         meta=('<div class="voce-meta">%s</div>' % ' · '.join(meta)) if meta else '',
         lingua_label=r['lingua'].upper(),
         tipo_label=html.escape(tipi.get(r['tipo'], r['tipo'])),
@@ -198,6 +214,8 @@ display:inline-block;background-image:linear-gradient(var(--nero),var(--nero));
 background-size:0 1px;background-repeat:no-repeat;background-position:0 100%;
 transition:background-size .3s ease}
 .voce-titolo:hover{background-size:100% 1px}
+.voce-titolo--muto{color:var(--nero);cursor:default}
+.voce-titolo--muto:hover{background-size:0 1px}
 .voce-meta{font-size:.8rem;color:var(--grigio);margin-top:.5rem}
 .voce-tag{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end}
 .tag-lingua,.tag-tipo{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
@@ -237,16 +255,13 @@ footer a:hover{color:var(--nero)}
 TESTI = {
  'it': {
   'title': 'Press — Rassegna internazionale | Tlon',
-  'desc': ('La ricezione internazionale dei libri e delle idee pubblicate da Tlon. '
-           'Rassegna verificata fonte per fonte: stampa, riviste accademiche, editori, '
-           'radio e televisione in cinque lingue.'),
+  'desc': ('Hanno scritto di Tlon: stampa, riviste accademiche, radio, televisione ed '
+           'enciclopedie in più lingue e paesi. Libri, festival, podcast, casa editrice.'),
   'label': 'Rassegna internazionale',
-  'h1': 'Hanno scritto di <em>quello che pubblichiamo</em>',
-  'hero_desc': ('Questa pagina raccoglie le fonti che hanno discusso i libri e i concetti '
-                'nati in Tlon — Ipnocrazia, Prompt Thinking, il dispositivo Jianwei Xun. '
-                'Ogni voce è stata aperta e letta prima di comparire qui: le segnalazioni '
-                'non verificate restano fuori.'),
-  'stat': [('fonti verificate', 'n'), ('paesi', 'paesi'), ('lingue', 'lingue'),
+  'h1': 'Hanno scritto <em>di noi</em>',
+  'hero_desc': ('Le fonti che hanno raccontato i libri, i concetti e i progetti nati in Tlon: '
+                'dalla casa editrice ai festival, dai podcast a Ipnocrazia e Prompt Thinking.'),
+  'stat': [('fonti', 'n'), ('paesi', 'paesi'), ('lingue', 'lingue'),
            ('fonti accademiche', 'accademiche')],
   'f_tutte': 'Tutte', 'f_lingua': 'Lingua', 'f_tipo': 'Tipo',
   'conteggio': 'voci visibili',
@@ -272,16 +287,15 @@ TESTI = {
  },
  'en': {
   'title': 'Press — International coverage | Tlon',
-  'desc': ('International reception of the books and ideas published by Tlon. '
-           'A source-by-source verified record: press, academic journals, publishers, '
-           'radio and television in five languages.'),
+  'desc': ('Coverage of Tlon: press, academic journals, radio, television and '
+           'encyclopedias across several languages and countries. Books, festivals, '
+           'podcasts, publishing house.'),
   'label': 'International coverage',
-  'h1': 'What has been written about <em>what we publish</em>',
-  'hero_desc': ('This page collects the sources that have discussed the books and concepts '
-                'born at Tlon — Hypnocracy, Prompt Thinking, the Jianwei Xun device. '
-                'Every entry was opened and read before appearing here: unverified '
-                'reports stay out.'),
-  'stat': [('verified sources', 'n'), ('countries', 'paesi'), ('languages', 'lingue'),
+  'h1': 'What has been <em>written about us</em>',
+  'hero_desc': ('The sources that have covered the books, concepts and projects born at Tlon: '
+                'from the publishing house to the festivals, from the podcasts to '
+                'Hypnocracy and Prompt Thinking.'),
+  'stat': [('sources', 'n'), ('countries', 'paesi'), ('languages', 'lingue'),
            ('academic sources', 'accademiche')],
   'f_tutte': 'All', 'f_lingua': 'Language', 'f_tipo': 'Type',
   'conteggio': 'entries shown',
@@ -338,13 +352,15 @@ def costruisci(recs, lang):
                          % (t, html.escape(tipi.get(t, t))) for t in tipi_presenti)))
 
     corpo = []
-    anno_corrente = None
+    gruppo_corrente = None
+    senza_data_lbl = 'Senza data' if lang == 'it' else 'Undated'
     for r in recs:
-        if r['anno'] != anno_corrente:
-            if anno_corrente is not None:
+        gruppo = senza_data_lbl if r['senza_data'] else r['anno']
+        if gruppo != gruppo_corrente:
+            if gruppo_corrente is not None:
                 corpo.append('</ul>')
-            anno_corrente = r['anno']
-            corpo.append('<h2 class="anno">%s</h2><ul class="voci">' % anno_corrente)
+            gruppo_corrente = gruppo
+            corpo.append('<h2 class="anno">%s</h2><ul class="voci">' % html.escape(gruppo))
         corpo.append(riga(r, lang))
     corpo.append('</ul>')
 
@@ -415,11 +431,6 @@ def costruisci(recs, lang):
 <p class="conteggio"><span id="conteggio">{n}</span> {conteggio_label}</p>
 {corpo}
 <p class="vuoto" id="vuoto" hidden>{vuoto}</p>
-<section class="metodo">
-<h2>{metodo_h}</h2>
-{metodo}
-<p style="font-size:.8rem;margin-top:1.5rem">{aggiornato} {data_oggi}.</p>
-</section>
 </main>
 <footer>
 <div>&copy; {anno} Tlon Srl &mdash; Via Nicol&ograve; da Pistoia, 12, 00154 Roma &mdash; P.IVA 13583341006</div>
@@ -476,9 +487,7 @@ def costruisci(recs, lang):
            label=html.escape(T['label']), h1=T['h1'], hero_desc=html.escape(T['hero_desc']),
            stats=stats, f_lingua=f_lingua, f_tipo=f_tipo, n=len(recs),
            conteggio_label=T['conteggio'], corpo=''.join(corpo), vuoto=html.escape(T['vuoto']),
-           metodo_h=html.escape(T['metodo_h']),
-           metodo=''.join('<p>%s</p>' % p for p in T['metodo']),
-           aggiornato=T['aggiornato'], data_oggi=data_oggi, anno=oggi.year)
+           anno=oggi.year)
 
 
 def main():
