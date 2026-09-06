@@ -1801,6 +1801,7 @@
                 </div>
                 
                 <div class="news-content">
+                    <p class="news-gruppo">Upcoming</p>
                     <div class="news-preview" id="news-prossimi">
                         <div class="news-item reveal" data-fine="2026-09-13">
                             <span class="news-item-tag">Festival</span>
@@ -1846,7 +1847,7 @@
                         </div>
                                         </div>
                     
-                    <p class="news-label" style="margin-top: 2rem; margin-bottom: 1rem; opacity: 0.7;">Recent</p>
+                    <p class="news-gruppo">Past events</p>
                     <div class="news-preview" id="news-recenti">
                         <div class="news-item reveal" style="border-left: 3px solid var(--ottanio, #2a9d8f); padding-left: 1rem;" data-fine="2026-07-12">
                             <span class="news-item-tag">Festival</span>
@@ -2224,6 +2225,27 @@
         }
         .skip-link:focus { left: 0; }
         :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+
+        /* intestazioni delle due liste del calendario */
+        .news-gruppo {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--ottanio, #2a6b6b);
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            margin: 0 0 1.4rem;
+        }
+        .news-gruppo::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.25;
+        }
+        .news-gruppo + .news-preview { margin-bottom: 3rem; }
 </style>
 
     <!-- Decorazioni -->
