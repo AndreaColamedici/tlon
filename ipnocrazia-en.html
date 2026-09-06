@@ -41,6 +41,10 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
         html { font-size: 16px; scroll-behavior: smooth; }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--nero); color: var(--bianco); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         ::selection { background: var(--ottanio); color: var(--bianco); }
@@ -49,8 +53,8 @@
         header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference; }
         .logo { display: flex; align-items: center; }
         .logo img { height: 28px; width: auto; filter: invert(1); }
-        nav { display: flex; gap: 3rem; }
-        nav a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--bianco); opacity: 0.6; transition: opacity 0.3s ease; }
+        nav { flex-wrap: nowrap; display: flex; gap: clamp(0.9rem, 1.9vw, 2.6rem); }
+        nav a { white-space: nowrap; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--bianco); opacity: 0.6; transition: opacity 0.3s ease; }
         nav a:hover { opacity: 1; }
 
         .lang-switch { display: flex; gap: 0.5rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid rgba(255,255,255,0.2); }
@@ -222,7 +226,7 @@
         .cta-btn.primary:hover { background: var(--ottanio); color: var(--bianco); border-color: var(--ottanio); }
 
         footer { padding: 4rem 3rem; background: var(--nero); border-top: 1px solid rgba(255,255,255,0.1); }
-        .footer-nav { display: flex; justify-content: space-between; align-items: center; }
+        .footer-nav { flex-wrap: nowrap; display: flex; justify-content: space-between; align-items: center; }
         .footer-back { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s ease; }
         .footer-back:hover { color: var(--bianco); }
         .footer-back::before { content: '←'; }
@@ -249,7 +253,7 @@
         @media (max-width: 768px) {
             html, body { overflow-x: hidden; max-width: 100vw; }
             header { padding: 1rem 1.5rem; background: var(--nero); border-bottom: 1px solid rgba(255,255,255,0.1); }
-            nav { display: none; }
+            nav { flex-wrap: nowrap; display: none; }
             .hamburger { display: flex; flex-shrink: 0; }
             .hamburger span { background: var(--bianco); }
             .mobile-menu { display: flex; }
@@ -260,12 +264,34 @@
             .traduzione { padding: 0.75rem 1.25rem; }
             .copertine-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
             footer { padding: 2rem 1.5rem; }
-            .footer-nav { flex-direction: column; gap: 2rem; }
+            .footer-nav { flex-wrap: nowrap; flex-direction: column; gap: 2rem; }
         }
-    </style>
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+</style></style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</noscript>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://www.tlon.it/ipnocrazia-en.html", "url": "https://www.tlon.it/ipnocrazia-en.html", "name": "Hypnocracy — Tlon", "inLanguage": "en", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "Hypnocracy: a book, a performance, a demonstration. Signed by the fictitious philosopher Jianwei Xun and written by Andrea Colamedici with artificial intelligence, it proved its own thesis on the manipulation of reality by becoming a global case in 2025."}</script>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Skip to content</a>
 
     <header>
         <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
@@ -277,7 +303,7 @@
             <a href="./librerie-en.html">Bookstores</a>
             <a href="./formazione-en.html">Education</a>
             <a href="./eventi-festival-en.html">Events</a>
-            <a href="./contatti/en.html">Contact</a>
+            <a href="./press-en.html">Press</a><a href="./contatti/en.html">Contact</a>
         </nav>
         <div class="lang-switch">
             <a href="./ipnocrazia.html">IT</a>
@@ -298,11 +324,11 @@
         <a href="./librerie-en.html">Bookstores</a>
         <a href="./formazione-en.html">Education</a>
         <a href="./eventi-festival-en.html">Events</a>
-        <a href="./contatti/en.html">Contact</a>
+        <a href="./press-en.html">Press</a><a href="./contatti/en.html">Contact</a>
         <div class="mobile-menu-lang"><a href="./ipnocrazia.html">IT</a><a href="./ipnocrazia-en.html" class="active">EN</a></div>
     </div>
 
-    <main>
+    <main id="contenuto">
         <section class="hero">
             <div class="hero-bg"></div>
             <div class="hero-content">
@@ -402,19 +428,19 @@
             </div>
             <div class="copertine-grid">
                 <div class="copertina reveal">
-                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia - Italian edition">
+                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia - Italian edition" width="710" height="1000" loading="lazy" decoding="async">
                     <span class="copertina-lang">Italian</span>
                 </div>
                 <div class="copertina reveal">
-                    <img src="./assets/images/ipnocrazia-en.jpg" alt="Hypnocracy - English edition">
+                    <img src="./assets/images/ipnocrazia-en.jpg" alt="Hypnocracy - English edition" width="1604" height="2560" loading="lazy" decoding="async">
                     <span class="copertina-lang">English</span>
                 </div>
                 <div class="copertina reveal">
-                    <img src="./assets/images/ipnocrazia-es.jpg" alt="Hipnocracia - Spanish edition">
+                    <img src="./assets/images/ipnocrazia-es.jpg" alt="Hipnocracia - Spanish edition" width="674" height="1000" loading="lazy" decoding="async">
                     <span class="copertina-lang">Spanish</span>
                 </div>
                 <div class="copertina reveal">
-                    <img src="./assets/images/ipnocrazia-fr.jpg" alt="Hypnocratie - French edition">
+                    <img src="./assets/images/ipnocrazia-fr.jpg" alt="Hypnocratie - French edition" width="536" height="761" loading="lazy" decoding="async">
                     <span class="copertina-lang">French</span>
                 </div>
             </div>
@@ -574,7 +600,7 @@
         <section class="libro">
             <div class="libro-grid">
                 <div class="libro-cover reveal">
-                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Hypnocracy - Cover">
+                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Hypnocracy - Cover" width="710" height="1000" loading="lazy" decoding="async">
                 </div>
                 <div class="libro-content reveal">
                     <span class="libro-label">The book</span>

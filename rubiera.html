@@ -42,6 +42,10 @@
     --line:rgba(244,240,234,.10);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
   html{scroll-behavior:smooth;}
   body{
     font-family:"Inter",-apple-system,sans-serif;
@@ -252,9 +256,18 @@
   #gate .g-err{color:#E0894A;font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.05em;margin-top:18px;height:14px;opacity:0;transition:opacity .3s;}
   #gate.shake .g-row{animation:shake .42s;}
   @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 
 <div id="gate">
   <div class="g-pre">Il Festival delle</div>
@@ -272,7 +285,7 @@
 <div class="field f-feeling"></div>
 <canvas id="dust"></canvas>
 
-<main>
+<main id="contenuto">
 
   <section class="overture">
     <div class="place">Rubiera · Comune · primavera 2027</div>

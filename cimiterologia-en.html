@@ -43,6 +43,10 @@
             padding: 0;
             box-sizing: border-box;
         }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -109,10 +113,23 @@
             font-size: 0.85rem;
             color: var(--grigio);
         }
-    </style>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://www.tlon.it/cimiterologia-en.html", "url": "https://www.tlon.it/cimiterologia-en.html", "name": "Page under maintenance – Tlon", "inLanguage": "en", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "This section is temporarily unavailable. We are working to make it even better."}</script>
 </head>
 <body>
-    <a href="./en.html" class="logo"><img src="./assets/images/logo-tlon.png" alt="Tlon"></a>
+    <a href="./en.html" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
     <h1>Page under <em>maintenance</em></h1>
     <p>This section is temporarily unavailable. We are working to make it even better.</p>
     <a href="./en.html" class="back">Back to homepage</a>

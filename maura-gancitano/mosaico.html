@@ -168,6 +168,10 @@
 </script>
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <style>
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
     --salvia: #6b8f6b;
@@ -558,16 +562,37 @@ body {
     .footer-top { flex-direction: column; }
     .footer-bottom { flex-direction: column; text-align: center; }
 }
+
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 <nav class="nav" aria-label="Navigazione principale">
     <a href="#" class="nav-logo">Maura Gancitano</a>
     <div class="nav-right">
         <a href="libri.html" class="nav-section">Libri</a>
         <a href="ricerca.html" class="nav-section">Ricerca</a>
         <a href="podcast.html" class="nav-section">Podcast</a>
-        <a href="contatti/" class="nav-section">Contatti</a>
+        <a href="press.html">Press</a><a href="contatti/" class="nav-section">Contatti</a>
         <div class="nav-lang" aria-label="Seleziona lingua">
             <a href="#" class="active" aria-current="page" lang="it">IT</a>
             <a href="en/" lang="en">EN</a>
@@ -576,7 +601,7 @@ body {
         </div>
     </div>
 </nav>
-<main>
+<main id="contenuto">
 <div class="mosaic" role="region" aria-label="Maura Gancitano — panoramica">
     <a href="#" class="tile tile-hero ph-portrait">
         <div class="overlay">
@@ -774,7 +799,7 @@ body {
                 <div class="footer-tagline">Filosofa, pedagogista, scrittrice</div>
             </div>
             <nav class="footer-links" aria-label="Link legali">
-                <a href="contatti/">Contatti</a>
+                <a href="press.html">Press</a><a href="contatti/">Contatti</a>
                 <a href="privacy.html">Privacy Policy</a>
                 <a href="cookie.html">Cookie Policy</a>
             </nav>

@@ -46,6 +46,10 @@
             padding: 0;
             box-sizing: border-box;
         }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 
         html {
             font-size: 16px;
@@ -409,12 +413,50 @@
                 gap: 1rem;
             }
         }
-    </style>
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+
+        /* Navigazione mobile: sotto i 900px la nav è nascosta,
+           serve un modo per raggiungere le altre pagine. */
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer;
+            padding: 4px; background: none; border: 0; }
+        .hamburger span { width: 24px; height: 2px; background: currentColor;
+            transition: all 0.3s ease; display: block; }
+        .mobile-menu { position: fixed; inset: 0; background: #0a0a0a; z-index: 1500;
+            display: none; flex-direction: column; justify-content: center;
+            align-items: center; gap: 1.4rem; }
+        .mobile-menu.active { display: flex; }
+        .mobile-menu a { color: #ffffff; font-size: 1.35rem;
+            font-family: 'Instrument Serif', serif; text-decoration: none; }
+        .mobile-menu .lang-switch { display: flex; margin-top: 1rem; }
+        .mobile-menu .lang-switch a { font-size: 0.85rem; font-family: inherit; }
+        @media (max-width: 900px) { .hamburger { display: flex; } }
+</style></style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</noscript>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://www.tlon.it/privacy.html", "url": "https://www.tlon.it/privacy.html", "name": "Privacy Policy — Tlon", "inLanguage": "it", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "Informativa sul trattamento dei dati personali ai sensi degli artt. 13 e 14 del Regolamento (UE) 2016/679 (GDPR)."}</script>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
     <header>
-        <a href="./" class="logo"><img src="./assets/images/logo-tlon.png" alt="Tlon"></a>
+        <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
         <nav>
             <a href="./il-progetto.html">Il Progetto</a>
             <a href="./andrea-colamedici/">Colamedici</a>
@@ -423,11 +465,14 @@
             <a href="./librerie.html">Librerie</a>
             <a href="./formazione.html">Formazione</a>
             <a href="./eventi-festival.html">Eventi</a>
-            <a href="./contatti/">Contatti</a>
+            <a href="./press.html">Press</a><a href="./contatti/">Contatti</a>
         </nav>
-    </header>
+            <button class="hamburger" id="hamburger" aria-label="Apri il menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+</header>
+<div class="mobile-menu" id="mobileMenu"><a href="./il-progetto.html">Il Progetto</a><a href="./andrea-colamedici/">Colamedici</a><a href="./maura-gancitano/">Gancitano</a><a href="./edizioni.html">Edizioni</a><a href="./librerie.html">Librerie</a><a href="./formazione.html">Formazione</a><a href="./eventi-festival.html">Eventi</a><a href="./press.html">Press</a><a href="./contatti/">Contatti</a></div>
 
-    <main>
+
+    <main id="contenuto">
         <section class="page-hero">
             <span class="page-label reveal">Informativa</span>
             <h1 class="page-title reveal">Privacy <em>Policy</em></h1>
@@ -585,5 +630,20 @@
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         reveals.forEach(el => observer.observe(el));
     </script>
+<script>
+    (function(){
+        var h = document.getElementById('hamburger'), m = document.getElementById('mobileMenu');
+        if (!h || !m) return;
+        function toggle(){
+            m.classList.toggle('active');
+            h.setAttribute('aria-expanded', m.classList.contains('active'));
+            document.body.style.overflow = m.classList.contains('active') ? 'hidden' : '';
+        }
+        h.addEventListener('click', toggle);
+        m.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){
+            m.classList.remove('active'); h.setAttribute('aria-expanded','false');
+            document.body.style.overflow = ''; }); });
+    })();
+</script>
 </body>
 </html>

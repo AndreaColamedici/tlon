@@ -43,6 +43,10 @@
             padding: 0;
             box-sizing: border-box;
         }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 
         html {
             font-size: 16px;
@@ -123,13 +127,13 @@
             filter: invert(1);
         }
 
-        nav {
+        nav { flex-wrap: nowrap;
             display: flex;
-            gap: 3rem;
+            gap: clamp(0.9rem, 1.9vw, 2.6rem);
             align-items: center;
         }
 
-        nav a {
+        nav a { white-space: nowrap;
             font-size: 0.75rem;
             font-weight: 500;
             letter-spacing: 0.15em;
@@ -1248,7 +1252,7 @@
             border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        .footer-nav {
+        .footer-nav { flex-wrap: nowrap;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1351,7 +1355,7 @@
                 padding: 1rem 1.5rem;
             }
 
-            nav {
+            nav { flex-wrap: nowrap;
                 display: none;
             }
 
@@ -1386,7 +1390,7 @@
                 padding: 2rem 1.5rem;
             }
 
-            .footer-nav {
+            .footer-nav { flex-wrap: nowrap;
                 flex-direction: column;
                 gap: 2rem;
             }
@@ -1395,10 +1399,48 @@
                 gap: 2rem;
             }
         }
-    </style>
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+
+        /* Navigazione mobile: sotto i 900px la nav è nascosta,
+           serve un modo per raggiungere le altre pagine. */
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer;
+            padding: 4px; background: none; border: 0; }
+        .hamburger span { width: 24px; height: 2px; background: currentColor;
+            transition: all 0.3s ease; display: block; }
+        .mobile-menu { position: fixed; inset: 0; background: #0a0a0a; z-index: 1500;
+            display: none; flex-direction: column; justify-content: center;
+            align-items: center; gap: 1.4rem; }
+        .mobile-menu.active { display: flex; }
+        .mobile-menu a { color: #ffffff; font-size: 1.35rem;
+            font-family: 'Instrument Serif', serif; text-decoration: none; }
+        .mobile-menu .lang-switch { display: flex; margin-top: 1rem; }
+        .mobile-menu .lang-switch a { font-size: 0.85rem; font-family: inherit; }
+        @media (max-width: 900px) { .hamburger { display: flex; } }
+</style></style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</noscript>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://www.tlon.it/ricerca.html", "url": "https://www.tlon.it/ricerca.html", "name": "Ricerca — Tlon", "inLanguage": "it", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "La filosofia nei luoghi dove si costruisce il domani. Hub di ricerca sull'intelligenza artificiale, comitati scientifici internazionali, academy per la cultura digitale."}</script>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 
     <!-- Custom Cursor -->
     <div class="cursor"></div>
@@ -1414,16 +1456,22 @@
             <a href="./andrea-colamedici/">Colamedici</a>
             <a href="./maura-gancitano/">Gancitano</a>
             <a href="./edizioni.html">Edizioni</a>
+            <a href="./librerie.html">Librerie</a>
             <a href="./formazione.html">Formazione</a>
-            <a href="./contatti/">Contatti</a>
+            <a href="./eventi-festival.html">Eventi</a>
+            <a href="./press.html">Press</a><a href="./contatti/">Contatti</a>
             <div class="lang-switch">
                 <a href="./ricerca.html" class="active">IT</a>
                 <a href="./ricerca-en.html">EN</a>
             </div>
         </nav>
-    </header>
+            <button class="hamburger" id="hamburger" aria-label="Apri il menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+</header>
+<div class="mobile-menu" id="mobileMenu"><a href="./il-progetto.html">Il Progetto</a><a href="./andrea-colamedici/">Colamedici</a><a href="./maura-gancitano/">Gancitano</a><a href="./edizioni.html">Edizioni</a><a href="./librerie.html">Librerie</a><a href="./formazione.html">Formazione</a><a href="./eventi-festival.html">Eventi</a><a href="./press.html">Press</a><a href="./contatti/">Contatti</a><div class="lang-switch"><a href="./ricerca.html" class="active">IT</a>
+                <a href="./ricerca-en.html">EN</a></div></div>
 
-    <main>
+
+    <main id="contenuto">
         <!-- HERO -->
         <section class="hero">
             <div class="hero-depth-layer layer-1"></div>
@@ -1501,7 +1549,7 @@
                 <div class="ipnocrazia-visual reveal">
                     <div class="ipnocrazia-frame">
                         <div class="ipnocrazia-book">
-                            <img src="./assets/images/ipnocrazia-cover.jpg" alt="Ipnocrazia">
+                            <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia" width="710" height="1000" loading="lazy" decoding="async">
                         </div>
                         <span class="ipnocrazia-glitch-text">虛</span>
                     </div>
@@ -1812,5 +1860,20 @@
         }
     </script>
 
+<script>
+    (function(){
+        var h = document.getElementById('hamburger'), m = document.getElementById('mobileMenu');
+        if (!h || !m) return;
+        function toggle(){
+            m.classList.toggle('active');
+            h.setAttribute('aria-expanded', m.classList.contains('active'));
+            document.body.style.overflow = m.classList.contains('active') ? 'hidden' : '';
+        }
+        h.addEventListener('click', toggle);
+        m.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){
+            m.classList.remove('active'); h.setAttribute('aria-expanded','false');
+            document.body.style.overflow = ''; }); });
+    })();
+</script>
 </body>
 </html>

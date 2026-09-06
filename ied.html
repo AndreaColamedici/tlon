@@ -43,6 +43,10 @@
   --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 html { scroll-behavior: smooth; }
 body {
   background: var(--paper);
@@ -741,10 +745,31 @@ h1, h2, h3, h4 {
   .scell { border-right: 0 !important; border-bottom: 1px solid var(--rule); }
   .scell:last-child { border-bottom: 0; }
 }
-</style>
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+</style></style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</noscript>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 
 <header class="site-header">
   <div class="header-inner">
@@ -754,7 +779,7 @@ h1, h2, h3, h4 {
   </div>
 </header>
 
-<section class="hero">
+<section id="contenuto" class="hero">
   <div class="frame">
     <span class="label"><span class="tick"></span>Mostra collettiva degli studenti · Mattatoio di Testaccio · 14 nov 2026 — 28 feb 2027</span>
     <h1><em>Sei gruppi.<br>Sei stanze.<br>Una mostra.</em></h1>

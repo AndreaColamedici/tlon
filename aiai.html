@@ -14,6 +14,7 @@
 <style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 <style>
   :root {
     --paper: #EEEBE3;
@@ -37,6 +38,10 @@
   }
 
   * { box-sizing: border-box; }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 
   body {
     margin: 0;
@@ -350,6 +355,26 @@
     .arena, .feature { break-inside: avoid; }
     .device, .col { break-inside: avoid; }
   }
+
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
 </style>
 
 <div class="wrap">
@@ -390,7 +415,7 @@ fonte; le distinzioni apparentemente pedanti sono i punti su cui l'altro
   </header>
 
   <!-- I. LAVORO -->
-  <section class="arena">
+  <section id="contenuto" class="arena">
     <div class="arena-head">
       <span class="arena-num">I</span>
       <h2 class="arena-name">Lavoro</h2>

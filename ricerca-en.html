@@ -39,6 +39,10 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
         html { font-size: 16px; scroll-behavior: smooth; }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--nero); color: var(--bianco); -webkit-font-smoothing: antialiased; overflow-x: hidden; cursor: none; }
         ::selection { background: var(--ottanio); color: var(--bianco); }
@@ -52,8 +56,8 @@
         header.menu-open { mix-blend-mode: normal; background: var(--nero); }
         .logo { display: flex; align-items: center; }
         .logo img { height: 28px; width: auto; filter: invert(1); }
-        nav { display: flex; gap: 3rem; }
-        nav a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--bianco); opacity: 0.5; transition: opacity 0.3s ease; }
+        nav { flex-wrap: nowrap; display: flex; gap: clamp(0.9rem, 1.9vw, 2.6rem); }
+        nav a { white-space: nowrap; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--bianco); opacity: 0.5; transition: opacity 0.3s ease; }
         nav a:hover { opacity: 1; }
 
         .lang-switch { display: flex; gap: 0.75rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid rgba(255,255,255,0.3); }
@@ -242,7 +246,7 @@
         .cta-btn.primary:hover { background: var(--bianco); color: var(--nero); }
 
         footer { padding: 4rem 3rem; border-top: 1px solid rgba(255,255,255,0.05); }
-        .footer-nav { display: flex; justify-content: space-between; align-items: center; }
+        .footer-nav { flex-wrap: nowrap; display: flex; justify-content: space-between; align-items: center; }
         .footer-back { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s ease; }
         .footer-back:hover { color: var(--bianco); }
         .footer-back::before { content: '←'; }
@@ -269,7 +273,7 @@
         }
 
         @media (max-width: 900px) {
-            nav { display: none; }
+            nav { flex-wrap: nowrap; display: none; }
             .hamburger { display: flex; }
             .mobile-menu { display: flex; }
             .lang-switch { display: none; }
@@ -285,13 +289,35 @@
             .ipnocrazia-glitch-text { font-size: 4rem; }
             .ipnocrazia-book img { max-width: 280px; }
             footer { padding: 2rem 1.5rem; }
-            .footer-nav { flex-direction: column; gap: 2rem; }
+            .footer-nav { flex-wrap: nowrap; flex-direction: column; gap: 2rem; }
             .footer-links { gap: 2rem; }
         }
-    </style>
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+</style></style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</noscript>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://www.tlon.it/ricerca-en.html", "url": "https://www.tlon.it/ricerca-en.html", "name": "Research — Tlon", "inLanguage": "en", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "Philosophy in the places where tomorrow is built. AI research hub, international scientific committees, academy for digital culture."}</script>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Skip to content</a>
 
     <div class="cursor"></div>
     <div class="cursor-dot"></div>
@@ -301,13 +327,13 @@
         <a href="./en.html" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
         <nav>
             <a href="./il-progetto-en.html">The Project</a>
-            <a href="./andrea-colamedici/">Colamedici</a>
-            <a href="./maura-gancitano/">Gancitano</a>
+            <a href="./andrea-colamedici/en.html">Colamedici</a>
+            <a href="./maura-gancitano/en.html">Gancitano</a>
             <a href="./edizioni-en.html">Publishing</a>
             <a href="./librerie-en.html">Bookstores</a>
-            <a href="./formazione-en.html">Training</a>
+            <a href="./formazione-en.html">Education</a>
             <a href="./eventi-festival-en.html">Events</a>
-            <a href="./contatti/">Contact</a>
+            <a href="./press-en.html">Press</a><a href="./contatti/en.html">Contact</a>
         </nav>
         <div class="lang-switch">
             <a href="./ricerca.html">IT</a>
@@ -322,17 +348,17 @@
 
     <div class="mobile-menu" id="mobileMenu">
         <a href="./il-progetto-en.html">The Project</a>
-        <a href="./andrea-colamedici/">Colamedici</a>
-        <a href="./maura-gancitano/">Gancitano</a>
+        <a href="./andrea-colamedici/en.html">Colamedici</a>
+        <a href="./maura-gancitano/en.html">Gancitano</a>
         <a href="./edizioni-en.html">Publishing</a>
         <a href="./librerie-en.html">Bookstores</a>
-        <a href="./formazione-en.html">Training</a>
+        <a href="./formazione-en.html">Education</a>
         <a href="./eventi-festival-en.html">Events</a>
-        <a href="./contatti/">Contact</a>
+        <a href="./press-en.html">Press</a><a href="./contatti/en.html">Contact</a>
         <div class="mobile-menu-lang"><a href="./ricerca.html">IT</a><a href="./ricerca-en.html" class="active">EN</a></div>
     </div>
 
-    <main>
+    <main id="contenuto">
         <section class="hero">
             <div class="hero-depth-layer layer-1"></div>
             <div class="hero-depth-layer layer-2"></div>
@@ -405,7 +431,7 @@
                 <div class="ipnocrazia-visual reveal">
                     <div class="ipnocrazia-frame">
                         <div class="ipnocrazia-book">
-                            <img src="./assets/images/ipnocrazia-cover.jpg" alt="Ipnocrazia">
+                            <img src="./assets/images/ipnocrazia-en.jpg" alt="Ipnocrazia" width="1604" height="2560" loading="lazy" decoding="async">
                         </div>
                         <span class="ipnocrazia-glitch-text">讯</span>
                     </div>

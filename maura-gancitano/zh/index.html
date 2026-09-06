@@ -81,6 +81,10 @@
 }
 </script>
 <style>
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root { --salvia: #6b8f6b; --salvia-scuro: #4a6b4a; --salvia-chiaro: #8aab8a; --crema: #f8f6f2; --nero: #1a1a1a; --grigio: #6b6b6b; }
 html { scroll-behavior: smooth; }
@@ -164,9 +168,30 @@ body { background: var(--crema); font-family: 'Noto Sans SC', 'Inter', sans-seri
     .footer-top { flex-direction: column; }
     .footer-bottom { flex-direction: column; text-align: center; }
 }
+
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 <nav class="nav" aria-label="&#20027;&#23548;&#33322;">
     <a href="#" class="nav-logo">Maura Gancitano</a>
     <div class="nav-right">
@@ -182,7 +207,7 @@ body { background: var(--crema); font-family: 'Noto Sans SC', 'Inter', sans-seri
         </div>
     </div>
 </nav>
-<main>
+<main id="contenuto">
 <div class="mosaic">
     <a href="#" class="tile tile-hero ph-portrait" aria-label="Maura Gancitano &#32918;&#20687;">
         <div class="overlay">

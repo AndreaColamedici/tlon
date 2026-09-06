@@ -44,6 +44,10 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
   html { scroll-behavior: smooth; }
   body {
     background: var(--paper);
@@ -817,8 +821,20 @@
     .room .descrizione { font-size: 16px; }
     .timeline .row { grid-template-columns: 1fr; gap: 6px; }
   }
-</style>
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+</style></style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</noscript>
 </head>
 <body>
 

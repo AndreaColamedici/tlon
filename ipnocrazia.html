@@ -43,6 +43,10 @@
             padding: 0;
             box-sizing: border-box;
         }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 
         html {
             font-size: 16px;
@@ -91,6 +95,10 @@
             width: auto;
             filter: invert(1);
         }
+        .lang-switch { display: flex; gap: 0.6rem; font-size: 0.75rem; letter-spacing: 0.08em; align-items: center; }
+        .lang-switch a { color: var(--grigio, #6b6b6b); text-decoration: none; }
+        .lang-switch a.active { color: inherit; font-weight: 600; }
+        @media (max-width: 900px) { .lang-switch { display: none; } }
 
         nav {
             display: flex;
@@ -1227,10 +1235,32 @@
                 gap: 2rem;
             }
         }
-    </style>
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+</style></style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</noscript>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://www.tlon.it/ipnocrazia.html", "url": "https://www.tlon.it/ipnocrazia.html", "name": "Ipnocrazia — Tlon", "inLanguage": "it", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "Trump, Musk e la nuova architettura della realtà"}</script>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 
     <header>
         <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
@@ -1242,8 +1272,12 @@
     <a href="./librerie.html">Librerie</a>
     <a href="./formazione.html">Formazione</a>
     <a href="./eventi-festival.html">Eventi</a>
-    <a href="./contatti/">Contatti</a>
+    <a href="./press.html">Press</a><a href="./contatti/">Contatti</a>
 </nav>
+        <div class="lang-switch">
+            <a href="./ipnocrazia.html" class="active">IT</a>
+            <a href="./ipnocrazia-en.html">EN</a>
+        </div>
         <button class="hamburger" id="hamburger" aria-label="Menu">
             <span></span>
             <span></span>
@@ -1259,10 +1293,10 @@
         <a href="./librerie.html">Librerie</a>
         <a href="./formazione.html">Formazione</a>
         <a href="./eventi-festival.html">Eventi</a>
-        <a href="./contatti/">Contatti</a>
+        <a href="./press.html">Press</a><a href="./contatti/">Contatti</a>
     </div>
 
-    <main>
+    <main id="contenuto">
         <!-- HERO -->
         <section class="hero">
             <div class="hero-bg"></div>
@@ -1365,19 +1399,19 @@
             </div>
             <div class="copertine-grid">
                 <div class="copertina reveal">
-                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia - Edizione italiana">
+                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia - Edizione italiana" width="710" height="1000" loading="lazy" decoding="async">
                     <span class="copertina-lang">Italiano</span>
                 </div>
                 <div class="copertina reveal">
-                    <img src="./assets/images/ipnocrazia-en.jpg" alt="Hypnocracy - English edition">
+                    <img src="./assets/images/ipnocrazia-en.jpg" alt="Hypnocracy - English edition" width="1604" height="2560" loading="lazy" decoding="async">
                     <span class="copertina-lang">English</span>
                 </div>
                 <div class="copertina reveal">
-                    <img src="./assets/images/ipnocrazia-es.jpg" alt="Hipnocracia - Edición española">
+                    <img src="./assets/images/ipnocrazia-es.jpg" alt="Hipnocracia - Edición española" width="674" height="1000" loading="lazy" decoding="async">
                     <span class="copertina-lang">Español</span>
                 </div>
                 <div class="copertina reveal">
-                    <img src="./assets/images/ipnocrazia-fr.jpg" alt="Hypnocratie - Édition française">
+                    <img src="./assets/images/ipnocrazia-fr.jpg" alt="Hypnocratie - Édition française" width="536" height="761" loading="lazy" decoding="async">
                     <span class="copertina-lang">Français</span>
                 </div>
             </div>
@@ -1584,7 +1618,7 @@
         <section class="libro">
             <div class="libro-grid">
                 <div class="libro-cover reveal">
-                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia - Copertina">
+                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia - Copertina" width="710" height="1000" loading="lazy" decoding="async">
                 </div>
                 <div class="libro-content reveal">
                     <span class="libro-label">Il libro</span>

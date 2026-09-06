@@ -32,6 +32,10 @@
     <style>
         :root { --bianco: #ffffff; --nero: #0a0a0a; --ottanio: #2a6b6b; --grigio: #6b6b6b; --grigio-chiaro: #e5e5e5; --crema: #f9f7f4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
         html { font-size: 16px; scroll-behavior: smooth; }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bianco); color: var(--nero); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         ::selection { background: var(--nero); color: var(--bianco); }
@@ -42,8 +46,8 @@
         .logo { display: flex; align-items: center; }
         .logo img { height: 28px; width: auto; transition: filter 0.3s ease; }
         header.menu-open .logo img { filter: invert(1); }
-        nav { display: flex; gap: 3rem; }
-        nav a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--nero); opacity: 0.5; transition: opacity 0.3s ease; }
+        nav { flex-wrap: nowrap; display: flex; gap: clamp(0.9rem, 1.9vw, 2.6rem); }
+        nav a { white-space: nowrap; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--nero); opacity: 0.5; transition: opacity 0.3s ease; }
         nav a:hover { opacity: 1; }
 
         .lang-switch { display: flex; gap: 0.5rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid var(--grigio-chiaro); }
@@ -179,7 +183,7 @@
         .social-link:hover span { color: var(--bianco); }
 
         footer { padding: 4rem 3rem; background: var(--bianco); border-top: 1px solid var(--grigio-chiaro); }
-        .footer-nav { display: flex; justify-content: space-between; align-items: center; }
+        .footer-nav { flex-wrap: nowrap; display: flex; justify-content: space-between; align-items: center; }
         .footer-back { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grigio); display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s ease; }
         .footer-back:hover { color: var(--nero); }
         .footer-back::before { content: '←'; }
@@ -199,7 +203,7 @@
         }
         @media (max-width: 900px) {
             header { padding: 1rem 1.5rem; }
-            nav { display: none; }
+            nav { flex-wrap: nowrap; display: none; }
             .hamburger { display: flex; }
             .mobile-menu { display: flex; }
             .lang-switch { display: none; }
@@ -215,15 +219,37 @@
             .social-container { gap: 1.5rem; }
             .social-link { padding: 1.5rem 2rem; }
             footer { padding: 2rem 1.5rem; }
-            .footer-nav { flex-direction: column; gap: 2rem; }
+            .footer-nav { flex-wrap: nowrap; flex-direction: column; gap: 2rem; }
         }
         @media (max-width: 600px) {
             .contatti-grid-secondary .contatto-card:first-child { border-right: 1px solid var(--grigio-chiaro); }
         }
-    </style>
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+</style></style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</noscript>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ContactPage", "@id": "https://www.tlon.it/contatti/", "url": "https://www.tlon.it/contatti/", "name": "Contatti — Tlon", "inLanguage": "it", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "Tlon è un organismo con molte anime. Ogni anima ha il proprio indirizzo: scegli quello giusto, ti risponderemo con cura."}</script>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 
     <header>
         <a href="../" class="logo"><img src="../assets/images/tlon-logo.png" alt="Tlon"></a>
@@ -235,7 +261,7 @@
             <a href="../librerie.html">Librerie</a>
             <a href="../formazione.html">Formazione</a>
             <a href="../eventi-festival.html">Eventi</a>
-            <a href="../contatti/">Contatti</a>
+            <a href="../press.html">Press</a><a href="../contatti/">Contatti</a>
         </nav>
         <div class="lang-switch">
             <a href="./index.html" class="active">IT</a>
@@ -252,11 +278,11 @@
         <a href="../librerie.html">Librerie</a>
         <a href="../formazione.html">Formazione</a>
         <a href="../eventi-festival.html">Eventi</a>
-        <a href="../contatti/">Contatti</a>
+        <a href="../press.html">Press</a><a href="../contatti/">Contatti</a>
         <div class="mobile-menu-lang"><a href="./index.html" class="active">IT</a><a href="./en.html">EN</a></div>
     </div>
 
-    <main>
+    <main id="contenuto">
         <section class="hero">
             <div class="hero-bg">
                 <div class="hero-line horizontal"></div>

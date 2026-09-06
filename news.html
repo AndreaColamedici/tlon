@@ -1,268 +1,197 @@
-<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>News — Tlon</title>
-    <meta name="description" content="Tutte le novità relative a Tlon, i progetti di Andrea Colamedici e Maura Gancitano.">
-    <link rel="canonical" href="https://www.tlon.it/news.html">
-    <link rel="alternate" hreflang="it" href="https://www.tlon.it/news.html">
-    <link rel="alternate" hreflang="x-default" href="https://www.tlon.it/news.html">
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>News — Eventi, festival e lezioni | Tlon</title>
+<meta name="description" content="Il calendario di Tlon: festival, conferenze, lezioni, mostre e uscite. 34 appuntamenti tra Italia ed estero, con gli eventi conclusi archiviati e consultabili.">
+<link rel="canonical" href="https://www.tlon.it/news.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tlon">
+<meta property="og:title" content="News — Eventi, festival e lezioni | Tlon">
+<meta property="og:description" content="Il calendario di Tlon: festival, conferenze, lezioni, mostre e uscite. 34 appuntamenti tra Italia ed estero, con gli eventi conclusi archiviati e consultabili.">
+<meta property="og:url" content="https://www.tlon.it/news.html">
+<meta property="og:image" content="https://www.tlon.it/assets/images/og-tlon.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="News — Eventi, festival e lezioni | Tlon">
+<meta name="twitter:description" content="Il calendario di Tlon: festival, conferenze, lezioni, mostre e uscite. 34 appuntamenti tra Italia ed estero, con gli eventi conclusi archiviati e consultabili.">
+<meta name="twitter:image" content="https://www.tlon.it/assets/images/og-tlon.png">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<style>
+:root{--bianco:#ffffff;--nero:#0a0a0a;--ottanio:#2a6b6b;--grigio:#6b6b6b;
+--grigio-chiaro:#e5e5e5;--crema:#f8f6f3}
+*{margin:0;padding:0;box-sizing:border-box}
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Tlon">
-    <meta property="og:locale" content="it_IT">
-    <meta property="og:locale:alternate" content="en_US">
-    <meta property="og:title" content="News — Tlon">
-    <meta property="og:description" content="Tutte le novità relative a Tlon, i progetti di Andrea Colamedici e Maura Gancitano.">
-    <meta property="og:url" content="https://www.tlon.it/news.html">
-    <meta property="og:image" content="https://www.tlon.it/assets/images/og-tlon.png">
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bianco);color:var(--nero);
+-webkit-font-smoothing:antialiased}
+::selection{background:var(--nero);color:var(--bianco)}
+a{color:inherit;text-decoration:none}
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--nero);color:var(--bianco);
+padding:.75rem 1.25rem;z-index:2000}
+.skip-link:focus{left:0}
+:focus-visible{outline:2px solid var(--ottanio);outline-offset:3px}
+header{position:fixed;top:0;left:0;right:0;z-index:1002;padding:1.5rem 3rem;display:flex;
+justify-content:space-between;align-items:center;background:var(--bianco);
+border-bottom:1px solid transparent;transition:border-color .3s ease}
+header.scrolled{border-bottom-color:var(--grigio-chiaro)}
+header.menu-open{background:var(--nero)}
+header.menu-open .logo img{filter:invert(1)}
+.logo img{height:28px;width:auto;display:block}
+nav{display:flex;flex-wrap:nowrap;gap:clamp(.9rem,1.9vw,2.4rem)}
+nav a{font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;color:var(--grigio);
+white-space:nowrap;transition:color .3s ease}
+nav a:hover,nav a.attivo{color:var(--nero)}
+.lang-switch{display:flex;gap:.6rem;font-size:.75rem;letter-spacing:.08em}
+.lang-switch a{color:var(--grigio)}
+.lang-switch a.active{color:var(--nero);font-weight:600}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--nero);transition:all .3s ease}
+header.menu-open .hamburger span{background:var(--bianco)}
+.mobile-menu{position:fixed;inset:0;background:var(--nero);z-index:1001;display:none;
+flex-direction:column;justify-content:center;align-items:center;gap:1.5rem}
+.mobile-menu.active{display:flex}
+.mobile-menu a{color:var(--bianco);font-size:1.4rem;font-family:'Instrument Serif',serif}
+main{padding-top:7rem}
+.hero{padding:4rem 3rem 3rem;max-width:1100px}
+.hero-label{font-size:.8rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;
+color:var(--ottanio);margin-bottom:2rem;display:flex;align-items:center;gap:1rem}
+.hero-label::before{content:'';width:40px;height:1px;background:var(--ottanio);flex:none}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(2.6rem,6.5vw,5rem);font-weight:400;
+line-height:1.05;letter-spacing:-.02em;margin-bottom:2rem}
+h1 em{font-style:italic}
+.hero-desc{font-size:1.1rem;line-height:1.8;color:var(--grigio);max-width:640px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:2rem;
+padding:3rem;border-top:1px solid var(--grigio-chiaro);
+border-bottom:1px solid var(--grigio-chiaro);margin:3rem 0 0}
+.stat-num{font-family:'Instrument Serif',serif;font-size:3rem;line-height:1;color:var(--nero)}
+.stat-label{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--grigio);
+margin-top:.5rem}
+.filtri{display:flex;flex-wrap:wrap;gap:1.2rem;padding:2.5rem 3rem 0}
+.filtro{font:inherit;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+padding:.5rem 1rem;border:1px solid var(--grigio-chiaro);background:transparent;color:var(--grigio);
+border-radius:100px;cursor:pointer;transition:all .25s ease}
+.filtro:hover{border-color:var(--nero);color:var(--nero)}
+.filtro.attivo{background:var(--nero);border-color:var(--nero);color:var(--bianco)}
+.filtri-gruppo{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.filtri-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--grigio);
+margin-right:.5rem}
+.conteggio{padding:1.5rem 3rem 0;font-size:.8rem;color:var(--grigio)}
+.vuoto{padding:2.5rem 3rem;color:var(--grigio);font-size:.95rem}
+.metodo{margin:5rem 3rem 0;padding:3rem;background:var(--crema)}
+.metodo h2{font-family:'Instrument Serif',serif;font-size:1.8rem;font-weight:400;
+margin-bottom:1.2rem}
+.metodo p{font-size:.95rem;line-height:1.9;color:var(--grigio);max-width:70ch;margin-bottom:1rem}
+.metodo p:last-child{margin-bottom:0}
+footer{margin-top:6rem;padding:3rem;border-top:1px solid var(--grigio-chiaro);
+display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;
+font-size:.8rem;color:var(--grigio)}
+footer a:hover{color:var(--nero)}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+@media (max-width:900px){
+ header{padding:1rem 1.5rem}
+ nav,.lang-switch{display:none}
+ header .hamburger{display:flex}
+ .mobile-menu .lang-switch{display:flex}
+ .hero,.filtri,.conteggio,.stats,.vuoto{padding-left:1.5rem;padding-right:1.5rem}
+ .metodo{margin-left:1.5rem;margin-right:1.5rem;padding:2rem}
+ footer{padding:2rem 1.5rem}
+}
+@media (prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+ transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="News — Tlon">
-    <meta name="twitter:description" content="Tutte le novità relative a Tlon, i progetti di Andrea Colamedici e Maura Gancitano.">
-    <meta name="twitter:image" content="https://www.tlon.it/assets/images/og-tlon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/assets/fonts/fonts.css"><style>:root{--bianco:#ffffff;--nero:#0a0a0a;--ottanio:#2a6b6b;--ottanio-scuro:#1a4848;--ottanio-light:#3a8b8b;--grigio:#6b6b6b;--grigio-chiaro:#e5e5e5;--crema:#f8f6f3;--conferenza:#2a6b6b;--festival:#c4763a;--corso:#3a5a8b;--presentazione:#7a4a9b;--media:#9b3a6a;--viaggio:#3a8b5a;--libro:#6a8b3a;}*{margin:0;padding:0;box-sizing:border-box;}html{font-size:16px;scroll-behavior:smooth;}body{font-family:'Inter',-apple-system,sans-serif;background:var(--nero);color:var(--bianco);-webkit-font-smoothing:antialiased;overflow-x:hidden;}::selection{background:var(--ottanio);color:var(--bianco);}a{color:inherit;text-decoration:none;}.cursor{width:20px;height:20px;border:2px solid var(--ottanio);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform 0.15s ease,width 0.3s ease,height 0.3s ease,background 0.2s ease;mix-blend-mode:difference;}.cursor.hover{width:60px;height:60px;background:var(--bianco);border-color:var(--bianco);}header{position:fixed;top:0;left:0;right:0;z-index:1002;padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference;}header.menu-open{background:var(--nero);mix-blend-mode:normal;}.logo img{height:24px;filter:invert(1);}nav{display:flex;gap:3rem;}nav a{font-size:0.7rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;transition:opacity 0.3s ease;}nav a:hover{opacity:1;}.lang-switch{display:flex;gap:0.75rem;align-items:center;margin-left:2rem;padding-left:2rem;border-left:1px solid rgba(255,255,255,0.3);}.lang-switch a{font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;opacity:0.7;transition:opacity 0.3s ease;}.lang-switch a.active{opacity:1;color:var(--ottanio);}.menu-button{width:20px;height:20px;position:relative;display:none;flex-direction:column;justify-content:center;gap:4px;cursor:pointer;margin-left:1.5rem;padding-left:1.5rem;border-left:1px solid rgba(255,255,255,0.3);}.menu-button span{width:100%;height:2px;background:var(--bianco);transition:all 0.3s ease;}.menu-open .menu-button span:nth-child(1){transform:rotate(45deg) translate(10px,10px);}.menu-open .menu-button span:nth-child(2){opacity:0;}.menu-open .menu-button span:nth-child(3){transform:rotate(-45deg) translate(7px,-7px);}@media(max-width:1024px){.menu-button{display:flex;}nav{display:none;position:absolute;top:80px;left:3rem;right:3rem;flex-direction:column;gap:1rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.1);background:var(--nero);z-index:1001;}header.menu-open nav{display:flex;}}.main-container{min-height:100vh;position:relative;background:var(--nero);}.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:80px 3rem 3rem;text-align:center;background:linear-gradient(135deg,rgba(42,107,107,0.05) 0%,rgba(58,139,90,0.05) 100%);border-bottom:1px solid rgba(255,255,255,0.05);}.hero h1{font-family:'Instrument Serif',serif;font-size:4rem;font-weight:300;line-height:1.2;margin-bottom:1.5rem;letter-spacing:-0.02em;max-width:1000px;}@media(max-width:768px){.hero h1{font-size:2rem;}}.hero p{font-size:1.125rem;color:var(--grigio-chiaro);max-width:600px;margin:0 auto;line-height:1.6;}.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2rem;padding:3rem;max-width:1400px;margin:0 auto;}@media(max-width:768px){.news-grid{grid-template-columns:1fr;padding:1.5rem;}}.news-card{background:var(--crema);border:1px solid rgba(0,0,0,0.06);border-radius:8px;padding:1.5rem;transition:all 0.3s ease;position:relative;overflow:hidden;display:flex;flex-direction:column;}.news-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--conferenza);opacity:0;transition:opacity 0.3s ease;}.news-card[data-type="conferenza"]::before{background:var(--conferenza);opacity:1;}.news-card[data-type="festival"]::before{background:var(--festival);opacity:1;}.news-card[data-type="corso"]::before{background:var(--corso);opacity:1;}.news-card[data-type="presentazione"]::before{background:var(--presentazione);opacity:1;}.news-card[data-type="media"]::before{background:var(--media);opacity:1;}.news-card[data-type="viaggio"]::before{background:var(--viaggio);opacity:1;}.news-card[data-type="libro"]::before{background:var(--libro);opacity:1;}.news-card:hover{background:#ffffff;border-color:rgba(0,0,0,0.12);transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,0.25);}.news-card:hover::before{opacity:1;}.news-card-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;}.news-card-category{font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:0.35rem 0.65rem;border-radius:3px;background:rgba(0,0,0,0.06);color:#555;}.news-card-category.conferenza{background:rgba(42,107,107,0.15);color:var(--conferenza);}.news-card-category.festival{background:rgba(196,118,58,0.18);color:#a35c24;}.news-card-category.corso{background:rgba(58,90,139,0.15);color:var(--corso);}.news-card-category.presentazione{background:rgba(122,74,155,0.15);color:var(--presentazione);}.news-card-category.media{background:rgba(155,58,106,0.15);color:var(--media);}.news-card-category.viaggio{background:rgba(58,139,90,0.18);color:#2c6d44;}.news-card-category.libro{background:rgba(106,139,58,0.2);color:#4e6b2b;}.news-card-date{font-size:0.75rem;color:#777;}.news-card-title{font-family:'Instrument Serif',serif;font-size:1.25rem;font-weight:400;line-height:1.3;margin-bottom:0.75rem;margin-top:0.75rem;color:var(--nero);}.news-card-excerpt{font-size:0.9rem;color:#4a4a4a;line-height:1.5;margin-bottom:1rem;flex-grow:1;}.news-card-link{color:var(--ottanio);font-size:0.9rem;font-weight:500;display:inline-flex;align-items:center;gap:0.5rem;transition:gap 0.3s ease;}.news-card-link:hover{gap:0.75rem;color:var(--ottanio-scuro);}.news-card-link::after{content:'→';}.news-card-excerpt.hidden{display:none;}.news-card.expanded .news-card-excerpt{display:block;}.filters{display:flex;flex-wrap:wrap;gap:0.75rem;padding:0 3rem;margin-bottom:2rem;max-width:1400px;margin-left:auto;margin-right:auto;}@media(max-width:768px){.filters{padding:0 1.5rem;}}.filter-button{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--bianco);padding:0.5rem 1rem;border-radius:20px;font-size:0.85rem;cursor:pointer;transition:all 0.3s ease;font-weight:500;}.filter-button:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);}.filter-button.active{background:var(--ottanio);border-color:var(--ottanio);color:var(--bianco);}.footer{background:var(--nero);border-top:1px solid rgba(255,255,255,0.1);padding:3rem;text-align:center;color:var(--grigio-chiaro);margin-top:3rem;}.footer p{margin:0.5rem 0;font-size:0.9rem;}.footer a{color:var(--ottanio-light);text-decoration:underline;transition:color 0.3s ease;}.footer a:hover{color:var(--bianco);}.hero-stats{display:flex;gap:2rem;justify-content:center;margin-top:2rem;opacity:0;}.hero-stats.visible{animation:fadeIn 0.6s ease forwards;}.hero-stats-item{display:flex;flex-direction:column;align-items:center;}.hero-stats-number{font-family:'Instrument Serif',serif;font-size:2rem;font-weight:300;color:var(--ottanio-light);}.hero-stats-label{font-size:0.8rem;color:var(--grigio-chiaro);margin-top:0.25rem;text-transform:uppercase;letter-spacing:0.1em;}@media(max-width:768px){.hero-stats{flex-direction:column;gap:1.5rem;}}@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.news-card.past-event{filter:grayscale(0.35);}
-.news-card.past-event .news-card-title,.news-card.past-event .news-card-excerpt,.news-card.past-event .news-card-date{opacity:0.72;}
-.news-card.past-event:hover{filter:grayscale(0);}
-.news-card.past-event:hover .news-card-title,.news-card.past-event:hover .news-card-excerpt,.news-card.past-event:hover .news-card-date{opacity:1;}
-.news-card.past-event .news-card-category::after{content:' · passato';font-weight:400;text-transform:lowercase;letter-spacing:0.05em;}
-.section-divider{grid-column:1/-1;padding:1.5rem 0 0.5rem;border-bottom:1px solid rgba(255,255,255,0.12);margin-bottom:0.5rem;}
-.section-divider h2{font-family:'Instrument Serif',serif;font-size:1.5rem;font-weight:300;color:var(--grigio-chiaro);letter-spacing:0.02em;}
-</style></head><body><header class="not-menu-open"><div class="logo"><img src="/logo-tlon.svg" alt="Tlon"></div><nav><a href="/it/chi-siamo">Chi siamo</a><a href="/it/libri">Libri</a><a href="/it/progetti">Progetti</a><a href="/it/contatti">Contatti</a></nav><div class="lang-switch"><a href="/en/news" class="">en</a><a href="/it/news" class="active">it</a></div><button class="menu-button"><span></span><span></span><span></span></button></header><div class="main-container"><section class="hero"><h1>News</h1><p>Tutte le novità relative a Tlon, i progetti di Andrea Colamedici e Maura Gancitano.</p><div class="hero-stats"><div class="hero-stats-item"><div class="hero-stats-number" data-count="35">35</div><div class="hero-stats-label">Eventi</div></div><div class="hero-stats-item"><div class="hero-stats-number" data-count="2">2</div><div class="hero-stats-label">Media</div></div><div class="hero-stats-item"><div class="hero-stats-number" data-count="2">2</div><div class="hero-stats-label">Libri</div></div></div></section><div class="filters"><button class="filter-button active" data-filter="all">Tutti</button><button class="filter-button" data-filter="conferenza">Conferenza</button><button class="filter-button" data-filter="festival">Festival</button><button class="filter-button" data-filter="corso">Corso</button><button class="filter-button" data-filter="presentazione">Presentazione</button><button class="filter-button" data-filter="media">Media</button><button class="filter-button" data-filter="viaggio">Viaggio</button><button class="filter-button" data-filter="libro">Libro</button></div><div class="news-grid">
-<div class="section-divider"><h2>Prossimi</h2></div>
+.evento{display:grid;grid-template-columns:190px 1fr;gap:2rem;align-items:start;
+padding:1.8rem 0;border-top:1px solid var(--grigio-chiaro)}
+.evento-data{font-size:.85rem;color:var(--grigio);padding-top:.25rem}
+.evento-cat{display:inline-block;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+color:var(--ottanio);border:1px solid var(--grigio-chiaro);border-radius:100px;
+padding:.2rem .65rem;margin-bottom:.7rem}
+.evento-titolo{font-family:'Instrument Serif',serif;font-size:1.5rem;line-height:1.3;
+margin-bottom:.5rem}
+.evento-testo{font-size:.95rem;line-height:1.75;color:var(--grigio);max-width:64ch}
+.evento-link{display:inline-block;margin-top:.8rem;font-size:.8rem;letter-spacing:.06em;
+text-transform:uppercase;color:var(--nero);border-bottom:1px solid var(--grigio-chiaro);
+padding-bottom:2px;transition:border-color .3s ease}
+.evento-link:hover{border-color:var(--nero)}
+.evento[hidden]{display:none}
+.gruppo-titolo{font-family:'Instrument Serif',serif;font-size:2.2rem;font-weight:400;
+padding:3.5rem 3rem 0}
+.gruppo-nota{padding:.6rem 3rem 0;font-size:.85rem;color:var(--grigio)}
+ul.eventi{list-style:none;padding:0 3rem;margin:0}
+@media (max-width:900px){
+ .evento{grid-template-columns:1fr;gap:.4rem}
+ ul.eventi{padding-left:1.5rem;padding-right:1.5rem}
+ .gruppo-titolo,.gruppo-nota{padding-left:1.5rem;padding-right:1.5rem}
+}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "CollectionPage", "@id": "https://www.tlon.it/news.html", "url": "https://www.tlon.it/news.html", "name": "News — Tlon", "inLanguage": "it", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "mainEntity": {"@type": "ItemList", "numberOfItems": 34, "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "Event", "name": "The Assault on Illusion · Santa Mònica", "description": "Partecipazione alla mostra collettiva L'assalt de la il·lusió al Centre d'Arts Santa Mònica di Barcellona.", "startDate": "2026-04-01", "endDate": "2026-09-30", "url": "https://www.santamonica.cat/en/exposicions-i-activitats/exposicions/2026/lassalt-de-la-illusio", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 2, "item": {"@type": "Event", "name": "Attraversamenti · Festival del Pensare Contemporaneo", "description": "La quarta edizione del festival diretto filosoficamente da Andrea Colamedici, a Piacenza.", "startDate": "2026-09-24", "endDate": "2026-09-27", "url": "https://www.pensarecontemporaneo.it/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 3, "item": {"@type": "Event", "name": "Ipnocrazia · Umbria Green Festival", "description": "Andrea Colamedici e Maura Gancitano all'Umbria Green Festival con la performance Ipnocrazia.", "startDate": "2026-08-01", "endDate": "2026-08-31", "url": "https://www.umbriagreenfestival.it/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 4, "item": {"@type": "Event", "name": "European Forum Alpbach · Media & Activism Lab", "description": "Andrea Colamedici allo European Forum Alpbach per il Media & Activism Lab, con Nika Kovač. EFA · D-Hub · ERSTE Foundation.", "startDate": "2026-08-28", "endDate": "2026-08-30", "url": "https://www.alpbach.org/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 5, "item": {"@type": "Event", "name": "Palestina Libera Tutt* · Leverano", "description": "Andrea Colamedici al festival Palestina Libera Tutt* di Leverano.", "startDate": "2026-07-12", "endDate": "2026-07-12", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 6, "item": {"@type": "Event", "name": "Festival Letterario di Gavoi", "description": "Andrea Colamedici a L’Isola delle Storie, il Festival Letterario della Sardegna.", "startDate": "2026-07-02", "endDate": "2026-07-05", "url": "https://www.isoladellestorie.it/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 7, "item": {"@type": "Event", "name": "Universidad Pontificia de Salamanca", "description": "Andrea Colamedici alla Universidad Pontificia de Salamanca.", "startDate": "2026-07-01", "endDate": "2026-07-01", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 8, "item": {"@type": "Event", "name": "WMF – We Make Future · Bologna", "description": "Andrea Colamedici al più grande festival europeo su IA, tech e innovazione digitale. BolognaFiere.", "startDate": "2026-06-26", "endDate": "2026-06-26", "url": "https://www.wemakefuture.it/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 9, "item": {"@type": "Event", "name": "La società della performance · Chongqing Publishing House", "description": "Presentazione dell’edizione cinese de La società della performance a Pechino, con Chongqing Publishing House.", "startDate": "2026-06-26", "endDate": "2026-06-26", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 10, "item": {"@type": "Event", "name": "2026 Fangtang Forum · Tsinghua University", "description": "Andrea Colamedici membro della giuria al 2026 Fangtang Forum della Tsinghua University di Pechino, con il Fangtang Institute.", "startDate": "2026-06-22", "endDate": "2026-06-23", "url": "https://www.tsinghua.edu.cn/en/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 11, "item": {"@type": "Event", "name": "Taobuk · Taormina", "description": "Maura Gancitano al Taormina International Book Festival.", "startDate": "2026-06-18", "endDate": "2026-06-22", "url": "https://www.taobuk.it/en/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 12, "item": {"@type": "Event", "name": "∀ISION_E · Politecnico di Torino", "description": "Andrea Colamedici alla conferenza ∀ISION_E del Politecnico di Torino.", "startDate": "2026-06-05", "endDate": "2026-06-05", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 13, "item": {"@type": "Event", "name": "Confindustria Romania · Bucarest", "description": "Andrea Colamedici ospite di Confindustria Romania a Bucarest.", "startDate": "2026-05-28", "endDate": "2026-05-28", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 14, "item": {"@type": "Event", "name": "The Peripheral Constellation · Istanbul", "description": "Andrea Colamedici e Maura Gancitano a Istanbul per The Peripheral Constellation.", "startDate": "2026-05-20", "endDate": "2026-05-23", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 15, "item": {"@type": "Event", "name": "Il tempo per l'infanzia · Cremona", "description": "Andrea Colamedici e Maura Gancitano al Festival Il tempo per l'infanzia, Teatro Monteverdi di Cremona.", "startDate": "2026-05-13", "endDate": "2026-05-13", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 16, "item": {"@type": "Event", "name": "Festival Biblico · Conegliano", "description": "Maura Gancitano al Festival Biblico di Conegliano, XXII edizione.", "startDate": "2026-05-07", "endDate": "2026-05-10", "url": "https://www.festivalbiblico.it", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 17, "item": {"@type": "Event", "name": "La società della performance · Cina", "description": "La società della performance esce in traduzione cinese, quarto libro di Andrea Colamedici e Maura Gancitano tradotto in Cina. Strutturato attorno alle Dieci immagini della caccia al bue dello Zen.", "startDate": "2026-01-01", "endDate": "2026-03-31", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 18, "item": {"@type": "Event", "name": "Filosofarti · Gallarate", "description": "Maura Gancitano al festival Filosofarti con la master lesson \"Nella rete. Abitare la complessità senza restarne intrappolati\", Teatro Giuditta Pasta.", "startDate": "2026-03-24", "endDate": "2026-03-24", "url": "https://www.filosofarti.it/edizione2026.php", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 19, "item": {"@type": "Event", "name": "Ipnocrazia · Teatro Carcano", "description": "Jianwei Xun intervistato da Maura Gancitano e Andrea Colamedici. Performance dal vivo al Teatro Carcano di Milano.", "startDate": "2026-03-23", "endDate": "2026-03-23", "url": "https://teatrocarcano.com/eventi/ipnocrazia-tlon-gancitano-colamedici-2526.htm", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 20, "item": {"@type": "Event", "name": "PARIX IA 2026 · Madrid", "description": "Andrea Colamedici alla conferenza su intelligenza artificiale e futuro del pensiero, alla Casa del Lector, Matadero Madrid.", "startDate": "2026-03-18", "endDate": "2026-03-18", "url": "https://parix.es", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 21, "item": {"@type": "Event", "name": "Autoritarismo e ipnocrazia · Oslo", "description": "Andrea Colamedici e Maura Gancitano a Oslo per un panel su fascismo, autoritarismo e resilienza democratica.", "startDate": "2026-03-18", "endDate": "2026-03-18", "url": "https://www.lo-oslo.no", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 22, "item": {"@type": "Event", "name": "Natura Omnia · Verona", "description": "Maura Gancitano a Verona per la rassegna Natura Omnia, ciclo \"De-sidera\", al Teatro alle Stimate.", "startDate": "2026-03-13", "endDate": "2026-03-13", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 23, "item": {"@type": "Event", "name": "VOICES · Potere, percezione e manipolazione", "description": "Andrea Colamedici al Festival Europeo del Giornalismo e della Libertà di Stampa. Panel all'Auditorium Zubin Mehta, Teatro del Maggio Musicale Fiorentino.", "startDate": "2026-03-12", "endDate": "2026-03-12", "url": "https://voicesfestival.eu/conference-event/power-perception-and-manipulation/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 24, "item": {"@type": "Event", "name": "Festival Cambio Gioco · Padova", "description": "Maura Gancitano al Festival Cambio Gioco di Padova.", "startDate": "2026-03-12", "endDate": "2026-03-12", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 25, "item": {"@type": "Event", "name": "Diálogos de Futuro · Mendoza", "description": "Andrea Colamedici con una disertación magistral ai Diálogos de Futuro nella Legislatura de Mendoza e una conferenza alla Universidad Nacional de Cuyo.", "startDate": "2026-03-04", "endDate": "2026-03-05", "url": "https://www.dialogosdefuturo.com/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 26, "item": {"@type": "Event", "name": "The Botany of Wonder · New York", "description": "Andrea Colamedici e Maura Gancitano a New York per The Botany of Wonder, in occasione del lancio di Prompt Thinking.", "startDate": "2026-02-26", "endDate": "2026-02-26", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 27, "item": {"@type": "Event", "name": "Prompt Thinking · Polity Press", "description": "Uscita di Prompt Thinking: A Critique of Generative Reason (Polity Press, collana Theory Redux), firmato Jianwei Xun. Contiene tre conversazioni con ChatGPT, DeepSeek e Claude.", "startDate": "2026-02-20", "endDate": "2026-02-20", "url": "https://www.amazon.com/Prompt-Thinking-Critique-Generative-Reason/dp/1509573887", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 28, "item": {"@type": "Event", "name": "Pensar con Prompts · Rosamerón", "description": "L'edizione in spagnolo di Prompt Thinking, pubblicata da Rosamerón.", "startDate": "2026-02-20", "endDate": "2026-02-20", "url": "https://jianweixun.com/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 29, "item": {"@type": "Event", "name": "Carnevale di Putignano", "description": "Due giornate al Carnevale di Putignano: conferenza, lectio a teatro, Maura nella giuria.", "startDate": "2026-02-14", "endDate": "2026-02-17", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 30, "item": {"@type": "Event", "name": "EuroVoices · Parlamento Europeo a Sanremo", "description": "Partecipazione a EuroVoices, iniziativa del Parlamento Europeo durante il Festival di Sanremo.", "startDate": "2026-02-10", "endDate": "2026-02-10", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 31, "item": {"@type": "Event", "name": "Intervista CNN", "description": "Intervista di Andrea Colamedici alla CNN sull'ipnocrazia e l'intelligenza artificiale.", "startDate": "2026-01-01", "endDate": "2026-01-31", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 32, "item": {"@type": "Event", "name": "Philosophy Summit · AI Festival Bocconi", "description": "Andrea Colamedici al Philosophy Summit nell'ambito dell'AI Festival all'Università Bocconi di Milano.", "startDate": "2026-01-15", "endDate": "2026-01-15", "url": "https://www.aifestival.it/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 33, "item": {"@type": "Event", "name": "Congreso Futuro · Santiago del Cile", "description": "Andrea Colamedici alla II Cumbre de Filosofía del Congreso Futuro, il più grande festival di scienza e futuro dell'America Latina.", "startDate": "2026-01-13", "endDate": "2026-01-13", "url": "https://congresofuturo.cl/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}, {"@type": "ListItem", "position": 34, "item": {"@type": "Event", "name": "IO & AI · MUSE", "description": "Mostra IO & AI al MUSE, Museo delle Scienze di Trento.", "url": "https://www.muse.it/", "organizer": {"@id": "https://www.tlon.it/#organization"}}}]}}</script>
+</head>
+<body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
+<header>
+<a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
+<nav><a href="./il-progetto.html">Il Progetto</a><a href="./andrea-colamedici/">Colamedici</a><a href="./maura-gancitano/">Gancitano</a><a href="./edizioni.html">Edizioni</a><a href="./librerie.html">Librerie</a><a href="./formazione.html">Formazione</a><a href="./eventi-festival.html">Eventi</a><a href="./press.html">Press</a><a href="./contatti/">Contatti</a></nav>
+<div class="lang-switch"><a href="./news.html" class="active">IT</a></div>
+<div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="Apri il menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></div>
+</header>
+<div class="mobile-menu" id="mobileMenu"><a href="./il-progetto.html">Il Progetto</a><a href="./andrea-colamedici/">Colamedici</a><a href="./maura-gancitano/">Gancitano</a><a href="./edizioni.html">Edizioni</a><a href="./librerie.html">Librerie</a><a href="./formazione.html">Formazione</a><a href="./eventi-festival.html">Eventi</a><a href="./press.html">Press</a><a href="./contatti/">Contatti</a><div class="lang-switch"><a href="./news.html" class="active">IT</a></div></div>
+<main id="contenuto">
+<section class="hero">
+<p class="hero-label">Calendario</p>
+<h1>Dove <em>siamo stati</em> e dove <em>saremo</em></h1>
+<p class="hero-desc">Festival, conferenze, lezioni, mostre e presentazioni in Italia e all&#x27;estero. Gli eventi conclusi restano consultabili: questa pagina è anche un archivio.</p>
+</section>
+<section class="stats"><div class="stat"><div class="stat-num">34</div><div class="stat-label">appuntamenti</div></div><div class="stat"><div class="stat-num">3</div><div class="stat-label">in programma</div></div><div class="stat"><div class="stat-num">7</div><div class="stat-label">tipi di evento</div></div></section>
+<div class="filtri"><div class="filtri-gruppo"><span class="filtri-label">Tipo</span><button class="filtro attivo" data-gruppo="cat" data-val="tutte">Tutti</button><button class="filtro" data-gruppo="cat" data-val="Conferenza">Conferenza</button><button class="filtro" data-gruppo="cat" data-val="Festival">Festival</button><button class="filtro" data-gruppo="cat" data-val="Lab">Lab</button><button class="filtro" data-gruppo="cat" data-val="Libro">Libro</button><button class="filtro" data-gruppo="cat" data-val="Media">Media</button><button class="filtro" data-gruppo="cat" data-val="Mostra">Mostra</button><button class="filtro" data-gruppo="cat" data-val="Presentazione">Presentazione</button></div></div><h2 class="gruppo-titolo">In programma</h2><ul class="eventi" id="gruppo-futuri"><li class="evento" data-cat="Festival" data-fine="2026-09-27"><div class="evento-data">24–27 settembre 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">Attraversamenti · Festival del Pensare Contemporaneo</h3><p class="evento-testo">La quarta edizione del festival diretto filosoficamente da Andrea Colamedici, a Piacenza.</p><a class="evento-link" href="https://www.pensarecontemporaneo.it/" target="_blank" rel="noopener">Pensare Contemporaneo</a></div></li><li class="evento" data-cat="Festival" data-fine="2026-09-30"><div class="evento-data">Aprile – Settembre 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">The Assault on Illusion · Santa Mònica</h3><p class="evento-testo">Partecipazione alla mostra collettiva L&#x27;assalt de la il·lusió al Centre d&#x27;Arts Santa Mònica di Barcellona.</p><a class="evento-link" href="https://www.santamonica.cat/en/exposicions-i-activitats/exposicions/2026/lassalt-de-la-illusio" target="_blank" rel="noopener">Santa Mònica</a></div></li><li class="evento" data-cat="Mostra"><div class="evento-data">Autunno 2026</div><div><span class="evento-cat">Mostra</span><h3 class="evento-titolo">IO &amp; AI · MUSE</h3><p class="evento-testo">Mostra IO &amp; AI al MUSE, Museo delle Scienze di Trento.</p><a class="evento-link" href="https://www.muse.it/" target="_blank" rel="noopener">MUSE Trento</a></div></li></ul><p class="vuoto" id="vuoto-futuri">Nessun evento in programma con questo filtro.</p><h2 class="gruppo-titolo">Passati</h2><ul class="eventi" id="gruppo-passati"><li class="evento" data-cat="Festival" data-fine="2026-08-31"><div class="evento-data">Agosto 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">Ipnocrazia · Umbria Green Festival</h3><p class="evento-testo">Andrea Colamedici e Maura Gancitano all&#x27;Umbria Green Festival con la performance Ipnocrazia.</p><a class="evento-link" href="https://www.umbriagreenfestival.it/" target="_blank" rel="noopener">Umbria Green Festival</a></div></li><li class="evento" data-cat="Lab" data-fine="2026-08-30"><div class="evento-data">28–30 agosto 2026</div><div><span class="evento-cat">Lab</span><h3 class="evento-titolo">European Forum Alpbach · Media &amp; Activism Lab</h3><p class="evento-testo">Andrea Colamedici allo European Forum Alpbach per il Media &amp; Activism Lab, con Nika Kovač. EFA · D-Hub · ERSTE Foundation.</p><a class="evento-link" href="https://www.alpbach.org/" target="_blank" rel="noopener">European Forum Alpbach</a></div></li><li class="evento" data-cat="Festival" data-fine="2026-07-12"><div class="evento-data">12 luglio 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">Palestina Libera Tutt* · Leverano</h3><p class="evento-testo">Andrea Colamedici al festival Palestina Libera Tutt* di Leverano.</p></div></li><li class="evento" data-cat="Festival" data-fine="2026-07-05"><div class="evento-data">2–5 luglio 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">Festival Letterario di Gavoi</h3><p class="evento-testo">Andrea Colamedici a L’Isola delle Storie, il Festival Letterario della Sardegna.</p><a class="evento-link" href="https://www.isoladellestorie.it/" target="_blank" rel="noopener">L’Isola delle Storie</a></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-07-01"><div class="evento-data">1 luglio 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">Universidad Pontificia de Salamanca</h3><p class="evento-testo">Andrea Colamedici alla Universidad Pontificia de Salamanca.</p></div></li><li class="evento" data-cat="Festival" data-fine="2026-06-26"><div class="evento-data">26 giugno 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">WMF – We Make Future · Bologna</h3><p class="evento-testo">Andrea Colamedici al più grande festival europeo su IA, tech e innovazione digitale. BolognaFiere.</p><a class="evento-link" href="https://www.wemakefuture.it/" target="_blank" rel="noopener">WMF Festival</a></div></li><li class="evento" data-cat="Presentazione" data-fine="2026-06-26"><div class="evento-data">26 giugno 2026</div><div><span class="evento-cat">Presentazione</span><h3 class="evento-titolo">La società della performance · Chongqing Publishing House</h3><p class="evento-testo">Presentazione dell’edizione cinese de La società della performance a Pechino, con Chongqing Publishing House.</p></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-06-23"><div class="evento-data">22–23 giugno 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">2026 Fangtang Forum · Tsinghua University</h3><p class="evento-testo">Andrea Colamedici membro della giuria al 2026 Fangtang Forum della Tsinghua University di Pechino, con il Fangtang Institute.</p><a class="evento-link" href="https://www.tsinghua.edu.cn/en/" target="_blank" rel="noopener">Tsinghua University</a></div></li><li class="evento" data-cat="Festival" data-fine="2026-06-22"><div class="evento-data">18–22 giugno 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">Taobuk · Taormina</h3><p class="evento-testo">Maura Gancitano al Taormina International Book Festival.</p><a class="evento-link" href="https://www.taobuk.it/en/" target="_blank" rel="noopener">Taobuk</a></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-06-05"><div class="evento-data">5 giugno 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">∀ISION_E · Politecnico di Torino</h3><p class="evento-testo">Andrea Colamedici alla conferenza ∀ISION_E del Politecnico di Torino.</p></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-05-28"><div class="evento-data">28 maggio 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">Confindustria Romania · Bucarest</h3><p class="evento-testo">Andrea Colamedici ospite di Confindustria Romania a Bucarest.</p></div></li><li class="evento" data-cat="Festival" data-fine="2026-05-23"><div class="evento-data">20–23 maggio 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">The Peripheral Constellation · Istanbul</h3><p class="evento-testo">Andrea Colamedici e Maura Gancitano a Istanbul per The Peripheral Constellation.</p></div></li><li class="evento" data-cat="Festival" data-fine="2026-05-13"><div class="evento-data">13 maggio 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">Il tempo per l&#x27;infanzia · Cremona</h3><p class="evento-testo">Andrea Colamedici e Maura Gancitano al Festival Il tempo per l&#x27;infanzia, Teatro Monteverdi di Cremona.</p></div></li><li class="evento" data-cat="Festival" data-fine="2026-05-10"><div class="evento-data">7–10 maggio 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">Festival Biblico · Conegliano</h3><p class="evento-testo">Maura Gancitano al Festival Biblico di Conegliano, XXII edizione.</p><a class="evento-link" href="https://www.festivalbiblico.it" target="_blank" rel="noopener">Festival Biblico</a></div></li><li class="evento" data-cat="Libro" data-fine="2026-03-31"><div class="evento-data">Q1 2026</div><div><span class="evento-cat">Libro</span><h3 class="evento-titolo">La società della performance · Cina</h3><p class="evento-testo">La società della performance esce in traduzione cinese, quarto libro di Andrea Colamedici e Maura Gancitano tradotto in Cina. Strutturato attorno alle Dieci immagini della caccia al bue dello Zen.</p></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-03-24"><div class="evento-data">24 marzo 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">Filosofarti · Gallarate</h3><p class="evento-testo">Maura Gancitano al festival Filosofarti con la master lesson &quot;Nella rete. Abitare la complessità senza restarne intrappolati&quot;, Teatro Giuditta Pasta.</p><a class="evento-link" href="https://www.filosofarti.it/edizione2026.php" target="_blank" rel="noopener">Filosofarti 2026</a></div></li><li class="evento" data-cat="Presentazione" data-fine="2026-03-23"><div class="evento-data">23 marzo 2026</div><div><span class="evento-cat">Presentazione</span><h3 class="evento-titolo">Ipnocrazia · Teatro Carcano</h3><p class="evento-testo">Jianwei Xun intervistato da Maura Gancitano e Andrea Colamedici. Performance dal vivo al Teatro Carcano di Milano.</p><a class="evento-link" href="https://teatrocarcano.com/eventi/ipnocrazia-tlon-gancitano-colamedici-2526.htm" target="_blank" rel="noopener">Teatro Carcano</a></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-03-18"><div class="evento-data">18 marzo 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">PARIX IA 2026 · Madrid</h3><p class="evento-testo">Andrea Colamedici alla conferenza su intelligenza artificiale e futuro del pensiero, alla Casa del Lector, Matadero Madrid.</p><a class="evento-link" href="https://parix.es" target="_blank" rel="noopener">PARIX IA</a></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-03-18"><div class="evento-data">18 marzo 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">Autoritarismo e ipnocrazia · Oslo</h3><p class="evento-testo">Andrea Colamedici e Maura Gancitano a Oslo per un panel su fascismo, autoritarismo e resilienza democratica.</p><a class="evento-link" href="https://www.lo-oslo.no" target="_blank" rel="noopener">LO i Oslo</a></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-03-13"><div class="evento-data">13 marzo 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">Natura Omnia · Verona</h3><p class="evento-testo">Maura Gancitano a Verona per la rassegna Natura Omnia, ciclo &quot;De-sidera&quot;, al Teatro alle Stimate.</p></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-03-12"><div class="evento-data">12 marzo 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">VOICES · Potere, percezione e manipolazione</h3><p class="evento-testo">Andrea Colamedici al Festival Europeo del Giornalismo e della Libertà di Stampa. Panel all&#x27;Auditorium Zubin Mehta, Teatro del Maggio Musicale Fiorentino.</p><a class="evento-link" href="https://voicesfestival.eu/conference-event/power-perception-and-manipulation/" target="_blank" rel="noopener">VOICES Festival</a></div></li><li class="evento" data-cat="Festival" data-fine="2026-03-12"><div class="evento-data">12 marzo 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">Festival Cambio Gioco · Padova</h3><p class="evento-testo">Maura Gancitano al Festival Cambio Gioco di Padova.</p></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-03-05"><div class="evento-data">4–5 marzo 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">Diálogos de Futuro · Mendoza</h3><p class="evento-testo">Andrea Colamedici con una disertación magistral ai Diálogos de Futuro nella Legislatura de Mendoza e una conferenza alla Universidad Nacional de Cuyo.</p><a class="evento-link" href="https://www.dialogosdefuturo.com/" target="_blank" rel="noopener">Congreso Futuro ARG</a></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-02-26"><div class="evento-data">26 febbraio 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">The Botany of Wonder · New York</h3><p class="evento-testo">Andrea Colamedici e Maura Gancitano a New York per The Botany of Wonder, in occasione del lancio di Prompt Thinking.</p></div></li><li class="evento" data-cat="Libro" data-fine="2026-02-20"><div class="evento-data">20 febbraio 2026</div><div><span class="evento-cat">Libro</span><h3 class="evento-titolo">Prompt Thinking · Polity Press</h3><p class="evento-testo">Uscita di Prompt Thinking: A Critique of Generative Reason (Polity Press, collana Theory Redux), firmato Jianwei Xun. Contiene tre conversazioni con ChatGPT, DeepSeek e Claude.</p><a class="evento-link" href="https://www.amazon.com/Prompt-Thinking-Critique-Generative-Reason/dp/1509573887" target="_blank" rel="noopener">Amazon</a></div></li><li class="evento" data-cat="Libro" data-fine="2026-02-20"><div class="evento-data">20 febbraio 2026</div><div><span class="evento-cat">Libro</span><h3 class="evento-titolo">Pensar con Prompts · Rosamerón</h3><p class="evento-testo">L&#x27;edizione in spagnolo di Prompt Thinking, pubblicata da Rosamerón.</p><a class="evento-link" href="https://jianweixun.com/" target="_blank" rel="noopener">Jianwei Xun</a></div></li><li class="evento" data-cat="Festival" data-fine="2026-02-17"><div class="evento-data">14–17 febbraio 2026</div><div><span class="evento-cat">Festival</span><h3 class="evento-titolo">Carnevale di Putignano</h3><p class="evento-testo">Due giornate al Carnevale di Putignano: conferenza, lectio a teatro, Maura nella giuria.</p></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-02-10"><div class="evento-data">10 febbraio 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">EuroVoices · Parlamento Europeo a Sanremo</h3><p class="evento-testo">Partecipazione a EuroVoices, iniziativa del Parlamento Europeo durante il Festival di Sanremo.</p></div></li><li class="evento" data-cat="Media" data-fine="2026-01-31"><div class="evento-data">Gennaio 2026</div><div><span class="evento-cat">Media</span><h3 class="evento-titolo">Intervista CNN</h3><p class="evento-testo">Intervista di Andrea Colamedici alla CNN sull&#x27;ipnocrazia e l&#x27;intelligenza artificiale.</p></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-01-15"><div class="evento-data">15 gennaio 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">Philosophy Summit · AI Festival Bocconi</h3><p class="evento-testo">Andrea Colamedici al Philosophy Summit nell&#x27;ambito dell&#x27;AI Festival all&#x27;Università Bocconi di Milano.</p><a class="evento-link" href="https://www.aifestival.it/" target="_blank" rel="noopener">AI Festival</a></div></li><li class="evento" data-cat="Conferenza" data-fine="2026-01-13"><div class="evento-data">13 gennaio 2026</div><div><span class="evento-cat">Conferenza</span><h3 class="evento-titolo">Congreso Futuro · Santiago del Cile</h3><p class="evento-testo">Andrea Colamedici alla II Cumbre de Filosofía del Congreso Futuro, il più grande festival di scienza e futuro dell&#x27;America Latina.</p><a class="evento-link" href="https://congresofuturo.cl/" target="_blank" rel="noopener">Congreso Futuro</a></div></li></ul><p class="vuoto" id="vuoto-passati" hidden>Nessun evento passato con questo filtro.</p>
 
-<div class="news-card" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">Agosto 2026</span></div>
-<h3 class="news-card-title">Ipnocrazia · Umbria Green Festival</h3>
-<p class="news-card-excerpt">Andrea Colamedici e Maura Gancitano all'Umbria Green Festival con la performance Ipnocrazia.</p>
-<a href="https://www.umbriagreenfestival.it/" class="news-card-link" target="_blank">Umbria Green Festival</a>
-</div>
+</main>
+<footer>
+<div>&copy; 2026 Tlon Srl &mdash; Via Nicol&ograve; da Pistoia, 12, 00154 Roma &mdash; P.IVA 13583341006</div>
+<div class="footer-links"><a href="./">Home</a><a href="./il-progetto.html">Il Progetto</a><a href="https://www.tlonletter.it">Tlonletter</a><a href="./contatti/">Contatti</a></div>
+</footer>
+<script>
+(function(){
+ var h=document.getElementById('hamburger'),m=document.getElementById('mobileMenu'),
+     hd=document.querySelector('header');
+ function toggle(){h.classList.toggle('active');m.classList.toggle('active');
+  hd.classList.toggle('menu-open');
+  h.setAttribute('aria-expanded',m.classList.contains('active'));
+  document.body.style.overflow=m.classList.contains('active')?'hidden':'';}
+ h.addEventListener('click',toggle);
+ h.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+ m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){
+  h.classList.remove('active');m.classList.remove('active');hd.classList.remove('menu-open');
+  h.setAttribute('aria-expanded','false');document.body.style.overflow='';});});
+ window.addEventListener('scroll',function(){hd.classList.toggle('scrolled',window.scrollY>10);});
+})();
 
-<div class="news-card" data-type="corso">
-<div class="news-card-header"><span class="news-card-category corso">Lab</span><span class="news-card-date">28–30 agosto 2026</span></div>
-<h3 class="news-card-title">European Forum Alpbach · Media &amp; Activism Lab</h3>
-<p class="news-card-excerpt">Andrea Colamedici allo European Forum Alpbach per il Media &amp; Activism Lab, con Nika Kovač. EFA · D-Hub · ERSTE Foundation.</p>
-<a href="https://www.alpbach.org/" class="news-card-link" target="_blank">European Forum Alpbach</a>
-</div>
-
-<div class="news-card" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">24–27 settembre 2026</span></div>
-<h3 class="news-card-title">Attraversamenti · Festival del Pensare Contemporaneo</h3>
-<p class="news-card-excerpt">La quarta edizione del festival diretto filosoficamente da Andrea Colamedici, a Piacenza.</p>
-<a href="https://www.pensarecontemporaneo.it/" class="news-card-link" target="_blank">Pensare Contemporaneo</a>
-</div>
-
-<div class="news-card" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">Aprile – Settembre 2026</span></div>
-<h3 class="news-card-title">The Assault on Illusion · Santa Mònica</h3>
-<p class="news-card-excerpt">Partecipazione alla mostra collettiva L'assalt de la il·lusió al Centre d'Arts Santa Mònica di Barcellona.</p>
-<a href="https://www.santamonica.cat/en/exposicions-i-activitats/exposicions/2026/lassalt-de-la-illusio" class="news-card-link" target="_blank">Santa Mònica</a>
-</div>
-
-<div class="news-card" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Mostra</span><span class="news-card-date">Autunno 2026</span></div>
-<h3 class="news-card-title">IO &amp; AI · MUSE</h3>
-<p class="news-card-excerpt">Mostra IO &amp; AI al MUSE, Museo delle Scienze di Trento.</p>
-<a href="https://www.muse.it/" class="news-card-link" target="_blank">MUSE Trento</a>
-</div>
-
-<div class="section-divider"><h2>Recenti</h2></div>
-
-<div class="news-card past-event" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">12 luglio 2026</span></div>
-<h3 class="news-card-title">Palestina Libera Tutt* · Leverano</h3>
-<p class="news-card-excerpt">Andrea Colamedici al festival Palestina Libera Tutt* di Leverano.</p>
-</div>
-
-<div class="news-card past-event" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">2–5 luglio 2026</span></div>
-<h3 class="news-card-title">Festival Letterario di Gavoi</h3>
-<p class="news-card-excerpt">Andrea Colamedici a L’Isola delle Storie, il Festival Letterario della Sardegna.</p>
-<a href="https://www.isoladellestorie.it/" class="news-card-link" target="_blank">L’Isola delle Storie</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">1 luglio 2026</span></div>
-<h3 class="news-card-title">Universidad Pontificia de Salamanca</h3>
-<p class="news-card-excerpt">Andrea Colamedici alla Universidad Pontificia de Salamanca.</p>
-</div>
-
-<div class="news-card past-event" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">26 giugno 2026</span></div>
-<h3 class="news-card-title">WMF – We Make Future · Bologna</h3>
-<p class="news-card-excerpt">Andrea Colamedici al più grande festival europeo su IA, tech e innovazione digitale. BolognaFiere.</p>
-<a href="https://www.wemakefuture.it/" class="news-card-link" target="_blank">WMF Festival</a>
-</div>
-
-<div class="news-card past-event" data-type="presentazione">
-<div class="news-card-header"><span class="news-card-category presentazione">Presentazione</span><span class="news-card-date">26 giugno 2026</span></div>
-<h3 class="news-card-title">La società della performance · Chongqing Publishing House</h3>
-<p class="news-card-excerpt">Presentazione dell’edizione cinese de La società della performance a Pechino, con Chongqing Publishing House.</p>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">22–23 giugno 2026</span></div>
-<h3 class="news-card-title">2026 Fangtang Forum · Tsinghua University</h3>
-<p class="news-card-excerpt">Andrea Colamedici membro della giuria al 2026 Fangtang Forum della Tsinghua University di Pechino, con il Fangtang Institute.</p>
-<a href="https://www.tsinghua.edu.cn/en/" class="news-card-link" target="_blank">Tsinghua University</a>
-</div>
-
-<div class="news-card past-event" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">18–22 giugno 2026</span></div>
-<h3 class="news-card-title">Taobuk · Taormina</h3>
-<p class="news-card-excerpt">Maura Gancitano al Taormina International Book Festival.</p>
-<a href="https://www.taobuk.it/en/" class="news-card-link" target="_blank">Taobuk</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">5 giugno 2026</span></div>
-<h3 class="news-card-title">∀ISION_E · Politecnico di Torino</h3>
-<p class="news-card-excerpt">Andrea Colamedici alla conferenza ∀ISION_E del Politecnico di Torino.</p>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">28 maggio 2026</span></div>
-<h3 class="news-card-title">Confindustria Romania · Bucarest</h3>
-<p class="news-card-excerpt">Andrea Colamedici ospite di Confindustria Romania a Bucarest.</p>
-</div>
-
-<div class="news-card past-event" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">20–23 maggio 2026</span></div>
-<h3 class="news-card-title">The Peripheral Constellation · Istanbul</h3>
-<p class="news-card-excerpt">Andrea Colamedici e Maura Gancitano a Istanbul per The Peripheral Constellation.</p>
-</div>
-
-<div class="news-card past-event" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">13 maggio 2026</span></div>
-<h3 class="news-card-title">Il tempo per l'infanzia · Cremona</h3>
-<p class="news-card-excerpt">Andrea Colamedici e Maura Gancitano al Festival Il tempo per l'infanzia, Teatro Monteverdi di Cremona.</p>
-<a href="#" class="news-card-link">Scopri di più</a>
-</div>
-
-<div class="news-card past-event" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">7–10 maggio 2026</span></div>
-<h3 class="news-card-title">Festival Biblico · Conegliano</h3>
-<p class="news-card-excerpt">Maura Gancitano al Festival Biblico di Conegliano, XXII edizione.</p>
-<a href="https://www.festivalbiblico.it" class="news-card-link" target="_blank">Festival Biblico</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">24 marzo 2026</span></div>
-<h3 class="news-card-title">Filosofarti · Gallarate</h3>
-<p class="news-card-excerpt">Maura Gancitano al festival Filosofarti con la master lesson "Nella rete. Abitare la complessità senza restarne intrappolati", Teatro Giuditta Pasta.</p>
-<a href="https://www.filosofarti.it/edizione2026.php" class="news-card-link" target="_blank">Filosofarti 2026</a>
-</div>
-
-<div class="news-card past-event" data-type="presentazione">
-<div class="news-card-header"><span class="news-card-category presentazione">Presentazione</span><span class="news-card-date">23 marzo 2026</span></div>
-<h3 class="news-card-title">Ipnocrazia · Teatro Carcano</h3>
-<p class="news-card-excerpt">Jianwei Xun intervistato da Maura Gancitano e Andrea Colamedici. Performance dal vivo al Teatro Carcano di Milano.</p>
-<a href="https://teatrocarcano.com/eventi/ipnocrazia-tlon-gancitano-colamedici-2526.htm" class="news-card-link" target="_blank">Teatro Carcano</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">18 marzo 2026</span></div>
-<h3 class="news-card-title">PARIX IA 2026 · Madrid</h3>
-<p class="news-card-excerpt">Andrea Colamedici alla conferenza su intelligenza artificiale e futuro del pensiero, alla Casa del Lector, Matadero Madrid.</p>
-<a href="https://parix.es" class="news-card-link" target="_blank">PARIX IA</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">18 marzo 2026</span></div>
-<h3 class="news-card-title">Autoritarismo e ipnocrazia · Oslo</h3>
-<p class="news-card-excerpt">Andrea Colamedici e Maura Gancitano a Oslo per un panel su fascismo, autoritarismo e resilienza democratica.</p>
-<a href="https://www.lo-oslo.no" class="news-card-link" target="_blank">LO i Oslo</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">13 marzo 2026</span></div>
-<h3 class="news-card-title">Natura Omnia · Verona</h3>
-<p class="news-card-excerpt">Maura Gancitano a Verona per la rassegna Natura Omnia, ciclo "De-sidera", al Teatro alle Stimate.</p>
-<a href="#" class="news-card-link">Scopri di più</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">12 marzo 2026</span></div>
-<h3 class="news-card-title">VOICES · Potere, percezione e manipolazione</h3>
-<p class="news-card-excerpt">Andrea Colamedici al Festival Europeo del Giornalismo e della Libertà di Stampa. Panel all'Auditorium Zubin Mehta, Teatro del Maggio Musicale Fiorentino.</p>
-<a href="https://voicesfestival.eu/conference-event/power-perception-and-manipulation/" class="news-card-link" target="_blank">VOICES Festival</a>
-</div>
-
-<div class="news-card past-event" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">12 marzo 2026</span></div>
-<h3 class="news-card-title">Festival Cambio Gioco · Padova</h3>
-<p class="news-card-excerpt">Maura Gancitano al Festival Cambio Gioco di Padova.</p>
-<a href="#" class="news-card-link">Scopri di più</a>
-</div>
-
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">4–5 marzo 2026</span></div>
-<h3 class="news-card-title">Diálogos de Futuro · Mendoza</h3>
-<p class="news-card-excerpt">Andrea Colamedici con una disertación magistral ai Diálogos de Futuro nella Legislatura de Mendoza e una conferenza alla Universidad Nacional de Cuyo.</p>
-<a href="https://www.dialogosdefuturo.com/" class="news-card-link" target="_blank">Congreso Futuro ARG</a>
-</div>
-
-<div class="news-card past-event" data-type="libro">
-<div class="news-card-header"><span class="news-card-category libro">Libro</span><span class="news-card-date">20 febbraio 2026</span></div>
-<h3 class="news-card-title">Prompt Thinking · Polity Press</h3>
-<p class="news-card-excerpt">Uscita di Prompt Thinking: A Critique of Generative Reason (Polity Press, collana Theory Redux), firmato Jianwei Xun. Contiene tre conversazioni con ChatGPT, DeepSeek e Claude.</p>
-<a href="https://www.amazon.com/Prompt-Thinking-Critique-Generative-Reason/dp/1509573887" class="news-card-link" target="_blank">Amazon</a>
-</div>
-
-<div class="news-card past-event" data-type="libro">
-<div class="news-card-header"><span class="news-card-category libro">Libro</span><span class="news-card-date">20 febbraio 2026</span></div>
-<h3 class="news-card-title">Pensar con Prompts · Rosamerón</h3>
-<p class="news-card-excerpt">L'edizione in spagnolo di Prompt Thinking, pubblicata da Rosamerón.</p>
-<a href="https://jianweixun.com/" class="news-card-link" target="_blank">Jianwei Xun</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">26 febbraio 2026</span></div>
-<h3 class="news-card-title">The Botany of Wonder · New York</h3>
-<p class="news-card-excerpt">Andrea Colamedici e Maura Gancitano a New York per The Botany of Wonder, in occasione del lancio di Prompt Thinking.</p>
-<a href="#" class="news-card-link">Scopri di più</a>
-</div>
-
-<div class="news-card past-event" data-type="festival">
-<div class="news-card-header"><span class="news-card-category festival">Festival</span><span class="news-card-date">14–17 febbraio 2026</span></div>
-<h3 class="news-card-title">Carnevale di Putignano</h3>
-<p class="news-card-excerpt">Due giornate al Carnevale di Putignano: conferenza, lectio a teatro, Maura nella giuria.</p>
-<a href="#" class="news-card-link">Scopri di più</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">10 febbraio 2026</span></div>
-<h3 class="news-card-title">EuroVoices · Parlamento Europeo a Sanremo</h3>
-<p class="news-card-excerpt">Partecipazione a EuroVoices, iniziativa del Parlamento Europeo durante il Festival di Sanremo.</p>
-<a href="#" class="news-card-link">Scopri di più</a>
-</div>
-
-<div class="news-card past-event" data-type="libro">
-<div class="news-card-header"><span class="news-card-category libro">Libro</span><span class="news-card-date">Q1 2026</span></div>
-<h3 class="news-card-title">La società della performance · Cina</h3>
-<p class="news-card-excerpt">La società della performance esce in traduzione cinese, quarto libro di Andrea Colamedici e Maura Gancitano tradotto in Cina. Strutturato attorno alle Dieci immagini della caccia al bue dello Zen.</p>
-<a href="#" class="news-card-link">Scopri di più</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">15 gennaio 2026</span></div>
-<h3 class="news-card-title">Philosophy Summit · AI Festival Bocconi</h3>
-<p class="news-card-excerpt">Andrea Colamedici al Philosophy Summit nell'ambito dell'AI Festival all'Università Bocconi di Milano.</p>
-<a href="https://www.aifestival.it/" class="news-card-link" target="_blank">AI Festival</a>
-</div>
-
-<div class="news-card past-event" data-type="conferenza">
-<div class="news-card-header"><span class="news-card-category conferenza">Conferenza</span><span class="news-card-date">13 gennaio 2026</span></div>
-<h3 class="news-card-title">Congreso Futuro · Santiago del Cile</h3>
-<p class="news-card-excerpt">Andrea Colamedici alla II Cumbre de Filosofía del Congreso Futuro, il più grande festival di scienza e futuro dell'America Latina.</p>
-<a href="https://congresofuturo.cl/" class="news-card-link" target="_blank">Congreso Futuro</a>
-</div>
-
-<div class="news-card past-event" data-type="media">
-<div class="news-card-header"><span class="news-card-category media">Media</span><span class="news-card-date">Gennaio 2026</span></div>
-<h3 class="news-card-title">Intervista CNN</h3>
-<p class="news-card-excerpt">Intervista di Andrea Colamedici alla CNN sull'ipnocrazia e l'intelligenza artificiale.</p>
-<a href="#" class="news-card-link">CNN</a>
-</div>
-
-</div>
-</div><footer class="footer"><p>&copy; 2026 Tlon. Tutti i diritti riservati.</p><p>Seguici su <a href="https://www.instagram.com/tlon_philosophy">Instagram</a> | <a href="https://www.linkedin.com/company/tlon-philosophy">LinkedIn</a> | <a href="https://www.tiktok.com/@tlon_philosophy">TikTok</a></p><p>Contattaci: <a href="mailto:info@tlon.it">info@tlon.it</a></p><div style="text-align:center; margin-top:1.5rem;"> <a href="https://chasecodeofconduct.eu/verify-badge/?uuid=251c66f0-5fe5-4da3-b9df-1e9da27fb961" target="_blank" rel="noopener" style="display:inline-block; line-height:0;"> <img src="https://chasecodeofconduct.eu/chase-badge/251c66f0-5fe5-4da3-b9df-1e9da27fb961/1775641922.png" alt="CHASE Verified Organisation Badge" width="140" style="height:auto; max-width:100%;" loading="lazy" decoding="async"> </a> </div></footer></div><script>document.addEventListener('DOMContentLoaded',function(){const menuButton=document.querySelector('.menu-button');const header=document.querySelector('header');menuButton.addEventListener('click',function(){header.classList.toggle('menu-open');header.classList.toggle('not-menu-open');});const navLinks=document.querySelectorAll('nav a');navLinks.forEach(link=>{link.addEventListener('click',function(){header.classList.remove('menu-open');header.classList.add('not-menu-open');});});const filterButtons=document.querySelectorAll('.filter-button');const newsCards=document.querySelectorAll('.news-card');filterButtons.forEach(button=>{button.addEventListener('click',function(){filterButtons.forEach(btn=>btn.classList.remove('active'));this.classList.add('active');const filter=this.getAttribute('data-filter');newsCards.forEach(card=>{if(filter==='all'||card.getAttribute('data-type')===filter){card.style.display='flex';}else{card.style.display='none';}});document.querySelectorAll('.section-divider').forEach(div=>{const next=[];let sib=div.nextElementSibling;while(sib&&!sib.classList.contains('section-divider')){if(sib.classList.contains('news-card'))next.push(sib);sib=sib.nextElementSibling;}const anyVisible=next.some(c=>c.style.display!=='none');div.style.display=anyVisible?'block':'none';});});});const cursor=document.querySelector('.cursor');if(cursor){document.addEventListener('mousemove',function(e){cursor.style.left=e.clientX-10+'px';cursor.style.top=e.clientY-10+'px';});document.addEventListener('mousedown',function(){cursor.classList.add('hover');});document.addEventListener('mouseup',function(){cursor.classList.remove('hover');});document.querySelectorAll('a, button, input, textarea').forEach(el=>{el.addEventListener('mouseenter',function(){cursor.classList.add('hover');});el.addEventListener('mouseleave',function(){cursor.classList.remove('hover');});});const cursorElement=document.querySelector('.cursor');if(cursorElement){cursorElement.style.display='none';}}const statsObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const statNumbers=entry.target.querySelectorAll('[data-count]');statNumbers.forEach(el=>{const target=parseInt(el.getAttribute('data-count'),10);let current=0;const increment=target/30;const interval=setInterval(function(){current+=increment;if(current>=target){el.textContent=target;clearInterval(interval);}else{el.textContent=Math.floor(current);}},30);});statsObserver.unobserve(entry.target);}});},{threshold:0.5});document.querySelector('.hero-stats') && statsObserver.observe(document.querySelector('.hero-stats'));</script></body></html>
+(function(){
+ var stato='tutte';
+ function applica(){
+  ['futuri','passati'].forEach(function(g){
+   var n=0;
+   document.querySelectorAll('#gruppo-'+g+' .evento').forEach(function(v){
+    var ok=(stato==='tutte'||v.dataset.cat===stato); v.hidden=!ok; if(ok) n++;});
+   document.getElementById('gruppo-'+g).hidden=!n;
+   document.getElementById('vuoto-'+g).hidden=!!n;
+  });
+ }
+ document.querySelectorAll('.filtro').forEach(function(b){
+  b.addEventListener('click',function(){
+   document.querySelectorAll('.filtro').forEach(function(o){o.classList.remove('attivo');});
+   b.classList.add('attivo'); stato=b.dataset.val; applica();});
+ });
+ applica();
+})();
+</script>
+</body>
+</html>

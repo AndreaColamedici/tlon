@@ -58,6 +58,10 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
         html { font-size: 16px; scroll-behavior: smooth; }
         
         body {
@@ -1788,9 +1792,30 @@
             .product-wishlist { opacity: 1; transform: scale(1); }
             .bestseller-actions { opacity: 1; transform: translateY(0); }
         }
-    </style>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+</style>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 
 <div class="announcement">
     <span>📦</span>
@@ -1824,7 +1849,7 @@
                 <div class="search-section">
                     <p class="search-section-title">Suggeriti per te</p>
                     <a href="#" class="search-result">
-                        <img class="search-result-img" src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia">
+                        <img class="search-result-img" src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia" width="710" height="1000">
                         <div class="search-result-info">
                             <p class="search-result-title">Ipnocrazia</p>
                             <p class="search-result-author">Jianwei Xun</p>
@@ -1832,7 +1857,7 @@
                         <span class="search-result-price">€18,00</span>
                     </a>
                     <a href="#" class="search-result">
-                        <img class="search-result-img" src="./assets/libri/salvati.jpg" alt="Non siamo ancora stati salvati">
+                        <img class="search-result-img" src="./assets/libri/salvati.jpg" alt="Non siamo ancora stati salvati" width="536" height="755">
                         <div class="search-result-info">
                             <p class="search-result-title">Non siamo ancora stati salvati</p>
                             <p class="search-result-author">Peter Sloterdijk</p>
@@ -1883,13 +1908,13 @@
     <span class="shipping-text">Ti mancano <strong>€11,50</strong> per la spedizione gratuita</span>
 </div>
 
-<main>
+<main id="contenuto">
 
 <!-- HERO - LIBRO DOMINANTE -->
 <section class="hero">
     <div class="hero-inner">
         <div class="hero-cover">
-            <img class="hero-cover-img" src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia">
+            <img class="hero-cover-img" src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia" width="710" height="1000" loading="lazy" decoding="async">
         </div>
         <div class="hero-content">
             <span class="hero-badge">
@@ -1928,7 +1953,7 @@
         <div class="products-track">
             <div class="product">
                 <div class="product-cover">
-                    <img class="product-cover-img" src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia">
+                    <img class="product-cover-img" src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia" width="710" height="1000" loading="lazy" decoding="async">
                     <span class="product-badge new">Nuovo</span>
                     <button class="product-wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C12 21 4 13.5 4 8.5C4 5.5 6.5 3 9.5 3C11.04 3 12 4 12 4C12 4 12.96 3 14.5 3C17.5 3 20 5.5 20 8.5C20 13.5 12 21 12 21Z"/></svg></button>
                     <div class="product-actions">
@@ -1946,7 +1971,7 @@
             </div>
             <div class="product">
                 <div class="product-cover">
-                    <img class="product-cover-img" src="./assets/libri/salvati.jpg" alt="Non siamo ancora stati salvati">
+                    <img class="product-cover-img" src="./assets/libri/salvati.jpg" alt="Non siamo ancora stati salvati" width="536" height="755" loading="lazy" decoding="async">
                     <button class="product-wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C12 21 4 13.5 4 8.5C4 5.5 6.5 3 9.5 3C11.04 3 12 4 12 4C12 4 12.96 3 14.5 3C17.5 3 20 5.5 20 8.5C20 13.5 12 21 12 21Z"/></svg></button>
                     <div class="product-actions">
                         <button class="product-add" data-add="sloterdijk">Aggiungi</button>
@@ -1962,7 +1987,7 @@
             </div>
             <div class="product">
                 <div class="product-cover">
-                    <img class="product-cover-img" src="./assets/libri/botanica.jpg" alt="Botanica della meraviglia">
+                    <img class="product-cover-img" src="./assets/libri/botanica.jpg" alt="Botanica della meraviglia" width="667" height="1000" loading="lazy" decoding="async">
                     <span class="product-badge new">Nuovo</span>
                     <button class="product-wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C12 21 4 13.5 4 8.5C4 5.5 6.5 3 9.5 3C11.04 3 12 4 12 4C12 4 12.96 3 14.5 3C17.5 3 20 5.5 20 8.5C20 13.5 12 21 12 21Z"/></svg></button>
                     <div class="product-actions">
@@ -1980,7 +2005,7 @@
             </div>
             <div class="product">
                 <div class="product-cover">
-                    <img class="product-cover-img" src="./assets/libri/amore.jpg" alt="L'amore in più">
+                    <img class="product-cover-img" src="./assets/libri/amore.jpg" alt="L'amore in più" width="1000" height="1499" loading="lazy" decoding="async">
                     <button class="product-wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C12 21 4 13.5 4 8.5C4 5.5 6.5 3 9.5 3C11.04 3 12 4 12 4C12 4 12.96 3 14.5 3C17.5 3 20 5.5 20 8.5C20 13.5 12 21 12 21Z"/></svg></button>
                     <div class="product-actions">
                         <button class="product-add" data-add="badinter">Aggiungi</button>
@@ -1996,7 +2021,7 @@
             </div>
             <div class="product">
                 <div class="product-cover">
-                    <img class="product-cover-img" src="./assets/libri/lavoro.jpg" alt="Dopo il lavoro">
+                    <img class="product-cover-img" src="./assets/libri/lavoro.jpg" alt="Dopo il lavoro" width="536" height="755" loading="lazy" decoding="async">
                     <button class="product-wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C12 21 4 13.5 4 8.5C4 5.5 6.5 3 9.5 3C11.04 3 12 4 12 4C12 4 12.96 3 14.5 3C17.5 3 20 5.5 20 8.5C20 13.5 12 21 12 21Z"/></svg></button>
                     <div class="product-actions">
                         <button class="product-add" data-add="lavoro">Aggiungi</button>
@@ -2012,7 +2037,7 @@
             </div>
             <div class="product">
                 <div class="product-cover">
-                    <img class="product-cover-img" src="./assets/libri/finita.jpg" alt="Per farla finita con se stessi">
+                    <img class="product-cover-img" src="./assets/libri/finita.jpg" alt="Per farla finita con se stessi" width="500" height="704" loading="lazy" decoding="async">
                     <button class="product-wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C12 21 4 13.5 4 8.5C4 5.5 6.5 3 9.5 3C11.04 3 12 4 12 4C12 4 12.96 3 14.5 3C17.5 3 20 5.5 20 8.5C20 13.5 12 21 12 21Z"/></svg></button>
                     <div class="product-actions">
                         <button class="product-add" data-add="finita">Aggiungi</button>
@@ -2081,7 +2106,7 @@
         <div class="bestseller-item">
             <span class="bestseller-rank">1</span>
             <div class="bestseller-cover">
-                <img class="bestseller-cover-img" src="./assets/libri/bellezza.jpg" alt="Il mito della bellezza">
+                <img class="bestseller-cover-img" src="./assets/libri/bellezza.jpg" alt="Il mito della bellezza" width="1000" height="1499" loading="lazy" decoding="async">
                 <div class="bestseller-actions">
                     <button class="bestseller-add" data-add="bellezza">Aggiungi</button>
                 </div>
@@ -2093,7 +2118,7 @@
         <div class="bestseller-item">
             <span class="bestseller-rank">2</span>
             <div class="bestseller-cover">
-                <img class="bestseller-cover-img" src="./assets/libri/mostruoso.jpg" alt="Il mostruoso femminile">
+                <img class="bestseller-cover-img" src="./assets/libri/mostruoso.jpg" alt="Il mostruoso femminile" width="1000" height="1404" loading="lazy" decoding="async">
                 <div class="bestseller-actions">
                     <button class="bestseller-add" data-add="mostruoso">Aggiungi</button>
                 </div>
@@ -2105,7 +2130,7 @@
         <div class="bestseller-item">
             <span class="bestseller-rank">3</span>
             <div class="bestseller-cover">
-                <img class="bestseller-cover-img" src="./assets/libri/martello.jpg" alt="Filosofia col martello">
+                <img class="bestseller-cover-img" src="./assets/libri/martello.jpg" alt="Filosofia col martello" width="456" height="652" loading="lazy" decoding="async">
                 <div class="bestseller-actions">
                     <button class="bestseller-add" data-add="martello">Aggiungi</button>
                 </div>
@@ -2117,7 +2142,7 @@
         <div class="bestseller-item">
             <span class="bestseller-rank">4</span>
             <div class="bestseller-cover">
-                <img class="bestseller-cover-img" src="./assets/libri/salvati.jpg" alt="Non siamo ancora stati salvati">
+                <img class="bestseller-cover-img" src="./assets/libri/salvati.jpg" alt="Non siamo ancora stati salvati" width="536" height="755" loading="lazy" decoding="async">
                 <div class="bestseller-actions">
                     <button class="bestseller-add" data-add="salvati">Aggiungi</button>
                 </div>
@@ -2129,7 +2154,7 @@
         <div class="bestseller-item">
             <span class="bestseller-rank">5</span>
             <div class="bestseller-cover">
-                <img class="bestseller-cover-img" src="./assets/libri/amore.jpg" alt="L'amore in più">
+                <img class="bestseller-cover-img" src="./assets/libri/amore.jpg" alt="L'amore in più" width="1000" height="1499" loading="lazy" decoding="async">
                 <div class="bestseller-actions">
                     <button class="bestseller-add" data-add="amore">Aggiungi</button>
                 </div>
@@ -2171,7 +2196,7 @@
     <div class="staff-grid">
         <div class="staff-card">
             <div class="staff-cover">
-                <img src="./assets/libri/bellezza.jpg" alt="Il mito della bellezza">
+                <img src="./assets/libri/bellezza.jpg" alt="Il mito della bellezza" width="1000" height="1499" loading="lazy" decoding="async">
             </div>
             <div class="staff-content">
                 <div class="staff-by">
@@ -2195,7 +2220,7 @@
         </div>
         <div class="staff-card">
             <div class="staff-cover">
-                <img src="./assets/libri/mostruoso.jpg" alt="Il mostruoso femminile">
+                <img src="./assets/libri/mostruoso.jpg" alt="Il mostruoso femminile" width="1000" height="1404" loading="lazy" decoding="async">
             </div>
             <div class="staff-content">
                 <div class="staff-by">
@@ -2219,7 +2244,7 @@
         </div>
         <div class="staff-card">
             <div class="staff-cover">
-                <img src="./assets/libri/salvati.jpg" alt="Non siamo ancora stati salvati">
+                <img src="./assets/libri/salvati.jpg" alt="Non siamo ancora stati salvati" width="536" height="755" loading="lazy" decoding="async">
             </div>
             <div class="staff-content">
                 <div class="staff-by">
@@ -2356,7 +2381,7 @@
         <div class="drawer-items">
             <div class="drawer-item">
                 <div class="drawer-item-img">
-                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia">
+                    <img src="./assets/images/ipnocrazia-it.jpg" alt="Ipnocrazia" width="710" height="1000" loading="lazy" decoding="async">
                 </div>
                 <div class="drawer-item-info">
                     <p class="drawer-item-title">Ipnocrazia</p>
@@ -2374,7 +2399,7 @@
             </div>
             <div class="drawer-item">
                 <div class="drawer-item-img">
-                    <img src="./assets/libri/bellezza.jpg" alt="Il mito della bellezza">
+                    <img src="./assets/libri/bellezza.jpg" alt="Il mito della bellezza" width="1000" height="1499" loading="lazy" decoding="async">
                 </div>
                 <div class="drawer-item-info">
                     <p class="drawer-item-title">Il mito della bellezza</p>
@@ -2395,7 +2420,7 @@
             <p class="drawer-upsell-title">Potrebbe interessarti</p>
             <div class="drawer-upsell-item">
                 <div class="drawer-upsell-img">
-                    <img src="./assets/libri/mostruoso.jpg" alt="Il mostruoso femminile">
+                    <img src="./assets/libri/mostruoso.jpg" alt="Il mostruoso femminile" width="1000" height="1404" loading="lazy" decoding="async">
                 </div>
                 <div class="drawer-upsell-info">
                     <p class="drawer-upsell-name">Il mostruoso femminile</p>

@@ -43,6 +43,10 @@
             padding: 0;
             box-sizing: border-box;
         }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 
         html {
             font-size: 16px;
@@ -1664,9 +1668,31 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "AboutPage", "@id": "https://www.tlon.it/il-progetto.html", "url": "https://www.tlon.it/il-progetto.html", "name": "Il Progetto — Tlon", "inLanguage": "it", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "Un pianeta immaginario. Che esiste."}</script>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 
     <!-- LOADER -->
     <div class="loader" id="loader">
@@ -1690,7 +1716,7 @@
             <a href="./librerie.html">Librerie</a>
             <a href="./formazione.html">Formazione</a>
             <a href="./eventi-festival.html">Eventi</a>
-            <a href="./contatti/">Contatti</a>
+            <a href="./press.html">Press</a><a href="./contatti/">Contatti</a>
         </nav>
         <div class="lang-switch">
             <a href="./il-progetto.html" class="active">IT</a>
@@ -1711,7 +1737,7 @@
         <a href="./librerie.html">Librerie</a>
         <a href="./formazione.html">Formazione</a>
         <a href="./eventi-festival.html">Eventi</a>
-        <a href="./contatti/">Contatti</a>
+        <a href="./press.html">Press</a><a href="./contatti/">Contatti</a>
         <div class="mobile-menu-lang"><a href="./il-progetto.html" class="active">IT</a><a href="./il-progetto-en.html">EN</a></div>
     </div>
 
@@ -1724,7 +1750,7 @@
         <div class="mission-progress-dot" data-panel="4"></div>
     </div>
 
-    <main>
+    <main id="contenuto">
         <!-- HERO -->
         <section class="hero">
             <div class="hero-content">

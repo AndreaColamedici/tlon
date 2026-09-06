@@ -44,6 +44,10 @@
             padding: 0;
             box-sizing: border-box;
         }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 
         html {
             font-size: 16px;
@@ -92,6 +96,10 @@
             width: auto;
             filter: invert(1);
         }
+        .lang-switch { display: flex; gap: 0.6rem; font-size: 0.75rem; letter-spacing: 0.08em; align-items: center; }
+        .lang-switch a { color: var(--grigio, #6b6b6b); text-decoration: none; }
+        .lang-switch a.active { color: inherit; font-weight: 600; }
+        @media (max-width: 900px) { .lang-switch { display: none; } }
 
         nav {
             display: flex;
@@ -1241,10 +1249,32 @@
                 gap: 2rem;
             }
         }
-    </style>
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+</style></style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</noscript>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://www.tlon.it/ilpod.html", "url": "https://www.tlon.it/ilpod.html", "name": "Il Pod — Italian Podcast Awards — Tlon", "inLanguage": "it", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "Il mondo del podcasting è un motore culturale con un potenziale enorme. Ogni anno celebriamo i contenuti più interessanti per valorizzare e far crescere questo medium, rafforzando la comunità di chi…"}</script>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
 
     <header>
         <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
@@ -1256,8 +1286,12 @@
     <a href="./librerie.html">Librerie</a>
     <a href="./formazione.html">Formazione</a>
     <a href="./eventi-festival.html">Eventi</a>
-    <a href="./contatti/">Contatti</a>
+    <a href="./press.html">Press</a><a href="./contatti/">Contatti</a>
 </nav>
+        <div class="lang-switch">
+            <a href="./ilpod.html" class="active">IT</a>
+            <a href="./ilpod-en.html">EN</a>
+        </div>
         <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
             <span></span>
             <span></span>
@@ -1273,10 +1307,10 @@
         <a href="./librerie.html">Librerie</a>
         <a href="./formazione.html">Formazione</a>
         <a href="./eventi-festival.html">Eventi</a>
-        <a href="./contatti/">Contatti</a>
+        <a href="./press.html">Press</a><a href="./contatti/">Contatti</a>
     </div>
 
-    <main>
+    <main id="contenuto">
         <!-- HERO -->
         <section class="hero">
             <div class="hero-bg"></div>
@@ -1310,7 +1344,7 @@
                     </p>
                 </div>
                 <div class="intro-image reveal">
-                    <img src="./assets/images/ilpod-teatro.jpg" alt="Il Pod - Teatro Municipale di Piacenza">
+                    <img src="./assets/images/ilpod-teatro.jpg" alt="Il Pod - Teatro Municipale di Piacenza" width="1200" height="800" loading="lazy" decoding="async">
                     <span class="intro-image-caption">Teatro Municipale di Piacenza</span>
                 </div>
             </div>

@@ -41,6 +41,10 @@
             --grigio: #8a9a92;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
         html { font-size: 16px; scroll-behavior: smooth; }
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -56,8 +60,8 @@
         header { position: fixed; top: 0; left: 0; right: 0; z-index: 1002; padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
         .logo { display: flex; align-items: center; }
         .logo img { height: 26px; width: auto; }
-        nav { display: flex; gap: 2.5rem; align-items: center; }
-        nav a { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grigio); transition: color 0.3s ease; }
+        nav { flex-wrap: nowrap; display: flex; gap: clamp(0.9rem, 1.9vw, 2.6rem); align-items: center; }
+        nav a { white-space: nowrap; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grigio); transition: color 0.3s ease; }
         nav a:hover { color: var(--ottanio); }
         .lang-switch { display: flex; gap: 0.75rem; align-items: center; margin-left: 2rem; padding-left: 2rem; border-left: 1px solid var(--verde-pallido); }
         .lang-switch a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grigio); }
@@ -178,10 +182,32 @@
         .footer-social a:hover { color: var(--bianco); }
 
         @media (max-width: 1024px) { .content-grid { grid-template-columns: 1fr; gap: 3rem; } .details-sidebar { position: static; } }
-        @media (max-width: 768px) { header { padding: 1rem 1.5rem; } nav { display: none; } .hamburger { display: flex; } .mobile-menu { display: flex; } .hero { padding: 3rem 1.5rem; min-height: 75vh; } .hero-title { font-size: clamp(2.8rem, 12vw, 4.5rem); } .content-section { padding: 3rem 1.5rem; } .form-row { grid-template-columns: 1fr; } .illustri-section, .quote-section, .cta-section { padding: 3rem 1.5rem; } footer { padding: 2.5rem 1.5rem 1.5rem; } .footer-links { gap: 2rem; } .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; } .cypress, .piramide { display: none; } .candles-container { gap: 60px; } }
-    </style>
+        @media (max-width: 768px) { header { padding: 1rem 1.5rem; } nav { flex-wrap: nowrap; display: none; } .hamburger { display: flex; } .mobile-menu { display: flex; } .hero { padding: 3rem 1.5rem; min-height: 75vh; } .hero-title { font-size: clamp(2.8rem, 12vw, 4.5rem); } .content-section { padding: 3rem 1.5rem; } .form-row { grid-template-columns: 1fr; } .illustri-section, .quote-section, .cta-section { padding: 3rem 1.5rem; } footer { padding: 2.5rem 1.5rem 1.5rem; } .footer-links { gap: 2rem; } .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; } .cypress, .piramide { display: none; } .candles-container { gap: 60px; } }
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://www.tlon.it/cimiterologia.html", "url": "https://www.tlon.it/cimiterologia.html", "name": "Cimiterologia — Tlon", "inLanguage": "it", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "Allargarsi la vita attraversando la Morte"}</script>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
     <div class="atmosphere">
         <div class="cypress cypress-1"></div>
         <div class="cypress cypress-2"></div>
@@ -205,7 +231,7 @@
             <a href="./librerie.html">Librerie</a>
             <a href="./formazione.html">Formazione</a>
             <a href="./eventi-festival.html">Eventi</a>
-            <a href="./contatti/">Contatti</a>
+            <a href="./press.html">Press</a><a href="./contatti/">Contatti</a>
             <div class="lang-switch">
                 <a href="./cimiterologia.html" class="active">IT</a>
                 <a href="./cimiterologia-en.html">EN</a>
@@ -222,11 +248,11 @@
         <a href="./librerie.html">Librerie</a>
         <a href="./formazione.html">Formazione</a>
         <a href="./eventi-festival.html">Eventi</a>
-        <a href="./contatti/">Contatti</a>
+        <a href="./press.html">Press</a><a href="./contatti/">Contatti</a>
         <div class="mobile-menu-lang"><a href="./cimiterologia.html" class="active">IT</a><a href="./cimiterologia-en.html">EN</a></div>
     </div>
 
-    <main>
+    <main id="contenuto">
         <section class="hero">
             <div class="hero-content">
                 <span class="hero-label">✝ Memento Mori ✝</span>

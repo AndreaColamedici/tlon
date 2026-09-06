@@ -7,8 +7,8 @@
     <link rel="icon" href="/favicon.ico" sizes="32x32">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <title>Tlon — School of Philosophy and Imagination</title>
-    <meta name="description" content="Tlon is a philosophical research and outreach project. Publishing house, bookstores, podcasts, festivals, education and cultural design: tools for personal and collective flourishing.">
+    <title>Tlon — Independent cultural institution for public philosophy, publishing and media</title>
+    <meta name="description" content="Tlon is an independent cultural institution: public philosophy, publishing and media. Since 2015: books, bookstores, podcasts, festivals, teaching and research.">
     <link rel="canonical" href="https://www.tlon.it/index-en.html">
     <link rel="alternate" hreflang="it" href="https://www.tlon.it/">
     <link rel="alternate" hreflang="en" href="https://www.tlon.it/index-en.html">
@@ -20,15 +20,15 @@
     <meta property="og:site_name" content="Tlon">
     <meta property="og:locale" content="en_US">
     <meta property="og:locale:alternate" content="it_IT">
-    <meta property="og:title" content="Tlon — School of Philosophy and Imagination">
-    <meta property="og:description" content="Tlon is a philosophical research and outreach project. Publishing house, bookstores, podcasts, festivals, education and cultural design: tools for personal and collective flourishing.">
+    <meta property="og:title" content="Tlon — Independent cultural institution for public philosophy, publishing and media">
+    <meta property="og:description" content="Tlon is an independent cultural institution: public philosophy, publishing and media. Since 2015: books, bookstores, podcasts, festivals, teaching and research.">
     <meta property="og:url" content="https://www.tlon.it/index-en.html">
     <meta property="og:image" content="https://www.tlon.it/assets/images/og-tlon-en.png">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Tlon — School of Philosophy and Imagination">
-    <meta name="twitter:description" content="Tlon is a philosophical research and outreach project. Publishing house, bookstores, podcasts, festivals, education and cultural design: tools for personal and collective flourishing.">
+    <meta name="twitter:title" content="Tlon — Independent cultural institution for public philosophy, publishing and media">
+    <meta name="twitter:description" content="Tlon is an independent cultural institution: public philosophy, publishing and media. Since 2015: books, bookstores, podcasts, festivals, teaching and research.">
     <meta name="twitter:image" content="https://www.tlon.it/assets/images/og-tlon-en.png">
     <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <link rel="stylesheet" href="./evidenza.css">
@@ -51,6 +51,10 @@
             padding: 0;
             box-sizing: border-box;
         }
+        /* le dimensioni in HTML servono a evitare il salto del layout: qui
+           si preserva il rapporto d'aspetto quando la larghezza è fluida */
+        img { height: auto; }
+
 
         html {
             font-size: 16px;
@@ -458,294 +462,194 @@
             }
         }
     
-        /* ============ ECOSISTEMA ============ */
-        .ecosistema {
-            padding: 4rem 3rem 8rem;
+        /* ============ COSTELLAZIONE ============ */
+        @property --cost-angolo {
+            syntax: '<angle>';
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        .costellazione {
+            padding: 6rem 3rem 9rem;
             background: var(--bianco);
             display: flex;
             justify-content: center;
-            align-items: center;
             position: relative;
             overflow: hidden;
         }
 
-        .ecosistema::before {
+        .costellazione::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 50% 50%, rgba(42, 107, 107, 0.06) 0%, transparent 50%);
+            left: 50%;
+            top: 50%;
+            width: min(92vw, 860px);
+            aspect-ratio: 1;
+            translate: -50% -50%;
+            border-radius: 50%;
+            background:
+                conic-gradient(from var(--cost-angolo),
+                    rgba(42,107,107,0.000) 0deg,
+                    rgba(42,107,107,0.030) 100deg,
+                    rgba(42,107,107,0.000) 200deg,
+                    rgba(42,107,107,0.022) 300deg,
+                    rgba(42,107,107,0.000) 360deg),
+                radial-gradient(circle at 50% 50%,
+                    rgba(42,107,107,0.05) 0%,
+                    rgba(42,107,107,0.018) 45%,
+                    rgba(42,107,107,0) 72%);
+            filter: blur(38px);
+            animation: costDeriva 78s linear infinite;
+            pointer-events: none;
         }
 
-        .eco-container {
+        @keyframes costDeriva { to { --cost-angolo: 360deg; } }
+
+        .cost-wrap {
             width: 100%;
-            max-width: 900px;
+            max-width: 940px;
             position: relative;
             z-index: 1;
         }
 
-        .eco-map {
+        .cost-scena {
             position: relative;
             width: 100%;
-            aspect-ratio: 4/3;
+            aspect-ratio: 16 / 10;
+            touch-action: pan-y;
         }
 
-        .eco-svg {
+        .cost-canvas {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
-            overflow: visible;
+            display: block;
         }
 
-        /* Orbite con rotazione */
-        .eco-orbits {
-            transform-origin: 400px 300px;
+        .cost-nodi { list-style: none; margin: 0; padding: 0; }
+
+        .cost-nodo {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.3rem 0.55rem 0.3rem 0.3rem;
+            border-radius: 100px;
+            white-space: nowrap;
+            transform: translate3d(0, -50%, 0);
+            transform-origin: 14px 50%;
+            will-change: transform, opacity;
+            transition: color 0.35s ease, background-color 0.35s ease;
+            color: var(--nero);
+            background: color-mix(in srgb, var(--bianco) 78%, transparent);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
 
-        .eco-orbit {
-            fill: none;
-            stroke: rgba(42, 107, 107, 0.25);
-            stroke-width: 1;
+        @supports not (background: color-mix(in srgb, white 50%, transparent)) {
+            .cost-nodo { background: rgba(255,255,255,0.8); }
         }
 
-        .eco-orbit-1 { 
-            stroke-dasharray: 6, 10;
-            animation: rotateOrbit 120s linear infinite;
-            transform-origin: 400px 300px;
-        }
-        .eco-orbit-2 { 
-            stroke-dasharray: 4, 8;
-            animation: rotateOrbit 80s linear infinite reverse;
-            transform-origin: 400px 300px;
-        }
-        .eco-orbit-3 { 
-            stroke-dasharray: 2, 6;
-            animation: rotateOrbit 50s linear infinite;
-            transform-origin: 400px 300px;
+        .cost-nodo--sinistra {
+            flex-direction: row-reverse;
+            padding: 0.3rem 0.3rem 0.3rem 0.55rem;
+            transform-origin: calc(100% - 14px) 50%;
         }
 
-        @keyframes rotateOrbit {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .cost-punto {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            flex: none;
+            background: var(--bianco);
+            border: 1.5px solid var(--ottanio);
+            box-shadow: 0 0 0 0 rgba(42,107,107,0.35);
+            transition: box-shadow 0.45s cubic-bezier(0.16,1,0.3,1),
+                        background-color 0.35s ease, border-color 0.35s ease;
         }
 
-        /* Linee di connessione */
-        .eco-line {
-            stroke: url(#lineGradient);
-            stroke-width: 1;
-            opacity: 0.2;
-            transition: all 0.6s ease;
-        }
-
-        /* Nodi */
-        .eco-node {
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .eco-node-glow {
-            fill: var(--ottanio);
-            opacity: 0;
-            filter: blur(15px);
-            transition: all 0.5s ease;
-        }
-
-        .eco-node-bg {
-            fill: var(--bianco);
-            stroke: rgba(42, 107, 107, 0.4);
-            stroke-width: 1;
-            transition: all 0.4s ease;
-        }
-
-        .eco-node-ring {
-            fill: none;
-            stroke: rgba(42, 107, 107, 0.3);
-            stroke-width: 1;
-            transition: all 0.4s ease;
-        }
-
-        .eco-node-ring-outer {
-            fill: none;
-            stroke: rgba(42, 107, 107, 0.2);
-            stroke-width: 1;
-            stroke-dasharray: 3, 3;
-            animation: rotateRing 10s linear infinite;
-        }
-
-        .eco-node-inner .eco-node-ring-outer {
-            animation: rotateRing 8s linear infinite reverse;
-        }
-
-        .eco-node-outer {
-            animation: floatNode 6s ease-in-out infinite;
-        }
-
-        .eco-node-outer:nth-child(2) { animation-delay: -1s; }
-        .eco-node-outer:nth-child(3) { animation-delay: -2s; }
-        .eco-node-outer:nth-child(4) { animation-delay: -3s; }
-        .eco-node-outer:nth-child(5) { animation-delay: -4s; }
-        .eco-node-outer:nth-child(6) { animation-delay: -5s; }
-
-        @keyframes floatNode {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(0, -3px); }
-        }
-
-        @keyframes rotateRing {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .eco-node-label {
-            font-family: 'Inter', sans-serif;
-            font-size: 9px;
+        .cost-etichetta {
+            font-size: 0.72rem;
             font-weight: 500;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            fill: var(--nero);
-            text-anchor: middle;
-            dominant-baseline: middle;
-            transition: all 0.4s ease;
         }
 
-        .eco-node-sub {
+        .cost-nodo:hover,
+        .cost-nodo:focus-visible {
+            color: var(--ottanio);
+            background: color-mix(in srgb, var(--bianco) 94%, transparent);
+        }
+
+        .cost-nodo:hover .cost-punto,
+        .cost-nodo:focus-visible .cost-punto {
+            background: var(--ottanio);
+            box-shadow: 0 0 0 7px rgba(42,107,107,0.12);
+        }
+
+        .cost-nucleo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            translate: -50% -50%;
+            display: grid;
+            place-items: center;
+            width: clamp(92px, 13vw, 128px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: var(--nero);
+            color: var(--bianco);
             font-family: 'Instrument Serif', serif;
-            font-size: 8px;
-            font-style: italic;
-            fill: rgba(10, 10, 10, 0.5);
-            text-anchor: middle;
-            transition: all 0.4s ease;
+            font-size: clamp(1rem, 1.7vw, 1.3rem);
+            letter-spacing: 0.22em;
+            text-indent: 0.22em;
+            box-shadow: 0 18px 60px -18px rgba(42,107,107,0.55);
+            transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
         }
 
-        /* Centro - Pianeta TLON - font uniformato */
-        .eco-node-center .eco-node-bg {
-            fill: var(--ottanio);
-            stroke: var(--ottanio);
-        }
+        .cost-nucleo:hover { transform: scale(1.045); }
 
-        .eco-node-center .eco-node-glow {
-            opacity: 0.3;
-            animation: centerPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes centerPulse {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(1.1); }
-        }
-
-        .eco-node-center .eco-node-ring {
-            stroke: rgba(42, 107, 107, 0.6);
-        }
-
-        .eco-node-center .eco-node-ring-outer {
-            stroke: rgba(42, 107, 107, 0.4);
-            animation: rotateRing 20s linear infinite;
-        }
-
-        .eco-node-label-center {
-            font-family: 'Inter', sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            fill: var(--bianco);
-            text-anchor: middle;
-            dominant-baseline: middle;
-        }
-
-        /* Hover states */
-        .eco-node:hover .eco-node-glow {
-            opacity: 0.6;
-        }
-
-        .eco-node:hover .eco-node-bg {
-            fill: var(--ottanio);
-            stroke: var(--ottanio);
-        }
-
-        .eco-node:hover .eco-node-ring {
-            stroke: var(--ottanio);
-            opacity: 0.7;
-        }
-
-        .eco-node:hover .eco-node-label {
-            fill: var(--bianco);
-        }
-
-        .eco-node:hover .eco-node-sub {
-            fill: rgba(255, 255, 255, 0.9);
-        }
-
-        /* Particelle in movimento sulle orbite */
-        .eco-particle {
-            fill: var(--ottanio);
-            opacity: 0.6;
-        }
-
-        .eco-particle-1 {
-            offset-path: path('M 80,300 Q 240,80 400,180 T 720,300 Q 560,520 400,420 T 80,300');
-            animation: moveParticle 15s linear infinite;
-        }
-        .eco-particle-2 {
-            offset-path: path('M 720,300 Q 560,80 400,180 T 80,300 Q 240,520 400,420 T 720,300');
-            animation: moveParticle 18s linear infinite;
-        }
-        .eco-particle-3 {
-            offset-path: path('M 400,180 Q 600,240 620,420 T 400,420 Q 200,360 180,180 T 400,180');
-            animation: moveParticle 12s linear infinite reverse;
-        }
-        .eco-particle-4 {
-            animation: floatParticle1 8s ease-in-out infinite;
-        }
-        .eco-particle-5 {
-            animation: floatParticle2 10s ease-in-out infinite;
-        }
-        .eco-particle-6 {
-            animation: floatParticle3 7s ease-in-out infinite;
-        }
-
-        @keyframes moveParticle {
-            from { offset-distance: 0%; }
-            to { offset-distance: 100%; }
-        }
-
-        @keyframes floatParticle1 {
-            0%, 100% { transform: translate(150px, 200px); opacity: 0.4; }
-            50% { transform: translate(300px, 150px); opacity: 0.8; }
-        }
-        @keyframes floatParticle2 {
-            0%, 100% { transform: translate(500px, 400px); opacity: 0.3; }
-            50% { transform: translate(600px, 250px); opacity: 0.7; }
-        }
-        @keyframes floatParticle3 {
-            0%, 100% { transform: translate(280px, 380px); opacity: 0.5; }
-            50% { transform: translate(350px, 220px); opacity: 0.9; }
-        }
-
-        /* Caption */
-        .eco-caption {
-            text-align: center;
+        .cost-didascalia {
             margin-top: 3rem;
-            font-family: 'Instrument Serif', serif;
-            font-size: 1rem;
-            font-style: italic;
-            color: rgba(10, 10, 10, 0.5);
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            color: var(--grigio);
         }
 
-        @media (max-width: 768px) {
-            .ecosistema {
-                padding: 3rem 1rem 5rem;
+        @media (max-width: 900px) {
+            .costellazione { padding: 4rem 1.25rem 6rem; }
+            .cost-scena { aspect-ratio: 1 / 1; }
+            .cost-etichetta { font-size: 0.62rem; letter-spacing: 0.1em; }
+            .cost-nodo { gap: 0.4rem; padding: 0.25rem 0.45rem 0.25rem 0.25rem; }
+        }
+
+        @media (max-width: 640px) {
+            .cost-scena { aspect-ratio: auto; display: grid; }
+            .cost-canvas { position: absolute; inset: 0; }
+            .cost-nucleo { position: relative; left: auto; top: auto; translate: none;
+                margin: 2.5rem auto 2rem; }
+            .cost-nodi {
+                position: relative;
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.35rem 0.5rem;
+                padding: 0 0.25rem 2.5rem;
             }
-            .eco-node-label {
-                font-size: 7px;
+            .cost-nodo {
+                position: relative;
+                transform: none !important;
+                opacity: 1 !important;
+                justify-content: flex-start;
             }
-            .eco-node-label-center {
-                font-size: 9px;
-            }
-            .eco-node-sub {
-                display: none;
-            }
-            .eco-caption {
-                font-size: 0.85rem;
-            }
+            .cost-nodo--sinistra { flex-direction: row; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .costellazione::before { animation: none; }
         }
 
         /* ============ STATEMENT ============ */
@@ -1760,7 +1664,8 @@
           "legalName": "TLON S.r.l.",
           "url": "https://www.tlon.it/",
           "logo": "https://www.tlon.it/assets/images/tlon-logo.png",
-          "description": "Philosophical research and outreach project: publishing house, bookstores, podcasts, festivals, education and cultural design.",
+          "description": "Independent cultural institution for public philosophy, publishing and media: publishing house, bookstores, podcasts, festivals, teaching and research.",
+          "slogan": "Public philosophy, publishing, media",
           "foundingDate": "2015",
           "founder": [
             {"@type": "Person", "name": "Andrea Colamedici", "url": "https://www.tlon.it/andrea-colamedici/"},
@@ -1789,6 +1694,7 @@
     </script>
 </head>
 <body>
+<a class="skip-link" href="#contenuto">Skip to content</a>
 
   <header>
     <a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
@@ -1800,11 +1706,12 @@
         <a href="./librerie-en.html">Bookstores</a>
         <a href="./formazione-en.html">Education</a>
         <a href="./eventi-festival-en.html">Events</a>
-        <a href="./contatti/en.html">Contact</a>
+        <a href="./press-en.html">Press</a><a href="./contatti/en.html">Contact</a>
     </nav>
     <div class="lang-switch">
         <a href="./">IT</a>
         <a href="./index-en.html" class="active">EN</a>
+        <a href="./index-es.html">ES</a>
     </div>
     <div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="Apri il menu" aria-expanded="false" aria-controls="mobileMenu">
         <span></span>
@@ -1821,21 +1728,21 @@
         <a href="./librerie-en.html">Bookstores</a>
         <a href="./formazione-en.html">Education</a>
         <a href="./eventi-festival-en.html">Events</a>
-        <a href="./contatti/en.html">Contact</a>
-        <div class="mobile-menu-lang"><a href="./">IT</a><a href="./index-en.html" class="active">EN</a></div>
+        <a href="./press-en.html">Press</a><a href="./contatti/en.html">Contact</a>
+        <div class="mobile-menu-lang"><a href="./">IT</a><a href="./index-en.html" class="active">EN</a><a href="./index-es.html">ES</a></div>
     </div>
 
-    <section class="hero">
+    <section id="contenuto" class="hero">
         <div class="hero-content">
             <div class="hero-main">
-                <p class="hero-label">Philosophy and Imagination</p>
+                <p class="hero-label">Independent cultural institution</p>
                 <h1 class="hero-title">Ideas, thought together, can create <em>a whole world</em></h1>
-                <p class="hero-desc">Tlon is a philosophical research and outreach project. Publishing house, bookstores, podcasts, festivals, education and cultural design: tools for personal and collective flourishing.</p>
+                <p class="hero-desc">Public philosophy, publishing and media. Since 2015 we have published books, opened bookstores, produced podcasts, festivals and courses: an independent cultural institution, sustained by the people who read it, listen to it and walk through it.</p>
             </div>
             <div class="hero-founders">
                 <a href="maura-gancitano/" class="founder">
                     <div class="founder-photo">
-                     <img src="../assets/images/maura-gancitano.jpg" alt="Maura Gancitano">  
+                     <img src="./assets/images/maura-gancitano.jpg" alt="Maura Gancitano" width="1333" height="2000" loading="lazy" decoding="async">  
                     </div>
                     <div class="founder-info">
                         <span class="founder-name">Maura Gancitano</span>
@@ -1843,7 +1750,7 @@
                 </a>
                 <a href="andrea-colamedici/" class="founder">
                     <div class="founder-photo">
-                     <img src="../assets/images/andrea-colamedici.jpg" alt="Andrea Colamedici">
+                     <img src="./assets/images/andrea-colamedici.jpg" alt="Andrea Colamedici" width="2400" height="1792" loading="lazy" decoding="async">
                          </div>
                     <div class="founder-info">
                         <span class="founder-name">Andrea Colamedici</span>
@@ -1860,138 +1767,19 @@
         <!-- STATEMENT -->
         <section class="statement">
             <p class="statement-text reveal">
-                An imaginary planet described by Borges. A new world created through the collective effort of imagination. Since 2015, we have been building <em>bridges between ideas and actions</em>.
+                An imaginary planet described by Borges. A new world created through the collective effort of imagination. Since 2015 we have been an independent cultural institution — public philosophy, publishing, media — building <em>bridges between ideas and actions</em>.
             </p>
         </section>
 
-        <!-- ECOSISTEMA -->
-        <section class="ecosistema">
-            <div class="eco-container">
-                <div class="eco-map reveal">
-                    <svg class="eco-svg" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:rgba(42,107,107,0.02)"/>
-                                <stop offset="50%" style="stop-color:rgba(42,107,107,0.25)"/>
-                                <stop offset="100%" style="stop-color:rgba(42,107,107,0.02)"/>
-                            </linearGradient>
-                        </defs>
-                        
-                        <!-- Rotating orbits -->
-                        <g class="eco-orbits" style="transform-origin: 400px 300px;">
-                            <ellipse class="eco-orbit eco-orbit-1" cx="400" cy="300" rx="320" ry="220"/>
-                            <ellipse class="eco-orbit eco-orbit-2" cx="400" cy="300" rx="180" ry="120"/>
-                            <ellipse class="eco-orbit eco-orbit-3" cx="400" cy="300" rx="90" ry="60"/>
-                        </g>
-                        
-                        <!-- Connection lines -->
-                        <g class="eco-lines">
-                            <line class="eco-line" x1="400" y1="300" x2="80" y2="300"/>
-                            <line class="eco-line" x1="400" y1="300" x2="720" y2="300"/>
-                            <line class="eco-line" x1="400" y1="300" x2="180" y2="120"/>
-                            <line class="eco-line" x1="400" y1="300" x2="620" y2="120"/>
-                            <line class="eco-line" x1="400" y1="300" x2="180" y2="480"/>
-                            <line class="eco-line" x1="400" y1="300" x2="620" y2="480"/>
-                            <line class="eco-line" x1="400" y1="300" x2="400" y2="180"/>
-                            <line class="eco-line" x1="400" y1="300" x2="400" y2="420"/>
-                            <line class="eco-line" x1="400" y1="300" x2="220" y2="300"/>
-                        </g>
-                        
-                        <!-- CENTER PLANET - TLON -->
-                        <g class="eco-node eco-node-center">
-                            <circle class="eco-node-glow" cx="400" cy="300" r="70"/>
-                            <circle class="eco-node-ring-outer" cx="400" cy="300" r="52"/>
-                            <circle class="eco-node-ring" cx="400" cy="300" r="42"/>
-                            <circle class="eco-node-bg" cx="400" cy="300" r="36"/>
-                            <text x="400" y="303" class="eco-node-label-center">TLON</text>
-                        </g>
-                        
-                        <!-- OUTER ORBIT -->
-<a href="./edizioni-en.html" class="eco-node eco-node-outer">
-    <circle class="eco-node-glow" cx="80" cy="300" r="48"/>
-    <circle class="eco-node-ring-outer" cx="80" cy="300" r="38"/>
-    <circle class="eco-node-ring" cx="80" cy="300" r="30"/>
-    <circle class="eco-node-bg" cx="80" cy="300" r="24"/>
-    <text x="80" y="298" class="eco-node-label">Publishing</text>
-</a>
-
-<a href="./eventi-festival-en.html" class="eco-node eco-node-outer">
-    <circle class="eco-node-glow" cx="720" cy="300" r="48"/>
-    <circle class="eco-node-ring-outer" cx="720" cy="300" r="38"/>
-    <circle class="eco-node-ring" cx="720" cy="300" r="30"/>
-    <circle class="eco-node-bg" cx="720" cy="300" r="24"/>
-    <text x="720" y="298" class="eco-node-label">Events</text>
-</a>
-
-<a href="./ilpod-en.html" class="eco-node eco-node-outer">
-    <circle class="eco-node-glow" cx="180" cy="120" r="48"/>
-    <circle class="eco-node-ring-outer" cx="180" cy="120" r="38"/>
-    <circle class="eco-node-ring" cx="180" cy="120" r="30"/>
-    <circle class="eco-node-bg" cx="180" cy="120" r="24"/>
-    <text x="180" y="118" class="eco-node-label">IlPod</text>
-</a>
-
-<a href="./formazione-en.html" class="eco-node eco-node-outer">
-    <circle class="eco-node-glow" cx="620" cy="120" r="48"/>
-    <circle class="eco-node-ring-outer" cx="620" cy="120" r="38"/>
-    <circle class="eco-node-ring" cx="620" cy="120" r="30"/>
-    <circle class="eco-node-bg" cx="620" cy="120" r="24"/>
-    <text x="620" y="118" class="eco-node-label">Education</text>
-</a>
-
-<a href="./ipnocrazia-en.html" class="eco-node eco-node-outer">
-    <circle class="eco-node-glow" cx="180" cy="480" r="48"/>
-    <circle class="eco-node-ring-outer" cx="180" cy="480" r="38"/>
-    <circle class="eco-node-ring" cx="180" cy="480" r="30"/>
-    <circle class="eco-node-bg" cx="180" cy="480" r="24"/>
-    <text x="180" y="478" class="eco-node-label">Hypnocracy</text>
-</a>
-
-<a href="./librerie-en.html" class="eco-node eco-node-outer">
-    <circle class="eco-node-glow" cx="620" cy="480" r="48"/>
-    <circle class="eco-node-ring-outer" cx="620" cy="480" r="38"/>
-    <circle class="eco-node-ring" cx="620" cy="480" r="30"/>
-    <circle class="eco-node-bg" cx="620" cy="480" r="24"/>
-    <text x="620" y="478" class="eco-node-label">Bookstores</text>
-</a>
-
-<!-- INNER ORBIT -->
-<a href="./il-progetto-en.html" class="eco-node eco-node-inner">
-    <circle class="eco-node-glow" cx="220" cy="300" r="42"/>
-    <circle class="eco-node-ring-outer" cx="220" cy="300" r="34"/>
-    <circle class="eco-node-ring" cx="220" cy="300" r="27"/>
-    <circle class="eco-node-bg" cx="220" cy="300" r="21"/>
-    <text x="220" y="298" class="eco-node-label">The Project</text>
-</a>
-
-<a href="https://www.tlonletter.it" target="_blank" class="eco-node eco-node-inner">
-    <circle class="eco-node-glow" cx="400" cy="180" r="42"/>
-    <circle class="eco-node-ring-outer" cx="400" cy="180" r="34"/>
-    <circle class="eco-node-ring" cx="400" cy="180" r="27"/>
-    <circle class="eco-node-bg" cx="400" cy="180" r="21"/>
-    <text x="400" y="178" class="eco-node-label">Newsletter</text>
-</a>
-
-<a href="./contatti/en.html" class="eco-node eco-node-inner">
-    <circle class="eco-node-glow" cx="400" cy="420" r="42"/>
-    <circle class="eco-node-ring-outer" cx="400" cy="420" r="34"/>
-    <circle class="eco-node-ring" cx="400" cy="420" r="27"/>
-    <circle class="eco-node-bg" cx="400" cy="420" r="21"/>
-    <text x="400" y="418" class="eco-node-label">Contact</text>
-</a>
-                        
-                        <!-- Moving particles -->
-                        <g class="eco-particles">
-                            <circle class="eco-particle eco-particle-1" r="2"/>
-                            <circle class="eco-particle eco-particle-2" r="2"/>
-                            <circle class="eco-particle eco-particle-3" r="2"/>
-                            <circle class="eco-particle eco-particle-4" r="1.5"/>
-                            <circle class="eco-particle eco-particle-5" r="1.5"/>
-                            <circle class="eco-particle eco-particle-6" r="1.5"/>
-                        </g>
-                    </svg>
+        <!-- COSTELLAZIONE -->
+        <section class="costellazione" id="ecosistema">
+            <div class="cost-wrap">
+                <div class="cost-scena" id="costScena">
+                    <canvas class="cost-canvas" id="costCanvas" aria-hidden="true"></canvas>
+                    <div class="cost-nucleo" aria-hidden="true">TLON</div>
+                    <ul class="cost-nodi" aria-label="The dimensions of Tlon"><li><a class="cost-nodo" data-orbita="2" data-fase="0.0" href="./edizioni-en.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Publishing</span></a></li><li><a class="cost-nodo" data-orbita="2" data-fase="0.25" href="./librerie-en.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Bookstores</span></a></li><li><a class="cost-nodo" data-orbita="2" data-fase="0.5" href="./eventi-festival-en.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Events</span></a></li><li><a class="cost-nodo" data-orbita="2" data-fase="0.75" href="./ilpod-en.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">IlPod</span></a></li><li><a class="cost-nodo" data-orbita="1" data-fase="0.1" href="./formazione-en.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Education</span></a></li><li><a class="cost-nodo" data-orbita="1" data-fase="0.43" href="./ipnocrazia-en.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Hypnocracy</span></a></li><li><a class="cost-nodo" data-orbita="1" data-fase="0.76" href="./press-en.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Press</span></a></li><li><a class="cost-nodo" data-orbita="0" data-fase="0.2" href="./il-progetto-en.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">The Project</span></a></li><li><a class="cost-nodo" data-orbita="0" data-fase="0.53" href="https://www.tlonletter.it" target="_blank" rel="noopener"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Newsletter</span></a></li><li><a class="cost-nodo" data-orbita="0" data-fase="0.86" href="./contatti/en.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Contact</span></a></li></ul>
                 </div>
-                <p class="eco-caption">An ecosystem where every dimension interweaves with the others</p>
+                <p class="cost-didascalia">An ecosystem where every dimension interweaves with the others</p>
             </div>
         </section>
 
@@ -2015,26 +1803,26 @@
                 </div>
                 
                 <div class="news-content">
-                    <div class="news-preview">
-                        <div class="news-item reveal">
+                    <div class="news-preview" id="news-prossimi">
+                        <div class="news-item reveal" data-fine="2026-08-31">
                             <span class="news-item-tag">Festival</span>
                             <span class="news-item-date">August · Umbria</span>
                             <h3 class="news-item-title">Ipnocrazia — Umbria Green Festival</h3>
                             <p class="news-item-meta">A. Colamedici · M. Gancitano · performance</p>
                         </div>
-                        <div class="news-item reveal">
+                        <div class="news-item reveal" data-fine="2026-08-30">
                             <span class="news-item-tag">Lab</span>
                             <span class="news-item-date">August 28–30 · Alpbach, Austria</span>
                             <h3 class="news-item-title">European Forum Alpbach — Media &amp; Activism Lab</h3>
                             <p class="news-item-meta">EFA · D-Hub · ERSTE Foundation · with Nika Kovač</p>
                         </div>
-                        <div class="news-item reveal">
+                        <div class="news-item reveal" data-fine="2026-09-27">
                             <span class="news-item-tag">Festival</span>
                             <span class="news-item-date">September 24–27 · Piacenza</span>
                             <h3 class="news-item-title">Festival del Pensare Contemporaneo — Attraversamenti</h3>
                             <p class="news-item-meta">Philosophical direction · Andrea Colamedici</p>
                         </div>
-                        <div class="news-item reveal">
+                        <div class="news-item reveal" data-fine="2026-09-30">
                             <span class="news-item-tag">Exhibition</span>
                             <span class="news-item-date">April — September · Barcelona</span>
                             <h3 class="news-item-title">The Assault on Illusion — Santa Mònica</h3>
@@ -2049,50 +1837,50 @@
                     </div>
                     
                     <p class="news-label" style="margin-top: 2rem; margin-bottom: 1rem; opacity: 0.7;">Recent</p>
-                    <div class="news-preview">
-                        <div class="news-item reveal" style="border-left: 3px solid var(--ottanio, #2a9d8f); padding-left: 1rem;">
+                    <div class="news-preview" id="news-recenti">
+                        <div class="news-item reveal" style="border-left: 3px solid var(--ottanio, #2a9d8f); padding-left: 1rem;" data-fine="2026-07-12">
                             <span class="news-item-tag">Festival</span>
                             <span class="news-item-date">July 12 · Leverano</span>
                             <h3 class="news-item-title">Palestina Libera Tutt*</h3>
                             <p class="news-item-meta">Andrea Colamedici</p>
                         </div>
-                        <div class="news-item reveal">
+                        <div class="news-item reveal" data-fine="2026-07-05">
                             <span class="news-item-tag">Festival</span>
                             <span class="news-item-date">July 2–5 · Sardinia</span>
                             <h3 class="news-item-title">Festival Letterario di Gavoi</h3>
                             <p class="news-item-meta">L’Isola delle Storie</p>
                         </div>
-                        <div class="news-item reveal">
+                        <div class="news-item reveal" data-fine="2026-07-01">
                             <span class="news-item-tag">Conference</span>
                             <span class="news-item-date">July 1 · Salamanca</span>
                             <h3 class="news-item-title">Universidad Pontificia de Salamanca</h3>
                             <p class="news-item-meta">Andrea Colamedici</p>
                         </div>
-                        <div class="news-item reveal">
+                        <div class="news-item reveal" data-fine="2026-06-26">
                             <span class="news-item-tag">Presentation</span>
                             <span class="news-item-date">June 26 · Beijing</span>
                             <h3 class="news-item-title">Book Presentation — Chongqing Publishing House</h3>
                             <p class="news-item-meta">The Performance Society · Chinese edition</p>
                         </div>
-                        <div class="news-item reveal">
+                        <div class="news-item reveal" data-fine="2026-06-23">
                             <span class="news-item-tag">Forum</span>
                             <span class="news-item-date">June 22–23 · Beijing</span>
                             <h3 class="news-item-title">2026 Fangtang Forum — Tsinghua University</h3>
                             <p class="news-item-meta">Fangtang Institute · A. Colamedici jury member</p>
                         </div>
-                        <div class="news-item reveal">
+                        <div class="news-item reveal" data-fine="2026-06-05">
                             <span class="news-item-tag">Conference</span>
                             <span class="news-item-date">June 5 · Turin</span>
                             <h3 class="news-item-title">∀ISION_E — Politecnico di Torino</h3>
                             <p class="news-item-meta">Andrea Colamedici</p>
                         </div>
-                        <div class="news-item reveal">
+                        <div class="news-item reveal" data-fine="2026-05-28">
                             <span class="news-item-tag">Conference</span>
                             <span class="news-item-date">May 28 · Bucharest</span>
                             <h3 class="news-item-title">Confindustria Romania</h3>
                             <p class="news-item-meta">Andrea Colamedici</p>
                         </div>
-                        <div class="news-item reveal">
+                        <div class="news-item reveal" data-fine="2026-05-23">
                             <span class="news-item-tag">Festival</span>
                             <span class="news-item-date">May 20–23 · Istanbul</span>
                             <h3 class="news-item-title">The Peripheral Constellation</h3>
@@ -2156,20 +1944,26 @@
             <p class="dimensione-desc">GenIALab, Generativa, Hypnocracy: artificial intelligence and philosophy.</p>
             <a href="./ricerca-en.html" class="dimensione-link">Explore</a>
         </div>
-        <div class="dimensione reveal" id="dim-progetto">
+        <div class="dimensione reveal" id="dim-press">
             <span class="dimensione-num">07</span>
+            <h3 class="dimensione-title">Press</h3>
+            <p class="dimensione-desc">Thirty-two verified sources across ten countries and five languages: the international reception.</p>
+            <a href="./press-en.html" class="dimensione-link">Coverage</a>
+        </div>
+        <div class="dimensione reveal" id="dim-progetto">
+            <span class="dimensione-num">08</span>
             <h3 class="dimensione-title">The Project</h3>
             <p class="dimensione-desc">The history, the mission, the founders. Everything Tlon is and wants to be.</p>
             <a href="./il-progetto-en.html" class="dimensione-link">Discover</a>
         </div>
         <div class="dimensione reveal" id="dim-newsletter">
-            <span class="dimensione-num">08</span>
+            <span class="dimensione-num">09</span>
             <h3 class="dimensione-title">Newsletter</h3>
             <p class="dimensione-desc">Tlonletter: our weekly newsletter, on Substack.</p>
             <a href="https://www.tlonletter.it" class="dimensione-link">Subscribe</a>
         </div>
         <div class="dimensione reveal" id="dim-contatti">
-            <span class="dimensione-num">09</span>
+            <span class="dimensione-num">10</span>
             <h3 class="dimensione-title">Contact</h3>
             <p class="dimensione-desc">Write to us for collaborations, events, education or to visit the bookstores.</p>
             <a href="./contatti/en.html" class="dimensione-link">Write</a>
@@ -2400,7 +2194,27 @@
         @media (max-width: 768px) {
             .ev-deco-ring, .ev-dot, .ev-line-deco, .ev-constellation { display: none; }
         }
-    </style>
+    
+        /* Rispetta la preferenza di sistema per il movimento ridotto:
+           orbite, particelle, parallasse e reveal diventano istantanei. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+        .skip-link {
+            position: absolute; left: -9999px; top: 0; z-index: 3000;
+            background: #0a0a0a; color: #ffffff; padding: 0.75rem 1.25rem;
+            font-size: 0.85rem; letter-spacing: 0.05em;
+        }
+        .skip-link:focus { left: 0; }
+        :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+</style>
 
     <!-- Decorazioni -->
     <div class="ev-deco-ring ev-ring-1"></div>
@@ -2440,7 +2254,7 @@
         <a href="https://shop.tlon.it/prodotto/botanica-della-meraviglia-andrea-colamedici-maura-gancitano/" class="evidenza-main reveal">
             <div class="evidenza-main-visual">
                 <div class="evidenza-book-frame">
-                    <img src="./assets/libri/botanica.jpg" alt="Botany of Wonder" class="evidenza-book-cover">
+                    <img src="./assets/libri/botanica.jpg" alt="Botany of Wonder" class="evidenza-book-cover" width="667" height="1000" loading="lazy" decoding="async">
                 </div>
                 <div class="evidenza-book-glow"></div>
             </div>
@@ -2479,7 +2293,7 @@
 
             <a href="https://shop.tlon.it/prodotto/le-voci-perdute-degli-dei-julian-jaynes/" class="uu-card">
                 <div class="uu-cover">
-                    <img src="./assets/libri/Jaynes.jpg" alt="The Lost Voices of the Gods">
+                    <img src="./assets/libri/Jaynes.jpg" alt="The Lost Voices of the Gods" width="381" height="492" loading="lazy" decoding="async">
                 </div>
                 <div class="uu-info">
                     <h3 class="uu-title">The Lost Voices of the Gods</h3>
@@ -2491,7 +2305,7 @@
 
             <a href="https://shop.tlon.it/prodotto/la-stella-nera-magia-e-potere-nell-era-di-putin-e-trump-gary-lachman/" class="uu-card">
                 <div class="uu-cover">
-                    <img src="./assets/libri/Lachman.jpg" alt="The Dark Star">
+                    <img src="./assets/libri/Lachman.jpg" alt="The Dark Star" width="536" height="755" loading="lazy" decoding="async">
                 </div>
                 <div class="uu-info">
                     <h3 class="uu-title">The Dark Star</h3>
@@ -2503,7 +2317,7 @@
 
             <a href="https://shop.tlon.it/prodotto/mozart-in-rock-il-genio-dal-classico-alla-cultura-pop-loredana-lipperini/" class="uu-card">
                 <div class="uu-cover">
-                    <img src="./assets/libri/Lipperini.jpg" alt="Mozart in Rock">
+                    <img src="./assets/libri/Lipperini.jpg" alt="Mozart in Rock" width="1000" height="1408" loading="lazy" decoding="async">
                 </div>
                 <div class="uu-info">
                     <h3 class="uu-title">Mozart in rock</h3>
@@ -2633,6 +2447,38 @@
             });
         });
 
+
+        // Calendario: sposta da sé gli eventi conclusi da "in programma" a "Recenti".
+        // Le voci senza data-fine (periodo non ancora determinato) restano in programma.
+        (function(){
+            var prossimi = document.getElementById('news-prossimi'),
+                recenti  = document.getElementById('news-recenti');
+            if (!prossimi || !recenti) return;
+            var oggi = new Date().toISOString().slice(0, 10);
+            var chiave = function(el){ return el.getAttribute('data-fine') || ''; };
+
+            Array.prototype.slice.call(prossimi.querySelectorAll('.news-item')).forEach(function(el){
+                var fine = chiave(el);
+                if (!fine || fine >= oggi) return;
+                el.removeAttribute('style');
+                var dopo = Array.prototype.slice.call(recenti.querySelectorAll('.news-item'))
+                    .filter(function(r){ return chiave(r) && chiave(r) < fine; })[0];
+                recenti.insertBefore(el, dopo || null);
+            });
+
+            Array.prototype.slice.call(prossimi.querySelectorAll('.news-item'))
+                .sort(function(a, b){
+                    var x = chiave(a), y = chiave(b);
+                    if (!x) return 1;
+                    if (!y) return -1;
+                    return x < y ? -1 : x > y ? 1 : 0;
+                })
+                .forEach(function(el){ prossimi.appendChild(el); });
+
+            var conta = document.querySelector('.news-stat-number');
+            if (conta) conta.textContent = prossimi.querySelectorAll('.news-item').length;
+        })();
+
         // Scroll reveal
         const reveals = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver((entries) => {
@@ -2643,6 +2489,245 @@
             });
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         reveals.forEach(el => observer.observe(el));
+    
+    
+    
+    
+    // Costellazione: il canvas disegna il campo, i nodi restano ancore HTML.
+    (function () {
+        var scena = document.getElementById('costScena');
+        if (!scena || !scena.getContext === undefined) { /* no-op */ }
+        var canvas = document.getElementById('costCanvas');
+        if (!scena || !canvas || !canvas.getContext) return;
+        var ctx = canvas.getContext('2d');
+        var nodiEl = [].slice.call(scena.querySelectorAll('.cost-nodo'));
+        if (!nodiEl.length) return;
+
+        var menoMoto = window.matchMedia('(prefers-reduced-motion: reduce)');
+        var compatto = window.matchMedia('(max-width: 640px)');
+        var RAGGI = [0.44, 0.71, 0.99];
+        var VEL = [0.062, -0.041, 0.027];
+        var TILT = 0.60;
+
+        var nodi = nodiEl.map(function (el) {
+            var o = Math.max(0, Math.min(2, parseInt(el.dataset.orbita, 10) || 0));
+            return {
+                el: el, orbita: o,
+                raggio: RAGGI[o], vel: VEL[o],
+                fase: parseFloat(el.dataset.fase || '0') * Math.PI * 2,
+                scia: [], luce: 0, x: 0, y: 0, z: 0
+            };
+        });
+
+        var particelle = [];
+        for (var i = 0; i < 84; i++) {
+            particelle.push({
+                r: 0.18 + Math.random() * 1.0,
+                a: Math.random() * Math.PI * 2,
+                v: (0.006 + Math.random() * 0.016) * (Math.random() < 0.5 ? -1 : 1),
+                p: Math.random(),
+                s: 0.35 + Math.random() * 1.15
+            });
+        }
+
+        var W = 0, H = 0, cx = 0, cy = 0, U = 0, dpr = 1;
+        var pt = { x: 0, y: 0, mx: 0, my: 0 };
+        var visibile = true, girando = false, t0 = 0, tempo = 0;
+
+        function dimensiona() {
+            var r = scena.getBoundingClientRect();
+            if (!r.width) return;
+            dpr = Math.min(window.devicePixelRatio || 1, 2);
+            W = r.width; H = r.height;
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            cx = W / 2; cy = H / 2;
+            var margineX = Math.max(52, Math.min(140, W * 0.13));
+            U = Math.min((W / 2 - margineX) / (0.99 * 1.06),
+                         (H / 2 - 44) / (0.99 * TILT));
+        }
+
+        function posizione(n, tempo) {
+            var a = n.fase + tempo * n.vel;
+            var rx = U * n.raggio * 1.06;
+            var ry = U * n.raggio * TILT;
+            var sx = Math.cos(a), sy = Math.sin(a);
+            n.z = sy;
+            n.x = cx + rx * sx + pt.mx * (10 + n.orbita * 9);
+            n.y = cy + ry * sy + pt.my * (7 + n.orbita * 6);
+            n.scala = 0.82 + 0.22 * (sy + 1) / 2;
+            n.alfa = 0.5 + 0.5 * (sy + 1) / 2;
+        }
+
+        function ellisse(raggio, alfa, larghezza, tratteggio, rotazione) {
+            var rx = U * raggio * 1.06, ry = U * raggio * TILT;
+            ctx.save();
+            ctx.translate(cx + pt.mx * (10 + raggio * 14), cy + pt.my * (7 + raggio * 10));
+            ctx.rotate(rotazione);
+            ctx.beginPath();
+            ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+            ctx.setLineDash(tratteggio);
+            ctx.lineWidth = larghezza;
+            ctx.strokeStyle = 'rgba(42,107,107,' + alfa + ')';
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function disegna(tempo) {
+            ctx.clearRect(0, 0, W, H);
+
+            // orbite
+            for (var o = 0; o < 3; o++) {
+                ellisse(RAGGI[o], 0.16 - o * 0.028, 1, [2, 7], tempo * 0.012 * (o % 2 ? -1 : 1));
+            }
+
+            // particelle in deriva, con parallasse
+            for (var p = 0; p < particelle.length; p++) {
+                var q = particelle[p];
+                var ang = q.a + tempo * q.v;
+                var rx = U * q.r * 1.06, ry = U * q.r * TILT;
+                var px = cx + rx * Math.cos(ang) + pt.mx * (6 + q.r * 16);
+                var py = cy + ry * Math.sin(ang) + pt.my * (4 + q.r * 11);
+                var prof = (Math.sin(ang) + 1) / 2;
+                ctx.beginPath();
+                ctx.arc(px, py, q.s * (0.55 + prof * 0.7), 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(42,107,107,' + (0.06 + prof * 0.16) + ')';
+                ctx.fill();
+            }
+
+            for (var i = 0; i < nodi.length; i++) posizione(nodi[i], tempo);
+
+            var ordinati = nodi.slice().sort(function (a, b) { return a.z - b.z; });
+
+            // linee di connessione e scie
+            for (var k = 0; k < ordinati.length; k++) {
+                var n = ordinati[k];
+                var prof = (n.z + 1) / 2;
+                var g = ctx.createLinearGradient(cx, cy, n.x, n.y);
+                var forza = 0.05 + prof * 0.10 + n.luce * 0.30;
+                g.addColorStop(0, 'rgba(42,107,107,' + forza + ')');
+                g.addColorStop(1, 'rgba(42,107,107,0)');
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(n.x, n.y);
+                ctx.strokeStyle = g;
+                ctx.lineWidth = 1 + n.luce * 0.8;
+                ctx.setLineDash([]);
+                ctx.stroke();
+
+                n.scia.push([n.x, n.y]);
+                if (n.scia.length > 26) n.scia.shift();
+                for (var s = 1; s < n.scia.length; s++) {
+                    var f = s / n.scia.length;
+                    ctx.beginPath();
+                    ctx.moveTo(n.scia[s - 1][0], n.scia[s - 1][1]);
+                    ctx.lineTo(n.scia[s][0], n.scia[s][1]);
+                    ctx.strokeStyle = 'rgba(42,107,107,' + (f * f * (0.10 + prof * 0.14 + n.luce * 0.25)) + ')';
+                    ctx.lineWidth = f * 2.1;
+                    ctx.stroke();
+                }
+
+                if (n.luce > 0.01) {
+                    var al = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 44);
+                    al.addColorStop(0, 'rgba(42,107,107,' + (0.20 * n.luce) + ')');
+                    al.addColorStop(1, 'rgba(42,107,107,0)');
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, 44, 0, Math.PI * 2);
+                    ctx.fillStyle = al;
+                    ctx.fill();
+                }
+
+                if (compatto.matches) { continue; }
+                var sinistra = n.x < cx;
+                if (n.sinistra !== sinistra) {
+                    n.el.classList.toggle('cost-nodo--sinistra', sinistra);
+                    n.sinistra = sinistra;
+                }
+                n.el.style.transform = 'translate3d(' + n.x + 'px,' + n.y + 'px,0) '
+                    + 'translate(' + (sinistra ? '-100%' : '0') + ',-50%) '
+                    + 'scale(' + n.scala.toFixed(3) + ')';
+                n.el.style.opacity = n.alfa.toFixed(3);
+                n.el.style.zIndex = String(10 + Math.round(n.z * 10));
+            }
+
+            // alone del nucleo
+            var pulsa = 1 + Math.sin(tempo * 0.9) * 0.045;
+            var rg = ctx.createRadialGradient(cx, cy, 0, cx, cy, U * 0.52 * pulsa);
+            rg.addColorStop(0, 'rgba(42,107,107,0.17)');
+            rg.addColorStop(0.45, 'rgba(42,107,107,0.06)');
+            rg.addColorStop(1, 'rgba(42,107,107,0)');
+            ctx.beginPath();
+            ctx.arc(cx, cy, U * 0.52 * pulsa, 0, Math.PI * 2);
+            ctx.fillStyle = rg;
+            ctx.fill();
+        }
+
+        function passo(ts) {
+            if (!girando) return;
+            if (!t0) t0 = ts;
+            tempo = (ts - t0) / 1000;
+            pt.mx += (pt.x - pt.mx) * 0.06;
+            pt.my += (pt.y - pt.my) * 0.06;
+            for (var i = 0; i < nodi.length; i++) {
+                var obiettivo = nodi[i].el.matches(':hover, :focus-visible') ? 1 : 0;
+                nodi[i].luce += (obiettivo - nodi[i].luce) * 0.12;
+            }
+            disegna(tempo);
+            requestAnimationFrame(passo);
+        }
+
+        function avvia() {
+            if (girando || menoMoto.matches) return;
+            girando = true; t0 = 0;
+            requestAnimationFrame(passo);
+        }
+        function ferma() { girando = false; }
+
+        function statico() {
+            pt.mx = pt.my = 0;
+            for (var i = 0; i < nodi.length; i++) nodi[i].scia = [];
+            disegna(0);
+        }
+
+        dimensiona();
+
+        if (window.ResizeObserver) {
+            new ResizeObserver(function () {
+                dimensiona();
+                if (menoMoto.matches) statico();
+            }).observe(scena);
+        } else {
+            window.addEventListener('resize', dimensiona);
+        }
+
+        if (window.IntersectionObserver) {
+            new IntersectionObserver(function (voci) {
+                visibile = voci[0].isIntersecting;
+                if (visibile && !menoMoto.matches) avvia(); else ferma();
+            }, { threshold: 0.05 }).observe(scena);
+        } else { avvia(); }
+
+        scena.addEventListener('pointermove', function (e) {
+            var r = scena.getBoundingClientRect();
+            pt.x = ((e.clientX - r.left) / r.width - 0.5) * 2;
+            pt.y = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        });
+        scena.addEventListener('pointerleave', function () { pt.x = 0; pt.y = 0; });
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) ferma();
+            else if (visibile) avvia();
+        });
+
+        function cambioPreferenza() {
+            if (menoMoto.matches) { ferma(); statico(); }
+            else if (visibile) avvia();
+        }
+        if (menoMoto.addEventListener) menoMoto.addEventListener('change', cambioPreferenza);
+        cambioPreferenza();
+    })();
+
     </script>
 
 </body>
