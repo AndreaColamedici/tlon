@@ -38,6 +38,26 @@ def campo(fm, chiave, default=''):
     return m.group(1).strip().strip('"').strip("'") if m else default
 
 
+def titolo_leggibile(t, testata):
+    """`[servizio televisivo sul caso Xun]` -> `Servizio televisivo sul caso Xun`.
+    I segnaposto del dossier non devono comparire in pagina con le parentesi."""
+    import re as _re
+    t = (t or '').strip()
+    if '[' not in t:
+        return t or testata
+    if t.startswith('[') and t.endswith(']'):
+        t = t[1:-1].strip()
+    else:
+        # segnaposto come prefisso: `[titolo da verificare] — pezzo di lancio`
+        t = _re.sub(r'^\[[^\]]*\]\s*[—-]?\s*', '', t).strip()
+    for prefisso in ('da verificare —', 'da verificare -', 'titolo da verificare'):
+        if t.lower().startswith(prefisso):
+            t = t[len(prefisso):].strip(' —-')
+    if not t:
+        return testata
+    return t[0].upper() + t[1:]
+
+
 def pulisci(v):
     """`[Nel Gómez]` -> `Nel Gómez`; segnaposto -> stringa vuota."""
     v = v.strip()
@@ -61,6 +81,12 @@ def leggi_record():
         # una rassegna raccoglie fonti terze: i domini di casa restano fuori
         if campo(fm, 'autopubblicazione'):
             continue
+        # cronaca locale di eventi in cui Tlon è uno dei nomi in cartellone
+        if campo(fm, 'periferico'):
+            continue
+        # scheda generica sostituita dal pezzo reale della stessa testata
+        if campo(fm, 'duplicato_di'):
+            continue
         data = campo(fm, 'data')
         out.append({
             'data': data,
@@ -71,7 +97,7 @@ def leggi_record():
             'paese': pulisci(campo(fm, 'paese')),
             'tipo': campo(fm, 'tipo'),
             'autore': pulisci(campo(fm, 'autore')),
-            'titolo': campo(fm, 'titolo'),
+            'titolo': titolo_leggibile(campo(fm, 'titolo'), campo(fm, 'testata')),
             'url': url,
             'rilevanza': campo(fm, 'rilevanza'),
             'senza_data': bool(campo(fm, 'data_incerta')),
@@ -133,13 +159,11 @@ def riga(r, lang):
 
 
 NAV_IT = [('./il-progetto.html', 'Il Progetto'), ('./andrea-colamedici/', 'Colamedici'),
-          ('./maura-gancitano/', 'Gancitano'), ('./edizioni.html', 'Edizioni'),
-          ('./librerie.html', 'Librerie'), ('./formazione.html', 'Formazione'),
+          ('./maura-gancitano/', 'Gancitano'), ('./edizioni.html', 'Edizioni'), ('./formazione.html', 'Formazione'),
           ('./eventi-festival.html', 'Eventi'), ('./press.html', 'Press'),
           ('./contatti/', 'Contatti')]
 NAV_EN = [('./il-progetto-en.html', 'The Project'), ('./andrea-colamedici/en.html', 'Colamedici'),
-          ('./maura-gancitano/en.html', 'Gancitano'), ('./edizioni-en.html', 'Publishing'),
-          ('./librerie-en.html', 'Bookstores'), ('./formazione-en.html', 'Education'),
+          ('./maura-gancitano/en.html', 'Gancitano'), ('./edizioni-en.html', 'Publishing'), ('./formazione-en.html', 'Education'),
           ('./eventi-festival-en.html', 'Events'), ('./press-en.html', 'Press'),
           ('./contatti/en.html', 'Contact')]
 

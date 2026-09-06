@@ -8,13 +8,11 @@ in coda le proprie regole specifiche.
 import html, json, datetime
 
 NAV_IT = [('./il-progetto.html', 'Il Progetto'), ('./andrea-colamedici/', 'Colamedici'),
-          ('./maura-gancitano/', 'Gancitano'), ('./edizioni.html', 'Edizioni'),
-          ('./librerie.html', 'Librerie'), ('./formazione.html', 'Formazione'),
+          ('./maura-gancitano/', 'Gancitano'), ('./edizioni.html', 'Edizioni'), ('./formazione.html', 'Formazione'),
           ('./eventi-festival.html', 'Eventi'), ('./press.html', 'Press'),
           ('./contatti/', 'Contatti')]
 NAV_EN = [('./il-progetto-en.html', 'The Project'), ('./andrea-colamedici/en.html', 'Colamedici'),
-          ('./maura-gancitano/en.html', 'Gancitano'), ('./edizioni-en.html', 'Publishing'),
-          ('./librerie-en.html', 'Bookstores'), ('./formazione-en.html', 'Education'),
+          ('./maura-gancitano/en.html', 'Gancitano'), ('./edizioni-en.html', 'Publishing'), ('./formazione-en.html', 'Education'),
           ('./eventi-festival-en.html', 'Events'), ('./press-en.html', 'Press'),
           ('./contatti/en.html', 'Contact')]
 

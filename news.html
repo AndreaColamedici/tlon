@@ -25,10 +25,6 @@
 :root{--bianco:#ffffff;--nero:#0a0a0a;--ottanio:#2a6b6b;--grigio:#6b6b6b;
 --grigio-chiaro:#e5e5e5;--crema:#f8f6f3}
 *{margin:0;padding:0;box-sizing:border-box}
-        /* le dimensioni in HTML servono a evitare il salto del layout: qui
-           si preserva il rapporto d'aspetto quando la larghezza è fluida */
-        img { height: auto; }
-
 html{font-size:16px;scroll-behavior:smooth}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bianco);color:var(--nero);
 -webkit-font-smoothing:antialiased}
@@ -138,12 +134,12 @@ ul.eventi{list-style:none;padding:0 3rem;margin:0}
 <body>
 <a class="skip-link" href="#contenuto">Vai al contenuto</a>
 <header>
-<a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon"></a>
-<nav><a href="./il-progetto.html">Il Progetto</a><a href="./andrea-colamedici/">Colamedici</a><a href="./maura-gancitano/">Gancitano</a><a href="./edizioni.html">Edizioni</a><a href="./librerie.html">Librerie</a><a href="./formazione.html">Formazione</a><a href="./eventi-festival.html">Eventi</a><a href="./press.html">Press</a><a href="./contatti/">Contatti</a></nav>
+<a href="./" class="logo"><img src="./assets/images/tlon-logo.png" alt="Tlon" width="112" height="28"></a>
+<nav><a href="./il-progetto.html">Il Progetto</a><a href="./andrea-colamedici/">Colamedici</a><a href="./maura-gancitano/">Gancitano</a><a href="./edizioni.html">Edizioni</a><a href="./formazione.html">Formazione</a><a href="./eventi-festival.html">Eventi</a><a href="./press.html">Press</a><a href="./contatti/">Contatti</a></nav>
 <div class="lang-switch"><a href="./news.html" class="active">IT</a></div>
 <div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="Apri il menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></div>
 </header>
-<div class="mobile-menu" id="mobileMenu"><a href="./il-progetto.html">Il Progetto</a><a href="./andrea-colamedici/">Colamedici</a><a href="./maura-gancitano/">Gancitano</a><a href="./edizioni.html">Edizioni</a><a href="./librerie.html">Librerie</a><a href="./formazione.html">Formazione</a><a href="./eventi-festival.html">Eventi</a><a href="./press.html">Press</a><a href="./contatti/">Contatti</a><div class="lang-switch"><a href="./news.html" class="active">IT</a></div></div>
+<div class="mobile-menu" id="mobileMenu"><a href="./il-progetto.html">Il Progetto</a><a href="./andrea-colamedici/">Colamedici</a><a href="./maura-gancitano/">Gancitano</a><a href="./edizioni.html">Edizioni</a><a href="./formazione.html">Formazione</a><a href="./eventi-festival.html">Eventi</a><a href="./press.html">Press</a><a href="./contatti/">Contatti</a><div class="lang-switch"><a href="./news.html" class="active">IT</a></div></div>
 <main id="contenuto">
 <section class="hero">
 <p class="hero-label">Calendario</p>
