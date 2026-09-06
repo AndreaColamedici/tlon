@@ -285,8 +285,6 @@ TESTI = {
   'h1': 'Hanno scritto <em>di noi</em>',
   'hero_desc': ('Le fonti che hanno raccontato i libri, i concetti e i progetti nati in Tlon: '
                 'dalla casa editrice ai festival, dai podcast a Ipnocrazia e Prompt Thinking.'),
-  'stat': [('fonti', 'n'), ('paesi', 'paesi'), ('lingue', 'lingue'),
-           ('fonti accademiche', 'accademiche')],
   'f_tutte': 'Tutte', 'f_lingua': 'Lingua', 'f_tipo': 'Tipo',
   'conteggio': 'voci visibili',
   'vuoto': 'Nessuna voce con questi filtri.',
@@ -319,8 +317,6 @@ TESTI = {
   'hero_desc': ('The sources that have covered the books, concepts and projects born at Tlon: '
                 'from the publishing house to the festivals, from the podcasts to '
                 'Hypnocracy and Prompt Thinking.'),
-  'stat': [('sources', 'n'), ('countries', 'paesi'), ('languages', 'lingue'),
-           ('academic sources', 'accademiche')],
   'f_tutte': 'All', 'f_lingua': 'Language', 'f_tipo': 'Type',
   'conteggio': 'entries shown',
   'vuoto': 'No entries match these filters.',
@@ -360,9 +356,6 @@ def costruisci(recs, lang):
 
     nav = ''.join('<a href="%s"%s>%s</a>' % (u, ' class="attivo"' if 'press' in u else '', t)
                   for u, t in T['nav'])
-    stats = ''.join('<div class="stat"><div class="stat-num">%d</div>'
-                    '<div class="stat-label">%s</div></div>' % (valori[k], html.escape(lab))
-                    for lab, k in T['stat'])
 
     f_lingua = ('<div class="filtri-gruppo"><span class="filtri-label">%s</span>'
                 '<button class="filtro attivo" data-gruppo="lingua" data-val="tutte">%s</button>%s</div>'
@@ -450,7 +443,6 @@ def costruisci(recs, lang):
 <h1>{h1}</h1>
 <p class="hero-desc">{hero_desc}</p>
 </section>
-<section class="stats">{stats}</section>
 <div class="filtri">{f_lingua}{f_tipo}</div>
 <p class="conteggio"><span id="conteggio">{n}</span> {conteggio_label}</p>
 {corpo}
@@ -509,7 +501,7 @@ def costruisci(recs, lang):
                'press-en.html' if lang == 'en' else 'press.html') else '', l)
                for u, l in (('./press.html', 'IT'), ('./press-en.html', 'EN'))),
            label=html.escape(T['label']), h1=T['h1'], hero_desc=html.escape(T['hero_desc']),
-           stats=stats, f_lingua=f_lingua, f_tipo=f_tipo, n=len(recs),
+           f_lingua=f_lingua, f_tipo=f_tipo, n=len(recs),
            conteggio_label=T['conteggio'], corpo=''.join(corpo), vuoto=html.escape(T['vuoto']),
            anno=oggi.year)
 
