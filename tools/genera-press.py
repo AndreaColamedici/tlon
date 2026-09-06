@@ -160,11 +160,11 @@ def riga(r, lang):
 
 NAV_IT = [('./il-progetto.html', 'Il Progetto'), ('./andrea-colamedici/', 'Colamedici'),
           ('./maura-gancitano/', 'Gancitano'), ('./edizioni.html', 'Edizioni'), ('./formazione.html', 'Formazione'),
-          ('./eventi-festival.html', 'Eventi'), ('./press.html', 'Press'),
+          ('./eventi-festival.html', 'Eventi'),
           ('./contatti/', 'Contatti')]
 NAV_EN = [('./il-progetto-en.html', 'The Project'), ('./andrea-colamedici/en.html', 'Colamedici'),
           ('./maura-gancitano/en.html', 'Gancitano'), ('./edizioni-en.html', 'Publishing'), ('./formazione-en.html', 'Education'),
-          ('./eventi-festival-en.html', 'Events'), ('./press-en.html', 'Press'),
+          ('./eventi-festival-en.html', 'Events'),
           ('./contatti/en.html', 'Contact')]
 
 CSS = """
@@ -441,7 +441,6 @@ def costruisci(recs, lang):
 <section class="hero">
 <p class="hero-label">{label}</p>
 <h1>{h1}</h1>
-<p class="hero-desc">{hero_desc}</p>
 </section>
 <div class="filtri">{f_lingua}{f_tipo}</div>
 <p class="conteggio"><span id="conteggio">{n}</span> {conteggio_label}</p>
@@ -500,7 +499,7 @@ def costruisci(recs, lang):
            switch=''.join('<a href="%s"%s>%s</a>' % (u, ' class="active"' if u.endswith(
                'press-en.html' if lang == 'en' else 'press.html') else '', l)
                for u, l in (('./press.html', 'IT'), ('./press-en.html', 'EN'))),
-           label=html.escape(T['label']), h1=T['h1'], hero_desc=html.escape(T['hero_desc']),
+           label=html.escape(T['label']), h1=T['h1'],
            f_lingua=f_lingua, f_tipo=f_tipo, n=len(recs),
            conteggio_label=T['conteggio'], corpo=''.join(corpo), vuoto=html.escape(T['vuoto']),
            anno=oggi.year)

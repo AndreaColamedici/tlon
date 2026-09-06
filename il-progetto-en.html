@@ -337,6 +337,38 @@
         }
         .skip-link:focus { left: 0; }
         :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
+        /* RASSEGNA */
+        .rassegna-band {
+            padding: 7rem 3rem;
+            background: var(--crema, #f8f6f3);
+            /* la pagina è a fondo scuro: qui il colore va riportato esplicitamente */
+            color: #0a0a0a;
+            display: flex;
+            justify-content: center;
+        }
+        .rassegna-inner { max-width: 820px; text-align: center; }
+        .rassegna-label {
+            font-size: 0.75rem; font-weight: 500; letter-spacing: 0.3em;
+            text-transform: uppercase; color: var(--ottanio); margin-bottom: 1.5rem;
+        }
+        .rassegna-title {
+            color: #0a0a0a;
+            font-family: 'Instrument Serif', serif; font-weight: 400;
+            font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.15; margin-bottom: 1.5rem;
+        }
+        .rassegna-title em { font-style: italic; }
+        .rassegna-text {
+            font-size: 1.05rem; line-height: 1.9; color: #6b6b6b;
+            max-width: 620px; margin: 0 auto 2.5rem;
+        }
+        .rassegna-btn {
+            display: inline-block; padding: 1.1rem 3rem; font-size: 0.75rem;
+            font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+            border: 1px solid #0a0a0a; color: #0a0a0a; text-decoration: none;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+        .rassegna-btn:hover { background: #0a0a0a; color: #ffffff; }
+        @media (max-width: 900px) { .rassegna-band { padding: 4.5rem 1.5rem; } }
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "AboutPage", "@id": "https://www.tlon.it/il-progetto-en.html", "url": "https://www.tlon.it/il-progetto-en.html", "name": "The Project — Tlon", "inLanguage": "en", "isPartOf": {"@id": "https://www.tlon.it/#website"}, "publisher": {"@id": "https://www.tlon.it/#organization"}, "about": {"@id": "https://www.tlon.it/#organization"}, "description": "An imaginary planet. That exists."}</script>
 </head>
@@ -356,7 +388,7 @@
             <a href="./edizioni-en.html">Publishing</a>
             <a href="./formazione-en.html">Education</a>
             <a href="./eventi-festival-en.html">Events</a>
-            <a href="./press-en.html">Press</a><a href="./contatti/en.html">Contact</a>
+            <a href="./contatti/en.html">Contact</a>
         </nav>
         <div class="lang-switch">
             <a href="./il-progetto.html">IT</a>
@@ -372,7 +404,7 @@
         <a href="./edizioni-en.html">Publishing</a>
         <a href="./formazione-en.html">Education</a>
         <a href="./eventi-festival-en.html">Events</a>
-        <a href="./press-en.html">Press</a><a href="./contatti/en.html">Contact</a>
+        <a href="./contatti/en.html">Contact</a>
         <div class="mobile-menu-lang"><a href="./il-progetto.html">IT</a><a href="./il-progetto-en.html" class="active">EN</a></div>
     </div>
 
@@ -668,6 +700,15 @@
             <div class="partners-row"><div class="partners-track"><span>Auditorium Parco della Musica</span><span>Teatro Carcano</span><span>Triennale Milan</span><span>MAXXI</span><span>National Gallery</span><span>Villa Medici</span><span>Teatro Argentina</span><span>XNL Piacenza</span><span>Monk Roma</span><span>Circolo dei Lettori Turin</span><span>Fondazione Feltrinelli</span><span>Auditorium Parco della Musica</span><span>Teatro Carcano</span><span>Triennale Milan</span><span>MAXXI</span><span>National Gallery</span><span>Villa Medici</span><span>Teatro Argentina</span><span>XNL Piacenza</span><span>Monk Roma</span><span>Circolo dei Lettori Turin</span><span>Fondazione Feltrinelli</span></div></div>
         </section>
 
+        <!-- RASSEGNA -->
+        <section class="rassegna-band">
+            <div class="rassegna-inner">
+                <p class="rassegna-label">Press</p>
+                <h2 class="rassegna-title">What has been <em>written about us</em></h2>
+                <p class="rassegna-text">One hundred and sixty-four sources across fourteen countries and six languages, from 2017 to today: press, academic journals, radio, television and encyclopedias that have covered the books, concepts and projects born here.</p>
+                <a href="./press-en.html" class="rassegna-btn">See the coverage</a>
+            </div>
+        </section>
         <section class="cta">
             <div class="cta-circles"><div class="cta-circle"></div><div class="cta-circle"></div><div class="cta-circle"></div></div>
             <div class="cta-content">

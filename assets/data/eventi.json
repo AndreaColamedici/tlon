@@ -1,5 +1,205 @@
 [
  {
+  "categoria": "Conferenza",
+  "data_testo": "11–18 gennaio 2027",
+  "inizio": "2027-01-11",
+  "fine": "2027-01-18",
+  "titolo": "Congreso Futuro · Cile",
+  "testo": "Maura Gancitano e Andrea Colamedici al Congreso Futuro.",
+  "url": "https://congresofuturo.cl/",
+  "url_label": "Congreso Futuro"
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "27–29 novembre 2026",
+  "inizio": "2026-11-27",
+  "fine": "2026-11-29",
+  "titolo": "Convegno ICS · Sibiu, Romania",
+  "testo": "Maura Gancitano e Andrea Colamedici al convegno ICS di Sibiu.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "19–22 novembre 2026",
+  "inizio": "2026-11-19",
+  "fine": "2026-11-22",
+  "titolo": "Convegno SIREM 2026",
+  "testo": "Maura Gancitano all'Università Europea di Roma.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "16 novembre 2026",
+  "inizio": "2026-11-16",
+  "fine": "2026-11-16",
+  "titolo": "Fondazione Poetica · Milano",
+  "testo": "Maura Gancitano alla Fondazione Poetica, in dialogo con Mauro Magatti, per «Ma chi me lo fa fare».",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "15 novembre 2026",
+  "inizio": "2026-11-15",
+  "fine": "2026-11-15",
+  "titolo": "BeMore Days · Teatro Dal Verme",
+  "testo": "Andrea Colamedici al Teatro Dal Verme di Milano.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "15 novembre 2026",
+  "inizio": "2026-11-15",
+  "fine": "2026-11-15",
+  "titolo": "Festival Radici · Circolo dei lettori, Torino",
+  "testo": "Maura Gancitano al Circolo dei lettori di Torino.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "14 novembre 2026",
+  "inizio": "2026-11-14",
+  "fine": "2026-11-14",
+  "titolo": "13es Journées philosophiques de Bienne",
+  "testo": "Maura Gancitano e Andrea Colamedici alle Giornate filosofiche di Bienne, in Svizzera.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "9 novembre 2026",
+  "inizio": "2026-11-09",
+  "fine": "2026-11-09",
+  "titolo": "Festival della Comunicazione",
+  "testo": "Maura Gancitano al Festival della Comunicazione. Orario da confermare.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "7 novembre 2026",
+  "inizio": "2026-11-07",
+  "fine": "2026-11-07",
+  "titolo": "Da Grande Festival · Milano",
+  "testo": "Maura Gancitano al Da Grande Festival.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "5 novembre 2026",
+  "inizio": "2026-11-05",
+  "fine": "2026-11-05",
+  "titolo": "Medici Senza Frontiere",
+  "testo": "Intervento online di Andrea Colamedici.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "28–30 ottobre 2026",
+  "inizio": "2026-10-28",
+  "fine": "2026-10-30",
+  "titolo": "TED AI · Vienna",
+  "testo": "Andrea Colamedici a TED AI Vienna.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "30 ottobre 2026",
+  "inizio": "2026-10-30",
+  "fine": "2026-10-30",
+  "titolo": "Scenari Mediterranei · Palermo",
+  "testo": "Maura Gancitano all'anteprima di Scenari Mediterranei.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "24 ottobre 2026",
+  "inizio": "2026-10-24",
+  "fine": "2026-10-24",
+  "titolo": "Università Cattolica",
+  "testo": "Intervento da remoto di Maura Gancitano.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "23 ottobre 2026",
+  "inizio": "2026-10-23",
+  "fine": "2026-10-23",
+  "titolo": "AITdC · Convegno Teilhard, Bologna",
+  "testo": "Intervento da remoto di Maura Gancitano.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "21 ottobre 2026",
+  "inizio": "2026-10-21",
+  "fine": "2026-10-21",
+  "titolo": "Convegno MITICI · Reggio Emilia",
+  "testo": "Maura Gancitano al convegno MITICI.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "20 ottobre 2026",
+  "inizio": "2026-10-20",
+  "fine": "2026-10-20",
+  "titolo": "Quattroruote Next · Milano",
+  "testo": "Maura Gancitano a Quattroruote Next.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "16 ottobre 2026",
+  "inizio": "2026-10-16",
+  "fine": "2026-10-16",
+  "titolo": "Festival Buon Tempo",
+  "testo": "Maura Gancitano al Festival Buon Tempo.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "14 ottobre 2026",
+  "inizio": "2026-10-14",
+  "fine": "2026-10-14",
+  "titolo": "IX Convegno Nazionale ANP · Identità in movimento",
+  "testo": "Andrea Colamedici al Cinema Barberini di Roma.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "10 ottobre 2026",
+  "inizio": "2026-10-10",
+  "fine": "2026-10-10",
+  "titolo": "Festival Moisai · Domus Aurea",
+  "testo": "Maura Gancitano e Andrea Colamedici al Festival Moisai, alla Domus Aurea di Roma.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "1 ottobre 2026",
+  "inizio": "2026-10-01",
+  "fine": "2026-10-01",
+  "titolo": "Ciclamini Festival · Albano Laziale",
+  "testo": "Maura Gancitano e Andrea Colamedici alla Casa Creativa di Albano Laziale.",
+  "url": "",
+  "url_label": ""
+ },
+ {
   "categoria": "Festival",
   "data_testo": "Aprile – Settembre 2026",
   "inizio": "2026-04-01",
@@ -10,6 +210,26 @@
   "url_label": "Santa Mònica"
  },
  {
+  "categoria": "Conferenza",
+  "data_testo": "30 settembre 2026",
+  "inizio": "2026-09-30",
+  "fine": "2026-09-30",
+  "titolo": "Universidad Nacional Autónoma de México",
+  "testo": "Intervento di Andrea Colamedici alla UNAM.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "28 settembre 2026",
+  "inizio": "2026-09-28",
+  "fine": "2026-09-28",
+  "titolo": "Incontro con Asma Mhalla · Roma",
+  "testo": "Dialogo con Asma Mhalla a Roma. Orario e sede da confermare.",
+  "url": "",
+  "url_label": ""
+ },
+ {
   "categoria": "Festival",
   "data_testo": "24–27 settembre 2026",
   "inizio": "2026-09-24",
@@ -18,6 +238,36 @@
   "testo": "La quarta edizione del festival diretto filosoficamente da Andrea Colamedici, a Piacenza.",
   "url": "https://www.pensarecontemporaneo.it/",
   "url_label": "Pensare Contemporaneo"
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "23 settembre 2026",
+  "inizio": "2026-09-23",
+  "fine": "2026-09-23",
+  "titolo": "IlPod · Italian Podcast Awards",
+  "testo": "La quinta edizione del premio nazionale per i podcast, ideato da Maura Gancitano e Andrea Colamedici, alla vigilia del Festival del Pensare Contemporaneo a Piacenza.",
+  "url": "https://ilpod.it/",
+  "url_label": "IlPod"
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "20 settembre 2026",
+  "inizio": "2026-09-20",
+  "fine": "2026-09-20",
+  "titolo": "2084 · Festival di Belleville",
+  "testo": "Maura Gancitano al festival 2084 di Belleville, a Milano.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "7–13 settembre 2026",
+  "inizio": "2026-09-07",
+  "fine": "2026-09-13",
+  "titolo": "TERRA! · Come restare umani",
+  "testo": "Sei incontri di Andrea Colamedici e Maura Gancitano al festival TERRA!: Come restare umani, L'illusione del nucleare, Adolescenza educazione e vita online, La passione non paga l'affitto, Il prezzo della libertà, Sud e ambiente.",
+  "url": "",
+  "url_label": ""
  },
  {
   "categoria": "Festival",
