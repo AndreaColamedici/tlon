@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monterano I — Tlon</title>
+<meta name="description" content="Politiche e narrazioni dell'intelligenza artificiale. Un incontro a porte chiuse promosso da Tlon. Canale Monterano, 21–23 agosto 2026.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tlon">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://www.tlon.it/monterano.html">
+<meta property="og:title" content="Monterano I">
+<meta property="og:description" content="Politiche e narrazioni dell'intelligenza artificiale. Un incontro a porte chiuse promosso da Tlon. Canale Monterano, 21–23 agosto 2026.">
+<meta property="og:image" content="https://www.tlon.it/monterano-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Monterano I — Tlon, 21–23 agosto 2026">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Monterano I">
+<meta name="twitter:description" content="Politiche e narrazioni dell'intelligenza artificiale. Canale Monterano, 21–23 agosto 2026.">
+<meta name="twitter:image" content="https://www.tlon.it/monterano-og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f2f2; --text:#201e1d; --accent:#ec3013; --accent-700:#ae1800;
+  --divider:color-mix(in srgb,#201e1d 40%,transparent);
+  --n600:#7d7979; --n700:#605d5d;
+  --font:"Archivo",system-ui,sans-serif;
+  --pad:clamp(20px,4vw,48px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.55;text-wrap:pretty;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-0.015em;line-height:1.12}
+p{margin:0}
+a{color:var(--accent-700);text-underline-offset:3px}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+
+nav{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:2px solid var(--text)}
+nav .wrap{display:flex;gap:clamp(18px,3vw,34px);overflow-x:auto;scrollbar-width:none}
+nav .wrap::-webkit-scrollbar{display:none}
+nav a{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--text);padding:14px 0 12px;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap}
+nav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+header{padding-top:clamp(44px,8vw,96px)}
+.kicker{margin-bottom:clamp(28px,5vw,56px);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-700)}
+.titolo{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:clamp(12px,3vw,40px)}
+h1{font-size:clamp(3rem,13vw,9.5rem);letter-spacing:-.045em;line-height:.86;text-transform:uppercase}
+.numerale{font-size:clamp(3rem,13vw,9.5rem);font-weight:800;line-height:.78;letter-spacing:-.02em;color:var(--accent)}
+.sotto{margin-top:clamp(28px,5vw,52px);border-top:2px solid var(--text);padding-top:22px;display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,56px)}
+.sotto p{flex:1 1 380px;font-size:clamp(1.05rem,2.2vw,1.45rem);line-height:1.35;font-weight:500;max-width:46ch}
+.coord{flex:0 1 300px;display:flex;flex-direction:column;gap:10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.coord span{display:flex;gap:12px}
+.coord i{color:var(--accent);font-style:normal}
+
+section.blocco{margin-top:clamp(56px,9vw,110px);border-top:2px solid var(--text);padding-top:24px;display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,56px);scroll-margin-top:70px}
+.etichetta{flex:0 0 200px}
+.etichetta h2{font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+.etichetta p{margin-top:10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--n600)}
+.corpo{flex:1 1 520px;min-width:0}
+.claim{margin-bottom:clamp(28px,4vw,44px);font-size:clamp(1.4rem,3.4vw,2.3rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;max-width:20ch}
+
+.celle{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.cella{border-top:1px solid var(--divider);padding:20px clamp(16px,2vw,28px) 26px 0}
+.cella h3{margin-bottom:14px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-700)}
+.cella p{font-size:15px;line-height:1.6}
+
+ul.persone{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));flex:1 1 520px;min-width:0}
+ul.persone li{border-top:1px solid var(--divider);padding:16px 20px 18px 0;display:flex;align-items:baseline;gap:12px}
+ul.persone b{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--accent);min-width:18px}
+ul.persone span{font-size:clamp(1rem,1.6vw,1.15rem);font-weight:600;letter-spacing:-.015em}
+
+.giorni{display:grid;gap:clamp(24px,3vw,40px);grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.giorno h3{margin-bottom:4px;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.035em;text-transform:uppercase}
+.riga{border-top:1px solid var(--divider);padding:12px 0 13px;display:flex;gap:14px;align-items:baseline}
+.slot{flex:0 0 74px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.riga p{flex:1 1 auto;font-size:15px;line-height:1.55}
+
+.mappa{border:2px solid var(--text);line-height:0;filter:grayscale(1) contrast(1.05)}
+.mappa iframe{width:100%;height:clamp(260px,38vw,400px);border:0;display:block}
+.indirizzo{margin:18px 0 clamp(28px,4vw,44px);font-size:13px}
+.vie{display:grid;gap:0 clamp(16px,3vw,32px);grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.via{border-top:1px solid var(--divider);padding:18px 0 24px}
+.via h3{margin-bottom:4px;font-size:15px;letter-spacing:.02em;text-transform:uppercase}
+.via .slot{margin-bottom:10px;display:block;flex:none}
+.via p{font-size:15px;line-height:1.6}
+
+.sub{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-700);margin-bottom:4px}
+ul.bandi{list-style:none;margin:0 0 clamp(28px,4vw,44px);padding:0}
+ul.bandi li{border-top:1px solid var(--divider);padding:18px 0 22px;display:flex;flex-wrap:wrap;gap:6px 16px}
+ul.bandi .quando{flex:0 0 96px;padding-top:4px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+ul.bandi .voce{flex:1 1 320px;min-width:0}
+ul.bandi a{font-size:clamp(1.05rem,1.8vw,1.25rem);font-weight:800;letter-spacing:-.02em;text-underline-offset:4px}
+ul.bandi p{margin-top:8px;font-size:15px;line-height:1.6;max-width:56ch}
+ul.letture{list-style:none;margin:0;padding:0}
+ul.letture li{border-top:1px solid var(--divider);padding:20px 0;font-size:clamp(1rem,1.8vw,1.15rem);color:var(--n700);max-width:52ch}
+ul.letture li:last-child{border-bottom:1px solid var(--divider)}
+ul.letture a{font-weight:800;letter-spacing:-.02em;text-underline-offset:4px}
+
+.poster{background:var(--accent);color:var(--bg);margin-top:clamp(56px,9vw,110px);scroll-margin-top:70px}
+.poster .wrap{padding-top:clamp(48px,8vw,100px);padding-bottom:clamp(48px,8vw,100px)}
+.poster h2{margin-bottom:clamp(24px,4vw,44px);font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+.poster p{max-width:22ch;font-size:clamp(1.9rem,6.4vw,4.6rem);font-weight:800;letter-spacing:-.04em;line-height:1.02}
+
+footer .wrap{padding-top:22px;padding-bottom:40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--n700)}
+main{padding-bottom:clamp(20px,4vw,40px)}
+</style>
+</head>
+<body>
+
+<nav aria-label="Sezioni della pagina">
+  <div class="wrap">
+    <a href="#perche">Perché</a>
+    <a href="#partecipanti">Partecipanti</a>
+    <a href="#programma">Programma</a>
+    <a href="#arrivare">Arrivare</a>
+    <a href="#materiali">Materiali</a>
+    <a href="#idee">Idee</a>
+  </div>
+</nav>
+
+<header class="wrap">
+  <p class="kicker">Un incontro a porte chiuse · Tlon</p>
+  <div class="titolo">
+    <h1>Monterano</h1>
+    <span class="numerale" aria-hidden="true">I</span>
+  </div>
+  <div class="sotto">
+    <p>Politiche e narrazioni dell'intelligenza artificiale. Il primo incontro di una serie.</p>
+    <div class="coord">
+      <span><i>→</i>Canale Monterano</span>
+      <span><i>→</i>dal 21 al 23 agosto 2026</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="blocco" id="perche">
+    <div class="etichetta"><h2>Perché Monterano</h2></div>
+    <div class="corpo">
+      <p class="claim">Si parte da una visione di futuro condivisa; i tre piani sono il modo in cui quella visione si mette a terra.</p>
+      <div class="celle">
+        <div class="cella">
+          <h3>Il piano delle idee</h3>
+          <p>La cornice è la sovranità cognitiva: la capacità, personale e collettiva, di restare padroni del proprio orientamento dentro l'ecosistema dell'intelligenza artificiale. A Monterano la si racconta, la si mette alla prova con obiezioni vere, e se ne ricava un'agenda di ricerca e di pressione pubblica, con bersagli e scadenze.</p>
+        </div>
+        <div class="cella">
+          <h3>Il piano della comunità</h3>
+          <p>Riflettere insieme su come si costruisce una comunità oggi: cosa la fa nascere, cosa la tiene insieme nel tempo, come si governa e come si moltiplica, cosa hanno da insegnarci le forme che già conosciamo, la festa di paese, il ritiro, la scuola, i luoghi da cui veniamo. Monterano è insieme il luogo di questa riflessione e il suo primo esperimento.</p>
+        </div>
+        <div class="cella">
+          <h3>Il piano materiale</h3>
+          <p>Valutare insieme bandi e progetti, per dare al gruppo gambe e risorse. Si comincia dalla candidatura al bando Building Narrative Power dell'European AI &amp; Society Fund, con la prima fase in scadenza il 31 agosto: da Monterano si esce con l'ossatura scritta. L'officina però continua oltre il primo bando.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blocco" id="partecipanti">
+    <div class="etichetta"><h2>Partecipanti</h2><p>Otto</p></div>
+    <ul class="persone">
+      <li><b>01</b><span>Giulia Amico di Meane</span></li>
+      <li><b>02</b><span>Luna Bianchi</span></li>
+      <li><b>03</b><span>Amedeo Ciaccheri</span></li>
+      <li><b>04</b><span>Andrea Colamedici</span></li>
+      <li><b>05</b><span>Maura Gancitano</span></li>
+      <li><b>06</b><span>Filippo Lubrano</span></li>
+      <li><b>07</b><span>Matteo Marchesano</span></li>
+      <li><b>08</b><span>Federica Vinci</span></li>
+    </ul>
+  </section>
+
+  <section class="blocco" id="programma">
+    <div class="etichetta"><h2>Programma</h2><p>21 → 23 agosto</p></div>
+    <div class="corpo giorni">
+      <div class="giorno">
+        <h3>Venerdì 21</h3>
+        <div class="riga"><span class="slot">sera</span><p>Arrivi e cena dal Sorcetto. Giro di apertura: con quale domanda arriva ognuno.</p></div>
+        <div class="riga"><span class="slot">dopo cena</span><p>La visione di futuro, tratteggiata insieme. Prima sessione in modalità jam: un campo dichiarato all'inizio, chi conduce dà gli attacchi, il turno gira.</p></div>
+      </div>
+      <div class="giorno">
+        <h3>Sabato 22</h3>
+        <div class="riga"><span class="slot">colazione</span><p>A casa.</p></div>
+        <div class="riga"><span class="slot">mattina</span><p>La comunità: come si tiene insieme, come si governa, come si moltiplica.</p></div>
+        <div class="riga"><span class="slot">a seguire</span><p>Federica racconta l'Anti-Authoritarian Toolkit di D-HUB, dieci volumi di tattiche democratiche. Un'ora e mezza, con una domanda in fondo: cosa funziona qui, e quale volume manca.</p></div>
+        <div class="riga"><span class="slot">pranzo</span><p>Da Antichi Sapori, in paese.</p></div>
+        <div class="riga"><span class="slot">pomeriggio</span><p>Verticale sull'IA aperta, pubblica, collettiva: costruire un altro immaginario di cosa l'intelligenza artificiale può essere. Con noi anche Lorenzo Marsili.</p></div>
+        <div class="riga"><span class="slot">cena</span><p>A casa: cena lunga e letture ad alta voce.</p></div>
+      </div>
+      <div class="giorno">
+        <h3>Domenica 23</h3>
+        <div class="riga"><span class="slot">mattina</span><p>La messa a terra, a tavoli paralleli: il bando europeo, la piattaforma, la pressione pubblica sull'IA. Un'ora finale in plenaria per rileggere quello che è uscito.</p></div>
+        <div class="riga"><span class="slot">pranzo</span><p>Da decidere insieme.</p></div>
+        <div class="riga"><span class="slot">pomeriggio</span><p>Compiti, calendario alla rovescia, chiusura. Poi si riparte.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blocco" id="arrivare">
+    <div class="etichetta"><h2>Dove e come arrivare</h2></div>
+    <div class="corpo">
+      <div class="mappa">
+        <iframe title="Mappa di via della Riccia 16, Canale Monterano" src="https://www.google.com/maps?q=Via+della+Riccia+16,+Canale+Monterano+RM&amp;z=14&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+      <p class="indirizzo">Via della Riccia 16, Canale Monterano (RM) ·
+        <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Via+della+Riccia+16,+Canale+Monterano+RM" target="_blank" rel="noopener">apri le indicazioni su Google Maps</a>
+      </p>
+      <div class="vie">
+        <div class="via">
+          <h3>In auto</h3>
+          <span class="slot">~1 ora</span>
+          <p>Da Roma si prende la Braccianese in direzione Bracciano, si prosegue per Manziana e da lì si seguono le indicazioni per Canale Monterano. In paese, il navigatore porta fino alla porta.</p>
+        </div>
+        <div class="via">
+          <h3>In treno</h3>
+          <span class="slot">FL3</span>
+          <p>Da Roma Ostiense, Trastevere o San Pietro, direzione Viterbo, fermata Manziana-Canale Monterano. Dalla stazione mancano pochi chilometri: avvisate Andrea dell'orario di arrivo e ci si organizza per i passaggi.</p>
+        </div>
+        <div class="via">
+          <h3>Nei dintorni</h3>
+          <span class="slot">rovine</span>
+          <p>A due passi ci sono le rovine dell'antica Monterano, la città abbandonata con la fontana e la chiesa di San Bonaventura, dentro la Riserva Naturale Monterano. Chi arriva con calma può passarci prima di cena.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blocco" id="materiali">
+    <div class="etichetta"><h2>Materiali</h2></div>
+    <div class="corpo">
+      <p class="sub">Bandi</p>
+      <ul class="bandi">
+        <li>
+          <span class="quando">31 agosto</span>
+          <div class="voce">
+            <a href="https://europeanaifund.org/building-narrative-power-funding-and-learning-programme/" target="_blank" rel="noopener">Building Narrative Power</a>
+            <p>European AI &amp; Society Fund. Costruire il potere narrativo delle comunità su data centre, lavoro e giovani. Prima fase in scadenza, seconda a novembre, avvio febbraio 2027.</p>
+          </div>
+        </li>
+        <li>
+          <span class="quando">30 settembre</span>
+          <div class="voce">
+            <a href="https://commission.europa.eu/funding-and-tenders/find-funding/eu-funding-programmes/citizens-equality-rights-and-values-programme/citizens-equality-rights-and-values-programme-overview_en" target="_blank" rel="noopener">CERV</a>
+            <p>Il programma europeo per diritti, democrazia e partecipazione civica. Ammette esplicitamente i think tank, finanzia di norma al novanta per cento. Prossima finestra civica a dicembre.</p>
+          </div>
+        </li>
+        <li>
+          <span class="quando">inizio 2027</span>
+          <div class="voce">
+            <a href="https://culture.ec.europa.eu/creative-europe/creative-europe-culture-strand/european-cooperation-projects" target="_blank" rel="noopener">Europa Creativa</a>
+            <p>European Cooperation Projects. Cooperazione culturale transnazionale, con l'intelligenza artificiale tra le priorità dal 2026. Da costruire con i partner europei nei prossimi mesi.</p>
+          </div>
+        </li>
+      </ul>
+      <p class="sub">Letture</p>
+      <ul class="letture">
+        <li><a href="/sovranita-cognitiva.pdf" target="_blank" rel="noopener">Sovranità cognitiva</a>. Cinque pagine per arrivare con la stessa mappa: i quattro livelli, lo sfratto cognitivo, il seme e la terza enclosure, e i punti in cui l'argomento può cadere.</li>
+        <li><a href="https://antiauthoritarian.com/" target="_blank" rel="noopener">Anti-Authoritarian Toolkit</a>, D-HUB. Dieci volumi liberi su come opera il potere autoritario e su come si risponde. Ne parliamo sabato mattina con Federica.</li>
+        <li>Chi vuole proporre un'altra lettura la mandi ad Andrea.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<section class="poster" id="idee">
+  <div class="wrap">
+    <h2>Idee</h2>
+    <p>Questa pagina si apre alle idee di tutti a partire da domenica 23, quando il gruppo avrà una forma. Portatele intere a Monterano.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Monterano I · agosto 2026</span>
+    <span>aggiornato il 14 agosto</span>
+  </div>
+</footer>
+
+</body>
+</html>
