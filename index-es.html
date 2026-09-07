@@ -2254,6 +2254,15 @@
             transition: opacity 0.3s ease;
         }
         .news-gruppo-link:hover { opacity: 1; }
+
+        /* la banda dei due libri d'autore ha due sole schede: griglia dedicata */
+        .ultime-uscite--due .ultime-uscite-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            max-width: 820px;
+        }
+        @media (max-width: 900px) {
+            .ultime-uscite--due .ultime-uscite-grid { grid-template-columns: 1fr; }
+        }
 </style>
 
     <!-- Decorazioni -->
@@ -2307,14 +2316,6 @@
             </div>
         </a>
         <div class="evidenza-list">
-            <a href="https://shop.tlon.it/prodotto/arcipelago-delle-realta-andrea-colamedici/" class="evidenza-item reveal">
-                <h4 class="evidenza-item-title">Arcipelago delle realtà</h4>
-                <p class="evidenza-item-meta">Andrea Colamedici — UTET</p>
-            </a>
-            <a href="https://shop.tlon.it/prodotto/animali-narrativi-maura-gancitano/" class="evidenza-item reveal">
-                <h4 class="evidenza-item-title">Animali narrativi</h4>
-                <p class="evidenza-item-meta">Maura Gancitano — Marsilio</p>
-            </a>
             <a href="https://shop.tlon.it/prodotto/ipnocrazia-trump-musk-e-la-nuova-architettura-della-realta-janwei-xun/" class="evidenza-item reveal">
                 <h4 class="evidenza-item-title">Ipnocrazia</h4>
                 <p class="evidenza-item-meta">Jianwei Xun — Edizioni Tlon</p>
@@ -2334,6 +2335,33 @@
         </div>
     </div>
 
+    <div class="ultime-uscite ultime-uscite--due reveal" style="position:relative; z-index:1;">
+        <p class="ultime-uscite-label">Los nuevos libros de Andrea y Maura</p>
+        <div class="ultime-uscite-grid">
+            <a href="https://shop.tlon.it/prodotto/arcipelago-delle-realta-andrea-colamedici/" class="uu-card">
+                <div class="uu-cover">
+                    <img src="./assets/libri/arcipelago.jpg" alt="Arcipelago delle realtà" width="700" height="1098" loading="lazy" decoding="async">
+                </div>
+                <div class="uu-info">
+                    <h3 class="uu-title">Arcipelago delle realtà</h3>
+                    <p class="uu-author">Andrea Colamedici</p>
+                    <p class="uu-desc">La realidad ha dejado de ser un continente único: un mapa de la post-realidad, donde la inteligencia artificial no produce contenidos sino que preforma el campo de lo posible.</p>
+                    <span class="uu-cta">Descubre <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                </div>
+            </a>
+            <a href="https://shop.tlon.it/prodotto/animali-narrativi-maura-gancitano/" class="uu-card">
+                <div class="uu-cover">
+                    <img src="./assets/libri/animali-narrativi.jpg" alt="Animali narrativi" width="700" height="1014" loading="lazy" decoding="async">
+                </div>
+                <div class="uu-info">
+                    <h3 class="uu-title">Animali narrativi</h3>
+                    <p class="uu-author">Maura Gancitano</p>
+                    <p class="uu-desc">Por qué no podemos dejar de creer en las historias: filosofía, crítica literaria y ciencias cognitivas en torno a nuestra necesidad más antigua.</p>
+                    <span class="uu-cta">Descubre <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                </div>
+            </a>
+        </div>
+    </div>
     <!-- ULTIME USCITE EDIZIONI TLON -->
     <div class="ultime-uscite reveal" style="position:relative; z-index:1;">
         <p class="ultime-uscite-label">Últimas publicaciones — Edizioni Tlon</p>
