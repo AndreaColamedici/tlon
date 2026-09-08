@@ -1,0 +1,431 @@
+/* ============================================================
+   Tlonletter — componenti condivisi
+   Sezione editoriale (home) + banda di richiamo (tutte le pagine)
+   Usa i token del sito con fallback, così funziona anche dove
+   :root non è definito.
+   ============================================================ */
+
+:root {
+    --tl-nero: #0e0e0e;
+    --tl-crema: #f8f6f3;
+    --tl-ottanio: #2a6b6b;
+    --tl-ottanio-chiaro: #7fb3ab;
+}
+
+.tl-rivista *,
+.tl-rivista *::before,
+.tl-rivista *::after,
+.tl-banda *,
+.tl-banda *::before,
+.tl-banda *::after {
+    box-sizing: border-box;
+}
+
+/* ---------- sezione principale ---------- */
+
+.tl-rivista {
+    position: relative;
+    overflow: hidden;
+    padding: 8rem 3rem;
+    background: var(--tl-nero);
+    color: var(--tl-crema);
+}
+
+/* alone di luce, appena percepibile */
+.tl-rivista::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 60vw;
+    height: 60vw;
+    max-width: 900px;
+    max-height: 900px;
+    background: radial-gradient(circle, rgba(42, 107, 107, 0.38) 0%, rgba(42, 107, 107, 0) 68%);
+    pointer-events: none;
+}
+
+.tl-rivista::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(248, 246, 243, 0.28), transparent);
+}
+
+.tl-inner {
+    position: relative;
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.tl-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 5rem;
+    align-items: start;
+}
+
+.tl-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--tl-ottanio-chiaro);
+    margin-bottom: 1.75rem;
+}
+
+.tl-titolo {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(3.2rem, 7.5vw, 6rem);
+    line-height: 0.94;
+    letter-spacing: -0.015em;
+    margin: 0 0 1.75rem;
+}
+
+.tl-titolo em {
+    font-style: italic;
+    color: var(--tl-ottanio-chiaro);
+}
+
+.tl-lead {
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+    line-height: 1.62;
+    color: rgba(248, 246, 243, 0.82);
+    max-width: 33em;
+    margin: 0 0 1.25rem;
+}
+
+.tl-lead em {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 1.12em;
+    color: var(--tl-crema);
+}
+
+.tl-sotto {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgba(248, 246, 243, 0.55);
+    max-width: 33em;
+    margin: 0 0 2.75rem;
+}
+
+/* ---------- il ritmo, colonna destra ---------- */
+
+.tl-ritmo {
+    border-top: 1px solid rgba(248, 246, 243, 0.16);
+    padding-top: 0.25rem;
+}
+
+.tl-voce {
+    display: grid;
+    grid-template-columns: 9.75rem 1fr;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid rgba(248, 246, 243, 0.12);
+}
+
+.tl-quando {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: var(--tl-ottanio-chiaro);
+    padding-top: 0.4rem;
+}
+
+.tl-cosa {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    margin: 0 0 0.4rem;
+    color: var(--tl-crema);
+}
+
+.tl-dettaglio {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(248, 246, 243, 0.58);
+    margin: 0;
+}
+
+/* ---------- form ---------- */
+
+.tl-form {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    max-width: 30rem;
+    border-bottom: 1px solid rgba(248, 246, 243, 0.35);
+    transition: border-color 0.35s ease;
+}
+
+.tl-form:focus-within {
+    border-color: var(--tl-ottanio-chiaro);
+}
+
+.tl-input {
+    flex: 1;
+    min-width: 0;
+    padding: 1rem 0.25rem;
+    background: transparent;
+    border: none;
+    color: var(--tl-crema);
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.tl-input::placeholder {
+    color: rgba(248, 246, 243, 0.42);
+}
+
+.tl-input:focus {
+    outline: none;
+}
+
+.tl-submit {
+    flex-shrink: 0;
+    padding: 1rem 1.75rem;
+    margin-bottom: 0.5rem;
+    background: var(--tl-crema);
+    border: none;
+    color: var(--tl-nero);
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.tl-submit:hover,
+.tl-submit:focus-visible {
+    background: var(--tl-ottanio-chiaro);
+    color: var(--tl-nero);
+}
+
+.tl-nota {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: rgba(248, 246, 243, 0.48);
+    margin: 1rem 0 0;
+    max-width: 30rem;
+}
+
+.tl-nota a {
+    color: rgba(248, 246, 243, 0.75);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(248, 246, 243, 0.3);
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.tl-nota a:hover {
+    color: var(--tl-ottanio-chiaro);
+    border-color: var(--tl-ottanio-chiaro);
+}
+
+/* ---------- riga di prova ---------- */
+
+.tl-prove {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3.5rem;
+    margin-top: 4.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(248, 246, 243, 0.16);
+}
+
+.tl-prova-num {
+    display: block;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--tl-crema);
+    margin-bottom: 0.5rem;
+}
+
+.tl-prova-txt {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: rgba(248, 246, 243, 0.5);
+}
+
+/* ---------- banda di richiamo, fondo pagina ---------- */
+
+.tl-banda {
+    padding: 4.5rem 3rem;
+    background: var(--tl-crema);
+    border-top: 1px solid #e5e5e5;
+}
+
+.tl-banda-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+}
+
+.tl-banda-label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--tl-ottanio);
+    margin-bottom: 0.9rem;
+}
+
+.tl-banda-titolo {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+    line-height: 1.12;
+    color: #0a0a0a;
+    margin: 0 0 0.7rem;
+}
+
+.tl-banda-titolo em {
+    font-style: italic;
+    color: var(--tl-ottanio);
+}
+
+.tl-banda-desc {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: #6b6b6b;
+    margin: 0;
+    max-width: 38em;
+}
+
+.tl-banda .tl-form {
+    border-bottom-color: rgba(10, 10, 10, 0.22);
+    width: 26rem;
+    max-width: 100%;
+}
+
+.tl-banda .tl-form:focus-within {
+    border-bottom-color: var(--tl-ottanio);
+}
+
+.tl-banda .tl-input {
+    color: #0a0a0a;
+}
+
+.tl-banda .tl-input::placeholder {
+    color: #9a9a9a;
+}
+
+.tl-banda .tl-submit {
+    background: #0a0a0a;
+    color: var(--tl-crema);
+}
+
+.tl-banda .tl-submit:hover,
+.tl-banda .tl-submit:focus-visible {
+    background: var(--tl-ottanio);
+    color: #fff;
+}
+
+.tl-banda .tl-nota {
+    color: #8a8a8a;
+    margin-top: 0.9rem;
+}
+
+.tl-banda .tl-nota a {
+    color: #4a4a4a;
+    border-bottom-color: #cfcfcf;
+}
+
+.tl-banda .tl-nota a:hover {
+    color: var(--tl-ottanio);
+    border-bottom-color: var(--tl-ottanio);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1024px) {
+    .tl-grid {
+        grid-template-columns: 1fr;
+        gap: 3.5rem;
+    }
+    .tl-banda-inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .tl-rivista {
+        padding: 5rem 1.5rem;
+    }
+    .tl-banda {
+        padding: 3.5rem 1.5rem;
+    }
+    .tl-voce {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 1.3rem 0;
+    }
+    .tl-quando {
+        padding-top: 0;
+    }
+    .tl-form {
+        flex-direction: column;
+        gap: 1rem;
+        border-bottom: none;
+        width: 100%;
+    }
+    .tl-input {
+        padding: 1rem 1.1rem;
+        border: 1px solid rgba(248, 246, 243, 0.28);
+    }
+    .tl-banda .tl-input {
+        border-color: #dcdcdc;
+        background: #fff;
+    }
+    .tl-submit {
+        margin-bottom: 0;
+        padding: 1.1rem 1.75rem;
+        text-align: center;
+    }
+    .tl-prove {
+        gap: 2rem 3rem;
+        margin-top: 3rem;
+        padding-top: 2rem;
+    }
+    .tl-prova-num {
+        font-size: 1.9rem;
+    }
+}
+
+/* ---------- voce di menu ---------- */
+
+nav a.tl-nav,
+nav a.tl-nav:hover {
+    color: var(--tl-ottanio);
+    opacity: 1;
+}
+
+.mobile-menu a.tl-nav {
+    color: var(--tl-ottanio-chiaro);
+}
+
+/* la voce di menu compare solo dove la barra ha spazio: sotto i 1100px
+   resta nel menu mobile, che è una lista verticale */
+@media (max-width: 1100px) {
+    nav a.tl-nav {
+        display: none;
+    }
+}

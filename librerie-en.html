@@ -29,6 +29,7 @@
     <meta name="twitter:description" content="Places where books happen. Where thought meets, clashes, transforms. Theaters of wonder.">
     <meta name="twitter:image" content="https://www.tlon.it/assets/images/libreria-1.jpg">
     <link rel="stylesheet" href="/assets/fonts/fonts.css">
+    <link rel="stylesheet" href="/tlonletter.css">
     <style>
         :root { --bianco: #ffffff; --nero: #0a0a0a; --ottanio: #2a6b6b; --grigio: #6b6b6b; --grigio-chiaro: #e5e5e5; --crema: #f9f7f4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -320,7 +321,25 @@
         <section class="stats"><div class="stats-grid"><div class="stat-item"><span class="stat-num">4</span><span class="stat-label">Bookstores</span></div><div class="stat-item"><span class="stat-num">2</span><span class="stat-label">Cities</span></div><div class="stat-item"><span class="stat-num">2016</span><span class="stat-label">Year Founded</span></div><div class="stat-item"><span class="stat-num">∞</span><span class="stat-label">Possible Stories</span></div></div></section>
         <section class="cta-section"><div class="cta-bg-text">Meet Us</div><div class="cta-content"><h2 class="cta-title">Come <em>visit</em></h2><p class="cta-text">The books await. Ideas ferment. Encounters happen. We're waiting for you at our bookstores to discover together the next book that will change everything.</p><div class="cta-buttons"><a href="https://shop.tlon.it" class="cta-btn primary">Shop Online</a><a href="./eventi-festival-en.html" class="cta-btn">Events</a><a href="./contatti/en.html" class="cta-btn">Contact</a></div></div></section>
     </main>
-    <footer><div class="footer-nav"><a href="./" class="footer-back">Home</a><div class="footer-links"><a href="https://shop.tlon.it/edizioni-tlon/">Publishing</a><a href="./il-progetto-en.html">The Project</a><a href="https://www.tlonletter.it">Newsletter</a></div></div></footer>
+
+    <!-- TLONLETTER — richiamo -->
+    <section class="tl-banda" aria-labelledby="tl-banda-titolo">
+        <div class="tl-banda-inner">
+            <div>
+                <span class="tl-banda-label">The magazine of Tlon</span>
+                <h2 class="tl-banda-titolo" id="tl-banda-titolo">Tlon<em>letter</em></h2>
+                <p class="tl-banda-desc">A philosophical opening onto the present, every week. Written by Maura Gancitano and Andrea Colamedici.</p>
+            </div>
+            <div>
+                <form class="tl-form" action="https://www.tlonletter.it/subscribe" method="get" target="_blank" rel="noopener">
+                    <input class="tl-input" type="email" name="email" required autocomplete="email" placeholder="Your email" aria-label="Subscribe to Tlonletter">
+                    <button class="tl-submit" type="submit">Subscribe</button>
+                </form>
+                <p class="tl-nota">Subscribing is free. A paid tier for those who want to support it is on <a href="https://www.tlonletter.it" target="_blank" rel="noopener">tlonletter.it</a>.</p>
+            </div>
+        </div>
+    </section>
+    <footer><div class="footer-nav"><a href="./" class="footer-back">Home</a><div class="footer-links"><a href="https://shop.tlon.it/edizioni-tlon/">Publishing</a><a href="./il-progetto-en.html">The Project</a><a href="https://www.tlonletter.it" target="_blank" rel="noopener">Tlonletter</a></div></div></footer>
     <script>
         const hamburger=document.getElementById('hamburger'),mobileMenu=document.getElementById('mobileMenu'),header=document.querySelector('header');
         hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');mobileMenu.classList.toggle('active');header.classList.toggle('menu-open');document.body.style.overflow=mobileMenu.classList.contains('active')?'hidden':'';});
