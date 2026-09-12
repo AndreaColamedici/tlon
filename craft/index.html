@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRAFT. Il barcamp nazionale di chi forma</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="CRAFT è il barcamp nazionale di formatori, educatori e docenti. Comunità, Riflessione, Apprendistato, Facilitazione, Trasmissione.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blu:      #0E2B45;
+    --blu-alto: #1A4C77;
+    --linea:    #2C6A9E;
+    --carta:    #E9E9E2;
+    --carta-alt:#DEDFD6;
+    --bordo:    #C3C5BA;
+    --gesso:    #F3F6F8;
+    --ottone:   #E0A93F;
+    --inchiostro:#141A1E;
+    --grigio:   #5A625F;
+    --misura: 34rem;
+    --scorri: 0;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+
+  body{
+    margin:0;
+    background:var(--carta);
+    color:var(--inchiostro);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:clamp(1.0625rem,0.98rem + 0.42vw,1.1875rem);
+    line-height:1.62;
+    font-optical-sizing:auto;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3{font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;font-optical-sizing:auto}
+
+  .avvolgi{width:min(100% - 2.5rem, 68rem);margin-inline:auto}
+  a{color:inherit}
+  p{max-width:var(--misura)}
+
+  :focus-visible{outline:3px solid var(--ottone);outline-offset:3px}
+
+  /* ============ righello di scorrimento ============ */
+
+  .righello{
+    position:fixed;
+    left:0; top:0; bottom:0;
+    width:1.75rem;
+    z-index:40;
+    pointer-events:none;
+    border-right:1px solid rgba(20,26,30,.14);
+    background:repeating-linear-gradient(
+        to bottom,
+        transparent 0 calc(2.5vh - 1px),
+        rgba(20,26,30,.22) calc(2.5vh - 1px) 2.5vh);
+    mix-blend-mode:multiply;
+    opacity:0;
+    transition:opacity .8s ease 1.6s;
+  }
+  .pronto .righello{opacity:1}
+
+  .righello .indice{
+    position:absolute;
+    left:0; right:-1px;
+    height:2px;
+    background:var(--ottone);
+    top:calc(var(--scorri) * 100%);
+    will-change:top;
+  }
+  .righello .indice::after{
+    content:"";
+    position:absolute;
+    right:-5px; top:-4px;
+    border:5px solid transparent;
+    border-right-color:var(--ottone);
+  }
+
+  @media (max-width:52rem){ .righello{display:none} }
+
+  /* ============ cianografia ============ */
+
+  .disegno{
+    position:relative;
+    isolation:isolate;
+    background:var(--blu);
+    color:var(--gesso);
+    padding-block:clamp(2.5rem,7vw,5rem) clamp(3rem,8vw,6rem);
+    border-bottom:3px solid var(--inchiostro);
+    overflow:hidden;
+  }
+
+  .disegno::before{
+    content:"";
+    position:absolute; inset:0;
+    z-index:-2;
+    background-image:
+      linear-gradient(var(--blu-alto) 1px, transparent 1px),
+      linear-gradient(90deg, var(--blu-alto) 1px, transparent 1px);
+    background-size:2.25rem 2.25rem;
+    clip-path:inset(0 0 100% 0);
+  }
+  .pronto .disegno::before{animation:traccia 1.15s linear forwards}
+  @keyframes traccia{to{clip-path:inset(0 0 0 0)}}
+
+  .disegno::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; top:0;
+    height:1px;
+    z-index:-1;
+    background:linear-gradient(90deg,transparent,var(--ottone) 12%,#FFF 50%,var(--ottone) 88%,transparent);
+    box-shadow:0 0 18px 2px rgba(224,169,63,.45);
+    opacity:0;
+  }
+  .pronto .disegno::after{animation:passata 1.15s linear forwards}
+  @keyframes passata{
+    0%{opacity:1;transform:translateY(0)}
+    99%{opacity:1}
+    100%{opacity:0;transform:translateY(var(--altezza,60vh))}
+  }
+
+  .mirino{
+    position:absolute; inset:0; z-index:1;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .mirino.attivo{opacity:1}
+  .mirino b, .mirino i{position:absolute;background:rgba(224,169,63,.55)}
+  .mirino b{left:0;right:0;height:1px;top:var(--y,50%)}
+  .mirino i{top:0;bottom:0;width:1px;left:var(--x,50%)}
+  .mirino u{
+    position:absolute;
+    left:calc(var(--x,50%) + 10px);
+    top:calc(var(--y,50%) + 8px);
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-size:.6875rem;
+    letter-spacing:.03em;
+    text-decoration:none;
+    color:var(--ottone);
+    white-space:nowrap;
+  }
+  @media (hover:none){ .mirino{display:none} }
+  @media (max-width:60rem){ .mirino u{display:none} }
+
+  .testata{
+    position:relative; z-index:2;
+    display:flex; flex-wrap:wrap;
+    gap:.75rem 1.5rem;
+    align-items:baseline; justify-content:space-between;
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-size:.9rem; font-weight:500;
+    color:#A8C6DE;
+    padding-bottom:clamp(2.75rem,9vw,5.5rem);
+    opacity:0;
+  }
+  .pronto .testata{animation:appare .8s ease .15s forwards}
+  @keyframes appare{to{opacity:1}}
+
+  .sigla{
+    position:relative; z-index:2;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:0;
+    margin:0;
+    line-height:.82;
+  }
+
+  .sigla b{
+    font-weight:700;
+    font-size:clamp(3.75rem,15.5vw,11.5rem);
+    letter-spacing:-.03em;
+    display:block;
+    text-align:center;
+    color:transparent;
+    -webkit-text-stroke:1.5px var(--gesso);
+    background-image:linear-gradient(var(--gesso),var(--gesso));
+    background-repeat:no-repeat;
+    background-position:0 100%;
+    background-size:100% 0%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    opacity:0;
+    transition:background-size 1s cubic-bezier(.22,.72,.25,1);
+  }
+  .pronto .sigla b{
+    animation:appare .45s ease forwards;
+    background-size:100% 100%;
+  }
+  .sigla b:nth-of-type(1){animation-delay:.55s;transition-delay:1.05s}
+  .sigla b:nth-of-type(2){animation-delay:.64s;transition-delay:1.17s}
+  .sigla b:nth-of-type(3){animation-delay:.73s;transition-delay:1.29s}
+  .sigla b:nth-of-type(4){animation-delay:.82s;transition-delay:1.41s}
+  .sigla b:nth-of-type(5){animation-delay:.91s;transition-delay:1.53s}
+
+  .sigla i{
+    display:block;
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-style:normal; font-weight:500;
+    font-size:clamp(.6rem,1.65vw,1.0625rem);
+    color:var(--ottone);
+    text-align:left;
+    margin-top:clamp(.7rem,2vw,1.35rem);
+    padding-top:.55rem;
+    padding-left:.5rem;
+    position:relative;
+    opacity:0;
+    transform:translateY(.45rem);
+  }
+  .sigla i::after{
+    content:"";
+    position:absolute;
+    left:0; top:0;
+    width:1px; height:.85rem;
+    background:var(--linea);
+  }
+  .sigla i::before{
+    content:"";
+    position:absolute; left:0; right:0; top:0;
+    height:1px; background:var(--linea);
+    transform:scaleX(0); transform-origin:left;
+  }
+  .pronto .sigla i{animation:sale .65s cubic-bezier(.2,.7,.3,1) forwards}
+  .pronto .sigla i::before{animation:tira .5s cubic-bezier(.4,0,.2,1) forwards}
+  @keyframes sale{to{opacity:1;transform:none}}
+  @keyframes tira{to{transform:scaleX(1)}}
+
+  .sigla i:nth-of-type(1){animation-delay:1.70s}
+  .sigla i:nth-of-type(2){animation-delay:1.80s}
+  .sigla i:nth-of-type(3){animation-delay:1.90s}
+  .sigla i:nth-of-type(4){animation-delay:2.00s}
+  .sigla i:nth-of-type(5){animation-delay:2.10s}
+  .sigla i:nth-of-type(1)::before{animation-delay:1.62s}
+  .sigla i:nth-of-type(2)::before{animation-delay:1.72s}
+  .sigla i:nth-of-type(3)::before{animation-delay:1.82s}
+  .sigla i:nth-of-type(4)::before{animation-delay:1.92s}
+  .sigla i:nth-of-type(5)::before{animation-delay:2.02s}
+
+  .occhiello{
+    position:relative; z-index:2;
+    max-width:30rem;
+    margin-top:clamp(2.75rem,7vw,4.5rem);
+    font-size:clamp(1.125rem,1rem + .6vw,1.4375rem);
+    line-height:1.45;
+    opacity:0;
+  }
+  .pronto .occhiello{animation:sale .9s cubic-bezier(.2,.7,.3,1) 2.3s forwards}
+  .occhiello em{font-style:italic;color:var(--ottone)}
+
+  /* ============ corpo ============ */
+
+  section{padding-block:clamp(3.25rem,8vw,6rem)}
+
+  h2{
+    font-size:clamp(1.5rem,1.2rem + 1.2vw,2.125rem);
+    font-weight:600; letter-spacing:-.018em; line-height:1.12;
+    margin:0 0 1.5rem; max-width:26rem;
+  }
+
+  .entra{opacity:0;transform:translateY(1.1rem);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.3,1)}
+  .entra.dentro{opacity:1;transform:none}
+
+  .definizione{border-top:3px solid var(--inchiostro)}
+  .definizione p{
+    font-size:clamp(1.375rem,1.05rem + 1.5vw,2.375rem);
+    line-height:1.3; max-width:26ch; margin:0; text-wrap:balance;
+  }
+  .definizione p + p{
+    margin-top:1.75rem; font-size:inherit; line-height:1.62;
+    max-width:var(--misura); color:var(--grigio);
+  }
+
+  .voci{background:var(--carta-alt);border-block:1px solid var(--bordo)}
+
+  .voce{
+    display:grid;
+    grid-template-columns:clamp(4.5rem,11vw,9rem) 1fr;
+    gap:clamp(1.25rem,4vw,3rem);
+    align-items:start;
+    padding-block:clamp(2rem,4.5vw,3rem);
+  }
+  .voce + .voce{border-top:1px solid var(--bordo)}
+
+  .voce .lettera{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-weight:700;
+    font-size:clamp(3.5rem,9vw,7rem);
+    line-height:.8; letter-spacing:-.04em;
+    color:transparent;
+    -webkit-text-stroke:2px var(--blu);
+    background-image:linear-gradient(var(--blu),var(--blu));
+    background-repeat:no-repeat;
+    background-position:0 100%;
+    background-size:100% 0%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    transition:background-size 1.15s cubic-bezier(.22,.72,.25,1);
+  }
+  .voce.dentro .lettera{background-size:100% 100%}
+
+  .voce .testo{opacity:0;transform:translateY(.9rem);transition:opacity .7s ease .12s,transform .7s cubic-bezier(.2,.7,.3,1) .12s}
+  .voce.dentro .testo{opacity:1;transform:none}
+
+  .voce h3{margin:0 0 .5rem;font-size:clamp(1.1875rem,1.05rem + .55vw,1.625rem);font-weight:600;letter-spacing:-.012em}
+  .voce p{margin:0;max-width:44ch}
+
+  /* ---- tabellone ---- */
+
+  .formato p.intro{margin-bottom:2.5rem}
+
+  .tabellone{
+    border:1px solid var(--bordo);
+    background:#F1F1EB;
+    padding:clamp(.75rem,2vw,1.25rem);
+  }
+
+  .stanze{
+    display:grid;
+    grid-template-columns:5.5rem repeat(3,1fr);
+    gap:.5rem;
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-size:.8125rem; font-weight:600;
+    color:var(--grigio);
+    padding-bottom:.5rem;
+  }
+  .stanze span:first-child{color:transparent}
+
+  .fascia{
+    display:grid;
+    grid-template-columns:5.5rem repeat(3,1fr);
+    gap:.5rem;
+    margin-bottom:.5rem;
+  }
+  .fascia .ora{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-size:.8125rem; font-weight:600; color:var(--grigio);
+    padding-top:.65rem;
+  }
+
+  .cella{
+    position:relative;
+    min-height:5.25rem;
+    border:1px dashed #B6B8AD;
+    border-radius:2px;
+    background:transparent;
+    padding:.7rem .75rem;
+    text-align:left;
+    font:inherit;
+    color:var(--inchiostro);
+    cursor:pointer;
+    display:flex; flex-direction:column; justify-content:space-between;
+    transition:border-color .25s ease,background .25s ease;
+  }
+  .cella[data-piena="1"]{cursor:default}
+  .cella:not([data-piena="1"]):hover,
+  .cella:not([data-piena="1"]):focus-visible{border-color:var(--blu);background:rgba(14,43,69,.05)}
+
+  .cella .vuoto{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-size:.8125rem; color:#8E9086;
+  }
+
+  .biglietto{
+    position:absolute; inset:.25rem;
+    background:var(--gesso);
+    border:1px solid var(--blu);
+    border-left:4px solid var(--ottone);
+    padding:.6rem .7rem;
+    display:flex; flex-direction:column; gap:.3rem;
+    box-shadow:0 2px 0 rgba(14,43,69,.16);
+    opacity:0;
+    transform:translateY(-8px) rotate(var(--ruota,0deg)) scale(.96);
+    transition:opacity .32s ease,transform .42s cubic-bezier(.2,1.25,.4,1);
+  }
+  .biglietto.posato{opacity:1;transform:rotate(var(--ruota,0deg))}
+  .biglietto strong{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-weight:600; font-size:.9375rem; line-height:1.25;
+    letter-spacing:-.005em;
+  }
+  .biglietto em{font-style:normal;font-size:.75rem;color:var(--grigio);font-family:"Bricolage Grotesque",sans-serif}
+  .biglietto.fissa{border-left-color:var(--blu)}
+  .biglietto.prenotata{border-left-color:var(--ottone)}
+  .biglietto.loco{border-left-color:var(--grigio);background:#FFF}
+
+  .legenda{
+    display:flex; flex-wrap:wrap;
+    gap:.65rem 1.75rem;
+    margin-bottom:1.25rem;
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-size:.8125rem;
+    color:var(--grigio);
+  }
+  .legenda span{display:flex;align-items:center;gap:.5rem}
+  .legenda span::before{
+    content:"";
+    width:1.25rem; height:.3rem;
+    background:var(--segno,var(--blu));
+    border-radius:1px;
+  }
+
+  .cella input{
+    width:100%;
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-size:.9375rem;
+    border:0; border-bottom:1px solid var(--blu);
+    background:transparent; padding:.2rem 0;
+    color:var(--inchiostro);
+  }
+  .cella input:focus{outline:0}
+
+  .nota{
+    font-size:.875rem; color:var(--grigio);
+    margin-top:1rem; max-width:none;
+    font-family:"Bricolage Grotesque",sans-serif;
+  }
+
+  .regola{
+    display:grid; gap:clamp(1.5rem,3vw,2.5rem);
+    grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
+    margin-top:3rem;
+  }
+  .regola div{border-left:2px solid var(--ottone);padding-left:1.125rem}
+  .regola h3{font-size:1.0625rem;font-weight:600;margin:0 0 .35rem}
+  .regola p{margin:0;font-size:.9875rem;line-height:1.55;color:var(--grigio)}
+
+  .platea{background:var(--blu);color:var(--gesso)}
+  .platea h2{color:var(--gesso)}
+  .platea p{color:#CBDCEA}
+  .tre{display:grid;gap:clamp(1.25rem,3vw,2.25rem);grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));margin-top:2.75rem}
+  .tre div{border-top:1px solid var(--linea);padding-top:1rem}
+  .tre strong{display:block;font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:1.125rem;color:var(--ottone);margin-bottom:.4rem}
+  .tre p{margin:0;font-size:.9875rem;line-height:1.55}
+
+  .letture ul{list-style:none;padding:0;margin:2rem 0 0;max-width:var(--misura)}
+  .letture li{padding:1.125rem 0;border-top:1px solid var(--bordo);font-size:1.0625rem;line-height:1.5}
+  .letture li:last-child{border-bottom:1px solid var(--bordo)}
+  .letture cite{font-style:italic}
+  .letture span{display:block;color:var(--grigio);font-size:.9375rem;margin-top:.2rem}
+
+  .chiamata{background:var(--inchiostro);color:var(--gesso)}
+  .chiamata h2{color:var(--gesso);max-width:20ch}
+  .chiamata p{color:#B6BEC2}
+  .bottone{
+    display:inline-block; margin-top:2rem;
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-weight:600; font-size:1.0625rem; text-decoration:none;
+    color:var(--inchiostro); background:var(--ottone);
+    padding:.85rem 1.6rem; border-radius:2px;
+    transition:transform .18s ease,background .18s ease;
+  }
+  .bottone:hover{background:#EFC061;transform:translateY(-2px)}
+  .bottone:active{transform:none}
+
+  footer{
+    background:var(--inchiostro); color:#7E8A90;
+    font-family:"Bricolage Grotesque",sans-serif; font-size:.875rem;
+    padding-block:2.5rem 3.5rem; border-top:1px solid #2A3238;
+  }
+  footer p{max-width:none;margin:0 0 .4rem}
+
+  main p em{font-style:italic}
+  main p strong{font-weight:600}
+  .platea p strong, .chiamata p strong, .livello p strong, .pluriennale p strong{color:var(--gesso);font-weight:600}
+
+  /* ---- scheda della proposta ---- */
+
+  .scheda{
+    display:grid;
+    grid-template-columns:11rem 1fr;
+    gap:0;
+    margin-top:2.25rem;
+    max-width:44rem;
+  }
+  .scheda dt{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-size:.8125rem; font-weight:600;
+    color:var(--grigio);
+    padding:.95rem 1rem .95rem 0;
+    border-top:1px solid var(--bordo);
+  }
+  .scheda dd{
+    margin:0;
+    padding:.9rem 0;
+    border-top:1px solid var(--bordo);
+    font-size:1.0625rem; line-height:1.5;
+  }
+  .scheda dt:first-of-type, .scheda dd:first-of-type{border-top:2px solid var(--inchiostro)}
+
+  .daDefinire{
+    display:inline-block;
+    background:rgba(224,169,63,.28);
+    border-bottom:1px solid var(--ottone);
+    padding:0 .3em;
+  }
+
+  /* ---- i momenti ---- */
+
+  .momenti{display:grid;gap:0;margin-top:2.5rem}
+  .momento{
+    display:grid;
+    grid-template-columns:2.5rem 1fr;
+    gap:clamp(1rem,3vw,2rem);
+    padding-block:1.75rem;
+    border-top:1px solid var(--bordo);
+    align-items:start;
+  }
+  .momento:last-child{border-bottom:1px solid var(--bordo)}
+  .momento .cifra{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-weight:700; font-size:1.5rem; line-height:1;
+    color:var(--ottone);
+    padding-top:.15rem;
+  }
+  .momento h3{margin:0 0 .4rem;font-size:1.25rem;font-weight:600;letter-spacing:-.012em}
+  .momento p{margin:0}
+  .momento .cuore{
+    display:inline-block;
+    margin-top:.7rem;
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-size:.8125rem; font-weight:600;
+    color:var(--blu);
+    border:1px solid var(--blu);
+    border-radius:2px;
+    padding:.15rem .5rem;
+  }
+
+  /* ---- tre livelli ---- */
+
+  .livelli{margin-top:2.5rem}
+  .livello{
+    border-left:3px solid #39424A;
+    padding:1.5rem 0 1.5rem 1.5rem;
+    margin-bottom:1.25rem;
+  }
+  .livello.scelto{border-left-color:var(--ottone)}
+  .livello .riga{
+    display:flex; flex-wrap:wrap; gap:.35rem 1.5rem;
+    align-items:baseline; justify-content:space-between;
+  }
+  .livello h3{
+    margin:0; font-size:1.25rem; font-weight:600;
+    letter-spacing:-.014em; color:var(--gesso);
+  }
+  .livello .prezzo{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-weight:700; font-size:1.5rem; color:var(--ottone);
+    white-space:nowrap;
+  }
+  .livello p{margin:.7rem 0 0;color:#B6BEC2;max-width:38rem}
+  .livello .avvertenza{color:#8E979C;font-size:.9375rem;margin-top:.6rem}
+  .livello .consigliato{
+    display:inline-block; margin-bottom:.6rem;
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-size:.75rem; font-weight:600;
+    color:var(--inchiostro); background:var(--ottone);
+    padding:.1rem .5rem; border-radius:2px;
+  }
+
+  .pluriennale{
+    margin-top:2.5rem; padding-top:2rem;
+    border-top:1px solid #333B41;
+    max-width:40rem;
+  }
+  .pluriennale h3{margin:0 0 .6rem;font-size:1.125rem;font-weight:600;color:var(--gesso)}
+  .pluriennale p{color:#B6BEC2}
+  .coda{margin-top:2rem;font-size:.9375rem;color:#8E979C;max-width:40rem}
+
+  /* ============ adattamenti ============ */
+
+  @media (max-width:46rem){
+    .sigla{
+      grid-template-columns:auto 1fr;
+      gap:0; line-height:1;
+      align-items:center;
+    }
+    .sigla b{
+      grid-column:1;
+      font-size:clamp(2.75rem,12vw,4rem);
+      text-align:left;
+      padding-right:1rem;
+    }
+    .sigla i{
+      grid-column:2; text-align:left; align-self:center;
+      margin-top:0; padding-top:0; padding-left:0; padding-bottom:.5rem;
+      font-size:clamp(.95rem,4vw,1.125rem);
+    }
+    .sigla b:nth-of-type(1), .sigla i:nth-of-type(1){grid-row:1}
+    .sigla b:nth-of-type(2), .sigla i:nth-of-type(2){grid-row:2}
+    .sigla b:nth-of-type(3), .sigla i:nth-of-type(3){grid-row:3}
+    .sigla b:nth-of-type(4), .sigla i:nth-of-type(4){grid-row:4}
+    .sigla b:nth-of-type(5), .sigla i:nth-of-type(5){grid-row:5}
+    .sigla i::before{top:auto;bottom:0}
+    .sigla i::after{display:none}
+
+    .stanze{display:none}
+    .fascia{grid-template-columns:1fr;gap:.45rem;margin-bottom:1.35rem}
+    .fascia .ora{padding-top:0;border-bottom:1px solid var(--bordo);padding-bottom:.3rem}
+    .cella{min-height:4.5rem}
+  }
+
+  @media (max-width:40rem){
+    .scheda{grid-template-columns:1fr;gap:0;max-width:none}
+    .scheda dt{border-top:1px solid var(--bordo);padding-bottom:.1rem}
+    .scheda dd{border-top:0;padding-top:.15rem}
+    .scheda dd:first-of-type{border-top:0}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.001ms !important;animation-delay:0ms !important;transition-duration:.001ms !important}
+    .sigla b,.sigla i,.occhiello,.testata,.entra,.voce .testo{opacity:1;transform:none}
+    .sigla b{background-size:100% 100%}
+    .sigla i::before{transform:scaleX(1)}
+    .disegno::before{clip-path:none}
+    .disegno::after{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="righello" aria-hidden="true"><div class="indice"></div></div>
+
+<header class="disegno">
+  <div class="mirino" aria-hidden="true"><b></b><i></i><u></u></div>
+  <div class="avvolgi">
+
+    <div class="testata">
+      <span>Il barcamp nazionale di chi forma</span>
+      <span>Proposta a ENGIM, settembre 2026</span>
+    </div>
+
+    <h1 class="sigla" aria-label="CRAFT. Comunità, Riflessione, Apprendistato, Facilitazione, Trasmissione">
+      <b>C</b><b>R</b><b>A</b><b>F</b><b>T</b>
+      <i>Comunità</i><i>Riflessione</i><i>Apprendistato</i><i>Facilitazione</i><i>Trasmissione</i>
+    </h1>
+
+    <p class="occhiello">Tre giorni in cui chi insegna, forma ed educa lavora accanto agli altri come si lavora in <em>bottega</em>.</p>
+
+  </div>
+</header>
+
+<main>
+
+  <section class="definizione">
+    <div class="avvolgi entra">
+      <p>Craft significa <em>mestiere</em>: arte appresa nella pratica, sapere che sta nelle mani prima che nelle parole.</p>
+      <p>Ogni formatore ne possiede <em>più di quanto riesca a dirne</em>, e quasi sempre resta dentro la sua aula. CRAFT serve a farlo circolare, tra pari.</p>
+    </div>
+  </section>
+
+  <section class="sintesi">
+    <div class="avvolgi entra">
+      <h2>La proposta in breve</h2>
+      <p>Un festival nazionale della formazione promosso da ENGIM, costruito attorno a un formato che in Italia il settore educativo usa pochissimo.</p>
+      <dl class="scheda">
+        <dt>Che cos'è</dt>
+        <dd>Tre giorni di lavoro tra pari su come si forma, si educa e si insegna.</dd>
+        <dt>Quando</dt>
+        <dd><span class="daDefinire">data da definire</span>, tre giornate consecutive.</dd>
+        <dt>Dove</dt>
+        <dd><span class="daDefinire">sede da definire</span>: servono almeno sei stanze divisibili, una sala grande per i tavoli di lavoro e una plenaria ampia. Il campus ITC-ILO di Torino, con i suoi padiglioni, l'auditorium e i posti letto, risponde già a tutti e tre i requisiti.</dd>
+        <dt>Chi partecipa</dt>
+        <dd>Formatori, educatori e docenti, dalla rete ENGIM e da fuori.</dd>
+        <dt>Quante persone</dt>
+        <dd>Un nucleo di 150 persone per tutti e tre i giorni, più 100 o 120 partecipanti di giornata. Circa 450 persone raggiunte, con una presenza quotidiana intorno alle 270.</dd>
+        <dt>Promotore</dt>
+        <dd>ENGIM.</dd>
+        <dt>Direzione e organizzazione</dt>
+        <dd>Tlon: impianto del festival, disegno dei formati, conduzione dei tre giorni e documentazione finale.</dd>
+        <dt>Ospiti</dt>
+        <dd>Otto o dieci formatori ed educatori invitati da fuori la rete ENGIM, che tengono sessioni nel barcamp e, i più noti, le lectio.</dd>
+        <dt>Partner possibili</dt>
+        <dd>Reggio Children e il Centro Internazionale di Formazione dell'OIL (ITC-ILO) di Torino.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="voci">
+    <div class="avvolgi">
+
+      <div class="voce">
+        <div class="lettera" aria-hidden="true">C</div>
+        <div class="testo">
+          <h3>Comunità</h3>
+          <p>Chi forma lavora quasi sempre da solo, davanti al proprio gruppo. Qui la prima cosa che si costruisce è <strong>la stanza accanto</strong>: le persone a cui si potrà scrivere il lunedì dopo.</p>
+        </div>
+      </div>
+
+      <div class="voce">
+        <div class="lettera" aria-hidden="true">R</div>
+        <div class="testo">
+          <h3>Riflessione</h3>
+          <p>Un mestiere si impara facendolo, e si capisce solo fermandosi. Tre giorni servono a questo: guardare il proprio lavoro <em>invece di eseguirlo</em>.</p>
+        </div>
+      </div>
+
+      <div class="voce">
+        <div class="lettera" aria-hidden="true">A</div>
+        <div class="testo">
+          <h3>Apprendistato</h3>
+          <p>Nella bottega si impara stando accanto a chi sa. Qui chi sa e chi impara si scambiano di posto più volte al giorno, perché ognuno è <em>esperto di qualcosa e principiante di qualcos'altro</em>.</p>
+        </div>
+      </div>
+
+      <div class="voce">
+        <div class="lettera" aria-hidden="true">F</div>
+        <div class="testo">
+          <h3>Facilitazione</h3>
+          <p>Tenere un gruppo è una tecnica, e si affina guardando come la usano gli altri. Qui si prova tra colleghi quello che nei propri corsi non si ha il tempo di provare.</p>
+        </div>
+      </div>
+
+      <div class="voce">
+        <div class="lettera" aria-hidden="true">T</div>
+        <div class="testo">
+          <h3>Trasmissione</h3>
+          <p>La domanda che regge tutto: <em>che cosa passa davvero</em> da una persona all'altra, quando crediamo di insegnare. CRAFT tiene aperta questa domanda invece di darla per risolta.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="formato">
+    <div class="avvolgi">
+      <div class="entra">
+        <h2>Il programma si riempie in tre tempi</h2>
+        <p class="intro">Una parte delle sessioni la sceglie l'organizzazione, ed è nel programma <strong>fin dall'inizio</strong>. Una parte la propongono gli iscritti nelle settimane della prenotazione, e compare <strong>prima dell'arrivo</strong>. Il resto nasce <strong>sul posto</strong>, nelle caselle rimaste libere. La griglia è la stessa: cambia solo il momento in cui viene riempita.</p>
+      </div>
+
+      <div class="legenda">
+        <span style="--segno:var(--blu)">Scelte dall'organizzazione</span>
+        <span style="--segno:var(--ottone)">Proposte in prenotazione</span>
+        <span style="--segno:var(--grigio)">Aggiunte sul posto</span>
+      </div>
+
+      <div class="tabellone" id="tabellone">
+        <div class="stanze" aria-hidden="true">
+          <span>.</span><span>Officina</span><span>Sala grande</span><span>Cortile</span>
+        </div>
+      </div>
+
+      <p class="nota">Le sessioni qui sopra sono esempi, e il tabellone ne mostra tre stanze su sei. Prova a riempire una casella libera: è quello che accade la mattina del primo giorno.</p>
+
+      <div class="regola entra">
+        <div>
+          <h3>Chi arriva, partecipa</h3>
+          <p>Non ci sono spettatori. Ogni persona presente porta una domanda, un problema aperto o un metodo che funziona.</p>
+        </div>
+        <div>
+          <h3>Chi propone, conduce</h3>
+          <p>Una sessione si tiene con quello che si sa fare, senza slide obbligatorie e senza bisogno di essere il massimo esperto in sala.</p>
+        </div>
+        <div>
+          <h3>Si può cambiare stanza</h3>
+          <p>Se una sessione non serve, si esce e se ne raggiunge un'altra. Vale per tutti e non offende nessuno.</p>
+        </div>
+        <div>
+          <h3>Resta una traccia</h3>
+          <p>Ogni sessione lascia appunti condivisi, così il lavoro dei tre giorni è consultabile anche da chi non c'era.</p>
+        </div>
+      </div>
+
+      <div class="momenti entra">
+        <div class="momento">
+          <div class="cifra" aria-hidden="true">1</div>
+          <div>
+            <h3>Assemblea</h3>
+            <p>Apre e chiude i tre giorni, e ogni mattina riprende per un quarto d'ora, così chi arriva in giornata sa a che punto è il festival. Serve a mettere in comune la domanda da cui si parte e, alla fine, a dire ad alta voce che cosa è emerso. È l'unico momento in cui tutti i presenti sono nella stessa stanza.</p>
+          </div>
+        </div>
+        <div class="momento">
+          <div class="cifra" aria-hidden="true">2</div>
+          <div>
+            <h3>Lectio magistralis</h3>
+            <p>Due momenti in plenaria, aperti anche a chi non è iscritto ai tre giorni: una voce sola davanti a tutti, su una questione che riguarda chiunque insegni un mestiere. Le tengono gli ospiti invitati per il barcamp, quando il nome lo giustifica, così una stessa presenza lavora due volte. Sono la porta d'ingresso del festival, la ragione per cui una persona decide di venire anche per una sola giornata, e <em>l'unico formato in cui si sta seduti ad ascoltare</em>.</p>
+          </div>
+        </div>
+        <div class="momento">
+          <div class="cifra" aria-hidden="true">3</div>
+          <div>
+            <h3>Tavoli di lavoro</h3>
+            <p>Gruppi stabili che per tre giorni seguono un problema solo e arrivano a un esito scritto: una scheda di metodo, una proposta, uno strumento utilizzabile il mese dopo. Girano in parallelo al barcamp, in una sala grande, così che nessuna sessione superi la dimensione in cui si può ancora parlare.</p>
+          </div>
+        </div>
+        <div class="momento">
+          <div class="cifra" aria-hidden="true">4</div>
+          <div>
+            <h3>Barcamp</h3>
+            <p>Il cuore del festival, ed è la parte che lo rende diverso da un convegno. Il programma lo scrivono i partecipanti la mattina stessa, come nel tabellone qui sopra. Una parte delle sessioni la tengono formatori invitati da fuori la rete ENGIM, scelti per le pratiche che portano: è il modo in cui entrano nel festival modi di lavorare che dentro la rete non ci sono ancora. È anche la parte che richiede più preparazione, perché un formato aperto funziona solo se la struttura sotto è solida.</p>
+            <span class="cuore">Il centro della proposta</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="facilitatori">
+    <div class="avvolgi entra">
+      <h2>Le sessioni le conducono i vostri</h2>
+      <p>Sei stanze in parallelo e una sala di tavoli di lavoro, per tre giorni, non si presidiano con una squadra esterna. Nei mesi precedenti Tlon forma ventiquattro facilitatori scelti dalla rete ENGIM, e durante il festival li dirige.</p>
+      <p>È la scelta che regge l'impianto e che lo rende coerente con quello che il festival sostiene: si impara facendo, accanto a chi sa. Alla fine dei tre giorni la competenza di facilitazione <strong>resta dentro ENGIM</strong> invece di andarsene con chi l'ha portata, e le edizioni successive partono da una squadra che esiste già.</p>
+    </div>
+  </section>
+
+  <section class="platea">
+    <div class="avvolgi entra">
+      <h2>A chi si rivolge</h2>
+      <p>A chi passa le proprie giornate a far imparare qualcosa a qualcuno, in contesti che raramente si parlano tra loro.</p>
+      <div class="tre">
+        <div><strong>Formatori</strong><p>Chi lavora nella formazione professionale e in azienda, su competenze tecniche e trasversali.</p></div>
+        <div><strong>Educatori</strong><p>Chi lavora nei servizi educativi, nell'extrascuola, nella comunità e nell'accompagnamento.</p></div>
+        <div><strong>Docenti</strong><p>Chi insegna nella scuola secondaria e nei percorsi professionalizzanti.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="letture">
+    <div class="avvolgi entra">
+      <h2>Da dove viene questa parola</h2>
+      <p>Il nome viene da una tradizione di studi precisa sul sapere pratico dei mestieri.</p>
+      <ul>
+        <li>
+          Richard Sennett, <cite>L'uomo artigiano</cite>, Feltrinelli, 2008.
+          <span>La bottega come luogo sociale dell'apprendere, e il lavoro fatto bene per sé stesso.</span>
+        </li>
+        <li>
+          Donald A. Schön, <cite>Il professionista riflessivo</cite>, Dedalo, 1993.
+          <span>Il sapere pratico dei mestieri, e il pensiero che avviene mentre si agisce.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chiorganizza">
+    <div class="avvolgi entra">
+      <h2>Chi lo tiene in piedi</h2>
+      <p>Tlon si occupa della direzione e dell'organizzazione: dall'impianto dei formati alla conduzione delle sessioni in parallelo, fino al materiale che resta dopo.</p>
+      <p>Fondata nel 2015 da Maura Gancitano e Andrea Colamedici, Tlon è una casa editrice, due librerie-teatro a Roma e a Venezia, una scuola di filosofia, un network di podcast e un'agenzia di eventi.</p>
+      <div class="regola">
+        <div>
+          <h3>Direzione di festival e premi</h3>
+          <p>Festival del Pensare Contemporaneo di Piacenza, Carnevale di Putignano, Italian Podcast Awards, Festa della Filosofia di Roma e di Milano. In ciascuno la responsabilità è la stessa: impianto, programma e tenuta delle giornate.</p>
+        </div>
+        <div>
+          <h3>Formazione</h3>
+          <p>Percorsi per aziende e organizzazioni, ENGIM compresa, su linguaggio, immaginario e strumenti del lavoro contemporaneo.</p>
+        </div>
+        <div>
+          <h3>Aula</h3>
+          <p>Il corso di Prompt Thinking allo IED di Roma, e una scuola di filosofia attiva tutto l'anno con un pubblico non accademico.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chiamata">
+    <div class="avvolgi entra">
+      <h2>Che cosa chiediamo a ENGIM</h2>
+      <p>L'incarico a Tlon copre direzione e conduzione. Produzione, sede, ristorazione e logistica dei partecipanti restano a ENGIM. Tre livelli, che si distinguono per quanto presidio portiamo e per quanto resta a voi dopo.</p>
+
+      <div class="livelli">
+
+        <div class="livello">
+          <div class="riga">
+            <h3>Impianto e regia</h3>
+            <span class="prezzo">30.000 €</span>
+          </div>
+          <p>Progettazione dell'impianto e dei formati. Raccolta e selezione delle proposte arrivate in prenotazione. Una sessione di preparazione dei facilitatori. Tre persone di Tlon in sede per i tre giorni. Restituzione sintetica finale.</p>
+          <p class="avvertenza">A questo livello la conduzione delle sei stanze in parallelo <strong>resta in carico a ENGIM</strong>.</p>
+        </div>
+
+        <div class="livello scelto">
+          <span class="consigliato">Il livello che proponiamo</span>
+          <div class="riga">
+            <h3>Impianto, formazione dei facilitatori, regia piena</h3>
+            <span class="prezzo">55.000 €</span>
+          </div>
+          <p>Tutto il primo livello, con la progettazione estesa. Quattro incontri con i referenti territoriali nei mesi precedenti, perché chi arriva sappia già che cosa porta. Individuazione, contatto e cura degli ospiti esterni. Percorso di formazione per ventiquattro facilitatori scelti nella rete ENGIM. Cinque persone di Tlon in sede. Documentazione completa di tutte le sessioni.</p>
+          <p class="avvertenza">La documentazione resta un materiale interno, a uso di chi c'era. Tutto quello che porta il festival fuori dai tre giorni è nel livello successivo.</p>
+        </div>
+
+        <div class="livello">
+          <div class="riga">
+            <h3>Da evento a processo</h3>
+            <span class="prezzo">80.000 €</span>
+          </div>
+          <p>Tutto il secondo livello. Il lavoro dei tre giorni viene trasformato in un Quaderno CRAFT, progettato e pubblicato da Edizioni Tlon, che raccoglie pratiche, casi, questioni aperte e risultati dei tavoli, e rende il festival leggibile anche a chi non era presente o ha partecipato a una sola giornata.</p>
+          <p>A due mesi dal festival, Tlon conduce una giornata di follow-up con una rappresentanza dei partecipanti: si verifica che cosa è stato effettivamente trasferito nei contesti di lavoro, si raccolgono gli esiti e si costruiscono le premesse dell'edizione successiva.</p>
+          <p>Il terzo livello trasforma così CRAFT da evento annuale a processo continuativo.</p>
+        </div>
+
+      </div>
+
+      <div class="pluriennale">
+        <h3>Un'alternativa: tre edizioni</h3>
+        <p>Il lavoro di impianto si paga una volta sola. Un incarico di direzione su tre anni, con la prima edizione al secondo livello e le due successive a 40.000 €, vale <strong>135.000 € complessivi</strong> e porta la media annua sotto il costo della singola prima edizione. Per ENGIM significa un festival che non riparte da zero ogni anno.</p>
+      </div>
+
+      <p class="coda">Le assemblee di apertura e di chiusura sono curate da Maura Gancitano e Andrea Colamedici e sono comprese in tutti e tre i livelli. Restano fuori i compensi di eventuali ospiti esterni, a piè di lista, e viaggio e alloggio del gruppo di lavoro Tlon. Tutti gli importi sono al netto di IVA.</p>
+
+      <a class="bottone" href="mailto:eventi@tlon.it?subject=CRAFT">Fissiamo il prossimo incontro</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="avvolgi">
+    <p>CRAFT è promosso da ENGIM. Direzione e organizzazione: Tlon.</p>
+    <p>Comunità, Riflessione, Apprendistato, Facilitazione, Trasmissione.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var fermo = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function avvia(){
+    if(document.body.classList.contains("pronto")) return;
+    var h = document.querySelector(".disegno");
+    if(h) h.style.setProperty("--altezza", h.offsetHeight + "px");
+    document.body.classList.add("pronto");
+  }
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(avvia);
+    setTimeout(avvia, 1200);
+  } else { avvia(); }
+
+  /* righello */
+  var indice = document.querySelector(".righello .indice"), inCoda = false;
+  function righello(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var q = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+    document.documentElement.style.setProperty("--scorri", q.toFixed(4));
+    inCoda = false;
+  }
+  if(indice){
+    window.addEventListener("scroll", function(){
+      if(!inCoda){ inCoda = true; requestAnimationFrame(righello); }
+    }, {passive:true});
+    righello();
+  }
+
+  /* mirino */
+  var testa = document.querySelector(".disegno"),
+      mirino = document.querySelector(".mirino");
+  if(testa && mirino && window.matchMedia("(hover:hover)").matches && !fermo){
+    var lettura = mirino.querySelector("u");
+    testa.addEventListener("pointermove", function(e){
+      var r = testa.getBoundingClientRect();
+      var x = e.clientX - r.left, y = e.clientY - r.top;
+      mirino.style.setProperty("--x", x + "px");
+      mirino.style.setProperty("--y", y + "px");
+      lettura.textContent = Math.round(x/3.78) + " × " + Math.round(y/3.78) + " mm";
+      mirino.classList.add("attivo");
+    });
+    testa.addEventListener("pointerleave", function(){ mirino.classList.remove("attivo"); });
+  }
+
+  /* entrate */
+  var osservabili = document.querySelectorAll(".entra, .voce");
+  if("IntersectionObserver" in window && !fermo){
+    var oss = new IntersectionObserver(function(voci){
+      voci.forEach(function(v){
+        if(v.isIntersecting){ v.target.classList.add("dentro"); oss.unobserve(v.target); }
+      });
+    }, {threshold:.18, rootMargin:"0px 0px -8% 0px"});
+    osservabili.forEach(function(el){ oss.observe(el); });
+  } else {
+    osservabili.forEach(function(el){ el.classList.add("dentro"); });
+  }
+
+  /* tabellone */
+  var F = "fissa", P = "prenotata", L = "loco";
+  var etichette = {
+    fissa:"scelta dall'organizzazione",
+    prenotata:"proposta in prenotazione",
+    loco:"aggiunta sul posto"
+  };
+  var fasce = [
+    {ora:"9.30",  celle:[{t:"Valutare una competenza che non si scrive", k:F}, {t:"Il primo giorno con un gruppo nuovo", k:P}, null]},
+    {ora:"11.00", celle:[{t:"Quando il gruppo non parte", k:P}, null, {t:"Orientare senza decidere al posto loro", k:F}]},
+    {ora:"14.30", celle:[null, {t:"Sbagliare davanti a chi impara", k:L}, {t:"IA nei percorsi formativi: che cosa faccio lunedì", k:F}]},
+    {ora:"16.00", celle:[{t:"Il tutor aziendale che non ha tempo", k:P}, null, {t:"Insegnare un mestiere a chi non l'ha scelto", k:L}]}
+  ];
+  var stanze = ["Officina","Sala grande","Cortile"];
+  var tab = document.getElementById("tabellone");
+  var daPosare = [];
+
+  function biglietto(testo, stanza, tipo){
+    var b = document.createElement("div");
+    b.className = "biglietto " + tipo;
+    b.style.setProperty("--ruota", ((Math.random()*2.2 - 1.1).toFixed(2)) + "deg");
+    var s = document.createElement("strong"); s.textContent = testo;
+    var e = document.createElement("em"); e.textContent = stanza;
+    b.appendChild(s); b.appendChild(e);
+    return b;
+  }
+
+  function svuota(cella, stanza, ora){
+    cella.innerHTML = "";
+    var v = document.createElement("span");
+    v.className = "vuoto";
+    v.textContent = "Scrivi la tua sessione";
+    cella.appendChild(v);
+    cella.setAttribute("aria-label", "Casella libera, " + stanza + ", ore " + ora + ". Proponi una sessione.");
+  }
+
+  function apri(cella, stanza, ora){
+    if(cella.dataset.piena === "1" || cella.querySelector("input")) return;
+    cella.innerHTML = "";
+    var campo = document.createElement("input");
+    campo.type = "text";
+    campo.maxLength = 60;
+    campo.placeholder = "Titolo della sessione";
+    campo.setAttribute("aria-label", "Titolo della sessione, " + stanza + ", ore " + ora);
+    cella.appendChild(campo);
+    campo.focus();
+
+    var chiuso = false;
+    function conferma(){
+      if(chiuso) return;
+      chiuso = true;
+      var t = campo.value.trim();
+      if(!t){ svuota(cella, stanza, ora); return; }
+      cella.innerHTML = "";
+      cella.dataset.piena = "1";
+      var b = biglietto(t, stanza, "loco");
+      cella.appendChild(b);
+      requestAnimationFrame(function(){ b.classList.add("posato"); });
+      cella.setAttribute("aria-label", t + ", " + stanza + ", ore " + ora + ", aggiunta sul posto");
+    }
+
+    campo.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){ e.preventDefault(); conferma(); }
+      if(e.key === "Escape"){ campo.value = ""; conferma(); }
+    });
+    campo.addEventListener("blur", conferma);
+  }
+
+  fasce.forEach(function(f){
+    var riga = document.createElement("div");
+    riga.className = "fascia";
+    var ora = document.createElement("div");
+    ora.className = "ora"; ora.textContent = f.ora;
+    riga.appendChild(ora);
+
+    f.celle.forEach(function(testo, i){
+      var cella = document.createElement("button");
+      cella.className = "cella";
+      cella.type = "button";
+
+      if(testo){
+        cella.dataset.piena = "1";
+        cella.setAttribute("aria-label", testo.t + ", " + stanze[i] + ", ore " + f.ora + ", " + etichette[testo.k]);
+        var b = biglietto(testo.t, stanze[i], testo.k);
+        cella.appendChild(b);
+        daPosare.push({nodo:b, k:testo.k});
+      } else {
+        svuota(cella, stanze[i], f.ora);
+        (function(c, s, o){
+          c.addEventListener("click", function(){ apri(c, s, o); });
+        })(cella, stanze[i], f.ora);
+      }
+      riga.appendChild(cella);
+    });
+
+    tab.appendChild(riga);
+  });
+
+  function posa(){
+    if(fermo){
+      daPosare.forEach(function(o){ o.nodo.classList.add("posato"); });
+      return;
+    }
+    var onde = ["fissa","prenotata","loco"], ritardo = 200;
+    onde.forEach(function(k){
+      daPosare.filter(function(o){ return o.k === k; })
+        .forEach(function(o){
+          var q = ritardo;
+          setTimeout(function(){ o.nodo.classList.add("posato"); }, q);
+          ritardo += 170;
+        });
+      ritardo += 520;
+    });
+  }
+
+  if("IntersectionObserver" in window){
+    var oss2 = new IntersectionObserver(function(voci){
+      voci.forEach(function(v){
+        if(v.isIntersecting){ posa(); oss2.disconnect(); }
+      });
+    }, {threshold:.25});
+    oss2.observe(tab);
+  } else { posa(); }
+
+})();
+</script>
+
+</body>
+</html>
