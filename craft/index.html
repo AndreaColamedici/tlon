@@ -81,8 +81,9 @@
 <script>
 (function(){
   "use strict";
-  var SALE = "/dM4lhalBsNBO0B+/o54rw==";
-  var IV   = "jI8kA5aovVJ156y8";
+  var SALE = "8vvOqO2MdhjS/XJLBzk6PA==";
+  var IV   = "zJJuootDVx8wJmQR";
+  var PARTI = ["p1.txt","p2.txt","p3.txt","p4.txt"];
   var campo = document.getElementById("chiave");
   var bottone = document.getElementById("entra");
   var esito = document.getElementById("esito");
@@ -100,10 +101,18 @@
     esito.className = male ? "esito male" : "esito";
   }
 
-  fetch("p.txt", {cache:"no-store"})
-    .then(function(r){ return r.text(); })
-    .then(function(t){ cifrato = byte(t); })
-    .catch(function(){ messaggio("Non riesco a caricare il documento. Ricarica la pagina.", true); });
+  Promise.all(PARTI.map(function(f){
+    return fetch(f, {cache:"no-store"}).then(function(r){
+      if(!r.ok) throw new Error("fetch");
+      return r.text();
+    });
+  }))
+  .then(function(pezzi){
+    cifrato = byte(pezzi.map(function(p){ return p.replace(/\s+/g,""); }).join(""));
+  })
+  .catch(function(){
+    messaggio("Non riesco a caricare il documento. Ricarica la pagina tra un minuto.", true);
+  });
 
   function apri(){
     if(!cifrato){ messaggio("Documento non ancora caricato, attendi un istante.", true); return; }
