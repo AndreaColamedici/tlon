@@ -81,13 +81,11 @@
 <script>
 (function(){
   "use strict";
-  var SALE = "8vvOqO2MdhjS/XJLBzk6PA==";
-  var IV   = "zJJuootDVx8wJmQR";
   var PARTI = ["p1.txt","p2.txt","p3.txt","p4.txt"];
   var campo = document.getElementById("chiave");
   var bottone = document.getElementById("entra");
   var esito = document.getElementById("esito");
-  var cifrato = null;
+  var cifrato = null, sale = null, iv = null;
 
   function byte(b64){
     var grezzo = atob(b64.replace(/\s+/g, ""));
@@ -101,18 +99,23 @@
     esito.className = male ? "esito male" : "esito";
   }
 
-  Promise.all(PARTI.map(function(f){
+  function prendi(f){
     return fetch(f, {cache:"no-store"}).then(function(r){
       if(!r.ok) throw new Error("fetch");
       return r.text();
     });
-  }))
-  .then(function(pezzi){
-    cifrato = byte(pezzi.map(function(p){ return p.replace(/\s+/g,""); }).join(""));
-  })
-  .catch(function(){
-    messaggio("Non riesco a caricare il documento. Ricarica la pagina tra un minuto.", true);
-  });
+  }
+
+  Promise.all([prendi("meta.txt")].concat(PARTI.map(prendi)))
+    .then(function(tutto){
+      var m = tutto[0].trim().split(":");
+      sale = byte(m[0]);
+      iv = byte(m[1]);
+      cifrato = byte(tutto.slice(1).map(function(p){ return p.replace(/\s+/g,""); }).join(""));
+    })
+    .catch(function(){
+      messaggio("Non riesco a caricare il documento. Ricarica la pagina tra un minuto.", true);
+    });
 
   function apri(){
     if(!cifrato){ messaggio("Documento non ancora caricato, attendi un istante.", true); return; }
@@ -126,11 +129,11 @@
     crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveKey"])
       .then(function(base){
         return crypto.subtle.deriveKey(
-          {name:"PBKDF2", salt:byte(SALE), iterations:200000, hash:"SHA-256"},
+          {name:"PBKDF2", salt:sale, iterations:200000, hash:"SHA-256"},
           base, {name:"AES-GCM", length:256}, false, ["decrypt"]);
       })
       .then(function(k){
-        return crypto.subtle.decrypt({name:"AES-GCM", iv:byte(IV)}, k, cifrato);
+        return crypto.subtle.decrypt({name:"AES-GCM", iv:iv}, k, cifrato);
       })
       .then(function(compresso){
         if(typeof DecompressionStream === "undefined"){ throw new Error("browser"); }
