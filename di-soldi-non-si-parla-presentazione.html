@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Di soldi (non) si parla! · Tlon per il Gruppo Banca Etica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#003087;
+  --blue-deep:#001A4A;
+  --lime:#64CD00;
+  --cyan:#00C8FF;
+  --orange:#FF7D00;
+  --yellow:#FFCC02;
+  --grey:#F2F2F2;
+  --dark:#14161A;
+  --white:#FFFFFF;
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --text:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --pad:clamp(1.2rem,4vw,4.5rem);
+  --rail:200px;
+}
+@media (max-width:1240px){:root{--rail:164px}}
+@media (max-width:940px){:root{--rail:0px}}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--grey);color:var(--dark);
+  font-family:var(--text);font-size:clamp(15px,.45vw + 13.6px,17.5px);line-height:1.55;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:500;letter-spacing:-0.03em;line-height:1.03}
+p{margin:0 0 .9em}
+ul{margin:0;padding:0;list-style:none}
+strong{font-weight:600;letter-spacing:-0.005em}
+em{font-style:italic}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;font-weight:600}
+
+/* ============ deck ============ */
+.deck{height:100dvh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.slide{
+  scroll-snap-align:start;min-height:100dvh;
+  padding:clamp(3rem,6vh,4.2rem) var(--pad) clamp(2.4rem,5vh,3.4rem) calc(var(--pad) + var(--rail));
+  display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;
+}
+.wrap{width:100%;max-width:1160px;margin:0 auto;position:relative;z-index:2}
+
+.s-blue{background:var(--blue);color:var(--white)}
+.s-grey{background:var(--grey)}
+.s-white{background:var(--white)}
+.s-cyan{background:var(--cyan)}
+.s-lime{background:var(--lime)}
+.s-orange{background:var(--orange)}
+.s-yellow{background:var(--yellow)}
+.s-cyan h2,.s-lime h2,.s-orange h2,.s-yellow h2{color:var(--blue)}
+.body strong,.lede strong{color:var(--blue)}
+.s-blue .body strong,.s-blue .lede strong,.s-blue .note strong,.s-blue .callout strong{color:var(--lime)}
+
+/* reticolo di fondo sulle schermate blu */
+.s-blue::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:clamp(48px,7vw,92px) clamp(48px,7vw,92px);
+}
+.s-yellow::before,.s-cyan::before,.s-lime::before,.s-orange::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:linear-gradient(rgba(0,0,0,.045) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(0,0,0,.045) 1px,transparent 1px);
+  background-size:clamp(48px,7vw,92px) clamp(48px,7vw,92px);
+}
+
+/* ============ navigazione ============ */
+.rail{
+  position:fixed;left:0;top:0;height:100dvh;width:var(--rail);
+  padding:1.1rem 0 1.1rem clamp(1rem,2.4vw,1.9rem);
+  display:flex;flex-direction:column;justify-content:center;z-index:40;pointer-events:none;overflow:hidden;
+}
+.rail .act{font-size:10px;font-weight:700;letter-spacing:.1em;opacity:.5;margin:.65rem 0 .28rem;text-transform:uppercase}
+.rail .act:first-child{margin-top:0}
+.rail button{
+  pointer-events:auto;appearance:none;background:none;border:0;cursor:pointer;
+  font:500 11.5px/1.2 var(--text);color:currentColor;opacity:.4;text-align:left;
+  padding:.2rem 0;display:flex;align-items:center;gap:.45rem;transition:opacity .16s ease;
+}
+.rail button i{display:block;width:8px;height:2px;background:currentColor;flex:none;opacity:.6;transition:width .2s ease,opacity .2s ease}
+.rail button:hover{opacity:.85}
+.rail button[aria-current="true"]{opacity:1;font-weight:600}
+.rail button[aria-current="true"] i{width:20px;opacity:1;background:var(--lime)}
+.rail button:focus-visible{outline:2px solid currentColor;outline-offset:2px;opacity:1}
+@media (max-width:940px){.rail{display:none}}
+
+.counter{position:fixed;right:var(--pad);top:1.15rem;z-index:45;font:600 12px/1 var(--text);font-variant-numeric:tabular-nums;opacity:.55}
+.progress{position:fixed;left:0;top:0;height:3px;width:0;background:var(--lime);z-index:60;transition:width .25s ease}
+
+.menu-btn{
+  display:none;position:fixed;right:var(--pad);bottom:1.1rem;z-index:55;
+  appearance:none;border:0;cursor:pointer;border-radius:999px;
+  background:var(--blue);color:var(--white);font:600 12.5px/1 var(--text);
+  padding:.72rem 1.1rem;box-shadow:0 6px 20px rgba(0,0,0,.18);
+}
+.sheet{position:fixed;inset:0;z-index:70;background:var(--blue);color:var(--white);padding:1.6rem var(--pad);overflow-y:auto;display:none}
+.sheet.open{display:block}
+.sheet h3{font-size:1.5rem;margin-bottom:1.1rem;color:var(--white)}
+.sheet button.item{display:block;width:100%;text-align:left;appearance:none;background:none;border:0;border-top:1px solid rgba(255,255,255,.2);color:inherit;font:500 15px/1.3 var(--text);padding:.75rem 0;cursor:pointer}
+.sheet .close-x{position:absolute;top:1.1rem;right:var(--pad);background:none;border:0;color:var(--white);font:600 13px/1 var(--text);cursor:pointer}
+@media (max-width:940px){.menu-btn{display:block}}
+
+/* ============ tipografia ============ */
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.06em;opacity:.6;margin:0 0 1.1rem}
+h2.title{font-size:clamp(1.9rem,4.2vw,3.4rem);margin:0 0 1rem;max-width:19ch}
+h2.title.wide{max-width:27ch}
+.lede{font-size:clamp(1rem,1.2vw,1.2rem);line-height:1.45;max-width:48ch;opacity:.8;margin:0 0 1.7rem}
+.note{font-size:13px;line-height:1.55;opacity:.62}
+.body{max-width:47ch}
+
+/* ============ hero ============ */
+.hero h1{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(2.7rem,11vw,9.5rem);letter-spacing:-0.05em;line-height:.86;margin:0 0 1.4rem;
+}
+.hero h1 .off{color:var(--lime);font-weight:400}
+.hero .rule{height:5px;background:var(--lime);width:0;margin-bottom:1.4rem;animation:grow 1.1s .35s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes grow{to{width:min(560px,100%)}}
+.hero .meta{font-size:clamp(14px,1.6vw,16px);line-height:1.65;opacity:.8;margin:0 0 clamp(1.4rem,4vh,2.4rem);max-width:48ch}
+.agenda{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.25)}
+.agenda a{display:block;background:var(--blue);padding:.85rem .9rem .95rem;text-decoration:none;color:inherit;transition:background .16s ease}
+.agenda a:hover,.agenda a:focus-visible{background:var(--blue-deep);outline:none}
+.agenda .n{font:600 11px/1 var(--text);color:var(--lime);margin-bottom:.35rem;font-variant-numeric:tabular-nums}
+.agenda .t{font-family:var(--display);font-size:clamp(.92rem,1.4vw,1.05rem);font-weight:600;letter-spacing:-0.02em;line-height:1.15}
+@media (max-width:620px){.agenda{grid-template-columns:1fr 1fr}}
+
+/* ticker */
+.ticker{position:absolute;left:0;right:0;bottom:0;z-index:3;border-top:1px solid rgba(255,255,255,.22);background:var(--blue-deep);overflow:hidden;padding:.7rem 0}
+.ticker-track{display:flex;gap:2.5rem;width:max-content;animation:slide 48s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker span{font-family:var(--display);font-size:clamp(.95rem,1.7vw,1.3rem);font-weight:500;letter-spacing:-0.02em;white-space:nowrap;opacity:.9}
+.ticker span::before{content:"◆";color:var(--lime);margin-right:2.5rem;font-size:.55em;vertical-align:middle}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ============ blocchi ============ */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.4rem,3.4vw,3.2rem);align-items:start}
+.cols--wide{grid-template-columns:1.2fr .8fr}
+@media (max-width:900px){.cols,.cols--wide{grid-template-columns:1fr;gap:1.4rem}}
+
+.grid3,.grid4,.grid6{display:grid;gap:1px;background:color-mix(in srgb,currentColor 14%,transparent)}
+.grid3{grid-template-columns:repeat(3,1fr)}
+.grid4{grid-template-columns:repeat(4,1fr)}
+.grid6{grid-template-columns:repeat(3,1fr)}
+.cell{background:var(--white);padding:1.1rem 1.15rem 1.3rem;position:relative;overflow:hidden}
+.s-grey .cell{background:var(--grey)}
+.s-blue .cell{background:var(--blue)}
+.cell h3{font-size:clamp(1rem,1.6vw,1.12rem);margin-bottom:.4rem;line-height:1.15;position:relative;z-index:2}
+.cell p{margin:0;font-size:13.5px;line-height:1.45;opacity:.78;position:relative;z-index:2}
+.cell .ghost{
+  position:absolute;right:-.08em;bottom:-.34em;z-index:1;
+  font-family:var(--display);font-weight:800;font-size:clamp(4.4rem,9vw,7rem);
+  line-height:1;letter-spacing:-0.06em;color:var(--blue);opacity:.09;font-variant-numeric:tabular-nums;
+}
+.cell .practice{margin-top:.55rem;font-size:12.6px;line-height:1.4;opacity:.9;font-style:italic;position:relative;z-index:2}
+.cell .practice strong{font-style:normal;color:var(--blue)}
+@media (max-width:980px){.grid4{grid-template-columns:1fr 1fr}.grid6{grid-template-columns:1fr 1fr}}
+@media (max-width:620px){.grid3,.grid4,.grid6{grid-template-columns:1fr}}
+
+/* citazioni */
+.quotes{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(0,0,0,.16);border:1px solid rgba(0,0,0,.16)}
+.quotes > div{background:var(--yellow);padding:1.2rem 1.3rem 1.3rem;position:relative}
+.quotes q{display:block;font-family:var(--display);font-size:clamp(1rem,1.75vw,1.32rem);font-weight:500;line-height:1.25;letter-spacing:-0.02em}
+.quotes .who{margin-top:.6rem;font-size:12px;font-weight:700;opacity:.6;letter-spacing:.03em}
+@media (max-width:760px){.quotes{grid-template-columns:1fr}}
+
+/* indicatore 0-20 */
+.gauge{margin-top:.2rem}
+.gauge .val{font-family:var(--display);font-weight:800;font-size:clamp(3.4rem,8vw,6rem);letter-spacing:-0.05em;line-height:.9;color:var(--blue);font-variant-numeric:tabular-nums}
+.gauge .val sup{font-size:.26em;font-weight:600;letter-spacing:0;vertical-align:super;opacity:.6}
+.gauge .ticks{display:flex;gap:3px;margin:1rem 0 .6rem;height:38px}
+.gauge .ticks i{flex:1;background:#DDDEDA;transform:scaleY(.45);transform-origin:bottom;transition:transform .5s cubic-bezier(.2,.7,.2,1),background .5s ease}
+.slide.in .gauge .ticks i{transform:scaleY(1)}
+.gauge .ticks i.on{background:var(--blue)}
+.gauge .scale{display:flex;justify-content:space-between;font:600 11px/1 var(--text);opacity:.5}
+
+/* numeri di pubblico */
+.reach{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.6vw,2.2rem);margin-bottom:1.6rem}
+.reach .v{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,6.4vw,4.6rem);letter-spacing:-0.05em;line-height:.9;color:var(--blue);font-variant-numeric:tabular-nums}
+.reach .bar{height:5px;background:var(--lime);width:0;margin:.7rem 0 .6rem;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.slide.in .reach .bar{width:100%}
+.reach .bar:nth-of-type(1){transition-delay:.05s}
+.reach .k{font-size:13px;line-height:1.4;opacity:.72}
+@media (max-width:760px){.reach{grid-template-columns:1fr;gap:1.1rem}}
+
+ul.items{border-bottom:1px solid color-mix(in srgb,currentColor 18%,transparent)}
+ul.items li{font-size:14.6px;line-height:1.45;padding:.54rem 0;border-top:1px solid color-mix(in srgb,currentColor 18%,transparent)}
+
+.callout{border-left:3px solid var(--blue);padding-left:1rem;max-width:40ch;font-size:1rem;line-height:1.45}
+.s-blue .callout{border-color:var(--lime)}
+.pill{display:inline-flex;align-items:center;gap:.4rem;font:600 11.5px/1 var(--text);border-radius:999px;padding:.35rem .75rem;background:var(--blue);color:var(--white)}
+
+/* SVG generici */
+.figure{width:100%;height:auto;display:block}
+.draw{stroke-dasharray:1200;stroke-dashoffset:1200;transition:stroke-dashoffset 1.2s cubic-bezier(.2,.7,.2,1)}
+.slide.in .draw{stroke-dashoffset:0}
+.pop{opacity:0;transform:scale(.86);transform-origin:center;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.slide.in .pop{opacity:1;transform:none}
+.slide.in .pop.d1{transition-delay:.12s}
+.slide.in .pop.d2{transition-delay:.24s}
+.slide.in .pop.d3{transition-delay:.36s}
+
+/* onda sonora */
+.wave{display:flex;align-items:flex-end;gap:3px;height:clamp(90px,16vh,150px);margin-top:.6rem}
+.wave i{flex:1;background:var(--blue);transform:scaleY(.08);transform-origin:bottom;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.slide.in .wave i{transform:scaleY(var(--h))}
+
+/* ruoli */
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#DCDDD9;border:1px solid #DCDDD9}
+.roles > div{background:var(--grey);padding:1.1rem 1.15rem 1.3rem}
+.roles h3{font-size:1.02rem;color:var(--blue);margin-bottom:.55rem}
+.roles li{font-size:13.6px;line-height:1.35;padding:.28rem 0;border-top:1px solid #E4E5E1}
+.roles li:first-child{border-top:none}
+@media (max-width:760px){.roles{grid-template-columns:1fr}}
+
+/* traiettoria */
+.years{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.4vw,2rem)}
+.years > div{position:relative;padding-top:2.4rem}
+.years > div::before{content:"";position:absolute;top:14px;left:0;right:0;height:2px;background:rgba(255,255,255,.28)}
+.years > div::after{content:"";position:absolute;top:6px;left:0;width:18px;height:18px;background:var(--lime);border-radius:50%}
+.years .y{font:700 11px/1 var(--text);letter-spacing:.09em;color:var(--lime);margin-bottom:.5rem;text-transform:uppercase}
+.years h3{font-family:var(--display);font-size:clamp(1.7rem,4.6vw,3rem);font-weight:800;letter-spacing:-0.045em;margin-bottom:.7rem}
+.years li{font-size:13.6px;line-height:1.4;padding:.22rem 0;opacity:.82}
+.years .fill{display:flex;gap:3px;margin-top:.9rem}
+.years .fill i{height:8px;flex:1;background:rgba(255,255,255,.2)}
+.years .fill i.on{background:var(--lime)}
+@media (max-width:760px){.years{grid-template-columns:1fr;gap:1.6rem}}
+
+/* tabella */
+.table-scroll{overflow-x:auto;margin-inline:-2px;padding-inline:2px}
+table.compare{border-collapse:collapse;width:100%;min-width:640px;background:var(--white)}
+table.compare th,table.compare td{text-align:left;padding:.52rem .85rem;font-size:13.8px;vertical-align:baseline}
+table.compare tbody tr{border-top:1px solid #E3E3E0}
+table.compare th[scope="row"]{font-weight:400;opacity:.6;width:23%;font-size:12.6px}
+.h-cell{padding:0!important;vertical-align:bottom}
+.h-inner{padding:.95rem .85rem .9rem;border-top:7px solid var(--tier,var(--blue))}
+.h-name{font-family:var(--display);font-size:1.02rem;font-weight:700;letter-spacing:-0.025em;line-height:1.1;display:block;margin-bottom:.28rem;color:var(--blue)}
+.h-tag{font:600 11px/1.2 var(--text);opacity:.6;display:block}
+.h-inner.is-reco{background:var(--blue)}
+.h-inner.is-reco .h-name{color:var(--white)}
+.h-inner.is-reco .h-tag{color:var(--lime);opacity:1}
+tr.money td{font-family:var(--display);font-size:1.3rem;font-weight:700;letter-spacing:-0.035em;font-variant-numeric:tabular-nums;padding-top:.8rem;padding-bottom:.8rem;color:var(--blue)}
+td.reco{background:#F4F8EC}
+.scroll-hint{font:600 11px/1 var(--text);opacity:.45;margin-top:.5rem;display:none}
+@media (max-width:760px){.scroll-hint{display:block}}
+
+.price{display:flex;flex-wrap:wrap;align-items:flex-end;gap:1rem;padding-top:.9rem;border-top:3px solid var(--blue)}
+.price .amount{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,8vw,5rem);letter-spacing:-0.05em;line-height:.88;font-variant-numeric:tabular-nums;color:var(--blue)}
+.price .side{font:600 13px/1 var(--text);opacity:.65;padding-bottom:.5rem}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#DCDDD9;border:1px solid #DCDDD9}
+.steps > div{background:var(--white);padding:1rem 1rem 1.3rem;position:relative}
+.steps > div::before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:var(--blue);opacity:.18}
+.steps > div:nth-child(1)::before{opacity:.35}
+.steps > div:nth-child(2)::before{opacity:.55}
+.steps > div:nth-child(3)::before{opacity:.78}
+.steps > div:nth-child(4)::before{opacity:1;background:var(--lime)}
+.steps .w{font:600 11.5px/1 var(--text);color:var(--blue);margin-bottom:.45rem}
+.steps h3{font-size:.98rem;line-height:1.15;margin-bottom:.35rem}
+.steps p{font-size:13px;line-height:1.45;opacity:.72;margin:0}
+@media (max-width:880px){.steps{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.steps{grid-template-columns:1fr}}
+
+dl.rows{margin:0;border-bottom:1px solid #DCDDD9}
+dl.rows > div{display:grid;grid-template-columns:12.5rem 1fr;gap:1.2rem;padding:.68rem 0;border-top:1px solid #DCDDD9}
+dl.rows dt{font:600 12.6px/1.45 var(--text);color:var(--blue)}
+dl.rows dd{margin:0;font-size:14.2px;line-height:1.45;max-width:66ch}
+@media (max-width:760px){dl.rows > div{grid-template-columns:1fr;gap:.15rem}}
+
+.budget{border-top:3px solid var(--blue)}
+.budget div{display:flex;justify-content:space-between;align-items:baseline;gap:1.2rem;padding:.62rem 0;border-bottom:1px solid #DCDDD9}
+.budget span:first-child{font-size:14.2px}
+.budget span:last-child{font-family:var(--display);font-weight:700;font-size:1.08rem;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--blue)}
+
+.metrics,.qa{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#DCDDD9;border:1px solid #DCDDD9}
+.metrics > div,.qa > div{background:var(--white);padding:1rem 1.1rem 1.2rem}
+.s-grey .metrics > div,.s-grey .qa > div{background:var(--grey)}
+.metrics h3,.qa h3{font-size:.98rem;margin-bottom:.35rem;color:var(--blue);line-height:1.2}
+.metrics p,.qa p{margin:0;font-size:13.4px;line-height:1.45;opacity:.78}
+@media (max-width:760px){.metrics,.qa{grid-template-columns:1fr}}
+
+.close h2{font-size:clamp(1.8rem,4.6vw,3.2rem);max-width:21ch;margin-bottom:2rem}
+.close .sign{font-family:var(--display);font-size:clamp(1.5rem,5vw,3rem);font-weight:800;letter-spacing:-0.045em;line-height:1}
+.close .sign .off{color:var(--lime);font-weight:400}
+.close .who{font-size:13.5px;line-height:1.7;opacity:.72;margin-top:1.3rem}
+
+.hint{position:fixed;right:var(--pad);bottom:4.4rem;z-index:40;font:500 11.5px/1 var(--text);opacity:.45;transition:opacity .5s ease}
+.hint.gone{opacity:0}
+@media (max-width:940px){.hint{display:none}}
+
+/* ======= responsive di sostanza ======= */
+@media (max-width:940px),(max-height:660px){
+  .deck{scroll-snap-type:none}
+  .slide{min-height:auto;justify-content:flex-start;padding-top:3.6rem;padding-bottom:3rem}
+  .slide.hero{min-height:100dvh;justify-content:center}
+  .ticker{position:static;margin:auto calc(var(--pad) * -1) 0;border-bottom:1px solid rgba(255,255,255,.22)}
+  .slide.hero{padding-bottom:0}
+}
+@media (max-width:940px){
+  .slide{padding-left:var(--pad);padding-right:var(--pad)}
+}
+@media (prefers-reduced-motion:reduce){
+  .deck{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+  .hero .rule{width:min(560px,100%)}
+  .reach .bar{width:100%}
+}
+@media print{
+  .deck{height:auto;overflow:visible}
+  .slide{min-height:auto;page-break-after:always;padding:1.4cm;display:block;overflow:visible}
+  .rail,.hint,.progress,.counter,.menu-btn,.ticker{display:none}
+  .s-blue,.s-cyan,.s-lime,.s-orange,.s-yellow{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<nav class="rail" id="rail" aria-label="Sezioni"></nav>
+<div class="counter" id="counter">01</div>
+<div class="hint" id="hint">frecce per navigare</div>
+<button class="menu-btn" id="menuBtn" type="button">Indice</button>
+<div class="sheet" id="sheet" role="dialog" aria-label="Indice">
+  <button class="close-x" id="closeSheet" type="button">Chiudi</button>
+  <h3>Indice</h3>
+  <div id="sheetItems"></div>
+</div>
+
+<main class="deck" id="deck">
+
+<!-- 01 -->
+<section class="slide s-blue hero" data-label="Copertina" data-act="Il progetto">
+  <div class="wrap">
+    <h1>Di soldi<br><span class="off">(</span>non<span class="off">)</span> si&nbsp;parla!</h1>
+    <div class="rule"></div>
+    <p class="meta">Un percorso di educazione finanziaria critica per il grande pubblico.<br>Proposta di Tlon per il Gruppo Banca Etica · Maura Gancitano e Andrea Colamedici.</p>
+    <div class="agenda">
+      <a href="#slide-1"><div class="n">01</div><div class="t">Da dove nasce</div></a>
+      <a href="#slide-5"><div class="n">02</div><div class="t">Il percorso</div></a>
+      <a href="#slide-9"><div class="n">03</div><div class="t">La partnership</div></a>
+      <a href="#slide-12"><div class="n">04</div><div class="t">L’investimento</div></a>
+    </div>
+  </div>
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Rimango immobile, perché non mi fido</span>
+      <span>Nella mia famiglia i discorsi sui soldi sono sempre stati vaghi, minimi e tristi</span>
+      <span>Nessuna informazione è mai stata pensata per me</span>
+      <span>I fondi cosa ci fanno con i miei soldi?</span>
+      <span>Rimango immobile, perché non mi fido</span>
+      <span>Nella mia famiglia i discorsi sui soldi sono sempre stati vaghi, minimi e tristi</span>
+      <span>Nessuna informazione è mai stata pensata per me</span>
+      <span>I fondi cosa ci fanno con i miei soldi?</span>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="slide s-white" data-label="Il punto di partenza">
+  <div class="wrap">
+    <p class="eyebrow">Il punto di partenza</p>
+    <h2 class="title">Di soldi si sa poco perché di soldi non si parla</h2>
+    <div class="cols cols--wide">
+      <div class="body">
+        <p>Quanto guadagni si dice raramente. Il peso di un mutuo resta privato. Chi firma qualcosa senza averla capita tende a non raccontarlo, perché alla difficoltà si aggiunge <strong>la vergogna di dover ammettere che non si è capito</strong>.</p>
+        <p>Il risultato è concreto: si fanno meno domande, si delegano decisioni importanti, <strong>si trasmettono ai figli abitudini e paure che nessuno ha mai nominato</strong>.</p>
+        <p>Quasi tutti i programmi di educazione finanziaria partono da strumenti, costi e definizioni. È una base indispensabile. Resta scoperto il passaggio precedente: il momento in cui una persona decide <em>se</em> guardare i numeri, chiedere spiegazioni, affrontare la previdenza. <strong>Questo progetto comincia da lì.</strong></p>
+      </div>
+      <div class="gauge">
+        <div class="val">10,6<sup>/20</sup></div>
+        <div class="ticks" id="ticks20" aria-hidden="true"></div>
+        <div class="scale"><span>0</span><span>20</span></div>
+        <p class="note" style="margin-top:.8rem">Alfabetizzazione finanziaria degli adulti in Italia. Indagine IACOFI della Banca d’Italia, 2023, metodologia OCSE-INFE.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="slide s-yellow" data-label="Le storie raccolte">
+  <div class="wrap">
+    <p class="eyebrow">Luglio e agosto 2026 · Tlonletter, Instagram, Facebook</p>
+    <h2 class="title wide">Abbiamo chiesto alla nostra comunità di raccontare il proprio rapporto con il denaro</h2>
+    <div class="quotes">
+      <div><q>I fondi cosa ci fanno con i miei soldi e con quelli di tutti gli altri? Li usano per finanziare guerre? Ci stiamo dando la zappa sui piedi?</q><div class="who">Ilaria</div></div>
+      <div><q>Mi sento sola, senza informazioni, e non so dove trovarne di oggettive e affidabili. Nessuna informazione è mai stata pensata per me.</q><div class="who">Ilaria</div></div>
+      <div><q>Rimango immobile, perché non mi fido.</q><div class="who">Luca, 30 anni</div></div>
+      <div><q>Nella mia famiglia i discorsi sui soldi sono sempre stati vaghi, minimi e tristi.</q><div class="who">Anna, 57 anni</div></div>
+    </div>
+    <p class="note" style="margin-top:1.1rem">Centinaia di risposte spontanee. I nuclei ricorrenti: <strong>fiducia, provenienza e destinazione del denaro, paura di sbagliare, potere dentro le relazioni, difficoltà a trovare interlocutori credibili</strong>.</p>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="slide s-grey" data-label="A chi parliamo">
+  <div class="wrap">
+    <p class="eyebrow">Il pubblico</p>
+    <h2 class="title wide">Quattro generazioni, in tutta Italia</h2>
+    <div class="reach">
+      <div><div class="v">500.000+</div><div class="bar"></div><div class="k">persone raggiunte dalla comunità Tlon</div></div>
+      <div><div class="v">53.000</div><div class="bar"></div><div class="k">iscritti alla Tlonletter</div></div>
+      <div><div class="v">50.000+</div><div class="bar"></div><div class="k">partecipanti agli eventi dal vivo nel 2026</div></div>
+    </div>
+    <div class="cols cols--wide">
+      <div class="body">
+        <p>Persone che <strong>condividono i principi della finanza etica senza conoscere Banca Etica</strong>. Clienti che non partecipano alla vita cooperativa. Persone che vivono dove la banca non è mai entrata nel loro orizzonte quotidiano.</p>
+        <p>Sugli investimenti convivono dubbi pratici e obiezioni etiche: come funzionano gli strumenti, dove va a finire il denaro, quali conseguenze ha una scelta. Quando manca un interlocutore credibile, <strong>la decisione viene rinviata</strong>.</p>
+      </div>
+      <div>
+        <p class="callout">Una comunità nazionale che già discute di desiderio, lavoro, potere e scelte quotidiane, e che condivide sensibilità vicine alla finanza etica <em>senza averla ancora incontrata come pratica concreta</em>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="slide s-blue" data-label="Le tre domande" data-act="Il percorso">
+  <div class="wrap">
+    <p class="eyebrow">Il metodo</p>
+    <h2 class="title wide">Ogni modulo attraversa le stesse tre domande</h2>
+    <div class="cols cols--wide">
+      <div>
+        <svg class="figure" viewBox="0 0 520 380" role="img" aria-label="Tre domande che convergono sulla decisione">
+          <g fill="none" stroke-width="2.5">
+            <circle class="pop" cx="190" cy="150" r="125" stroke="#64CD00" fill="#64CD00" fill-opacity=".16"/>
+            <circle class="pop d1" cx="330" cy="150" r="125" stroke="#00C8FF" fill="#00C8FF" fill-opacity=".16"/>
+            <circle class="pop d2" cx="260" cy="250" r="125" stroke="#FFCC02" fill="#FFCC02" fill-opacity=".16"/>
+          </g>
+          <g font-family="Bricolage Grotesque, sans-serif" font-weight="700" fill="#FFFFFF">
+            <text class="pop d1" x="118" y="96" font-size="19">Come</text>
+            <text class="pop d1" x="118" y="118" font-size="19">funziona</text>
+            <text class="pop d2" x="330" y="96" font-size="19">Dove vanno</text>
+            <text class="pop d2" x="330" y="118" font-size="19">i soldi</text>
+            <text class="pop d3" x="196" y="330" font-size="19">Cosa muove in te</text>
+            <text class="pop d3" x="222" y="190" font-size="18" font-weight="800" fill="#FFFFFF">La scelta</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <p class="lede" style="margin-bottom:1.2rem"><strong>È qui che la parte tecnica incontra la vita concreta.</strong></p>
+        <ul class="items">
+          <li><strong>Come funziona</strong> · strumenti, costi, regole</li>
+          <li><strong>Dove vanno i soldi</strong> · incentivi, impieghi, impatti</li>
+          <li><strong>Cosa muove in te</strong> · paura, vergogna, potere</li>
+        </ul>
+        <p class="note" style="margin-top:1.1rem">La competenza finanziaria viene validata dal Gruppo Banca Etica. Tlon cura l’impianto pedagogico e filosofico, il linguaggio, le pratiche e la lettura culturale delle scelte.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="slide s-white" data-label="I sei moduli">
+  <div class="wrap">
+    <p class="eyebrow">Il percorso</p>
+    <h2 class="title wide">Sei questioni della vita finanziaria reale, con una pratica per ogni tappa</h2>
+    <div class="grid6">
+      <div class="cell"><span class="ghost">01</span><h3>La storia di cui fai parte</h3><p>Che cosa hai imparato sul denaro in famiglia, anche attraverso i silenzi.</p><p class="practice"><strong>Pratica:</strong> chiedere ai custodi di quella storia di raccontarla.</p></div>
+      <div class="cell"><span class="ghost">02</span><h3>I soldi che hai già</h3><p>Che cosa accade al denaro lasciato in banca, anche quando il capitale è piccolo.</p><p class="practice"><strong>Pratica:</strong> ricostruire dove sono oggi i propri soldi.</p></div>
+      <div class="cell"><span class="ghost">03</span><h3>Le domande che puoi fare</h3><p>Consulenza, costi, responsabilità, trasparenza, segnali a cui prestare attenzione.</p><p class="practice"><strong>Pratica:</strong> preparare tre domande e portarle davvero in banca.</p></div>
+      <div class="cell"><span class="ghost">04</span><h3>Il rischio</h3><p>Come si misura, come si comunica, perché modifica il nostro comportamento.</p><p class="practice"><strong>Pratica:</strong> distinguere rischio percepito e rischio descritto.</p></div>
+      <div class="cell"><span class="ghost">05</span><h3>Investire senza tradirsi</h3><p>Fondi, criteri ESG, impatti e limiti delle etichette disponibili.</p><p class="practice"><strong>Pratica:</strong> seguire un euro lungo la catena delle decisioni.</p></div>
+      <div class="cell"><span class="ghost">06</span><h3>Il futuro che immagini</h3><p>Previdenza, tempo, margine economico e difficoltà a pensarsi più avanti.</p><p class="practice"><strong>Pratica:</strong> costruire uno scenario concreto, senza presupporre risorse che non ci sono.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="slide s-grey" data-label="Quattro modi di entrare">
+  <div class="wrap">
+    <p class="eyebrow">La struttura</p>
+    <h2 class="title wide">Quattro accessi allo stesso percorso</h2>
+    <div class="cols cols--wide">
+      <div>
+        <svg class="figure" viewBox="0 0 560 300" role="img" aria-label="Quattro accessi convergono nel percorso">
+          <g stroke="#003087" stroke-width="2" fill="none" opacity=".45">
+            <path class="draw" d="M95 52 C 200 52, 210 130, 262 143"/>
+            <path class="draw" d="M95 248 C 200 248, 210 170, 262 157"/>
+            <path class="draw" d="M465 52 C 360 52, 350 130, 298 143"/>
+            <path class="draw" d="M465 248 C 360 248, 350 170, 298 157"/>
+          </g>
+          <g font-family="Bricolage Grotesque, sans-serif" font-weight="700" font-size="17" fill="#003087">
+            <g class="pop"><rect x="8" y="30" width="150" height="44" fill="#FFFFFF" stroke="#003087" stroke-width="2"/><text x="24" y="58">Contenuti aperti</text></g>
+            <g class="pop d1"><rect x="8" y="226" width="150" height="44" fill="#FFFFFF" stroke="#003087" stroke-width="2"/><text x="24" y="254">Scuola online</text></g>
+            <g class="pop d2"><rect x="402" y="30" width="150" height="44" fill="#FFFFFF" stroke="#003087" stroke-width="2"/><text x="418" y="58">Gruppo pilota</text></g>
+            <g class="pop d3"><rect x="402" y="226" width="150" height="44" fill="#FFFFFF" stroke="#003087" stroke-width="2"/><text x="418" y="254">Festival</text></g>
+          </g>
+          <g class="pop d3">
+            <circle cx="280" cy="150" r="58" fill="#64CD00"/>
+            <text x="280" y="145" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="700" font-size="16" fill="#003087">Un solo</text>
+            <text x="280" y="165" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="700" font-size="16" fill="#003087">percorso</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <p class="lede">Si può incontrare il progetto da un podcast, da una diretta, da un gruppo o da un evento. <strong>Ogni porta conduce alle altre.</strong></p>
+        <ul class="items">
+          <li><strong>Contenuti aperti</strong> · video brevi e podcast, gratuiti e senza iscrizione</li>
+          <li><strong>Scuola online</strong> · incontri in diretta ogni due settimane, due cicli l’anno</li>
+          <li><strong>Gruppo pilota</strong> · una coorte seguita, con rilevazione prima e dopo</li>
+          <li><strong>Festival</strong> · due giorni con esperti e artisti</li>
+        </ul>
+        <p class="note" style="margin-top:1rem">Un’area digitale dedicata raccoglie video, registrazioni e materiali. Il podcast raggiunge le principali piattaforme audio e YouTube.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="slide s-white" data-label="Il podcast e la rete">
+  <div class="wrap">
+    <p class="eyebrow">Una voce continua</p>
+    <h2 class="title">Quindici minuti, una questione alla settimana</h2>
+    <div class="wave" id="wave" aria-hidden="true"></div>
+    <div class="cols" style="margin-top:1.4rem">
+      <div class="body">
+        <p>Il podcast <em>Di soldi (non) si parla!</em>, <strong>ideato e condotto da Maura Gancitano</strong>, parte ogni volta da una situazione riconoscibile e arriva alla <strong>domanda finanziaria che contiene</strong>: estratti conto evitati, firme incomprese, conversazioni difficili in famiglia, previdenza rimandata.</p>
+        <p>I moduli hanno un inizio e una fine. <strong>Il podcast tiene aperta la conversazione</strong> tra un ciclo della Scuola e l’altro e accompagna i festival.</p>
+      </div>
+      <div>
+        <p class="callout">I GIT coprono il paese anche dove la presenza fisica della banca è più limitata. Il progetto può portare verso quella rete persone che oggi non hanno un motivo per entrarvi: ascoltano un contenuto, partecipano alla Scuola, <strong>scoprono che nella loro città esiste un gruppo con cui continuare</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="slide s-grey" data-label="Ruoli e responsabilità" data-act="La partnership">
+  <div class="wrap">
+    <p class="eyebrow">La partnership</p>
+    <h2 class="title wide">Le competenze restano riconoscibili lungo tutto il percorso</h2>
+    <div class="roles">
+      <div><h3>Tlon</h3><ul><li>Direzione pedagogica e filosofica</li><li>Contenuti e scrittura</li><li>Podcast e produzione</li><li>Festival</li><li>Relazione con il pubblico</li></ul></div>
+      <div><h3>Insieme</h3><ul><li>Architettura del percorso</li><li>Criteri di qualità</li><li>Obiettivi di impatto</li><li>Scelta del gruppo pilota</li><li>Valutazione annuale</li></ul></div>
+      <div><h3>Gruppo Banca Etica</h3><ul><li>Competenza finanziaria</li><li>Validazione tecnica</li><li>Persone esperte nei moduli</li><li>GIT e territori</li><li>Accesso alla rete cooperativa</li></ul></div>
+    </div>
+    <p class="note" style="margin-top:1rem"><strong>Maura Gancitano è pedagogista e filosofa</strong>: studia da anni il rapporto fra pressione sociale, desiderio e costruzione di sé, e qui applica quello sguardo ai punti in cui paura, abitudini familiari, fiducia e competenza tecnica si influenzano a vicenda.</p>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide s-blue" data-label="La traiettoria">
+  <div class="wrap">
+    <p class="eyebrow">Tre anni</p>
+    <h2 class="title wide">Il primo anno costruisce e verifica. I due successivi portano il progetto dentro la rete territoriale.</h2>
+    <div class="years">
+      <div>
+        <div class="y">Anno uno</div><h3>Costruire</h3>
+        <ul><li>Moduli validati</li><li>Contenuti aperti e podcast</li><li>Scuola, gruppo pilota, festival</li></ul>
+        <div class="fill"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div>
+        <div class="y">Anno due</div><h3>Radicare</h3>
+        <ul><li>Primi facilitatori nei GIT</li><li>Gruppi locali</li><li>Corso già disponibile</li></ul>
+        <div class="fill"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+      </div>
+      <div>
+        <div class="y">Anno tre</div><h3>Estendere</h3>
+        <ul><li>Presenza in tutte le regioni</li><li>Nuovi facilitatori</li><li>Struttura replicabile</li></ul>
+        <div class="fill"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:1.2rem;opacity:.75"><strong>Il piano esecutivo del primo anno viene definito ora.</strong> Gli anni due e tre si attivano sugli obiettivi concordati.</p>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide s-white" data-label="Che cosa acquista il Gruppo">
+  <div class="wrap">
+    <p class="eyebrow">Il valore della partnership</p>
+    <h2 class="title wide">Che cosa acquista il Gruppo</h2>
+    <div class="grid3">
+      <div class="cell"><h3>Un format proprietario</h3><p>Sei moduli validati, pratiche, materiali e un archivio che <strong>resta disponibile e riutilizzabile</strong> negli anni successivi.</p></div>
+      <div class="cell"><h3>Un pubblico nuovo</h3><p>Persone che arrivano dalla cultura e non dalla finanza, e che cercano <em>un modo di pensare il denaro</em> prima ancora di cercare una banca.</p></div>
+      <div class="cell"><h3>Impatto misurabile</h3><p>Una coorte seguita e rilevata prima e dopo, con un rapporto annuale che dice <strong>che cosa è cambiato davvero</strong> nei comportamenti.</p></div>
+    </div>
+    <p class="lede" style="margin:1.3rem 0 0">Il progetto interviene sul passaggio che i programmi tecnici non coprono: il momento in cui una persona decide <em>se</em> guardare, chiedere, capire. <strong>È lì che si costruisce la fiducia su cui poi si appoggia tutto il resto.</strong></p>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide s-grey" data-label="Come è costruito il costo" data-act="L’investimento">
+  <div class="wrap">
+    <p class="eyebrow">La logica economica</p>
+    <h2 class="title">Un impianto comune, tre intensità</h2>
+    <div class="cols cols--wide">
+      <div class="body">
+        <p>Le tre configurazioni condividono lo stesso nucleo: progettazione pedagogica, sviluppo dei sei moduli, costruzione del format. Cambiano la durata della presenza pubblica, il ritmo editoriale, l’estensione territoriale e il numero degli eventi.</p>
+        <p>La quota d’impianto comprende ricerca, architettura del percorso, pratiche, materiali didattici, coordinamento della validazione tecnica e definizione degli indicatori. <strong>Si paga una volta sola</strong> e non si replica negli anni successivi.</p>
+        <p class="note">Anche la selezione della coorte pilota, la rilevazione iniziale e finale e la restituzione dei risultati hanno <strong>un costo che non varia con il numero delle pubblicazioni</strong>.</p>
+      </div>
+      <div>
+        <svg class="figure" viewBox="0 0 420 260" role="img" aria-label="Impianto comune e tre livelli di attivazione">
+          <g class="pop"><rect x="20" y="196" width="380" height="46" fill="#003087"/>
+            <text x="36" y="225" font-family="Bricolage Grotesque, sans-serif" font-weight="700" font-size="17" fill="#FFFFFF">Impianto comune</text></g>
+          <g class="pop d1"><rect x="20" y="140" width="110" height="48" fill="#00C8FF"/></g>
+          <g class="pop d2"><rect x="155" y="96" width="110" height="92" fill="#64CD00"/></g>
+          <g class="pop d3"><rect x="290" y="38" width="110" height="150" fill="#FF7D00"/></g>
+          <g font-family="Instrument Sans, sans-serif" font-weight="600" font-size="12.5" fill="#14161A" text-anchor="middle">
+            <text class="pop d1" x="75" y="132">verifica</text>
+            <text class="pop d2" x="210" y="88">anno intero</text>
+            <text class="pop d3" x="345" y="30">scala nazionale</text>
+          </g>
+        </svg>
+        <p class="note" style="margin-top:.7rem">Quello che si sceglie è <strong>l’intensità</strong> con cui il progetto viene attivato.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide s-white" data-label="Le tre configurazioni">
+  <div class="wrap">
+    <p class="eyebrow">Primo anno</p>
+    <h2 class="title wide">Tre modi di attivare il progetto</h2>
+    <div class="table-scroll">
+      <table class="compare">
+        <thead>
+          <tr>
+            <td></td>
+            <th scope="col" class="h-cell" style="--tier:var(--cyan)"><div class="h-inner"><span class="h-name">Sperimentazione circoscritta</span><span class="h-tag">verifica del modello</span></div></th>
+            <th scope="col" class="h-cell" style="--tier:var(--lime)"><div class="h-inner is-reco"><span class="h-name">Programma annuale</span><span class="h-tag">configurazione raccomandata</span></div></th>
+            <th scope="col" class="h-cell" style="--tier:var(--orange)"><div class="h-inner"><span class="h-name">Partnership nazionale</span><span class="h-tag">architettura completa</span></div></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Moduli</th><td>6</td><td class="reco">6</td><td>6</td></tr>
+          <tr><th scope="row">Scuola online</th><td>1 ciclo, 6 incontri</td><td class="reco">2 cicli, 12 incontri</td><td>2 cicli, 12 incontri</td></tr>
+          <tr><th scope="row">Podcast video</th><td>12 episodi</td><td class="reco">24 episodi, quindicinali</td><td>40 episodi, settimanali</td></tr>
+          <tr><th scope="row">Gruppo pilota</th><td>1 coorte</td><td class="reco">1 coorte</td><td>1 coorte</td></tr>
+          <tr><th scope="row">Valutazione</th><td>iniziale e finale</td><td class="reco">rapporto annuale</td><td>rapporto e revisione del modello</td></tr>
+          <tr><th scope="row">Momenti pubblici</th><td>1 evento conclusivo</td><td class="reco">festival di 2 giorni, una città</td><td>2 giorni a Roma, 2 a Milano</td></tr>
+          <tr><th scope="row">Territori</th><td>coordinamento essenziale</td><td class="reco">attivazione selettiva dei GIT</td><td>GIT e rete cooperativa</td></tr>
+          <tr><th scope="row">Distribuzione Tlon</th><td>lancio e contenuti principali</td><td class="reco">presenza editoriale per l’anno</td><td>presenza continuativa nazionale</td></tr>
+          <tr class="money"><th scope="row">Corrispettivo</th><td>€145.000</td><td class="reco">€185.000</td><td>€250.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scroll-hint">Scorri la tabella →</p>
+    <p class="note" style="margin-top:.8rem">Importi al netto di IVA.</p>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide s-cyan" data-label="Sperimentazione">
+  <div class="wrap">
+    <p class="eyebrow">Prima configurazione</p>
+    <h2 class="title">Sperimentazione circoscritta</h2>
+    <div class="cols">
+      <ul class="items">
+        <li>Progettazione pedagogica, sei moduli, costruzione del format</li>
+        <li>Un ciclo della Scuola online, sei incontri in diretta</li>
+        <li>12 episodi del podcast video</li>
+        <li>Selezione e accompagnamento della coorte pilota</li>
+        <li>Rilevazione iniziale e finale, con restituzione dei risultati</li>
+        <li>Materiali didattici e pratiche associate ai moduli</li>
+        <li>Lancio e distribuzione attraverso i canali Tlon</li>
+        <li>Un evento pubblico conclusivo</li>
+      </ul>
+      <div>
+        <p class="callout"><strong>Una prima edizione completa e misurabile</strong>, con il format pronto per l’attivazione annuale successiva.</p>
+        <p class="note" style="margin-top:1.1rem">Resta fuori la presenza editoriale continuativa per dodici mesi, insieme al festival di due giorni.</p>
+      </div>
+    </div>
+    <div class="price" style="margin-top:1.8rem">
+      <div class="amount">€145.000</div>
+      <div class="side">+ IVA</div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide s-lime" data-label="Programma annuale">
+  <div class="wrap">
+    <p class="eyebrow"><span class="pill">Configurazione raccomandata</span></p>
+    <h2 class="title">Programma annuale</h2>
+    <div class="cols">
+      <ul class="items">
+        <li>Progettazione pedagogica, sei moduli, costruzione del format</li>
+        <li>Due cicli della Scuola online, dodici incontri in diretta</li>
+        <li>24 episodi del podcast video, pubblicazione quindicinale</li>
+        <li>Coorte pilota, rilevazione iniziale e finale, rapporto annuale</li>
+        <li>Archivio progressivo dei contenuti e dei materiali</li>
+        <li>Distribuzione editoriale continuativa nell’ecosistema Tlon</li>
+        <li>Attivazione selettiva dei GIT e della rete cooperativa</li>
+        <li>Un festival di due giorni, a Roma oppure a Milano</li>
+        <li>Coordinamento e programmazione dell’annualità successiva</li>
+      </ul>
+      <div>
+        <p class="callout"><strong>Un programma riconoscibile, presente per l’intero anno</strong> e valutabile nei suoi effetti, con una prima capacità di attivazione territoriale.</p>
+        <p class="note" style="margin-top:1.1rem">È l’equilibrio migliore fra investimento, continuità e possibilità di verificare il progetto prima di portarlo a scala nazionale.</p>
+      </div>
+    </div>
+    <div class="price" style="margin-top:1.8rem">
+      <div class="amount">€185.000</div>
+      <div class="side">+ IVA</div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide s-orange" data-label="Partnership nazionale">
+  <div class="wrap">
+    <p class="eyebrow">Configurazione completa</p>
+    <h2 class="title">Partnership nazionale</h2>
+    <div class="cols">
+      <ul class="items">
+        <li>Direzione pedagogica, filosofica e autoriale dell’annualità</li>
+        <li>Progettazione e aggiornamento dei sei moduli</li>
+        <li>Due cicli della Scuola online, dodici incontri in diretta</li>
+        <li>40 episodi del podcast video, settimanali lungo la stagione</li>
+        <li>Coorte pilota, misurazione, rapporto annuale, revisione del modello</li>
+        <li>Coinvolgimento strutturato dei GIT e della rete cooperativa</li>
+        <li>Un festival di due giorni a Roma e uno di due giorni a Milano</li>
+        <li>Distribuzione nazionale attraverso l’ecosistema Tlon</li>
+        <li>Archivio digitale completo e organizzazione editoriale</li>
+      </ul>
+      <div>
+        <p class="callout"><strong>Un’infrastruttura culturale e formativa nazionale</strong> che tiene insieme educazione finanziaria, produzione editoriale, impatto misurabile e presenza territoriale.</p>
+        <p class="note" style="margin-top:1.1rem">La pubblicazione settimanale è organizzata in una stagione di 40 episodi, con pause editoriali programmate.</p>
+      </div>
+    </div>
+    <div class="price" style="margin-top:1.8rem">
+      <div class="amount">€250.000</div>
+      <div class="side">+ IVA</div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="slide s-grey" data-label="Il Gruppo">
+  <div class="wrap">
+    <p class="eyebrow">Una proposta unitaria</p>
+    <h2 class="title wide">Le competenze di tutto il Gruppo</h2>
+    <p class="lede">La proposta è formulata unitariamente al Gruppo Banca Etica. <strong>L’articolazione interna resta una scelta del Gruppo</strong> e non modifica l’unitarietà progettuale ed economica del percorso.</p>
+    <div class="grid3">
+      <div class="cell"><h3>Banca Etica</h3><p>Percorso educativo, comunità, GIT e territori, relazione con clienti e persone socie.</p></div>
+      <div class="cell"><h3>Etica Sgr</h3><p>Investimento responsabile, fondi, criteri ESG, impiego del risparmio, contenuti del modulo 05.</p></div>
+      <div class="cell"><h3>Fondazione Finanza Etica</h3><p>Ricerca, cultura finanziaria, coorte pilota, valutazione e misurazione d’impatto.</p></div>
+    </div>
+    <p class="note" style="margin-top:1rem">La forma contrattuale sarà definita insieme al Gruppo, secondo i suoi processi deliberativi e contabili.</p>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide s-white" data-label="La firma">
+  <div class="wrap">
+    <p class="eyebrow">Visibilità e conduzione</p>
+    <h2 class="title">La firma della partnership</h2>
+    <div class="cols">
+      <ul class="items">
+        <li>Progetto presentato come iniziativa di Tlon realizzata in partnership con il Gruppo Banca Etica</li>
+        <li>Menzione della partnership in apertura e chiusura di ogni episodio del podcast</li>
+        <li>Presenza del marchio sui materiali della Scuola e sulle pagine digitali dedicate</li>
+        <li>Annuncio congiunto e piano coordinato di pubblicazione sui rispettivi canali</li>
+        <li>Utilizzo reciproco dei contenuti promozionali per la durata dell’accordo</li>
+        <li>Campagne media e acquisto di spazi esclusi dal corrispettivo, concordati a parte</li>
+      </ul>
+      <div>
+        <p class="callout">Il podcast è <strong>ideato e condotto da Maura Gancitano</strong>. La partecipazione di Andrea Colamedici e degli ospiti è definita nel piano editoriale di ogni stagione.</p>
+        <p class="note" style="margin-top:1.1rem">Estensioni ulteriori della presenza del marchio si concordano in fase di definizione del piano di comunicazione.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 -->
+<section class="slide s-grey" data-label="Che cosa misuriamo">
+  <div class="wrap">
+    <p class="eyebrow">Impatto</p>
+    <h2 class="title wide">Che cosa misuriamo</h2>
+    <p class="lede">Gli indicatori definitivi si concordano con la Fondazione Finanza Etica prima dell’avvio. Questi sono gli assi proposti.</p>
+    <div class="metrics">
+      <div><h3>Comportamenti</h3><p>Azioni concrete dichiarate prima e dopo: leggere un estratto conto, chiedere un chiarimento, confrontare condizioni, aprire una posizione previdenziale.</p></div>
+      <div><h3>Conversazione</h3><p>Capacità di parlare di denaro con partner, figli, familiari. <strong>È la variabile su cui il progetto interviene per primo.</strong></p></div>
+      <div><h3>Partecipazione</h3><p>Iscritti, completamento dei cicli, ascolti e visualizzazioni, presenza agli eventi, provenienza geografica del pubblico.</p></div>
+      <div><h3>Territori</h3><p>Contatti generati verso i GIT e la rete cooperativa, distinguendo fra <strong>persone già in relazione con il Gruppo</strong> e <strong>persone nuove</strong>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="slide s-white" data-label="I primi mesi">
+  <div class="wrap">
+    <p class="eyebrow">Avvio</p>
+    <h2 class="title wide">Dalla firma alla prima pubblicazione</h2>
+    <div class="steps">
+      <div><div class="w">Settimane 1–2</div><h3>Riunione di avvio</h3><p>Calendario, referenti, indicatori, criteri di selezione della coorte.</p></div>
+      <div><div class="w">Settimane 3–8</div><h3>Progettazione</h3><p>Architettura dei sei moduli, pratiche e materiali, con validazione tecnica del Gruppo.</p></div>
+      <div><div class="w">Settimane 7–10</div><h3>Coorte e produzione</h3><p>Selezione dei partecipanti, rilevazione iniziale, registrazione dei primi episodi.</p></div>
+      <div><div class="w">Settimane 11–12</div><h3>Lancio pubblico</h3><p>Annuncio congiunto, prima uscita del podcast, apertura del primo ciclo della Scuola.</p></div>
+    </div>
+    <p class="note" style="margin-top:1rem">Le settimane decorrono dalla riunione di avvio. Il calendario definitivo dipende dalla data di approvazione.</p>
+  </div>
+</section>
+
+<!-- 21 -->
+<section class="slide s-grey" data-label="Costi vivi">
+  <div class="wrap">
+    <p class="eyebrow">Condizioni economiche</p>
+    <h2 class="title wide">Che cosa remunera il corrispettivo</h2>
+    <div class="cols">
+      <div>
+        <p class="note" style="margin-bottom:.7rem">Ideazione, direzione, produzione editoriale, conduzione, curatela, coordinamento e distribuzione. Restano separati i costi verso soggetti terzi.</p>
+        <ul class="items">
+          <li>Sedi, service audio-video, allestimenti, sicurezza, personale tecnico</li>
+          <li>Viaggi, pernottamenti, trasferimenti, cachet e ospitalità degli ospiti</li>
+          <li>Campagne pubblicitarie e acquisto di spazi media</li>
+          <li>Sviluppo informatico dell’area digitale e licenze di piattaforma</li>
+          <li>Traduzioni, interpretariato e sottotitolazione avanzata</li>
+          <li>Valutazioni scientifiche affidate a soggetti terzi</li>
+        </ul>
+      </div>
+      <div>
+        <p class="note" style="margin-bottom:.7rem"><strong>Dotazione di riferimento</strong> dei momenti pubblici, necessaria a realizzare il programma descritto.</p>
+        <div class="budget">
+          <div><span>Evento conclusivo della Sperimentazione</span><span>€12.000</span></div>
+          <div><span>Festival di due giorni, per città</span><span>€45.000</span></div>
+          <div><span>Due festival della Partnership nazionale</span><span>€90.000</span></div>
+        </div>
+        <p class="note" style="margin-top:.9rem">Una dotazione inferiore comporta <strong>una rimodulazione concordata</strong> della durata, del numero degli ospiti o delle componenti produttive dell’evento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 22 -->
+<section class="slide s-white" data-label="Contratti e pagamenti">
+  <div class="wrap">
+    <p class="eyebrow">Regole operative, 1 di 2</p>
+    <h2 class="title wide">Contratti, pagamenti, tempi</h2>
+    <dl class="rows">
+      <div><dt>Contratti con i fornitori</dt><dd>Sottoscritti dal soggetto committente. Tlon cura direzione culturale, programmazione e coordinamento editoriale. Se Tlon assume anche contrattualizzazione e amministrazione dei fornitori, si applica un compenso di produzione pari al <span class="num">10%</span> dei costi amministrati.</dd></div>
+      <div><dt>Pagamenti</dt><dd><span class="num">40%</span> alla sottoscrizione, <span class="num">30%</span> all’avvio della prima stagione di contenuti, <span class="num">20%</span> all’avvio dei momenti pubblici, <span class="num">10%</span> alla consegna della relazione annuale. Fatture a <span class="num">30</span> giorni data fattura.</dd></div>
+      <div><dt>Durata e validità</dt><dd>Offerta valida <span class="num">60</span> giorni. Annualità di <span class="num">12</span> mesi dalla riunione di avvio. Recesso con preavviso di <span class="num">60</span> giorni.</dd></div>
+      <div><dt>Interruzione</dt><dd>Restano acquisiti i compensi relativi alle attività già svolte. La quota d’impianto si considera acquisita con la consegna dell’architettura dei sei moduli.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- 23 -->
+<section class="slide s-white" data-label="Diritti e dati">
+  <div class="wrap">
+    <p class="eyebrow">Regole operative, 2 di 2</p>
+    <h2 class="title wide">Diritti, dati, annualità successive</h2>
+    <dl class="rows">
+      <div><dt>Diritti e utilizzi</dt><dd>Format, metodologia, titolo e architettura editoriale restano in titolarità di Tlon. Il Gruppo utilizza i contenuti co-prodotti per la durata della partnership, sui canali concordati. Esclusiva settoriale, cessione permanente o riuso autonomo successivo richiedono un accordo specifico.</dd></div>
+      <div><dt>Dati della coorte pilota</dt><dd>Raccolta e trattamento definiti con il referente privacy del Gruppo, secondo principi di minimizzazione e, ove possibile, anonimizzazione. Ruoli e responsabilità formalizzati prima dell’avvio della rilevazione.</dd></div>
+      <div><dt>Annualità successive</dt><dd>La quota d’impianto non si replica: dal secondo anno è sostituita da una quota di aggiornamento, revisione e sviluppo. Il corrispettivo si definisce sulla produzione prevista, sulla scala territoriale e sugli obiettivi concordati.</dd></div>
+      <div><dt>Riservatezza</dt><dd>Dati, materiali e risultati intermedi scambiati durante il percorso restano riservati fino alla pubblicazione concordata.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- 24 -->
+<section class="slide s-grey" data-label="Le vostre domande">
+  <div class="wrap">
+    <p class="eyebrow">Domande ricorrenti</p>
+    <h2 class="title wide">Quello che ci chiederete</h2>
+    <div class="qa">
+      <div><h3>Perché la configurazione più piccola non costa la metà?</h3><p><strong>Progettazione, coorte e misurazione non si dimezzano con le pubblicazioni.</strong> La sola quota d’impianto, identica nei tre livelli, vale <span class="num">€45.000</span>. Chi sceglie il primo livello finanzia soprattutto la costruzione del format; chi sceglie il terzo usa fino in fondo ciò che è stato costruito.</p></div>
+      <div><h3>Possiamo partire da un livello e salire?</h3><p><strong>Sì.</strong> L’impianto si paga una volta sola e resta acquisito: il passaggio al livello superiore, nella stessa annualità o in quella seguente, <strong>si valorizza sulla sola parte di attivazione aggiuntiva</strong>.</p></div>
+      <div><h3>Chi decide i contenuti finanziari?</h3><p><strong>La competenza tecnica resta del Gruppo.</strong> Tlon cura linguaggio, pedagogia e produzione; ogni modulo passa dalla validazione delle vostre persone esperte prima della pubblicazione.</p></div>
+      <div><h3>Che cosa resta a voi alla fine dell’anno?</h3><p>I contenuti co-prodotti, l’archivio, i dati della coorte e <strong>il rapporto di impatto</strong>. Format e metodologia restano di Tlon e vengono concessi in uso per la durata della partnership.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 25 -->
+<section class="slide s-blue close" data-label="Il passo successivo">
+  <div class="wrap">
+    <p class="eyebrow">Il passo successivo</p>
+    <h2>Scegliere la configurazione, poi lavorare insieme su calendario, indicatori e coorte pilota.</h2>
+    <p class="sign">Di soldi <span class="off">(</span>non<span class="off">)</span> si parla!</p>
+    <p class="who">Tlon · Maura Gancitano e Andrea Colamedici<br>Proposta per il Gruppo Banca Etica · settembre 2026</p>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var deck=document.getElementById('deck'),rail=document.getElementById('rail'),
+      progress=document.getElementById('progress'),counter=document.getElementById('counter'),
+      hint=document.getElementById('hint'),sheet=document.getElementById('sheet'),
+      sheetItems=document.getElementById('sheetItems'),
+      slides=[].slice.call(deck.querySelectorAll('.slide')),current=-1,buttons=[];
+
+  /* indicatore 0-20 */
+  var ticks=document.getElementById('ticks20');
+  if(ticks){for(var t=0;t<20;t++){var i=document.createElement('i');if(t<10.6)i.className='on';i.style.transitionDelay=(t*22)+'ms';ticks.appendChild(i);}}
+
+  /* onda del podcast */
+  var wave=document.getElementById('wave');
+  if(wave){
+    var pattern=[.18,.34,.62,.42,.86,.55,.3,.72,.95,.48,.26,.58,.8,.38,.66,.22,.5,.9,.44,.7,.32,.6,.84,.4,.24,.56,.76,.36,.64,.28,.52,.88,.46,.68,.2,.6,.78,.35,.54,.3];
+    pattern.forEach(function(h,n){
+      var b=document.createElement('i');
+      b.style.setProperty('--h',h);
+      b.style.transitionDelay=(n*16)+'ms';
+      if(n%7===0)b.style.background='var(--lime)';
+      wave.appendChild(b);
+    });
+  }
+
+  /* navigazione */
+  slides.forEach(function(s,idx){
+    s.id='slide-'+idx;
+    if(s.dataset.act){var a=document.createElement('div');a.className='act';a.textContent=s.dataset.act;rail.appendChild(a);}
+    var b=document.createElement('button');
+    b.type='button';b.innerHTML='<i></i><span></span>';
+    b.querySelector('span').textContent=s.dataset.label;
+    b.addEventListener('click',function(){go(idx);});
+    rail.appendChild(b);buttons.push(b);
+
+    var m=document.createElement('button');
+    m.type='button';m.className='item';m.textContent=('0'+(idx+1)).slice(-2)+'  ·  '+s.dataset.label;
+    m.addEventListener('click',function(){closeSheet();go(idx);});
+    sheetItems.appendChild(m);
+  });
+
+  function go(i){
+    i=Math.max(0,Math.min(slides.length-1,i));
+    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    slides[i].scrollIntoView({behavior:reduce?'auto':'smooth'});
+  }
+  function set(i){
+    if(i===current)return;
+    current=i;
+    buttons.forEach(function(b,n){n===i?b.setAttribute('aria-current','true'):b.removeAttribute('aria-current');});
+    progress.style.width=(i/(slides.length-1)*100)+'%';
+    counter.textContent=('0'+(i+1)).slice(-2);
+    var col=/s-blue/.test(slides[i].className)?'#FFFFFF':'#14161A';
+    rail.style.color=col;counter.style.color=col;hint.style.color=col;
+    if(i>0)hint.classList.add('gone');
+  }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting&&e.intersectionRatio>0.5)set(slides.indexOf(e.target));});
+    },{threshold:[0.51],root:deck});
+    var io2=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});
+    },{threshold:[0.22],root:deck});
+    slides.forEach(function(s){io.observe(s);io2.observe(s);});
+  } else {
+    slides.forEach(function(s){s.classList.add('in');});
+  }
+  set(0);slides[0].classList.add('in');
+
+  deck.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#slide-"]');
+    if(!a)return;e.preventDefault();
+    go(parseInt(a.getAttribute('href').replace('#slide-',''),10));
+  });
+
+  function openSheet(){sheet.classList.add('open');}
+  function closeSheet(){sheet.classList.remove('open');}
+  document.getElementById('menuBtn').addEventListener('click',openSheet);
+  document.getElementById('closeSheet').addEventListener('click',closeSheet);
+
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey)return;
+    if(e.key==='Escape'){closeSheet();return;}
+    var k=e.key;
+    if(k==='ArrowDown'||k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();go(current+1);}
+    else if(k==='ArrowUp'||k==='ArrowLeft'||k==='PageUp'){e.preventDefault();go(current-1);}
+    else if(k==='Home'){e.preventDefault();go(0);}
+    else if(k==='End'){e.preventDefault();go(slides.length-1);}
+  });
+})();
+</script>
+</body>
+</html>
