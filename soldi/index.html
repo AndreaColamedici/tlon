@@ -49,7 +49,9 @@ e.preventDefault();
 if(!window.crypto||!crypto.subtle){m.textContent='Apri la pagina in https per poter accedere.';return}
 b.disabled=true;m.textContent='Apertura in corso...';
 try{
-if(!D)D=await (await fetch('p.json',{cache:'no-store'})).json();
+if(!D){D=await (await fetch('p.json',{cache:'no-store'})).json();
+var ps=[];for(var q=1;q<=D.k;q++)ps.push(fetch('c'+q+'.txt',{cache:'no-store'}).then(function(r){return r.text()}));
+var parts=await Promise.all(ps);D.c=parts.join('').replace(/\s+/g,'');}
 var enc=new TextEncoder();
 var base=await crypto.subtle.importKey('raw',enc.encode(p.value),{name:'PBKDF2'},false,['deriveKey']);
 var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(D.s),iterations:D.n,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
