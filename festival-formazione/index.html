@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Festival internazionale della formazione</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blu:#0E2B45; --blu-alto:#1A4C77; --linea:#2C6A9E;
+    --gesso:#F3F6F8; --ottone:#E0A93F; --inchiostro:#141A1E;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding:1.5rem;
+    background:var(--blu);
+    background-image:
+      linear-gradient(var(--blu-alto) 1px, transparent 1px),
+      linear-gradient(90deg, var(--blu-alto) 1px, transparent 1px);
+    background-size:2.25rem 2.25rem;
+    color:var(--gesso);
+    font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  }
+  .porta{width:min(100%,25rem)}
+  .sopra{margin:0 0 .5rem;font-size:1rem;font-weight:500;color:var(--gesso)}
+  h1{
+    margin:0;
+    font-size:clamp(2rem,9.5vw,3.4rem);
+    font-weight:700; letter-spacing:.01em; line-height:1;
+    color:transparent;
+    -webkit-text-stroke:1.5px var(--gesso);
+  }
+  .sotto{
+    margin:.9rem 0 2.5rem;
+    padding-top:.55rem;
+    border-top:1px solid var(--linea);
+    font-size:.8125rem; font-weight:500;
+    color:var(--ottone);
+  }
+  label{display:block;font-size:.8125rem;font-weight:600;color:#A8C6DE;margin-bottom:.5rem}
+  .campo{display:flex;gap:.5rem}
+  input{
+    flex:1; min-width:0;
+    font-family:inherit; font-size:1rem;
+    padding:.75rem .85rem;
+    color:var(--gesso);
+    background:rgba(243,246,248,.06);
+    border:1px solid var(--linea);
+    border-radius:2px;
+  }
+  input:focus{outline:2px solid var(--ottone);outline-offset:1px}
+  button{
+    font-family:inherit; font-size:1rem; font-weight:600;
+    padding:.75rem 1.25rem;
+    color:var(--inchiostro); background:var(--ottone);
+    border:0; border-radius:2px; cursor:pointer;
+  }
+  button:disabled{opacity:.55;cursor:default}
+  .esito{margin-top:1rem;font-size:.875rem;min-height:1.2em;color:#A8C6DE}
+  .esito.male{color:#F0A9A0}
+</style>
+</head>
+<body>
+
+<div class="porta">
+  <p class="sopra">Festival internazionale della</p>
+  <h1>FORMAZIONE</h1>
+  <p class="sotto">di Torino · dossier riservato</p>
+
+  <label for="chiave">Password</label>
+  <div class="campo">
+    <input id="chiave" type="password" autocomplete="current-password" autofocus>
+    <button id="entra" type="button">Entra</button>
+  </div>
+  <p class="esito" id="esito" role="status"></p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var PARTI = ["p1.txt","p2.txt","p3.txt","p4.txt"];
+  var campo = document.getElementById("chiave");
+  var bottone = document.getElementById("entra");
+  var esito = document.getElementById("esito");
+  var cifrato = null, sale = null, iv = null;
+
+  function byte(b64){
+    var grezzo = atob(b64.replace(/\s+/g, ""));
+    var a = new Uint8Array(grezzo.length);
+    for(var i = 0; i < grezzo.length; i++) a[i] = grezzo.charCodeAt(i);
+    return a;
+  }
+
+  function messaggio(testo, male){
+    esito.textContent = testo;
+    esito.className = male ? "esito male" : "esito";
+  }
+
+  function prendi(f){
+    return fetch(f, {cache:"no-store"}).then(function(r){
+      if(!r.ok) throw new Error("fetch");
+      return r.text();
+    });
+  }
+
+  Promise.all([prendi("meta.txt")].concat(PARTI.map(prendi)))
+    .then(function(tutto){
+      var m = tutto[0].trim().split(":");
+      sale = byte(m[0]);
+      iv = byte(m[1]);
+      cifrato = byte(tutto.slice(1).map(function(p){ return p.replace(/\s+/g,""); }).join(""));
+    })
+    .catch(function(){
+      messaggio("Non riesco a caricare il documento. Ricarica la pagina tra un minuto.", true);
+    });
+
+  function apri(){
+    if(!cifrato){ messaggio("Documento non ancora caricato, attendi un istante.", true); return; }
+    var pw = campo.value;
+    if(!pw){ campo.focus(); return; }
+
+    bottone.disabled = true;
+    messaggio("Apertura in corso");
+
+    var enc = new TextEncoder();
+    crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveKey"])
+      .then(function(base){
+        return crypto.subtle.deriveKey(
+          {name:"PBKDF2", salt:sale, iterations:200000, hash:"SHA-256"},
+          base, {name:"AES-GCM", length:256}, false, ["decrypt"]);
+      })
+      .then(function(k){
+        return crypto.subtle.decrypt({name:"AES-GCM", iv:iv}, k, cifrato);
+      })
+      .then(function(compresso){
+        if(typeof DecompressionStream === "undefined"){ throw new Error("browser"); }
+        var flusso = new Blob([compresso]).stream().pipeThrough(new DecompressionStream("gzip"));
+        return new Response(flusso).text();
+      })
+      .then(function(html){
+        document.open();
+        document.write(html);
+        document.close();
+      })
+      .catch(function(e){
+        bottone.disabled = false;
+        if(e && e.message === "browser"){
+          messaggio("Questo browser non è supportato. Prova con Chrome, Safari o Firefox aggiornati.", true);
+        } else {
+          messaggio("Password non valida.", true);
+          campo.select();
+        }
+      });
+  }
+
+  bottone.addEventListener("click", apri);
+  campo.addEventListener("keydown", function(e){ if(e.key === "Enter") apri(); });
+})();
+</script>
+
+</body>
+</html>
