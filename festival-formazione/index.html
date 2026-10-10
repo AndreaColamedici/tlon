@@ -5,85 +5,358 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Festival internazionale della formazione</title>
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A2340">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --blu:#0E2B45; --blu-alto:#1A4C77; --linea:#2C6A9E;
+    --notte:#0A2340; --linea:#2C6A9E; --linea-chiara:#A8C6DE;
     --gesso:#F3F6F8; --ottone:#E0A93F; --inchiostro:#141A1E;
+    --sans:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
   }
   *{box-sizing:border-box}
-  body{
-    margin:0; min-height:100vh;
-    display:flex; align-items:center; justify-content:center;
-    padding:1.5rem;
-    background:var(--blu);
+  html,body{margin:0}
+  body{background:var(--notte);color:var(--gesso);font-family:var(--sans)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  .porta{
+    position:relative;isolation:isolate;overflow:hidden;
+    min-height:100vh;min-height:100svh;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:clamp(2.5rem,6vw,4rem) 0;
+    background:radial-gradient(62% 52% at 50% 40%, #17497A 0%, rgba(23,73,122,0) 72%), var(--notte);
+  }
+  .porta::before{
+    content:"";position:absolute;inset:0;z-index:-2;
     background-image:
-      linear-gradient(var(--blu-alto) 1px, transparent 1px),
-      linear-gradient(90deg, var(--blu-alto) 1px, transparent 1px);
+      linear-gradient(rgba(44,106,158,.32) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(44,106,158,.32) 1px, transparent 1px);
     background-size:2.25rem 2.25rem;
-    color:var(--gesso);
-    font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+    -webkit-mask-image:radial-gradient(130% 95% at 50% 40%, #000 38%, transparent 100%);
+            mask-image:radial-gradient(130% 95% at 50% 40%, #000 38%, transparent 100%);
   }
-  .porta{width:min(100%,25rem)}
-  .sopra{margin:0 0 .5rem;font-size:1rem;font-weight:500;color:var(--gesso)}
-  h1{
-    margin:0;
-    font-size:clamp(2rem,9.5vw,3.4rem);
-    font-weight:700; letter-spacing:.01em; line-height:1;
-    color:transparent;
-    -webkit-text-stroke:1.5px var(--gesso);
+  .porta::after{
+    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   }
-  .sotto{
-    margin:.9rem 0 2.5rem;
-    padding-top:.55rem;
-    border-top:1px solid var(--linea);
-    font-size:.8125rem; font-weight:500;
-    color:var(--ottone);
-  }
-  label{display:block;font-size:.8125rem;font-weight:600;color:#A8C6DE;margin-bottom:.5rem}
-  .campo{display:flex;gap:.5rem}
-  input{
-    flex:1; min-width:0;
-    font-family:inherit; font-size:1rem;
-    padding:.75rem .85rem;
-    color:var(--gesso);
-    background:rgba(243,246,248,.06);
-    border:1px solid var(--linea);
-    border-radius:2px;
-  }
+  .incisione{position:absolute;inset:0;z-index:0;pointer-events:none}
+  .avvolgi{position:relative;z-index:1;width:min(100% - 2.5rem, 76rem);margin-inline:auto;transition:opacity .55s ease}
+  .aperta .avvolgi{opacity:0}
+
+  .sopra,.dopo{display:block;margin:0;font-weight:450;font-stretch:86%;font-size:clamp(1.15rem,.82rem + 1.6vw,2.25rem);line-height:1.1;letter-spacing:-.012em}
+  .dopo{text-align:right}
+  .parola{display:flex;justify-content:space-between;line-height:.8;margin-block:clamp(.55rem,1.6vw,1.15rem)}
+  .parola b{display:block;font-weight:800;font-size:clamp(2.4rem,14vw,11.5rem);letter-spacing:-.03em;color:var(--gesso)}
+  .js .parola b{color:transparent}
+
+  .cartiglio{margin-top:clamp(2.5rem,6vw,4rem);width:min(100%,31rem);border:1.5px solid var(--linea);background:rgba(10,35,64,.78);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+  .cartiglio .testa{margin:0;padding:.7rem 1rem;border-bottom:1px solid var(--linea);font-size:.875rem;font-weight:600;color:var(--linea-chiara)}
+  .cartiglio .dentro{padding:1rem 1rem 1.1rem}
+  label{display:block;font-size:.8125rem;font-weight:600;color:var(--linea-chiara);margin-bottom:.5rem}
+  .campo{display:flex;flex-wrap:wrap;gap:.5rem}
+  input{flex:1 1 12rem;min-width:0;font:inherit;font-size:1rem;padding:.75rem .85rem;color:var(--gesso);background:rgba(243,246,248,.06);border:1px solid var(--linea);border-radius:2px}
   input:focus{outline:2px solid var(--ottone);outline-offset:1px}
-  button{
-    font-family:inherit; font-size:1rem; font-weight:600;
-    padding:.75rem 1.25rem;
-    color:var(--inchiostro); background:var(--ottone);
-    border:0; border-radius:2px; cursor:pointer;
-  }
+  button{font:inherit;font-size:1rem;font-weight:600;padding:.75rem 1.15rem;color:var(--inchiostro);background:var(--ottone);border:0;border-radius:2px;cursor:pointer;white-space:nowrap}
+  button:hover{background:#EFC061}
+  button:focus-visible{outline:2px solid var(--gesso);outline-offset:2px}
   button:disabled{opacity:.55;cursor:default}
-  .esito{margin-top:1rem;font-size:.875rem;min-height:1.2em;color:#A8C6DE}
+  .esito{margin:.85rem 0 0;font-size:.875rem;min-height:1.25em;color:var(--linea-chiara)}
   .esito.male{color:#F0A9A0}
+  @media (prefers-reduced-motion:reduce){.avvolgi{transition:none}}
 </style>
 </head>
 <body>
+<script>document.documentElement.classList.add("js");</script>
 
-<div class="porta">
-  <p class="sopra">Festival internazionale della</p>
-  <h1>FORMAZIONE</h1>
-  <p class="sotto">di Torino · dossier riservato</p>
+<main class="porta">
+  <div class="avvolgi">
+    <h1 class="sr">Festival internazionale della formazione di Torino</h1>
+    <p class="sopra" aria-hidden="true">Festival internazionale della</p>
+    <div class="parola" aria-hidden="true"><b>F</b><b>O</b><b>R</b><b>M</b><b>A</b><b>Z</b><b>I</b><b>O</b><b>N</b><b>E</b></div>
+    <p class="dopo" aria-hidden="true">di Torino</p>
 
-  <label for="chiave">Password</label>
-  <div class="campo">
-    <input id="chiave" type="password" autocomplete="current-password" autofocus>
-    <button id="entra" type="button">Entra</button>
+    <form class="cartiglio" id="modulo" novalidate>
+      <p class="testa">Dossier di progetto riservato</p>
+      <div class="dentro">
+        <label for="chiave">Password</label>
+        <div class="campo">
+          <input id="chiave" type="password" autocomplete="current-password" autofocus required>
+          <button id="entra" type="submit">Apri il dossier</button>
+        </div>
+        <p class="esito" id="esito" role="status"></p>
+      </div>
+    </form>
   </div>
-  <p class="esito" id="esito" role="status"></p>
-</div>
+</main>
 
+<script>
+/* Incisore. Migliaia di tratti, come segni di bulino, vagano nel campo e poi
+   incidono una parola da sinistra a destra. Il puntatore li scompone, la molla
+   li riporta in sede; lo scorrimento li disperde piano. Con il movimento ridotto
+   la parola compare già incisa e ferma. */
+function Incisore(hero, box, opz) {
+  "use strict";
+  opz = opz || {};
+  var testo = opz.testo || "FORMAZIONE";
+  var fermo = !!opz.fermo;
+  var canvas = document.createElement("canvas");
+  canvas.className = "incisione";
+  canvas.setAttribute("aria-hidden", "true");
+  var ctx = canvas.getContext && canvas.getContext("2d");
+  if (!ctx || !window.Path2D) return null;
+  hero.insertBefore(canvas, hero.firstChild);
+
+  var W = 1, H = 1, dpr = 1, piccolo = false, lung = 8;
+  var parti = [], polvere = [];
+  var t0 = performance.now(), raf = 0, vivo = true, visibile = true, avviato = false;
+  var mx = -1e5, my = -1e5, dispersione = 0, apertura = 0, cx = 0, cy = 0;
+  var TRATTO = -0.9, INCROCIO = 0.68;
+
+  function mescola(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = (Math.random() * (i + 1)) | 0, t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function flusso(x, y, t) {
+    return Math.sin(x * 0.0021 + t * 0.00011) * 1.7 +
+           Math.cos(y * 0.0027 - t * 0.00009) * 1.3 +
+           Math.sin((x + y) * 0.0013 + t * 0.00007);
+  }
+  function scarto(a, b) {
+    var d = a - b;
+    while (d > Math.PI) d -= 2 * Math.PI;
+    while (d < -Math.PI) d += 2 * Math.PI;
+    return d;
+  }
+
+  function campiona() {
+    var r = hero.getBoundingClientRect(), b = box.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.max(1, Math.round(r.width));
+    H = Math.max(1, Math.round(r.height));
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    piccolo = W < 720;
+
+    var ox = b.left - r.left, oy = b.top - r.top;
+    var bw = Math.max(20, b.width), bh = Math.max(10, b.height);
+    cx = ox + bw / 2; cy = oy + bh / 2;
+
+    var foglio = document.createElement("canvas");
+    foglio.width = Math.ceil(bw); foglio.height = Math.ceil(bh);
+    var o = foglio.getContext("2d");
+    var famiglia = '"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif';
+    o.font = "800 100px " + famiglia;
+    var cap = o.measureText("H").actualBoundingBoxAscent || 72, somma = 0, i;
+    for (i = 0; i < testo.length; i++) somma += o.measureText(testo[i]).width;
+    var corpo = Math.min(100 * bh * 0.97 / cap, 100 * bw / (somma * 1.035));
+    o.font = "800 " + corpo.toFixed(2) + "px " + famiglia;
+    var capC = o.measureText("H").actualBoundingBoxAscent || corpo * 0.72, larg = [], tot = 0;
+    for (i = 0; i < testo.length; i++) { var w = o.measureText(testo[i]).width; larg.push(w); tot += w; }
+    var luce = testo.length > 1 ? (bw - tot) / (testo.length - 1) : 0, x = 0, base = (bh + capC) / 2;
+    o.fillStyle = "#fff";
+    for (i = 0; i < testo.length; i++) { o.fillText(testo[i], x, base); x += larg[i] + luce; }
+
+    var dati = o.getImageData(0, 0, foglio.width, foglio.height).data;
+    var passo = Math.max(3, Math.round(bw / 230)), punti = [];
+    lung = passo * 1.75;
+    for (var yy = passo / 2; yy < foglio.height; yy += passo) {
+      for (var xx = passo / 2; xx < foglio.width; xx += passo) {
+        var jx = xx + (Math.random() - 0.5) * passo * 0.7;
+        var jy = yy + (Math.random() - 0.5) * passo * 0.7;
+        var ix = Math.min(foglio.width - 1, Math.max(0, jx | 0));
+        var iy = Math.min(foglio.height - 1, Math.max(0, jy | 0));
+        if (dati[(iy * foglio.width + ix) * 4 + 3] > 140) punti.push([ox + jx, oy + jy, jx / bw]);
+      }
+    }
+    mescola(punti);
+    var massimo = piccolo ? 1400 : 3400;
+    if (punti.length > massimo) punti.length = massimo;
+    return punti;
+  }
+
+  function costruisci() {
+    var punti = campiona(), vecchie = parti, i;
+    parti = new Array(punti.length);
+    for (i = 0; i < punti.length; i++) {
+      var p = vecchie[i] || {
+        x: Math.random() * W, y: Math.random() * H, vx: 0, vy: 0,
+        a: Math.random() * 6.283, fase: Math.random() * 6.283,
+        ottone: Math.random() < 0.06, incrocio: Math.random() < 0.18
+      };
+      p.tx = punti[i][0]; p.ty = punti[i][1];
+      p.ritardo = avviato ? 0 : 350 + punti[i][2] * 1500 + Math.random() * 350;
+      parti[i] = p;
+    }
+    var quanta = piccolo ? 110 : 380;
+    while (polvere.length < quanta) {
+      polvere.push({ x: Math.random() * W, y: Math.random() * H, a: 0, l: 4 + Math.random() * 7, v: 0.15 + Math.random() * 0.35 });
+    }
+    polvere.length = quanta;
+    if (fermo) {
+      for (i = 0; i < parti.length; i++) {
+        parti[i].x = parti[i].tx; parti[i].y = parti[i].ty;
+        parti[i].a = parti[i].incrocio ? INCROCIO : TRATTO;
+      }
+      disegna(t0, true);
+    }
+  }
+
+  function disegna(ora, statico) {
+    var t = ora - t0, i, p, c, s;
+    ctx.clearRect(0, 0, W, H);
+    var gesso = new Path2D(), ottone = new Path2D(), fine = new Path2D();
+    var R = piccolo ? 64 : 105, R2 = R * R, molla = 0.05, attrito = 0.84;
+    var aperta = apertura ? Math.min(1, (ora - apertura) / 900) : 0;
+
+    for (i = 0; i < parti.length; i++) {
+      p = parti[i];
+      if (!statico) {
+        if (aperta > 0) {
+          var ax = p.x - cx, ay = p.y - cy, ad = Math.sqrt(ax * ax + ay * ay) || 1;
+          p.vx = p.vx * 0.96 + ax / ad * 0.9; p.vy = p.vy * 0.96 + ay / ad * 0.9;
+          p.x += p.vx; p.y += p.vy;
+          p.a += scarto(Math.atan2(p.vy, p.vx), p.a) * 0.15;
+        } else if (t > p.ritardo) {
+          var fx = (p.tx - p.x) * molla, fy = (p.ty - p.y) * molla;
+          if (dispersione > 0) {
+            var g = flusso(p.tx, p.ty, t);
+            fx += Math.cos(g) * dispersione * 2.4;
+            fy += Math.sin(g) * dispersione * 2.4 - dispersione * 0.8;
+          }
+          var dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy;
+          if (d2 < R2) {
+            var d = Math.sqrt(d2) || 1, f = 1 - d / R;
+            f = f * f * 7.5; fx += dx / d * f; fy += dy / d * f;
+          }
+          p.vx = (p.vx + fx) * attrito; p.vy = (p.vy + fy) * attrito;
+          p.x += p.vx; p.y += p.vy;
+          var vel = Math.abs(p.vx) + Math.abs(p.vy);
+          var mira = vel > 1.4 ? Math.atan2(p.vy, p.vx)
+                   : (p.incrocio ? INCROCIO : TRATTO) + Math.sin(t * 0.0016 + p.fase) * 0.06;
+          p.a += scarto(mira, p.a) * 0.14;
+        } else {
+          var gg = flusso(p.x, p.y, t);
+          p.vx = p.vx * 0.94 + Math.cos(gg) * 0.14; p.vy = p.vy * 0.94 + Math.sin(gg) * 0.14;
+          p.x += p.vx; p.y += p.vy;
+          p.a += scarto(gg, p.a) * 0.1;
+        }
+      }
+      c = Math.cos(p.a) * lung * 0.5; s = Math.sin(p.a) * lung * 0.5;
+      var via = p.ottone ? ottone : gesso;
+      via.moveTo(p.x - c, p.y - s); via.lineTo(p.x + c, p.y + s);
+    }
+
+    for (i = 0; i < polvere.length; i++) {
+      p = polvere[i];
+      p.a = flusso(p.x, p.y, statico ? 0 : t);
+      if (!statico) {
+        p.x += Math.cos(p.a) * p.v; p.y += Math.sin(p.a) * p.v;
+        var ex = p.x - mx, ey = p.y - my, e2 = ex * ex + ey * ey;
+        if (e2 < R2) { var e = Math.sqrt(e2) || 1; p.x += ex / e * 1.6; p.y += ey / e * 1.6; }
+        if (p.x < -10) p.x = W + 10; else if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10; else if (p.y > H + 10) p.y = -10;
+      }
+      c = Math.cos(p.a) * p.l * 0.5; s = Math.sin(p.a) * p.l * 0.5;
+      fine.moveTo(p.x - c, p.y - s); fine.lineTo(p.x + c, p.y + s);
+    }
+
+    ctx.lineCap = "round";
+    ctx.globalAlpha = 1 - aperta;
+    ctx.lineWidth = 0.9; ctx.strokeStyle = "rgba(168,198,222,.28)"; ctx.stroke(fine);
+    ctx.lineWidth = piccolo ? 1.05 : 1.3;
+    ctx.strokeStyle = "rgba(243,246,248,.93)"; ctx.stroke(gesso);
+    ctx.strokeStyle = "rgba(224,169,63,.96)"; ctx.stroke(ottone);
+    ctx.globalAlpha = 1;
+  }
+
+  /* se i primi novanta fotogrammi arrivano lenti, alleggerisce il campo */
+  var campioni = 0, somma = 0, ultimo = 0, misurato = false;
+  function ciclo(ora) {
+    raf = 0;
+    if (!vivo) return;
+    if (!misurato && ultimo) {
+      var dt = ora - ultimo;
+      if (dt < 200) { somma += dt; campioni++; }
+      if (campioni >= 90) {
+        misurato = true;
+        if (somma / campioni > 24 && parti.length > 1500) {
+          parti.length = Math.round(parti.length * 0.65);
+          polvere.length = Math.round(polvere.length * 0.6);
+        }
+      }
+    }
+    ultimo = ora;
+    disegna(ora, false);
+    if (visibile && !document.hidden) raf = requestAnimationFrame(ciclo);
+  }
+  function riparti() {
+    if (!fermo && vivo && avviato && !raf && visibile && !document.hidden) raf = requestAnimationFrame(ciclo);
+  }
+  function suPuntatore(e) { var r = hero.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; }
+  function fuori() { mx = my = -1e5; }
+  function suScorrimento() { dispersione = Math.max(0, Math.min(1, (window.scrollY || 0) / (H * 0.85))); }
+  var attesa = 0;
+  function suRidimensiona() {
+    clearTimeout(attesa);
+    attesa = setTimeout(function () { if (vivo && avviato) costruisci(); }, 220);
+  }
+  function suVisibilita() { if (!document.hidden) riparti(); }
+  var osservatore = "IntersectionObserver" in window
+    ? new IntersectionObserver(function (v) { visibile = v[0].isIntersecting; riparti(); })
+    : null;
+
+  function avvia() {
+    if (avviato || !vivo) return;
+    costruisci();
+    avviato = true;
+    hero.classList.add("inciso");
+    window.addEventListener("resize", suRidimensiona);
+    if (fermo) return;
+    hero.addEventListener("pointermove", suPuntatore, { passive: true });
+    hero.addEventListener("pointerleave", fuori);
+    window.addEventListener("scroll", suScorrimento, { passive: true });
+    document.addEventListener("visibilitychange", suVisibilita);
+    if (osservatore) osservatore.observe(hero);
+    riparti();
+  }
+
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load('800 100px "Bricolage Grotesque"').then(avvia, avvia);
+    setTimeout(avvia, 2200);
+  } else {
+    avvia();
+  }
+
+  return {
+    apri: function () { apertura = performance.now(); },
+    ferma: function () {
+      vivo = false;
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("resize", suRidimensiona);
+      window.removeEventListener("scroll", suScorrimento);
+      document.removeEventListener("visibilitychange", suVisibilita);
+      if (osservatore) osservatore.disconnect();
+    }
+  };
+}
+
+</script>
 <script>
 (function(){
   "use strict";
+  var fermo = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var porta = document.querySelector(".porta");
+  var incisore = Incisore(porta, document.querySelector(".parola"), {testo:"FORMAZIONE", fermo:fermo});
+  if(!incisore) document.documentElement.classList.remove("js");
+
   var PARTI = ["p1.txt","p2.txt","p3.txt","p4.txt"];
+  var modulo = document.getElementById("modulo");
   var campo = document.getElementById("chiave");
   var bottone = document.getElementById("entra");
   var esito = document.getElementById("esito");
@@ -95,12 +368,10 @@
     for(var i = 0; i < grezzo.length; i++) a[i] = grezzo.charCodeAt(i);
     return a;
   }
-
   function messaggio(testo, male){
     esito.textContent = testo;
     esito.className = male ? "esito male" : "esito";
   }
-
   function prendi(f){
     return fetch(f, {cache:"no-store"}).then(function(r){
       if(!r.ok) throw new Error("fetch");
@@ -113,20 +384,25 @@
       var m = tutto[0].trim().split(":");
       sale = byte(m[0]);
       iv = byte(m[1]);
-      cifrato = byte(tutto.slice(1).map(function(p){ return p.replace(/\s+/g,""); }).join(""));
+      cifrato = byte(tutto.slice(1).map(function(p){ return p.replace(/\s+/g, ""); }).join(""));
     })
     .catch(function(){
-      messaggio("Non riesco a caricare il documento. Ricarica la pagina tra un minuto.", true);
+      messaggio("Il documento non si è caricato. Ricarica la pagina tra un minuto.", true);
     });
 
+  function scrivi(html){
+    if(incisore) incisore.ferma();
+    document.open();
+    document.write(html);
+    document.close();
+  }
+
   function apri(){
-    if(!cifrato){ messaggio("Documento non ancora caricato, attendi un istante.", true); return; }
+    if(!cifrato){ messaggio("Il documento si sta ancora caricando. Riprova tra un istante.", true); return; }
     var pw = campo.value;
     if(!pw){ campo.focus(); return; }
-
     bottone.disabled = true;
     messaggio("Apertura in corso");
-
     var enc = new TextEncoder();
     crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveKey"])
       .then(function(base){
@@ -134,34 +410,34 @@
           {name:"PBKDF2", salt:sale, iterations:200000, hash:"SHA-256"},
           base, {name:"AES-GCM", length:256}, false, ["decrypt"]);
       })
-      .then(function(k){
-        return crypto.subtle.decrypt({name:"AES-GCM", iv:iv}, k, cifrato);
-      })
+      .then(function(k){ return crypto.subtle.decrypt({name:"AES-GCM", iv:iv}, k, cifrato); })
       .then(function(compresso){
         if(typeof DecompressionStream === "undefined"){ throw new Error("browser"); }
         var flusso = new Blob([compresso]).stream().pipeThrough(new DecompressionStream("gzip"));
         return new Response(flusso).text();
       })
       .then(function(html){
-        document.open();
-        document.write(html);
-        document.close();
+        if(incisore && !fermo){
+          incisore.apri();
+          porta.classList.add("aperta");
+          setTimeout(function(){ scrivi(html); }, 850);
+        } else {
+          scrivi(html);
+        }
       })
       .catch(function(e){
         bottone.disabled = false;
         if(e && e.message === "browser"){
-          messaggio("Questo browser non è supportato. Prova con Chrome, Safari o Firefox aggiornati.", true);
+          messaggio("Questo browser non apre il dossier. Usa Chrome, Safari o Firefox aggiornati.", true);
         } else {
-          messaggio("Password non valida.", true);
+          messaggio("Password non valida. Controlla maiuscole e minuscole e riprova.", true);
           campo.select();
         }
       });
   }
 
-  bottone.addEventListener("click", apri);
-  campo.addEventListener("keydown", function(e){ if(e.key === "Enter") apri(); });
+  modulo.addEventListener("submit", function(e){ e.preventDefault(); apri(); });
 })();
 </script>
-
 </body>
 </html>
