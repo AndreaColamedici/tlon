@@ -40,10 +40,11 @@
   .testata,.piede{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.35rem 2rem;font-size:.9375rem;line-height:1.4;color:var(--avorio-2)}
   .testata{padding-block:clamp(1.25rem,3vw,2.1rem) .95rem;border-bottom:1px solid var(--filo-notte)}
   .piede{padding-block:1rem clamp(1.25rem,3vw,1.9rem);border-top:1px solid var(--filo-notte);font-size:.875rem}
-  .apertura{align-self:end;padding-block:clamp(3rem,9vh,6rem) clamp(2.5rem,7vh,4.5rem)}
+  .apertura{align-self:end;padding-block:clamp(3rem,9vh,6rem) clamp(2.5rem,7vh,4.5rem);text-shadow:0 0 1.4rem rgba(11,26,46,.85),0 0 .35rem rgba(11,26,46,.6)}
 
-  h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(2.5rem,1rem + 4.6vw,6.6rem);line-height:1;letter-spacing:-.018em}
+  h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(2.5rem,1rem + 4.6vw,6rem);line-height:1;letter-spacing:-.018em}
   h1 span{display:block}
+  .claim{margin:clamp(1rem,2vw,1.5rem) 0 0;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(1.3rem,1rem + 1.2vw,2.2rem);line-height:1.15;color:var(--oro)}
 
   .modulo{margin-top:clamp(2.25rem,5vw,3.25rem);max-width:31rem}
   label{display:block;font-style:italic;font-size:1rem;color:var(--avorio-2);margin-bottom:.4rem}
@@ -58,7 +59,7 @@
   .esito.male{color:#F2B8AE}
 
   @media (max-width:45rem){
-    .velo{background:linear-gradient(0deg, rgba(11,26,46,.97) 0%, rgba(11,26,46,.88) 40%, rgba(11,26,46,.3) 62%, rgba(11,26,46,0) 80%)}
+    .velo{background:linear-gradient(0deg, rgba(11,26,46,.97) 0%, rgba(11,26,46,.92) 50%, rgba(11,26,46,.4) 68%, rgba(11,26,46,0) 84%)}
   }
   @media (prefers-reduced-motion:reduce){.avvolgi{transition:none}}
 </style>
@@ -72,6 +73,7 @@
   </div>
   <div class="apertura avvolgi">
     <h1><span>Festival internazionale</span> <span>della formazione</span> <span>di Torino</span></h1>
+    <p class="claim">Formare chi forma, educare tutti alla formazione.</p>
     <form class="modulo" id="modulo" novalidate>
       <label for="chiave">Password del dossier</label>
       <div class="campo">
@@ -260,6 +262,7 @@ function Fioritura(campo, opz) {
 
   return {
     apri: function () { apertura = performance.now(); },
+    ridisegna: function () { if (!vivo) return; semina(); if (fermo) disegna(0, true); },
     ferma: function () {
       vivo = false;
       if (raf) cancelAnimationFrame(raf);
@@ -279,11 +282,22 @@ function Fioritura(campo, opz) {
   "use strict";
   var fermo = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var porta = document.querySelector(".porta");
+  var primaRiga = document.querySelector("h1 span");
+  function destraDelTitolo(){
+    if(!primaRiga || !document.createRange) return 0;
+    var tratto = document.createRange();
+    tratto.selectNodeContents(primaRiga);
+    return tratto.getBoundingClientRect().right;
+  }
   var fiore = window.Fioritura ? Fioritura(porta, {
     fermo: fermo,
-    centro: function(W, H, piccolo){ return piccolo ? [W * 0.6, H * 0.27] : [W * 0.715, H * 0.5]; },
-    raggio: function(W, H, piccolo){ return Math.max(W, H) * (piccolo ? 0.4 : 0.43); }
+    centro: function(W, H, piccolo){
+      if(piccolo) return [W * 0.62, H * 0.2];
+      return [Math.max(W * 0.715, destraDelTitolo() + W * 0.09), H * 0.47];
+    },
+    raggio: function(W, H, piccolo){ return Math.max(W, H) * (piccolo ? 0.34 : 0.43); }
   }) : null;
+  if(fiore && document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fiore.ridisegna(); });
 
   var PARTI = ["p1.txt","p2.txt","p3.txt","p4.txt"];
   var modulo = document.getElementById("modulo");
