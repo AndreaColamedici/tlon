@@ -3,136 +3,118 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Festival internazionale della formazione</title>
+<title>Festival internazionale della formazione di Torino</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#0A2340">
+<meta name="theme-color" content="#0B1A2E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --notte:#0A2340; --linea:#2C6A9E; --linea-chiara:#A8C6DE;
-    --gesso:#F3F6F8; --ottone:#E0A93F; --inchiostro:#141A1E;
-    --sans:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+    --notte:#0B1A2E; --avorio:#F2EEE6; --avorio-2:rgba(242,238,230,.76);
+    --oro:#CDA868; --oro-chiaro:#E0C48E; --filo-notte:rgba(242,238,230,.16);
+    --display:"Bodoni Moda","Bodoni 72",Didot,"Times New Roman",serif;
+    --testo:"Newsreader",Georgia,serif;
   }
   *{box-sizing:border-box}
-  html,body{margin:0}
-  body{background:var(--notte);color:var(--gesso);font-family:var(--sans)}
+  html,body{margin:0;background:var(--notte)}
+  body{color:var(--avorio);font-family:var(--testo);font-optical-sizing:auto}
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
   .porta{
     position:relative;isolation:isolate;overflow:hidden;
     min-height:100vh;min-height:100svh;
-    display:flex;flex-direction:column;justify-content:center;
-    padding:clamp(2.5rem,6vw,4rem) 0;
-    background:radial-gradient(62% 52% at 50% 40%, #17497A 0%, rgba(23,73,122,0) 72%), var(--notte);
+    display:grid;grid-template-rows:auto 1fr auto auto;
+    background:
+      radial-gradient(90% 80% at 12% 112%, #142B4C 0%, rgba(20,43,76,0) 62%),
+      var(--notte);
   }
-  .porta::before{
-    content:"";position:absolute;inset:0;z-index:-2;
-    background-image:
-      linear-gradient(rgba(44,106,158,.32) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(44,106,158,.32) 1px, transparent 1px);
-    background-size:2.25rem 2.25rem;
-    -webkit-mask-image:radial-gradient(130% 95% at 50% 40%, #000 38%, transparent 100%);
-            mask-image:radial-gradient(130% 95% at 50% 40%, #000 38%, transparent 100%);
+  .fioritura{position:absolute;left:0;top:0;z-index:0;pointer-events:none}
+  .velo{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(90deg, rgba(11,26,46,.94) 0%, rgba(11,26,46,.74) 30%, rgba(11,26,46,.22) 55%, rgba(11,26,46,0) 70%);
   }
-  .porta::after{
-    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
-  }
-  .incisione{position:absolute;inset:0;z-index:0;pointer-events:none}
-  .avvolgi{position:relative;z-index:1;width:min(100% - 2.5rem, 76rem);margin-inline:auto;transition:opacity .55s ease}
+  .avvolgi{position:relative;z-index:2;width:min(100% - 2.5rem, 84rem);margin-inline:auto;transition:opacity .6s ease}
   .aperta .avvolgi{opacity:0}
 
-  .sopra,.dopo{display:block;margin:0;font-weight:450;font-stretch:86%;font-size:clamp(1.15rem,.82rem + 1.6vw,2.25rem);line-height:1.1;letter-spacing:-.012em}
-  .dopo{text-align:right}
-  .parola{display:flex;justify-content:space-between;line-height:.8;margin-block:clamp(.55rem,1.6vw,1.15rem)}
-  .parola b{display:block;font-weight:800;font-size:clamp(2.4rem,14vw,11.5rem);letter-spacing:-.03em;color:var(--gesso)}
-  .js .parola b{color:transparent}
+  .testata,.piede{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.35rem 2rem;font-size:.9375rem;line-height:1.4;color:var(--avorio-2)}
+  .testata{padding-block:clamp(1.25rem,3vw,2.1rem) .95rem;border-bottom:1px solid var(--filo-notte)}
+  .piede{padding-block:1rem clamp(1.25rem,3vw,1.9rem);border-top:1px solid var(--filo-notte);font-size:.875rem}
+  .apertura{align-self:end;padding-block:clamp(3rem,9vh,6rem) clamp(2.5rem,7vh,4.5rem)}
 
-  .cartiglio{margin-top:clamp(2.5rem,6vw,4rem);width:min(100%,31rem);border:1.5px solid var(--linea);background:rgba(10,35,64,.78);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
-  .cartiglio .testa{margin:0;padding:.7rem 1rem;border-bottom:1px solid var(--linea);font-size:.875rem;font-weight:600;color:var(--linea-chiara)}
-  .cartiglio .dentro{padding:1rem 1rem 1.1rem}
-  label{display:block;font-size:.8125rem;font-weight:600;color:var(--linea-chiara);margin-bottom:.5rem}
-  .campo{display:flex;flex-wrap:wrap;gap:.5rem}
-  input{flex:1 1 12rem;min-width:0;font:inherit;font-size:1rem;padding:.75rem .85rem;color:var(--gesso);background:rgba(243,246,248,.06);border:1px solid var(--linea);border-radius:2px}
-  input:focus{outline:2px solid var(--ottone);outline-offset:1px}
-  button{font:inherit;font-size:1rem;font-weight:600;padding:.75rem 1.15rem;color:var(--inchiostro);background:var(--ottone);border:0;border-radius:2px;cursor:pointer;white-space:nowrap}
-  button:hover{background:#EFC061}
-  button:focus-visible{outline:2px solid var(--gesso);outline-offset:2px}
+  h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(2.5rem,1rem + 4.6vw,6.6rem);line-height:1;letter-spacing:-.018em}
+  h1 span{display:block}
+
+  .modulo{margin-top:clamp(2.25rem,5vw,3.25rem);max-width:31rem}
+  label{display:block;font-style:italic;font-size:1rem;color:var(--avorio-2);margin-bottom:.4rem}
+  .campo{display:flex;flex-wrap:wrap;gap:.9rem 1.1rem;align-items:center}
+  input{flex:1 1 13rem;min-width:0;font:inherit;font-size:1.125rem;padding:.65rem 0;color:var(--avorio);background:transparent;border:0;border-bottom:1px solid rgba(242,238,230,.42);border-radius:0;transition:border-color .25s ease}
+  input:focus{outline:0;border-bottom-color:var(--oro)}
+  button{font:inherit;font-size:1.0625rem;padding:.7rem 1.6rem;color:var(--notte);background:var(--oro);border:0;border-radius:999px;cursor:pointer;white-space:nowrap;transition:background .2s ease}
+  button:hover{background:var(--oro-chiaro)}
+  button:focus-visible{outline:2px solid var(--avorio);outline-offset:3px}
   button:disabled{opacity:.55;cursor:default}
-  .esito{margin:.85rem 0 0;font-size:.875rem;min-height:1.25em;color:var(--linea-chiara)}
-  .esito.male{color:#F0A9A0}
+  .esito{margin:.9rem 0 0;font-size:.9375rem;min-height:1.4em;color:var(--avorio-2)}
+  .esito.male{color:#F2B8AE}
+
+  @media (max-width:45rem){
+    .velo{background:linear-gradient(0deg, rgba(11,26,46,.97) 0%, rgba(11,26,46,.88) 40%, rgba(11,26,46,.3) 62%, rgba(11,26,46,0) 80%)}
+  }
   @media (prefers-reduced-motion:reduce){.avvolgi{transition:none}}
 </style>
 </head>
 <body>
-<script>document.documentElement.classList.add("js");</script>
-
 <main class="porta">
-  <div class="avvolgi">
-    <h1 class="sr">Festival internazionale della formazione di Torino</h1>
-    <p class="sopra" aria-hidden="true">Festival internazionale della</p>
-    <div class="parola" aria-hidden="true"><b>F</b><b>O</b><b>R</b><b>M</b><b>A</b><b>Z</b><b>I</b><b>O</b><b>N</b><b>E</b></div>
-    <p class="dopo" aria-hidden="true">di Torino</p>
-
-    <form class="cartiglio" id="modulo" novalidate>
-      <p class="testa">Dossier di progetto riservato</p>
-      <div class="dentro">
-        <label for="chiave">Password</label>
-        <div class="campo">
-          <input id="chiave" type="password" autocomplete="current-password" autofocus required>
-          <button id="entra" type="submit">Apri il dossier</button>
-        </div>
-        <p class="esito" id="esito" role="status"></p>
+  <div class="velo" aria-hidden="true"></div>
+  <div class="testata avvolgi">
+    <span>Torino, autunno 2027</span>
+    <span>Dossier di progetto riservato</span>
+  </div>
+  <div class="apertura avvolgi">
+    <h1><span>Festival internazionale</span> <span>della formazione</span> <span>di Torino</span></h1>
+    <form class="modulo" id="modulo" novalidate>
+      <label for="chiave">Password del dossier</label>
+      <div class="campo">
+        <input id="chiave" type="password" autocomplete="current-password" autofocus required>
+        <button id="entra" type="submit">Apri il dossier</button>
       </div>
+      <p class="esito" id="esito" role="status"></p>
     </form>
+  </div>
+  <div class="piede avvolgi">
+    <span>Promosso da ENGIM con il Centro internazionale di formazione dell'OIL e la Fondazione europea per la formazione</span>
+    <span>Curatela di Tlon</span>
   </div>
 </main>
 
 <script>
-/* Incisore. Migliaia di tratti, come segni di bulino, vagano nel campo e poi
-   incidono una parola da sinistra a destra. Il puntatore li scompone, la molla
-   li riporta in sede; lo scorrimento li disperde piano. Con il movimento ridotto
-   la parola compare già incisa e ferma. */
-function Incisore(hero, box, opz) {
+/* Fioritura. Migliaia di punti disposti secondo l'angolo aureo, la regola con cui
+   crescono i semi del girasole: ogni punto una persona, insieme un fiore più
+   grande dello schermo. Il fiore cresce dal centro la prima volta che entra in
+   vista; il puntatore apre un varco che si richiude; lo scorrimento, se
+   richiesto, lo fa ruotare e schiudere. Con il movimento ridotto il fiore
+   compare intero e fermo. */
+function Fioritura(campo, opz) {
   "use strict";
   opz = opz || {};
-  var testo = opz.testo || "FORMAZIONE";
   var fermo = !!opz.fermo;
+  var scorre = opz.scorre !== false;
   var canvas = document.createElement("canvas");
-  canvas.className = "incisione";
+  canvas.className = "fioritura";
   canvas.setAttribute("aria-hidden", "true");
   var ctx = canvas.getContext && canvas.getContext("2d");
   if (!ctx || !window.Path2D) return null;
-  hero.insertBefore(canvas, hero.firstChild);
+  campo.insertBefore(canvas, campo.firstChild);
 
-  var W = 1, H = 1, dpr = 1, piccolo = false, lung = 8;
-  var parti = [], polvere = [];
-  var t0 = performance.now(), raf = 0, vivo = true, visibile = true, avviato = false;
-  var mx = -1e5, my = -1e5, dispersione = 0, apertura = 0, cx = 0, cy = 0;
-  var TRATTO = -0.9, INCROCIO = 0.68;
+  var AUREO = Math.PI * (3 - Math.sqrt(5));
+  var LIVELLI = 7;
+  var W = 1, H = 1, dpr = 1, piccolo = false;
+  var punti = [], N = 0, cx = 0, cy = 0, raggio = 1, riduzione = 1;
+  var t0 = 0, raf = 0, vivo = true, visibile = true;
+  var mx = -1e5, my = -1e5, schiusa = 0, apertura = 0;
 
-  function mescola(a) {
-    for (var i = a.length - 1; i > 0; i--) {
-      var j = (Math.random() * (i + 1)) | 0, t = a[i]; a[i] = a[j]; a[j] = t;
-    }
-    return a;
-  }
-  function flusso(x, y, t) {
-    return Math.sin(x * 0.0021 + t * 0.00011) * 1.7 +
-           Math.cos(y * 0.0027 - t * 0.00009) * 1.3 +
-           Math.sin((x + y) * 0.0013 + t * 0.00007);
-  }
-  function scarto(a, b) {
-    var d = a - b;
-    while (d > Math.PI) d -= 2 * Math.PI;
-    while (d < -Math.PI) d += 2 * Math.PI;
-    return d;
-  }
-
-  function campiona() {
-    var r = hero.getBoundingClientRect(), b = box.getBoundingClientRect();
+  function semina() {
+    var r = campo.getBoundingClientRect();
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = Math.max(1, Math.round(r.width));
     H = Math.max(1, Math.round(r.height));
@@ -142,153 +124,94 @@ function Incisore(hero, box, opz) {
     canvas.style.height = H + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     piccolo = W < 720;
-
-    var ox = b.left - r.left, oy = b.top - r.top;
-    var bw = Math.max(20, b.width), bh = Math.max(10, b.height);
-    cx = ox + bw / 2; cy = oy + bh / 2;
-
-    var foglio = document.createElement("canvas");
-    foglio.width = Math.ceil(bw); foglio.height = Math.ceil(bh);
-    var o = foglio.getContext("2d");
-    var famiglia = '"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif';
-    o.font = "800 100px " + famiglia;
-    var cap = o.measureText("H").actualBoundingBoxAscent || 72, somma = 0, i;
-    for (i = 0; i < testo.length; i++) somma += o.measureText(testo[i]).width;
-    var corpo = Math.min(100 * bh * 0.97 / cap, 100 * bw / (somma * 1.035));
-    o.font = "800 " + corpo.toFixed(2) + "px " + famiglia;
-    var capC = o.measureText("H").actualBoundingBoxAscent || corpo * 0.72, larg = [], tot = 0;
-    for (i = 0; i < testo.length; i++) { var w = o.measureText(testo[i]).width; larg.push(w); tot += w; }
-    var luce = testo.length > 1 ? (bw - tot) / (testo.length - 1) : 0, x = 0, base = (bh + capC) / 2;
-    o.fillStyle = "#fff";
-    for (i = 0; i < testo.length; i++) { o.fillText(testo[i], x, base); x += larg[i] + luce; }
-
-    var dati = o.getImageData(0, 0, foglio.width, foglio.height).data;
-    var passo = Math.max(3, Math.round(bw / 230)), punti = [];
-    lung = passo * 1.75;
-    for (var yy = passo / 2; yy < foglio.height; yy += passo) {
-      for (var xx = passo / 2; xx < foglio.width; xx += passo) {
-        var jx = xx + (Math.random() - 0.5) * passo * 0.7;
-        var jy = yy + (Math.random() - 0.5) * passo * 0.7;
-        var ix = Math.min(foglio.width - 1, Math.max(0, jx | 0));
-        var iy = Math.min(foglio.height - 1, Math.max(0, jy | 0));
-        if (dati[(iy * foglio.width + ix) * 4 + 3] > 140) punti.push([ox + jx, oy + jy, jx / bw]);
-      }
-    }
-    mescola(punti);
-    var massimo = piccolo ? 1400 : 3400;
-    if (punti.length > massimo) punti.length = massimo;
-    return punti;
-  }
-
-  function costruisci() {
-    var punti = campiona(), vecchie = parti, i;
-    parti = new Array(punti.length);
-    for (i = 0; i < punti.length; i++) {
-      var p = vecchie[i] || {
-        x: Math.random() * W, y: Math.random() * H, vx: 0, vy: 0,
-        a: Math.random() * 6.283, fase: Math.random() * 6.283,
-        ottone: Math.random() < 0.06, incrocio: Math.random() < 0.18
+    var c = opz.centro ? opz.centro(W, H, piccolo) : [W * 0.7, H * 0.5];
+    cx = c[0]; cy = c[1];
+    raggio = opz.raggio ? opz.raggio(W, H, piccolo) : Math.max(W, H) * 0.6;
+    var base = opz.punti ? opz.punti(piccolo) : (piccolo ? 900 : 1700);
+    N = Math.round(base * riduzione);
+    /* il passo tra un seme e l'altro è costante; i semi crescono verso il bordo
+       finché le spirali si leggono, e la luce cala dal centro verso fuori */
+    var passo = raggio / Math.sqrt(N);
+    punti = new Array(N);
+    for (var n = 0; n < N; n++) {
+      var q = n / N;
+      punti[n] = {
+        r: passo * Math.sqrt(n + 0.5),
+        a: n * AUREO,
+        s: passo * (0.16 + 0.17 * Math.pow(q, 0.7)),
+        al: 0.14 + 0.8 * Math.pow(1 - q, 1.5),
+        oro: (n % 34 === 0) || (n % 55 === 0),
+        dx: 0, dy: 0, vx: 0, vy: 0
       };
-      p.tx = punti[i][0]; p.ty = punti[i][1];
-      p.ritardo = avviato ? 0 : 350 + punti[i][2] * 1500 + Math.random() * 350;
-      parti[i] = p;
-    }
-    var quanta = piccolo ? 110 : 380;
-    while (polvere.length < quanta) {
-      polvere.push({ x: Math.random() * W, y: Math.random() * H, a: 0, l: 4 + Math.random() * 7, v: 0.15 + Math.random() * 0.35 });
-    }
-    polvere.length = quanta;
-    if (fermo) {
-      for (i = 0; i < parti.length; i++) {
-        parti[i].x = parti[i].tx; parti[i].y = parti[i].ty;
-        parti[i].a = parti[i].incrocio ? INCROCIO : TRATTO;
-      }
-      disegna(t0, true);
     }
   }
 
   function disegna(ora, statico) {
-    var t = ora - t0, i, p, c, s;
+    var t = t0 ? ora - t0 : 0, i, n, p;
     ctx.clearRect(0, 0, W, H);
-    var gesso = new Path2D(), ottone = new Path2D(), fine = new Path2D();
-    var R = piccolo ? 64 : 105, R2 = R * R, molla = 0.05, attrito = 0.84;
+    var crescita = statico ? 1 : Math.min(1, t / 2800);
+    var visibili = statico ? N : Math.floor(N * (1 - Math.pow(1 - crescita, 3)));
+    var rotazione = statico ? 0 : t * 0.000022 + schiusa * 0.9;
+    var scala = 1 + schiusa * 0.18 + (statico ? 0 : Math.sin(t * 0.0006) * 0.006);
     var aperta = apertura ? Math.min(1, (ora - apertura) / 900) : 0;
+    aperta = aperta * aperta * (3 - 2 * aperta);
+    /* un alone dorato al centro, che cresce con il fiore */
+    var alone = ctx.createRadialGradient(cx, cy, 0, cx, cy, raggio * 0.6 * scala);
+    alone.addColorStop(0, "rgba(205,168,104," + (0.17 * crescita * (1 - aperta)).toFixed(3) + ")");
+    alone.addColorStop(1, "rgba(205,168,104,0)");
+    ctx.fillStyle = alone;
+    ctx.fillRect(0, 0, W, H);
+    var vie = [];
+    for (i = 0; i < LIVELLI; i++) vie.push(new Path2D());
+    var oro = new Path2D();
+    var R = piccolo ? 70 : 125, R2 = R * R;
 
-    for (i = 0; i < parti.length; i++) {
-      p = parti[i];
+    for (n = 0; n < visibili; n++) {
+      p = punti[n];
+      var ang = p.a + rotazione, rr = p.r * scala * (1 + aperta * 1.6);
+      var x = cx + Math.cos(ang) * rr, y = cy + Math.sin(ang) * rr;
       if (!statico) {
-        if (aperta > 0) {
-          var ax = p.x - cx, ay = p.y - cy, ad = Math.sqrt(ax * ax + ay * ay) || 1;
-          p.vx = p.vx * 0.96 + ax / ad * 0.9; p.vy = p.vy * 0.96 + ay / ad * 0.9;
-          p.x += p.vx; p.y += p.vy;
-          p.a += scarto(Math.atan2(p.vy, p.vx), p.a) * 0.15;
-        } else if (t > p.ritardo) {
-          var fx = (p.tx - p.x) * molla, fy = (p.ty - p.y) * molla;
-          if (dispersione > 0) {
-            var g = flusso(p.tx, p.ty, t);
-            fx += Math.cos(g) * dispersione * 2.4;
-            fy += Math.sin(g) * dispersione * 2.4 - dispersione * 0.8;
-          }
-          var dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy;
-          if (d2 < R2) {
-            var d = Math.sqrt(d2) || 1, f = 1 - d / R;
-            f = f * f * 7.5; fx += dx / d * f; fy += dy / d * f;
-          }
-          p.vx = (p.vx + fx) * attrito; p.vy = (p.vy + fy) * attrito;
-          p.x += p.vx; p.y += p.vy;
-          var vel = Math.abs(p.vx) + Math.abs(p.vy);
-          var mira = vel > 1.4 ? Math.atan2(p.vy, p.vx)
-                   : (p.incrocio ? INCROCIO : TRATTO) + Math.sin(t * 0.0016 + p.fase) * 0.06;
-          p.a += scarto(mira, p.a) * 0.14;
-        } else {
-          var gg = flusso(p.x, p.y, t);
-          p.vx = p.vx * 0.94 + Math.cos(gg) * 0.14; p.vy = p.vy * 0.94 + Math.sin(gg) * 0.14;
-          p.x += p.vx; p.y += p.vy;
-          p.a += scarto(gg, p.a) * 0.1;
+        var ex = x - mx, ey = y - my, e2 = ex * ex + ey * ey, tx = 0, ty = 0;
+        if (e2 < R2) {
+          var e = Math.sqrt(e2) || 1, f = 1 - e / R;
+          f = f * f * R * 0.55; tx = ex / e * f; ty = ey / e * f;
         }
+        p.vx = (p.vx + (tx - p.dx) * 0.09) * 0.82;
+        p.vy = (p.vy + (ty - p.dy) * 0.09) * 0.82;
+        p.dx += p.vx; p.dy += p.vy;
+        x += p.dx; y += p.dy;
       }
-      c = Math.cos(p.a) * lung * 0.5; s = Math.sin(p.a) * lung * 0.5;
-      var via = p.ottone ? ottone : gesso;
-      via.moveTo(p.x - c, p.y - s); via.lineTo(p.x + c, p.y + s);
-    }
-
-    for (i = 0; i < polvere.length; i++) {
-      p = polvere[i];
-      p.a = flusso(p.x, p.y, statico ? 0 : t);
-      if (!statico) {
-        p.x += Math.cos(p.a) * p.v; p.y += Math.sin(p.a) * p.v;
-        var ex = p.x - mx, ey = p.y - my, e2 = ex * ex + ey * ey;
-        if (e2 < R2) { var e = Math.sqrt(e2) || 1; p.x += ex / e * 1.6; p.y += ey / e * 1.6; }
-        if (p.x < -10) p.x = W + 10; else if (p.x > W + 10) p.x = -10;
-        if (p.y < -10) p.y = H + 10; else if (p.y > H + 10) p.y = -10;
+      if (x < -8 || x > W + 8 || y < -8 || y > H + 8) continue;
+      var fronte = statico ? 1 : Math.min(1, (visibili - n) / 140);
+      var s = p.s * (0.35 + 0.65 * fronte);
+      var a = p.al * fronte * (1 - aperta);
+      if (p.oro) {
+        oro.moveTo(x + s + 0.5, y); oro.arc(x, y, s + 0.5, 0, 6.2832);
+      } else {
+        var li = Math.min(LIVELLI - 1, Math.floor(a * LIVELLI));
+        vie[li].moveTo(x + s, y); vie[li].arc(x, y, s, 0, 6.2832);
       }
-      c = Math.cos(p.a) * p.l * 0.5; s = Math.sin(p.a) * p.l * 0.5;
-      fine.moveTo(p.x - c, p.y - s); fine.lineTo(p.x + c, p.y + s);
     }
-
-    ctx.lineCap = "round";
-    ctx.globalAlpha = 1 - aperta;
-    ctx.lineWidth = 0.9; ctx.strokeStyle = "rgba(168,198,222,.28)"; ctx.stroke(fine);
-    ctx.lineWidth = piccolo ? 1.05 : 1.3;
-    ctx.strokeStyle = "rgba(243,246,248,.93)"; ctx.stroke(gesso);
-    ctx.strokeStyle = "rgba(224,169,63,.96)"; ctx.stroke(ottone);
-    ctx.globalAlpha = 1;
+    for (i = 0; i < LIVELLI; i++) {
+      ctx.fillStyle = "rgba(242,238,230," + ((i + 0.5) / LIVELLI).toFixed(3) + ")";
+      ctx.fill(vie[i]);
+    }
+    ctx.fillStyle = "rgba(205,168,104," + (0.95 * (1 - aperta)).toFixed(3) + ")";
+    ctx.fill(oro);
   }
 
-  /* se i primi novanta fotogrammi arrivano lenti, alleggerisce il campo */
+  /* se i primi novanta fotogrammi arrivano lenti, il campo si dirada */
   var campioni = 0, somma = 0, ultimo = 0, misurato = false;
   function ciclo(ora) {
     raf = 0;
     if (!vivo) return;
+    if (!t0) t0 = ora;
     if (!misurato && ultimo) {
       var dt = ora - ultimo;
       if (dt < 200) { somma += dt; campioni++; }
       if (campioni >= 90) {
         misurato = true;
-        if (somma / campioni > 24 && parti.length > 1500) {
-          parti.length = Math.round(parti.length * 0.65);
-          polvere.length = Math.round(polvere.length * 0.6);
-        }
+        if (somma / campioni > 24) { riduzione = 0.62; semina(); }
       }
     }
     ultimo = ora;
@@ -296,41 +219,43 @@ function Incisore(hero, box, opz) {
     if (visibile && !document.hidden) raf = requestAnimationFrame(ciclo);
   }
   function riparti() {
-    if (!fermo && vivo && avviato && !raf && visibile && !document.hidden) raf = requestAnimationFrame(ciclo);
+    if (!fermo && vivo && !raf && visibile && !document.hidden) { ultimo = 0; raf = requestAnimationFrame(ciclo); }
   }
-  function suPuntatore(e) { var r = hero.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; }
+  function suPuntatore(e) { var r = campo.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; }
   function fuori() { mx = my = -1e5; }
-  function suScorrimento() { dispersione = Math.max(0, Math.min(1, (window.scrollY || 0) / (H * 0.85))); }
-  var attesa = 0;
+  function suScorrimento() { schiusa = Math.max(0, Math.min(1, (window.scrollY || 0) / (H * 0.9))); }
+  var attesa = 0, ultimaW = 0, ultimaH = 0;
   function suRidimensiona() {
     clearTimeout(attesa);
-    attesa = setTimeout(function () { if (vivo && avviato) costruisci(); }, 220);
+    attesa = setTimeout(function () {
+      if (!vivo) return;
+      var r = campo.getBoundingClientRect();
+      if (Math.round(r.width) === ultimaW && Math.round(r.height) === ultimaH) return;
+      ultimaW = Math.round(r.width); ultimaH = Math.round(r.height);
+      semina();
+      if (fermo) disegna(0, true);
+      else if (!raf) disegna(performance.now(), false);
+    }, 160);
   }
   function suVisibilita() { if (!document.hidden) riparti(); }
   var osservatore = "IntersectionObserver" in window
-    ? new IntersectionObserver(function (v) { visibile = v[0].isIntersecting; riparti(); })
+    ? new IntersectionObserver(function (v) { visibile = v[v.length - 1].isIntersecting; riparti(); })
     : null;
+  var misuratore = "ResizeObserver" in window ? new ResizeObserver(suRidimensiona) : null;
 
-  function avvia() {
-    if (avviato || !vivo) return;
-    costruisci();
-    avviato = true;
-    hero.classList.add("inciso");
-    window.addEventListener("resize", suRidimensiona);
-    if (fermo) return;
-    hero.addEventListener("pointermove", suPuntatore, { passive: true });
-    hero.addEventListener("pointerleave", fuori);
-    window.addEventListener("scroll", suScorrimento, { passive: true });
-    document.addEventListener("visibilitychange", suVisibilita);
-    if (osservatore) osservatore.observe(hero);
-    riparti();
-  }
-
-  if (document.fonts && document.fonts.load) {
-    document.fonts.load('800 100px "Bricolage Grotesque"').then(avvia, avvia);
-    setTimeout(avvia, 2200);
+  semina();
+  ultimaW = W; ultimaH = H;
+  if (misuratore) misuratore.observe(campo);
+  else window.addEventListener("resize", suRidimensiona);
+  if (fermo) {
+    disegna(0, true);
   } else {
-    avvia();
+    campo.addEventListener("pointermove", suPuntatore, { passive: true });
+    campo.addEventListener("pointerleave", fuori);
+    if (scorre) window.addEventListener("scroll", suScorrimento, { passive: true });
+    document.addEventListener("visibilitychange", suVisibilita);
+    if (osservatore) { visibile = false; osservatore.observe(campo); }
+    else riparti();
   }
 
   return {
@@ -338,6 +263,8 @@ function Incisore(hero, box, opz) {
     ferma: function () {
       vivo = false;
       if (raf) cancelAnimationFrame(raf);
+      clearTimeout(attesa);
+      if (misuratore) misuratore.disconnect();
       window.removeEventListener("resize", suRidimensiona);
       window.removeEventListener("scroll", suScorrimento);
       document.removeEventListener("visibilitychange", suVisibilita);
@@ -352,8 +279,11 @@ function Incisore(hero, box, opz) {
   "use strict";
   var fermo = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var porta = document.querySelector(".porta");
-  var incisore = Incisore(porta, document.querySelector(".parola"), {testo:"FORMAZIONE", fermo:fermo});
-  if(!incisore) document.documentElement.classList.remove("js");
+  var fiore = window.Fioritura ? Fioritura(porta, {
+    fermo: fermo,
+    centro: function(W, H, piccolo){ return piccolo ? [W * 0.6, H * 0.27] : [W * 0.715, H * 0.5]; },
+    raggio: function(W, H, piccolo){ return Math.max(W, H) * (piccolo ? 0.4 : 0.43); }
+  }) : null;
 
   var PARTI = ["p1.txt","p2.txt","p3.txt","p4.txt"];
   var modulo = document.getElementById("modulo");
@@ -391,7 +321,7 @@ function Incisore(hero, box, opz) {
     });
 
   function scrivi(html){
-    if(incisore) incisore.ferma();
+    if(fiore) fiore.ferma();
     document.open();
     document.write(html);
     document.close();
@@ -417,8 +347,8 @@ function Incisore(hero, box, opz) {
         return new Response(flusso).text();
       })
       .then(function(html){
-        if(incisore && !fermo){
-          incisore.apri();
+        if(fiore && !fermo){
+          fiore.apri();
           porta.classList.add("aperta");
           setTimeout(function(){ scrivi(html); }, 850);
         } else {
