@@ -1,23 +1,137 @@
 [
  {
+  "categoria": "Mostra",
+  "data_testo": "Autunno 2026",
+  "inizio": null,
+  "fine": null,
+  "titolo": "IO & AI · MUSE",
+  "testo": "Mostra IO & AI al MUSE, Museo delle Scienze di Trento. Andrea Colamedici è nel comitato scientifico.",
+  "url": "https://www.muse.it/",
+  "url_label": "MUSE Trento",
+  "testo_en": "IO & AI exhibition at MUSE, Trento's science museum. Andrea Colamedici is a member of the scientific committee.",
+  "testo_es": "Exposición IO & AI en el MUSE, museo de las ciencias de Trento. Andrea Colamedici forma parte del comité científico."
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "25 febbraio 2027",
+  "inizio": "2027-02-25",
+  "fine": "2027-02-25",
+  "titolo": "Incorporea · Nardò",
+  "testo": "Maura Gancitano nella rassegna Incorporea. Orario da confermare.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Maura Gancitano at the Incorporea series. Time to be confirmed.",
+  "testo_es": "Maura Gancitano en el ciclo Incorporea. Horario por confirmar."
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "11–14 febbraio 2027",
+  "inizio": "2027-02-11",
+  "fine": "2027-02-14",
+  "titolo": "Peripheral Constellation · Belgrado",
+  "testo": "Maura Gancitano e Andrea Colamedici alla nuova tappa di Peripheral Constellation, a Belgrado.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Maura Gancitano and Andrea Colamedici at the new chapter of Peripheral Constellation, in Belgrade.",
+  "testo_es": "Maura Gancitano y Andrea Colamedici en la nueva etapa de Peripheral Constellation, en Belgrado."
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "10 febbraio 2027",
+  "inizio": "2027-02-10",
+  "fine": "2027-02-10",
+  "titolo": "BIT · Milano",
+  "testo": "Maura Gancitano alla Borsa Internazionale del Turismo. Orario da confermare.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Maura Gancitano at BIT, the international tourism exchange. Time to be confirmed.",
+  "testo_es": "Maura Gancitano en la BIT, bolsa internacional del turismo. Horario por confirmar."
+ },
+ {
   "categoria": "Conferenza",
   "data_testo": "11–18 gennaio 2027",
   "inizio": "2027-01-11",
   "fine": "2027-01-18",
   "titolo": "Congreso Futuro · Cile",
-  "testo": "Maura Gancitano e Andrea Colamedici al Congreso Futuro.",
+  "testo": "Maura Gancitano e Andrea Colamedici tornano al Congreso Futuro, il congresso cileno su scienza e pensiero.",
   "url": "https://congresofuturo.cl/",
-  "url_label": "Congreso Futuro"
+  "url_label": "Congreso Futuro",
+  "testo_en": "Maura Gancitano and Andrea Colamedici return to Congreso Futuro, Chile's congress on science and thought.",
+  "testo_es": "Maura Gancitano y Andrea Colamedici vuelven al Congreso Futuro, el congreso chileno sobre ciencia y pensamiento.",
+  "home": true
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "Dicembre 2026 · data da confermare",
+  "inizio": "2026-12-01",
+  "fine": "2026-12-04",
+  "titolo": "Beautiful Minds · Roma",
+  "testo": "Andrea Colamedici presenta «Arcipelago delle realtà» al festival di Riccardo Luna ed Eleonora Chioda.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Andrea Colamedici presents “Arcipelago delle realtà” at the festival curated by Riccardo Luna and Eleonora Chioda.",
+  "testo_es": "Andrea Colamedici presenta «Arcipelago delle realtà» en el festival de Riccardo Luna y Eleonora Chioda."
  },
  {
   "categoria": "Conferenza",
-  "data_testo": "27–29 novembre 2026",
+  "data_testo": "27–28 novembre 2026",
   "inizio": "2026-11-27",
-  "fine": "2026-11-29",
-  "titolo": "Convegno ICS · Sibiu, Romania",
-  "testo": "Maura Gancitano e Andrea Colamedici al convegno ICS di Sibiu.",
+  "fine": "2026-11-28",
+  "titolo": "ICS Exchange Europe 2026 · Sibiu",
+  "testo": "Maura Gancitano e Andrea Colamedici presiedono la track Social Engagement and Communication di ICS Exchange Europe, su invito del Learning Sciences Institute dell'Università di Foggia.",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "testo_en": "Maura Gancitano and Andrea Colamedici chair the Social Engagement and Communication track of ICS Exchange Europe, invited by the Learning Sciences Institute, University of Foggia.",
+  "testo_es": "Maura Gancitano y Andrea Colamedici presiden el track Social Engagement and Communication de ICS Exchange Europe, por invitación del Learning Sciences Institute de la Università di Foggia."
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "26 novembre 2026",
+  "inizio": "2026-11-26",
+  "fine": "2026-11-26",
+  "titolo": "Festival dell'Orientamento · ENGIM, Ravenna",
+  "testo": "Lectio a due voci di Maura Gancitano e Andrea Colamedici alle Artificerie Almagià: pedagogia, orientamento e dialogo tra generazioni.",
+  "url": "https://www.orientiamo.it/",
+  "url_label": "Orientiamo",
+  "testo_en": "Lecture by Maura Gancitano and Andrea Colamedici at Artificerie Almagià: pedagogy, orientation and dialogue between generations.",
+  "testo_es": "Conferencia a dos voces de Maura Gancitano y Andrea Colamedici en las Artificerie Almagià: pedagogía, orientación y diálogo entre generaciones."
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "25 novembre 2026",
+  "inizio": "2026-11-25",
+  "fine": "2026-11-25",
+  "titolo": "INSIDE · Gallerie d'Italia, Torino",
+  "testo": "Lectio di Maura Gancitano e Andrea Colamedici sull'Europa alle Gallerie d'Italia di Torino, con il Circolo dei Lettori, accanto alla mostra di Luca Campigotto.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Lecture by Maura Gancitano and Andrea Colamedici on Europe at Gallerie d'Italia, Turin, with the Circolo dei Lettori, alongside Luca Campigotto's exhibition.",
+  "testo_es": "Conferencia de Maura Gancitano y Andrea Colamedici sobre Europa en las Gallerie d'Italia de Turín, con el Circolo dei Lettori, junto a la exposición de Luca Campigotto.",
+  "home": true
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "24 novembre 2026",
+  "inizio": "2026-11-24",
+  "fine": "2026-11-24",
+  "titolo": "Amori rubati · Roma",
+  "testo": "Tlon nella rassegna «Amori rubati» della Compagnia Gabriele Lavia, Teatro di Documenti; il contributo della serata è devoluto ai centri antiviolenza.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Tlon at the “Amori rubati” series by Compagnia Gabriele Lavia, Teatro di Documenti; the evening's proceeds go to anti-violence centres.",
+  "testo_es": "Tlon en el ciclo «Amori rubati» de la Compagnia Gabriele Lavia, Teatro di Documenti; la recaudación se destina a los centros contra la violencia."
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "23 novembre 2026",
+  "inizio": "2026-11-23",
+  "fine": "2026-11-23",
+  "titolo": "Trasform-Azioni · Casette d'Ete",
+  "testo": "Maura Gancitano nella rassegna Trasform-Azioni. Orario da confermare.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Maura Gancitano at the Trasform-Azioni series. Time to be confirmed.",
+  "testo_es": "Maura Gancitano en el ciclo Trasform-Azioni. Horario por confirmar."
  },
  {
   "categoria": "Conferenza",
@@ -27,7 +141,57 @@
   "titolo": "Convegno SIREM 2026",
   "testo": "Maura Gancitano all'Università Europea di Roma.",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "testo_en": "Maura Gancitano at Università Europea di Roma.",
+  "testo_es": "Maura Gancitano en la Università Europea di Roma."
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "22 novembre 2026",
+  "inizio": "2026-11-22",
+  "fine": "2026-11-22",
+  "titolo": "Ad Alta Voce · San Giovanni Teatino",
+  "testo": "Maura Gancitano e Andrea Colamedici nella rassegna Ad Alta Voce, condotta da Giorgio Zanchini: da «La società della performance» a cooperazione e democrazia.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Maura Gancitano and Andrea Colamedici at the Ad Alta Voce series, hosted by Giorgio Zanchini: from “La società della performance” to cooperation and democracy.",
+  "testo_es": "Maura Gancitano y Andrea Colamedici en el ciclo Ad Alta Voce, conducido por Giorgio Zanchini: de «La società della performance» a la cooperación y la democracia."
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "21 novembre 2026",
+  "inizio": "2026-11-21",
+  "fine": "2026-11-21",
+  "titolo": "Convegno Nazionale Percorsi Formativi 06 · Milano",
+  "testo": "Maura Gancitano e Andrea Colamedici al convegno nazionale di Percorsi Formativi 06 sul tempo dell'infanzia, NH Milano Congress Centre.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Maura Gancitano and Andrea Colamedici at the national conference of Percorsi Formativi 06 on the time of childhood, NH Milano Congress Centre.",
+  "testo_es": "Maura Gancitano y Andrea Colamedici en el congreso nacional de Percorsi Formativi 06 sobre el tiempo de la infancia, NH Milano Congress Centre."
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "21 novembre 2026",
+  "inizio": "2026-11-21",
+  "fine": "2026-11-21",
+  "titolo": "La fabbrica della bellezza · L'Eredità delle Donne, Bologna",
+  "testo": "Maura Gancitano presenta «La fabbrica della bellezza» (Rizzoli) al festival L'Eredità delle Donne.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Maura Gancitano presents “La fabbrica della bellezza” (Rizzoli) at the festival L'Eredità delle Donne.",
+  "testo_es": "Maura Gancitano presenta «La fabbrica della bellezza» (Rizzoli) en el festival L'Eredità delle Donne."
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "17 novembre 2026",
+  "inizio": "2026-11-17",
+  "fine": "2026-11-17",
+  "titolo": "Come trame di un canto · Boario Terme",
+  "testo": "Maura Gancitano al festival Come trame di un canto.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Maura Gancitano at the festival Come trame di un canto.",
+  "testo_es": "Maura Gancitano en el festival Come trame di un canto."
  },
  {
   "categoria": "Presentazione",
@@ -37,7 +201,9 @@
   "titolo": "Fondazione Poetica · Milano",
   "testo": "Maura Gancitano alla Fondazione Poetica, in dialogo con Mauro Magatti, per «Ma chi me lo fa fare».",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "testo_en": "Maura Gancitano at Fondazione Poetica, in conversation with Mauro Magatti: “Ma chi me lo fa fare”.",
+  "testo_es": "Maura Gancitano en la Fondazione Poetica, en diálogo con Mauro Magatti: «Ma chi me lo fa fare»."
  },
  {
   "categoria": "Conferenza",
@@ -45,9 +211,11 @@
   "inizio": "2026-11-15",
   "fine": "2026-11-15",
   "titolo": "BeMore Days · Teatro Dal Verme",
-  "testo": "Andrea Colamedici al Teatro Dal Verme di Milano.",
+  "testo": "Andrea Colamedici ai BeMore Days, Teatro Dal Verme di Milano. Edizione 2026: Be More #HERO.",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "testo_en": "Andrea Colamedici at BeMore Days, Teatro Dal Verme, Milan. 2026 edition: Be More #HERO.",
+  "testo_es": "Andrea Colamedici en los BeMore Days, Teatro Dal Verme de Milán. Edición 2026: Be More #HERO."
  },
  {
   "categoria": "Festival",
@@ -57,7 +225,9 @@
   "titolo": "Festival Radici · Circolo dei lettori, Torino",
   "testo": "Maura Gancitano al Circolo dei lettori di Torino.",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "testo_en": "Maura Gancitano at the Circolo dei lettori, Turin.",
+  "testo_es": "Maura Gancitano en el Circolo dei lettori de Turín."
  },
  {
   "categoria": "Conferenza",
@@ -65,19 +235,48 @@
   "inizio": "2026-11-14",
   "fine": "2026-11-14",
   "titolo": "13es Journées philosophiques de Bienne",
-  "testo": "Maura Gancitano e Andrea Colamedici alle Giornate filosofiche di Bienne, in Svizzera.",
+  "testo": "Maura Gancitano e Andrea Colamedici alle Giornate filosofiche di Bienne (tema: Le Courage de la Vérité, 12–15 novembre) con la conferenza «Le courage de perdre la réalité».",
+  "url": "https://philosophietage.ch/fr/home",
+  "url_label": "Journées philosophiques",
+  "testo_en": "Maura Gancitano and Andrea Colamedici at the Biel/Bienne philosophy days (theme: Le Courage de la Vérité, November 12–15) with the talk “Le courage de perdre la réalité”.",
+  "testo_es": "Maura Gancitano y Andrea Colamedici en las Jornadas filosóficas de Bienne (tema: Le Courage de la Vérité, 12–15 de noviembre) con la conferencia «Le courage de perdre la réalité».",
+  "home": true
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "12 novembre 2026",
+  "inizio": "2026-11-12",
+  "fine": "2026-11-12",
+  "titolo": "Festival Rigenera · Bolzano",
+  "testo": "Maura Gancitano al Festival Rigenera, Teatro Cristallo, con Gio Evan.",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "testo_en": "Maura Gancitano at Festival Rigenera, Teatro Cristallo, with Gio Evan.",
+  "testo_es": "Maura Gancitano en el Festival Rigenera, Teatro Cristallo, con Gio Evan."
  },
  {
   "categoria": "Conferenza",
   "data_testo": "9 novembre 2026",
   "inizio": "2026-11-09",
   "fine": "2026-11-09",
-  "titolo": "Festival della Comunicazione",
-  "testo": "Maura Gancitano al Festival della Comunicazione. Orario da confermare.",
+  "titolo": "Festival della Comunicazione · Sapienza",
+  "testo": "Maura Gancitano e Andrea Colamedici alla seconda edizione del Festival della Comunicazione di Sapienza Futura, Sapienza Università di Roma. Orario da confermare.",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "testo_en": "Maura Gancitano and Andrea Colamedici at the second Festival della Comunicazione by Sapienza Futura, Sapienza University of Rome. Time to be confirmed.",
+  "testo_es": "Maura Gancitano y Andrea Colamedici en la segunda edición del Festival della Comunicazione de Sapienza Futura, Sapienza Università di Roma. Horario por confirmar."
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "8 novembre 2026",
+  "inizio": "2026-11-08",
+  "fine": "2026-11-08",
+  "titolo": "La fabbrica della bellezza · Roma",
+  "testo": "Maura Gancitano presenta «La fabbrica della bellezza» (Rizzoli) alla libreria Spazio Sette.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Maura Gancitano presents “La fabbrica della bellezza” (Rizzoli) at Spazio Sette bookshop.",
+  "testo_es": "Maura Gancitano presenta «La fabbrica della bellezza» (Rizzoli) en la librería Spazio Sette."
  },
  {
   "categoria": "Festival",
@@ -85,9 +284,11 @@
   "inizio": "2026-11-07",
   "fine": "2026-11-07",
   "titolo": "Da Grande Festival · Milano",
-  "testo": "Maura Gancitano al Da Grande Festival.",
+  "testo": "Maura Gancitano al Da Grande Festival, BASE Milano.",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "testo_en": "Maura Gancitano at Da Grande Festival, BASE Milano.",
+  "testo_es": "Maura Gancitano en el Da Grande Festival, BASE Milano."
  },
  {
   "categoria": "Conferenza",
@@ -95,19 +296,37 @@
   "inizio": "2026-11-05",
   "fine": "2026-11-05",
   "titolo": "Medici Senza Frontiere",
-  "testo": "Intervento online di Andrea Colamedici.",
+  "testo": "Intervento online di Andrea Colamedici per Medici Senza Frontiere: IA e pensiero critico.",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "testo_en": "Online talk by Andrea Colamedici for Médecins Sans Frontières: AI and critical thinking.",
+  "testo_es": "Intervención en línea de Andrea Colamedici para Médicos Sin Fronteras: IA y pensamiento crítico."
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "4 novembre 2026",
+  "inizio": "2026-11-04",
+  "fine": "2026-11-04",
+  "titolo": "La fabbrica della bellezza · Milano",
+  "testo": "Maura Gancitano presenta «La fabbrica della bellezza» (Rizzoli) a Milano.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Maura Gancitano presents “La fabbrica della bellezza” (Rizzoli) in Milan.",
+  "testo_es": "Maura Gancitano presenta «La fabbrica della bellezza» (Rizzoli) en Milán.",
+  "home": true
  },
  {
   "categoria": "Conferenza",
   "data_testo": "28–30 ottobre 2026",
   "inizio": "2026-10-28",
   "fine": "2026-10-30",
-  "titolo": "TED AI · Vienna",
-  "testo": "Andrea Colamedici a TED AI Vienna.",
-  "url": "",
-  "url_label": ""
+  "titolo": "TEDAI Vienna",
+  "testo": "Andrea Colamedici speaker a TEDAI Vienna, la conferenza TED europea sull'intelligenza artificiale, alla Hofburg. Tema: AI & Cognitive Sovereignty.",
+  "url": "https://tedai-vienna.ted.com/program",
+  "url_label": "TEDAI Vienna",
+  "testo_en": "Andrea Colamedici speaks at TEDAI Vienna, Europe's TED conference on artificial intelligence, at the Hofburg. Theme: AI & Cognitive Sovereignty.",
+  "testo_es": "Andrea Colamedici, ponente en TEDAI Vienna, la conferencia TED europea sobre inteligencia artificial, en el Hofburg. Tema: AI & Cognitive Sovereignty.",
+  "home": true
  },
  {
   "categoria": "Festival",
@@ -117,7 +336,9 @@
   "titolo": "Scenari Mediterranei · Palermo",
   "testo": "Maura Gancitano all'anteprima di Scenari Mediterranei.",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "testo_en": "Maura Gancitano at the preview of Scenari Mediterranei.",
+  "testo_es": "Maura Gancitano en el avance de Scenari Mediterranei."
  },
  {
   "categoria": "Conferenza",
@@ -141,6 +362,19 @@
  },
  {
   "categoria": "Conferenza",
+  "data_testo": "23 ottobre 2026",
+  "inizio": "2026-10-23",
+  "fine": "2026-10-23",
+  "titolo": "GenIA Lab · AANT, Roma",
+  "testo": "Convegno di chiusura del primo anno di GenIA Lab all'Accademia delle Arti e Nuove Tecnologie: Andrea Colamedici con l'intervento «Intelligenza apocalittica», Maura Gancitano nella prima sessione.",
+  "url": "https://www.accademiadellearti.it/ricerca-e-produzione-artistica/genialab/",
+  "url_label": "GenIA Lab",
+  "testo_en": "Closing conference of GenIA Lab's first year at the Accademia delle Arti e Nuove Tecnologie: Andrea Colamedici with the talk “Intelligenza apocalittica”, Maura Gancitano in the first session.",
+  "testo_es": "Jornada de cierre del primer año de GenIA Lab en la Accademia delle Arti e Nuove Tecnologie: Andrea Colamedici con la ponencia «Intelligenza apocalittica», Maura Gancitano en la primera sesión.",
+  "home": true
+ },
+ {
+  "categoria": "Conferenza",
   "data_testo": "21 ottobre 2026",
   "inizio": "2026-10-21",
   "fine": "2026-10-21",
@@ -161,11 +395,63 @@
  },
  {
   "categoria": "Conferenza",
+  "data_testo": "20 ottobre 2026",
+  "inizio": "2026-10-20",
+  "fine": "2026-10-20",
+  "titolo": "Next Gen AI · Cernobbio",
+  "testo": "Andrea Colamedici a Next Gen AI con due sessioni sull'intelligenza artificiale, per docenti e per studenti, insieme a Simone Arcagni.",
+  "url": "",
+  "url_label": "",
+  "testo_en": "Andrea Colamedici at Next Gen AI with two sessions on artificial intelligence, for teachers and students, with Simone Arcagni.",
+  "testo_es": "Andrea Colamedici en Next Gen AI con dos sesiones sobre inteligencia artificial, para docentes y estudiantes, junto a Simone Arcagni."
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "17 ottobre 2026",
+  "inizio": "2026-10-17",
+  "fine": "2026-10-17",
+  "titolo": "VIDAS Festival · Milano",
+  "testo": "Maura Gancitano al VIDAS Festival, Teatro Franco Parenti.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "17 ottobre 2026",
+  "inizio": "2026-10-17",
+  "fine": "2026-10-17",
+  "titolo": "Il piacere sovversivo della lettura · Modica",
+  "testo": "Maura Gancitano e Andrea Colamedici a Modica: il libro come talismano per tempi incerti.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
   "data_testo": "16 ottobre 2026",
   "inizio": "2026-10-16",
   "fine": "2026-10-16",
   "titolo": "Festival Buon Tempo",
   "testo": "Maura Gancitano al Festival Buon Tempo.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "16 ottobre 2026",
+  "inizio": "2026-10-16",
+  "fine": "2026-10-16",
+  "titolo": "Teatro Sociale · Palazzolo sull'Oglio",
+  "testo": "Maura Gancitano al Teatro Sociale di Palazzolo sull'Oglio, con la cooperativa pLay Up.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "15 ottobre 2026",
+  "inizio": "2026-10-15",
+  "fine": "2026-10-15",
+  "titolo": "Future@Work 2026 · Roma",
+  "testo": "Maura Gancitano a Future@Work 2026 di HRC Community, Palazzo Wedekind.",
   "url": "",
   "url_label": ""
  },
@@ -180,14 +466,70 @@
   "url_label": ""
  },
  {
+  "categoria": "Conferenza",
+  "data_testo": "14 ottobre 2026",
+  "inizio": "2026-10-14",
+  "fine": "2026-10-14",
+  "titolo": "Festival della Salute · Padova",
+  "testo": "Maura Gancitano al Festival della Salute, Aula Magna Galileo Galilei.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Lab",
+  "data_testo": "11 ottobre 2026",
+  "inizio": "2026-10-11",
+  "fine": "2026-10-11",
+  "titolo": "Filosofia di gruppo · Libreria Tlon, Roma",
+  "testo": "Serata di filosofia di gruppo con Andrea Colamedici: un'ora con il pubblico che partecipa.",
+  "url": "https://tlon.it/roma",
+  "url_label": "Tlon a Roma"
+ },
+ {
   "categoria": "Festival",
   "data_testo": "10 ottobre 2026",
   "inizio": "2026-10-10",
   "fine": "2026-10-10",
   "titolo": "Festival Moisai · Domus Aurea",
-  "testo": "Maura Gancitano e Andrea Colamedici al Festival Moisai, alla Domus Aurea di Roma.",
+  "testo": "«Architetture della meraviglia. Muse, immaginazione e costruzione dello stupore»: lectio a due voci di Maura Gancitano e Andrea Colamedici nella Sala Ottagona della Domus Aurea, per il festival del Parco archeologico del Colosseo.",
+  "url": "https://colosseo.it/evento/moisai-2026/",
+  "url_label": "Parco archeologico del Colosseo",
+  "home": true,
+  "testo_en": "“Architetture della meraviglia”: lecture by Maura Gancitano and Andrea Colamedici in the Sala Ottagona of the Domus Aurea, for the festival of the Parco archeologico del Colosseo.",
+  "testo_es": "«Architetture della meraviglia»: conferencia de Maura Gancitano y Andrea Colamedici en la Sala Ottagona de la Domus Aurea, para el festival del Parco archeologico del Colosseo."
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "10 ottobre 2026",
+  "inizio": "2026-10-10",
+  "fine": "2026-10-10",
+  "titolo": "ICF Italia · Conferenza annuale, Roma",
+  "testo": "Andrea Colamedici alla conferenza annuale di ICF Italia, Palazzo Brancaccio: intervento sull'intelligenza artificiale per una platea di trecento coach.",
   "url": "",
   "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "10 ottobre 2026",
+  "inizio": "2026-10-10",
+  "fine": "2026-10-10",
+  "titolo": "Rumore Festival · Fanpage.it, Roma",
+  "testo": "Andrea Colamedici nel panel «Il mondo in guerra», moderato da Valerio Nicolosi, con Damiano Rizzi, Stefano Rapone e Giulia Paganelli. Acquario Romano.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "8 ottobre 2026",
+  "inizio": "2026-10-08",
+  "fine": "2026-10-08",
+  "titolo": "Verona Capitale italiana del volontariato 2027",
+  "testo": "Lectio di Maura Gancitano e Andrea Colamedici alla Fucina Culturale Machiavelli per l'avvio del percorso verso Verona Capitale italiana del volontariato 2027: il valore politico del volontariato.",
+  "url": "",
+  "url_label": "",
+  "home": true,
+  "testo_en": "Lecture by Maura Gancitano and Andrea Colamedici at Fucina Culturale Machiavelli, opening the path towards Verona Italian Capital of Volunteering 2027: the political value of volunteering.",
+  "testo_es": "Conferencia de Maura Gancitano y Andrea Colamedici en la Fucina Culturale Machiavelli, inicio del camino hacia Verona Capital italiana del voluntariado 2027: el valor político del voluntariado."
  },
  {
   "categoria": "Festival",
@@ -215,9 +557,12 @@
   "inizio": "2026-09-30",
   "fine": "2026-09-30",
   "titolo": "Universidad Nacional Autónoma de México",
-  "testo": "Intervento di Andrea Colamedici alla UNAM.",
-  "url": "",
-  "url_label": ""
+  "testo": "«Aprender a pensar en la época de la pregunta»: conferenza online di Andrea Colamedici per il seminario del Laboratorio de Inteligencia Artificial, Sociedad e Interdisciplina della UNAM.",
+  "url": "https://www.unam.mx/",
+  "url_label": "UNAM",
+  "home": true,
+  "testo_en": "“Aprender a pensar en la época de la pregunta”: online lecture by Andrea Colamedici for the seminar of UNAM's Laboratorio de Inteligencia Artificial, Sociedad e Interdisciplina.",
+  "testo_es": "«Aprender a pensar en la época de la pregunta»: conferencia en línea de Andrea Colamedici para el seminario del Laboratorio de Inteligencia Artificial, Sociedad e Interdisciplina de la UNAM."
  },
  {
   "categoria": "Conferenza",
@@ -235,9 +580,12 @@
   "inizio": "2026-09-24",
   "fine": "2026-09-27",
   "titolo": "Attraversamenti · Festival del Pensare Contemporaneo",
-  "testo": "La quarta edizione del festival diretto filosoficamente da Andrea Colamedici, a Piacenza.",
+  "testo": "La quarta edizione del festival diretto filosoficamente da Andrea Colamedici, a Piacenza. Tra gli incontri: «A cavallo di mezzanotte» con Alessandro Fusacchia e Andrea Ciucci, «Il sé digitale» con Vittorio Gallese, «Attraversare tempi oscuri» con Asma Mhalla e Gary Lachman, «Paura non abbiamo» con Serena Dandini, «Più futuro nelle nostre vite» con Guido Girardi e Bruno Giussani, «Attraversare la parola» con Dacia Maraini; concerto filosofico di chiusura con Marco Castello e Roy Paci.",
   "url": "https://www.pensarecontemporaneo.it/",
-  "url_label": "Pensare Contemporaneo"
+  "url_label": "Pensare Contemporaneo",
+  "home": true,
+  "testo_en": "Fourth edition of the festival under Andrea Colamedici's philosophical direction, in Piacenza. Among the talks: “A cavallo di mezzanotte” with Alessandro Fusacchia and Andrea Ciucci, “Il sé digitale” with Vittorio Gallese, “Attraversare tempi oscuri” with Asma Mhalla and Gary Lachman, “Attraversare la parola” with Dacia Maraini; closing philosophical concert with Marco Castello and Roy Paci.",
+  "testo_es": "Cuarta edición del festival bajo la dirección filosófica de Andrea Colamedici, en Piacenza. Entre los encuentros: «A cavallo di mezzanotte» con Alessandro Fusacchia y Andrea Ciucci, «Il sé digitale» con Vittorio Gallese, «Attraversare tempi oscuri» con Asma Mhalla y Gary Lachman, «Attraversare la parola» con Dacia Maraini; concierto filosófico de clausura con Marco Castello y Roy Paci."
  },
  {
   "categoria": "Festival",
@@ -247,7 +595,10 @@
   "titolo": "IlPod · Italian Podcast Awards",
   "testo": "La quinta edizione del premio nazionale per i podcast, ideato da Maura Gancitano e Andrea Colamedici, alla vigilia del Festival del Pensare Contemporaneo a Piacenza.",
   "url": "https://ilpod.it/",
-  "url_label": "IlPod"
+  "url_label": "IlPod",
+  "home": true,
+  "testo_en": "Fifth edition of the national podcast award created by Maura Gancitano and Andrea Colamedici, on the eve of the Festival del Pensare Contemporaneo in Piacenza.",
+  "testo_es": "Quinta edición del premio nacional de pódcast creado por Maura Gancitano y Andrea Colamedici, en la víspera del Festival del Pensare Contemporaneo en Piacenza."
  },
  {
   "categoria": "Festival",
@@ -257,7 +608,10 @@
   "titolo": "2084 · Festival di Belleville",
   "testo": "Maura Gancitano al festival 2084 di Belleville, a Milano.",
   "url": "",
-  "url_label": ""
+  "url_label": "",
+  "home": true,
+  "testo_en": "Maura Gancitano at the 2084 festival of Belleville, Milan.",
+  "testo_es": "Maura Gancitano en el festival 2084 de Belleville, Milán."
  },
  {
   "categoria": "Festival",
@@ -271,13 +625,36 @@
  },
  {
   "categoria": "Festival",
+  "data_testo": "6 settembre 2026",
+  "inizio": "2026-09-06",
+  "fine": "2026-09-06",
+  "titolo": "Festival Teatro sull'Acqua · Arona",
+  "testo": "Maura Gancitano e Andrea Colamedici al festival diretto da Dacia Maraini, Piazza San Graziano.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "4 settembre 2026",
+  "inizio": "2026-09-04",
+  "fine": "2026-09-04",
+  "titolo": "Festival delle Corrispondenze · Monte del Lago",
+  "testo": "Maura Gancitano e Andrea Colamedici al Festival delle Corrispondenze, sul Trasimeno.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
   "data_testo": "Agosto 2026",
   "inizio": "2026-08-01",
   "fine": "2026-08-31",
   "titolo": "Ipnocrazia · Umbria Green Festival",
   "testo": "Andrea Colamedici e Maura Gancitano all'Umbria Green Festival con la performance Ipnocrazia.",
   "url": "https://www.umbriagreenfestival.it/",
-  "url_label": "Umbria Green Festival"
+  "url_label": "Umbria Green Festival",
+  "home": true,
+  "testo_en": "Live performance of Ipnocrazia with Maura Gancitano and Andrea Colamedici at Umbria Green Festival.",
+  "testo_es": "Performance en vivo de Ipnocrazia con Maura Gancitano y Andrea Colamedici en el Umbria Green Festival."
  },
  {
   "categoria": "Lab",
@@ -287,7 +664,40 @@
   "titolo": "European Forum Alpbach · Media & Activism Lab",
   "testo": "Andrea Colamedici allo European Forum Alpbach per il Media & Activism Lab, con Nika Kovač. EFA · D-Hub · ERSTE Foundation.",
   "url": "https://www.alpbach.org/",
-  "url_label": "European Forum Alpbach"
+  "url_label": "European Forum Alpbach",
+  "home": true,
+  "testo_en": "Andrea Colamedici at the European Forum Alpbach for the Media & Activism Lab, with Nika Kovač. EFA · D-Hub · ERSTE Foundation.",
+  "testo_es": "Andrea Colamedici en el European Forum Alpbach para el Media & Activism Lab, con Nika Kovač. EFA · D-Hub · ERSTE Foundation."
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "26 agosto 2026",
+  "inizio": "2026-08-26",
+  "fine": "2026-08-26",
+  "titolo": "DolomitIncontri · San Martino di Castrozza",
+  "testo": "Maura Gancitano e Andrea Colamedici alla quarantesima edizione della rassegna DolomitIncontri, Sala Sass Maor.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "19 agosto 2026",
+  "inizio": "2026-08-19",
+  "fine": "2026-08-19",
+  "titolo": "La Luna e i Calanchi · Aliano",
+  "testo": "Maura Gancitano e Andrea Colamedici ad Aliano con «Animali narrativi».",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "20–22 luglio 2026",
+  "inizio": "2026-07-20",
+  "fine": "2026-07-22",
+  "titolo": "Summer School di Pratolungo",
+  "testo": "Maura Gancitano e Andrea Colamedici alla Summer School di Pratolungo, con due sessioni.",
+  "url": "",
+  "url_label": ""
  },
  {
   "categoria": "Festival",
@@ -578,15 +988,5 @@
   "testo": "Andrea Colamedici alla II Cumbre de Filosofía del Congreso Futuro, il più grande festival di scienza e futuro dell'America Latina.",
   "url": "https://congresofuturo.cl/",
   "url_label": "Congreso Futuro"
- },
- {
-  "categoria": "Mostra",
-  "data_testo": "Autunno 2026",
-  "inizio": null,
-  "fine": null,
-  "titolo": "IO & AI · MUSE",
-  "testo": "Mostra IO & AI al MUSE, Museo delle Scienze di Trento.",
-  "url": "https://www.muse.it/",
-  "url_label": "MUSE Trento"
  }
 ]
