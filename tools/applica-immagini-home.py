@@ -4,7 +4,7 @@
 
 Idempotente: ogni inserimento è marcato da una classe e non si ripete.
 - statement: la mappa incisa del pianeta accanto al testo
-- news: Piranesi, Veduta della Piazza della Rotonda (Met, pubblico dominio) e foto del Teatro Municipale (IlPod)
+- news: cella «in programma» riservata al cielo degli appuntamenti (tools/applica-cielo-news.py), foto del Teatro Municipale (IlPod) nella cella dei passati
 - tlonletter: natura morta dello scrittoio sopra il ritmo settimanale
 - dimensioni: dieci icone a tratto (tools/icone-dimensioni.py)
 - dove trovarci: una fotografia per ogni libreria
