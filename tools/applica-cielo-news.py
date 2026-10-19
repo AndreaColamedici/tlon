@@ -11,17 +11,18 @@ from cielo_news import CSS, JS
 
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FILE = {'index.html': 'it', 'index-en.html': 'en', 'index-es.html': 'es'}
-MESI = {'it': 'GFMAMGLASOND', 'en': 'JFMAMJJASOND', 'es': 'EFMAMJJASOND'}
-DID = {'it': 'Il cielo dei prossimi mesi: ogni stella un appuntamento, la linea è oggi',
-       'en': 'The sky of the coming months: every star an event, the line is today',
-       'es': 'El cielo de los próximos meses: cada estrella una cita, la línea es hoy'}
+MESI = {'it': 'gen,feb,mar,apr,mag,giu,lug,ago,set,ott,nov,dic', 'en': 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec', 'es': 'ene,feb,mar,abr,may,jun,jul,ago,sep,oct,nov,dic'}
+OGGI = {'it': 'oggi', 'en': 'today', 'es': 'hoy'}
+DID = {'it': 'I prossimi appuntamenti disposti sull\u2019anno, come stelle: la linea segna oggi',
+       'en': 'The coming events laid out on the year, like stars: the line marks today',
+       'es': 'Las pr\u00f3ximas citas dispuestas sobre el a\u00f1o, como estrellas: la l\u00ednea marca hoy'}
 
 
 def figura(lang):
     return ('                        <figure class="news-figura news-cielo reveal">\n'
-            '                            <canvas class="cielo-canvas" id="cieloCanvas" data-mesi="%s" aria-hidden="true"></canvas>\n'
+            '                            <canvas class="cielo-canvas" id="cieloCanvas" data-mesi="%s" data-oggi="%s" aria-hidden="true"></canvas>\n'
             '                            <figcaption>%s</figcaption>\n'
-            '                        </figure>\n' % (MESI[lang], DID[lang]))
+            '                        </figure>\n' % (MESI[lang], OGGI[lang], DID[lang]))
 
 
 def main():
