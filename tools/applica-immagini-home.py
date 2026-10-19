@@ -41,7 +41,7 @@ CSS = """
             box-shadow: 0 30px 80px -40px rgba(42,107,107,0.45); }
         .statement-figura figcaption { margin-top: 0.9rem; text-align: center; font-family: 'Instrument Serif', serif;
             font-style: italic; font-size: 0.95rem; color: var(--grigio); }
-        .news-gruppo-col { display: flex; flex-direction: column; gap: 1.5rem; padding: 3rem 3rem 3rem 0; }
+        .news-gruppo-col { display: flex; flex-direction: column; gap: 1.5rem; padding: 3rem; }
         .news-gruppo-col .news-gruppo { padding: 0; margin: 0; }
         .news-figura { margin: 0; position: sticky; top: 6rem; }
         .news-figura img { display: block; width: 100%; height: auto; border-radius: 2px; opacity: 0.92;
@@ -59,7 +59,7 @@ CSS = """
             transition: transform 0.8s cubic-bezier(0.16,1,0.3,1); }
         .luogo:hover .luogo-foto img { transform: scale(1.04); }
         @media (max-width: 900px) {
-            .news-gruppo-col { padding: 2rem 0 0; }
+            .news-gruppo-col { padding: 2rem 1.5rem 0; }
             .news-figura { position: static; }
             .luogo-foto { margin: -2rem -2rem 1.5rem; }
         }

@@ -657,7 +657,7 @@
             box-shadow: 0 30px 80px -40px rgba(42,107,107,0.45); }
         .statement-figura figcaption { margin-top: 0.9rem; text-align: center; font-family: 'Instrument Serif', serif;
             font-style: italic; font-size: 0.95rem; color: var(--grigio); }
-        .news-gruppo-col { display: flex; flex-direction: column; gap: 1.5rem; padding: 3rem 3rem 3rem 0; }
+        .news-gruppo-col { display: flex; flex-direction: column; gap: 1.5rem; padding: 3rem; }
         .news-gruppo-col .news-gruppo { padding: 0; margin: 0; }
         .news-figura { margin: 0; position: sticky; top: 6rem; }
         .news-figura img { display: block; width: 100%; height: auto; border-radius: 2px; opacity: 0.92;
@@ -675,17 +675,48 @@
             transition: transform 0.8s cubic-bezier(0.16,1,0.3,1); }
         .luogo:hover .luogo-foto img { transform: scale(1.04); }
         @media (max-width: 900px) {
-            .news-gruppo-col { padding: 2rem 0 0; }
+            .news-gruppo-col { padding: 2rem 1.5rem 0; }
             .news-figura { position: static; }
             .luogo-foto { margin: -2rem -2rem 1.5rem; }
         }
 
-        /* ============ CIELO DEGLI APPUNTAMENTI ============ */
-        .news-cielo { margin: 0; position: sticky; top: 6rem; }
-        .cielo-canvas { display: block; width: 100%; aspect-ratio: 4 / 3; height: auto; }
-        .news-cielo figcaption { margin-top: 0.7rem; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
-            color: rgba(255,255,255,0.45); }
-        @media (max-width: 900px) { .news-cielo { position: static; } }
+
+        /* ============ PROSSIMO APPUNTAMENTO ============ */
+        .prossimo { margin: 0.5rem 0 0; }
+        .prossimo-label { display: block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+            color: rgba(255,255,255,0.45); margin-bottom: 1.6rem; }
+        .prossimo-data { display: flex; align-items: flex-end; gap: 1rem; line-height: 0.85; margin-bottom: 1.4rem; }
+        .prossimo-giorno { font-family: 'Instrument Serif', serif; font-size: clamp(5rem, 9vw, 8.5rem); font-weight: 400; color: var(--bianco); letter-spacing: -0.03em; }
+        .prossimo-mese { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(1.3rem, 1.9vw, 1.7rem); color: rgba(255,255,255,0.8); line-height: 1.15; padding-bottom: 0.6rem; }
+        .prossimo-titolo { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(1.5rem, 2.4vw, 2.1rem); line-height: 1.2; color: var(--bianco); margin: 0 0 0.8rem; }
+        .prossimo-titolo a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.25); transition: border-color 0.3s ease; }
+        .prossimo-titolo a:hover { border-bottom-color: var(--ottanio, #2a6b6b); }
+        .prossimo-meta { font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(95,176,176,0.95); margin: 0; }
+        .prossimo-meta .prossimo-punto { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #5fb0b0; margin-right: 0.6rem; vertical-align: middle;
+            box-shadow: 0 0 0 0 rgba(95,176,176,0.5); animation: prossimoRespiro 2.8s ease-out infinite; }
+        @keyframes prossimoRespiro { 0% { box-shadow: 0 0 0 0 rgba(95,176,176,0.55); } 70% { box-shadow: 0 0 0 10px rgba(95,176,176,0); } 100% { box-shadow: 0 0 0 0 rgba(95,176,176,0); } }
+        .prossimo-nota { font-size: 0.9rem; line-height: 1.6; color: rgba(255,255,255,0.6); margin: 1rem 0 0; max-width: 34ch; }
+
+        .lt { position: relative; margin-top: 3.2rem; padding-top: 1.6rem; height: 5.4rem; }
+        .lt-titolo { position: absolute; top: 0; left: 0; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+        .lt-asse { position: absolute; left: 0; right: 0; top: 3.1rem; height: 1px; background: rgba(255,255,255,0.18); }
+        .lt-mese { position: absolute; top: 3.5rem; transform: translateX(-50%); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); white-space: nowrap; }
+        .lt-mese::before { content: ''; position: absolute; left: 50%; top: -0.55rem; width: 1px; height: 0.45rem; background: rgba(255,255,255,0.3); }
+        .lt-oggi { position: absolute; top: 2.2rem; transform: translateX(-50%); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #5fb0b0; }
+        .lt-oggi::after { content: ''; position: absolute; left: 50%; top: 1.05rem; width: 1px; height: 0.85rem; background: #5fb0b0; }
+        .lt-evento { position: absolute; top: 3.1rem; width: 11px; height: 11px; transform: translate(-50%, -50%); border-radius: 50%;
+            background: var(--nero, #0a0a0a); border: 1.5px solid #5fb0b0; cursor: pointer; transition: transform 0.25s ease, background-color 0.25s ease; }
+        .lt-evento:hover, .lt-evento.acceso { background: #5fb0b0; transform: translate(-50%, -50%) scale(1.35); }
+        .lt-evento:first-of-type { background: #5fb0b0; }
+        .lt-evento .lt-tip { position: absolute; bottom: 1.3rem; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 0.72rem; letter-spacing: 0.02em; text-transform: none;
+            color: var(--bianco); background: rgba(10,10,10,0.92); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.6rem; border-radius: 3px;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+        .lt-evento:hover .lt-tip, .lt-evento.acceso .lt-tip { opacity: 1; }
+        .lt-evento.lt-sinistra .lt-tip { left: 0; transform: none; }
+        .lt-evento.lt-destra .lt-tip { left: auto; right: 0; transform: none; }
+        .news-item.acceso { background: rgba(95,176,176,0.08); }
+        @media (max-width: 900px) { .prossimo { margin-top: 0; } .lt { height: 5.8rem; } }
+        @media (prefers-reduced-motion: reduce) { .prossimo-meta .prossimo-punto { animation: none; } }
 
         /* ============ STATEMENT ============ */
         .statement {
@@ -1848,10 +1879,13 @@
                 <div class="news-content">
                     <div class="news-gruppo-col">
                         <p class="news-gruppo">In programma <a class="news-gruppo-link" href="./news.html">vedi tutti i 34</a></p>
-                        <figure class="news-figura news-cielo reveal">
-                            <canvas class="cielo-canvas" id="cieloCanvas" data-mesi="gen,feb,mar,apr,mag,giu,lug,ago,set,ott,nov,dic" data-oggi="oggi" aria-hidden="true"></canvas>
-                            <figcaption>I prossimi appuntamenti disposti sull’anno, come stelle: la linea segna oggi</figcaption>
-                        </figure>
+                        <div class="prossimo" id="prossimoBox" data-mesi="gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre" data-tra="tra %d giorni" data-domani="domani" data-oggi="oggi" data-incorso="in corso">
+                            <span class="prossimo-label">Il prossimo appuntamento</span>
+                            <div class="prossimo-data"><span class="prossimo-giorno"></span><span class="prossimo-mese"></span></div>
+                            <h3 class="prossimo-titolo"></h3>
+                            <p class="prossimo-meta"><span class="prossimo-punto" aria-hidden="true"></span><span class="prossimo-quando"></span></p>
+                        </div>
+                        <div class="lt" id="lineaTempo" aria-label="I prossimi mesi"><span class="lt-titolo">I prossimi mesi</span></div>
                     </div>
                     <div class="news-preview" id="news-prossimi" data-totale="34">
                         <a class="news-item reveal" data-fine="2026-10-23" href="https://www.accademiadellearti.it/ricerca-e-produzione-artistica/genialab/" target="_blank" rel="noopener">
@@ -3046,212 +3080,70 @@
     })();
 
     
-    // Cielo degli appuntamenti: le stelle ruotano, gli eventi in programma sono stelle fisse alla loro data.
+    
+    // Prossimo appuntamento e linea del tempo, letti dall'elenco accanto.
     (function () {
-        var canvas = document.getElementById('cieloCanvas');
-        if (!canvas || !canvas.getContext) return;
-        var ctx = canvas.getContext('2d');
-        var menoMoto = window.matchMedia('(prefers-reduced-motion: reduce)');
-        var MESI = (canvas.getAttribute('data-mesi') || 'gen,feb,mar,apr,mag,giu,lug,ago,set,ott,nov,dic').split(',');
-        var OGGI = canvas.getAttribute('data-oggi') || 'oggi';
-        var evidenza = -1;
-        var TEAL = '95,176,176';
+        var box = document.getElementById('prossimoBox');
+        var lt = document.getElementById('lineaTempo');
+        if (!box || !lt) return;
+        var T = {
+            mesi: (box.getAttribute('data-mesi') || '').split(','),
+            tra: box.getAttribute('data-tra') || 'tra %d giorni', domani: box.getAttribute('data-domani') || 'domani',
+            oggi: box.getAttribute('data-oggi') || 'oggi', incorso: box.getAttribute('data-incorso') || 'in corso'
+        };
+        var items = [].slice.call(document.querySelectorAll('#news-prossimi .news-item[data-fine]'));
+        var oggi = new Date(); oggi.setHours(12, 0, 0, 0);
+        function data(iso) { var d = new Date(iso + 'T12:00:00'); return isNaN(d) ? null : d; }
+        function giorni(a, b) { return Math.round((a - b) / 86400000); }
+        var eventi = items.map(function (el) {
+            var fine = data(el.getAttribute('data-fine')); if (!fine) return null;
+            var testo = (el.querySelector('.news-item-date') || {}).textContent || '';
+            var m = testo.match(/(\d{1,2})\s*[–-]\s*(\d{1,2})/);
+            var inizio = new Date(fine);
+            if (m) inizio.setDate(fine.getDate() - (parseInt(m[2], 10) - parseInt(m[1], 10)));
+            return { el: el, inizio: inizio, fine: fine, testo: testo.trim(),
+                     titolo: ((el.querySelector('.news-item-title') || {}).textContent || '').trim(),
+                     tag: ((el.querySelector('.news-item-tag') || {}).textContent || '').trim(),
+                     href: el.getAttribute('href') };
+        }).filter(Boolean).sort(function (p, q) { return p.inizio - q.inizio; });
+        if (!eventi.length) { box.style.display = 'none'; lt.style.display = 'none'; return; }
 
-        var SEME = 1940;
-        function rnd() { SEME = (SEME * 1664525 + 1013904223) % 4294967296; return SEME / 4294967296; }
+        // il prossimo
+        var p = eventi[0], d0 = giorni(p.inizio, oggi), dF = giorni(p.fine, oggi);
+        var quando = d0 > 1 ? T.tra.replace('%d', d0) : d0 === 1 ? T.domani : (dF >= 0 && d0 <= 0 ? (dF > 0 ? T.incorso : T.oggi) : T.oggi);
+        box.querySelector('.prossimo-giorno').textContent = p.inizio.getDate();
+        box.querySelector('.prossimo-mese').innerHTML = T.mesi[p.inizio.getMonth()] + '<br>' + p.inizio.getFullYear();
+        var tit = box.querySelector('.prossimo-titolo');
+        tit.innerHTML = p.href ? '<a href="' + p.href.replace(/"/g, '&quot;') + '"' + (/^https?:/.test(p.href) ? ' target="_blank" rel="noopener"' : '') + '></a>' : '';
+        (tit.firstChild || tit).textContent = p.titolo;
+        box.querySelector('.prossimo-quando').textContent = (p.tag ? p.tag + ' · ' : '') + quando + (p.testo && /[–-]/.test(p.testo) ? ' · ' + p.testo : '');
 
-        // campo di stelle (coordinate polari, ruotano insieme)
-        var stelle = [];
-        for (var i = 0; i < 230; i++) {
-            var r = Math.sqrt(rnd());
-            stelle.push({ r: r, a: rnd() * Math.PI * 2, m: 0.25 + rnd() * 0.75, f: 0.4 + rnd() * 1.6, ph: rnd() * Math.PI * 2 });
+        // linea del tempo: da oggi all'ultimo evento, almeno 90 giorni, al massimo 240
+        var ultimo = eventi[eventi.length - 1].fine;
+        var span = Math.min(240, Math.max(90, giorni(ultimo, oggi) + 10));
+        var fineLt = new Date(oggi); fineLt.setDate(oggi.getDate() + span);
+        function pos(d) { return Math.max(0, Math.min(100, giorni(d, oggi) / span * 100)); }
+        var html = '<span class="lt-asse"></span><span class="lt-oggi" style="left:0%">' + T.oggi + '</span>';
+        var cur = new Date(oggi.getFullYear(), oggi.getMonth() + 1, 1);
+        while (cur <= fineLt) {
+            html += '<span class="lt-mese" style="left:' + pos(cur).toFixed(2) + '%">' + T.mesi[cur.getMonth()].slice(0, 3) + '</span>';
+            cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
         }
-        // costellazioni di sfondo: gruppi di stelle vicine
-        var costellazioni = [];
-        for (var c = 0; c < 6; c++) {
-            var base = stelle[Math.floor(rnd() * stelle.length)];
-            var vicine = stelle.slice().sort(function (p, q) { return dist(p, base) - dist(q, base); }).slice(0, 4 + Math.floor(rnd() * 3));
-            costellazioni.push(vicine);
-        }
-        function dist(p, q) {
-            var x1 = p.r * Math.cos(p.a), y1 = p.r * Math.sin(p.a), x2 = q.r * Math.cos(q.a), y2 = q.r * Math.sin(q.a);
-            return Math.hypot(x1 - x2, y1 - y2);
-        }
-
-        // eventi dal DOM
-        function giornoAnno(iso) {
-            var d = new Date(iso + 'T12:00:00'); var inizio = new Date(d.getFullYear(), 0, 1);
-            return (d - inizio) / 86400000;
-        }
-        function angolo(iso) { return giornoAnno(iso) / 365.25 * Math.PI * 2 - Math.PI / 2; }
-        function leggi() {
-            var oggi = new Date().toISOString().slice(0, 10);
-            var futuri = [], passati = [];
-            [].forEach.call(document.querySelectorAll('#news-prossimi .news-item[data-fine], #news-recenti .news-item[data-fine]'), function (el) {
-                var fine = el.getAttribute('data-fine'); if (!fine) return;
-                var t = el.querySelector('.news-item-title'); var d = el.querySelector('.news-item-date');
-                var voce = { fine: fine, a: angolo(fine), titolo: t ? t.textContent.trim() : '', data: d ? d.textContent.trim() : '', el: el };
-                (fine >= oggi ? futuri : passati).push(voce);
-            });
-            futuri.sort(function (p, q) { return p.fine < q.fine ? -1 : 1; });
-            passati.sort(function (p, q) { return p.fine < q.fine ? -1 : 1; });
-            return { futuri: futuri.slice(0, 12), passati: passati.slice(-8), oggi: angolo(oggi) };
-        }
-        var dati = leggi();
-        dati.futuri.forEach(function (ev, i) {
-            ev.el.addEventListener('mouseenter', function () { evidenza = i; if (!girando) statico(); });
-            ev.el.addEventListener('mouseleave', function () { evidenza = -1; if (!girando) statico(); });
+        lt.insertAdjacentHTML('beforeend', html);
+        eventi.forEach(function (e, i) {
+            var x = pos(e.inizio);
+            var dot = document.createElement('span');
+            dot.className = 'lt-evento' + (x < 12 ? ' lt-sinistra' : x > 88 ? ' lt-destra' : '');
+            dot.style.left = x.toFixed(2) + '%';
+            dot.setAttribute('role', 'img'); dot.setAttribute('aria-label', e.testo + ' · ' + e.titolo);
+            dot.innerHTML = '<span class="lt-tip">' + e.testo + ' · ' + e.titolo.replace(/</g, '&lt;') + '</span>';
+            dot.addEventListener('mouseenter', function () { e.el.classList.add('acceso'); });
+            dot.addEventListener('mouseleave', function () { e.el.classList.remove('acceso'); });
+            dot.addEventListener('click', function () { e.el.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+            e.el.addEventListener('mouseenter', function () { dot.classList.add('acceso'); });
+            e.el.addEventListener('mouseleave', function () { dot.classList.remove('acceso'); });
+            lt.appendChild(dot);
         });
-
-        var W = 0, H = 0, cx = 0, cy = 0, R = 0, dpr = 1, pt = { x: 0, y: 0, mx: 0, my: 0 };
-        var visibile = true, girando = false, t0 = 0;
-
-        function dimensiona() {
-            var r = canvas.getBoundingClientRect(); if (!r.width) return;
-            dpr = Math.min(window.devicePixelRatio || 1, 2);
-            W = r.width; H = r.width * 0.75;
-            canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-            canvas.style.height = H + 'px';
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            cx = W / 2; cy = H / 2; R = Math.min(W, H) * 0.45;
-        }
-
-        function polare(r, a, raggio) {
-            return [cx + Math.cos(a) * r * raggio + pt.mx * 6, cy + Math.sin(a) * r * raggio + pt.my * 4];
-        }
-
-        function disegna(t) {
-            ctx.clearRect(0, 0, W, H);
-            var rot = t * 0.018;
-
-            // alone del polo
-            var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.05);
-            g.addColorStop(0, 'rgba(' + TEAL + ',0.10)'); g.addColorStop(0.6, 'rgba(' + TEAL + ',0.03)'); g.addColorStop(1, 'rgba(' + TEAL + ',0)');
-            ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, R * 1.05, 0, Math.PI * 2); ctx.fill();
-
-            // costellazioni di sfondo
-            ctx.lineWidth = 0.7;
-            for (var c = 0; c < costellazioni.length; c++) {
-                var gr = costellazioni[c];
-                ctx.beginPath();
-                for (var k = 0; k < gr.length; k++) { var p = polare(gr[k].r, gr[k].a + rot, R * 0.96); if (k) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }
-                ctx.strokeStyle = 'rgba(255,255,255,0.09)'; ctx.stroke();
-            }
-            // stelle
-            for (var i = 0; i < stelle.length; i++) {
-                var s = stelle[i], q = polare(s.r, s.a + rot, R * 0.96);
-                var tw = 0.75 + 0.25 * Math.sin(t * s.f + s.ph);
-                ctx.beginPath(); ctx.arc(q[0], q[1], 0.5 + s.m * 1.1, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255,255,255,' + (0.12 + 0.42 * s.m * tw).toFixed(3) + ')'; ctx.fill();
-            }
-
-            // quadrante dei mesi (fisso)
-            ctx.beginPath(); ctx.arc(cx + pt.mx * 6, cy + pt.my * 4, R, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(255,255,255,0.16)'; ctx.lineWidth = 1; ctx.stroke();
-            ctx.beginPath(); ctx.arc(cx + pt.mx * 6, cy + pt.my * 4, R * 0.78, 0, Math.PI * 2);
-            ctx.setLineDash([2, 6]); ctx.strokeStyle = 'rgba(' + TEAL + ',0.22)'; ctx.stroke(); ctx.setLineDash([]);
-            var piccolo = W < 520;
-            ctx.font = '500 ' + Math.max(9, R * 0.05).toFixed(1) + 'px Inter, sans-serif';
-            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            for (var m = 0; m < 12; m++) {
-                var a = m / 12 * Math.PI * 2 - Math.PI / 2;
-                var p1 = polare(1, a, R), p2 = polare(1, a, R * 0.955), pl = polare(1, a + Math.PI / 12, R * 1.085);
-                ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.stroke();
-                ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.fillText(piccolo ? MESI[m].slice(0, 1).toUpperCase() : MESI[m], pl[0], pl[1]);
-            }
-
-            // oggi
-            var o1 = polare(1, dati.oggi, R * 0.08), o2 = polare(1, dati.oggi, R);
-            var lg = ctx.createLinearGradient(o1[0], o1[1], o2[0], o2[1]);
-            lg.addColorStop(0, 'rgba(' + TEAL + ',0)'); lg.addColorStop(1, 'rgba(' + TEAL + ',0.7)');
-            ctx.beginPath(); ctx.moveTo(o1[0], o1[1]); ctx.lineTo(o2[0], o2[1]); ctx.strokeStyle = lg; ctx.lineWidth = 1; ctx.stroke();
-            ctx.beginPath(); ctx.arc(o2[0], o2[1], 2.5, 0, Math.PI * 2); ctx.fillStyle = 'rgba(' + TEAL + ',0.9)'; ctx.fill();
-            var om = polare(1, dati.oggi, R * 0.5);
-            ctx.save(); ctx.translate(om[0], om[1]); var ang = dati.oggi; if (Math.cos(ang) < 0) ang += Math.PI; ctx.rotate(ang);
-            ctx.font = '600 ' + Math.max(8.5, R * 0.042).toFixed(1) + 'px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-            ctx.fillStyle = 'rgba(' + TEAL + ',0.95)'; ctx.fillText(OGGI.toUpperCase(), 0, -5); ctx.restore();
-
-            // eventi passati: stelle spente
-            for (var j = 0; j < dati.passati.length; j++) {
-                var e = dati.passati[j], raggioE = R * (0.50 + (j % 3) * 0.06), pe = polare(1, e.a, raggioE);
-                ctx.beginPath(); ctx.arc(pe[0], pe[1], 1.6, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,0.16)'; ctx.fill();
-            }
-            // eventi in programma: costellazione in ordine di tempo
-            var punti = [];
-            for (var n = 0; n < dati.futuri.length; n++) {
-                var ev = dati.futuri[n], rr = R * (0.60 + (n % 4) * 0.055);
-                punti.push(polare(1, ev.a, rr));
-            }
-            if (punti.length > 1) {
-                ctx.beginPath(); ctx.moveTo(punti[0][0], punti[0][1]);
-                for (var u = 1; u < punti.length; u++) ctx.lineTo(punti[u][0], punti[u][1]);
-                ctx.strokeStyle = 'rgba(' + TEAL + ',0.45)'; ctx.lineWidth = 0.9; ctx.stroke();
-            }
-            var etichette = [];
-            var fs = Math.max(9, R * 0.046), fs2 = Math.max(8.5, R * 0.04), maxEt = piccolo ? 4 : 12, maxCar = piccolo ? 16 : 26;
-            for (var v = 0; v < punti.length; v++) {
-                var pp = punti[v], vicinanza = 1 - v / Math.max(1, punti.length), pulsa = 1 + 0.25 * Math.sin(t * 1.4 + v);
-                var acceso = evidenza === v, forzaAl = acceso ? 1 : (0.30 + 0.30 * vicinanza), ragAl = (acceso ? 16 : 6 + 6 * vicinanza);
-                var al = ctx.createRadialGradient(pp[0], pp[1], 0, pp[0], pp[1], ragAl);
-                al.addColorStop(0, 'rgba(' + TEAL + ',' + forzaAl + ')'); al.addColorStop(1, 'rgba(' + TEAL + ',0)');
-                ctx.beginPath(); ctx.arc(pp[0], pp[1], ragAl * pulsa, 0, Math.PI * 2); ctx.fillStyle = al; ctx.fill();
-                ctx.beginPath(); ctx.arc(pp[0], pp[1], (acceso ? 3.4 : 1.6 + 1.8 * vicinanza), 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.fill();
-                if (v < maxEt) {
-                    var ev2 = dati.futuri[v], destra = pp[0] >= cx, tit = ev2.titolo.length > maxCar ? ev2.titolo.slice(0, maxCar - 1).replace(/\s+\S*$/, '') + '…' : ev2.titolo;
-                    etichette.push({ x: pp[0] + (destra ? 16 : -16), y: pp[1], sx: pp[0], sy: pp[1], destra: destra, data: ev2.data, titolo: tit, acceso: acceso, h: fs + fs2 + 4 });
-                }
-            }
-            // le etichette vicine si scostano in verticale
-            etichette.sort(function (p, q) { return p.y - q.y; });
-            for (var it = 0; it < 3; it++) for (var e1 = 0; e1 < etichette.length; e1++) for (var e2 = e1 + 1; e2 < etichette.length; e2++) {
-                var A = etichette[e1], B = etichette[e2];
-                if (A.destra !== B.destra || Math.abs(A.x - B.x) > 150) continue;
-                var dy = B.y - A.y, min = A.h + 6;
-                if (Math.abs(dy) < min) { var sp = (min - Math.abs(dy)) / 2; A.y -= sp; B.y += sp; }
-            }
-            ctx.textBaseline = 'middle';
-            ctx.save(); ctx.shadowColor = 'rgba(8,10,10,0.95)'; ctx.shadowBlur = 6;
-            for (var e3 = 0; e3 < etichette.length; e3++) {
-                var L = etichette[e3];
-                if (Math.abs(L.y - L.sy) > 6) {
-                    ctx.beginPath(); ctx.moveTo(L.sx, L.sy); ctx.lineTo(L.x - (L.destra ? 4 : -4), L.y);
-                    ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.lineWidth = 0.7; ctx.stroke();
-                }
-                ctx.textAlign = L.destra ? 'left' : 'right';
-                ctx.font = '600 ' + fs2.toFixed(1) + 'px Inter, sans-serif';
-                ctx.fillStyle = L.acceso ? 'rgba(' + TEAL + ',1)' : 'rgba(' + TEAL + ',0.9)';
-                ctx.fillText(L.data.toUpperCase(), L.x, L.y - fs * 0.55);
-                ctx.font = '400 ' + fs.toFixed(1) + 'px Inter, sans-serif';
-                ctx.fillStyle = L.acceso ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.78)';
-                ctx.fillText(L.titolo, L.x, L.y + fs * 0.55);
-            }
-            ctx.restore();
-        }
-
-        function passo(ts) {
-            if (!girando) return;
-            if (!t0) t0 = ts;
-            pt.mx += (pt.x - pt.mx) * 0.06; pt.my += (pt.y - pt.my) * 0.06;
-            disegna((ts - t0) / 1000);
-            requestAnimationFrame(passo);
-        }
-        function avvia() { if (girando || menoMoto.matches) return; girando = true; t0 = 0; requestAnimationFrame(passo); }
-        function ferma() { girando = false; }
-        function statico() { pt.mx = pt.my = 0; disegna(0); }
-
-        dimensiona(); statico();
-        if (window.ResizeObserver) new ResizeObserver(function () { dimensiona(); if (!girando) statico(); }).observe(canvas);
-        else window.addEventListener('resize', function () { dimensiona(); statico(); });
-        if (window.IntersectionObserver) {
-            new IntersectionObserver(function (voci) { visibile = voci[0].isIntersecting; if (visibile && !menoMoto.matches) avvia(); else ferma(); }, { threshold: 0.05 }).observe(canvas);
-        } else { avvia(); }
-        canvas.addEventListener('pointermove', function (e) {
-            var r = canvas.getBoundingClientRect();
-            pt.x = ((e.clientX - r.left) / r.width - 0.5) * 2; pt.y = ((e.clientY - r.top) / r.height - 0.5) * 2;
-        });
-        canvas.addEventListener('pointerleave', function () { pt.x = 0; pt.y = 0; });
-        document.addEventListener('visibilitychange', function () { if (document.hidden) ferma(); else if (visibile) avvia(); });
-        if (menoMoto.addEventListener) menoMoto.addEventListener('change', function () { if (menoMoto.matches) { ferma(); statico(); } else if (visibile) avvia(); });
     })();
 
     </script>
