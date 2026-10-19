@@ -311,8 +311,8 @@
 
 .tl-banda .tl-form {
     border-bottom-color: rgba(10, 10, 10, 0.22);
-    width: 26rem;
-    max-width: 100%;
+    width: 100%;
+    max-width: 26rem;
 }
 
 .tl-banda .tl-form:focus-within {
@@ -339,7 +339,7 @@
 }
 
 .tl-banda .tl-nota {
-    color: #8a8a8a;
+    color: #6b6b6b;
     margin-top: 0.9rem;
 }
 
