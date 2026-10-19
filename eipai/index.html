@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="EIPAI vi aiuta a implementare l’intelligenza artificiale nella vostra azienda: un anno nei vostri team, prima gli strumenti, poi il pensiero, poi le regole dell’AI Act.">
+</head>
+<body>
+<title>EIPAI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap">
+<style>
+/* Layout: white page, two full-bleed blue bands (the organisation keyboard and the contact), one typeface in two widths
+   (Archivo expanded black for headlines, Archivo normal for text). Yellow is the highlighter and means one thing only:
+   what is already there (functions where AI is in use, the words of the law that matter, the result of the test).
+   No cards. Thick blue rules mark sequences; everything else is set by space and scale. Single committed theme. */
+:root{
+  --white:#FFFFFF;
+  --blue:#1430B8;
+  --blue-deep:#0E2187;
+  --blue-soft:#E7EBFA;
+  --ink:#10152E;
+  --ink-2:#4A5070;
+  --ink-3:#8A90A8;
+  --yellow:#FFE500;
+  --paper:#F6F2E6;
+  --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --max:1200px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+[hidden]:not([hidden="until-found" i]){display:none!important}
+body{margin:0; background:var(--white); color:var(--ink); font-family:var(--font); font-size:18px; line-height:1.5; font-stretch:100%; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:60; background:var(--white)}
+a{color:inherit; text-decoration:none}
+p a{text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px; text-decoration-color:var(--blue)}
+:focus-visible{outline:3px solid var(--yellow); outline-offset:2px}
+::selection{background:var(--yellow); color:var(--ink)}
+p{margin:0}
+h1,h2,h3{margin:0; font-stretch:125%; font-weight:800; letter-spacing:-.025em; line-height:.98; text-wrap:balance}
+h1{font-size:clamp(34px,6.6vw,92px); font-weight:900; letter-spacing:-.035em; line-height:.92; overflow-wrap:anywhere}
+h2{font-size:clamp(34px,4.8vw,64px)}
+h3{font-size:clamp(22px,2.2vw,30px); line-height:1.08}
+.lead{font-size:clamp(19px,1.7vw,24px); line-height:1.45; color:var(--ink-2); max-width:34em}
+.wrap{max-width:var(--max); margin:0 auto; padding-left:max(20px,env(safe-area-inset-left,0px)); padding-right:max(20px,env(safe-area-inset-right,0px))}
+@media (min-width:760px){ .wrap{padding-left:max(40px,env(safe-area-inset-left,0px)); padding-right:max(40px,env(safe-area-inset-right,0px))} }
+.band{padding-block:clamp(64px,9vw,128px)}
+.band.blue{background:var(--blue); color:var(--white)}
+.band.blue .lead{color:rgba(255,255,255,.78)}
+.hl{background:var(--yellow); color:var(--ink); padding:0 .12em; box-decoration-break:clone; -webkit-box-decoration-break:clone}
+.head{display:grid; gap:22px; margin-bottom:clamp(36px,5vw,72px)}
+.head .lead{max-width:30em}
+.split{display:grid; gap:40px}
+.split h2{font-size:clamp(30px,3.8vw,50px)}
+.split>*,.docs>*,.quiz>*,.three>*,.layers>*,.people>*,.lawgrid>*,.hero .under>*,.kb .out>*,.q>*,.step>*{min-width:0}
+.doc{min-width:0; overflow:hidden}
+@media (min-width:960px){ #metodo .split{grid-template-columns:4fr 8fr; gap:56px} }
+.doc td,.doc th{overflow-wrap:normal; hyphens:manual}
+.doc td:last-child,.doc th:last-child{padding-left:10px; padding-right:0}
+@media (min-width:960px){ .split{grid-template-columns:5fr 7fr; gap:72px; align-items:start} }
+
+/* Buttons */
+.btn{display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:17px; line-height:1; padding:18px 26px; border:2px solid var(--blue); background:var(--blue); color:var(--white); cursor:pointer; white-space:nowrap; font-family:inherit; transition:background .15s,color .15s,border-color .15s}
+.btn:hover{background:var(--blue-deep); border-color:var(--blue-deep)}
+.btn.line{background:transparent; color:var(--blue)}
+.btn.line:hover{background:var(--blue-soft)}
+.btn.yellow{background:var(--yellow); border-color:var(--yellow); color:var(--ink)}
+.btn.yellow:hover{background:#FFEF5C; border-color:#FFEF5C}
+.btn.white{background:var(--white); border-color:var(--white); color:var(--blue)}
+.btn.white:hover{background:#EEF1FF; border-color:#EEF1FF}
+.btn.sm{padding:12px 18px; font-size:15px}
+
+/* Bar */
+.bar{position:sticky; top:env(safe-area-inset-top,0px); z-index:50; background:var(--white); border-bottom:3px solid var(--blue)}
+.bar .wrap{display:flex; align-items:center; gap:28px; height:72px}
+.logo{display:flex; align-items:center; gap:12px; font-stretch:125%; font-weight:900; font-size:24px; letter-spacing:-.03em}
+.logo i{display:block; width:14px; height:14px; background:var(--yellow)}
+.logo b{color:var(--blue); font-weight:900}
+.links{display:none; gap:4px; margin-left:auto}
+.links a{font-weight:600; font-size:16px; color:var(--ink-2); padding:10px 12px; white-space:nowrap}
+.links a:hover{color:var(--blue)}
+@media (min-width:1000px){ .links{display:flex} }
+.bar .btn{margin-left:auto}
+@media (min-width:1000px){ .bar .btn{margin-left:0} }
+.bar .btn .long{display:none}
+@media (min-width:600px){ .bar .btn .long{display:inline} .bar .btn .short{display:none} }
+@media (max-width:480px){ .bar .btn{padding:11px 14px; font-size:14px} }
+
+/* Hero */
+.hero{padding-block:clamp(48px,7vw,104px) clamp(40px,6vw,88px)}
+.hero h1{max-width:11.5em}
+.hero .under{display:grid; gap:28px; margin-top:clamp(32px,4vw,56px)}
+@media (min-width:900px){ .hero .under{grid-template-columns:7fr 5fr; gap:64px; align-items:end} }
+.hero .cta{display:flex; flex-wrap:wrap; gap:12px}
+.hero .fine{font-size:15px; color:var(--ink-3); max-width:32em}
+.facts{display:grid; gap:12px; border-left:6px solid var(--blue); padding-left:20px; font-size:16px; color:var(--ink-2); line-height:1.4}
+.facts b{display:block; color:var(--ink); font-weight:700}
+
+/* Keyboard band */
+.kb .top{display:grid; gap:14px; margin-bottom:32px}
+.kb .top h2{font-size:clamp(28px,3.4vw,44px)}
+.kb .top p{color:rgba(255,255,255,.72); font-size:17px}
+.keys{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+@media (min-width:1100px){ .keys{grid-template-columns:repeat(9,1fr)} }
+.key{min-width:0; appearance:none; border:0; background:var(--white); color:var(--blue); font-family:inherit; font-weight:700; font-size:clamp(13px,1.15vw,17px); line-height:1.1; letter-spacing:-.01em; text-align:left; padding:16px 12px; min-height:150px; display:grid; align-content:space-between; cursor:pointer; transition:background .12s,transform .12s}
+.key:hover{background:#EEF1FF}
+.key .st{font-size:12px; font-weight:600; color:var(--ink-3)}
+.key[aria-pressed="true"]{background:var(--yellow); color:var(--ink)}
+.key[aria-pressed="true"] .st{color:var(--ink)}
+.key[aria-pressed="true"] .st::before{content:"IA in uso"}
+.key[aria-pressed="false"] .st::before{content:"Nessun uso"}
+.kb .out{display:grid; gap:24px; margin-top:36px; align-items:center}
+@media (min-width:900px){ .kb .out{grid-template-columns:auto 1fr auto; gap:48px} }
+.kb .big{font-stretch:125%; font-weight:900; font-size:clamp(72px,9vw,128px); line-height:.85; letter-spacing:-.04em; font-variant-numeric:tabular-nums; color:var(--yellow)}
+.kb .big small{display:block; font-stretch:100%; font-size:18px; font-weight:600; letter-spacing:0; color:var(--white); margin-top:10px}
+.kb .out p{font-size:clamp(18px,1.6vw,22px); line-height:1.4; max-width:30em}
+
+/* Reasons */
+.three{display:grid; gap:40px}
+@media (min-width:860px){ .three{grid-template-columns:repeat(3,1fr); gap:40px} }
+.three > div{border-top:6px solid var(--blue); padding-top:22px; display:grid; gap:14px; align-content:start}
+.three p{color:var(--ink-2); font-size:17px}
+
+/* Test */
+.quiz{display:grid; gap:36px}
+@media (min-width:1000px){ .quiz{grid-template-columns:7fr 5fr; gap:64px; align-items:start} }
+.q{display:grid; grid-template-columns:64px 1fr; gap:8px 16px; padding:26px 0; border-top:2px solid var(--blue-soft)}
+.q:first-child{border-top:0; padding-top:0}
+.q .n{font-stretch:125%; font-weight:900; font-size:40px; line-height:.9; color:var(--blue); letter-spacing:-.04em; grid-row:span 2}
+.q p{font-size:clamp(18px,1.6vw,22px); line-height:1.35; font-weight:500; max-width:26em}
+.seg{display:flex; gap:8px; flex-wrap:wrap; margin-top:4px}
+.seg button{appearance:none; font-family:inherit; font-weight:700; font-size:15px; padding:11px 18px; border:2px solid var(--blue); background:var(--white); color:var(--blue); cursor:pointer; transition:background .12s,color .12s}
+.seg button:hover{background:var(--blue-soft)}
+.seg button[aria-pressed="true"]{background:var(--blue); color:var(--white)}
+.result{position:sticky; top:calc(env(safe-area-inset-top,0px) + 96px); background:var(--blue); color:var(--white); padding:32px 32px 36px; display:grid; gap:20px}
+.result .score{font-size:15px; color:rgba(255,255,255,.72); font-variant-numeric:tabular-nums}
+.meter{height:14px; background:rgba(255,255,255,.18); overflow:hidden}
+.meter i{display:block; height:100%; width:0; background:var(--yellow); transition:width .35s ease}
+.result .profile{font-stretch:125%; font-weight:900; font-size:clamp(30px,3.2vw,44px); letter-spacing:-.03em; line-height:.95}
+.result p{color:rgba(255,255,255,.82); font-size:17px}
+.gaps{margin:0; padding:0; list-style:none; display:grid; gap:8px}
+.gaps li{display:flex; gap:12px; font-size:16px; line-height:1.35; align-items:baseline}
+.gaps li::before{content:"Manca"; flex:none; font-size:12px; font-weight:700; background:var(--yellow); color:var(--ink); padding:3px 6px}
+.gaps li.part::before{content:"In parte"; background:var(--white); color:var(--blue)}
+.gaps li.ok::before{content:"C'è"; background:transparent; color:rgba(255,255,255,.7); border:1px solid rgba(255,255,255,.4)}
+.reco{border-top:2px solid rgba(255,255,255,.25); padding-top:20px; display:grid; gap:12px}
+.reco .lbl{font-size:14px; color:rgba(255,255,255,.72)}
+.reco strong{font-size:clamp(20px,2vw,26px); line-height:1.15; font-weight:700}
+.reco .btn{justify-self:start}
+
+/* Program */
+.layers{display:grid; gap:40px}
+@media (min-width:900px){ .layers{grid-template-columns:repeat(3,1fr); gap:40px} }
+.layer{border-top:6px solid var(--blue); padding-top:20px; display:grid; gap:12px; align-content:start}
+.layer .n{font-stretch:125%; font-weight:900; font-size:56px; line-height:.85; letter-spacing:-.04em; color:var(--blue)}
+.layer:first-child .n{background:var(--yellow); color:var(--ink); display:inline-block; padding:4px 10px 0; justify-self:start}
+.layer h3{font-size:clamp(28px,3vw,38px)}
+.layer .for{font-size:17px; color:var(--blue); font-weight:700}
+.layer p{color:var(--ink-2); font-size:16.5px}
+.layer .who{font-size:15px; color:var(--ink); font-weight:600; border-left:4px solid var(--yellow); padding-left:12px; line-height:1.4}
+.layer ul{margin:6px 0 0; padding:0; list-style:none; display:grid; gap:7px}
+.layer li{font-size:16px; padding-left:20px; position:relative; line-height:1.35}
+.layer li::before{content:""; position:absolute; left:0; top:.5em; width:10px; height:10px; background:var(--blue)}
+.year{margin-top:clamp(48px,6vw,80px); display:grid; gap:24px}
+.year .yh{display:flex; flex-wrap:wrap; gap:8px 24px; align-items:baseline}
+.year .yh span{color:var(--ink-3); font-size:16px}
+.months{display:grid; gap:2px; background:var(--blue)}
+@media (min-width:900px){ .months{grid-template-columns:repeat(5,1fr)} }
+.months > div{background:var(--white); padding:22px 0 0; display:grid; gap:6px; align-content:start; min-width:0; border-top:6px solid var(--blue); margin-top:-2px}
+@media (min-width:900px){ .months > div{padding-right:22px} .months > div + div{padding-left:22px} }
+.months b{font-size:14px; font-weight:700; color:var(--blue); font-variant-numeric:tabular-nums}
+.months strong{font-stretch:125%; font-weight:800; font-size:22px; letter-spacing:-.02em; line-height:1}
+.months p{color:var(--ink-2); font-size:15.5px; margin-top:4px}
+.months > div:first-child b{background:var(--yellow); color:var(--ink); padding:2px 6px; justify-self:start}
+.pathnote{margin-top:48px; display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between; font-size:17px; color:var(--ink-2); border-top:2px solid var(--blue-soft); padding-top:28px}
+
+/* Method + documents */
+.steps{display:grid; gap:0}
+.step{display:grid; grid-template-columns:72px 1fr; gap:16px; padding:26px 0; border-top:2px solid var(--blue-soft)}
+.step .n{font-stretch:125%; font-weight:900; font-size:48px; line-height:.85; color:var(--blue); letter-spacing:-.04em}
+.step h3{margin-bottom:8px}
+.step p{color:var(--ink-2); font-size:17px}
+.docs{display:grid; gap:18px}
+@media (min-width:640px){ .docs{grid-template-columns:1fr 1fr} }
+.doc{background:var(--paper); color:var(--ink); padding:22px 22px 20px; font-size:13px; line-height:1.4; display:grid; gap:12px; box-shadow:6px 6px 0 var(--blue)}
+.doc .t{display:flex; justify-content:space-between; gap:10px; align-items:baseline; border-bottom:2px solid var(--ink); padding-bottom:8px}
+.doc .t b{font-stretch:125%; font-weight:800; font-size:17px; letter-spacing:-.02em}
+.doc .t span{font-size:12px; color:var(--ink-2); text-align:right}
+.doc .ex{font-size:12px; color:var(--ink-2)}
+.doc table{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums}
+.doc th,.doc td{text-align:left; padding:6px 8px 6px 0; border-bottom:1px solid rgba(16,21,46,.18); vertical-align:top}
+.doc th{font-size:11.5px; color:var(--ink-2); font-weight:600}
+.doc td:last-child,.doc th:last-child{text-align:right}
+.doc ol{margin:0; padding-left:20px; display:grid; gap:4px}
+.doc .stamp{justify-self:end; border:2px solid var(--blue); color:var(--blue); padding:3px 8px; font-size:12px; font-weight:800; letter-spacing:.04em; transform:rotate(-4deg)}
+
+/* Law */
+.law .art{font-stretch:125%; font-weight:900; font-size:clamp(120px,18vw,240px); line-height:.8; letter-spacing:-.06em; color:var(--blue)}
+.law .art small{display:block; font-stretch:100%; font-weight:600; font-size:16px; letter-spacing:0; color:var(--ink-2); margin-top:16px; max-width:18em; line-height:1.35}
+.law blockquote{margin:0; font-size:clamp(20px,2.1vw,28px); line-height:1.4; font-weight:500; letter-spacing:-.01em}
+.law .after{margin-top:22px; display:flex; flex-wrap:wrap; gap:12px 28px; font-size:16px; color:var(--ink-2)}
+.law .after a{color:var(--blue); font-weight:700; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px}
+.lawgrid{display:grid; gap:40px; margin-top:clamp(48px,6vw,80px); padding-top:clamp(32px,4vw,48px); border-top:6px solid var(--blue)}
+@media (min-width:860px){ .lawgrid{grid-template-columns:repeat(3,1fr); gap:48px} }
+.lawgrid h3{margin-bottom:14px}
+.lawgrid p{color:var(--ink-2); font-size:17px}
+.dates{display:grid; gap:10px}
+.dates div{display:grid; grid-template-columns:110px 1fr; gap:12px; font-size:16px; color:var(--ink-2)}
+.dates b{color:var(--ink); font-weight:700; font-variant-numeric:tabular-nums}
+.dates .now b{background:var(--yellow); padding:0 4px; justify-self:start; align-self:start}
+
+/* People */
+.people{display:grid; gap:40px}
+@media (min-width:860px){ .people{grid-template-columns:1fr 1fr; gap:64px} }
+.person{display:grid; gap:12px; align-content:start}
+.person .role{font-weight:700; color:var(--blue); font-size:16px}
+.person p{color:var(--ink-2); font-size:17px}
+.shelf{margin-top:clamp(40px,5vw,64px); border-top:2px solid var(--blue-soft); padding-top:28px; display:grid; gap:16px}
+.shelf .lbl{font-weight:700; font-size:16px}
+.books{display:grid; gap:10px 40px}
+@media (min-width:760px){ .books{grid-template-columns:repeat(3,auto); justify-content:start} }
+.books div{display:grid; gap:2px; font-size:16px}
+.books b{font-weight:700}
+.books span{color:var(--ink-3); font-size:15px}
+
+/* FAQ */
+.faq{max-width:860px}
+.faq details{border-top:2px solid var(--blue-soft)}
+.faq details:last-child{border-bottom:2px solid var(--blue-soft)}
+.faq summary{list-style:none; cursor:pointer; display:flex; justify-content:space-between; gap:24px; align-items:flex-start; padding:22px 0; font-weight:700; font-size:clamp(19px,1.7vw,23px); line-height:1.3; letter-spacing:-.01em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+"; font-stretch:125%; font-weight:900; font-size:30px; line-height:1; color:var(--blue); flex:none; transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 26px; color:var(--ink-2); max-width:36em; font-size:17px}
+
+/* Contact */
+.contact .promise{display:grid; gap:16px; margin-top:32px}
+.contact .promise div{display:grid; grid-template-columns:40px 1fr; gap:12px; font-size:17px; color:rgba(255,255,255,.82); line-height:1.4}
+.contact .promise b{font-stretch:125%; font-weight:900; font-size:22px; color:var(--yellow); line-height:1}
+.form{display:grid; gap:16px}
+.form label{display:grid; gap:8px; font-size:14px; font-weight:600; color:rgba(255,255,255,.8)}
+.form input,.form textarea{appearance:none; width:100%; min-width:0; background:var(--white); border:2px solid var(--white); color:var(--ink); padding:14px 16px; font:17px var(--font)}
+.form input:focus,.form textarea:focus{outline:none; border-color:var(--yellow); box-shadow:0 0 0 3px var(--yellow)}
+.form input.bad{border-color:var(--yellow); box-shadow:0 0 0 3px var(--yellow)}
+.form textarea{min-height:110px; resize:vertical}
+.form .two{display:grid; gap:16px}
+@media (min-width:560px){ .form .two{grid-template-columns:1fr 1fr} }
+.form .btn{width:100%; margin-top:6px}
+.form .hint{font-size:14px; color:rgba(255,255,255,.7); line-height:1.5}
+.form .hint a{text-decoration:underline; color:var(--white)}
+.done{display:grid; gap:12px}
+.done pre{white-space:pre-wrap; word-break:break-word; font:14px/1.5 var(--font); background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.3); padding:16px; margin:0; max-height:280px; overflow:auto; color:var(--white)}
+.done .row{display:flex; gap:10px; flex-wrap:wrap}
+
+/* Footer */
+footer{padding-block:32px; border-top:3px solid var(--blue)}
+footer .wrap{display:flex; flex-wrap:wrap; gap:14px 36px; justify-content:space-between; align-items:center; font-size:14px; color:var(--ink-3)}
+footer nav{display:flex; gap:20px; flex-wrap:wrap; font-weight:600}
+footer nav a:hover{color:var(--blue)}
+</style>
+
+<header class="bar" id="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="EIPAI"><i aria-hidden="true"></i><span>EI<b>P</b>AI</span></a>
+    <nav class="links" aria-label="Sezioni">
+      <a href="#test">Il test</a><a href="#programma">Il programma</a><a href="#metodo">Metodo</a><a href="#legge">La legge</a><a href="#chi">Chi insegna</a><a href="#domande">Domande</a>
+    </nav>
+    <a class="btn sm" href="#contatto"><span class="long">Prenota il primo incontro</span><span class="short">Prenota</span></a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="wrap">
+    <h1>Vi aiutiamo a implementare l'intelligenza artificiale <span class="hl">nella vostra azienda.</span></h1>
+    <div class="under">
+      <div style="display:grid;gap:26px">
+        <p class="lead">Con competenza, con filosofia, con i migliori strumenti e professionisti. Per un anno entriamo nei vostri team: prima per imparare davvero a usare Claude Code e gli altri strumenti, poi per capire come pensare con la macchina, poi per mettervi in regola con l'AI Act. In quest'ordine, perché è l'ordine che conta.</p>
+        <div class="cta">
+          <a class="btn" href="#contatto">Prenota il primo incontro</a>
+          <a class="btn line" href="#test">Fate il test in tre minuti</a>
+        </div>
+        <p class="fine">Quarantacinque minuti, senza impegno, in presenza o a distanza. Proposta scritta entro 48 ore.</p>
+      </div>
+      <div class="facts">
+        <div><b>Prima gli strumenti</b>mani sulla tastiera dal primo giorno, con chi quegli strumenti li usa per lavoro.</div>
+        <div><b>Un anno dentro l'azienda</b>consulenti nei team a giorni fissi, sessioni mensili per ruolo, aggiornamento a ogni cambiamento che vi riguarda.</div>
+        <div><b>Dal 2 febbraio 2025</b>formare il personale sull'IA è un obbligo dell'AI Act. Noi lo facciamo e lo documentiamo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Keyboard -->
+<section class="band blue kb" id="mappa">
+  <div class="wrap">
+    <div class="top">
+      <h2>Dove si usa già l'IA da voi? Toccate le funzioni.</h2>
+      <p>Vale anche chi usa un chatbot con un account personale per scrivere o tradurre. È un esempio: modificatelo.</p>
+    </div>
+    <div class="keys" id="keys" role="group" aria-label="Funzioni dell'organizzazione"></div>
+    <div class="out">
+      <div class="big"><span id="mapN">3</span><small>funzioni su 9</small></div>
+      <p id="mapText"></p>
+      <a class="btn white" href="#test">Continuate con il test</a>
+    </div>
+  </div>
+</section>
+
+<!-- Reasons -->
+<section class="band" id="perche">
+  <div class="wrap">
+    <div class="head">
+      <h2>Tre problemi che arrivano insieme.</h2>
+      <p class="lead">E una sola risposta: competenza costruita dentro il lavoro, con un metodo che si misura.</p>
+    </div>
+    <div class="three">
+      <div><h3>L'uso spontaneo</h3><p>Le persone usano già strumenti di IA, spesso con account personali e dati aziendali. Nessuno ha deciso che accadesse, nessuno sa che cosa è entrato e che cosa è uscito. Il primo passo è vedere dove si lavora già così.</p></div>
+      <div><h3>La produttività promessa</h3><p>Un pomeriggio di corso su un chatbot produce entusiasmo e poco altro. L'IA rende quando qualcuno entra nei compiti veri con le persone e torna: richieste costruite bene, flussi che reggono, controlli chiari, qualcuno che risponde del risultato.</p></div>
+      <div><h3>L'obbligo di legge</h3><p>Dal 2 febbraio 2025 chi usa sistemi di IA deve garantire al personale un'alfabetizzazione proporzionata a ruolo, esperienza e contesto. La formazione va fatta e va documentata. Noi facciamo entrambe le cose.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Test -->
+<section class="band" id="test" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <h2>A che punto siete con l'IA?</h2>
+      <p class="lead">Otto domande, tre minuti. Rispondete come stanno le cose oggi: il profilo appare subito e potete portarlo al primo incontro.</p>
+    </div>
+    <div class="quiz">
+      <div id="qlist"></div>
+      <aside class="result" aria-live="polite">
+        <div class="score"><span id="answered">0</span> risposte su 8, punteggio <span id="score">0</span> su 16</div>
+        <div class="meter"><i id="meter"></i></div>
+        <div class="profile" id="profile">Rispondete alle domande</div>
+        <p id="profileText">Tre esiti possibili: uso spontaneo, percorso avviato, uso governato. Il profilo si compone man mano che rispondete.</p>
+        <ul class="gaps" id="gaps"></ul>
+        <div class="reco" id="reco" hidden>
+          <span class="lbl">Percorso consigliato</span>
+          <strong id="recoTitle"></strong>
+          <p id="recoText"></p>
+          <a class="btn yellow" href="#contatto">Portate il risultato al primo incontro</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Program -->
+<section class="band" id="programma" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <h2>Prima le mani. Poi la testa. Poi le regole.</h2>
+      <p class="lead">Un anno dentro la vostra azienda, su tre livelli, nell'ordine che conta. Quando esce un modello nuovo o cambia una norma che vi riguarda, torniamo.</p>
+    </div>
+    <div class="layers">
+      <article class="layer">
+        <span class="n">1</span>
+        <h3>Gli strumenti</h3>
+        <span class="for">Imparare davvero a usarli</span>
+        <p>I nostri consulenti entrano nei team a giorni fissi, siedono accanto alle persone, mostrano come funzionano Claude Code e gli altri strumenti, costruiscono con loro i flussi di lavoro e li mettono in funzione. Tornano ogni volta che serve: un processo nuovo, uno strumento nuovo, un modello che cambia.</p>
+        <span class="who">Con chi: professionisti che con questi strumenti lavorano ogni giorno.</span>
+        <ul><li>Flussi di lavoro con l'IA costruiti sui vostri compiti</li><li>Strumenti scelti, configurati, collegati ai vostri dati</li><li>Interventi successivi ogni volta che cambia qualcosa</li></ul>
+      </article>
+      <article class="layer">
+        <span class="n">2</span>
+        <h3>Il pensiero</h3>
+        <span class="for">Come si ragiona con la macchina</span>
+        <p>Che cosa affidare all'IA e che cosa tenere, quando fidarsi di un risultato, come si costruisce una richiesta che funziona, come cambia il giudizio di chi decide. Sessioni mensili per ruolo, su materiale vostro, per tutto il personale e con un percorso a parte per chi dirige.</p>
+        <span class="who">Con chi: filosofi che lavorano sull'intelligenza artificiale da anni.</span>
+        <ul><li>Competenze per ruolo, verificate</li><li>Un modo condiviso di decidere con l'IA</li><li>Seminari di giudizio per la direzione</li></ul>
+      </article>
+      <article class="layer">
+        <span class="n">3</span>
+        <h3>Le regole</h3>
+        <span class="for">Che cosa chiede la legge</span>
+        <p>L'articolo 4 dell'AI Act, la legge italiana, i dati che possono entrare in uno strumento e quelli che no, i fornitori da valutare, la responsabilità di chi usa un risultato. Una policy scritta con legale, risorse umane e IT, e il registro della formazione che potete esibire.</p>
+        <span class="who">Con chi: giuristi del quadro europeo e italiano sull'IA.</span>
+        <ul><li>Policy sull'uso dell'IA, versione 1.0</li><li>Registro della formazione, articolo 4</li><li>Valutazione dei fornitori</li></ul>
+      </article>
+    </div>
+    <div class="year" aria-label="I dodici mesi del programma">
+      <div class="yh"><h3>Come si svolge l'anno</h3><span>Ritmo tipo, da adattare alle dimensioni dell'organizzazione.</span></div>
+      <div class="months">
+        <div><b>Mese 1</b><strong>Mappatura</strong><p>Interviste e osservazione: dove l'IA è già in uso, con quali dati, con quali rischi. Piano per ruoli.</p></div>
+        <div><b>Mesi 2–4</b><strong>Fondamenta</strong><p>Consulenti nelle due funzioni dove l'uso è più esteso o più rischioso. Sessioni di base per tutti.</p></div>
+        <div><b>Mesi 5–8</b><strong>Estensione</strong><p>Consulenti in tutte le funzioni mappate, flussi documentati, prime misure. Sessioni operative per ruolo.</p></div>
+        <div><b>Mesi 9–11</b><strong>Governo</strong><p>Policy scritta con legale, risorse umane e IT. Seminari di giudizio per chi dirige. Sessioni avanzate.</p></div>
+        <div><b>Mese 12</b><strong>Verifica</strong><p>Misura di che cosa è cambiato, registro completo, piano per l'anno successivo.</p></div>
+      </div>
+    </div>
+    <div class="pathnote">
+      <span>La proposta scritta, con calendario, persone coinvolte e costo, arriva entro 48 ore dal primo incontro.</span>
+      <a class="btn line" href="#contatto">Chiedete una proposta</a>
+    </div>
+  </div>
+</section>
+
+<!-- Method -->
+<section class="band" id="metodo" style="padding-top:0">
+  <div class="wrap split">
+    <div>
+      <div class="head">
+        <h2>Prima vedere. Poi praticare. Poi mettere per iscritto.</h2>
+        <p class="lead">Il primo obiettivo del programma è accorgersi: dove l'IA è affidabile, dove sbaglia con sicurezza, che cosa cambia nel lavoro di chi la usa. Le competenze si costruiscono su questa capacità, e la presenza in azienda serve a esercitarla ogni settimana.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><div><h3>Osservare</h3><p>Prima di insegnare guardiamo come si lavora: quali compiti, quali strumenti sono già in uso, dove l'IA è entrata senza che nessuno l'abbia deciso.</p></div></div>
+        <div class="step"><span class="n">2</span><div><h3>Praticare</h3><p>Ogni sessione parte da materiale vero dell'organizzazione. Si costruiscono richieste, flussi e controlli sui casi che le persone affrontano davvero.</p></div></div>
+        <div class="step"><span class="n">3</span><div><h3>Verificare e documentare</h3><p>Misuriamo che cosa è cambiato e lo mettiamo per iscritto: competenze acquisite, regole adottate, registro della formazione svolta.</p></div></div>
+      </div>
+    </div>
+    <div class="docs" aria-label="Esempi dei documenti consegnati">
+      <div class="doc">
+        <div class="t"><b>Registro della formazione</b><span>Articolo 4</span></div>
+        <span class="ex">Esempio di struttura</span>
+        <table><thead><tr><th>Ruolo</th><th>Modulo</th><th>Livello e ore</th></tr></thead><tbody>
+          <tr><td>Direzione</td><td>Giudizio e responsabilità</td><td>Avanzato, 6 h</td></tr>
+          <tr><td>Amministrazione</td><td>Dati, riservatezza, verifica</td><td>Operativo, 8 h</td></tr>
+          <tr><td>Commerciale</td><td>Scrittura assistita e controllo</td><td>Operativo, 8 h</td></tr>
+          <tr><td>Tutto il personale</td><td>Alfabetizzazione di base</td><td>Base, 4 h</td></tr>
+        </tbody></table>
+        <span class="stamp">Verificato</span>
+      </div>
+      <div class="doc">
+        <div class="t"><b>Policy sull'uso dell'IA</b><span>Versione 1.0</span></div>
+        <span class="ex">Esempio di indice</span>
+        <ol><li>Ambito e destinatari</li><li>Strumenti ammessi e account</li><li>Dati che non entrano in uno strumento di IA</li><li>Verifica umana: quando e chi</li><li>Responsabile dell'uso dell'IA</li><li>Registro della formazione</li><li>Aggiornamento annuale</li></ol>
+        <span class="stamp">Approvata</span>
+      </div>
+      <div class="doc">
+        <div class="t"><b>Mappa dell'uso dell'IA</b><span>Mese 1</span></div>
+        <span class="ex">Esempio di esito per funzione</span>
+        <table><thead><tr><th>Funzione</th><th>Uso rilevato</th><th>Rischio</th></tr></thead><tbody>
+          <tr><td>Marketing</td><td>Testi, immagini</td><td>Medio</td></tr>
+          <tr><td>Amministrazione</td><td>Riepiloghi di documenti</td><td>Alto</td></tr>
+          <tr><td>Risorse umane</td><td>Screening dei CV</td><td>Alto</td></tr>
+          <tr><td>Operations</td><td>Nessuno dichiarato</td><td>Da verificare</td></tr>
+        </tbody></table>
+      </div>
+      <div class="doc">
+        <div class="t"><b>Misura prima e dopo</b><span>Mesi 5–12</span></div>
+        <span class="ex">Esempio di indicatori</span>
+        <table><thead><tr><th>Indicatore</th><th>Come si misura</th></tr></thead><tbody>
+          <tr><td>Tempo per compito</td><td>Rilevato su casi reali</td></tr>
+          <tr><td>Errori intercettati</td><td>Verifica a campione</td></tr>
+          <tr><td>Decisioni con verifica umana</td><td>Registro del team</td></tr>
+          <tr><td>Processi coperti dall'IA</td><td>Conteggio per funzione</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Law -->
+<section class="band law" id="legge" style="padding-top:0">
+  <div class="wrap">
+    <div class="split">
+      <div class="art">4<small>Regolamento (UE) 2024/1689, articolo 4. Alfabetizzazione in materia di IA. In applicazione dal 2 febbraio 2025.</small></div>
+      <div>
+        <blockquote>I fornitori e i deployer dei sistemi di IA adottano misure per garantire nella misura del possibile un livello sufficiente di alfabetizzazione in materia di IA del loro personale nonché di qualsiasi altra persona che si occupa del funzionamento e dell'utilizzo dei sistemi di IA per loro conto, <span class="hl">prendendo in considerazione le loro conoscenze tecniche, la loro esperienza, istruzione e formazione, nonché il contesto in cui i sistemi di IA devono essere utilizzati</span>, e tenendo conto delle persone o dei gruppi di persone su cui i sistemi di IA devono essere utilizzati.</blockquote>
+        <div class="after">
+          <span>Le parole evidenziate escludono il corso uguale per tutti.</span>
+          <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/ita" target="_blank" rel="noopener">Testo ufficiale su EUR-Lex</a>
+        </div>
+      </div>
+    </div>
+    <div class="lawgrid">
+      <div>
+        <h3>Le date</h3>
+        <div class="dates">
+          <div><b>1 ago 2024</b><span>Il regolamento entra in vigore.</span></div>
+          <div class="now"><b>2 feb 2025</b><span>Si applicano l'articolo 4 sull'alfabetizzazione e i divieti dell'articolo 5.</span></div>
+          <div><b>2 ago 2025</b><span>Si applicano le norme su governance, sanzioni e modelli di IA per finalità generali.</span></div>
+          <div><b>2025</b><span>La legge italiana n. 132 detta disposizioni nazionali sull'IA e affida al Governo i percorsi di alfabetizzazione e formazione.</span></div>
+        </div>
+      </div>
+      <div><h3>Chi riguarda</h3><p>Fornitori e deployer, cioè chiunque usi sistemi di IA nella propria attività. Secondo la Commissione europea l'obbligo vale anche per l'impresa che usa un chatbot per scrivere testi o tradurre documenti. Riguarda le PMI, gli studi professionali e le pubbliche amministrazioni.</p></div>
+      <div><h3>Che cosa va dimostrato</h3><p>Che la formazione sia stata fatta, che sia proporzionata a conoscenze, esperienza e contesto d'uso delle persone, e che tenga conto di chi subisce gli effetti dei sistemi. Per questo ogni nostro percorso si chiude con un registro.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- People -->
+<section class="band" id="chi" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <h2>Chi entra in azienda con voi.</h2>
+      <p class="lead">Un filosofo che lavora sull'IA da anni e un avvocato che conosce il quadro europeo guidano l'istituto. Con loro i consulenti che portano gli strumenti dentro i team, e i filosofi e i giuristi che insegnano come pensarci e come stare in regola.</p>
+    </div>
+    <div class="people">
+      <article class="person">
+        <h3>Andrea Colamedici</h3>
+        <span class="role">Cofondatore, direzione didattica</span>
+        <p>Filosofo, cofondatore di Tlon. Insegna allo IED di Roma e alla 24ORE Business School e presiede il comitato scientifico di geniaLAB all'AANT. Da anni tiene corsi e laboratori sull'uso critico dell'intelligenza artificiale generativa per imprese, università e istituzioni, in Italia e all'estero.</p>
+      </article>
+      <article class="person">
+        <h3>Riccardo Messina</h3>
+        <span class="role">Cofondatore, quadro giuridico</span>
+        <p>Avvocato, presidente di United Network Europa. Con United Network promuove progetti di formazione per studenti e docenti, tra cui il Premio Nazionale Insegnanti. In EIPAI segue la conformità dei percorsi al quadro europeo e nazionale.</p>
+      </article>
+    </div>
+    <div class="people" style="margin-top:48px">
+      <article class="person">
+        <h3>I consulenti</h3>
+        <span class="role">Professionisti dell'IA selezionati e coordinati da EIPAI</span>
+        <p>Chi conosce gli strumenti perché li usa ogni giorno. Entrano nei team a giorni fissi, mostrano come funzionano Claude Code e gli strumenti che l'azienda usa già, costruiscono i flussi con le persone e li mettono in funzione. Tornano ogni volta che serve, e nel frattempo restano raggiungibili.</p>
+      </article>
+      <article class="person">
+        <h3>Filosofi e giuristi</h3>
+        <span class="role">Il pensiero e le regole</span>
+        <p>Filosofi che lavorano sull'intelligenza artificiale da anni, per il giudizio e la responsabilità di chi decide. Giuristi del quadro europeo e italiano, per la policy, il registro e i fornitori. Tornano in azienda ogni mese per un anno e ogni volta che cambia qualcosa che vi riguarda.</p>
+      </article>
+    </div>
+    <div class="shelf">
+      <span class="lbl">Libri di Andrea Colamedici sull'intelligenza artificiale</span>
+      <div class="books">
+        <div><b>L'algoritmo di Babele</b><span>con Simone Arcagni, Solferino 2024</span></div>
+        <div><b>Arcipelago delle realtà</b><span>UTET 2026</span></div>
+        <div><b>L'alba dei nuovi dèi</b><span>con Maura Gancitano, Mondadori 2021</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="band" id="domande" style="padding-top:0">
+  <div class="wrap">
+    <div class="head"><h2>Prima di chiamarci.</h2></div>
+    <div class="faq">
+      <details><summary>Abbiamo già fatto un corso su ChatGPT. Non basta?</summary><p>Un corso generico copre il livello base e nulla di più. L'articolo 4 chiede una formazione proporzionata a ruolo, esperienza e contesto d'uso, e chiede di poterla dimostrare. Se avete già fatto un corso, la mappatura lo mette a frutto: individua che cosa manca per ruolo e il programma parte da lì.</p></details>
+      <details><summary>Siamo una PMI con venti persone. Ci riguarda davvero?</summary><p>Sì. L'obbligo vale per chiunque usi sistemi di IA nella propria attività, e la Commissione europea ha chiarito che basta un chatbot per scrivere o tradurre. Per un'organizzazione piccola il percorso è più breve e si concentra sui compiti che contano.</p></details>
+      <details><summary>Un anno è lungo. Perché non un corso?</summary><p>Perché l'intelligenza artificiale cambia ogni trimestre e un corso fatto una volta invecchia prima di finire. In un anno i consulenti hanno il tempo di far reggere i flussi, misurarli e intervenire di nuovo quando cambia qualcosa, e le sessioni aggiornano il personale a ogni cambiamento che vi riguarda.</p></details>
+      <details><summary>Chi sono i consulenti che entrano in azienda?</summary><p>Professionisti dell'IA selezionati e coordinati da EIPAI, che usano ogni giorno gli strumenti che vi mostrano. Vengono a giorni fissi, siedono con i vostri team, spiegano come funzionano Claude Code e gli altri strumenti, costruiscono con voi e tornano ogni volta che serve.</p></details>
+      <details><summary>Quanto tempo porta via ai team?</summary><p>La mappatura richiede un'ora di intervista per funzione. Le sessioni occupano un incontro al mese per persona. I consulenti lavorano dentro il tempo di lavoro ordinario, sui compiti che il team sta già svolgendo, e quindi lo restituiscono invece di sottrarlo.</p></details>
+      <details><summary>Lavorate anche con la pubblica amministrazione?</summary><p>Sì. I percorsi per la PA tengono conto dei vincoli su dati, procedimenti e responsabilità amministrativa, e producono la stessa documentazione: mappa, registro, policy.</p></details>
+      <details><summary>Che cosa resta a fine anno?</summary><p>Documenti che potete esibire e usare: la mappa dell'uso dell'IA, il registro della formazione, la policy interna, i flussi di lavoro documentati, le misure prima e dopo, e un interlocutore che conosce la vostra azienda e torna quando serve. Sopra trovate esempi della loro struttura.</p></details>
+      <details><summary>Quanto costa?</summary><p>Dipende da dimensioni e punto di partenza. Il primo incontro è gratuito e serve a capire da dove partire. Entro 48 ore ricevete una proposta scritta con calendario, persone coinvolte e costo del programma.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="band blue contact" id="contatto">
+  <div class="wrap split">
+    <div>
+      <h2>Quarantacinque minuti per capire da dove partire.</h2>
+      <p class="lead" style="margin-top:22px">Nessuna presentazione commerciale. Parliamo dei vostri compiti, dei vostri strumenti e di che cosa dovete poter mostrare.</p>
+      <div class="promise">
+        <div><b>1</b><span>Rispondiamo entro un giorno lavorativo e fissiamo l'incontro, in presenza o a distanza.</span></div>
+        <div><b>2</b><span>Se avete fatto il test, il profilo arriva con la richiesta e partiamo da lì.</span></div>
+        <div><b>3</b><span>Entro 48 ore dall'incontro ricevete una proposta scritta con calendario, persone coinvolte e costo.</span></div>
+      </div>
+    </div>
+    <form class="form" id="form" novalidate>
+      <div class="two">
+        <label>Nome e cognome<input id="f-name" name="name" type="text" autocomplete="name" required></label>
+        <label>Organizzazione<input id="f-org" name="org" type="text" autocomplete="organization" required></label>
+      </div>
+      <div class="two">
+        <label>Ruolo<input id="f-role" name="role" type="text" autocomplete="organization-title"></label>
+        <label>Email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+      </div>
+      <label>Che cosa vi serve<textarea id="f-msg" name="msg" placeholder="Dove usate già l'IA, che cosa volete ottenere, quante persone coinvolgere."></textarea></label>
+      <button class="btn yellow" type="submit" id="submitBtn">Chiedete il primo incontro</button>
+      <p class="hint" id="hint">Il modulo prepara un messaggio con i vostri dati e l'esito del test. Potete anche scrivere direttamente a <a id="mailLink" href="#">–</a>.</p>
+      <div class="done" id="done" hidden>
+        <p class="hint">Si apre il vostro programma di posta con il messaggio pronto. Se non succede, copiate il testo e inviatelo a <a id="mailLink2" href="#">–</a>.</p>
+        <pre id="summary"></pre>
+        <div class="row"><button class="btn white sm" type="button" id="copyBtn">Copiate il messaggio</button><a class="btn white sm" id="mailtoBtn" href="#">Aprite la posta</a></div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 EIPAI, European Institute for Practical AI. Istituto Europeo per l'Intelligenza Artificiale Applicata.</span>
+    <nav aria-label="Piè di pagina"><a href="#test">Il test</a><a href="#programma">Il programma</a><a href="#legge">La legge</a><a href="#chi">Chi insegna</a><a href="#contatto">Contatto</a></nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* Da configurare prima della pubblicazione */
+  var CONTACT_EMAIL = "info@tlon.it";   /* indirizzo che riceve le richieste: sostituire con quello dell'istituto */
+  var BOOKING_URL = "";                 /* opzionale: link a un calendario per prenotare direttamente */
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* Tastiera dell'organizzazione */
+  var FUNCS = ["Direzione","Amministrazione","Risorse umane","Legale","Commerciale","Marketing","Operations","IT e dati","Assistenza clienti"];
+  var on = {1:true,4:true,5:true};
+  var keys = $('keys');
+  FUNCS.forEach(function(name,i){
+    var b = document.createElement('button');
+    b.type='button'; b.className='key'; b.id='key-'+i;
+    b.setAttribute('aria-pressed', on[i] ? 'true':'false');
+    b.innerHTML = '<span>'+name+'</span><span class="st" aria-hidden="true"></span>';
+    b.addEventListener('click', function(){ on[i]=!on[i]; b.setAttribute('aria-pressed', on[i]?'true':'false'); renderMap(); });
+    keys.appendChild(b);
+  });
+  function renderMap(){
+    var n = Object.keys(on).filter(function(k){ return on[k]; }).length;
+    $('mapN').textContent = n;
+    var t;
+    if(n===0) t = "Se la risposta è davvero zero siete un caso raro. La mappatura lo verifica in due settimane, interviste comprese.";
+    else if(n===1) t = "Una funzione usa già l'IA. Dal 2 febbraio 2025 anche un solo uso rientra nell'articolo 4: formazione proporzionata al ruolo, documentata.";
+    else if(n<=4) t = n+" funzioni usano già l'IA, con compiti, dati e rischi diversi. Un corso uguale per tutti non copre "+n+" contesti d'uso. L'articolo 4 chiede percorsi per ruolo e un registro che lo dimostri.";
+    else t = n+" funzioni su 9. L'IA è ormai un'infrastruttura della vostra organizzazione, ed è entrata senza una regola. Serve una mappatura, poi formazione per ruolo e una policy che tutti possano applicare.";
+    $('mapText').textContent = t;
+  }
+  renderMap();
+
+  /* Test */
+  var QS = [
+    {q:"Sapete quali strumenti di IA usano oggi le persone nella vostra organizzazione, compresi quelli con account personali?", gap:"Mappa degli strumenti in uso"},
+    {q:"Esiste una regola scritta su quali dati possono entrare in uno strumento di IA e quali no?", gap:"Regola scritta sui dati"},
+    {q:"Il personale ha ricevuto una formazione sull'IA negli ultimi dodici mesi?", gap:"Formazione negli ultimi dodici mesi"},
+    {q:"La formazione è differenziata per ruolo e livello di esperienza, come chiede l'articolo 4?", gap:"Percorsi per ruolo e livello"},
+    {q:"Potete mostrare un registro di chi è stato formato, su che cosa e quando?", gap:"Registro della formazione"},
+    {q:"Chi prende decisioni rilevanti sa quando un risultato dell'IA va verificato e da chi?", gap:"Procedura di verifica umana"},
+    {q:"Avete individuato un responsabile interno per l'uso dell'IA?", gap:"Responsabile dell'uso dell'IA"},
+    {q:"I fornitori di IA che usate sono stati valutati su contratti, dati e conformità?", gap:"Valutazione dei fornitori"}
+  ];
+  var OPTS = [["Sì",2],["In parte",1],["No",0]];
+  var ans = {};
+  var qlist = $('qlist');
+  QS.forEach(function(item,i){
+    var el = document.createElement('div'); el.className='q';
+    el.innerHTML = '<span class="n">'+(i+1)+'</span><p>'+item.q+'</p><div class="seg" role="group" aria-label="Risposta '+(i+1)+'">'+
+      OPTS.map(function(o,j){ return '<button type="button" id="q'+i+'o'+j+'" data-q="'+i+'" data-v="'+o[1]+'" aria-pressed="false">'+o[0]+'</button>'; }).join('')+'</div>';
+    qlist.appendChild(el);
+  });
+  qlist.addEventListener('click', function(e){
+    var b = e.target.closest('button[data-q]'); if(!b) return;
+    var qi=+b.dataset.q, v=+b.dataset.v; ans[qi]=v;
+    b.parentNode.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', x===b?'true':'false'); });
+    renderResult();
+  });
+  var PROFILES = [
+    {min:0,max:5,name:"Uso spontaneo",text:"L'IA è entrata senza una decisione. Le persone la usano, i dati circolano, nessuno può mostrare che cosa è stato fatto. Il rischio è concreto e l'obbligo dell'articolo 4 è scoperto.",reco:"Anno completo, con consulenti nei team dai primi mesi",recoText:"Mappatura subito, consulenti dentro le funzioni dove l'uso è più esteso, sessioni di base per tutti. Le regole arrivano dopo, su una base reale."},
+    {min:6,max:11,name:"Percorso avviato",text:"Avete cominciato: qualche regola, qualche ora di formazione. Mancano la proporzione per ruolo e la documentazione che la dimostri. Ciò che c'è va completato e messo per iscritto.",reco:"Anno con consulenti sulle funzioni scoperte e sessioni per ruolo",recoText:"Si parte da ciò che avete già fatto, i consulenti lavorano dove nessuno ha ancora costruito flussi, le sessioni colmano i vuoti per ruolo. Policy e registro inclusi."},
+    {min:12,max:16,name:"Uso governato",text:"Regole, formazione e responsabilità ci sono. Il passo successivo è far rendere l'IA nei compiti veri e tenere aggiornato ciò che avete costruito.",reco:"Consulenti sui flussi avanzati e sessioni di aggiornamento",recoText:"Consulenti nei reparti sui flussi reali, Claude Code e automazioni collegate ai vostri dati, misura prima e dopo, e sessioni per chi dirige su giudizio e responsabilità."}
+  ];
+  var lastProfile = null;
+  function renderResult(){
+    var keysA = Object.keys(ans), n=keysA.length, s=0;
+    keysA.forEach(function(k){ s+=ans[k]; });
+    $('answered').textContent=n; $('score').textContent=s;
+    $('meter').style.width=(s/16*100)+'%';
+    var gaps=$('gaps'); gaps.innerHTML='';
+    QS.forEach(function(item,i){
+      if(ans[i]===undefined) return;
+      var li=document.createElement('li'); li.className = ans[i]===2?'ok':(ans[i]===1?'part':'');
+      li.textContent=item.gap; gaps.appendChild(li);
+    });
+    if(n===0){ $('profile').textContent='Rispondete alle domande'; $('reco').hidden=true; lastProfile=null; return; }
+    var p = PROFILES.filter(function(x){ return s>=x.min && s<=x.max; })[0];
+    $('profile').textContent = (n===QS.length?'':'Per ora: ')+p.name;
+    $('profileText').textContent=p.text;
+    $('recoTitle').textContent=p.reco; $('recoText').textContent=p.recoText;
+    $('reco').hidden=false;
+    lastProfile={name:p.name,score:s,n:n,gaps:QS.filter(function(it,i){ return ans[i]!==undefined && ans[i]<2; }).map(function(it){ return it.gap; })};
+  }
+
+  /* Contatto */
+  [$('mailLink'),$('mailLink2')].forEach(function(a){ a.textContent=CONTACT_EMAIL; a.href='mailto:'+CONTACT_EMAIL; });
+  if(BOOKING_URL){ document.querySelectorAll('a.btn[href="#contatto"]').forEach(function(a){ a.href=BOOKING_URL; a.target='_blank'; a.rel='noopener'; }); }
+  function buildSummary(){
+    var g=function(id){ return ($(id).value||'').trim(); };
+    var lines=["Richiesta di primo incontro EIPAI","","Nome: "+g('f-name'),"Organizzazione: "+g('f-org'),"Ruolo: "+(g('f-role')||'–'),"Email: "+g('f-email'),"","Che cosa serve:",g('f-msg')||'–'];
+    var funcs=FUNCS.filter(function(f,i){ return on[i]; });
+    lines.push("","Funzioni in cui l'IA è già in uso ("+funcs.length+" su 9): "+(funcs.join(', ')||'nessuna indicata'));
+    if(lastProfile){ lines.push("","Esito del test: "+lastProfile.name+", punteggio "+lastProfile.score+" su 16 con "+lastProfile.n+" risposte"); if(lastProfile.gaps.length) lines.push("Da costruire: "+lastProfile.gaps.join('; ')); }
+    else lines.push("","Test non compilato.");
+    return lines.join('\n');
+  }
+  $('form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var ok=true;
+    ['f-name','f-org','f-email'].forEach(function(id){ var el=$(id); var bad=!el.value.trim()||(el.type==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value)); el.classList.toggle('bad',bad); if(bad) ok=false; });
+    if(!ok){ $('hint').textContent='Compilate nome, organizzazione e un indirizzo email valido.'; return; }
+    var text=buildSummary(); $('summary').textContent=text;
+    var href='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('Primo incontro EIPAI, '+$('f-org').value.trim())+'&body='+encodeURIComponent(text);
+    $('mailtoBtn').href=href; $('done').hidden=false; $('hint').hidden=true; $('submitBtn').textContent='Richiesta preparata';
+    try{ window.location.href=href; }catch(err){}
+  });
+  $('copyBtn').addEventListener('click', function(){
+    var t=$('summary').textContent, b=$('copyBtn');
+    var fallback=function(){ var r=document.createRange(); r.selectNodeContents($('summary')); var sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent='Testo selezionato: copiate con ⌘C'; };
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(function(){ b.textContent='Copiato'; },fallback); } else fallback();
+  });
+})();
+</script>
+</body>
+</html>
