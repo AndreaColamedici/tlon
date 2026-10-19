@@ -4,7 +4,7 @@
 
 Idempotente: ogni inserimento è marcato da una classe e non si ripete.
 - statement: la mappa incisa del pianeta accanto al testo
-- news: incisione della piazza-festival e foto del Teatro Municipale (IlPod)
+- news: Piranesi, Veduta della Piazza della Rotonda (Met, pubblico dominio) e foto del Teatro Municipale (IlPod)
 - tlonletter: natura morta dello scrittoio sopra il ritmo settimanale
 - dimensioni: dieci icone a tratto (tools/icone-dimensioni.py)
 - dove trovarci: una fotografia per ogni libreria
@@ -19,15 +19,15 @@ SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FILE = {'index.html': 'it', 'index-en.html': 'en', 'index-es.html': 'es'}
 
 ALT = {
-    'it': dict(mappa='Mappa incisa di un pianeta immaginario', piazza='Incisione di una piazza italiana durante un festival di filosofia, con due voci sul palco e il pubblico seduto',
+    'it': dict(mappa='Mappa incisa di un pianeta immaginario', piazza='Giovanni Battista Piranesi, Veduta della Piazza della Rotonda, Roma, 1751 circa: la piazza affollata davanti al Pantheon', did_piazza='G. B. Piranesi, Veduta della Piazza della Rotonda, 1751 ca. · The Met, Open Access',
                teatro='Il Teatro Municipale di Piacenza gremito per la cerimonia di IlPod', scrittoio='Una lettera, una penna e tre libri su uno scrittoio, alla luce di una lampada',
                did_mappa='La geografia di Tlon, immaginata', did_teatro='Teatro Municipale di Piacenza, cerimonia di IlPod',
                lib=['La Libreria Teatro Tlon a Roma Ostiense', 'Tlon Aleph, il bookshop della Galleria Nazionale', 'Il bookshop di Villa Medici', 'La Libreria Giovanni alla Querini Stampalia']),
-    'en': dict(mappa='Engraved map of an imaginary planet', piazza='Engraving of an Italian square during a philosophy festival, two voices on stage and the audience seated',
+    'en': dict(mappa='Engraved map of an imaginary planet', piazza='Giovanni Battista Piranesi, View of the Piazza della Rotonda, Rome, c. 1751: the crowded square in front of the Pantheon', did_piazza='G. B. Piranesi, View of the Piazza della Rotonda, c. 1751 · The Met, Open Access',
                teatro='The Teatro Municipale in Piacenza, full for the IlPod ceremony', scrittoio='A letter, a pen and three books on a desk, by lamplight',
                did_mappa='The geography of Tlon, imagined', did_teatro='Teatro Municipale, Piacenza, IlPod ceremony',
                lib=['Teatro Tlon bookstore in Rome, Ostiense', 'Tlon Aleph, the bookshop of the Galleria Nazionale', 'The Villa Medici bookshop', 'Giovanni bookstore at the Querini Stampalia']),
-    'es': dict(mappa='Mapa grabado de un planeta imaginario', piazza='Grabado de una plaza italiana durante un festival de filosofía, dos voces en el escenario y el público sentado',
+    'es': dict(mappa='Mapa grabado de un planeta imaginario', piazza='Giovanni Battista Piranesi, Vista de la Piazza della Rotonda, Roma, c. 1751: la plaza llena de gente frente al Panteón', did_piazza='G. B. Piranesi, Vista de la Piazza della Rotonda, c. 1751 · The Met, Open Access',
                teatro='El Teatro Municipale de Piacenza lleno para la ceremonia de IlPod', scrittoio='Una carta, una pluma y tres libros sobre un escritorio, a la luz de una lámpara',
                did_mappa='La geografía de Tlon, imaginada', did_teatro='Teatro Municipale de Piacenza, ceremonia de IlPod',
                lib=['La Librería Teatro Tlon en Roma Ostiense', 'Tlon Aleph, la librería de la Galleria Nazionale', 'La librería de Villa Medici', 'La Librería Giovanni en la Querini Stampalia']),
@@ -92,9 +92,10 @@ def main():
         s = s[:m.start()] + ('                    <div class="news-gruppo-col">\n'
                              '                        <p class="news-gruppo">%s</p>\n'
                              '                        <figure class="news-figura reveal">\n'
-                             '                            <img src="./assets/images/home/piazza-festival.jpg" width="1536" height="1024" alt="%s" loading="lazy" decoding="async">\n'
+                             '                            <img src="./assets/images/home/piranesi-piazza.jpg" width="1400" height="923" alt="%s" loading="lazy" decoding="async">\n'
+                             '                            <figcaption>%s</figcaption>\n'
                              '                        </figure>\n'
-                             '                    </div>\n' % (m.group(1), A['piazza'])) + m.group(2) + s[m.end():]
+                             '                    </div>\n' % (m.group(1), A['piazza'], A['did_piazza'])) + m.group(2) + s[m.end():]
         m = re.search(r'                    <p class="news-gruppo">((?:(?!<div)[\s\S])*?)</p>\n(\s*<div class="news-preview" id="news-recenti")', s)
         assert m, f + ': news recenti'
         s = s[:m.start()] + ('                    <div class="news-gruppo-col">\n'
