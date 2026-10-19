@@ -1,9 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Sostituisce la vecchia sezione "ecosistema" con la nuova costellazione."""
+"""Applica (o riapplica) la sezione "costellazione" alle tre home.
+
+Sostituisce tre blocchi delimitati da marcatori: il CSS tra
+`/* ============ COSTELLAZIONE ============ */` e `/* ============ STATEMENT ============ */`,
+il markup da `<!-- COSTELLAZIONE -->` alla chiusura della sezione, e lo script
+che comincia con `// Costellazione:` e finisce con `})();` prima dell'ultimo </script>.
+Il testo dei nodi e delle didascalie vive qui sotto, in tre lingue.
+
+Uso:  python3 tools/applica-costellazione.py
+"""
 import re, io, sys, os, html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from costellazione import CSS, JS
+
+SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # (orbita, fase, etichetta per lingua, href per lingua)
 NODI = [
@@ -23,27 +34,32 @@ NODI = [
               {'it': './press.html', 'en': './press-en.html', 'es': './press-en.html'}),
     (0, 0.20, {'it': 'Il Progetto', 'en': 'The Project', 'es': 'El Proyecto'},
               {'it': './il-progetto.html', 'en': './il-progetto-en.html', 'es': './il-progetto-en.html'}),
-    (0, 0.53, {'it': 'Newsletter',  'en': 'Newsletter',  'es': 'Newsletter'},
-              {'it': 'https://www.tlonletter.it', 'en': 'https://www.tlonletter.it', 'es': 'https://www.tlonletter.it'}),
+    (0, 0.53, {'it': 'Tlonletter',  'en': 'Tlonletter',  'es': 'Tlonletter'},
+              {'it': '#tlonletter', 'en': '#tlonletter', 'es': '#tlonletter'}),
     (0, 0.86, {'it': 'Contatti',    'en': 'Contact',     'es': 'Contacto'},
               {'it': './contatti/', 'en': './contatti/en.html', 'es': './contatti/en.html'}),
 ]
 
-DIDASCALIA = {
-    'it': 'Un ecosistema in cui ogni dimensione si intreccia con le altre',
-    'en': 'An ecosystem where every dimension interweaves with the others',
-    'es': 'Un ecosistema donde cada dimensión se entrelaza con las demás',
-}
-ETICHETTA_LISTA = {
-    'it': 'Le dimensioni di Tlon',
-    'en': 'The dimensions of Tlon',
-    'es': 'Las dimensiones de Tlon',
+TESTI = {
+    'it': dict(eyebrow='Il pianeta', hint='Trascina per farlo girare',
+               nome='Tlon', sotto='un pianeta immaginario, che esiste',
+               lista='Le dimensioni di Tlon',
+               did='Un ecosistema in cui ogni dimensione si intreccia con le altre'),
+    'en': dict(eyebrow='The planet', hint='Drag to spin it',
+               nome='Tlon', sotto='an imaginary planet that exists',
+               lista='The dimensions of Tlon',
+               did='An ecosystem where every dimension interweaves with the others'),
+    'es': dict(eyebrow='El planeta', hint='Arrastra para girarlo',
+               nome='Tlon', sotto='un planeta imaginario que existe',
+               lista='Las dimensiones de Tlon',
+               did='Un ecosistema donde cada dimensión se entrelaza con las demás'),
 }
 
 FILE = {'index.html': 'it', 'index-en.html': 'en', 'index-es.html': 'es'}
 
 
 def sezione(lang):
+    T = TESTI[lang]
     voci = []
     for orbita, fase, etichette, href in NODI:
         u = href[lang]
@@ -59,44 +75,45 @@ def sezione(lang):
         '        <!-- COSTELLAZIONE -->\n'
         '        <section class="costellazione" id="ecosistema">\n'
         '            <div class="cost-wrap">\n'
+        '                <div class="cost-intro"><span class="cost-eyebrow">{eyebrow}</span><span class="cost-hint" aria-hidden="true">{hint}</span></div>\n'
         '                <div class="cost-scena" id="costScena">\n'
         '                    <canvas class="cost-canvas" id="costCanvas" aria-hidden="true"></canvas>\n'
-        '                    <div class="cost-nucleo" aria-hidden="true">TLON</div>\n'
+        '                    <div class="cost-nome" id="costNome"><strong>{nome}</strong><em>{sotto}</em></div>\n'
         '                    <ul class="cost-nodi" aria-label="{lista}">' + ''.join(voci) + '</ul>\n'
         '                </div>\n'
         '                <p class="cost-didascalia">{did}</p>\n'
         '            </div>\n'
         '        </section>\n'
-    ).format(lista=html.escape(ETICHETTA_LISTA[lang]), did=html.escape(DIDASCALIA[lang]))
+    ).format(eyebrow=html.escape(T['eyebrow']), hint=html.escape(T['hint']), nome=html.escape(T['nome']),
+             sotto=html.escape(T['sotto']), lista=html.escape(T['lista']), did=html.escape(T['did']))
 
 
 def main():
     for f, lang in FILE.items():
-        s = io.open(f, encoding='utf-8').read()
-        if 'cost-scena' in s:
-            print(f, "gia' applicata"); continue
+        path = os.path.join(SITE, f)
+        s = io.open(path, encoding='utf-8').read()
 
-        # 1. CSS: sostituisco il blocco ECOSISTEMA
-        a = s.index('/* ============ ECOSISTEMA ============ */')
+        # 1. CSS
+        a = s.index('/* ============ COSTELLAZIONE ============ */')
         b = s.index('/* ============ STATEMENT ============ */')
         s = s[:a] + CSS.strip() + '\n\n        ' + s[b:]
+        # vecchia @property rimasta sopra il marcatore
+        s = re.sub(r'\n\s*@property --cost-angolo \{[^}]*\}\n', '\n', s)
+        s = re.sub(r'\n\s*@keyframes costDeriva \{[^}]*\}\n', '\n', s)
 
-        # 2. CSS: elimino le regole .eco-* e i keyframe rimasti altrove
-        s = re.sub(r'\n\s*[^{}\n]*\.eco-[a-z-]*[^{}]*\{[^}]*\}', '', s)
-        s = re.sub(r'\n\s*@keyframes\s+(rotateOrbit|orbitFloat|particleFloat|pulseGlow|nodePulse)\s*\{(?:[^{}]|\{[^}]*\})*\}', '', s)
-
-        # 3. markup
-        m = re.search(r'[ \t]*<!-- ECOSISTEMA -->\n?\s*<section class="ecosistema">.*?</section>\n', s, re.S)
+        # 2. markup
+        m = re.search(r'[ \t]*<!-- COSTELLAZIONE -->\n\s*<section class="costellazione" id="ecosistema">.*?</section>\n', s, re.S)
         if not m:
-            m = re.search(r'[ \t]*<section class="ecosistema">.*?</section>\n', s, re.S)
+            raise SystemExit(f + ': sezione costellazione non trovata')
         s = s[:m.start()] + sezione(lang) + s[m.end():]
 
-        # 4. script, in coda a quello esistente
-        i = s.rfind('</script>')
-        s = s[:i] + JS + '\n    ' + s[i:]
+        # 3. script
+        i = s.index('    // Costellazione:')
+        j = s.index('})();', i) + len('})();')
+        s = s[:i] + JS.strip('\n') + s[j:]
 
-        io.open(f, 'w', encoding='utf-8').write(s)
-        print("%s: costellazione applicata (%d nodi)" % (f, len(NODI)))
+        io.open(path, 'w', encoding='utf-8').write(s)
+        print('%s: costellazione applicata (%d nodi)' % (f, len(NODI)))
 
 
 if __name__ == '__main__':
