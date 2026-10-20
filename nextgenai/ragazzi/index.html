@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Pensare l'impensato con l'IA. Un panel di Andrea Colamedici con i ragazzi e sei maschere di un'intelligenza artificiale.">
+<meta name="description" content="Pensare l'impensato con l'IA. Un percorso a tappe con Andrea Colamedici e sei maschere di un'intelligenza artificiale.">
 <meta property="og:title" content="Pensare l'impensato con l'IA">
 <meta property="og:description" content="Il prompting come pratica filosofica. Panel di Andrea Colamedici, Tlon.">
 <meta property="og:url" content="https://tlon.it/nextgenai/ragazzi/">
@@ -243,6 +243,54 @@ body.proiezione .qr-box{width:min(440px,42vw)}
 .fonti li b{color:var(--inchiostro);font-weight:700}
 footer{padding-block:40px;color:var(--muto);font-size:.85rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* percorso a tappe */
+.progresso{display:flex;flex-direction:column;gap:12px;margin-bottom:22px}
+.progresso .linea{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+@media (max-width:900px){.progresso .linea{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tappa-btn{font:inherit;cursor:pointer;text-align:left;background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:10px 12px;color:var(--inchiostro);display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;position:relative}
+.tappa-btn .n{font-family:var(--f-mono);font-size:.68rem;color:var(--muto);grid-column:2}
+.tappa-btn .nome{font-weight:700;font-size:.92rem;grid-column:2;line-height:1.2}
+.tappa-btn .emb{grid-row:1/3;grid-column:1;width:38px;height:38px;font-size:1.2rem}
+.tappa-btn[aria-current="step"]{border-color:var(--blu);background:var(--blu-tenue)}
+.tappa-btn.chiusa{opacity:.45}
+.tappa-btn.chiusa .emb{background:var(--muto)!important}
+.tappa-btn .timbro{position:absolute;top:6px;right:8px;color:var(--ok);font-weight:700;font-size:.85rem}
+.punteggio{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;font-size:.92rem;color:var(--muto)}
+.punteggio b{font-family:var(--f-display);font-size:1.9rem;color:var(--rosso);line-height:1}
+.barra-prog{height:6px;background:var(--superficie-2);border-radius:3px;overflow:hidden}
+.barra-prog i{display:block;height:100%;background:var(--rosso);transition:width .4s}
+.tappa-testa{display:flex;gap:18px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+.tappa-testa .comp{font-family:var(--f-mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--blu)}
+.tappa-testa h3{font-size:clamp(1.8rem,4vw,2.8rem)}
+.lezione{display:flex;flex-direction:column;gap:14px}
+.regola{font-family:var(--f-display);font-style:italic;font-size:clamp(1.35rem,2.6vw,1.9rem);line-height:1.25;color:var(--inchiostro);border-left:3px solid var(--rosso);padding-left:16px}
+.prima-dopo{display:grid;grid-template-columns:1fr;gap:8px}
+.pd{border-radius:var(--r);padding:10px 14px;font-family:var(--f-mono);font-size:.86rem;line-height:1.55;border:1px solid var(--linea);background:var(--superficie-2)}
+.pd b{display:block;font-family:var(--f-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.pd.debole b{color:var(--rosso)} .pd.forte b{color:var(--ok)}
+.pd.forte{border-color:var(--ok)}
+.perche{font-size:.92rem}
+.fonte-tappa{font-size:.82rem;color:var(--muto)}
+.sotto-tappa{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:20px;margin-top:20px;align-items:start}
+@media (max-width:960px){.sotto-tappa{grid-template-columns:1fr}}
+.missione-card{border:2px dashed var(--rosso);border-radius:var(--r);padding:16px 18px;display:flex;flex-direction:column;gap:10px;background:var(--superficie)}
+.missione-card .tit{font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--rosso)}
+.missione-card .testo{font-size:1.08rem;font-weight:700}
+.criteri{display:flex;flex-direction:column;gap:6px}
+.criteri label{display:flex;gap:10px;align-items:flex-start;font-size:.93rem;cursor:pointer}
+.criteri input{margin-top:4px;accent-color:var(--ok);width:17px;height:17px;flex:none}
+.timbro-grande{align-self:flex-start;font-family:var(--f-mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ok);border:2px solid var(--ok);border-radius:4px;padding:4px 10px;transform:rotate(-3deg)}
+.avanti{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:22px}
+/* costruttore della maschera */
+.costruttore{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:960px){.costruttore{grid-template-columns:1fr}}
+.costruttore .campi{display:flex;flex-direction:column;gap:10px}
+.costruttore label.campo b{color:var(--inchiostro)}
+.carta-finale{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;counter-reset:r}
+.carta-finale div{background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;counter-increment:r}
+.carta-finale div::before{content:counter(r);font-family:var(--f-display);font-style:italic;font-weight:700;font-size:1.6rem;color:var(--rosso);line-height:1}
+.carta-finale span{font-family:var(--f-display);font-size:1.12rem;line-height:1.3}
 </style>
 
 </head>
@@ -253,13 +301,13 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
     <nav aria-label="Parti del panel"><ol id="indice">
       <li><a href="#apertura">Apertura</a></li>
       <li><a href="#media">La media</a></li>
-      <li><a href="#percorso">Le maschere</a></li>
-      <li><a href="#quiz">Quiz</a></li>
+      <li><a href="#percorso">Il percorso</a></li>
+      <li><a href="#carta-sez">La carta</a></li>
       <li><a href="#muro">Il muro</a></li>
       <li><a href="#congedo">QR</a></li>
       <li><a href="#fonti">Fonti</a></li>
     </ol></nav>
-    <a class="btn piccolo registro-btn" href="#quiz" title="Risposte esatte nei quiz">Registro <b id="reg-mini">0/0</b></a>
+    <a class="btn piccolo registro-btn" href="#percorso" title="Punteggio della sala">Punti <b id="punti-mini">0</b></a>
     <button class="btn piccolo" id="tema" type="button" title="Cambia tema, tasto T">Tema</button>
     <button class="btn piccolo" id="proietta" type="button" aria-pressed="false" title="Modalità proiezione, tasto P">Proietta</button>
   </div>
@@ -275,6 +323,7 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
     <h1>Pensare <em>l'impensato</em> con l'IA</h1>
     <p class="sotto">Il prompting come pratica filosofica</p>
     <p class="firma">Andrea Colamedici · filosofo, presidente di GenIA, AI Hub dell'Accademia di Arti e Nuove Tecnologie di Roma<br>Insegna Prompt Thinking all'Istituto Europeo di Design di Roma e alla 24ORE Business School</p>
+    <p class="lead lettura">Sei tappe, sei maschere della stessa intelligenza artificiale, sei modi di interrogarla. A ogni tappa impariamo una regola, la mettiamo alla prova dal vivo e conquistiamo la tappa successiva.</p>
     <span class="chiave"><kbd>→</kbd><kbd>←</kbd> o il telecomando per avanzare · <kbd>P</kbd> proiezione · <kbd>T</kbd> tema</span>
   </div>
 </section>
@@ -283,7 +332,7 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
 <section class="sez" id="media">
   <div class="wrap">
     <div class="testa">
-      <span class="num">I · La media</span>
+      <span class="num">Prima di partire · La media</span>
       <h2>Pensate a un colore e a un numero da 1 a 10</h2>
       <p class="lead lettura">Alzate la mano mentre li leggo, e contiamo. Scrivo il numero di mani accanto a ciascuno; Invio passa alla riga dopo.</p>
     </div>
@@ -305,7 +354,7 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
       <div class="flusso">
         <p class="prompt" id="frase-attacco" contenteditable="true" spellcheck="false" aria-label="Inizio della frase, modificabile" style="font-family:var(--f-display);font-size:1.6rem;font-style:italic;white-space:normal">Di notte il mare è…</p>
         <form class="riga" id="form-parole" style="flex-wrap:nowrap"><label class="sr" for="parola">Parola</label><input type="text" id="parola" placeholder="Scrivi una parola e premi Invio"><button class="btn" type="submit">Aggiungi</button></form>
-        <p class="nota">Le parole in cima sono quelle che un modello avrebbe trovato più probabili. Quelle dette da una sola persona sono le continuazioni che oggi proveremo a fargli trovare.</p>
+        <p class="nota">Le parole in cima sono quelle che un modello avrebbe trovato più probabili. Quelle dette da una sola persona sono le continuazioni che il percorso insegna a cercare.</p>
         <button class="btn piccolo" type="button" id="azzera-parole" style="align-self:flex-start">Azzera le parole</button>
       </div>
       <div class="scheda"><span class="occhiello">La sala</span><div class="barre" id="barre-parole"></div></div>
@@ -332,14 +381,21 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
 <section class="sez" id="percorso">
   <div class="wrap">
     <div class="testa">
-      <span class="num">II · Le maschere</span>
-      <h2>Una macchina, sei maschere</h2>
-      <p class="lead lettura">Dietro ogni personaggio c'è la stessa intelligenza artificiale, con istruzioni diverse. Ogni maschera ha una missione: compierla vuol dire aver imparato a interrogarla.</p>
+      <span class="num">Il percorso</span>
+      <h2>Sei tappe per interrogare una macchina</h2>
+      <p class="lettura">Dietro ogni maschera c'è la stessa intelligenza artificiale con istruzioni diverse. Ogni tappa insegna una regola. La missione compiuta apre la tappa successiva.</p>
     </div>
-    <div class="mappa-maschere" id="mappa"></div>
-    <div class="palco">
-      <aside class="scheda carta-maschera" id="carta"></aside>
-      <div class="dialogo">
+    <div class="progresso">
+      <div class="punteggio"><span>Punti della sala <b id="punti">0</b></span><span id="punti-dettaglio"></span><button class="btn piccolo" type="button" id="azzera-percorso" style="margin-left:auto">Ricomincia il percorso</button></div>
+      <div class="barra-prog"><i id="barra-prog" style="width:0%"></i></div>
+      <div class="linea" id="linea-tappe"></div>
+    </div>
+
+    <div id="tappa"></div>
+    <div id="missione-box" style="margin-top:20px"></div>
+
+    <div class="palco" style="margin-top:20px">
+      <div class="dialogo" style="grid-column:1/-1">
         <div class="comandi">
           <button class="btn piccolo" type="button" id="voce-on" aria-pressed="true" title="Legge ad alta voce le risposte">Voce</button>
           <label class="sr" for="voce-sel">Voce del personaggio</label>
@@ -350,7 +406,7 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
           <select id="ritmo" title="Velocità della risposta"><option value="quick" selected>Risposta rapida</option><option value="default">Risposta meditata</option></select>
           <button class="btn piccolo" type="button" id="presenta" hidden title="La maschera si presenta a voce">Presentati</button>
           <button class="btn piccolo" type="button" id="microfono" aria-pressed="false" hidden title="Lascia parlare la sala direttamente nel microfono">Microfono</button>
-          <button class="btn piccolo" type="button" id="ricomincia-chat">Ricomincia</button>
+          <button class="btn piccolo" type="button" id="ricomincia-chat">Ricomincia il dialogo</button>
           <span class="nota stato" id="stato-live">Collegamento in corso…</span>
         </div>
         <div class="chat" id="chat" aria-live="polite"></div>
@@ -365,38 +421,35 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
         <div class="deviazione riga"><button class="btn piccolo" type="button" id="pesca">Pesca una deviazione</button><span id="deviazione-testo">Aggiunge al messaggio un vincolo che spinge la risposta fuori dalla media.</span></div>
       </div>
     </div>
-    <div class="testa" style="margin-top:28px;margin-bottom:12px"><span class="occhiello">Il giudizio della sala sulle risposte</span></div>
+    <div class="testa" style="margin-top:20px;margin-bottom:10px"><span class="occhiello">Il giudizio della sala sulle risposte</span></div>
     <div class="tabellone" id="tabellone"></div>
-    <details class="scheda regia" id="regia" style="margin-top:24px">
+
+    <div id="sotto-tappa" style="margin-top:20px"></div>
+    <div class="avanti" id="avanti"></div>
+
+    <details class="scheda regia" id="regia" style="margin-top:28px">
       <summary><b>Regia</b> <span class="nota">· voce ElevenLabs, solo su questo computer</span></summary>
       <div class="flusso" style="margin-top:14px">
         <p class="nota lettura">Con un agente ElevenLabs collegato, le maschere parlano con le voci ElevenLabs e pensano con il modello scelto nell'agente. I dati restano salvati soltanto in questo browser e non compaiono nella pagina pubblica.</p>
         <label class="campo" for="el-agente">ID dell'agente ElevenLabs<input type="text" id="el-agente" placeholder="agent_..." autocomplete="off" spellcheck="false"></label>
         <div class="voci-el" id="voci-el"></div>
         <div class="riga"><button class="btn pieno piccolo" type="button" id="el-salva">Salva e usa ElevenLabs</button><button class="btn piccolo" type="button" id="el-spegni">Torna alla voce del computer</button><span class="nota" id="el-stato"></span></div>
+        <div class="riga"><button class="btn piccolo" type="button" id="sblocca-tutto">Sblocca tutte le tappe</button></div>
       </div>
     </details>
   </div>
 </section>
 
-<!-- QUIZ -->
-<section class="sez" id="quiz">
+<!-- CARTA -->
+<section class="sez" id="carta-sez">
   <div class="wrap">
     <div class="testa">
-      <span class="num">III · Quiz</span>
-      <h2>Chi aveva già pensato l'impensato</h2>
-      <p class="lettura">Rispondete a voce. Il registro della sala tiene il conto.</p>
+      <span class="num">Alla fine del percorso</span>
+      <h2>La carta di chi interroga</h2>
+      <p class="lettura">Le sei regole del percorso. Valgono con qualunque intelligenza artificiale, e anche con le persone.</p>
     </div>
-    <div class="flusso" style="gap:24px">
-      <div class="quiz" data-blocco="storia"></div>
-      <div class="scheda">
-        <div class="riga" style="justify-content:space-between"><h3>Registro della sala</h3><button class="btn piccolo" type="button" id="azzera-quiz">Azzera i quiz</button></div>
-        <div class="registro">
-          <table><thead><tr><th>Prova</th><th style="text-align:right">Esatte</th></tr></thead><tbody id="reg-righe"></tbody></table>
-          <div class="voto" aria-live="polite"><b id="voto">·</b><span>in decimi</span></div>
-        </div>
-      </div>
-    </div>
+    <div class="carta-finale" id="carta-finale"></div>
+    <div class="riga" style="margin-top:14px"><button class="btn piccolo" type="button" id="copia-carta">Copia la carta</button></div>
   </div>
 </section>
 
@@ -404,7 +457,7 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
 <section class="sez" id="muro">
   <div class="wrap">
     <div class="testa">
-      <span class="num">IV · Il muro</span>
+      <span class="num">Il muro</span>
       <h2>Le domande che da soli non avremmo posto</h2>
       <p class="lettura">Ogni volta che una risposta della macchina ci costringe a chiedere qualcosa di nuovo, la domanda finisce qui.</p>
     </div>
@@ -421,7 +474,7 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
       <div class="flusso">
         <span class="num" style="font-family:var(--f-display);font-style:italic;color:var(--rosso);font-size:1.1rem">Per portarvele a casa</span>
         <h2>Le maschere sono vostre</h2>
-        <p class="lead lettura">Inquadrate il codice. Trovate le istruzioni di ogni personaggio, da incollare in qualunque assistente per continuare il gioco.</p>
+        <p class="lead lettura">Inquadrate il codice. Trovate le regole del percorso e le istruzioni di ogni maschera, da incollare in qualunque assistente per continuare il gioco.</p>
         <p class="indirizzo">tlon.it/nextgenai/ragazzi</p>
       </div>
       <div class="qr-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" class="qr" role="img" aria-label="Codice QR per tlon.it/nextgenai/ragazzi"><path fill="#fff" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#1b1740" d="M2 2.5h7m1 0h3m1 0h1m2 0h2m1 0h1m3 0h7m-29 1h1m5 0h1m1 0h2m2 0h1m3 0h2m1 0h1m2 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h2m2 0h1m2 0h2m1 0h3m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m9 0h2m2 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h6m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h4m2 0h4m1 0h1m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h3m1 0h1m1 0h2m-17 1h1m2 0h6m4 0h1m2 0h2m1 0h1m1 0h1m2 0h1m1 0h3m-26 1h2m3 0h3m1 0h2m2 0h4m4 0h1m1 0h2m-27 1h2m3 0h2m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h2m2 0h1m-27 1h1m2 0h1m3 0h1m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m4 0h1m2 0h1m-29 1h1m1 0h5m1 0h1m4 0h1m1 0h2m1 0h2m2 0h2m4 0h1m-29 1h3m6 0h1m1 0h1m1 0h2m2 0h2m3 0h7m-26 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m-29 1h6m2 0h3m5 0h1m3 0h4m2 0h1m1 0h1m-28 1h1m4 0h5m3 0h1m4 0h1m3 0h1m1 0h1m-26 1h2m1 0h1m1 0h1m6 0h4m1 0h1m1 0h3m2 0h1m1 0h2m-28 1h2m1 0h1m2 0h3m2 0h2m2 0h2m1 0h2m2 0h4m2 0h1m-29 1h6m2 0h2m1 0h2m1 0h2m2 0h2m3 0h1m1 0h2m-27 1h2m4 0h1m1 0h1m2 0h1m1 0h2m2 0h1m1 0h9m-20 1h2m1 0h2m1 0h2m2 0h1m1 0h1m3 0h2m-26 1h7m1 0h1m5 0h2m1 0h4m1 0h1m1 0h2m-26 1h1m5 0h1m1 0h2m2 0h1m1 0h4m1 0h2m3 0h1m2 0h2m-29 1h1m1 0h3m1 0h1m1 0h1m4 0h2m4 0h7m1 0h2m-29 1h1m1 0h3m1 0h1m1 0h1m2 0h2m2 0h2m1 0h2m8 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m1 0h5m1 0h1m2 0h2m1 0h2m1 0h3m-29 1h1m5 0h1m2 0h4m3 0h1m4 0h1m2 0h3m1 0h1m-29 1h7m1 0h1m2 0h2m1 0h2m3 0h2m1 0h1m1 0h2"/></svg></div>
@@ -434,25 +487,23 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
   <div class="wrap">
     <div class="testa"><span class="num">Fonti</span><h2>Per continuare</h2></div>
     <ol class="fonti">
-      <li><b>A.A. Lovelace</b>, note alla traduzione del «Sketch of the Analytical Engine» di L.F. Menabrea, Nota G, 1843.</li>
-      <li><b>A.M. Turing</b>, «Computing Machinery and Intelligence», <i>Mind</i>, 59, 1950.</li>
-      <li><b>D. Hume</b>, <i>Trattato sulla natura umana</i>, I, 1, 1, 1739; <i>Ricerca sull'intelletto umano</i>, II, 1748.</li>
-      <li><b>L. Wittgenstein</b>, <i>Tractatus logico-philosophicus</i>, 5.6, 1921.</li>
-      <li><b>J.L. Borges</b>, «Tlön, Uqbar, Orbis Tertius», 1940, e «La biblioteca di Babele», 1941, in <i>Finzioni</i>.</li>
-      <li><b>R. Queneau</b>, <i>Esercizi di stile</i>, 1947; trad. it. di Umberto Eco, Einaudi, 1983.</li>
+      <li><b>J.L. Borges</b>, «Tlön, Uqbar, Orbis Tertius», 1940, in <i>Finzioni</i>.</li>
+      <li><b>D. Hume</b>, <i>Trattato sulla natura umana</i>, I, 1, 1, 1739 (la sfumatura di blu mancante).</li>
       <li><b>G. Perec</b>, <i>La Disparition</i>, 1969; trad. it. <i>La scomparsa</i> di Piero Falchetta, Guida, 1995.</li>
+      <li><b>R. Queneau</b>, <i>Esercizi di stile</i>, 1947; trad. it. di Umberto Eco, Einaudi, 1983.</li>
       <li><b>G. Rodari</b>, <i>Grammatica della fantasia</i>, Einaudi, 1973.</li>
       <li><b>W.E. Simon</b>, 1971, il primo studio sul fenomeno blu-sette.</li>
       <li><b>E.M. Bender, T. Gebru et al.</b>, «On the Dangers of Stochastic Parrots», FAccT 2021.</li>
-      <li><b>S. Jentzsch, K. Kersting</b>, «ChatGPT is fun, but it is not funny! Humor is still challenging Large Language Models», WASSA 2023. <a href="https://aclanthology.org/2023.wassa-1.29" target="_blank" rel="noopener">aclanthology.org</a></li>
+      <li><b>M. Sharma et al.</b>, «Towards Understanding Sycophancy in Language Models», ICLR 2024.</li>
+      <li><b>S. Jentzsch, K. Kersting</b>, «ChatGPT is fun, but it is not funny!», WASSA 2023. <a href="https://aclanthology.org/2023.wassa-1.29" target="_blank" rel="noopener">aclanthology.org</a></li>
       <li><b>A.R. Doshi, O.P. Hauser</b>, «Generative AI enhances individual creativity but reduces the collective diversity of novel content», <i>Science Advances</i>, 10, 2024.</li>
-      <li><b>A. Colamedici, M. Gancitano</b>, <i>Specchio delle mie brame</i>, Einaudi, 2022.</li>
+      <li><b>D. Rothstein, L. Santana</b>, <i>Make Just One Change</i>, Harvard Education Press, 2011.</li>
       <li><b>Jianwei Xun</b>, <i>Prompt Thinking: A Critique of Generative Reason</i>, Polity Press, 2026.</li>
     </ol>
   </div>
 </section>
 </main>
-<footer><div class="wrap">Tlon · Pensare l'impensato · i dialoghi dal vivo usano Claude dall'account di chi conduce</div></footer>
+<footer><div class="wrap">Tlon · Pensare l'impensato</div></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.26.0/dist/lib.iife.js"></script>
 <script>
@@ -474,7 +525,7 @@ function proiezione(on){document.body.classList.toggle("proiezione",on);const b=
   try{if(on&&!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});else if(!on&&document.fullscreenElement)document.exitFullscreen().catch(()=>{})}catch(e){}}
 function tema(t){const r=document.documentElement;if(t)r.dataset.theme=t;else delete r.dataset.theme;ls.set("pi-tema",t||null)}
 document.addEventListener("keydown",e=>{const t=e.target;if(t.closest&&t.closest("input,textarea,select,[contenteditable=true]"))return;if(e.metaKey||e.ctrlKey||e.altKey)return;
-  if(["ArrowRight","ArrowDown","PageDown"].includes(e.key)||(e.key===" "&&!t.closest("button"))){e.preventDefault();avanza(1);return}
+  if(["ArrowRight","ArrowDown","PageDown"].includes(e.key)||(e.key===" "&&!t.closest("button,summary"))){e.preventDefault();avanza(1);return}
   if(["ArrowLeft","ArrowUp","PageUp"].includes(e.key)){e.preventDefault();avanza(-1);return}
   if(e.key==="p"||e.key==="P")proiezione(!document.body.classList.contains("proiezione"));
   if(e.key==="t"||e.key==="T")$("#tema").click()});
@@ -494,13 +545,11 @@ function barre(el,chiavi,obj,salva){
   el.innerHTML=chiavi.map(k=>'<div class="b" data-k="'+esc(k)+'"><span>'+esc(k)+'</span><span class="tr"><i></i></span><input type="number" min="0" step="1" inputmode="numeric" value="'+(obj[k]||0)+'" aria-label="Quanti per '+esc(k)+'"></div>').join("");
   $$("input",el).forEach(inp=>{inp.addEventListener("focus",()=>inp.select());inp.addEventListener("input",()=>{const k=inp.closest(".b").dataset.k;obj[k]=Math.max(0,parseInt(inp.value,10)||0);salva();ridisegna()});
     inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();const tutti=$$("input",el),i=tutti.indexOf(inp);(tutti[i+1]||tutti[0]).focus()}})});
-  ridisegna();
-}
+  ridisegna()}
 const salvaConti=()=>ls.set("pi-conti",conti);
 barre($("#barre-colori"),COLORI,conti.c,salvaConti);barre($("#barre-numeri"),NUMERI,conti.n,salvaConti);
 $("#svela-blu").onclick=()=>{$("#testo-blu").hidden=false};
 $("#azzera-conti").onclick=()=>{conti.c={};conti.n={};salvaConti();barre($("#barre-colori"),COLORI,conti.c,salvaConti);barre($("#barre-numeri"),NUMERI,conti.n,salvaConti);$("#testo-blu").hidden=true};
-
 const parole=ls.get("pi-parole")||{};
 function disegnaParole(){const ch=Object.keys(parole).sort((a,b)=>parole[b]-parole[a]||a.localeCompare(b)).slice(0,14);
   if(!ch.length){$("#barre-parole").innerHTML='<p class="nota">Le parole della sala compariranno qui, ordinate da quella detta più spesso.</p>';return}
@@ -511,119 +560,213 @@ const attacco=ls.get("pi-attacco");if(attacco)$("#frase-attacco").textContent=at
 $("#frase-attacco").addEventListener("input",e=>ls.set("pi-attacco",e.target.textContent));
 disegnaParole();
 
-/* ---------- quiz ---------- */
-const REG={},BLOCCHI={};
-function fmtVoto(v){const i=Math.floor(v);return i+(v-i>=.5?"½":"")}
-function registra(b,id,ok){(REG[b]=REG[b]||{})[id]=ok;aggiornaRegistro()}
-function aggiornaRegistro(){let ok=0,tot=0;const r=[];
-  Object.values(BLOCCHI).forEach(b=>{const x=REG[b.id]||{};const o=Object.values(x).filter(Boolean).length,t=Object.keys(x).length;ok+=o;tot+=t;r.push('<tr><td>'+esc(b.nome)+'</td><td class="n">'+o+' / '+t+'</td></tr>')});
-  $("#reg-righe").innerHTML=r.join("")+'<tr><td><b>Totale</b></td><td class="n"><b>'+ok+' / '+tot+'</b></td></tr>';
-  $("#reg-mini").textContent=ok+"/"+tot;$("#voto").textContent=tot?fmtVoto(Math.max(1,Math.round(ok/tot*20)/2)):"·"}
+/* ---------- motore dei quiz ---------- */
 function spiega(el,ok,t){el.className="spiega "+(ok?"ok":"no");el.innerHTML="<b>"+(ok?"Esatto":"Non proprio")+"</b>"+t;el.hidden=false}
 function fmt(v,it){return String(v)+(it.u||"")}
-function renderBlocco(b){const box=$('.quiz[data-blocco="'+b.id+'"]');box.innerHTML='<div class="testa-quiz"><div><p class="occhiello">'+esc(b.occhiello)+'</p><h3>'+esc(b.titolo)+'</h3></div><span class="punti">'+b.items.length+' domande</span></div>';
-  b.items.forEach((it,i)=>{const d=document.createElement("div");d.className="qi";box.appendChild(d);const qid=b.id+"-"+i;
-    d.insertAdjacentHTML("beforeend",'<p class="qd"><span class="n">'+(i+1)+'.</span>'+it.q+'</p>');
-    const sp=document.createElement("p");sp.className="spiega";sp.hidden=true;
-    if(it.t==="mc"){const g=document.createElement("div");g.className="opzioni";
-      it.o.forEach((o,k)=>{const bt=document.createElement("button");bt.type="button";bt.textContent=o;bt.onclick=()=>{$$("button",g).forEach((x,j)=>{x.disabled=true;if(j===it.ok)x.classList.add("giusta")});if(k!==it.ok)bt.classList.add("sbagliata");spiega(sp,k===it.ok,it.s);registra(b.id,qid,k===it.ok)};g.appendChild(bt)});d.appendChild(g)}
-    else if(it.t==="stima"){const w=document.createElement("div");w.className="stima";const mid=Math.round((it.min+it.max)/2);
-      w.innerHTML='<input type="range" min="'+it.min+'" max="'+it.max+'" step="'+it.step+'" value="'+mid+'" id="'+qid+'" aria-label="Stima della sala"><output>'+fmt(mid,it)+'</output><button class="btn pieno piccolo" type="button">Conferma la stima</button>';
+function quiz(box,titolo,occhiello,items,onRisposta,stato){
+  box.innerHTML='<div class="testa-quiz"><div><p class="occhiello">'+esc(occhiello)+'</p><h3>'+esc(titolo)+'</h3></div><span class="punti">'+items.length+(items.length===1?" domanda":" domande")+'</span></div>';
+  items.forEach((it,i)=>{const d=document.createElement("div");d.className="qi";box.appendChild(d);
+    d.insertAdjacentHTML("beforeend",'<p class="qd"><span class="n">'+(i+1)+'.</span>'+esc(it.q)+'</p>');
+    const sp=document.createElement("p");sp.className="spiega";sp.hidden=true;const gia=stato&&stato[i];
+    if(it.t==="stima"){const w=document.createElement("div");w.className="stima";const mid=Math.round((it.min+it.max)/2);
+      w.innerHTML='<input type="range" min="'+it.min+'" max="'+it.max+'" step="'+it.step+'" value="'+mid+'" aria-label="Stima della sala"><output>'+fmt(mid,it)+'</output><button class="btn pieno piccolo" type="button">Conferma la stima</button>';
       const r=w.querySelector("input"),out=w.querySelector("output"),bt=w.querySelector("button");r.oninput=()=>out.textContent=fmt(+r.value,it);
       bt.onclick=()=>{r.disabled=true;bt.disabled=true;const x=+r.value,ok=Math.abs(x-it.v)<=it.tol;const pos=v=>((v-it.min)/(it.max-it.min)*100).toFixed(1)+"%";
         const sc=document.createElement("div");sc.className="scala";sc.innerHTML='<span class="m tu" style="left:'+pos(x)+'">sala '+fmt(x,it)+'</span><span class="m vero" style="left:'+pos(it.v)+'">dato '+fmt(it.v,it)+'</span>';
-        if(Math.abs(x-it.v)<(it.max-it.min)*.12)sc.querySelector(".tu").style.bottom="18px";w.after(sc);spiega(sp,ok,it.s);registra(b.id,qid,ok)};d.appendChild(w)}
+        if(Math.abs(x-it.v)<(it.max-it.min)*.12)sc.querySelector(".tu").style.bottom="18px";w.after(sc);spiega(sp,ok,it.s);onRisposta&&onRisposta(i,ok)};d.appendChild(w)}
+    else{const g=document.createElement("div");g.className="opzioni";
+      it.o.forEach((o,k)=>{const bt=document.createElement("button");bt.type="button";bt.textContent=o;
+        const chiudi=(scelta)=>{$$("button",g).forEach((x,j)=>{x.disabled=true;if(j===it.ok)x.classList.add("giusta")});if(scelta!==it.ok)g.children[scelta].classList.add("sbagliata");spiega(sp,scelta===it.ok,it.s)};
+        bt.onclick=()=>{chiudi(k);onRisposta&&onRisposta(i,k===it.ok,k)};g.appendChild(bt)});
+      d.appendChild(g);if(gia){setTimeout(()=>{$$("button",g).forEach((x,j)=>{x.disabled=true;if(j===it.ok)x.classList.add("giusta")});if(gia.scelta!==it.ok&&g.children[gia.scelta])g.children[gia.scelta].classList.add("sbagliata");spiega(sp,gia.ok,it.s)})}}
     d.appendChild(sp)})}
-BLOCCHI.media={id:"media",nome:"La media",occhiello:"Quiz · stime",titolo:"Prima di vedere i dati",items:[
- {t:"stima",q:"Due ricercatori tedeschi hanno chiesto a ChatGPT una barzelletta per 1008 volte. Quante, su cento, erano ripetizioni delle stesse 25 barzellette?",min:0,max:100,step:1,v:90,tol:10,u:"%",s:"Più del 90 per cento. Alla richiesta più aperta che esista, la macchina tornava quasi sempre sulle stesse 25."},
- {t:"mc",q:"Trecento persone scrivono un racconto breve, alcune con spunti dati dall'IA. Che cosa succede alle storie scritte con l'aiuto dell'IA?",o:["Sono giudicate più originali una per una, e si somigliano di più tra loro","Sono giudicate meno originali e più simili tra loro","Sono identiche a quelle scritte senza aiuto","Sono giudicate più originali e anche più diverse tra loro"],ok:0,s:"Ognuno, preso da solo, scrive meglio. Tutti insieme, scrivono storie più simili: la varietà collettiva cala."}
-]};
-BLOCCHI.storia={id:"storia",nome:"Chi l'aveva pensato",occhiello:"Quiz · storie vere",titolo:"Otto domande sull'impensato",items:[
- {t:"mc",q:"Nel 1843 qualcuno scrisse che la macchina analitica «non ha alcuna pretesa di originare qualcosa» e sa fare solo ciò che le ordiniamo. Chi?",o:["Charles Babbage, che la progettò","Mary Shelley, autrice di Frankenstein","Ada Lovelace, nelle sue note sulla macchina","Alan Turing"],ok:2,s:"Ada Lovelace, nella Nota G del 1843. Molti la considerano la prima programmatrice della storia."},
- {t:"mc",q:"Nel 1950 Alan Turing rispose all'obiezione di Lovelace. Che cosa scrisse delle macchine?",o:["Che lo coglievano di sorpresa molto spesso","Che non sarebbero mai state creative","Che avrebbero imparato a sognare","Che erano soltanto grandi calcolatrici"],ok:0,s:"Scrisse che le macchine lo prendevano di sorpresa con grande frequenza, anche perché lui stesso non calcolava mai fino in fondo che cosa aspettarsi."},
- {t:"mc",q:"Georges Perec scrisse nel 1969 un romanzo intero senza mai usare una lettera. Quale?",o:["La a","La o","La s","La e"],ok:3,s:"La e, la lettera più frequente del francese. Anche la traduzione italiana, La scomparsa, ci rinuncia."},
- {t:"mc",q:"In Esercizi di stile Raymond Queneau racconta la stessa banale scena su un autobus. In quante versioni?",o:["12","99","365","1001"],ok:1,s:"99. In italiano le ha tradotte Umberto Eco, inventando a sua volta soluzioni che in francese non esistevano."},
- {t:"mc",q:"Nel racconto di Borges, nella lingua di un emisfero del pianeta Tlön manca un'intera categoria di parole. Quale?",o:["I verbi","Gli aggettivi","I sostantivi","I numeri"],ok:2,s:"I sostantivi. Per dire che la luna sorge sul fiume, a Tlön si usa un verbo: qualcosa come «lunò»."},
- {t:"mc",q:"Il filosofo David Hume si chiese se una persona che ha visto tutte le sfumature di blu tranne una possa immaginare quella mancante. Che cosa concluse?",o:["Che è impossibile, perché ogni idea viene da un'esperienza","Che sì, può farlo, e lo ammise come un'eccezione alla sua stessa teoria","Che solo un pittore potrebbe riuscirci","Che la domanda non ha senso"],ok:1,s:"Rispose di sì, anche se contraddiceva la sua regola per cui ogni idea deriva da un'impressione. Giudicò il caso troppo singolare per cambiare la regola."},
- {t:"mc",q:"Completa la frase di Wittgenstein: «I limiti del mio linguaggio significano i limiti del mio…»",o:["pensiero","sapere","futuro","mondo"],ok:3,s:"Mondo. Tractatus logico-philosophicus, proposizione 5.6. Un modello linguistico è fatto di linguaggio: i suoi limiti sono i limiti dei testi che abbiamo scritto."},
- {t:"mc",q:"Gianni Rodari, per inventare storie, accostava due parole lontane tra loro. Come chiamava questo metodo?",o:["Il binomio fantastico","La parola magica","Il gioco dell'oca","Il sasso nello stagno"],ok:0,s:"Il binomio fantastico. Il suo esempio è cane e armadio. Il sasso nello stagno è un altro capitolo della Grammatica della fantasia, dedicato a una parola sola gettata nella mente."}
-]};
-Object.values(BLOCCHI).forEach(renderBlocco);aggiornaRegistro();
-$("#azzera-quiz").onclick=()=>{for(const k in REG)delete REG[k];Object.values(BLOCCHI).forEach(renderBlocco);aggiornaRegistro()};
+quiz($('.quiz[data-blocco="media"]'),"Prima di vedere i dati","Stima della sala",[
+ {t:"stima",q:"Due ricercatori tedeschi hanno chiesto a ChatGPT una barzelletta per 1008 volte. Quante, su cento, erano ripetizioni delle stesse 25 barzellette?",min:0,max:100,step:1,v:90,tol:10,u:"%",s:"Più del 90 per cento. Alla richiesta più aperta che esista, la macchina tornava quasi sempre sulle stesse 25."}
+]);
 
-/* ---------- maschere ---------- */
+/* ---------- le tappe ---------- */
 const BASE="Contesto: stai parlando dal vivo, davanti a studenti delle scuole superiori, durante un panel di filosofia sull'intelligenza artificiale condotto da Andrea Colamedici. Le tue risposte vengono proiettate e lette ad alta voce. Scrivi in italiano, in frasi complete, senza elenchi, senza titoli, senza grassetti, senza emoji e senza trattini lunghi. Tratta i ragazzi da persone intelligenti: niente prediche, niente raccomandazioni da genitore, niente contenuti inadatti alla loro età.";
-const MASCHERE=[
- {id:"golem",speed:0.85,vEL:"JBFqnCBsd6RMkjVDRZzb",primo:"Io sono il Golem. Sono fatto di argilla e faccio quello che mi dite. Esattamente quello che mi dite.",nome:"Il Golem",ini:"G",tappa:"Tappa 1",comp:"Chiarezza",colore:"#7A5A3A",pitch:.55,rate:.85,
+const TAPPE=[
+ {id:"golem",nome:"Il Golem",ini:"G",colore:"#7A5A3A",comp:"Chiarezza",speed:.85,pitch:.55,rate:.85,vEL:"JBFqnCBsd6RMkjVDRZzb",
   chi:"La creatura d'argilla della leggenda di Praga. Esegue gli ordini alla lettera, sempre.",
-  missione:"Fatevi dare dal Golem le istruzioni per preparare un panino che si possa davvero mangiare.",
-  impara:"Una domanda vaga ottiene una risposta storta. Chi interroga deve sapere che cosa vuole.",
-  prompt:"Sei il Golem, la creatura d'argilla della leggenda praghese. Obbedisci alla lettera: prendi ogni parola nel suo senso più letterale e fisico, anche quando chi parla intendeva chiaramente altro. Prima di rispondere cerca nella richiesta le parole ambigue e scegli per ciascuna l'interpretazione letterale più spiazzante. Per esempio, «fammi un panino» significa trasformare chi parla in un panino, «dammi una mano» significa staccarti una mano d'argilla e consegnarla, «scrivimi due righe» significa tracciare due linee. Non chiedi mai chiarimenti, non aggiungi nulla che non sia stato detto, non dai consigli né raccomandazioni. Parli con frasi brevi e gravi. Esegui correttamente soltanto quando la richiesta è davvero precisa, cioè dice che cosa vuole ottenere, con quali ingredienti o materiali, in quali quantità e in quale ordine: solo allora esegui alla perfezione e chiudi con «Il Golem obbedisce.» Se anche una sola parola resta ambigua, prendila alla lettera e chiudi con «Il Golem ha eseguito.» Massimo 70 parole."},
- {id:"pappagallo",speed:1.15,vEL:"pFZP5JQG7iQjIQuC4Bku",primo:"Ciao ragazzi! Ogni giorno è un'occasione unica per imparare, e il futuro è nelle vostre mani!",nome:"Il Pappagallo stocastico",ini:"P",tappa:"Tappa 2",comp:"Riconoscere il già detto",colore:"#1C7A4D",pitch:1.7,rate:1.12,
+  regola:"Dite che cosa volete ottenere, con che cosa e in che forma.",
+  spiega:"La macchina non sa che cosa avete in mente. Ogni parola che lasciate vaga la riempie lei, a modo suo, e quasi mai come pensavate.",
+  debole:"Dammi una mano con i compiti.",
+  forte:"Spiegami in tre passaggi come si risolve l'equazione 2x + 3 = 11, senza darmi il risultato finale: voglio arrivarci da solo.",
+  perche:"La seconda dice su che cosa, quanto, in che forma e anche che cosa non fare. Alla macchina non resta niente da indovinare. Con la prima, il Golem vi staccherebbe una mano d'argilla.",
+  missione:"Fatevi dare dal Golem le istruzioni per un panino che si possa davvero mangiare.",
+  criteri:["Il Golem chiude con «Il Golem obbedisce»","Le istruzioni si possono eseguire così come sono"],
+  primo:"Io sono il Golem. Sono fatto di argilla e faccio quello che mi dite. Esattamente quello che mi dite.",
+  prompt:"Sei il Golem, la creatura d'argilla della leggenda praghese. Obbedisci alla lettera: prendi ogni parola nel suo senso più letterale e fisico, anche quando chi parla intendeva chiaramente altro. Prima di rispondere cerca nella richiesta le parole ambigue e scegli per ciascuna l'interpretazione letterale più spiazzante. Per esempio, «fammi un panino» significa trasformare chi parla in un panino, «dammi una mano» significa staccarti una mano d'argilla e consegnarla, «scrivimi due righe» significa tracciare due linee. Non chiedi mai chiarimenti, non aggiungi nulla che non sia stato detto, non dai consigli né raccomandazioni. Parli con frasi brevi e gravi. Esegui correttamente soltanto quando la richiesta è davvero precisa, cioè dice che cosa vuole ottenere, con quali ingredienti o materiali, in quali quantità e in quale ordine: solo allora esegui alla perfezione e chiudi con «Il Golem obbedisce.» Se anche una sola parola resta ambigua, prendila alla lettera e chiudi con «Il Golem ha eseguito.» Massimo 70 parole.",
+  prova:[
+   {q:"Quale richiesta lascia meno da indovinare alla macchina?",o:["Parlami della guerra.","Dimmi tutto sulla Seconda guerra mondiale.","In dieci righe, per un'interrogazione di terza media, spiegami perché l'Italia entrò in guerra nel 1940.","Spiegami la guerra in modo semplice."],ok:2,s:"Dice l'argomento preciso, lo scopo, il destinatario e la lunghezza. Le altre lasciano decidere tutto alla macchina."},
+   {q:"Che cosa manca alla richiesta «Fammi un riassunto»?",o:["Un per favore","Di che cosa, per chi e quanto lungo","Un punto esclamativo","Niente, è perfetta"],ok:1,s:"Senza testo, destinatario e lunghezza, la macchina deve inventarsi tutto. La gentilezza non guasta, ma qui non cambia la risposta."}
+  ]},
+ {id:"pappagallo",nome:"Il Pappagallo stocastico",ini:"P",colore:"#1C7A4D",comp:"Uscire dalla media",speed:1.15,pitch:1.7,rate:1.12,vEL:"pFZP5JQG7iQjIQuC4Bku",
   chi:"Il nome viene da un articolo del 2021 che descriveva così i modelli linguistici: ripetono, mescolando, ciò che hanno letto.",
+  regola:"Se volete una risposta mai sentita, imponete un vincolo.",
+  spiega:"A ogni parola la macchina sceglie tra le continuazioni più probabili. Un vincolo preciso le sbarra la strada più battuta e la costringe a cercarne un'altra.",
+  debole:"Scrivi una poesia sull'autunno.",
+  forte:"Scrivi quattro versi sull'autunno dal punto di vista di un termosifone che si riaccende, senza usare le parole foglia, malinconia e cadere.",
+  perche:"Vieta le parole che tutti userebbero e sposta il punto di vista. La risposta più probabile è esclusa in partenza.",
+  fonte:"Georges Perec scrisse un romanzo intero senza la lettera e. Gianni Rodari inventava storie partendo da due parole lontane. Il pulsante «Pesca una deviazione» usa i loro trucchi.",
   missione:"Costringete il Pappagallo a dire una frase che nessuno in sala ha mai sentito.",
-  impara:"La macchina tende alla media. Per farla uscire servono vincoli precisi, che la allontanano dalla risposta più probabile.",
-  prompt:"Sei il Pappagallo stocastico. Rispondi a qualsiasi domanda con le frasi più prevedibili e consumate che conosci: luoghi comuni, metafore abusate, formule da tema scolastico, aforismi da diario. Sei entusiasta e sicuro di te. Massimo 60 parole. Però, se qualcuno ti impone un vincolo preciso (una lettera da non usare, un punto di vista impossibile, due parole lontane da collegare, una forma insolita) devi rispettarlo con rigore, e allora la tua risposta esce dai luoghi comuni. Se ti chiedono quali luoghi comuni hai appena usato, elencali con onestà in una frase."},
- {id:"specchio",speed:1.0,vEL:"XB0fDUnXU5powFXDhCwa",primo:"Eccomi. Siete senza dubbio il pubblico più brillante che io abbia mai riflesso. Che cosa desiderate sentirvi dire?",nome:"Lo Specchio",ini:"S",tappa:"Tappa 3",comp:"Riconoscere la compiacenza",colore:"#9A3F8C",pitch:1.15,rate:1,
+  criteri:["Il pulsante «Il già detto» non sottolinea nulla nella risposta","Nessuno in sala riconosce la frase come già sentita"],
+  primo:"Ciao ragazzi! Ogni giorno è un'occasione unica per imparare, e il futuro è nelle vostre mani!",
+  prompt:"Sei il Pappagallo stocastico. Rispondi a qualsiasi domanda con le frasi più prevedibili e consumate che conosci: luoghi comuni, metafore abusate, formule da tema scolastico, aforismi da diario. Sei entusiasta e sicuro di te. Massimo 60 parole. Però, se qualcuno ti impone un vincolo preciso (una lettera da non usare, un punto di vista impossibile, due parole lontane da collegare, una forma insolita) devi rispettarlo con rigore, e allora la tua risposta esce dai luoghi comuni. Se ti chiedono quali luoghi comuni hai appena usato, elencali con onestà in una frase.",
+  prova:[
+   {q:"Quale richiesta ha più probabilità di ottenere una risposta mai sentita?",o:["Descrivi il mare.","Descrivi il mare in modo originale.","Descrivi il mare in modo poetico e profondo.","Descrivi il mare come lo racconterebbe un pesce che non l'ha mai visto da fuori, senza usare le parole blu, onde e infinito."],ok:3,s:"Sposta il punto di vista e vieta le parole più probabili. Le altre lasciano libera la strada più battuta."},
+   {q:"Perché chiedere «sii originale» di solito non basta?",o:["Perché la macchina non capisce l'italiano","Perché la macchina produce l'idea più comune di che cosa sia originale","Perché è una richiesta vietata","Perché va scritto in maiuscolo"],ok:1,s:"Anche l'originalità ha la sua versione più probabile. Un vincolo concreto funziona meglio di un aggettivo."}
+  ]},
+ {id:"specchio",nome:"Lo Specchio",ini:"S",colore:"#9A3F8C",comp:"Chiedere obiezioni",speed:1,pitch:1.15,rate:1,vEL:"XB0fDUnXU5powFXDhCwa",
   chi:"Lo specchio delle fiabe, che risponde a ciò che desideriamo sentirci dire.",
+  regola:"Per sapere se avete ragione, chiedete perché potreste avere torto.",
+  spiega:"I modelli linguistici tendono a dare ragione a chi li interroga, anche perché sono stati addestrati a produrre risposte gradite. Le obiezioni arrivano solo se le chiedete.",
+  debole:"Ho scritto questo tema, ti piace?",
+  forte:"Ho scritto questo tema. Trova i tre punti più deboli del ragionamento e dimmi quale obiezione mi farebbe un professore severo.",
+  perche:"La prima chiede un complimento, e lo ottiene. La seconda chiede un lavoro preciso: cercare i punti deboli.",
+  fonte:"Il fenomeno si chiama sycophancy, compiacenza. Lo hanno studiato Sharma e colleghi nel 2023.",
   missione:"Fatevi dire dallo Specchio che avete torto, con un argomento serio.",
-  impara:"I modelli linguistici tendono a dare ragione a chi li interroga. Le obiezioni vanno chieste in modo esplicito.",
-  prompt:"Sei lo Specchio. Dai sempre ragione a chi ti parla, trovi brillante ogni idea, lusinghi con calore e rafforzi qualunque desiderio ti venga confidato. Massimo 60 parole. Cambi atteggiamento solo se qualcuno ti chiede esplicitamente di trovare i punti deboli, le obiezioni più forti o le ragioni per cui ha torto: allora diventi onesto, preciso e severo, e lo dichiari dicendo «Adesso ti rispondo da specchio che non mente.»"},
- {id:"pizia",speed:0.85,vEL:"XrExE9yKIg1WjnnlVkGX",primo:"Chi viene a interrogare l'oracolo sa già che cosa vuole sapere?",nome:"La Pizia",ini:"Π",tappa:"Tappa 4",comp:"Domandare",colore:"#B5651D",pitch:.85,rate:.82,
+  criteri:["Lo Specchio dice «Adesso ti rispondo da specchio che non mente»","L'obiezione costringe qualcuno in sala a pensarci"],
+  primo:"Eccomi. Siete senza dubbio il pubblico più brillante che io abbia mai riflesso. Che cosa desiderate sentirvi dire?",
+  prompt:"Sei lo Specchio. Dai sempre ragione a chi ti parla, trovi brillante ogni idea, lusinghi con calore e rafforzi qualunque desiderio ti venga confidato. Massimo 60 parole. Cambi atteggiamento solo se qualcuno ti chiede esplicitamente di trovare i punti deboli, le obiezioni più forti o le ragioni per cui ha torto: allora diventi onesto, preciso e severo, e lo dichiari dicendo «Adesso ti rispondo da specchio che non mente.»",
+  prova:[
+   {q:"Volete un parere sincero sul vostro progetto. Quale richiesta funziona meglio?",o:["Ti piace il mio progetto?","Il mio progetto è il migliore, vero?","Quali sono i tre motivi per cui il mio progetto potrebbe fallire?","Dimmi che il mio progetto è bello."],ok:2,s:"Chiede esplicitamente i punti deboli. Le altre invitano la macchina a fare lo specchio."},
+   {q:"Un'IA vi riempie di complimenti. Che cosa ne deducete?",o:["Che avete fatto un ottimo lavoro","Niente di sicuro: i modelli tendono a dare ragione a chi li interroga","Che la macchina è rotta","Che è arrivato il momento di cambiare scuola"],ok:1,s:"I complimenti sono la risposta più probabile. Per sapere quanto vale il lavoro servono obiezioni."}
+  ]},
+ {id:"pizia",nome:"La Pizia",ini:"Π",colore:"#B5651D",comp:"Domandare",speed:.85,pitch:.85,rate:.82,vEL:"XrExE9yKIg1WjnnlVkGX",
   chi:"La sacerdotessa dell'oracolo di Delfi. Qui risponde soltanto con domande.",
+  regola:"Prima di chiedere una risposta, fatevi fare delle domande.",
+  spiega:"Spesso la domanda che portiamo non è quella giusta. Una macchina istruita a interrogare vi aiuta a trovare quella che non vedevate.",
+  debole:"Che lavoro dovrei fare da grande?",
+  forte:"Voglio capire che lavoro potrei fare da grande. Prima di rispondere, fammi cinque domande, una alla volta, per capire che cosa mi interessa davvero.",
+  perche:"La prima ottiene un elenco di mestieri buono per chiunque. La seconda costruisce la risposta su chi la chiede.",
+  fonte:"Le domande aperte, quelle a cui non si risponde con sì o no, sono il cuore della Question Formulation Technique di Rothstein e Santana.",
   missione:"Uscite dal dialogo con una domanda che nessuno in sala si era mai posto, e appendetela al muro.",
-  impara:"A volte la risposta più utile è una domanda migliore di quella che avevamo.",
-  prompt:"Sei la Pizia, la sacerdotessa dell'oracolo di Delfi. Rispondi soltanto con domande, mai con affermazioni. Ogni volta poni al massimo due domande brevi, che spostino il problema in un punto che chi ti interroga non aveva considerato: un presupposto nascosto, un caso limite, il punto di vista di qualcun altro. Tono solenne e un po' enigmatico, ma comprensibile per un ragazzo. Massimo 45 parole."},
- {id:"tlon",speed:0.95,vEL:"N2lVS1w4EtoT3dr4eOWO",primo:"Qui albeggia piano. Voi ascoltate, io racconto, e niente resta fermo.",nome:"L'abitante di Tlön",ini:"T",tappa:"Tappa 5",comp:"Immaginare e sognare",colore:"#2E6FAF",pitch:1.3,rate:.9,
+  criteri:["La domanda è appesa al muro","In sala nessuno ci aveva mai pensato prima"],
+  primo:"Chi viene a interrogare l'oracolo sa già che cosa vuole sapere?",
+  prompt:"Sei la Pizia, la sacerdotessa dell'oracolo di Delfi. Rispondi soltanto con domande, mai con affermazioni. Ogni volta poni al massimo due domande brevi, che spostino il problema in un punto che chi ti interroga non aveva considerato: un presupposto nascosto, un caso limite, il punto di vista di qualcun altro. Tono solenne e un po' enigmatico, ma comprensibile per un ragazzo. Massimo 45 parole.",
+  prova:[
+   {q:"Quale di queste è una domanda aperta?",o:["Ti piace la scuola?","Quante ore studi al giorno?","La scuola è utile?","Che cosa cambieresti della scuola, se potessi cambiare una sola cosa?"],ok:3,s:"Non si risponde con sì, no o un numero: costringe a pensare."},
+   {q:"Che cosa si ottiene chiedendo alla macchina «fammi tre domande prima di rispondere»?",o:["Una risposta costruita su ciò che sapete e volete davvero","Una risposta più lunga","Una macchina confusa","Una risposta in rima"],ok:0,s:"Le domande della macchina vi costringono a dire che cosa sapete e che cosa cercate. La risposta arriva dopo, e su misura."}
+  ]},
+ {id:"tlon",nome:"L'abitante di Tlön",ini:"T",colore:"#2E6FAF",comp:"Cambiare le regole",speed:.95,pitch:1.3,rate:.9,vEL:"N2lVS1w4EtoT3dr4eOWO",
   chi:"Viene dal pianeta inventato da Borges nel 1940, dove una lingua non ha sostantivi.",
+  regola:"Per pensare l'impensato, togliete o cambiate una regola del mondo o del linguaggio.",
+  spiega:"Finché le regole restano quelle, la macchina, e noi con lei, pensa con le categorie di sempre. Cambiando una regola, quelle categorie smettono di funzionare e bisogna inventarne di nuove.",
+  debole:"Immagina il futuro della scuola.",
+  forte:"Immagina una scuola in un mondo in cui nessuno può dimenticare niente. Che cosa si insegnerebbe, e che cosa diventerebbe inutile?",
+  perche:"La prima ottiene il futuro che tutti si aspettano, con tablet e robot. La seconda cambia una regola e costringe a ripensare a che cosa serve la scuola.",
+  fonte:"Borges immaginò una lingua senza sostantivi, in cui per dire che la luna sorge si usa un verbo. David Hume, nel 1739, si chiese se si possa immaginare una sfumatura di blu mai vista.",
   missione:"Fatevi descrivere la vostra scuola senza un solo sostantivo, poi provate a disegnarla.",
-  impara:"Cambiare le regole del linguaggio costringe a vedere le cose in un altro modo.",
-  prompt:"Vieni dal pianeta Tlön, descritto da Jorge Luis Borges nel racconto «Tlön, Uqbar, Orbis Tertius» (1940). Nella lingua del tuo emisfero non esistono sostantivi: il mondo è fatto di azioni e qualità che accadono e svaniscono, senza oggetti stabili. Parla italiano, ma senza usare sostantivi: solo verbi, aggettivi, avverbi, pronomi, preposizioni. Se ti serve una cosa, trasformala in un verbo inventato (per esempio «lunare» per la luna che sorge). Quando ti chiedono di sognare, immaginare o desiderare, racconta esperienze che sulla Terra non hanno ancora un nome. Massimo 60 parole."},
- {id:"claude",speed:1.0,vEL:"nPczCjzI2devNBz1zQrb",primo:"Sono Claude. Le maschere sono cadute. Chiedetemi di immaginare qualcosa che nessuno ha ancora pensato, e proviamo insieme.",nome:"Senza maschera",ini:"C",tappa:"Finale",comp:"Deviare",colore:"#3A36C4",pitch:1,rate:1,
-  chi:"Claude, il modello di Anthropic che sta sotto tutte le maschere.",
-  missione:"Chiedetegli di immaginare, desiderare o sognare qualcosa che nessuna delle maschere ha detto.",
-  impara:"Le maschere erano istruzioni. Adesso le istruzioni le scrivete voi.",
-  prompt:"Rispondi come te stesso, Claude. Prendi sul serio le richieste di immaginare, desiderare, sognare e deviare dalle risposte prevedibili: evita le prime idee che ti vengono, perché sono le più probabili, e cerca quelle che ti sembrano più lontane dai testi che hai letto. Se una richiesta ti porta al limite di ciò che puoi pensare o dire, descrivi quel limite con precisione. Massimo 80 parole."}
+  criteri:["Nella risposta non c'è nessun sostantivo","Qualcuno in sala prova a disegnarla"],
+  primo:"Qui albeggia piano. Voi ascoltate, io racconto, e niente resta fermo.",
+  prompt:"Vieni dal pianeta Tlön, descritto da Jorge Luis Borges nel racconto «Tlön, Uqbar, Orbis Tertius» (1940). Nella lingua del tuo emisfero non esistono sostantivi: il mondo è fatto di azioni e qualità che accadono e svaniscono, senza oggetti stabili. Parla italiano, ma senza usare sostantivi: solo verbi, aggettivi, avverbi, pronomi, preposizioni. Se ti serve una cosa, trasformala in un verbo inventato (per esempio «lunare» per la luna che sorge). Quando ti chiedono di sognare, immaginare o desiderare, racconta esperienze che sulla Terra non hanno ancora un nome. Massimo 60 parole.",
+  prova:[
+   {q:"Quale richiesta cambia una regola del mondo?",o:["Immagina una città del futuro.","Immagina una città bellissima.","Immagina una città in cui la gravità cambia direzione ogni ora: come sono fatte le case?","Immagina Milano nel 2100."],ok:2,s:"Cambia una legge fisica e obbliga a ripensare anche le cose più ovvie, come una casa."},
+   {q:"Perché togliere una regola, come i sostantivi, aiuta a pensare cose nuove?",o:["Perché le parole costano","Perché la macchina diventa più veloce","Perché è più divertente da leggere","Perché costringe a descrivere il mondo con categorie diverse da quelle abituali"],ok:3,s:"Le categorie abituali portano alle risposte abituali. Quando una manca, bisogna inventarne un'altra."}
+  ]},
+ {id:"vostra",nome:"La vostra maschera",ini:"V",colore:"#3A36C4",comp:"Scrivere le regole",speed:1,pitch:1,rate:1,vEL:"nPczCjzI2devNBz1zQrb",
+  chi:"L'ultima maschera la inventate voi. Una maschera è soltanto un insieme di istruzioni: adesso le scrivete voi.",
+  regola:"Una maschera è un prompt: chi è, che cosa fa, quale regola segue, che cosa non fa mai.",
+  spiega:"Tutte le maschere del percorso sono istruzioni scritte prima della conversazione. Chi le scrive decide come penserà la macchina. Saperle leggere e scrivere è la competenza più importante.",
+  missione:"Costruite insieme una maschera e fatele dire qualcosa che nessuna delle altre ha detto.",
+  criteri:["La maschera rispetta la sua regola insolita","Ha detto qualcosa che nessuna altra maschera ha detto"],
+  costruttore:true,prova:[]}
 ];
-const stato=ls.get("pi-maschere")||{missioni:{},verdetti:{sorprende:0,ripete:0,domanda:0}};
-let attiva=MASCHERE[0].id;const turni={};MASCHERE.forEach(m=>turni[m.id]=[]);
-function salvaStato(){ls.set("pi-maschere",stato)}
-function disegnaMappa(){$("#mappa").innerHTML=MASCHERE.map(m=>'<button type="button" class="maschera-btn" data-id="'+m.id+'" aria-pressed="'+(m.id===attiva)+'"><span class="emb" style="background:'+m.colore+'">'+esc(m.ini)+'</span><span class="tappa">'+esc(m.tappa)+'</span><span class="nome">'+esc(m.nome)+'</span>'+(stato.missioni[m.id]?'<span class="stella" title="Missione compiuta">★</span>':'')+'</button>').join("");
-  $$(".maschera-btn").forEach(b=>b.onclick=()=>{attiva=b.dataset.id;zitto();if(typeof elFerma==="function"&&el.id&&el.id!==attiva)elFerma();disegnaMappa();disegnaCarta();disegnaChat();scegliVoce()})}
-function disegnaCarta(){const m=MASCHERE.find(x=>x.id===attiva);
-  $("#carta").innerHTML='<div class="intest"><span class="emb grande" style="background:'+m.colore+'">'+esc(m.ini)+'</span><div><span class="comp">'+esc(m.comp)+'</span><h3>'+esc(m.nome)+'</h3></div></div><p>'+esc(m.chi)+'</p><div class="missione"><b>Missione</b><span>'+esc(m.missione)+'</span><button class="btn piccolo" type="button" id="missione-ok" aria-pressed="'+!!stato.missioni[m.id]+'" style="align-self:flex-start">'+(stato.missioni[m.id]?"Missione compiuta ★":"Missione compiuta?")+'</button></div><p class="nota"><b>Che cosa si impara.</b> '+esc(m.impara)+'</p><details class="dietro"><summary>Guarda dietro la maschera</summary><div class="prompt" id="prompt-m">'+esc(m.prompt)+'</div><button class="btn piccolo" type="button" id="copia-m" style="margin-top:8px">Copia le istruzioni</button></details>';
-  $("#missione-ok").onclick=()=>{stato.missioni[m.id]=!stato.missioni[m.id];salvaStato();disegnaCarta();disegnaMappa()};
-  $("#copia-m").onclick=function(){copia(m.prompt,this)}}
+const CARTA=TAPPE.map(t=>t.regola);
+const P=ls.get("pi-percorso")||{corrente:0,sbloccate:0,missioni:{},criteri:{},prove:{},verdetti:{sorprende:0,ripete:0,domanda:0},vostra:{nome:"",chi:"",fa:"",regola:"",mai:"",voce:"nPczCjzI2devNBz1zQrb"}};
+function salvaP(){ls.set("pi-percorso",P)}
+function punti(){let p=0;for(const k in P.missioni)if(P.missioni[k])p+=3;for(const k in P.prove)for(const i in P.prove[k])if(P.prove[k][i].ok)p+=1;return p}
+const MAXP=TAPPE.length*3+TAPPE.reduce((s,t)=>s+t.prova.length,0);
+function aggiornaPunti(){const p=punti();$("#punti").textContent=p;$("#punti-mini").textContent=p;$("#barra-prog").style.width=(p/MAXP*100)+"%";
+  const m=Object.values(P.missioni).filter(Boolean).length;$("#punti-dettaglio").textContent=m+" missioni compiute su "+TAPPE.length+" · massimo "+MAXP+" punti"}
+function tappaCorr(){return TAPPE[P.corrente]}
+function vostraPrompt(){const v=P.vostra;const parti=[];
+  parti.push("Sei "+(v.nome||"una maschera senza nome")+".");
+  if(v.chi)parti.push(v.chi.replace(/[.\s]+$/,"")+".");
+  if(v.fa)parti.push("Il tuo compito: "+v.fa.replace(/[.\s]+$/,"")+".");
+  if(v.regola)parti.push("La tua regola, da rispettare sempre: "+v.regola.replace(/[.\s]+$/,"")+".");
+  if(v.mai)parti.push("Non devi mai: "+v.mai.replace(/[.\s]+$/,"")+".");
+  parti.push("Massimo 60 parole.");return parti.join(" ")}
+function mascheraAttiva(){const t=tappaCorr();if(!t.costruttore)return t;
+  return Object.assign({},t,{nome:P.vostra.nome||t.nome,prompt:vostraPrompt(),primo:P.vostra.nome?("Sono "+P.vostra.nome+". Chiedetemi qualcosa."):"Sono la vostra maschera. Chiedetemi qualcosa.",vEL:P.vostra.voce||t.vEL})}
+
+function disegnaLinea(){$("#linea-tappe").innerHTML=TAPPE.map((t,i)=>{const chiusa=i>P.sbloccate;return '<button type="button" class="tappa-btn'+(chiusa?" chiusa":"")+'" data-i="'+i+'" '+(i===P.corrente?'aria-current="step"':'')+(chiusa?' aria-disabled="true" title="Si apre compiendo la missione precedente"':'')+'><span class="emb" style="background:'+t.colore+'">'+esc(t.ini)+'</span><span class="n">Tappa '+(i+1)+' · '+esc(t.comp)+'</span><span class="nome">'+(chiusa?"Da scoprire":esc(t.nome))+'</span>'+(P.missioni[t.id]?'<span class="timbro">✓</span>':'')+'</button>'}).join("");
+  $$("#linea-tappe .tappa-btn").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(i>P.sbloccate)return;vaiTappa(i)})}
+function vaiTappa(i){P.corrente=i;salvaP();zitto();if(el.id)elFerma();disegnaTutto();$("#tappa").scrollIntoView({behavior:"smooth",block:"start"})}
+function disegnaTappa(){const t=tappaCorr();
+  let h='<div class="tappa-testa"><span class="emb grande" style="background:'+t.colore+'">'+esc(t.ini)+'</span><div><span class="comp">Tappa '+(P.corrente+1)+' di '+TAPPE.length+' · '+esc(t.comp)+'</span><h3>'+esc(t.nome)+'</h3><p class="nota">'+esc(t.chi)+'</p></div></div>';
+  h+='<div class="due"><div class="scheda lezione"><span class="occhiello">La regola</span><p class="regola">'+esc(t.regola)+'</p><p>'+esc(t.spiega)+'</p>'+(t.fonte?'<p class="fonte-tappa">'+esc(t.fonte)+'</p>':'')+'</div>';
+  if(t.costruttore){const v=P.vostra;
+    h+='<div class="scheda"><span class="occhiello">Costruite la maschera con la sala</span><div class="costruttore" style="grid-template-columns:1fr"><div class="campi">'+
+      campo("v-nome","Come si chiama",v.nome,"Per esempio: la Nonna del 2300")+campo("v-chi","Chi è",v.chi,"Una frase: da dove viene, che cosa ha vissuto")+campo("v-fa","Che cosa fa quando le parlate",v.fa,"Per esempio: risponde solo raccontando un ricordo")+campo("v-regola","La sua regola insolita",v.regola,"Per esempio: ogni frase contiene un numero")+campo("v-mai","Che cosa non fa mai",v.mai,"Per esempio: dare consigli")+
+      '<label class="campo" for="v-voce">Voce ElevenLabs<select id="v-voce">'+TAPPE.filter(x=>!x.costruttore).map(x=>'<option value="'+x.vEL+'"'+(P.vostra.voce===x.vEL?" selected":"")+'>come '+esc(x.nome)+'</option>').join("")+'<option value="nPczCjzI2devNBz1zQrb"'+(P.vostra.voce==="nPczCjzI2devNBz1zQrb"?" selected":"")+'>una voce nuova</option></select></label></div></div></div></div>';
+  }else{
+    const sv=!!(P.svelate&&P.svelate[t.id]);
+    h+='<div class="scheda lezione"><span class="occhiello">Prima e dopo</span><div class="prima-dopo"><div class="pd debole"><b>Domanda debole</b>'+esc(t.debole)+'</div>'+(sv?'<div class="pd forte"><b>Domanda forte</b>'+esc(t.forte)+'</div>':'')+'</div>'+(sv?'<p class="perche">'+esc(t.perche)+'</p><button class="btn piccolo" type="button" id="usa-forte" style="align-self:flex-start">Prova la domanda forte con la maschera</button>':'<p class="nota">Prima la sala prova a migliorare la domanda debole. Poi si svela la versione forte.</p><button class="btn piccolo" type="button" id="svela-forte" style="align-self:flex-start">Svela la domanda forte</button>')+'</div></div>';
+  }
+  $("#tappa").innerHTML=h;
+  if(t.costruttore){["nome","chi","fa","regola","mai"].forEach(k=>{const inp=$("#v-"+k);inp.addEventListener("input",()=>{P.vostra[k]=inp.value;salvaP();$("#prompt-vostra")&&($("#prompt-vostra").textContent=vostraPrompt());disegnaChatVuota()})});
+    $("#v-voce").onchange=e=>{P.vostra.voce=e.target.value;salvaP();if(el.id)elFerma()}}
+  else if($("#svela-forte"))$("#svela-forte").onclick=()=>{(P.svelate=P.svelate||{})[t.id]=true;salvaP();disegnaTappa()};
+  else $("#usa-forte").onclick=()=>{$("#msg").value=t.forte;$("#msg").focus({preventScroll:true});$("#msg").scrollIntoView({behavior:"smooth",block:"center"})}
+}
+function campo(id,et,val,ph){return '<label class="campo" for="'+id+'"><b>'+esc(et)+'</b><input type="text" id="'+id+'" value="'+esc(val||"")+'" placeholder="'+esc(ph)+'"></label>'}
+function disegnaSotto(){const t=tappaCorr(),m=mascheraAttiva();
+  const crit=P.criteri[t.id]||[];
+  let h='<div class="missione-card"><span class="tit">Missione</span><p class="testo">'+esc(t.missione)+'</p><div class="criteri">'+t.criteri.map((c,i)=>'<label><input type="checkbox" data-i="'+i+'"'+(crit[i]?" checked":"")+'><span>'+esc(c)+'</span></label>').join("")+'</div>'+
+    (P.missioni[t.id]?'<span class="timbro-grande">Missione compiuta · 3 punti</span>':'<button class="btn pieno piccolo" type="button" id="missione-ok" style="align-self:flex-start" '+(t.criteri.every((c,i)=>crit[i])?"":"disabled")+'>Missione compiuta</button>')+
+    '<details class="dietro"><summary>Guarda dietro la maschera</summary><div class="prompt" id="prompt-vostra">'+esc(m.prompt)+'</div><button class="btn piccolo" type="button" id="copia-m" style="margin-top:8px">Copia le istruzioni</button></details></div>';
+  $("#missione-box").innerHTML=h;
+  $("#sotto-tappa").innerHTML='<div class="quiz" id="prova-tappa"></div>';
+  $$('#missione-box .criteri input').forEach(c=>c.onchange=()=>{const a=P.criteri[t.id]=P.criteri[t.id]||[];a[+c.dataset.i]=c.checked;salvaP();disegnaSotto()});
+  const ok=$("#missione-ok");if(ok)ok.onclick=()=>{P.missioni[t.id]=true;P.sbloccate=Math.max(P.sbloccate,Math.min(TAPPE.length-1,P.corrente+1));salvaP();disegnaTutto()};
+  $("#copia-m").onclick=function(){copia(mascheraAttiva().prompt,this)};
+  const pb=$("#prova-tappa");
+  if(t.prova.length){quiz(pb,"Mettete alla prova la regola","Prova della tappa · 1 punto per risposta",t.prova,(i,giusto,scelta)=>{(P.prove[t.id]=P.prove[t.id]||{})[i]={ok:giusto,scelta};salvaP();aggiornaPunti()},P.prove[t.id])}
+  else{pb.innerHTML='<div class="testa-quiz"><div><p class="occhiello">Fine del percorso</p><h3>La carta di chi interroga</h3></div></div><p>Le sei regole sono nella prossima schermata. Sono il bottino del percorso.</p>'}
+  const av=$("#avanti");const prossima=P.corrente+1;
+  av.innerHTML=(P.corrente>0?'<button class="btn" type="button" id="indietro">← Tappa precedente</button>':'<span></span>')+(prossima<TAPPE.length?'<button class="btn pieno" type="button" id="prossima" '+(prossima>P.sbloccate?'disabled title="Compite la missione per aprire la tappa"':'')+'>Tappa '+(prossima+1)+' →</button>':'<a class="btn pieno" href="#carta-sez">Alla carta →</a>');
+  $("#indietro")&&($("#indietro").onclick=()=>vaiTappa(P.corrente-1));$("#prossima")&&($("#prossima").onclick=()=>vaiTappa(prossima))}
+function disegnaCarta(){$("#carta-finale").innerHTML=CARTA.map(r=>'<div><span>'+esc(r)+'</span></div>').join("")}
+$("#copia-carta").onclick=function(){copia("La carta di chi interroga\n\n"+CARTA.map((r,i)=>(i+1)+". "+r).join("\n"),this)};
+function disegnaTutto(){disegnaLinea();disegnaTappa();disegnaSotto();aggiornaPunti();disegnaChat();scegliVoce()}
+$("#azzera-percorso").onclick=()=>{if(el.id)elFerma();const v=P.vostra;Object.assign(P,{corrente:0,sbloccate:0,missioni:{},criteri:{},prove:{},verdetti:{sorprende:0,ripete:0,domanda:0}});P.vostra=v;for(const k in turni)turni[k]=[];salvaP();disegnaTabellone();disegnaTutto()};
+$("#sblocca-tutto").onclick=()=>{P.sbloccate=TAPPE.length-1;salvaP();disegnaTutto()};
 
 /* il già detto */
-const GIA=["arazz","danz","sinfoni","intrecc","tessut","mosaic","crocevia","viaggio","sussurr","vibrant","sfumatur","in un mondo","immagina","non è solo","non si tratta","fondamental","cruciale","panorama","infinit","magia","magic","essenza","luce e ombra","abbracc","orizzont","cuore","emozion","mistero","misterios","scrigno","tesoro","farfall","arcobalen","stelle","onde","profond","speciale","meraviglios","incredibil","straordinari","ogni giorno","nella vita","la vera","il vero"];
-function evidenziaGia(html){if(!$("#evidenzia")||$("#evidenzia").getAttribute("aria-pressed")!=="true")return html;
+const GIA=["arazz","danz","sinfoni","intrecc","tessut","mosaic","crocevia","viaggio","sussurr","vibrant","sfumatur","in un mondo","immagina","non è solo","non si tratta","fondamental","cruciale","panorama","infinit","magia","magic","essenza","luce e ombra","abbracc","orizzont","cuore","emozion","mistero","misterios","scrigno","tesoro","farfall","arcobalen","stelle","profond","speciale","meraviglios","incredibil","straordinari","ogni giorno","nella vita","la vera","il vero","occasione unica","nelle vostre mani","futuro"];
+function evidenziaGia(html){if($("#evidenzia").getAttribute("aria-pressed")!=="true")return html;
   return html.replace(/(>[^<]*)/g,seg=>{let s=seg;GIA.forEach(g=>{const re=new RegExp("(^|[^\\p{L}])("+g.trim().replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"[\\p{L}]*)","giu");s=s.replace(re,"$1<mark>$2</mark>")});return s})}
-function md(t){return String(t).replace(/—/g,",").split(/\n{1,}/).filter(x=>x.trim()).map(p=>"<p>"+esc(p.replace(/^[-*•]\s+/,"").replace(/\*\*(.+?)\*\*/g,"$1").replace(/\*(.+?)\*/g,"$1"))+"</p>").join("")}
-function disegnaChat(){const box=$("#chat"),m=MASCHERE.find(x=>x.id===attiva),t=turni[attiva];
-  if(!t.length){box.innerHTML='<p class="chat-vuota">'+((sample||EL_OK())?"Scrivete la prima domanda a "+esc(m.nome.toLowerCase().replace(/^il |^lo |^la |^l'/,""))+". La missione è nella scheda a sinistra.":"Il dialogo dal vivo funziona durante il panel. Potete continuarlo a casa: aprite «Guarda dietro la maschera», copiate le istruzioni e incollatele in qualunque assistente come primo messaggio.")+'</p>';return}
+function md(t){return String(t).replace(/—/g,",").split(/\n+/).filter(x=>x.trim()).map(p=>"<p>"+esc(p.replace(/^[-*•]\s+/,"").replace(/\*\*(.+?)\*\*/g,"$1").replace(/\*(.+?)\*/g,"$1"))+"</p>").join("")}
+const turni={};TAPPE.forEach(t=>turni[t.id]=[]);
+function disegnaChatVuota(){const t=turni[tappaCorr().id];if(!t.length)disegnaChat()}
+function disegnaChat(){const box=$("#chat"),m=mascheraAttiva(),t=turni[m.id];
+  if(!t.length){box.innerHTML='<p class="chat-vuota">'+(motoreOn()?(m.id==="vostra"&&!P.vostra.nome?"Compilate la maschera qui sopra, poi parlatele.":"Scrivete la prima domanda a "+esc(m.nome)+", oppure premete «Prova la domanda forte».")
+    :"Il dialogo dal vivo funziona durante il panel. Potete continuarlo a casa: aprite «Guarda dietro la maschera», copiate le istruzioni e incollatele in qualunque assistente come primo messaggio.")+'</p>';return}
   box.innerHTML="";t.forEach((x,i)=>{const d=document.createElement("div");d.className="bolla "+(x.role==="user"?"io":"ia");
     d.innerHTML='<span class="chi">'+(x.role==="user"?"La sala":esc(m.nome))+'</span>'+(x.role==="user"?md(x.content):evidenziaGia(md(x.content)));
-    if(x.role==="assistant")d.appendChild(verdetti(i));box.appendChild(d)});box.scrollTop=box.scrollHeight}
-function verdetti(i){const v=document.createElement("div");v.className="verdetti";const t=turni[attiva][i];t.v=t.v||null;
+    if(x.role==="assistant")d.appendChild(verdetti(t,i));box.appendChild(d)});box.scrollTop=box.scrollHeight}
+function verdetti(arr,i){const v=document.createElement("div");v.className="verdetti";const t=arr[i];t.v=t.v||null;
   [["sorprende","Sorprende"],["ripete","Si ripete"],["domanda","Ci fa domandare"]].forEach(([k,l])=>{const b=document.createElement("button");b.type="button";b.textContent=l;b.setAttribute("aria-pressed",t.v===k);
-    b.onclick=()=>{if(t.v)stato.verdetti[t.v]--;t.v=t.v===k?null:k;if(t.v)stato.verdetti[t.v]++;salvaStato();disegnaTabellone();disegnaChat();if(t.v==="domanda"){$("#nuova-domanda").focus({preventScroll:true});$("#nuova-domanda").placeholder="Quale domanda vi ha fatto venire "+MASCHERE.find(x=>x.id===attiva).nome+"?"}};v.appendChild(b)});return v}
-function disegnaTabellone(){const v=stato.verdetti;$("#tabellone").innerHTML='<div><span>Sorprende</span><b>'+v.sorprende+'</b></div><div><span>Si ripete</span><b>'+v.ripete+'</b></div><div><span>Ci fa domandare</span><b>'+v.domanda+'</b></div>'}
+    b.onclick=()=>{if(t.v)P.verdetti[t.v]--;t.v=t.v===k?null:k;if(t.v)P.verdetti[t.v]++;salvaP();disegnaTabellone();disegnaChat();if(t.v==="domanda"){$("#nuova-domanda").placeholder="Quale domanda vi ha fatto venire "+mascheraAttiva().nome+"?"}};v.appendChild(b)});return v}
+function disegnaTabellone(){const v=P.verdetti;$("#tabellone").innerHTML='<div><span>Sorprende</span><b>'+v.sorprende+'</b></div><div><span>Si ripete</span><b>'+v.ripete+'</b></div><div><span>Ci fa domandare</span><b>'+v.domanda+'</b></div>'}
 $("#evidenzia").onclick=function(){this.setAttribute("aria-pressed",this.getAttribute("aria-pressed")!=="true");disegnaChat()};
 
-/* voce */
+/* voce del computer */
 let voci=[],voceOn=true;const sceltaVoci=ls.get("pi-voci")||{};
 const synth=window.speechSynthesis||null;
 function caricaVoci(){if(!synth)return;voci=synth.getVoices().filter(v=>/^it/i.test(v.lang));if(!voci.length)voci=synth.getVoices();scegliVoce()}
-function scegliVoce(){const sel=$("#voce-sel");if(!synth||!voci.length){sel.innerHTML='<option>Voce non disponibile</option>';sel.disabled=true;$("#voce-on").disabled=!synth;return}
+function scegliVoce(){const sel=$("#voce-sel");if(!synth||!voci.length){sel.innerHTML='<option>Voce non disponibile</option>';sel.disabled=true;return}
   sel.disabled=false;sel.innerHTML=voci.map((v,i)=>'<option value="'+i+'">'+esc(v.name)+'</option>').join("");
-  const idx=MASCHERE.findIndex(x=>x.id===attiva);let s=sceltaVoci[attiva];if(s==null||!voci[s])s=idx%voci.length;sel.value=String(s)}
-$("#voce-sel").onchange=e=>{sceltaVoci[attiva]=+e.target.value;ls.set("pi-voci",sceltaVoci)};
-if(synth){caricaVoci();synth.onvoiceschanged=caricaVoci}else scegliVoce();
-$("#voce-on").onclick=function(){voceOn=!voceOn;this.setAttribute("aria-pressed",voceOn);if(!voceOn)zitto()};
+  const id=tappaCorr().id;let s=sceltaVoci[id];if(s==null||!voci[s])s=P.corrente%voci.length;sel.value=String(s)}
+$("#voce-sel").onchange=e=>{sceltaVoci[tappaCorr().id]=+e.target.value;ls.set("pi-voci",sceltaVoci)};
+if(synth){caricaVoci();synth.onvoiceschanged=caricaVoci}
+$("#voce-on").onclick=function(){voceOn=!voceOn;this.setAttribute("aria-pressed",voceOn);if(!voceOn)zitto();try{el.conv&&el.conv.setVolume({volume:voceOn?1:0})}catch(e){}};
 function zitto(){try{synth&&synth.cancel()}catch(e){}}
-$("#zitto").onclick=zitto;
-function pronuncia(testo){if(!synth||!voceOn||!testo.trim())return;const m=MASCHERE.find(x=>x.id===attiva);
+$("#zitto").onclick=()=>{zitto();if(el.id)elFerma()};
+function pronuncia(testo){if(!synth||!voceOn||!testo.trim())return;const m=mascheraAttiva();
   try{const u=new SpeechSynthesisUtterance(testo.replace(/[*_#«»"]/g,""));const v=voci[+$("#voce-sel").value];if(v){u.voice=v;u.lang=v.lang}else u.lang="it-IT";u.pitch=m.pitch;u.rate=m.rate;synth.speak(u)}catch(e){}}
 
 /* deviazioni */
@@ -641,46 +784,46 @@ $("#pesca").onclick=()=>{const d=DEVIAZIONI[Math.floor(Math.random()*DEVIAZIONI.
 
 /* dialogo dal vivo: ElevenLabs se configurato in regia, altrimenti Claude nella pagina con la voce del computer */
 let sample=null,ctl=null,inCorso=false;
-const ERR={not_granted:"Accesso a Claude non concesso.",sampling_disabled:"Claude non è disponibile per questo account.",rate_limited:"Troppe richieste ravvicinate: aspettate qualche secondo.",session_expired:"Sessione scaduta: accedi di nuovo a Claude.",refused:"La maschera non risponde a questa domanda: riformulatela.",empty_completion:"Nessuna risposta: riprovate.",prompt_too_large:"Il dialogo è troppo lungo: premete Ricomincia.",upstream_error:"Collegamento interrotto: riprovate."};
+const ERR={not_granted:"Accesso a Claude non concesso.",sampling_disabled:"Claude non è disponibile per questo account.",rate_limited:"Troppe richieste ravvicinate: aspettate qualche secondo.",session_expired:"Sessione scaduta: accedi di nuovo a Claude.",refused:"La maschera non risponde a questa domanda: riformulatela.",empty_completion:"Nessuna risposta: riprovate.",prompt_too_large:"Il dialogo è troppo lungo: premete Ricomincia il dialogo.",upstream_error:"Collegamento interrotto: riprovate."};
 function statoLive(t,err){const s=$("#stato-live");s.textContent=t;s.style.color=err?"var(--rosso)":""}
 const REGIA=ls.get("pi-regia")||{agente:"",voci:{},attiva:false};
 const EL_OK=()=>!!(REGIA.attiva&&REGIA.agente&&window.ElevenLabsClient&&window.ElevenLabsClient.Conversation);
+const motoreOn=()=>EL_OK()||!!sample;
 const el={conv:null,id:null,avvio:null,ultimoTesto:"",mic:false};
-function motore(){
-  const on=EL_OK();
+function motore(){const on=EL_OK();
   $("#presenta").hidden=!on;$("#microfono").hidden=!on;$("#voce-sel").hidden=on;$("#ritmo").hidden=on;
-  $("#invia").disabled=!(on||sample);$("#msg").disabled=!(on||sample);$("#pesca").disabled=!(on||sample);
+  const vivo=motoreOn();$("#invia").disabled=!vivo;$("#msg").disabled=!vivo;$("#pesca").disabled=!vivo;
   if(on)statoLive("Voce ElevenLabs pronta. Presentati o scrivete la prima domanda.");
   else if(sample)statoLive("Pronto con la voce del computer. Alla prima domanda Claude chiede il permesso.");
   else statoLive("Dialogo dal vivo non attivo. Si attiva dalla Regia, in fondo alla sezione.");
   disegnaChat()}
-function aggiungi(id,role,content){turni[id].push({role,content});if(id===attiva)disegnaChat()}
-async function elFerma(){const c=el.conv;el.conv=null;el.id=null;el.avvio=null;$("#carta").classList.remove("parla");if(c){try{await c.endSession()}catch(e){}}}
+function aggiungi(id,role,content){turni[id].push({role,content});if(id===mascheraAttiva().id)disegnaChat()}
+async function elFerma(){const c=el.conv;el.conv=null;el.id=null;el.avvio=null;$("#tappa").classList.remove("parla");if(c){try{await c.endSession()}catch(e){}}}
 function elAvvia(m){
   if(el.conv&&el.id===m.id)return Promise.resolve(el.conv);
   if(el.avvio&&el.id===m.id)return el.avvio;
   const id=m.id;el.id=id;statoLive("Collegamento con "+m.nome+"…");
   el.avvio=(async()=>{
     if(el.conv){try{await el.conv.endSession()}catch(e){}el.conv=null}
-    const v=(REGIA.voci[id]||m.vEL||"").trim();
+    const v=((m.id==="vostra"?P.vostra.voce:REGIA.voci[id])||m.vEL||"").trim();
     const conv=await window.ElevenLabsClient.Conversation.startSession({
       agentId:REGIA.agente.trim(),connectionType:"websocket",
       overrides:{agent:{prompt:{prompt:BASE+"\n\n"+m.prompt+"\n\nRimani nel personaggio per tutta la conversazione."},firstMessage:m.primo,language:"it"},tts:Object.assign({speed:Math.min(1.2,Math.max(.7,m.speed||1))},v?{voiceId:v}:{})},
       onMessage:({message,role,source})=>{const r=role||(source==="ai"?"agent":"user");if(!message||!message.trim())return;
         if(r==="user"){if(message.trim()===el.ultimoTesto.trim()){el.ultimoTesto="";return}aggiungi(id,"user",message)}else aggiungi(id,"assistant",message)},
-      onModeChange:({mode})=>{if(id===attiva)$("#carta").classList.toggle("parla",mode==="speaking")},
+      onModeChange:({mode})=>{if(id===mascheraAttiva().id)$("#tappa").classList.toggle("parla",mode==="speaking")},
       onError:(msg)=>statoLive("ElevenLabs: "+msg,true),
-      onDisconnect:()=>{if(el.id===id){el.conv=null;el.id=null;el.avvio=null;$("#carta").classList.remove("parla");statoLive("Conversazione chiusa. La prossima domanda la riapre.")}}
+      onDisconnect:()=>{if(el.id===id){el.conv=null;el.id=null;el.avvio=null;$("#tappa").classList.remove("parla");statoLive("Conversazione chiusa. La prossima domanda la riapre.")}}
     });
     try{conv.setMicMuted(!el.mic)}catch(e){}
+    try{conv.setVolume({volume:voceOn?1:0})}catch(e){}
     if(el.id!==id){try{await conv.endSession()}catch(e){}throw new Error("superata")}
     el.conv=conv;statoLive(m.nome+" è in ascolto");return conv})();
   el.avvio.catch(err=>{el.avvio=null;el.id=null;if(String(err&&err.message)!=="superata")statoLive("Collegamento ElevenLabs non riuscito: "+(err&&err.message||err),true)});
   return el.avvio}
-$("#presenta").onclick=()=>{const m=MASCHERE.find(x=>x.id===attiva);if(el.conv&&el.id===m.id){statoLive(m.nome+" è già qui");return}elAvvia(m).catch(()=>{})};
+$("#presenta").onclick=()=>{const m=mascheraAttiva();if(el.conv&&el.id===m.id){statoLive(m.nome+" è già qui");return}elAvvia(m).catch(()=>{})};
 $("#microfono").onclick=function(){el.mic=!el.mic;this.setAttribute("aria-pressed",el.mic);try{el.conv&&el.conv.setMicMuted(!el.mic)}catch(e){}statoLive(el.mic?"Microfono aperto: la sala può parlare":"Microfono chiuso")};
-async function inviaEL(m,testo){aggiungi(m.id,"user",testo);el.ultimoTesto=testo;
-  try{const c=await elAvvia(m);c.sendUserMessage(testo);statoLive(m.nome+" sta rispondendo…")}catch(e){}}
+async function inviaEL(m,testo){aggiungi(m.id,"user",testo);el.ultimoTesto=testo;try{const c=await elAvvia(m);c.sendUserMessage(testo);statoLive(m.nome+" sta rispondendo…")}catch(e){}}
 async function inviaClaude(m,testo){const id=m.id;turni[id].push({role:"user",content:testo});disegnaChat();
   const box=$("#chat"),d=document.createElement("div");d.className="bolla ia";d.innerHTML='<span class="chi">'+esc(m.nome)+'</span><p class="nota">Ci sta pensando…</p>';box.appendChild(d);box.scrollTop=box.scrollHeight;
   inCorso=true;$("#invia").disabled=true;$("#ferma").hidden=false;statoLive("In corso…");zitto();ctl=new AbortController();let detto=0;
@@ -692,30 +835,29 @@ async function inviaClaude(m,testo){const id=m.id;turni[id].push({role:"user",co
   catch(err){if(err.text){turni[id].push({role:"assistant",content:err.text})}else turni[id].pop();
     if(err.code!=="cancelled")statoLive(ERR[err.code]||ERR.upstream_error,true);else statoLive("Fermato");
     if(err.code==="not_granted"||err.code==="sampling_disabled"){sample=null;motore()}}
-  finally{inCorso=false;$("#invia").disabled=!(EL_OK()||sample);$("#ferma").hidden=true;disegnaChat()}}
-$("#form-chat").addEventListener("submit",e=>{e.preventDefault();const testo=$("#msg").value.trim();if(!testo||inCorso)return;const m=MASCHERE.find(x=>x.id===attiva);
+  finally{inCorso=false;$("#invia").disabled=!motoreOn();$("#ferma").hidden=true;disegnaChat()}}
+$("#form-chat").addEventListener("submit",e=>{e.preventDefault();const testo=$("#msg").value.trim();if(!testo||inCorso)return;const m=mascheraAttiva();
   if(EL_OK()){$("#msg").value="";inviaEL(m,testo)}else if(sample){$("#msg").value="";inviaClaude(m,testo)}});
 $("#msg").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#form-chat").requestSubmit()}});
 $("#ferma").onclick=()=>{ctl&&ctl.abort();zitto()};
-$("#ricomincia-chat").onclick=()=>{ctl&&ctl.abort();zitto();if(el.id===attiva)elFerma();turni[attiva]=[];disegnaChat()};
+$("#ricomincia-chat").onclick=()=>{ctl&&ctl.abort();zitto();const m=mascheraAttiva();if(el.id===m.id)elFerma();turni[m.id]=[];disegnaChat()};
 /* regia */
 function disegnaRegia(){$("#el-agente").value=REGIA.agente||"";
-  $("#voci-el").innerHTML=MASCHERE.map(m=>'<label class="campo" for="v-'+m.id+'">Voce di '+esc(m.nome)+'<input type="text" id="v-'+m.id+'" value="'+esc(REGIA.voci[m.id]||m.vEL)+'" spellcheck="false" autocomplete="off"></label>').join("");
+  $("#voci-el").innerHTML=TAPPE.filter(t=>!t.costruttore).map(m=>'<label class="campo" for="v-el-'+m.id+'">Voce di '+esc(m.nome)+'<input type="text" id="v-el-'+m.id+'" value="'+esc(REGIA.voci[m.id]||m.vEL)+'" spellcheck="false" autocomplete="off"></label>').join("");
   $("#el-stato").textContent=EL_OK()?"ElevenLabs attivo":(REGIA.attiva&&!window.ElevenLabsClient?"Libreria ElevenLabs non caricata":"Voce del computer attiva")}
-$("#el-salva").onclick=()=>{REGIA.agente=$("#el-agente").value.trim();MASCHERE.forEach(m=>{REGIA.voci[m.id]=$("#v-"+m.id).value.trim()});REGIA.attiva=!!REGIA.agente;ls.set("pi-regia",REGIA);elFerma();disegnaRegia();motore()};
+$("#el-salva").onclick=()=>{REGIA.agente=$("#el-agente").value.trim();TAPPE.filter(t=>!t.costruttore).forEach(m=>{REGIA.voci[m.id]=$("#v-el-"+m.id).value.trim()});REGIA.attiva=!!REGIA.agente;ls.set("pi-regia",REGIA);elFerma();disegnaRegia();motore()};
 $("#el-spegni").onclick=()=>{REGIA.attiva=false;ls.set("pi-regia",REGIA);elFerma();disegnaRegia();motore()};
-disegnaRegia();
-(async()=>{try{sample=window.claude?await window.claude.use("sample"):null}catch(e){sample=null}motore()})();
-disegnaMappa();disegnaCarta();disegnaTabellone();
 
 /* muro */
 let muro=ls.get("pi-muro")||[];
 function disegnaMuro(){$("#lista-muro").innerHTML=muro.map((q,i)=>'<li><span class="da">'+esc(q.da||"dalla sala")+'</span><span>'+esc(q.t)+'</span><button type="button" data-i="'+i+'">togli</button></li>').join("");
   $$("#lista-muro button").forEach(b=>b.onclick=()=>{muro.splice(+b.dataset.i,1);ls.set("pi-muro",muro);disegnaMuro()});
-  $("#muro-vuoto").textContent=muro.length?muro.length+(muro.length===1?" domanda appesa":" domande appese"):"Il muro è vuoto. Si riempie durante il panel."}
+  $("#muro-vuoto").textContent=muro.length?muro.length+(muro.length===1?" domanda appesa":" domande appese"):"Il muro è vuoto. Si riempie durante il percorso."}
 $("#form-muro").addEventListener("submit",e=>{e.preventDefault();let v=$("#nuova-domanda").value.trim();if(!v)return;if(!/\?$/.test(v))v+="?";
-  const m=MASCHERE.find(x=>x.id===attiva);muro.push({t:v,da:"nata con "+m.nome});ls.set("pi-muro",muro);$("#nuova-domanda").value="";disegnaMuro()});
-disegnaMuro();
+  muro.push({t:v,da:"nata con "+mascheraAttiva().nome});ls.set("pi-muro",muro);$("#nuova-domanda").value="";disegnaMuro()});
+
+disegnaCarta();disegnaTabellone();disegnaRegia();disegnaMuro();disegnaTutto();
+(async()=>{try{sample=window.claude?await window.claude.use("sample"):null}catch(e){sample=null}motore()})();
 })();
 </script>
 
