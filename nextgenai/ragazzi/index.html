@@ -800,7 +800,7 @@ function motore(){const on=EL_OK();
   disegnaChat()}
 function aggiungi(id,role,content){turni[id].push({role,content});if(id===mascheraAttiva().id)disegnaChat()}
 async function elFerma(){const c=el.conv;el.conv=null;el.id=null;el.avvio=null;$("#tappa").classList.remove("parla");if(c){try{await c.endSession()}catch(e){}}}
-function elAvvia(m){
+function elAvvia(m,saluto){
   if(el.conv&&el.id===m.id)return Promise.resolve(el.conv);
   if(el.avvio&&el.id===m.id)return el.avvio;
   const id=m.id;el.id=id;statoLive("Collegamento con "+m.nome+"…");
@@ -809,7 +809,7 @@ function elAvvia(m){
     const v=((m.id==="vostra"?P.vostra.voce:REGIA.voci[id])||m.vEL||"").trim();
     const conv=await window.ElevenLabsClient.Conversation.startSession({
       agentId:REGIA.agente.trim(),connectionType:"websocket",
-      overrides:{agent:{prompt:{prompt:BASE+"\n\n"+m.prompt+"\n\nRimani nel personaggio per tutta la conversazione."},firstMessage:m.primo,language:"it"},tts:Object.assign({speed:Math.min(1.2,Math.max(.7,m.speed||1))},v?{voiceId:v}:{})},
+      overrides:{agent:{prompt:{prompt:BASE+"\n\n"+m.prompt+"\n\nRimani nel personaggio per tutta la conversazione."},firstMessage:saluto?m.primo:"",language:"it"},tts:Object.assign({speed:Math.min(1.2,Math.max(.7,m.speed||1))},v?{voiceId:v}:{})},
       onMessage:({message,role,source})=>{const r=role||(source==="ai"?"agent":"user");if(!message||!message.trim())return;
         if(r==="user"){if(message.trim()===el.ultimoTesto.trim()){el.ultimoTesto="";return}aggiungi(id,"user",message)}else aggiungi(id,"assistant",message)},
       onModeChange:({mode})=>{if(id===mascheraAttiva().id)$("#tappa").classList.toggle("parla",mode==="speaking")},
@@ -822,9 +822,9 @@ function elAvvia(m){
     el.conv=conv;statoLive(m.nome+" è in ascolto");return conv})();
   el.avvio.catch(err=>{el.avvio=null;el.id=null;if(String(err&&err.message)!=="superata")statoLive("Collegamento ElevenLabs non riuscito: "+(err&&err.message||err),true)});
   return el.avvio}
-$("#presenta").onclick=()=>{const m=mascheraAttiva();if(el.conv&&el.id===m.id){statoLive(m.nome+" è già qui");return}elAvvia(m).catch(()=>{})};
+$("#presenta").onclick=()=>{const m=mascheraAttiva();if(el.conv&&el.id===m.id){statoLive(m.nome+" è già qui");return}elAvvia(m,true).catch(()=>{})};
 $("#microfono").onclick=function(){el.mic=!el.mic;this.setAttribute("aria-pressed",el.mic);try{el.conv&&el.conv.setMicMuted(!el.mic)}catch(e){}statoLive(el.mic?"Microfono aperto: la sala può parlare":"Microfono chiuso")};
-async function inviaEL(m,testo){aggiungi(m.id,"user",testo);el.ultimoTesto=testo;try{const c=await elAvvia(m);c.sendUserMessage(testo);statoLive(m.nome+" sta rispondendo…")}catch(e){}}
+async function inviaEL(m,testo){aggiungi(m.id,"user",testo);el.ultimoTesto=testo;try{const c=await elAvvia(m,false);c.sendUserMessage(testo);statoLive(m.nome+" sta rispondendo…")}catch(e){}}
 async function inviaClaude(m,testo){const id=m.id;turni[id].push({role:"user",content:testo});disegnaChat();
   const box=$("#chat"),d=document.createElement("div");d.className="bolla ia";d.innerHTML='<span class="chi">'+esc(m.nome)+'</span><p class="nota">Ci sta pensando…</p>';box.appendChild(d);box.scrollTop=box.scrollHeight;
   inCorso=true;$("#invia").disabled=true;$("#ferma").hidden=false;statoLive("In corso…");zitto();ctl=new AbortController();let detto=0;
