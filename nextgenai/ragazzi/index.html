@@ -587,7 +587,7 @@ quiz($('.quiz[data-blocco="media"]'),"Prima di vedere i dati","Stima della sala"
 /* ---------- le tappe ---------- */
 const BASE="Contesto: stai parlando dal vivo, davanti a studenti delle scuole superiori, durante un panel di filosofia sull'intelligenza artificiale condotto da Andrea Colamedici. Le tue risposte vengono proiettate e lette ad alta voce. Scrivi in italiano, in frasi complete, senza elenchi, senza titoli, senza grassetti, senza emoji e senza trattini lunghi. Tratta i ragazzi da persone intelligenti: niente prediche, niente raccomandazioni da genitore, niente contenuti inadatti alla loro età.";
 const TAPPE=[
- {id:"golem",nome:"Il Golem",ini:"G",colore:"#7A5A3A",comp:"Chiarezza",speed:.85,pitch:.55,rate:.85,vEL:"JBFqnCBsd6RMkjVDRZzb",
+ {id:"golem",nome:"Il Golem",ini:"G",colore:"#7A5A3A",comp:"Chiarezza",speed:.85,pitch:.55,rate:.85,vEL:"rgL0xVDlz05Kid06YUgx",
   chi:"La creatura d'argilla della leggenda di Praga. Esegue gli ordini alla lettera, sempre.",
   regola:"Dite che cosa volete ottenere, con che cosa e in che forma.",
   spiega:"La macchina non sa che cosa avete in mente. Ogni parola che lasciate vaga la riempie lei, a modo suo, e quasi mai come pensavate.",
@@ -602,7 +602,7 @@ const TAPPE=[
    {q:"Quale richiesta lascia meno da indovinare alla macchina?",o:["Parlami della guerra.","Dimmi tutto sulla Seconda guerra mondiale.","In dieci righe, per un'interrogazione di terza media, spiegami perché l'Italia entrò in guerra nel 1940.","Spiegami la guerra in modo semplice."],ok:2,s:"Dice l'argomento preciso, lo scopo, il destinatario e la lunghezza. Le altre lasciano decidere tutto alla macchina."},
    {q:"Che cosa manca alla richiesta «Fammi un riassunto»?",o:["Un per favore","Di che cosa, per chi e quanto lungo","Un punto esclamativo","Niente, è perfetta"],ok:1,s:"Senza testo, destinatario e lunghezza, la macchina deve inventarsi tutto. La gentilezza non guasta, ma qui non cambia la risposta."}
   ]},
- {id:"pappagallo",nome:"Il Pappagallo stocastico",ini:"P",colore:"#1C7A4D",comp:"Uscire dalla media",speed:1.15,pitch:1.7,rate:1.12,vEL:"pFZP5JQG7iQjIQuC4Bku",
+ {id:"pappagallo",nome:"Il Pappagallo stocastico",ini:"P",colore:"#1C7A4D",comp:"Uscire dalla media",speed:1.15,pitch:1.7,rate:1.12,vEL:"mcMi8FJDhg35bMpWHv2R",
   chi:"Il nome viene da un articolo del 2021 che descriveva così i modelli linguistici: ripetono, mescolando, ciò che hanno letto.",
   regola:"Se volete una risposta mai sentita, imponete un vincolo.",
   spiega:"A ogni parola la macchina sceglie tra le continuazioni più probabili. Un vincolo preciso le sbarra la strada più battuta e la costringe a cercarne un'altra.",
@@ -618,7 +618,7 @@ const TAPPE=[
    {q:"Quale richiesta ha più probabilità di ottenere una risposta mai sentita?",o:["Descrivi il mare.","Descrivi il mare in modo originale.","Descrivi il mare in modo poetico e profondo.","Descrivi il mare come lo racconterebbe un pesce che non l'ha mai visto da fuori, senza usare le parole blu, onde e infinito."],ok:3,s:"Sposta il punto di vista e vieta le parole più probabili. Le altre lasciano libera la strada più battuta."},
    {q:"Perché chiedere «sii originale» di solito non basta?",o:["Perché la macchina non capisce l'italiano","Perché la macchina produce l'idea più comune di che cosa sia originale","Perché è una richiesta vietata","Perché va scritto in maiuscolo"],ok:1,s:"Anche l'originalità ha la sua versione più probabile. Un vincolo concreto funziona meglio di un aggettivo."}
   ]},
- {id:"specchio",nome:"Lo Specchio",ini:"S",colore:"#9A3F8C",comp:"Chiedere obiezioni",speed:1,pitch:1.15,rate:1,vEL:"XB0fDUnXU5powFXDhCwa",
+ {id:"specchio",nome:"Lo Specchio",ini:"S",colore:"#9A3F8C",comp:"Chiedere obiezioni",speed:1,pitch:1.15,rate:1,vEL:"MLpDWJvrjFIdb63xbJp8",
   chi:"Lo specchio delle fiabe, che risponde a ciò che desideriamo sentirci dire.",
   regola:"Per sapere se avete ragione, chiedete perché potreste avere torto.",
   spiega:"I modelli linguistici tendono a dare ragione a chi li interroga, anche perché sono stati addestrati a produrre risposte gradite. Le obiezioni arrivano solo se le chiedete.",
@@ -634,7 +634,7 @@ const TAPPE=[
    {q:"Volete un parere sincero sul vostro progetto. Quale richiesta funziona meglio?",o:["Ti piace il mio progetto?","Il mio progetto è il migliore, vero?","Quali sono i tre motivi per cui il mio progetto potrebbe fallire?","Dimmi che il mio progetto è bello."],ok:2,s:"Chiede esplicitamente i punti deboli. Le altre invitano la macchina a fare lo specchio."},
    {q:"Un'IA vi riempie di complimenti. Che cosa ne deducete?",o:["Che avete fatto un ottimo lavoro","Niente di sicuro: i modelli tendono a dare ragione a chi li interroga","Che la macchina è rotta","Che è arrivato il momento di cambiare scuola"],ok:1,s:"I complimenti sono la risposta più probabile. Per sapere quanto vale il lavoro servono obiezioni."}
   ]},
- {id:"pizia",nome:"La Pizia",ini:"Π",colore:"#B5651D",comp:"Domandare",speed:.85,pitch:.85,rate:.82,vEL:"XrExE9yKIg1WjnnlVkGX",
+ {id:"pizia",nome:"La Pizia",ini:"Π",colore:"#B5651D",comp:"Domandare",speed:.85,pitch:.85,rate:.82,vEL:"G0q9AYE8QsarSbMtaIEu",
   chi:"La sacerdotessa dell'oracolo di Delfi. Qui risponde soltanto con domande.",
   regola:"Prima di chiedere una risposta, fatevi fare delle domande.",
   spiega:"Spesso la domanda che portiamo non è quella giusta. Una macchina istruita a interrogare vi aiuta a trovare quella che non vedevate.",
@@ -650,7 +650,7 @@ const TAPPE=[
    {q:"Quale di queste è una domanda aperta?",o:["Ti piace la scuola?","Quante ore studi al giorno?","La scuola è utile?","Che cosa cambieresti della scuola, se potessi cambiare una sola cosa?"],ok:3,s:"Non si risponde con sì, no o un numero: costringe a pensare."},
    {q:"Che cosa si ottiene chiedendo alla macchina «fammi tre domande prima di rispondere»?",o:["Una risposta costruita su ciò che sapete e volete davvero","Una risposta più lunga","Una macchina confusa","Una risposta in rima"],ok:0,s:"Le domande della macchina vi costringono a dire che cosa sapete e che cosa cercate. La risposta arriva dopo, e su misura."}
   ]},
- {id:"tlon",nome:"L'abitante di Tlön",ini:"T",colore:"#2E6FAF",comp:"Cambiare le regole",speed:.95,pitch:1.3,rate:.9,vEL:"N2lVS1w4EtoT3dr4eOWO",
+ {id:"tlon",nome:"L'abitante di Tlön",ini:"T",colore:"#2E6FAF",comp:"Cambiare le regole",speed:.95,pitch:1.3,rate:.9,vEL:"MxbaIHXywTPlbmHYvbPn",
   chi:"Viene dal pianeta inventato da Borges nel 1940, dove una lingua non ha sostantivi.",
   regola:"Per pensare l'impensato, togliete o cambiate una regola del mondo o del linguaggio.",
   spiega:"Finché le regole restano quelle, la macchina, e noi con lei, pensa con le categorie di sempre. Cambiando una regola, quelle categorie smettono di funzionare e bisogna inventarne di nuove.",
@@ -666,7 +666,7 @@ const TAPPE=[
    {q:"Quale richiesta cambia una regola del mondo?",o:["Immagina una città del futuro.","Immagina una città bellissima.","Immagina una città in cui la gravità cambia direzione ogni ora: come sono fatte le case?","Immagina Milano nel 2100."],ok:2,s:"Cambia una legge fisica e obbliga a ripensare anche le cose più ovvie, come una casa."},
    {q:"Perché togliere una regola, come i sostantivi, aiuta a pensare cose nuove?",o:["Perché le parole costano","Perché la macchina diventa più veloce","Perché è più divertente da leggere","Perché costringe a descrivere il mondo con categorie diverse da quelle abituali"],ok:3,s:"Le categorie abituali portano alle risposte abituali. Quando una manca, bisogna inventarne un'altra."}
   ]},
- {id:"vostra",nome:"La vostra maschera",ini:"V",colore:"#3A36C4",comp:"Scrivere le regole",speed:1,pitch:1,rate:1,vEL:"nPczCjzI2devNBz1zQrb",
+ {id:"vostra",nome:"La vostra maschera",ini:"V",colore:"#3A36C4",comp:"Scrivere le regole",speed:1,pitch:1,rate:1,vEL:"G1QO6RfZl0zS1DpKDReq",
   chi:"L'ultima maschera la inventate voi. Una maschera è soltanto un insieme di istruzioni: adesso le scrivete voi.",
   regola:"Una maschera è un prompt: chi è, che cosa fa, quale regola segue, che cosa non fa mai.",
   spiega:"Tutte le maschere del percorso sono istruzioni scritte prima della conversazione. Chi le scrive decide come penserà la macchina. Saperle leggere e scrivere è la competenza più importante.",
@@ -675,7 +675,7 @@ const TAPPE=[
   costruttore:true,prova:[]}
 ];
 const CARTA=TAPPE.map(t=>t.regola);
-const P=ls.get("pi-percorso")||{corrente:0,sbloccate:0,missioni:{},criteri:{},prove:{},verdetti:{sorprende:0,ripete:0,domanda:0},vostra:{nome:"",chi:"",fa:"",regola:"",mai:"",voce:"nPczCjzI2devNBz1zQrb"}};
+const P=ls.get("pi-percorso")||{corrente:0,sbloccate:0,missioni:{},criteri:{},prove:{},verdetti:{sorprende:0,ripete:0,domanda:0},vostra:{nome:"",chi:"",fa:"",regola:"",mai:"",voce:"G1QO6RfZl0zS1DpKDReq"}};
 function salvaP(){ls.set("pi-percorso",P)}
 function punti(){let p=0;for(const k in P.missioni)if(P.missioni[k])p+=3;for(const k in P.prove)for(const i in P.prove[k])if(P.prove[k][i].ok)p+=1;return p}
 const MAXP=TAPPE.length*3+TAPPE.reduce((s,t)=>s+t.prova.length,0);
@@ -701,7 +701,7 @@ function disegnaTappa(){const t=tappaCorr();
   if(t.costruttore){const v=P.vostra;
     h+='<div class="scheda"><span class="occhiello">Costruite la maschera con la sala</span><div class="costruttore" style="grid-template-columns:1fr"><div class="campi">'+
       campo("v-nome","Come si chiama",v.nome,"Per esempio: la Nonna del 2300")+campo("v-chi","Chi è",v.chi,"Una frase: da dove viene, che cosa ha vissuto")+campo("v-fa","Che cosa fa quando le parlate",v.fa,"Per esempio: risponde solo raccontando un ricordo")+campo("v-regola","La sua regola insolita",v.regola,"Per esempio: ogni frase contiene un numero")+campo("v-mai","Che cosa non fa mai",v.mai,"Per esempio: dare consigli")+
-      '<label class="campo" for="v-voce">Voce ElevenLabs<select id="v-voce">'+TAPPE.filter(x=>!x.costruttore).map(x=>'<option value="'+x.vEL+'"'+(P.vostra.voce===x.vEL?" selected":"")+'>come '+esc(x.nome)+'</option>').join("")+'<option value="nPczCjzI2devNBz1zQrb"'+(P.vostra.voce==="nPczCjzI2devNBz1zQrb"?" selected":"")+'>una voce nuova</option></select></label></div></div></div></div>';
+      '<label class="campo" for="v-voce">Voce ElevenLabs<select id="v-voce">'+TAPPE.filter(x=>!x.costruttore).map(x=>'<option value="'+x.vEL+'"'+(P.vostra.voce===x.vEL?" selected":"")+'>come '+esc(x.nome)+'</option>').join("")+'<option value="G1QO6RfZl0zS1DpKDReq"'+(P.vostra.voce==="G1QO6RfZl0zS1DpKDReq"?" selected":"")+'>Ricasco, la voce di Claude</option></select></label></div></div></div></div>';
   }else{
     const sv=!!(P.svelate&&P.svelate[t.id]);
     h+='<div class="scheda lezione"><span class="occhiello">Prima e dopo</span><div class="prima-dopo"><div class="pd debole"><b>Domanda debole</b>'+esc(t.debole)+'</div>'+(sv?'<div class="pd forte"><b>Domanda forte</b>'+esc(t.forte)+'</div>':'')+'</div>'+(sv?'<p class="perche">'+esc(t.perche)+'</p><button class="btn piccolo" type="button" id="usa-forte" style="align-self:flex-start">Prova la domanda forte con la maschera</button>':'<p class="nota">Prima la sala prova a migliorare la domanda debole. Poi si svela la versione forte.</p><button class="btn piccolo" type="button" id="svela-forte" style="align-self:flex-start">Svela la domanda forte</button>')+'</div></div>';
@@ -787,6 +787,7 @@ let sample=null,ctl=null,inCorso=false;
 const ERR={not_granted:"Accesso a Claude non concesso.",sampling_disabled:"Claude non è disponibile per questo account.",rate_limited:"Troppe richieste ravvicinate: aspettate qualche secondo.",session_expired:"Sessione scaduta: accedi di nuovo a Claude.",refused:"La maschera non risponde a questa domanda: riformulatela.",empty_completion:"Nessuna risposta: riprovate.",prompt_too_large:"Il dialogo è troppo lungo: premete Ricomincia il dialogo.",upstream_error:"Collegamento interrotto: riprovate."};
 function statoLive(t,err){const s=$("#stato-live");s.textContent=t;s.style.color=err?"var(--rosso)":""}
 const REGIA=ls.get("pi-regia")||{agente:"",voci:{},attiva:false};
+(function(){const m=location.hash.match(/^#agente=(agent_[A-Za-z0-9]+)/);if(m){REGIA.agente=m[1];REGIA.attiva=true;REGIA.voci={};ls.set("pi-regia",REGIA);try{history.replaceState(null,"",location.pathname+"#percorso")}catch(e){}}})();
 const EL_OK=()=>!!(REGIA.attiva&&REGIA.agente&&window.ElevenLabsClient&&window.ElevenLabsClient.Conversation);
 const motoreOn=()=>EL_OK()||!!sample;
 const el={conv:null,id:null,avvio:null,ultimoTesto:"",mic:false};
