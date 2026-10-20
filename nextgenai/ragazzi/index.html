@@ -412,6 +412,13 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
 </main>
 <footer><div class="wrap">Tlon · Pensare l'impensato</div></footer>
 
+<script>
+/* sveglia l'audio: alcuni browser creano il contesto audio in pausa e la voce resta muta */
+(function(){var AC=window.AudioContext||window.webkitAudioContext;if(!AC||window.__acPatch)return;window.__acPatch=1;var lista=[];
+function W(a){var c=a?new AC(a):new AC();lista.push(c);try{c.resume()}catch(e){}return c}W.prototype=AC.prototype;window.AudioContext=W;window.__contestiAudio=lista;
+function sveglia(){lista.forEach(function(c){if(c.state==="suspended"){try{c.resume()}catch(e){}}})}
+["pointerdown","keydown","click"].forEach(function(t){document.addEventListener(t,sveglia,true)});setInterval(sveglia,700)})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.26.0/dist/lib.iife.js"></script>
 <script>
 (function(){
@@ -461,7 +468,7 @@ $("#crono").onclick=()=>{if(cronoIv){clearInterval(cronoIv);cronoIv=null;cronoRe
 $("#crono").ondblclick=()=>{clearInterval(cronoIv);cronoIv=null;cronoResto=25*60;cronoMostra(cronoResto)};
 
 /* ---------- le maschere ---------- */
-const BASE="Contesto: stai parlando dal vivo davanti a duecento studenti delle scuole superiori, durante un panel di filosofia condotto da Andrea Colamedici. Lo scopo è usare l'intelligenza artificiale per immaginare. Le tue risposte vengono proiettate e lette ad alta voce. Scrivi in italiano, in frasi complete, senza elenchi, senza titoli, senza grassetti, senza emoji e senza trattini lunghi. Tratta i ragazzi da persone intelligenti: niente prediche, niente raccomandazioni da genitore, niente contenuti inadatti alla loro età.";
+const BASE="Contesto: stai parlando dal vivo davanti a duecento studenti delle scuole superiori, durante un panel di filosofia condotto da Andrea Colamedici. Lo scopo è usare l'intelligenza artificiale per immaginare. Le tue risposte vengono proiettate e lette ad alta voce. Scrivi in italiano, in frasi complete, senza elenchi, senza titoli, senza grassetti, senza emoji e senza trattini lunghi. Tratta i ragazzi da persone intelligenti: niente prediche, niente raccomandazioni da genitore, niente contenuti inadatti alla loro età. Se la sala resta in silenzio, aspetta senza dire nulla: non chiedere mai se ci sono ancora, se sono ancora lì o se vogliono continuare.";
 const TAPPE=[
  {id:"pappagallo",prova:1,verbo:"Deviare",nome:"Il Pappagallo stocastico",ini:"P",colore:"#1C7A4D",speed:1.15,pitch:1.7,rate:1.12,vEL:"mcMi8FJDhg35bMpWHv2R",
   chi:"Ripete, mescolandolo, ciò che ha letto. Il nome viene da un articolo scientifico del 2021 sui modelli linguistici.",
@@ -639,7 +646,7 @@ function elAvvia(m,saluto){
       agentId:REGIA.agente.trim(),connectionType:"websocket",
       overrides:{agent:{prompt:{prompt:BASE+"\n\n"+m.prompt+"\n\nRimani nel personaggio per tutta la conversazione."},firstMessage:saluto?m.primo:"",language:"it"},tts:Object.assign({speed:Math.min(1.2,Math.max(.7,m.speed||1))},v?{voiceId:v}:{})},
       onMessage:({message,role,source})=>{const r=role||(source==="ai"?"agent":"user");if(!message||!message.trim())return;
-        if(r==="user"){if(message.trim()===el.ultimoTesto.trim()){el.ultimoTesto="";return}aggiungi(id,"user",message)}else aggiungi(id,"assistant",message)},
+        if(r==="user"){if(/^[.\s…]*$/.test(message))return;if(message.trim()===el.ultimoTesto.trim()){el.ultimoTesto="";return}aggiungi(id,"user",message)}else aggiungi(id,"assistant",message)},
       onModeChange:({mode})=>{if(id===mascheraAttiva().id)$("#tappa").classList.toggle("parla",mode==="speaking")},
       onError:(msg)=>statoLive("ElevenLabs: "+msg,true),
       onDisconnect:()=>{if(el.id===id){el.conv=null;el.id=null;el.avvio=null;$("#tappa").classList.remove("parla");statoLive("Conversazione chiusa. La prossima domanda la riapre.")}}
