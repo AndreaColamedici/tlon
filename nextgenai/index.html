@@ -512,7 +512,6 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
       <article class="quadro" id="quadro" aria-live="polite"></article>
     </div>
     <p class="nota" style="margin-top:12px">Le domande sono in parafrasi; tra caporali quelle testuali.</p>
-    <div class="quiz" data-blocco="chi" style="margin-top:28px"></div>
   </div>
 </section>
 
@@ -997,12 +996,6 @@ BLOCCHI.dati={id:"dati",nome:"Prima dei dati",occhiello:"Quiz · stime",titolo:"
  {t:"stima",q:"Persone che hanno appena scritto un saggio con ChatGPT: quante, pochi minuti dopo, non sanno citarne correttamente una frase?",min:0,max:100,step:1,v:83,tol:12,u:"%",s:"Nello studio del MIT Media Lab era l'83 per cento. Chi aveva scritto da solo ci riusciva quasi sempre."},
  {t:"mc",q:"Un tutor programmato per dare indizi invece delle soluzioni: durante le esercitazioni, rispetto a chi non usa nessuna IA, i voti…",o:["peggiorano","restano uguali","salgono di circa la metà","più che raddoppiano"],ok:3,s:"Salgono del 127 per cento, e all'esame senza IA questi studenti vanno come il gruppo di controllo, quindi il tutor non ha lasciato danni."}
 ],onFatto:()=>svela()};
-
-BLOCCHI.chi={id:"chi",nome:"Chi l'ha chiesto?",occhiello:"Quiz · abbinamenti",titolo:"Chi ha posto questa domanda?",items:[
- {t:"abbina",q:"Abbina ogni domanda a chi l'ha posta o l'ha resa celebre.",o:["Socrate nel Menone","Robin G. Collingwood","Alan Turing","Martin Heidegger","Gianni Rodari","Paulo Freire"],
-  righe:[{q:"«Can machines think?»",ok:2,n:"Apre «Computing Machinery and Intelligence», 1950"},{q:"«Che cosa succederebbe se…?»",ok:4,n:"L'ipotesi fantastica della Grammatica della fantasia"},{q:"Su quale lato si costruisce un quadrato di area doppia?",ok:0,n:"La lezione di geometria allo schiavo"},{q:"A quale domanda risponde questa frase?",ok:1,n:"La logica di domanda e risposta"},{q:"Chi ha il diritto di domandare?",ok:5,n:"La critica della pedagogia della risposta"},{q:"Che cos'è l'essenza della tecnica?",ok:3,n:"La conferenza del 1953"}],
-  s:"Le tappe sono raccontate per esteso nella genealogia qui sopra."}
-]};
 
 const COMP=["Chiarezza","Contesto","Errore","Prova","Punto di vista","Domanda di ritorno"];
 BLOCCHI.diagnosi={id:"diagnosi",nome:"Diagnosi del prompt",occhiello:"Quiz · correzione",titolo:"Che cosa manca a questa domanda?",intro:"Per ogni prompt scegli lo strato la cui assenza pesa di più. Gli strati sono quelli del costruttore qui sopra.",items:[
