@@ -787,13 +787,13 @@ let sample=null,ctl=null,inCorso=false;
 const ERR={not_granted:"Accesso a Claude non concesso.",sampling_disabled:"Claude non è disponibile per questo account.",rate_limited:"Troppe richieste ravvicinate: aspettate qualche secondo.",session_expired:"Sessione scaduta: accedi di nuovo a Claude.",refused:"La maschera non risponde a questa domanda: riformulatela.",empty_completion:"Nessuna risposta: riprovate.",prompt_too_large:"Il dialogo è troppo lungo: premete Ricomincia il dialogo.",upstream_error:"Collegamento interrotto: riprovate."};
 function statoLive(t,err){const s=$("#stato-live");s.textContent=t;s.style.color=err?"var(--rosso)":""}
 const REGIA=ls.get("pi-regia")||{agente:"",voci:{},attiva:false};
-(function(){const m=location.hash.match(/^#agente=(agent_[A-Za-z0-9]+)/);if(m){REGIA.agente=m[1];REGIA.attiva=true;REGIA.voci={};ls.set("pi-regia",REGIA);try{history.replaceState(null,"",location.pathname+"#percorso")}catch(e){}}})();
+(function(){const m=location.hash.match(/^#agente=(agent_[A-Za-z0-9]+?)(?=https?:|&|#|$)/);if(m){REGIA.agente=m[1];REGIA.attiva=true;REGIA.voci={};ls.set("pi-regia",REGIA);try{history.replaceState(null,"",location.pathname+"#percorso")}catch(e){}}})();
 const EL_OK=()=>!!(REGIA.attiva&&REGIA.agente&&window.ElevenLabsClient&&window.ElevenLabsClient.Conversation);
 const motoreOn=()=>EL_OK()||!!sample;
 const el={conv:null,id:null,avvio:null,ultimoTesto:"",mic:false};
 function motore(){const on=EL_OK();
   $("#presenta").hidden=!on;$("#microfono").hidden=!on;$("#voce-sel").hidden=on;$("#ritmo").hidden=on;
-  const vivo=motoreOn();$("#invia").disabled=!vivo;$("#msg").disabled=!vivo;$("#pesca").disabled=!vivo;
+  $("#invia").disabled=false;$("#msg").disabled=false;$("#pesca").disabled=false;
   if(on)statoLive("Voce ElevenLabs pronta. Presentati o scrivete la prima domanda.");
   else if(sample)statoLive("Pronto con la voce del computer. Alla prima domanda Claude chiede il permesso.");
   else statoLive("Dialogo dal vivo non attivo. Si attiva dalla Regia, in fondo alla sezione.");
@@ -836,9 +836,10 @@ async function inviaClaude(m,testo){const id=m.id;turni[id].push({role:"user",co
   catch(err){if(err.text){turni[id].push({role:"assistant",content:err.text})}else turni[id].pop();
     if(err.code!=="cancelled")statoLive(ERR[err.code]||ERR.upstream_error,true);else statoLive("Fermato");
     if(err.code==="not_granted"||err.code==="sampling_disabled"){sample=null;motore()}}
-  finally{inCorso=false;$("#invia").disabled=!motoreOn();$("#ferma").hidden=true;disegnaChat()}}
+  finally{inCorso=false;$("#invia").disabled=false;$("#ferma").hidden=true;disegnaChat()}}
 $("#form-chat").addEventListener("submit",e=>{e.preventDefault();const testo=$("#msg").value.trim();if(!testo||inCorso)return;const m=mascheraAttiva();
-  if(EL_OK()){$("#msg").value="";inviaEL(m,testo)}else if(sample){$("#msg").value="";inviaClaude(m,testo)}});
+  if(EL_OK()){$("#msg").value="";inviaEL(m,testo)}else if(sample){$("#msg").value="";inviaClaude(m,testo)}
+  else{statoLive("Nessuna voce collegata: inserisci l'agente nella Regia qui sotto, poi premi Invio di nuovo.",true);const r=$("#regia");r.open=true;r.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>$("#el-agente").focus({preventScroll:true}),400)}});
 $("#msg").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#form-chat").requestSubmit()}});
 $("#ferma").onclick=()=>{ctl&&ctl.abort();zitto()};
 $("#ricomincia-chat").onclick=()=>{ctl&&ctl.abort();zitto();const m=mascheraAttiva();if(el.id===m.id)elFerma();turni[m.id]=[];disegnaChat()};
