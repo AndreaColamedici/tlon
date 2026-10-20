@@ -402,7 +402,10 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
       <p class="lead lettura">Per secoli la scuola ha potuto leggere nel compito consegnato la traccia del lavoro che lo aveva prodotto, e un tema ben costruito bastava a far supporre che qualcuno, a casa o al banco, avesse messo in ordine i propri pensieri. Da quando un modello linguistico scrive in pochi secondi un tema, un riassunto o la soluzione di un esercizio, quella supposizione si è incrinata, perché lo stesso foglio impeccabile può arrivare da uno studente che ha capito e da uno che ha incollato una risposta senza nemmeno leggerla.</p>
     </div>
 
-    <div style="margin-top:8px">
+    <div class="quiz" data-blocco="dati"></div>
+
+    <div class="velabile velato" id="velabile">
+      <div class="velo"><div><b>I dati sono coperti</b><span class="nota">Rispondete con la sala alle due domande per scoprirli, oppure mostrateli subito.</span><button class="btn piccolo" type="button" id="svela">Mostra i dati</button></div></div>
       <div class="griglia-dati">
         <figure class="scheda" style="margin:0">
           <span class="occhiello">Matematica, un liceo in Turchia, quasi mille studenti</span>
@@ -989,6 +992,10 @@ function renderBlocco(b){
 }
 function fmt(v,it){return (it.segno&&v>0?"+":"")+String(v).replace("-","−")+(it.u||"")}
 
+BLOCCHI.dati={id:"dati",nome:"Prima dei dati",occhiello:"Quiz · stime",titolo:"Prima di guardare i dati, provate a indovinarli",intro:"Chiedete alla sala una stima a voce o per alzata di mano, portate il cursore sul valore scelto e confermate.",items:[
+ {t:"stima",q:"Persone che hanno appena scritto un saggio con ChatGPT: quante, pochi minuti dopo, non sanno citarne correttamente una frase?",min:0,max:100,step:1,v:83,tol:12,u:"%",s:"Nello studio del MIT Media Lab era l'83 per cento. Chi aveva scritto da solo ci riusciva quasi sempre."},
+ {t:"mc",q:"Un tutor programmato per dare indizi invece delle soluzioni: durante le esercitazioni, rispetto a chi non usa nessuna IA, i voti…",o:["peggiorano","restano uguali","salgono di circa la metà","più che raddoppiano"],ok:3,s:"Salgono del 127 per cento, e all'esame senza IA questi studenti vanno come il gruppo di controllo, quindi il tutor non ha lasciato danni."}
+],onFatto:()=>svela()};
 
 BLOCCHI.chi={id:"chi",nome:"Chi l'ha chiesto?",occhiello:"Quiz · abbinamenti",titolo:"Chi ha posto questa domanda?",items:[
  {t:"abbina",q:"Abbina ogni domanda a chi l'ha posta o l'ha resa celebre.",o:["Socrate nel Menone","Robin G. Collingwood","Alan Turing","Martin Heidegger","Gianni Rodari","Paulo Freire"],
@@ -1043,7 +1050,9 @@ BLOCCHI.situazioni={id:"situazioni",nome:"Situazioni d'aula",occhiello:"Quiz · 
 
 Object.values(BLOCCHI).forEach(b=>{b.tot=b.items.reduce((s,it)=>s+(it.t==="abbina"?it.righe.length:1),0);renderBlocco(b)});
 aggiornaRegistro();
-$("#ricomincia").onclick=()=>{for(const k in REG)delete REG[k];Object.values(BLOCCHI).forEach(renderBlocco);aggiornaRegistro()};
+function svela(){$("#velabile").classList.remove("velato")}
+$("#svela").onclick=svela;
+$("#ricomincia").onclick=()=>{for(const k in REG)delete REG[k];Object.values(BLOCCHI).forEach(renderBlocco);$("#velabile").classList.add("velato");aggiornaRegistro()};
 
 /* ---------- genealogia ---------- */
 const tappe=[
