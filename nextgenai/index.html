@@ -1,0 +1,1193 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Prompt Thinking: insegnare a interrogare le macchine e il mondo. Una lezione di Andrea Colamedici per docenti, con quiz, schede e prompt da usare in classe.">
+<meta property="og:title" content="La scuola delle domande">
+<meta property="og:description" content="Prompt Thinking: insegnare a interrogare le macchine e il mondo. Lezione per docenti di Andrea Colamedici, Tlon.">
+<meta property="og:url" content="https://tlon.it/nextgenai/">
+<meta property="og:type" content="website">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>La scuola delle domande</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: quaderno a quadretti (chiaro) e lavagna d'ardesia (scuro); colonna di lettura, laboratori a due colonne, matita rossa e blu come segno grafico; registro dei voti come filo dei quiz */
+:root{
+  --carta:#F6F8FB; --quadretto:rgba(31,79,209,.075); --superficie:#FFFFFF; --superficie-2:#EEF2F8;
+  --inchiostro:#13203A; --muto:#56657F; --linea:#CCD6E6;
+  --blu:#1F4FD1; --blu-tenue:rgba(31,79,209,.12); --rosso:#D3263A; --rosso-tenue:rgba(211,38,58,.10);
+  --ok:#1C7A4D; --ok-tenue:rgba(28,122,77,.12);
+  --f-display:"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --f-testo:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r:6px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --carta:#18231F; --quadretto:rgba(238,241,234,.05); --superficie:#213029; --superficie-2:#2A3A33;
+  --inchiostro:#ECEFE7; --muto:#A3B4AB; --linea:#3B4C44;
+  --blu:#93B4FF; --blu-tenue:rgba(147,180,255,.16); --rosso:#FF8A93; --rosso-tenue:rgba(255,138,147,.14);
+  --ok:#7FD3A6; --ok-tenue:rgba(127,211,166,.14); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --carta:#18231F; --quadretto:rgba(238,241,234,.05); --superficie:#213029; --superficie-2:#2A3A33;
+  --inchiostro:#ECEFE7; --muto:#A3B4AB; --linea:#3B4C44;
+  --blu:#93B4FF; --blu-tenue:rgba(147,180,255,.16); --rosso:#FF8A93; --rosso-tenue:rgba(255,138,147,.14);
+  --ok:#7FD3A6; --ok-tenue:rgba(127,211,166,.14); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  background-color:var(--carta); color:var(--inchiostro);
+  background-image:linear-gradient(var(--quadretto) 1px,transparent 1px),linear-gradient(90deg,var(--quadretto) 1px,transparent 1px);
+  background-size:22px 22px;
+  font-family:var(--f-testo); font-size:1.0625rem; line-height:1.6;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+body.proiezione{font-size:1.38rem}
+body.proiezione .wrap{max-width:1320px}
+body.proiezione .nota,body.proiezione .fonte{font-size:1rem}
+body.proiezione .mappa,body.proiezione footer{display:none}
+body.proiezione .quadro{min-height:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--carta)}
+a{color:var(--blu)}
+:focus-visible{outline:2px solid var(--blu);outline-offset:2px;border-radius:3px}
+.wrap{max-width:1120px;margin-inline:auto}
+.lettura{max-width:66ch}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;text-wrap:balance;line-height:1.08;margin:0}
+h2{font-size:clamp(2rem,4.8vw,3.5rem);letter-spacing:-.01em}
+h3{font-size:clamp(1.3rem,2.4vw,1.7rem)}
+p{margin:0}
+.occhiello{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muto)}
+.matita{display:flex;height:5px;width:88px;border-radius:3px;overflow:hidden}
+.matita i{flex:1;background:var(--rosso)} .matita i+i{background:var(--blu)}
+.flusso{display:flex;flex-direction:column;gap:18px;min-width:0}
+.nota{font-size:.86rem;color:var(--muto)}
+.riga{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* barra */
+.barra{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding-inline:max(16px, env(safe-area-inset-left, 0px));
+  background:color-mix(in srgb, var(--carta) 90%, transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--linea)}
+.barra .wrap{display:flex;align-items:center;gap:12px;min-height:52px}
+.barra .marchio{font-family:var(--f-display);font-weight:700;font-size:1.05rem;white-space:nowrap}
+.barra nav{flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.barra nav::-webkit-scrollbar{display:none}
+.barra nav ol{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+.barra nav a{display:block;padding:6px 9px;border-radius:999px;text-decoration:none;color:var(--muto);font-size:.84rem;white-space:nowrap}
+.barra nav a.attivo{background:var(--blu-tenue);color:var(--blu);font-weight:700}
+.btn{font:inherit;font-size:.9rem;cursor:pointer;border:1px solid var(--linea);background:var(--superficie);color:var(--inchiostro);padding:8px 14px;border-radius:var(--r);display:inline-flex;align-items:center;gap:8px;line-height:1.2}
+.btn:hover{border-color:var(--blu)}
+.btn.pieno{background:var(--blu);border-color:var(--blu);color:var(--carta);font-weight:700}
+.btn.pieno:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.piccolo{padding:5px 10px;font-size:.8rem}
+.registro-btn{font-family:var(--f-mono);font-size:.78rem;white-space:nowrap}
+.registro-btn b{color:var(--rosso)}
+@media (max-width:700px){.barra .marchio{display:none}}
+
+/* sezioni */
+.sez{padding-block:clamp(56px,9vw,112px);border-bottom:1px solid var(--linea);scroll-margin-top:52px}
+body.proiezione .sez{min-height:100vh}
+.testa{display:flex;flex-direction:column;gap:16px;margin-bottom:clamp(28px,4vw,48px)}
+.testa .num{font-family:var(--f-display);font-style:italic;font-size:1.1rem;color:var(--rosso)}
+.lead{font-size:1.18em;line-height:1.55}
+.scheda{background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:clamp(18px,2.6vw,28px);display:flex;flex-direction:column;gap:14px;min-width:0}
+.scheda .fonte{font-family:var(--f-mono);font-size:.74rem;color:var(--muto);letter-spacing:.02em}
+.due{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tre{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:860px){.due,.tre{grid-template-columns:1fr}}
+.prompt{font-family:var(--f-mono);font-size:.9rem;line-height:1.65;background:var(--superficie-2);border:1px solid var(--linea);border-radius:var(--r);padding:16px 18px;white-space:pre-wrap;overflow-wrap:anywhere}
+.prompt mark{background:var(--blu-tenue);color:inherit;border-radius:3px;padding:0 2px}
+
+/* apertura */
+.apertura{position:relative;padding-block:clamp(48px,8vw,104px) clamp(48px,7vw,88px);overflow:hidden}
+.apertura .grande{position:absolute;right:-2vw;top:50%;transform:translateY(-52%);font-family:var(--f-display);font-weight:800;font-style:italic;
+  font-size:clamp(18rem,44vw,40rem);line-height:.8;color:var(--rosso);opacity:.13;pointer-events:none;user-select:none}
+.apertura h1{font-size:clamp(3rem,10vw,8.2rem);font-weight:700;letter-spacing:-.02em;line-height:.95}
+.apertura h1 em{font-style:italic;color:var(--blu);font-weight:600}
+.apertura .sotto{font-family:var(--f-display);font-size:clamp(1.25rem,2.6vw,1.9rem);font-style:italic;max-width:30ch}
+.apertura .firma{color:var(--muto);font-size:.95rem}
+.apertura .colonna{position:relative;display:flex;flex-direction:column;gap:22px}
+.oracolo{margin-top:28px;display:grid;grid-template-columns:auto 1fr;gap:20px 28px;align-items:center;max-width:780px;
+  background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:22px}
+.oracolo .schermo{font-family:var(--f-mono);font-size:3.4rem;font-weight:500;color:var(--blu);min-width:3.2ch;text-align:center;line-height:1}
+.oracolo .schermo.vuoto{color:var(--linea)}
+.oracolo p{color:var(--muto);font-size:.98rem}
+.oracolo .azioni{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+@media (max-width:560px){.oracolo{grid-template-columns:1fr}.oracolo .schermo{text-align:left}}
+.mappa{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;max-width:780px}
+.mappa a{font-size:.82rem;text-decoration:none;color:var(--inchiostro);background:var(--superficie);border:1px solid var(--linea);border-radius:999px;padding:4px 11px}
+.mappa a span{font-family:var(--f-display);font-style:italic;color:var(--rosso);margin-right:5px}
+.chiave{display:inline-flex;gap:6px;align-items:center;color:var(--muto);font-size:.82rem}
+kbd{font-family:var(--f-mono);font-size:.75rem;border:1px solid var(--linea);border-bottom-width:2px;border-radius:4px;padding:1px 6px;background:var(--superficie)}
+
+/* dati */
+.griglia-dati{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;transition:filter .4s}
+@media (max-width:860px){.griglia-dati{grid-template-columns:1fr}}
+.velabile{position:relative;margin-top:20px}
+.velabile.velato .griglia-dati{filter:blur(9px);pointer-events:none;user-select:none}
+.velo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+.velabile:not(.velato) .velo{display:none}
+.velo div{background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:18px 22px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;max-width:36ch}
+.scheda svg{width:100%;height:auto;display:block}
+.cifra{font-family:var(--f-display);font-weight:700;font-size:clamp(4rem,9vw,6.5rem);line-height:.9;color:var(--rosso)}
+.cifra small{font-size:.45em}
+.colonna-dati{display:flex;flex-direction:column;gap:20px;min-width:0}
+.tesi{font-family:var(--f-display);font-size:clamp(1.4rem,2.8vw,2.1rem);font-style:italic;line-height:1.25;max-width:34ch;margin-top:clamp(28px,4vw,44px);padding-left:20px;border-left:3px solid var(--blu)}
+
+/* quiz */
+.quiz{background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:clamp(18px,2.8vw,30px);display:flex;flex-direction:column;gap:22px;min-width:0}
+.quiz .testa-quiz{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;border-bottom:1px dashed var(--linea);padding-bottom:12px}
+.quiz .testa-quiz h3{font-size:clamp(1.2rem,2.2vw,1.5rem)}
+.quiz .punti{font-family:var(--f-mono);font-size:.78rem;color:var(--muto)}
+.qi{display:flex;flex-direction:column;gap:10px}
+.qi .qd{font-weight:700;line-height:1.45}
+.qi .qd .n{font-family:var(--f-display);font-style:italic;color:var(--rosso);font-weight:600;margin-right:6px}
+.qi .tipo{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blu)}
+.opzioni{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.opzioni.vf{grid-template-columns:repeat(2,minmax(0,140px))}
+.opzioni button{font:inherit;font-size:.93rem;text-align:left;cursor:pointer;background:var(--carta);border:1px solid var(--linea);border-radius:var(--r);padding:10px 12px;color:var(--inchiostro);line-height:1.35}
+.opzioni button:hover:not(:disabled){border-color:var(--blu)}
+.opzioni button:disabled{cursor:default}
+.opzioni button.giusta{border-color:var(--ok);background:var(--ok-tenue)}
+.opzioni button.sbagliata{border-color:var(--rosso);background:var(--rosso-tenue);text-decoration:line-through;text-decoration-color:var(--rosso)}
+.spiega{font-size:.92rem;padding:10px 14px;border-radius:var(--r);background:var(--superficie-2);border-left:3px solid var(--blu)}
+.spiega.ok{border-left-color:var(--ok)} .spiega.no{border-left-color:var(--rosso)}
+.spiega b{font-family:var(--f-mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;margin-right:6px}
+.spiega.ok b{color:var(--ok)} .spiega.no b{color:var(--rosso)}
+.stima{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center}
+@media (max-width:560px){.stima{grid-template-columns:1fr auto}.stima .btn{grid-column:1/-1}}
+.stima input{accent-color:var(--blu);width:100%}
+.stima output{font-family:var(--f-display);font-weight:700;font-size:1.6rem;min-width:3.4ch;text-align:right;font-variant-numeric:tabular-nums}
+.scala{position:relative;height:34px;border-bottom:2px solid var(--linea);margin-inline:6px}
+.scala .m{position:absolute;bottom:-7px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;font-family:var(--f-mono);font-size:.72rem;white-space:nowrap}
+.scala .m::after{content:"";width:12px;height:12px;border-radius:50%;margin-top:3px}
+.scala .m.tu{color:var(--blu)} .scala .m.tu::after{background:var(--blu)}
+.scala .m.vero{color:var(--rosso)} .scala .m.vero::after{background:var(--rosso)}
+.abbina{display:flex;flex-direction:column;gap:8px}
+.abbina .ar{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,220px) 1.6em;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--linea)}
+.abbina .ar .q{font-family:var(--f-display);font-style:italic;font-size:1.08rem;line-height:1.3}
+.abbina .ar .e{font-weight:700;text-align:center}
+.abbina .ar .e.ok{color:var(--ok)} .abbina .ar .e.no{color:var(--rosso)}
+.abbina .ar .corr{grid-column:1/-1;font-size:.82rem;color:var(--muto)}
+@media (max-width:560px){.abbina .ar{grid-template-columns:minmax(0,1fr) 1.6em}.abbina .ar select{grid-column:1;grid-row:2}.abbina .ar .e{grid-row:2;grid-column:2}}
+.prompt-quiz{font-family:var(--f-mono);font-size:.86rem;background:var(--superficie-2);border-radius:var(--r);padding:12px 14px;line-height:1.55}
+
+/* bivio */
+.bivio{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--linea);border-radius:var(--r);overflow:hidden;background:var(--superficie)}
+.bivio > div{padding:clamp(20px,3vw,34px);display:flex;flex-direction:column;gap:12px;min-width:0}
+.bivio > div + div{border-left:1px solid var(--linea);background:var(--blu-tenue)}
+.bivio .etichetta{font-family:var(--f-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.1em}
+.bivio > div:first-child .etichetta{color:var(--rosso)} .bivio > div + div .etichetta{color:var(--blu)}
+@media (max-width:720px){.bivio{grid-template-columns:1fr}.bivio > div + div{border-left:0;border-top:1px solid var(--linea)}}
+.cartiglio{font-family:var(--f-display);font-size:1.05rem}
+
+/* genealogia */
+.genealogia{display:grid;grid-template-columns:240px minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:820px){.genealogia{grid-template-columns:1fr}}
+.anni{display:flex;flex-direction:column;border-left:1px solid var(--linea)}
+@media (max-width:820px){.anni{flex-direction:row;overflow-x:auto;border-left:0;border-bottom:1px solid var(--linea);padding-bottom:4px}}
+.anni button{font:inherit;background:none;border:0;cursor:pointer;color:var(--muto);text-align:left;padding:7px 14px;display:flex;gap:10px;align-items:baseline;width:100%;white-space:nowrap;position:relative}
+.anni button .a{font-family:var(--f-mono);font-size:.8rem;min-width:7.5ch}
+.anni button .c{font-size:.9rem}
+.anni button[aria-selected="true"]{color:var(--inchiostro);font-weight:700}
+.anni button[aria-selected="true"]::before{content:"";position:absolute;left:-2px;top:6px;bottom:6px;width:3px;background:var(--rosso);border-radius:2px}
+@media (max-width:820px){.anni button .c{display:none}.anni button[aria-selected="true"]::before{left:8px;right:8px;top:auto;bottom:-5px;width:auto;height:3px}}
+.quadro{background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:clamp(22px,3.4vw,40px);display:flex;flex-direction:column;gap:16px;min-height:360px;min-width:0}
+.quadro .domanda{font-family:var(--f-display);font-style:italic;font-size:clamp(1.7rem,4vw,2.9rem);line-height:1.15;color:var(--blu);text-wrap:balance}
+.quadro .chi{font-family:var(--f-mono);font-size:.8rem;color:var(--muto)}
+.quadro .inclasse{border-top:1px dashed var(--linea);padding-top:14px;display:flex;gap:10px}
+.quadro .inclasse b{color:var(--rosso);font-family:var(--f-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;padding-top:3px}
+.quadro .frecce{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap}
+
+/* anatomia */
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.lab{grid-template-columns:1fr}}
+.strati{display:flex;flex-direction:column;gap:8px}
+.strato{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start;padding:12px 14px;border:1px solid var(--linea);border-radius:var(--r);background:var(--superficie);cursor:pointer}
+.strato input{margin-top:4px;accent-color:var(--blu);width:18px;height:18px}
+.strato .nome{font-weight:700}
+.strato .allena{grid-column:2;font-size:.86rem;color:var(--muto)}
+.strato:has(input:checked){border-color:var(--blu);background:var(--blu-tenue)}
+#prompt-vivo{min-height:140px}
+.contatore{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-family:var(--f-mono);font-size:.72rem;padding:3px 9px;border-radius:999px;border:1px solid var(--linea);color:var(--muto)}
+.chip.on{border-color:var(--blu);color:var(--blu);background:var(--blu-tenue)}
+.effetto{font-size:.93rem;border-left:3px solid var(--blu);padding:2px 0 2px 14px;color:var(--inchiostro)}
+.errori .scheda h3{font-size:1.4rem}
+.errori .scheda .rimedio{font-size:.86rem;border-top:1px dashed var(--linea);padding-top:10px;margin-top:auto}
+.errori .scheda .rimedio b{color:var(--blu);font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;display:block}
+.errori .verbo{font-family:var(--f-display);font-style:italic;font-size:2.4rem;line-height:1;color:var(--rosso)}
+
+/* scala */
+.scala-bloom{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:24px;align-items:stretch}
+@media (max-width:820px){.scala-bloom{grid-template-columns:1fr}}
+.gradini{display:flex;flex-direction:column-reverse;gap:6px}
+.gradini button{font:inherit;cursor:pointer;text-align:left;border:1px solid var(--linea);background:var(--superficie);color:var(--inchiostro);border-radius:var(--r);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.gradini button .g{font-family:var(--f-display);font-weight:600;font-size:1.12rem}
+.gradini button .peso{display:flex;gap:2px}
+.gradini button .peso i{width:6px;height:14px;border-radius:2px;background:var(--linea)}
+.gradini button .peso i.on{background:var(--rosso)}
+.gradini button[aria-pressed="true"]{border-color:var(--blu);background:var(--blu-tenue)}
+.gradini button:nth-child(1){margin-right:50%}.gradini button:nth-child(2){margin-right:40%}.gradini button:nth-child(3){margin-right:30%}.gradini button:nth-child(4){margin-right:20%}.gradini button:nth-child(5){margin-right:10%}
+@media (max-width:820px){.gradini button{margin-right:0!important}}
+
+/* pratiche */
+.schede-tab{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.schede-tab button{font:inherit;cursor:pointer;background:var(--superficie);border:1px solid var(--linea);color:var(--inchiostro);border-radius:var(--r);padding:10px 14px;display:flex;gap:10px;align-items:baseline;text-align:left}
+.schede-tab button .n{font-family:var(--f-display);font-style:italic;color:var(--rosso);font-size:1.15rem}
+.schede-tab button[aria-selected="true"]{border-color:var(--blu);background:var(--blu-tenue);font-weight:700}
+.pannello{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:24px;align-items:start}
+@media (max-width:960px){.pannello{grid-template-columns:1fr}}
+.passi{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+.passi li::marker{font-family:var(--f-display);font-style:italic;color:var(--rosso)}
+.modello{position:relative}
+.modello .prompt{padding-top:34px}
+.modello .copia{position:absolute;top:8px;right:8px}
+.modello .tag{position:absolute;top:10px;left:14px;font-family:var(--f-mono);font-size:.7rem;color:var(--muto);text-transform:uppercase;letter-spacing:.08em}
+label.campo{display:flex;flex-direction:column;gap:6px;font-size:.86rem;color:var(--muto)}
+label.campo b{color:var(--inchiostro)}
+textarea,input[type=text],select{font:inherit;font-size:.95rem;color:var(--inchiostro);background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:70px;line-height:1.5}
+textarea:focus,input[type=text]:focus,select:focus{outline:2px solid var(--blu);outline-offset:0;border-color:var(--blu)}
+.valuta{font-size:.92rem;border-top:1px dashed var(--linea);padding-top:12px}
+.valuta b{font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blu);display:block;margin-bottom:4px}
+.foglio{background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px}
+.foglio .tit{font-family:var(--f-mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muto)}
+.varianti{display:flex;flex-direction:column;gap:12px}
+
+/* rubrica */
+.rubrica{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:center}
+@media (max-width:620px){.rubrica{grid-template-columns:1fr}}
+.cursori{display:flex;flex-direction:column;gap:10px}
+.cursori label{display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:.88rem}
+.cursori input{grid-column:1/-1;accent-color:var(--blu);width:100%}
+.cursori .liv{font-family:var(--f-mono);font-size:.72rem;color:var(--blu);text-align:right}
+.radar text{font-family:var(--f-testo);font-size:11px;fill:var(--inchiostro)}
+.radar .anello{fill:none;stroke:var(--linea)}
+.radar .asse{stroke:var(--linea)}
+.radar .area{fill:var(--blu);fill-opacity:.2;stroke:var(--blu);stroke-width:2}
+.radar .punto{fill:var(--blu)}
+.descr-liv{font-size:.88rem;background:var(--superficie-2);border-radius:var(--r);padding:10px 14px;min-height:3.2em}
+
+/* qft */
+.qft-focus{font-family:var(--f-display);font-style:italic;font-size:1.4rem;color:var(--blu);padding:14px 16px;border:1px dashed var(--blu);border-radius:var(--r);text-align:center}
+.qlista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.qlista li{display:grid;grid-template-columns:auto 1fr auto auto auto;gap:8px;align-items:center;background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:8px 10px;font-size:.93rem}
+.qlista li .t{min-width:0;overflow-wrap:anywhere}
+.qlista li.prio{border-color:var(--rosso);background:var(--rosso-tenue)}
+.qlista button{font:inherit;font-size:.75rem;cursor:pointer;background:none;border:1px solid var(--linea);border-radius:4px;color:var(--muto);padding:2px 7px;font-family:var(--f-mono)}
+.qlista button.ac{min-width:2.2em}
+.qlista button.ac[data-tipo="A"]{color:var(--blu);border-color:var(--blu)}
+.qlista button.ac[data-tipo="C"]{color:var(--rosso);border-color:var(--rosso)}
+.qlista .stella[aria-pressed="true"]{color:var(--rosso);border-color:var(--rosso)}
+.qlista .ord{font-family:var(--f-mono);font-size:.75rem;color:var(--muto);width:1.6em;text-align:right}
+.fasi{display:flex;gap:4px;flex-wrap:wrap}
+.fasi span{font-family:var(--f-mono);font-size:.7rem;padding:3px 8px;border-radius:999px;background:var(--superficie-2);color:var(--muto)}
+
+/* patto */
+.patto{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:900px){.patto{grid-template-columns:1fr}}
+.voci{display:flex;flex-direction:column;gap:6px}
+.voci label{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:var(--r);border:1px solid transparent;cursor:pointer;font-size:.95rem}
+.voci label:has(input:checked){border-color:var(--linea);background:var(--superficie)}
+.voci input{margin-top:5px;accent-color:var(--blu);width:16px;height:16px;flex:none}
+.pergamena{background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:14px;position:sticky;top:72px}
+@media (max-width:900px){.pergamena{position:static}}
+.pergamena h3{text-align:center}
+.pergamena .intest{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pergamena ol{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:5px;font-size:.95rem}
+.pergamena .gruppo{font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--rosso)}
+.firme{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:10px;font-size:.8rem;color:var(--muto)}
+.firme span{border-top:1px solid var(--inchiostro);padding-top:4px}
+
+/* docente */
+.citazione{font-family:var(--f-display);font-size:clamp(1.6rem,3.6vw,2.6rem);font-style:italic;line-height:1.2;max-width:28ch}
+.citazione span{color:var(--rosso)}
+.sala{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:720px){.sala{grid-template-columns:1fr}}
+.sala li{background:var(--superficie);border:1px solid var(--linea);border-radius:var(--r);padding:16px 18px;font-family:var(--f-display);font-size:1.15rem;line-height:1.35;display:flex;gap:12px}
+.sala li::before{content:"?";color:var(--rosso);font-weight:800;font-style:italic}
+
+/* registro */
+.registro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+@media (max-width:620px){.registro{grid-template-columns:1fr}}
+.registro table{width:100%;border-collapse:collapse;font-size:.92rem}
+.registro td,.registro th{padding:7px 4px;border-bottom:1px solid var(--linea);text-align:left}
+.registro th{font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muto);font-weight:500}
+.registro td.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono)}
+.voto{width:150px;height:150px;border:3px solid var(--rosso);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-6deg)}
+.voto b{font-family:var(--f-display);font-size:3.6rem;line-height:1;color:var(--rosso);font-weight:700}
+.voto span{font-family:var(--f-mono);font-size:.7rem;color:var(--muto);text-transform:uppercase;letter-spacing:.1em}
+
+
+/* congedo */
+.congedo-griglia{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,64px);align-items:center}
+@media (max-width:760px){.congedo-griglia{grid-template-columns:1fr}}
+.indirizzo{font-family:var(--f-mono);font-size:clamp(1.3rem,3vw,2rem);color:var(--blu)}
+.qr-box{background:#FFFFFF;border:1px solid var(--linea);border-radius:var(--r);padding:14px;width:min(360px,80vw)}
+.qr-box svg{display:block;width:100%;height:auto}
+body.proiezione .qr-box{width:min(440px,42vw)}
+/* fonti */
+.fonti{columns:2 320px;column-gap:40px;font-size:.88rem;padding-left:1.2em;margin:0}
+.fonti li{break-inside:avoid;margin-bottom:8px;color:var(--muto)}
+.fonti li b{color:var(--inchiostro);font-weight:700}
+footer{padding-block:40px;color:var(--muto);font-size:.85rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+</head>
+<body>
+<header class="barra">
+  <div class="wrap">
+    <span class="marchio">La scuola delle domande</span>
+    <nav aria-label="Parti della lezione"><ol id="indice">
+      <li><a href="#apertura">Apertura</a></li>
+      <li><a href="#prova">La prova</a></li>
+      <li><a href="#bivio">Il bivio</a></li>
+      <li><a href="#genealogia">Genealogia</a></li>
+      <li><a href="#anatomia">Anatomia</a></li>
+      <li><a href="#scala">La scala</a></li>
+      <li><a href="#pratiche">Cinque pratiche</a></li>
+      <li><a href="#patto">Il patto</a></li>
+      <li><a href="#docente">Il docente</a></li>
+      <li><a href="#verifica">Verifica</a></li>
+      <li><a href="#fonti">Fonti</a></li>
+      <li><a href="#congedo">QR</a></li>
+    </ol></nav>
+    <a class="btn piccolo registro-btn" href="#verifica" id="registro-btn" title="Risposte esatte nei quiz">Registro <b id="reg-mini">0/0</b></a>
+    <button class="btn piccolo" id="tema" type="button" title="Cambia tema, tasto T">Tema</button>
+    <button class="btn piccolo" id="proietta" type="button" aria-pressed="false" title="Modalità proiezione, tasto P">Proietta</button>
+  </div>
+</header>
+
+<main>
+<!-- APERTURA -->
+<section class="apertura sez" id="apertura">
+  <div class="grande" aria-hidden="true">?</div>
+  <div class="wrap colonna">
+    <div class="matita" aria-hidden="true"><i></i><i></i></div>
+    <p class="occhiello">Prompt Thinking · lezione per docenti</p>
+    <h1>La scuola <em>delle domande</em></h1>
+    <p class="sotto">Insegnare a interrogare le macchine e il mondo</p>
+    <p class="firma">Andrea Colamedici · dal corso di Prompt Thinking all'Istituto Europeo di Design di Roma e alla 24ORE Business School</p>
+
+    <div class="oracolo" aria-live="polite">
+      <div class="schermo vuoto" id="schermo">··</div>
+      <p id="oracolo-testo">Nella <i>Guida galattica per gli autostoppisti</i> di Douglas Adams (1979) un computer di nome Pensiero Profondo viene costruito per dare la risposta alla domanda fondamentale sulla vita, l'universo e tutto quanto. Calcola per sette milioni e mezzo di anni.</p>
+      <div class="azioni">
+        <button class="btn pieno" id="chiedi42" type="button">Chiedi a Pensiero Profondo</button>
+        <span class="chiave"><kbd>→</kbd><kbd>←</kbd> o il telecomando per avanzare · <kbd>P</kbd> proiezione · <kbd>T</kbd> tema</span>
+      </div>
+    </div>
+    <nav class="mappa" aria-label="Percorso">
+      <a href="#prova"><span>I</span>La prova</a><a href="#bivio"><span>II</span>Il bivio</a><a href="#genealogia"><span>III</span>Genealogia</a><a href="#anatomia"><span>IV</span>Anatomia</a><a href="#scala"><span>V</span>La scala</a><a href="#pratiche"><span>VI</span>Cinque pratiche</a><a href="#patto"><span>VII</span>Il patto</a><a href="#docente"><span>VIII</span>Il docente</a><a href="#verifica"><span>IX</span>Verifica</a>
+    </nav>
+  </div>
+</section>
+
+<!-- PROVA -->
+<section class="sez" id="prova">
+  <div class="wrap">
+    <div class="testa">
+      <span class="num">I · La prova</span>
+      <h2>La risposta corretta ha smesso di provare l'apprendimento</h2>
+      <p class="lead lettura">Per secoli la scuola ha potuto leggere nel compito consegnato la traccia del lavoro che lo aveva prodotto, e un tema ben costruito bastava a far supporre che qualcuno, a casa o al banco, avesse messo in ordine i propri pensieri. Da quando un modello linguistico scrive in pochi secondi un tema, un riassunto o la soluzione di un esercizio, quella supposizione si è incrinata, perché lo stesso foglio impeccabile può arrivare da uno studente che ha capito e da uno che ha incollato una risposta senza nemmeno leggerla.</p>
+    </div>
+
+    <div class="quiz" data-blocco="dati"></div>
+
+    <div class="velabile velato" id="velabile">
+      <div class="velo"><div><b>I dati sono coperti</b><span class="nota">Fate le tre stime con la sala per scoprirli, oppure mostrateli subito.</span><button class="btn piccolo" type="button" id="svela">Mostra i dati</button></div></div>
+      <div class="griglia-dati">
+        <figure class="scheda" style="margin:0">
+          <span class="occhiello">Matematica, un liceo in Turchia, quasi mille studenti</span>
+          <h3>Con l'IA i voti salgono. Senza, chi l'ha usata come stampella scende</h3>
+          <svg viewBox="0 0 560 300" role="img" aria-labelledby="graf-tit graf-desc">
+            <title id="graf-tit">Variazione dei voti rispetto al gruppo di controllo</title>
+            <desc id="graf-desc">Durante l'esercitazione con GPT-4: interfaccia standard più 48 per cento, tutor con indizi più 127 per cento. All'esame senza IA: interfaccia standard meno 17 per cento, tutor circa uguale al controllo.</desc>
+            <g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muto)">
+              <line x1="70" x2="540" y1="54.4" y2="54.4" stroke="var(--linea)" stroke-dasharray="3 4"/><text x="60" y="58" text-anchor="end">+120%</text>
+              <line x1="70" x2="540" y1="103.3" y2="103.3" stroke="var(--linea)" stroke-dasharray="3 4"/><text x="60" y="107" text-anchor="end">+80%</text>
+              <line x1="70" x2="540" y1="152.2" y2="152.2" stroke="var(--linea)" stroke-dasharray="3 4"/><text x="60" y="156" text-anchor="end">+40%</text>
+              <text x="60" y="205" text-anchor="end" fill="var(--inchiostro)">0</text>
+              <line x1="70" x2="540" y1="225.6" y2="225.6" stroke="var(--linea)" stroke-dasharray="3 4"/><text x="60" y="229" text-anchor="end">−20%</text>
+            </g>
+            <rect x="120" y="142.4" width="64" height="58.7" fill="var(--rosso)" rx="2"/>
+            <rect x="196" y="45.9" width="64" height="155.2" fill="var(--blu)" rx="2"/>
+            <rect x="350" y="201.1" width="64" height="20.8" fill="var(--rosso)" rx="2"/>
+            <rect x="426" y="199.6" width="64" height="3" fill="var(--blu)" rx="1"/>
+            <line x1="70" x2="540" y1="201.1" y2="201.1" stroke="var(--inchiostro)" stroke-width="1.2"/>
+            <text x="540" y="195" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muto)">gruppo di controllo</text>
+            <g font-family="Bodoni Moda, Georgia, serif" font-weight="700" font-size="20" text-anchor="middle">
+              <text x="152" y="134" fill="var(--rosso)">+48%</text>
+              <text x="228" y="38" fill="var(--blu)">+127%</text>
+              <text x="382" y="244" fill="var(--rosso)">−17%</text>
+              <text x="458" y="190" fill="var(--blu)">≈ 0</text>
+            </g>
+            <g font-family="Atkinson Hyperlegible, sans-serif" font-size="13" fill="var(--inchiostro)" text-anchor="middle">
+              <text x="190" y="282">Esercitazione con GPT-4</text>
+              <text x="420" y="282">Esame senza IA</text>
+            </g>
+          </svg>
+          <div class="riga" style="gap:18px;font-size:.86rem">
+            <span class="riga" style="gap:6px"><svg width="12" height="12" aria-hidden="true"><rect width="12" height="12" rx="2" fill="var(--rosso)"/></svg>GPT Base, interfaccia come ChatGPT</span>
+            <span class="riga" style="gap:6px"><svg width="12" height="12" aria-hidden="true"><rect width="12" height="12" rx="2" fill="var(--blu)"/></svg>GPT Tutor, indizi al posto delle soluzioni</span>
+          </div>
+          <figcaption class="nota">Gli studenti che avevano usato l'interfaccia standard la trattavano come una stampella e all'esame andavano peggio di chi l'IA non l'aveva mai avuta. Il tutor progettato per proteggere l'apprendimento attenuava quasi del tutto l'effetto.</figcaption>
+          <span class="fonte">Bastani et al., «Generative AI without guardrails can harm learning», PNAS 122, 2025</span>
+        </figure>
+        <div class="colonna-dati">
+          <div class="scheda">
+            <span class="occhiello">Scrivere un saggio con ChatGPT</span>
+            <div class="cifra">83<small>%</small></div>
+            <p>dei partecipanti che avevano scritto con il modello, pochi minuti dopo, non riusciva a citare correttamente una frase del proprio testo. Quasi tutti quelli che avevano scritto da soli o con un motore di ricerca ci riuscivano.</p>
+            <span class="fonte">Kosmyna et al., «Your Brain on ChatGPT», MIT Media Lab, 2025 · preprint, 54 partecipanti</span>
+          </div>
+          <div class="scheda">
+            <span class="occhiello">319 lavoratori della conoscenza</span>
+            <p>Più fiducia nell'IA si associa a meno pensiero critico; più fiducia nelle proprie capacità si associa a più pensiero critico.</p>
+            <span class="fonte">Lee et al., Microsoft Research e Carnegie Mellon, CHI 2025</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="tesi">Nello studio di Bastani i due gruppi usavano lo stesso modello, GPT-4. Cambiavano soltanto le istruzioni con cui era stato interrogato, ed è bastato quello a separare chi all'esame è andato peggio da chi ha tenuto il passo.</p>
+  </div>
+</section>
+
+<!-- BIVIO -->
+<section class="sez" id="bivio">
+  <div class="wrap">
+    <div class="testa">
+      <span class="num">II · Il bivio</span>
+      <h2>Due strade davanti alla macchina</h2>
+    </div>
+    <div class="bivio">
+      <div>
+        <span class="etichetta">Tenerla fuori</span>
+        <h3>Fingere che non esista</h3>
+        <p>Si vietano gli assistenti e si torna al compito in classe con carta e penna. Per qualche tempo la prova ridiventa affidabile, mentre gli studenti restano soli con uno strumento che fuori dall'aula già usano, e il docente finisce per spendere le sue ore a cercare frodi.</p>
+        <p class="nota">Anche la sorveglianza automatica ha i suoi limiti: nel luglio 2023 OpenAI ha ritirato il proprio classificatore di testi generati, citandone la bassa accuratezza.</p>
+      </div>
+      <div>
+        <span class="etichetta">Farne materia</span>
+        <h3>Insegnarla e valutarla</h3>
+        <p>La macchina entra nel programma come oggetto di studio. La conversazione che uno studente ha avuto con un assistente diventa un documento da leggere e valutare, gli errori della macchina, frequenti e quasi sempre istruttivi, diventano materiale di esercizio, e la prima cosa da correggere con la penna rossa è la domanda che lo studente ha posto.</p>
+      </div>
+    </div>
+    <div class="due" style="margin-top:20px">
+      <div class="scheda">
+        <span class="occhiello">Platone, Fedro, 274c-275b</span>
+        <p class="cartiglio">Il dio Theuth offre al re Thamus la scrittura come farmaco della memoria e della sapienza. Thamus gli risponde che otterrà l'effetto contrario: chi la impara smetterà di esercitare il ricordo e avrà l'apparenza della sapienza senza la sostanza.</p>
+        <p class="nota">Conosciamo questa condanna della scrittura perché Platone la mise per iscritto. La scuola ha già discusso in termini simili della calcolatrice e poi del motore di ricerca, e in entrambi i casi la discussione si è chiusa decidendo quando ammetterli e a quale scopo.</p>
+      </div>
+      <div class="scheda">
+        <span class="occhiello">Il quadro in Italia</span>
+        <p>Le <b>Linee guida per l'introduzione dell'IA nelle istituzioni scolastiche</b> (DM 166 del 9 agosto 2025) chiedono a ogni scuola un Piano d'Istituto per l'IA e lasciano alle singole scuole le scelte su come e quando usarla nella didattica.</p>
+        <p>Dal 2 febbraio 2025 l'articolo 4 dell'AI Act chiede a chi impiega sistemi di IA di garantire un'alfabetizzazione adeguata; la legge 132/2025 è in vigore dal 10 ottobre 2025.</p>
+        <p class="nota">Su che cosa fare concretamente in aula le Linee guida dicono poco, e la decisione spetta ai collegi e ai singoli docenti.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GENEALOGIA -->
+<section class="sez" id="genealogia">
+  <div class="wrap">
+    <div class="testa">
+      <span class="num">III · Genealogia</span>
+      <h2>Una lunga storia di maestri che domandano</h2>
+      <p class="lettura">Chi scrive un prompt fa una cosa che filosofi, pedagogisti e informatici hanno studiato a lungo prima che esistessero i modelli linguistici. Da ciascuna tappa di questa storia si può ricavare un esercizio da proporre in classe la settimana prossima.</p>
+    </div>
+    <div class="genealogia">
+      <div class="anni" role="tablist" aria-label="Tappe" id="anni"></div>
+      <article class="quadro" id="quadro" aria-live="polite"></article>
+    </div>
+    <p class="nota" style="margin-top:12px">Le domande sono in parafrasi; tra caporali quelle testuali.</p>
+    <div class="quiz" data-blocco="chi" style="margin-top:28px"></div>
+  </div>
+</section>
+
+<!-- ANATOMIA -->
+<section class="sez" id="anatomia">
+  <div class="wrap">
+    <div class="testa">
+      <span class="num">IV · Anatomia</span>
+      <h2>Per interrogare bene servono le competenze di sempre</h2>
+      <p class="lead lettura">Per ottenere da un modello linguistico qualcosa che valga la pena leggere servono chiarezza di pensiero, conoscenza del contesto e la capacità di riconoscere un errore, di chiedere una prova, di cambiare punto di vista, cioè le competenze che la scuola cerca di formare da sempre e che compaiono, con nomi diversi, nelle programmazioni di ogni disciplina. Per questo un prompt si può correggere con la penna rossa come un tema, segnando a margine dove manca uno scopo o dove lo studente ha dato per scontato ciò che andava detto.</p>
+    </div>
+    <div class="lab">
+      <div class="flusso">
+        <p class="occhiello">Costruisci la domanda, uno strato alla volta</p>
+        <div class="strati" id="strati"></div>
+      </div>
+      <div class="flusso">
+        <div class="riga" style="justify-content:space-between">
+          <p class="occhiello">La domanda che ne risulta</p>
+          <div class="contatore" id="contatore"></div>
+        </div>
+        <div class="prompt" id="prompt-vivo"></div>
+        <div class="riga">
+          <button class="btn piccolo" type="button" id="copia-vivo">Copia</button>
+          <button class="btn piccolo" type="button" id="tutti">Tutti gli strati</button>
+          <button class="btn piccolo" type="button" id="nessuno">Domanda nuda</button>
+        </div>
+        <p class="effetto" id="effetto"></p>
+        <p class="nota">Esercizio d'aula: proiettate la domanda nuda e quella costruita in due finestre dello stesso assistente, e chiedete alla classe che cosa ha imparato in più chi ha posto la seconda.</p>
+      </div>
+    </div>
+
+    <div class="testa" style="margin-top:clamp(48px,7vw,80px);margin-bottom:24px">
+      <h3>Tre modi in cui la macchina sbaglia</h3>
+      <p class="lettura">Alcuni difetti dei modelli linguistici ricorrono con tanta regolarità da poter essere anticipati, e per ciascuno esiste un rimedio tra le competenze della domanda.</p>
+    </div>
+    <div class="tre errori">
+      <div class="scheda">
+        <span class="verbo">Inventa</span>
+        <p>Produce fonti, dati e citazioni plausibili che non esistono. Nel caso <b>Mata v. Avianca</b> (New York, 2023) due avvocati depositarono sei precedenti generati da ChatGPT e inesistenti; uno aveva chiesto al modello se fossero veri e aveva ricevuto conferma. Il giudice P. Kevin Castel li sanzionò con 5.000 dollari.</p>
+        <p class="rimedio"><b>Rimedio</b>Chiedere una prova e verificarla fuori dalla macchina che l'ha prodotta.</p>
+      </div>
+      <div class="scheda">
+        <span class="verbo">Asseconda</span>
+        <p>Tende a dare ragione a chi la interroga, anche a scapito dell'esattezza. Il fenomeno, chiamato <i>sycophancy</i>, è documentato da Sharma e colleghi in «Towards Understanding Sycophancy in Language Models» (2023), presentato a ICLR 2024.</p>
+        <p class="rimedio"><b>Rimedio</b>Chiedere esplicitamente obiezioni e punti di vista contrari. È la pratica 2.</p>
+      </div>
+      <div class="scheda">
+        <span class="verbo">Varia</span>
+        <p>La generazione è probabilistica: la stessa domanda, posta a modelli diversi o allo stesso modello in due momenti, produce risposte diverse, a volte in contraddizione tra loro.</p>
+        <p class="rimedio"><b>Rimedio</b>Confrontare le risposte e trattare la divergenza come un problema da indagare. È la pratica 3.</p>
+      </div>
+    </div>
+    <div class="quiz" data-blocco="diagnosi" style="margin-top:28px"></div>
+  </div>
+</section>
+
+<!-- SCALA -->
+<section class="sez" id="scala">
+  <div class="wrap">
+    <div class="testa">
+      <span class="num">V · La scala</span>
+      <h2>Non tutte le domande pesano uguale</h2>
+      <p class="lead lettura">La tassonomia di Bloom (1956), rivista da Anderson e Krathwohl nel 2001, ordina gli obiettivi cognitivi in sei livelli. Letta oggi, la scala aiuta anche a stimare quanto lavoro resta allo studente dopo che la macchina ha risposto. Chi chiede in che anno la peste arrivò a Milano ha finito quando legge la data, mentre chi deve giudicare i processi agli untori del 1630 ha appena cominciato.</p>
+    </div>
+    <div class="scala-bloom">
+      <div class="gradini" id="gradini" aria-label="Livelli della tassonomia"></div>
+      <div class="scheda" id="gradino-scheda" aria-live="polite"></div>
+    </div>
+    <div class="quiz" data-blocco="scala" style="margin-top:28px"></div>
+  </div>
+</section>
+
+<!-- PRATICHE -->
+<section class="sez" id="pratiche">
+  <div class="wrap">
+    <div class="testa">
+      <span class="num">VI · In classe</span>
+      <h2>Cinque pratiche da portare in aula subito</h2>
+      <p class="lettura">Per ciascuna pratica trovate la procedura, un prompt da copiare e i criteri di valutazione, accanto a uno strumento da usare in aula.</p>
+    </div>
+    <div class="schede-tab" role="tablist" aria-label="Pratiche" id="tab-pratiche">
+      <button role="tab" aria-selected="true" aria-controls="p1" id="t1"><span class="n">1</span>Valutare la conversazione</button>
+      <button role="tab" aria-selected="false" aria-controls="p2" id="t2"><span class="n">2</span>Farsi confutare</button>
+      <button role="tab" aria-selected="false" aria-controls="p3" id="t3"><span class="n">3</span>Confrontare i modelli</button>
+      <button role="tab" aria-selected="false" aria-controls="p4" id="t4"><span class="n">4</span>Domande prima della scrittura</button>
+      <button role="tab" aria-selected="false" aria-controls="p5" id="t5"><span class="n">5</span>Farsi interrogare</button>
+    </div>
+
+    <!-- P1 -->
+    <div class="pannello" role="tabpanel" id="p1" aria-labelledby="t1">
+      <div class="flusso">
+        <h3>Valutare l'intera conversazione insieme al prodotto finale</h3>
+        <p>Del lavoro di uno studente il testo finale dice poco. La conversazione che lo ha prodotto mostra in quali punti ha riformulato la domanda e in quali ha deciso da solo, contro il parere della macchina o senza chiederglielo.</p>
+        <ol class="passi">
+          <li>Lo studente consegna il prodotto e la conversazione completa con la macchina.</li>
+          <li>Annota a margine tre momenti: quando ha riformulato, quando non si è fidato, quando ha scelto senza la macchina.</li>
+          <li>Il docente valuta con la rubrica a sei criteri.</li>
+          <li>Chiusura senza schermo: lo studente spiega a voce un passaggio del suo lavoro.</li>
+        </ol>
+        <div class="valuta"><b>Livelli</b>I quattro della valutazione descrittiva della scuola primaria (OM 172/2020): in via di prima acquisizione, base, intermedio, avanzato. Funzionano bene anche alle superiori, perché descrivono un percorso.</div>
+        <div class="valuta"><b>Perché l'ultimo passo</b>Nello studio del MIT chi aveva scritto con il modello non ricordava il proprio testo. La spiegazione orale verifica l'appropriazione, che nessuna conversazione può dimostrare da sola.</div>
+      </div>
+      <div class="flusso">
+        <p class="occhiello">Rubrica · sposta i cursori su una conversazione reale</p>
+        <div class="rubrica">
+          <div class="cursori" id="cursori"></div>
+          <svg class="radar" id="radar" viewBox="-70 -40 440 380" role="img" aria-label="Profilo della conversazione sui sei criteri"></svg>
+        </div>
+        <div class="descr-liv" id="descr-liv">Tocca un cursore per leggere il descrittore del livello.</div>
+        <div class="riga"><button class="btn piccolo" type="button" id="copia-rubrica">Copia la rubrica completa</button><button class="btn piccolo" type="button" id="copia-profilo">Copia questo profilo</button></div>
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="pannello" role="tabpanel" id="p2" aria-labelledby="t2" hidden>
+      <div class="flusso">
+        <h3>Chiedere all'IA di confutare le tesi degli studenti</h3>
+        <p>La macchina tende ad assecondare chi le parla, e le obiezioni arrivano solo se le si chiedono esplicitamente, dicendo quante e di che tipo, come fa il prompt qui sotto.</p>
+        <ol class="passi">
+          <li>Lo studente scrive la propria tesi in una frase e la sostiene con due argomenti.</li>
+          <li>Chiede alla macchina la confutazione con il prompt qui sotto.</li>
+          <li>Sceglie l'obiezione più forte e le risponde per iscritto, a mano.</li>
+          <li>Riscrive la tesi: più precisa, più limitata o rovesciata.</li>
+        </ol>
+        <div class="modello"><span class="tag">Prompt di partenza</span><button class="btn piccolo copia" type="button" data-copia="m2">Copia</button>
+<div class="prompt" id="m2">Sostengo questa tesi: [TESI]. I miei argomenti sono: [ARGOMENTI].
+Riformula la mia tesi nella sua versione più forte. Poi presenta le tre obiezioni più solide che un esperto le muoverebbe, e per ciascuna indica che tipo di prova servirebbe per sostenerla. Indica il presupposto nascosto più fragile del mio ragionamento. Non darmi ragione e non concludere: chiudi con una sola domanda che mi costringa a precisare.</div></div>
+        <div class="valuta"><b>Cosa si valuta</b>La qualità della risposta all'obiezione scelta e la distanza tra la prima e l'ultima versione della tesi.</div>
+      </div>
+      <div class="foglio">
+        <span class="tit">Scheda dello studente · da compilare dal vivo con una tesi proposta dalla sala</span>
+        <label class="campo" for="f2-tesi"><b>1. La mia tesi, in una frase</b><textarea id="f2-tesi" data-salva rows="2"></textarea></label>
+        <label class="campo" for="f2-arg"><b>2. I miei due argomenti</b><textarea id="f2-arg" data-salva rows="3"></textarea></label>
+        <label class="campo" for="f2-obi"><b>3. L'obiezione più forte che ho ricevuto</b><textarea id="f2-obi" data-salva rows="3"></textarea></label>
+        <label class="campo" for="f2-ris"><b>4. La mia risposta, scritta senza la macchina</b><textarea id="f2-ris" data-salva rows="3"></textarea></label>
+        <label class="campo" for="f2-nuova"><b>5. La tesi riscritta</b><textarea id="f2-nuova" data-salva rows="2"></textarea></label>
+        <div class="riga"><button class="btn piccolo" type="button" data-copia-scheda="f2">Copia la scheda</button><button class="btn piccolo" type="button" data-svuota="f2">Svuota</button></div>
+      </div>
+    </div>
+
+    <!-- P3 -->
+    <div class="pannello" role="tabpanel" id="p3" aria-labelledby="t3" hidden>
+      <div class="flusso">
+        <h3>Confrontare le risposte di modelli diversi alla stessa domanda</h3>
+        <p>Modelli diversi, e anche lo stesso modello in due sessioni, rispondono in modo diverso alla stessa domanda. La divergenza diventa materiale didattico, perché obbliga a chiedersi chi ha ragione e come si fa a saperlo.</p>
+        <ol class="passi">
+          <li>La classe scrive una domanda e la pone identica, parola per parola, a due o tre modelli.</li>
+          <li>A gruppi si compila la griglia: accordi, divergenze, fonti citate.</li>
+          <li>Ogni gruppo verifica due affermazioni su fonti primarie, fuori dalle macchine.</li>
+          <li>Discussione finale: perché le risposte divergono, e quale si è rivelata più affidabile.</li>
+        </ol>
+        <div class="valuta"><b>Cosa si valuta</b>La qualità della verifica: quale fonte, quanto vicina al fatto, come è stata letta.</div>
+        <div class="valuta"><b>Una regola</b>Mai chiedere a un terzo modello di fare da arbitro. La verifica passa per un documento o per il manuale.</div>
+      </div>
+      <div class="foglio">
+        <span class="tit">Griglia delle divergenze · da compilare dal vivo</span>
+        <label class="campo" for="f3-q"><b>La domanda posta, identica per tutti i modelli</b><input type="text" id="f3-q" data-salva></label>
+        <label class="campo" for="f3-acc"><b>Accordi</b> ciò che tutte le risposte affermano<textarea id="f3-acc" data-salva rows="3"></textarea></label>
+        <label class="campo" for="f3-div"><b>Divergenze</b> chi dice che cosa<textarea id="f3-div" data-salva rows="3"></textarea></label>
+        <label class="campo" for="f3-fon"><b>Fonti citate</b> e se esistono davvero<textarea id="f3-fon" data-salva rows="2"></textarea></label>
+        <label class="campo" for="f3-ver"><b>Esito della verifica</b> fonte primaria consultata e che cosa dice<textarea id="f3-ver" data-salva rows="3"></textarea></label>
+        <div class="riga"><button class="btn piccolo" type="button" data-copia-scheda="f3">Copia la griglia</button><button class="btn piccolo" type="button" data-svuota="f3">Svuota</button></div>
+      </div>
+    </div>
+
+    <!-- P4 -->
+    <div class="pannello" role="tabpanel" id="p4" aria-labelledby="t4" hidden>
+      <div class="flusso">
+        <h3>Far progettare le domande prima della scrittura</h3>
+        <p>Prima di aprire qualunque assistente, la classe produce le proprie domande. Il protocollo è la Question Formulation Technique del Right Question Institute (Rothstein e Santana, <i>Make Just One Change</i>, 2011).</p>
+        <ol class="passi">
+          <li>Il docente presenta uno spunto, il <i>question focus</i>: una frase, un'immagine, un dato.</li>
+          <li>Quattro regole: fare quante più domande possibile; non fermarsi a discuterle, giudicarle o risponderle; scriverle esattamente come sono state dette; trasformare ogni affermazione in domanda.</li>
+          <li>Classificare le domande in aperte e chiuse, e trasformarne alcune da un tipo all'altro.</li>
+          <li>Scegliere le tre prioritarie e decidere come usarle.</li>
+          <li>Solo ora si scrive, eventualmente con la macchina, partendo dalle tre domande.</li>
+          <li>Riflessione: che cosa si è imparato facendo domande.</li>
+        </ol>
+        <div class="valuta"><b>Perché prima</b>Nello studio del MIT chi aveva scritto prima senza strumenti e solo dopo aveva usato il modello mostrava un coinvolgimento cerebrale più ampio di chi aveva cominciato con il modello.</div>
+      </div>
+      <div class="flusso">
+        <p class="occhiello">Lavagna delle domande</p>
+        <div class="qft-focus" id="qft-focus" contenteditable="true" spellcheck="false" aria-label="Spunto modificabile">Una macchina che risponde a tutto.</div>
+        <div class="fasi"><span>produci</span><span>A / C aperta o chiusa</span><span>⇄ trasforma</span><span>★ scegli tre</span></div>
+        <form class="riga" id="qft-form" style="flex-wrap:nowrap">
+          <label class="sr" for="qft-in">Nuova domanda</label>
+          <input type="text" id="qft-in" placeholder="Scrivi una domanda e premi Invio">
+          <button class="btn" type="submit">Aggiungi</button>
+        </form>
+        <ol class="qlista" id="qlista"></ol>
+        <div class="riga" style="justify-content:space-between">
+          <span class="nota" id="qft-conta"></span>
+          <button class="btn piccolo" type="button" id="qft-svuota">Svuota la lavagna</button>
+        </div>
+        <p class="nota">Il pulsante ⇄ propone un modo di trasformare una domanda chiusa in aperta, o viceversa: la riscrittura spetta alla classe.</p>
+      </div>
+    </div>
+
+    <!-- P5 -->
+    <div class="pannello" role="tabpanel" id="p5" aria-labelledby="t5" hidden>
+      <div class="flusso">
+        <h3>Imparare a chiedere alle IA domande, oltre che risposte</h3>
+        <p>Un modello si può istruire a interrogare, chiedendo allo studente che cosa sa già e rimandandogli la domanda quando sbaglia, senza consegnargli la soluzione. Nel 2025 Anthropic, ad aprile, e OpenAI, a luglio, hanno introdotto nei loro assistenti modalità di studio costruite su questo principio, coerenti con il risultato del tutor nello studio pubblicato su PNAS.</p>
+        <ol class="passi">
+          <li>Lo studente sceglie un argomento che deve preparare e uno dei tre prompt.</li>
+          <li>Risponde alla macchina senza consultare altro.</li>
+          <li>Alla fine scrive in cinque righe che cosa ha capito e dove si è bloccato.</li>
+          <li>Il docente legge la conversazione: le risposte dello studente sono il materiale della valutazione.</li>
+        </ol>
+        <div class="valuta"><b>Cosa si valuta</b>Le risposte dello studente, la loro evoluzione nel corso della conversazione e la sincerità delle cinque righe finali.</div>
+      </div>
+      <div class="varianti">
+        <div class="modello"><span class="tag">Tutor socratico</span><button class="btn piccolo copia" type="button" data-copia="m5a">Copia</button>
+<div class="prompt" id="m5a">Voglio prepararmi su [ARGOMENTO]. Fammi da tutor socratico. Fai una sola domanda alla volta e parti da ciò che so già. Non darmi la soluzione nemmeno se te la chiedo: al massimo un indizio. Quando sbaglio, chiedimi su che cosa mi baso. Quando arrivo a una conclusione giusta, chiedimi di dirla con parole mie e di trovare un esempio.</div></div>
+        <div class="modello"><span class="tag">Interrogazione simulata</span><button class="btn piccolo copia" type="button" data-copia="m5b">Copia</button>
+<div class="prompt" id="m5b">Fammi un'interrogazione orale su [ARGOMENTO] come la farebbe un docente di [CLASSE]. Una domanda alla volta: aspetta la mia risposta prima di passare alla successiva. Dopo sei domande dammi un giudizio con uno dei quattro livelli (in via di prima acquisizione, base, intermedio, avanzato), motivalo e dimmi che cosa ripassare.</div></div>
+        <div class="modello"><span class="tag">Caccia alle lacune</span><button class="btn piccolo copia" type="button" data-copia="m5c">Copia</button>
+<div class="prompt" id="m5c">Ti spiego [ARGOMENTO] con parole mie. Non correggermi subito. Fammi prima tre domande che rivelino che cosa non ho capito o che cosa ho dato per scontato. Solo dopo le mie risposte dimmi dove sbagliavo.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATTO -->
+<section class="sez" id="patto">
+  <div class="wrap">
+    <div class="testa">
+      <span class="num">VII · Il patto</span>
+      <h2>Un patto d'aula sull'intelligenza artificiale</h2>
+      <p class="lettura">Il Piano d'Istituto fissa le regole della scuola. Dentro una classe aiuta anche un accordo breve, discusso con gli studenti all'inizio dell'anno, in cui ciascuna delle due parti dichiara a che cosa si impegna. Scegliete le voci e copiate il testo, che si può stampare e appendere in aula.</p>
+    </div>
+    <div class="patto">
+      <div class="flusso">
+        <p class="occhiello">Lo studente</p>
+        <div class="voci" id="voci-s"></div>
+        <p class="occhiello">Il docente</p>
+        <div class="voci" id="voci-d"></div>
+      </div>
+      <div class="pergamena">
+        <h3>Patto d'aula sull'IA</h3>
+        <div class="intest">
+          <label class="campo" for="pt-classe">Classe<input type="text" id="pt-classe" data-salva value="3ª B"></label>
+          <label class="campo" for="pt-anno">Anno scolastico<input type="text" id="pt-anno" data-salva value="2026/27"></label>
+        </div>
+        <span class="gruppo">Lo studente si impegna a</span>
+        <ol id="pt-s"></ol>
+        <span class="gruppo">Il docente si impegna a</span>
+        <ol id="pt-d"></ol>
+        <div class="firme"><span>Per la classe</span><span>Il docente</span></div>
+        <div class="riga"><button class="btn pieno piccolo" type="button" id="copia-patto">Copia il patto</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCENTE -->
+<section class="sez" id="docente">
+  <div class="wrap">
+    <div class="testa">
+      <span class="num">VIII · Il docente</span>
+      <h2>Il maestro dell'interrogazione</h2>
+    </div>
+    <div class="flusso lettura">
+      <p class="lead">Nella scuola italiana interrogazione è il nome della prova orale, quella in cui il docente domanda e il voto misura quanto lo studente sa rispondere. Il docente di cui c'è bisogno adesso insegna anche il gesto opposto, cioè come si costruisce una domanda e come si incalza una risposta che suona convincente finché qualcuno non la mette alla prova.</p>
+      <p>A lui spetta custodire il metodo con cui si arriva a sapere, compresa la pazienza davanti a ciò che resta irrisolto che Rilke raccomandava al giovane Franz Xaver Kappus nella lettera del 16 luglio 1903, quando gli chiedeva di amare le domande stesse e di viverle, nella speranza di entrare un giorno, quasi senza accorgersene, nelle risposte.</p>
+    </div>
+    <p class="citazione" style="margin-block:clamp(32px,5vw,56px)">«Das Fragen ist die <span>Frömmigkeit</span> des Denkens.»<br><span class="nota" style="font-family:var(--f-testo);font-style:normal;font-size:.9rem;color:var(--muto)">Il domandare è la pietà del pensiero. Martin Heidegger, <i>La questione della tecnica</i>, 1953</span></p>
+    <p class="occhiello" style="margin-bottom:14px">Domande per la sala</p>
+    <ul class="sala">
+      <li>Quale compito della vostra materia oggi si può delegare per intero a una macchina, e che cosa dice quel compito di ciò che stavate valutando?</li>
+      <li>Se doveste mettere un voto a una domanda, quali criteri usereste?</li>
+      <li>In quale momento della lezione la macchina dovrebbe entrare, e in quale restare fuori?</li>
+      <li>Che cosa deve saper fare uno studente da solo, a fine anno, senza nessuno schermo davanti?</li>
+    </ul>
+  </div>
+</section>
+
+<!-- VERIFICA -->
+<section class="sez" id="verifica">
+  <div class="wrap">
+    <div class="testa">
+      <span class="num">IX · Verifica</span>
+      <h2>L'interrogazione, rovesciata</h2>
+      <p class="lettura">Otto affermazioni da giudicare e tre situazioni d'aula da risolvere, a voce, con la sala. Il registro in fondo raccoglie le risposte date in tutti i quiz della lezione e assegna alla sala un voto.</p>
+    </div>
+    <div class="flusso" style="gap:24px">
+      <div class="quiz" data-blocco="vf"></div>
+      <div class="quiz" data-blocco="situazioni"></div>
+      <div class="scheda">
+        <div class="riga" style="justify-content:space-between"><h3>Registro della sala</h3><button class="btn piccolo" type="button" id="ricomincia">Azzera tutti i quiz</button></div>
+        <div class="registro">
+          <table><thead><tr><th>Prova</th><th style="text-align:right">Esatte</th></tr></thead><tbody id="reg-righe"></tbody></table>
+          <div class="voto" aria-live="polite"><b id="voto">·</b><span id="voto-nota">in decimi</span></div>
+        </div>
+        <p class="nota" id="reg-commento">Il voto compare dopo la prima risposta, con i mezzi voti come nel registro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FONTI -->
+<section class="sez" id="fonti">
+  <div class="wrap">
+    <div class="testa">
+      <span class="num">Fonti</span>
+      <h2>Per continuare a domandare</h2>
+    </div>
+    <ol class="fonti">
+      <li><b>Platone</b>, <i>Menone</i>, 82b-85b; <i>Fedro</i>, 274c-275b.</li>
+      <li><b>R.G. Collingwood</b>, <i>An Autobiography</i>, Oxford University Press, 1939.</li>
+      <li><b>A.M. Turing</b>, «Computing Machinery and Intelligence», <i>Mind</i>, 59, 1950.</li>
+      <li><b>M. Heidegger</b>, «Die Frage nach der Technik», 1953; trad. it. in <i>Saggi e discorsi</i>, Mursia.</li>
+      <li><b>B.S. Bloom</b> (a cura di), <i>Taxonomy of Educational Objectives</i>, 1956; <b>L.W. Anderson, D.R. Krathwohl</b> (a cura di), <i>A Taxonomy for Learning, Teaching, and Assessing</i>, Longman, 2001.</li>
+      <li><b>H.-G. Gadamer</b>, <i>Wahrheit und Methode</i>, 1960; trad. it. <i>Verità e metodo</i>, Bompiani.</li>
+      <li><b>J. Weizenbaum</b>, «ELIZA», <i>Communications of the ACM</i>, 9, 1966; <i>Computer Power and Human Reason</i>, 1976.</li>
+      <li><b>N. Postman, C. Weingartner</b>, <i>Teaching as a Subversive Activity</i>, Delacorte, 1969.</li>
+      <li><b>G. Rodari</b>, <i>Grammatica della fantasia</i>, Einaudi, 1973.</li>
+      <li><b>M. Lipman, A.M. Sharp</b>, Institute for the Advancement of Philosophy for Children, Montclair State, dal 1974.</li>
+      <li><b>P. Freire, A. Faundez</b>, <i>Por uma pedagogia da pergunta</i>, Paz e Terra, 1985.</li>
+      <li><b>D. Rothstein, L. Santana</b>, <i>Make Just One Change</i>, Harvard Education Press, 2011. <a href="https://rightquestion.org" target="_blank" rel="noopener">rightquestion.org</a></li>
+      <li><b>E. Mollick, L. Mollick</b>, «Assigning AI: Seven Approaches for Students, with Prompts», SSRN, 2023.</li>
+      <li><b>M. Sharma et al.</b>, «Towards Understanding Sycophancy in Language Models», 2023; ICLR 2024.</li>
+      <li><b>H. Bastani et al.</b>, «Generative AI without guardrails can harm learning», <i>PNAS</i>, 122, 2025. <a href="https://doi.org/10.1073/pnas.2422633122" target="_blank" rel="noopener">doi</a></li>
+      <li><b>N. Kosmyna et al.</b>, «Your Brain on ChatGPT: Accumulation of Cognitive Debt when Using an AI Assistant for Essay Writing Task», MIT Media Lab, 2025.</li>
+      <li><b>H.-P. Lee et al.</b>, «The Impact of Generative AI on Critical Thinking», CHI 2025.</li>
+      <li><b>Mata v. Avianca, Inc.</b>, Southern District of New York, ordinanza del 22 giugno 2023.</li>
+      <li><b>MIM</b>, Decreto ministeriale n. 166 del 9 agosto 2025, Linee guida IA. <a href="https://www.mim.gov.it/-/decreto-ministeriale-n-166-del-9-agosto-2025" target="_blank" rel="noopener">mim.gov.it</a></li>
+      <li><b>Regolamento (UE) 2024/1689</b> (AI Act), art. 4; <b>Legge 23 settembre 2025, n. 132</b>.</li>
+      <li><b>MI</b>, Ordinanza n. 172 del 4 dicembre 2020, valutazione descrittiva nella primaria.</li>
+      <li><b>Costituzione della Repubblica italiana</b>, art. 3.</li>
+      <li><b>D. Adams</b>, <i>The Hitchhiker's Guide to the Galaxy</i>, Pan Books, 1979.</li>
+      <li><b>R.M. Rilke</b>, <i>Briefe an einen jungen Dichter</i>, Insel, 1929.</li>
+      <li><b>Jianwei Xun</b>, <i>Prompt Thinking: A Critique of Generative Reason</i>, Polity Press, 2026.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- CONGEDO -->
+<section class="sez congedo" id="congedo">
+  <div class="wrap">
+    <div class="congedo-griglia">
+      <div class="flusso">
+        <span class="num" style="font-family:var(--f-display);font-style:italic;color:var(--rosso);font-size:1.1rem">Per riprenderla in classe</span>
+        <h2>La lezione resta aperta</h2>
+        <p class="lead lettura">Inquadrate il codice per ritrovare questa pagina, con i quiz, le schede, la rubrica e i prompt da copiare.</p>
+        <p class="indirizzo">tlon.it/nextgenai</p>
+      </div>
+      <div class="qr-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" class="qr" role="img" aria-label="Codice QR per tlon.it/nextgenai"><path fill="#fff" d="M0 0h29v29h-29z"/><path class="qrline" stroke="#13203a" d="M2 2.5h7m2 0h3m2 0h2m2 0h7m-25 1h1m5 0h1m1 0h1m4 0h3m2 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m3 0h1m4 0h1m2 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m2 0h1m4 0h1m3 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h1m4 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m2 0h1m1 0h1m1 0h1m1 0h2m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-15 1h1m2 0h1m2 0h1m-17 1h1m1 0h1m1 0h1m1 0h1m2 0h1m3 0h1m1 0h2m3 0h1m2 0h1m-23 1h1m3 0h1m1 0h1m3 0h4m2 0h2m5 0h1m-23 1h1m3 0h1m4 0h2m3 0h2m2 0h1m1 0h3m-25 1h2m2 0h2m3 0h2m2 0h1m1 0h3m5 0h1m-23 1h1m1 0h1m1 0h3m1 0h1m2 0h2m3 0h3m1 0h1m1 0h2m-24 1h1m1 0h1m4 0h1m2 0h1m1 0h1m2 0h3m2 0h1m2 0h1m-25 1h1m1 0h1m2 0h4m3 0h2m3 0h1m1 0h1m2 0h3m-24 1h2m1 0h1m2 0h1m1 0h1m1 0h1m1 0h3m2 0h1m1 0h1m2 0h1m-24 1h1m1 0h2m1 0h2m1 0h1m1 0h1m1 0h2m1 0h7m-14 1h1m2 0h1m1 0h1m1 0h2m3 0h2m1 0h2m-25 1h7m8 0h2m1 0h1m1 0h2m1 0h2m-25 1h1m5 0h1m2 0h1m1 0h1m1 0h2m1 0h1m3 0h2m-22 1h1m1 0h3m1 0h1m1 0h1m2 0h3m2 0h6m-22 1h1m1 0h3m1 0h1m2 0h1m2 0h1m2 0h2m2 0h4m-23 1h1m1 0h3m1 0h1m1 0h2m3 0h1m1 0h1m4 0h1m3 0h1m-25 1h1m5 0h1m4 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m-24 1h7m1 0h1m3 0h2m2 0h1m2 0h1m3 0h2"/></svg></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">Tlon · La scuola delle domande</div></footer>
+
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ls={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+async function copia(testo,btn){
+  const o=btn.textContent;
+  try{await navigator.clipboard.writeText(testo);btn.textContent="Copiato";}
+  catch(e){btn.textContent="Copia non riuscita: seleziona il testo";}
+  setTimeout(()=>btn.textContent=o,1600);
+}
+
+/* ---------- navigazione ---------- */
+const sezioni=$$("main > section");
+const links=$$("#indice a");
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle("attivo",a.getAttribute("href")==="#"+e.target.id));const a=links.find(a=>a.classList.contains("attivo"));a&&a.scrollIntoView({block:"nearest",inline:"nearest"})}})},{rootMargin:"-45% 0px -50% 0px"});
+sezioni.forEach(s=>io.observe(s));
+function corrente(){let i=0;sezioni.forEach((s,k)=>{if(s.getBoundingClientRect().top<window.innerHeight*.4)i=k});return i}
+function avanza(d){
+  const i=corrente(),sz=sezioni[i],r=sz.getBoundingClientRect(),h=window.innerHeight,barra=56;
+  if(d>0){
+    if(r.bottom>h+24){window.scrollBy({top:Math.min(h*.8,r.bottom-h+24),behavior:"smooth"});return}
+    if(i<sezioni.length-1)sezioni[i+1].scrollIntoView({behavior:"smooth",block:"start"});
+  }else{
+    if(r.top<barra-24){window.scrollBy({top:-Math.min(h*.8,barra-r.top),behavior:"smooth"});return}
+    if(i>0)sezioni[i-1].scrollIntoView({behavior:"smooth",block:"start"});
+  }
+}
+function proiezione(on){
+  document.body.classList.toggle("proiezione",on);const b=$("#proietta");b.setAttribute("aria-pressed",on);b.textContent=on?"Esci dalla proiezione":"Proietta";
+  ls.set("sdd-proiezione",on);
+  try{ if(on&&!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{}); else if(!on&&document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }catch(e){}
+}
+function tema(t){const r=document.documentElement;if(t)r.dataset.theme=t;else delete r.dataset.theme;ls.set("sdd-tema",t||null)}
+document.addEventListener("keydown",e=>{
+  const t=e.target; if(t.closest&&t.closest("input,textarea,select,[contenteditable=true],[role=tab],.anni"))return;
+  if(e.metaKey||e.ctrlKey||e.altKey)return;
+  if(["ArrowRight","ArrowDown","PageDown"].includes(e.key)||(e.key===" "&&!t.closest("button"))){e.preventDefault();avanza(1);return}
+  if(["ArrowLeft","ArrowUp","PageUp"].includes(e.key)){e.preventDefault();avanza(-1);return}
+  if(e.key==="p"||e.key==="P"){proiezione(!document.body.classList.contains("proiezione"))}
+  if(e.key==="t"||e.key==="T"){$("#tema").click()}
+});
+$("#proietta").addEventListener("click",()=>proiezione(!document.body.classList.contains("proiezione")));
+$("#tema").addEventListener("click",()=>{const scuro=document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;tema(scuro?"light":"dark")});
+const temaSalvato=ls.get("sdd-tema");if(temaSalvato)tema(temaSalvato);
+if(ls.get("sdd-proiezione"))document.body.classList.add("proiezione"),$("#proietta").setAttribute("aria-pressed",true),$("#proietta").textContent="Esci dalla proiezione";
+if(location.hash){const s=document.getElementById(location.hash.slice(1)); s&&setTimeout(()=>s.scrollIntoView(),60)}
+
+/* ---------- 42 ---------- */
+let fase=0;
+$("#chiedi42").addEventListener("click",function(){
+  const sc=$("#schermo"),tx=$("#oracolo-testo");
+  if(fase===2){$("#prova").scrollIntoView({behavior:"smooth"});return}
+  if(fase===0){
+    fase=-1; let k=0; const fr=["·  ","·· ","···"]; const iv=setInterval(()=>{sc.textContent=fr[k++%3]},140);
+    setTimeout(()=>{clearInterval(iv);sc.classList.remove("vuoto");sc.textContent="42";
+      tx.innerHTML="Quarantadue. Davanti allo sconcerto di chi aspettava la verità, Pensiero Profondo spiega che la risposta è esatta: il guaio è che nessuno ha mai saputo con precisione quale fosse la domanda.";
+      this.textContent="E la domanda?";fase=1},1300);
+  }else if(fase===1){
+    tx.innerHTML="Per trovarla Pensiero Profondo progetta un computer ancora più grande, la Terra, che dovrà calcolare per dieci milioni di anni. Verrà demolita per far posto a una superstrada iperspaziale cinque minuti prima di finire.";
+    sc.textContent="?";this.textContent="Comincia la lezione";fase=2;
+  }
+});
+
+/* ---------- registro e motore dei quiz ---------- */
+const REG={}; // blocco -> {id: true/false}
+const BLOCCHI={};
+function registra(b,id,ok){(REG[b]=REG[b]||{})[id]=ok;aggiornaRegistro();if(BLOCCHI[b].onFatto&&Object.keys(REG[b]).length>=BLOCCHI[b].tot)BLOCCHI[b].onFatto()}
+function fmtVoto(v){const i=Math.floor(v),m=v-i>=.5;return i+(m?"½":"")}
+function aggiornaRegistro(){
+  let ok=0,tot=0;const righe=[];
+  Object.values(BLOCCHI).forEach(b=>{const r=REG[b.id]||{};const o=Object.values(r).filter(Boolean).length,t=Object.keys(r).length;ok+=o;tot+=t;righe.push('<tr><td>'+esc(b.nome)+' <span class="nota">'+t+' di '+b.tot+' risposte</span></td><td class="n">'+o+' / '+t+'</td></tr>')});
+  $("#reg-righe").innerHTML=righe.join("")+'<tr><td><b>Totale</b></td><td class="n"><b>'+ok+' / '+tot+'</b></td></tr>';
+  $("#reg-mini").textContent=ok+"/"+tot;
+  if(!tot){$("#voto").textContent="·";$("#reg-commento").textContent="Il voto compare dopo la prima risposta, con i mezzi voti come nel registro.";return}
+  const v=Math.max(1,Math.round(ok/tot*20)/2);$("#voto").textContent=fmtVoto(v);
+  const tutte=Object.values(BLOCCHI).reduce((s,b)=>s+b.tot,0);
+  $("#reg-commento").textContent=tot<tutte?"Voto provvisorio su "+tot+" risposte di "+tutte+".":(v>=8?"Ottimo. Ora provate a scrivere voi una domanda per ciascun quiz.":v>=6?"Sufficiente. Le spiegazioni sotto ogni risposta sono il materiale da ripassare.":"Rileggete le spiegazioni delle risposte sbagliate, che contengono i punti principali della lezione.");
+}
+function spiega(el,ok,testo){el.className="spiega "+(ok?"ok":"no");el.innerHTML="<b>"+(ok?"Esatto":"Non proprio")+"</b>"+testo;el.hidden=false}
+function renderBlocco(b){
+  const box=$('.quiz[data-blocco="'+b.id+'"]');box.innerHTML="";
+  box.insertAdjacentHTML("beforeend",'<div class="testa-quiz"><div><p class="occhiello">'+esc(b.occhiello)+'</p><h3>'+esc(b.titolo)+'</h3></div><span class="punti">'+b.tot+(b.tot===1?" risposta":" risposte")+'</span></div>');
+  if(b.intro)box.insertAdjacentHTML("beforeend",'<p class="nota" style="margin-top:-8px">'+b.intro+'</p>');
+  b.items.forEach((it,i)=>{
+    const d=document.createElement("div");d.className="qi";box.appendChild(d);
+    const qid=b.id+"-"+i;
+    d.insertAdjacentHTML("beforeend",(it.tipoEt?'<span class="tipo">'+esc(it.tipoEt)+'</span>':'')+'<p class="qd"><span class="n">'+(i+1)+'.</span>'+it.q+'</p>'+(it.prompt?'<div class="prompt-quiz">'+esc(it.prompt)+'</div>':''));
+    const sp=document.createElement("p");sp.className="spiega";sp.hidden=true;
+    if(it.t==="mc"||it.t==="vf"){
+      const opts=it.t==="vf"?["Vero","Falso"]:it.o; const okI=it.t==="vf"?(it.v?0:1):it.ok;
+      const g=document.createElement("div");g.className="opzioni"+(it.t==="vf"?" vf":"");
+      opts.forEach((o,k)=>{const bt=document.createElement("button");bt.type="button";bt.innerHTML=esc(o);bt.onclick=()=>{
+        $$("button",g).forEach((x,j)=>{x.disabled=true;if(j===okI)x.classList.add("giusta")});if(k!==okI)bt.classList.add("sbagliata");
+        spiega(sp,k===okI,it.s);registra(b.id,qid,k===okI)};g.appendChild(bt)});
+      d.appendChild(g);
+    }else if(it.t==="stima"){
+      const w=document.createElement("div");w.className="stima";
+      const mid=Math.round((it.min+it.max)/2/it.step)*it.step;
+      w.innerHTML='<input type="range" min="'+it.min+'" max="'+it.max+'" step="'+it.step+'" value="'+mid+'" id="'+qid+'" aria-label="La tua stima"><output for="'+qid+'">'+fmt(mid,it)+'</output><button class="btn pieno piccolo" type="button">Conferma la stima</button>';
+      const r=w.querySelector("input"),out=w.querySelector("output"),bt=w.querySelector("button");
+      r.oninput=()=>out.textContent=fmt(+r.value,it);
+      bt.onclick=()=>{r.disabled=true;bt.disabled=true;const x=+r.value,ok=Math.abs(x-it.v)<=it.tol;
+        const pos=v=>((v-it.min)/(it.max-it.min)*100).toFixed(1)+"%";
+        const sc=document.createElement("div");sc.className="scala";sc.innerHTML='<span class="m tu" style="left:'+pos(x)+'">tu '+fmt(x,it)+'</span><span class="m vero" style="left:'+pos(it.v)+'">dato '+fmt(it.v,it)+'</span>';
+        if(Math.abs(x-it.v)<(it.max-it.min)*.12)sc.querySelector(".tu").style.bottom="18px";
+        w.after(sc);spiega(sp,ok,(ok?"La tua stima cade entro "+it.tol+" punti dal dato. ":"La distanza dal dato è di "+Math.abs(x-it.v)+" punti. ")+it.s);registra(b.id,qid,ok)};
+      d.appendChild(w);
+    }else if(it.t==="abbina"){
+      const w=document.createElement("div");w.className="abbina";
+      it.righe.forEach((rg,k)=>{const ar=document.createElement("div");ar.className="ar";
+        ar.innerHTML='<span class="q">'+esc(rg.q)+'</span><select aria-label="Risposta"><option value="">scegli</option>'+it.o.map((o,j)=>'<option value="'+j+'">'+esc(o)+'</option>').join("")+'</select><span class="e"></span>';w.appendChild(ar)});
+      const bt=document.createElement("button");bt.className="btn pieno piccolo";bt.type="button";bt.textContent="Verifica";bt.style.alignSelf="flex-start";
+      bt.onclick=()=>{const sel=$$("select",w);if(sel.some(s=>s.value==="")){bt.textContent="Completa tutte le righe";setTimeout(()=>bt.textContent="Verifica",1400);return}
+        let tutti=0;sel.forEach((s,k)=>{s.disabled=true;const ok=+s.value===it.righe[k].ok;const ar=s.closest(".ar");const e=ar.querySelector(".e");e.textContent=ok?"✓":"✗";e.className="e "+(ok?"ok":"no");
+          if(!ok)ar.insertAdjacentHTML("beforeend",'<span class="corr">Risposta: '+esc(it.o[it.righe[k].ok])+(it.righe[k].n?". "+esc(it.righe[k].n):"")+'</span>');if(ok)tutti++;registra(b.id,qid+"-"+k,ok)});
+        bt.remove();spiega(sp,tutti===sel.length,tutti+" su "+sel.length+". "+it.s)};
+      d.appendChild(w);d.appendChild(bt);
+    }
+    d.appendChild(sp);
+  });
+}
+function fmt(v,it){return (it.segno&&v>0?"+":"")+String(v).replace("-","−")+(it.u||"")}
+
+BLOCCHI.dati={id:"dati",nome:"Prima dei dati",occhiello:"Quiz · stime",titolo:"Prima di guardare i dati, prova a indovinarli",intro:"Chiedete alla sala una stima a voce o per alzata di mano, portate il cursore sul valore scelto e confermate.",items:[
+ {t:"stima",q:"Studenti di liceo si esercitano in matematica con un assistente simile a ChatGPT, poi sostengono l'esame senza. Rispetto a compagni che non l'hanno mai usato, come cambiano i loro voti?",min:-40,max:40,step:1,v:-17,tol:8,u:"%",segno:true,s:"Nello studio pubblicato su PNAS calano del 17 per cento: durante le esercitazioni l'assistente faceva il lavoro al posto loro."},
+ {t:"stima",q:"Persone che hanno appena scritto un saggio con ChatGPT: quante, pochi minuti dopo, non sanno citarne correttamente una frase?",min:0,max:100,step:1,v:83,tol:12,u:"%",s:"Nello studio del MIT Media Lab era l'83 per cento. Chi aveva scritto da solo ci riusciva quasi sempre."},
+ {t:"mc",q:"Un tutor programmato per dare indizi invece delle soluzioni: durante le esercitazioni, rispetto a chi non usa nessuna IA, i voti…",o:["peggiorano","restano uguali","salgono di circa la metà","più che raddoppiano"],ok:3,s:"Salgono del 127 per cento, e all'esame senza IA questi studenti vanno come il gruppo di controllo, quindi il tutor non ha lasciato danni."}
+],onFatto:()=>svela()};
+
+BLOCCHI.chi={id:"chi",nome:"Chi l'ha chiesto?",occhiello:"Quiz · abbinamenti",titolo:"Chi ha posto questa domanda?",items:[
+ {t:"abbina",q:"Abbina ogni domanda a chi l'ha posta o l'ha resa celebre.",o:["Socrate nel Menone","Robin G. Collingwood","Alan Turing","Martin Heidegger","Gianni Rodari","Paulo Freire"],
+  righe:[{q:"«Can machines think?»",ok:2,n:"Apre «Computing Machinery and Intelligence», 1950"},{q:"«Che cosa succederebbe se…?»",ok:4,n:"L'ipotesi fantastica della Grammatica della fantasia"},{q:"Su quale lato si costruisce un quadrato di area doppia?",ok:0,n:"La lezione di geometria allo schiavo"},{q:"A quale domanda risponde questa frase?",ok:1,n:"La logica di domanda e risposta"},{q:"Chi ha il diritto di domandare?",ok:5,n:"La critica della pedagogia della risposta"},{q:"Che cos'è l'essenza della tecnica?",ok:3,n:"La conferenza del 1953"}],
+  s:"Le tappe sono raccontate per esteso nella genealogia qui sopra."}
+]};
+
+const COMP=["Chiarezza","Contesto","Errore","Prova","Punto di vista","Domanda di ritorno"];
+BLOCCHI.diagnosi={id:"diagnosi",nome:"Diagnosi del prompt",occhiello:"Quiz · correzione",titolo:"Che cosa manca a questa domanda?",intro:"Per ogni prompt scegli lo strato la cui assenza pesa di più. Gli strati sono quelli del costruttore qui sopra.",items:[
+ {t:"mc",q:"Uno studente scrive:",prompt:"Voglio capire perché il ghiaccio galleggia sull'acqua. Spiegamelo.",o:COMP,ok:1,s:"Lo scopo è chiaro, ma la macchina non sa chi sta chiedendo: la stessa spiegazione va costruita in modo diverso per la seconda media e per il quinto anno di un liceo scientifico."},
+ {t:"mc",q:"In seconda media:",prompt:"Voglio capire perché Colombo pensava di arrivare in Asia navigando verso ovest. Spiegamelo e dimmi dove posso controllare.",o:COMP,ok:4,s:"Scopo, contesto implicito e prova ci sono. Manca lo sguardo degli altri: per esempio i dotti del suo tempo, che contestavano i suoi calcoli sulle distanze."},
+ {t:"mc",q:"In quarta liceo:",prompt:"Domani ho l'interrogazione sul Leopardi delle Operette morali. Riassumimi il Dialogo della Natura e di un Islandese e citami due studi critici con autore e anno.",o:COMP,ok:2,s:"Chiede citazioni bibliografiche senza chiedere di segnalare l'incertezza né di distinguere ciò che è sicuro. È la situazione in cui un modello inventa più facilmente: il caso Avianca insegna."},
+ {t:"mc",q:"Al terzo anno di un istituto tecnico:",prompt:"Sto preparando una relazione sulle energie rinnovabili per la classe terza. Scrivimi la relazione.",o:COMP,ok:0,s:"C'è il contesto, manca una domanda: chiede un prodotto finito e nessun problema da capire. Riscritta, potrebbe partire da un dubbio preciso, per esempio come si accumula l'energia prodotta quando non serve."}
+]};
+
+const LIV=[
+ {g:"Ricordare",q:"In che anno la peste arrivò a Milano?",m:"La macchina risponde in un secondo.",s:"Deve sapere che il dato esiste e controllarlo su un manuale."},
+ {g:"Comprendere",q:"Che cosa intende Manzoni quando racconta la caccia agli untori?",m:"La macchina offre una spiegazione corretta e generica.",s:"Deve ritrovare quella spiegazione nel capitolo XXXII e capire se regge."},
+ {g:"Applicare",q:"Quali comportamenti descritti nei capitoli della peste riconosci nel modo in cui si diffondono oggi le voci false?",m:"La macchina propone paralleli plausibili.",s:"Sceglie i paralleli che tengono e li giustifica con esempi presi dalla propria esperienza."},
+ {g:"Analizzare",q:"In che cosa il racconto di Manzoni si scosta dalle cronache di Ripamonti e Tadino che usò come fonti?",m:"La macchina può aiutare e anche sbagliare con sicurezza.",s:"Il confronto con Ripamonti e Tadino può farlo solo leggendoli."},
+ {g:"Valutare",q:"Il giudizio di Manzoni sui giudici della Storia della colonna infame è giusto, con i criteri del loro tempo?",m:"La macchina presenta posizioni, tende ad assecondare la tua.",s:"Prende posizione e la difende, sapendo che la macchina tende a dargli ragione."},
+ {g:"Creare",q:"Come racconteresti gli stessi mesi dal punto di vista di un medico del Tribunale di sanità?",m:"La macchina scrive volentieri al posto tuo.",s:"Il lavoro è tutto suo, dalla voce del narratore alla scelta di che cosa raccontare."}
+];
+const gr=$("#gradini");let gsel=3;
+LIV.forEach((l,i)=>{const b=document.createElement("button");b.type="button";b.innerHTML='<span class="g">'+esc(l.g)+'</span><span class="peso" aria-hidden="true">'+Array.from({length:6},(_,k)=>'<i class="'+(k<=i?"on":"")+'"></i>').join("")+'</span>';b.onclick=()=>mostraGradino(i);gr.appendChild(b)});
+function mostraGradino(i){gsel=i;const l=LIV[i];$$("button",gr).forEach((b,k)=>b.setAttribute("aria-pressed",k===i));
+  $("#gradino-scheda").innerHTML='<span class="occhiello">Livello '+(i+1)+' di 6 · '+esc(l.g)+' · tema: la peste nei Promessi sposi</span><p style="font-family:var(--f-display);font-style:italic;font-size:clamp(1.4rem,3vw,2rem);line-height:1.2;color:var(--blu)">'+esc(l.q)+'</p><div class="due" style="gap:14px"><div class="valuta" style="margin:0"><b>La macchina</b>'+esc(l.m)+'</div><div class="valuta" style="margin:0"><b>Lo studente</b>'+esc(l.s)+'</div></div><p class="nota">Le tacche rosse indicano quanto lavoro di pensiero resta a chi ha chiesto.</p>'}
+mostraGradino(3);
+
+BLOCCHI.scala={id:"scala",nome:"La scala delle domande",occhiello:"Quiz · classificazione",titolo:"A quale livello sta questa domanda?",items:[
+ {t:"abbina",q:"Sei domande sull'articolo 3 della Costituzione. Assegna a ciascuna il livello prevalente.",o:LIV.map(l=>l.g),
+  righe:[{q:"Perché i costituenti affiancarono il secondo comma al primo?",ok:3},{q:"Scrivi il terzo comma che aggiungeresti oggi, e motivalo.",ok:5},{q:"Che cosa dice l'articolo 3 della Costituzione?",ok:0},{q:"Una legge che riserva posti a un gruppo svantaggiato è coerente con l'articolo 3?",ok:4},{q:"Quale ostacolo di ordine economico e sociale riconosci nel quartiere in cui vivi?",ok:2},{q:"Che differenza c'è tra il primo e il secondo comma, tra uguaglianza formale e sostanziale?",ok:1}],
+  s:"I confini tra i livelli sono discutibili, e discuterne in classe è già un esercizio di analisi. Più si sale, meno la macchina può fare il lavoro al posto di chi ha chiesto."}
+]};
+
+BLOCCHI.vf={id:"vf",nome:"Vero o falso",occhiello:"Quiz · vero o falso",titolo:"Otto affermazioni da giudicare",items:[
+ {t:"vf",q:"Nel 1950 Turing rispose di sì alla domanda se le macchine possano pensare.",v:false,s:"La giudicò troppo vaga per essere discussa e la sostituì con il gioco dell'imitazione: una riformulazione."},
+ {t:"vf",q:"Lo stesso modello può dare risposte diverse alla stessa identica domanda.",v:true,s:"La generazione è probabilistica. È il fondamento della pratica 3."},
+ {t:"vf",q:"I modelli linguistici tendono ad assecondare le opinioni di chi li interroga.",v:true,s:"È la sycophancy documentata da Sharma e colleghi. Per questo serve chiedere esplicitamente obiezioni."},
+ {t:"vf",q:"Nel Fedro il re Thamus accoglie la scrittura come un dono per la memoria.",v:false,s:"La giudica il contrario: un farmaco che indebolisce il ricordo e dà solo l'apparenza della sapienza."},
+ {t:"vf",q:"Se un modello conferma che una fonte da lui citata esiste, hai una prova sufficiente.",v:false,s:"Nel caso Avianca l'avvocato aveva chiesto proprio questo a ChatGPT, che aveva confermato. La verifica deve passare per la fonte stessa."},
+ {t:"vf",q:"ELIZA, il chatbot di Weizenbaum del 1966, rispondeva soprattutto con domande.",v:true,s:"Il copione DOCTOR rilanciava come domande le frasi dell'utente, alla maniera di uno psicoterapeuta."},
+ {t:"vf",q:"Le Linee guida del MIM del 2025 stabiliscono nel dettaglio quali attività didattiche svolgere con l'IA.",v:false,s:"Chiedono un Piano d'Istituto e lasciano alle scuole le scelte didattiche. La pedagogia è affidata ai docenti."},
+ {t:"vf",q:"Nella Question Formulation Technique le domande si discutono e si correggono appena vengono proposte.",v:false,s:"Una delle quattro regole vieta proprio di fermarsi a discuterle, giudicarle o risponderle durante la produzione."}
+]};
+
+BLOCCHI.situazioni={id:"situazioni",nome:"Situazioni d'aula",occhiello:"Quiz · decisioni",titolo:"Tre situazioni ipotetiche: che cosa fai?",items:[
+ {t:"mc",tipoEt:"Situazione",q:"Uno studente consegna un saggio impeccabile. La conversazione allegata contiene una sola richiesta: «scrivi un saggio su…».",o:["Passi il testo in un rilevatore di testi generati","Voto basso e divieto di usare l'IA","Gli chiedi di spiegare a voce due passaggi, poi di rifare il lavoro partendo da tre domande sue","Accetti il saggio: il risultato è buono"],ok:2,s:"La spiegazione orale mostra se lo studente si è appropriato del lavoro, e le tre domande lo costringono a ripartire dal proprio pensiero. I rilevatori sono inaffidabili: OpenAI ha ritirato il proprio nel 2023 per la bassa accuratezza."},
+ {t:"mc",tipoEt:"Situazione",q:"La classe pone la stessa domanda a due modelli e ottiene due date diverse per lo stesso evento.",o:["Si cerca la data su una fonte primaria o sul manuale e si discute perché i modelli divergono","Si sceglie il modello più recente","Si fa la media tra le due date","Si chiede a un terzo modello di decidere"],ok:0,s:"Un terzo modello aggiungerebbe una terza versione senza nessuna prova in più. La divergenza si scioglie con un documento, ed è il momento dell'esercizio da cui gli studenti imparano di più."},
+ {t:"mc",tipoEt:"Situazione",q:"Una studentessa chiede all'IA un parere sulla propria tesi e riceve soltanto complimenti.",o:["Le suggerisci di cambiare modello","Va bene così, la tesi evidentemente regge","Le chiedi di rinunciare alla tesi","Le suggerisci di chiedere le tre obiezioni più forti e il presupposto più fragile"],ok:3,s:"I complimenti sono l'effetto atteso della compiacenza dei modelli. Il prompt della pratica 2 rovescia il verso della conversazione."}
+]};
+
+Object.values(BLOCCHI).forEach(b=>{b.tot=b.items.reduce((s,it)=>s+(it.t==="abbina"?it.righe.length:1),0);renderBlocco(b)});
+aggiornaRegistro();
+function svela(){$("#velabile").classList.remove("velato")}
+$("#svela").onclick=svela;
+$("#ricomincia").onclick=()=>{for(const k in REG)delete REG[k];Object.values(BLOCCHI).forEach(renderBlocco);$("#velabile").classList.add("velato");aggiornaRegistro()};
+
+/* ---------- genealogia ---------- */
+const tappe=[
+ {a:"c. 385 a.C.",c:"Platone, Menone",q:"Su quale lato si costruisce un quadrato di area doppia?",t:"Socrate interroga uno schiavo che non ha mai studiato geometria. Il ragazzo sbaglia due volte, prima raddoppiando il lato e poi provando con un lato di tre piedi, finché ammette di non sapere; solo a quel punto Socrate, sempre domandando, lo porta a scoprire che il quadrato doppio si costruisce sulla diagonale.",k:"Lasciate che uno studente sbagli ad alta voce prima di correggerlo, e chiedetegli su che cosa si basava."},
+ {a:"c. 370 a.C.",c:"Platone, Fedro",q:"La scrittura rende più sapienti o più smemorati?",t:"Thamus giudica l'invenzione di Theuth un farmaco che aiuta a richiamare alla mente ciò che si è dimenticato e intanto indebolisce il ricordare, perché affida la memoria a segni esterni e dà a chi li usa l'apparenza della sapienza.",k:"Leggete il passo in classe e fate riscrivere il dialogo con un assistente di IA al posto della scrittura."},
+ {a:"1939",c:"R.G. Collingwood, An Autobiography",q:"A quale domanda risponde questa frase?",t:"Collingwood sostiene che un enunciato non si capisce, e nemmeno si può dire vero o falso, finché non si conosce la domanda a cui intendeva rispondere. Chiama questo metodo logica di domanda e risposta.",k:"Date agli studenti un testo generato da un'IA e chiedete di ricostruire il prompt che lo ha prodotto."},
+ {a:"1950",c:"A.M. Turing, Computing Machinery and Intelligence",q:"«Can machines think?»",t:"Turing apre l'articolo con questa domanda e la mette subito da parte, giudicandola troppo vaga per essere discussa con profitto. Al suo posto propone un gioco osservabile, il gioco dell'imitazione, in cui un interrogante deve capire, solo facendo domande per iscritto, quale dei due interlocutori sia la macchina.",k:"Proponete una domanda troppo vaga, come «l'arte serve a qualcosa?», e fatela riformulare finché non diventa una domanda a cui si può rispondere con delle prove."},
+ {a:"1953",c:"M. Heidegger, La questione della tecnica",q:"Che cos'è l'essenza della tecnica?",t:"La conferenza avanza per domande successive e si chiude con la frase sul domandare come pietà del pensiero, diventata poi una delle più citate di Heidegger.",k:"Prima di insegnare a usare uno strumento, chiedete alla classe a chi conviene e che cosa cambia nel loro modo di studiare."},
+ {a:"1956",c:"B.S. Bloom, Taxonomy of Educational Objectives",q:"Quale lavoro chiede questa domanda a chi risponde?",t:"Bloom e il suo gruppo classificano gli obiettivi cognitivi dal ricordare al valutare. Nel 2001 Anderson e Krathwohl rivedono la scala e mettono in cima il creare.",k:"Prendete le domande dell'ultima verifica e collocatele sui sei livelli, come nella parte V."},
+ {a:"1960",c:"H.-G. Gadamer, Verità e metodo",q:"A che cosa sta rispondendo questo testo?",t:"Gadamer dedica un capitolo al primato ermeneutico della domanda. Comprendere un testo significa comprenderlo come risposta, e saper domandare significa saper tenere aperta una questione invece di chiuderla in fretta.",k:"Dopo ogni risposta dell'IA chiedete agli studenti quale domanda è rimasta aperta."},
+ {a:"1966",c:"J. Weizenbaum, ELIZA",q:"Perché dici di sentirti così?",t:"Il primo chatbot, con il copione DOCTOR, rispondeva quasi soltanto rilanciando come domande le frasi dell'utente. Weizenbaum rimase turbato da quanto le persone si affezionassero a quel programma, e dieci anni dopo ne scrisse in Computer Power and Human Reason.",k:"Fate provare alla classe una delle versioni di ELIZA che circolano in rete e chiedete perché sembra capire."},
+ {a:"1969",c:"N. Postman, C. Weingartner, Teaching as a Subversive Activity",q:"Che cosa vale la pena sapere?",t:"Il libro propone una scuola costruita sul metodo dell'indagine, in cui il risultato da osservare sono le domande che gli studenti imparano a porre.",k:"Inserite nella valutazione di un'unità la qualità delle domande poste dallo studente."},
+ {a:"1973",c:"G. Rodari, Grammatica della fantasia",q:"«Che cosa succederebbe se…?»",t:"Rodari chiama questa formula ipotesi fantastica. Si prendono a caso un soggetto e un predicato, li si unisce con il «che cosa succederebbe se», e dalla domanda nasce una storia intera.",k:"Usate il «che cosa succederebbe se…?» per far scrivere un racconto prima di aprire qualunque assistente."},
+ {a:"1974",c:"M. Lipman, A.M. Sharp, Philosophy for Children",q:"Che cosa intendi quando dici…?",t:"Con l'Institute for the Advancement of Philosophy for Children nasce la comunità di ricerca, in cui bambini e ragazzi costruiscono insieme le domande e le discutono con un adulto che fa da facilitatore e si astiene dal dare risposte.",k:"Una volta al mese dedicate un'ora a una sola domanda scelta dalla classe, discussa in cerchio."},
+ {a:"1985",c:"P. Freire, A. Faundez, Por uma pedagogia da pergunta",q:"Chi ha il diritto di domandare?",t:"Freire critica la pedagogia della risposta, in cui il docente risponde a domande che nessuno studente ha posto, e propone di partire dalle domande di chi impara.",k:"Aprite una nuova unità raccogliendo le domande degli studenti prima di spiegare."},
+ {a:"2011",c:"D. Rothstein, L. Santana, Make Just One Change",q:"Quali domande ti fa venire questo?",t:"Il Right Question Institute codifica la Question Formulation Technique, un protocollo in cui la classe parte da uno spunto, produce liberamente domande seguendo quattro regole, le classifica e sceglie le prioritarie.",k:"Il protocollo completo è nella pratica 4, con una lavagna da usare in aula."},
+ {a:"2025",c:"Le modalità di studio",q:"Che cosa sai già di questo argomento?",t:"Anthropic e OpenAI introducono negli assistenti modalità che guidano lo studente con domande e indizi. Nello stesso anno PNAS pubblica lo studio sul tutor che protegge l'apprendimento.",k:"I prompt della pratica 5 ottengono lo stesso comportamento da qualunque assistente."},
+ {a:"2026",c:"Jianwei Xun, Prompt Thinking",q:"Come si pensa con una macchina che risponde?",t:"Il libro, uscito per Polity Press nella collana Theory Redux, tratta il prompting come una forma di pensiero e, come suggerisce il sottotitolo che riprende Kant, ne esamina condizioni e limiti.",k:"Chiedete agli studenti di tenere per una settimana un diario dei prompt che scrivono, e rileggetelo con loro."}
+];
+const anni=$("#anni"),quadro=$("#quadro");let tsel=0;
+tappe.forEach((x,i)=>{const b=document.createElement("button");b.type="button";b.setAttribute("role","tab");b.innerHTML='<span class="a">'+esc(x.a)+'</span><span class="c">'+esc(x.c.split(",")[0])+'</span>';b.onclick=()=>mostraTappa(i);anni.appendChild(b)});
+function mostraTappa(i,focus){tsel=(i+tappe.length)%tappe.length;const x=tappe[tsel];
+  const bs=$$("button",anni);bs.forEach((b,k)=>{b.setAttribute("aria-selected",k===tsel);b.tabIndex=k===tsel?0:-1});
+  if(focus)bs[tsel].focus();
+  quadro.innerHTML='<span class="chi">'+esc(x.a)+' · '+esc(x.c)+'</span><p class="domanda">'+esc(x.q)+'</p><p>'+esc(x.t)+'</p><div class="inclasse"><b>In classe</b><span>'+esc(x.k)+'</span></div><div class="frecce"><button class="btn piccolo" type="button" data-d="-1">Precedente</button><button class="btn piccolo" type="button" data-d="1">Successiva</button><span class="nota" style="margin-left:auto;align-self:center">'+(tsel+1)+' di '+tappe.length+'</span></div>';
+  $$("[data-d]",quadro).forEach(b=>b.onclick=()=>mostraTappa(tsel+ +b.dataset.d));
+}
+anni.addEventListener("keydown",e=>{if(["ArrowDown","ArrowRight"].includes(e.key)){e.preventDefault();mostraTappa(tsel+1,true)}if(["ArrowUp","ArrowLeft"].includes(e.key)){e.preventDefault();mostraTappa(tsel-1,true)}});
+mostraTappa(0);
+
+/* ---------- anatomia ---------- */
+const base="Parlami della peste di Milano.";
+const strati=[
+ {id:"scopo",n:"Chiarezza",c:"chiarezza di pensiero",t:"Voglio capire perché nel 1630 la peste a Milano si diffuse così rapidamente.",a:"Sapere che cosa si vuole sapere. Sostituisce l'argomento con un problema.",e:"La risposta smette di essere un riassunto e prova a spiegare una causa."},
+ {id:"contesto",n:"Contesto",c:"conoscenza del contesto",t:"Frequento la seconda superiore e in classe stiamo leggendo i capitoli XXXI e XXXII dei Promessi sposi.",a:"Dire chi chiede e da dove. La risposta si adatta a ciò che lo studente ha davanti.",e:"Il lessico si adatta all'età e la risposta si aggancia al testo che lo studente sta leggendo."},
+ {id:"errore",n:"Errore",c:"riconoscere un errore",t:"Distingui ciò che racconta Manzoni da ciò che sostengono gli storici, e segnala quando un'affermazione è incerta.",a:"Prevedere dove la risposta può sbagliare, e chiedere che lo dichiari.",e:"Il romanzo e la storia vengono tenuti distinti, e i punti incerti diventano visibili."},
+ {id:"prova",n:"Prova",c:"chiedere una prova",t:"Per ogni causa indica una fonte che posso controllare, un documento dell'epoca o uno studio storico, e dimmi come verificarla.",a:"Pretendere fonti esterne e un modo per controllarle.",e:"Ogni affermazione arriva con un indirizzo a cui andarla a controllare, fuori dalla macchina."},
+ {id:"punto",n:"Punto di vista",c:"cambiare punto di vista",t:"Poi ripercorri gli stessi fatti dal punto di vista di chi in quei mesi credeva agli untori, e mostra dove le due letture si separano.",a:"Guardare lo stesso fatto con gli occhi di qualcun altro.",e:"Compare una seconda lettura, e con lei la domanda su perché allora sembrasse credibile."},
+ {id:"ritorno",n:"Domanda di ritorno",c:"farsi interrogare",t:"Prima di rispondere, fammi due domande per capire che cosa so già.",a:"Rovesciare il verso: la macchina chiede, lo studente risponde.",e:"Prima di rispondere, la macchina chiede allo studente che cosa sa già."}
+];
+const elS=$("#strati"),elP=$("#prompt-vivo"),elC=$("#contatore");let ultimo=null;
+strati.forEach(s=>{const l=document.createElement("label");l.className="strato";l.innerHTML='<input type="checkbox" id="st-'+s.id+'"><span class="nome">'+esc(s.n)+'</span><span class="allena">'+esc(s.a)+'</span>';elS.appendChild(l);l.querySelector("input").addEventListener("change",e=>{ultimo=e.target.checked?s:null;aggiornaPrompt()})});
+function promptCostruito(html){const on=strati.filter(s=>$("#st-"+s.id).checked);
+  if(!on.length)return html?esc(base):base;
+  return on.map(s=>html?'<mark>'+esc(s.t)+'</mark>':s.t).join(" ");}
+function aggiornaPrompt(){elP.innerHTML=promptCostruito(true);
+  const n=strati.filter(s=>$("#st-"+s.id).checked).length;
+  elC.innerHTML=strati.map(s=>'<span class="chip'+($("#st-"+s.id).checked?' on':'')+'">'+esc(s.c)+'</span>').join("");
+  $("#effetto").textContent=ultimo?"Che cosa cambia: "+ultimo.e:(n?n+" competenze su 6 in gioco.":"La domanda nuda nomina un argomento e lascia alla macchina ogni decisione su che cosa dire e a chi.");}
+$("#tutti").onclick=()=>{strati.forEach(s=>$("#st-"+s.id).checked=true);ultimo=null;aggiornaPrompt()};
+$("#nessuno").onclick=()=>{strati.forEach(s=>$("#st-"+s.id).checked=false);ultimo=null;aggiornaPrompt()};
+$("#copia-vivo").onclick=function(){copia(promptCostruito(false),this)};
+["scopo","contesto","prova"].forEach(id=>$("#st-"+id).checked=true);
+aggiornaPrompt();
+
+/* ---------- pratiche ---------- */
+const tabs=$$("#tab-pratiche [role=tab]");
+function apriTab(i){tabs.forEach((t,k)=>{t.setAttribute("aria-selected",k===i);t.tabIndex=k===i?0:-1;document.getElementById(t.getAttribute("aria-controls")).hidden=k!==i})}
+tabs.forEach((t,i)=>{t.onclick=()=>apriTab(i);t.addEventListener("keydown",e=>{if(e.key==="ArrowRight"){e.preventDefault();const j=(i+1)%tabs.length;apriTab(j);tabs[j].focus()}if(e.key==="ArrowLeft"){e.preventDefault();const j=(i-1+tabs.length)%tabs.length;apriTab(j);tabs[j].focus()}})});
+apriTab(0);
+$$("[data-copia]").forEach(b=>b.onclick=()=>copia($("#"+b.dataset.copia).textContent.trim(),b));
+
+/* schede salvate nel browser */
+const SCH=ls.get("sdd-schede")||{};
+$$("[data-salva]").forEach(el=>{if(SCH[el.id]!=null)el.value=SCH[el.id];el.addEventListener("input",()=>{SCH[el.id]=el.value;ls.set("sdd-schede",SCH);if(el.id.startsWith("pt-"))disegnaPatto()})});
+$$("[data-copia-scheda]").forEach(b=>b.onclick=()=>{const p=b.dataset.copiaScheda;const t=$$('[id^="'+p+'-"]').map(el=>{const lab=el.closest("label").querySelector("b").textContent;return lab+"\n"+(el.value||"…")}).join("\n\n");copia(t,b)});
+$$("[data-svuota]").forEach(b=>b.onclick=()=>{const p=b.dataset.svuota;$$('[id^="'+p+'-"]').forEach(el=>{el.value="";SCH[el.id]=""});ls.set("sdd-schede",SCH)});
+
+/* rubrica */
+const criteri=[
+ {k:"intenzione",n:"Intenzione",d:"la domanda dichiara uno scopo",l:["Chiede un argomento o un prodotto, senza uno scopo.","Lo scopo c'è ma resta generico.","Lo scopo è chiaro e orienta la richiesta.","Lo scopo è preciso e lo studente lo ridefinisce mentre impara."]},
+ {k:"contesto",n:"Contesto",d:"dà alla macchina ciò che deve sapere",l:["Nessuna informazione su chi chiede e a che cosa serve.","Qualche elemento di contesto, poco usato.","Contesto adeguato: livello, testo di riferimento, scopo.","Contesto ricco e selezionato, aggiornato lungo la conversazione."]},
+ {k:"verifica",n:"Verifica",d:"chiede fonti, controlla, segnala errori",l:["Accetta ogni risposta così com'è.","Chiede fonti, senza controllarle.","Controlla alcune affermazioni su fonti esterne.","Verifica sistematicamente e segnala alla macchina i suoi errori."]},
+ {k:"rilancio",n:"Rilancio",d:"riformula quando la risposta non basta",l:["Una sola richiesta, nessun seguito.","Chiede di più senza cambiare domanda.","Riformula la domanda quando la risposta non basta.","Riformula con strategia, cambiando livello o angolazione."]},
+ {k:"prospettiva",n:"Prospettiva",d:"cerca obiezioni e altri punti di vista",l:["Un solo punto di vista, il proprio.","Chiede altri punti di vista se sollecitato.","Chiede di propria iniziativa obiezioni e alternative.","Mette alla prova la propria tesi e la modifica alla luce delle obiezioni."]},
+ {k:"appropriazione",n:"Appropriazione",d:"rielabora e decide senza la macchina",l:["Il prodotto coincide con l'output della macchina.","Qualche rielaborazione superficiale.","Rielabora con parole sue e sa spiegare le scelte.","Prende decisioni proprie e sa difenderle a voce senza schermo."]}
+];
+const livelli=["","In via di prima acquisizione","Base","Intermedio","Avanzato"];
+const valori={intenzione:3,contesto:2,verifica:1,rilancio:2,prospettiva:1,appropriazione:2};
+const cur=$("#cursori");
+criteri.forEach(c=>{const l=document.createElement("label");l.htmlFor="r-"+c.k;l.innerHTML='<span><b>'+esc(c.n)+'</b> <span class="nota">'+esc(c.d)+'</span></span><span class="liv" id="lv-'+c.k+'"></span><input type="range" min="1" max="4" step="1" id="r-'+c.k+'" value="'+valori[c.k]+'">';cur.appendChild(l);
+  const inp=l.querySelector("input");const descr=()=>{$("#descr-liv").innerHTML="<b>"+esc(c.n)+" · "+esc(livelli[valori[c.k]])+".</b> "+esc(c.l[valori[c.k]-1])};
+  inp.addEventListener("input",e=>{valori[c.k]=+e.target.value;disegnaRadar();descr()});inp.addEventListener("focus",descr)});
+const NS="http://www.w3.org/2000/svg";
+function disegnaRadar(){const svg=$("#radar");svg.innerHTML="";const cx=150,cy=150,R=110,n=criteri.length;
+  const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};
+  const el=(t,at)=>{const e=document.createElementNS(NS,t);for(const k in at)e.setAttribute(k,at[k]);svg.appendChild(e);return e};
+  for(let l=1;l<=4;l++)el("polygon",{class:"anello",points:criteri.map((c,i)=>pt(i,R*l/4).join(",")).join(" ")});
+  criteri.forEach((c,i)=>{const[x,y]=pt(i,R);el("line",{class:"asse",x1:cx,y1:cy,x2:x,y2:y});
+    const[lx,ly]=pt(i,R+20);const t=el("text",{x:lx,y:ly+4,"text-anchor":Math.abs(lx-cx)<5?"middle":(lx>cx?"start":"end")});t.textContent=c.n});
+  el("polygon",{class:"area",points:criteri.map((c,i)=>pt(i,R*valori[c.k]/4).join(",")).join(" ")});
+  criteri.forEach((c,i)=>{const[x,y]=pt(i,R*valori[c.k]/4);el("circle",{class:"punto",cx:x,cy:y,r:4});$("#lv-"+c.k).textContent=livelli[valori[c.k]]});
+}
+disegnaRadar();
+$("#copia-rubrica").onclick=function(){copia("Rubrica per valutare una conversazione con l'IA\nLivelli: "+livelli.slice(1).join(", ")+"\n\n"+criteri.map(c=>c.n.toUpperCase()+" ("+c.d+")\n"+c.l.map((x,i)=>"  "+livelli[i+1]+": "+x).join("\n")).join("\n\n"),this)};
+$("#copia-profilo").onclick=function(){copia(criteri.map(c=>c.n+": "+livelli[valori[c.k]]).join("\n"),this)};
+
+/* lavagna QFT */
+const TRASF={C:["Perché…?","Come…?","In che modo…?","Che cosa succederebbe se…?"],A:["È vero che…?","Sempre…?","Più di…?","Si può…?"]};
+let domande=[
+ {t:"Chi decide che cosa sa la macchina?",tipo:"A",p:false,es:true},
+ {t:"La macchina sa quando sbaglia?",tipo:"C",p:false,es:true},
+ {t:"Una risposta può essere giusta e inutile?",tipo:"C",p:false,es:true},
+ {t:"Perché ci fidiamo di chi risponde subito?",tipo:"A",p:false,es:true},
+ {t:"Esiste una domanda a cui nessuna macchina può rispondere?",tipo:"C",p:false,es:true}
+];
+const salvate=ls.get("sdd-qft");if(salvate){if(Array.isArray(salvate.d))domande=salvate.d;if(salvate.f)$("#qft-focus").textContent=salvate.f}
+function salvaQ(){ls.set("sdd-qft",{d:domande,f:$("#qft-focus").textContent})}
+function disegnaQ(){const ul=$("#qlista");ul.innerHTML="";
+  domande.forEach((d,i)=>{const li=document.createElement("li");if(d.p)li.className="prio";
+    li.innerHTML='<span class="ord">'+(i+1)+'</span><span class="t">'+esc(d.t)+(d.es?' <span class="nota">esempio</span>':'')+(d.hint?'<br><span class="nota">Prova a riscriverla iniziando con: '+esc(d.hint)+'</span>':'')+'</span><button type="button" class="ac" data-tipo="'+d.tipo+'" title="Aperta o chiusa">'+d.tipo+'</button><button type="button" class="tr" title="Suggerisci una trasformazione">⇄</button><button type="button" class="stella" aria-pressed="'+d.p+'" title="Prioritaria">★</button>';
+    li.querySelector(".ac").onclick=()=>{d.tipo=d.tipo==="A"?"C":"A";d.hint=null;salvaQ();disegnaQ()};
+    li.querySelector(".tr").onclick=()=>{const arr=TRASF[d.tipo];d.hint=arr[Math.floor(Math.random()*arr.length)];salvaQ();disegnaQ()};
+    li.querySelector(".stella").onclick=()=>{if(!d.p&&domande.filter(x=>x.p).length>=3)return;d.p=!d.p;salvaQ();disegnaQ()};
+    ul.appendChild(li)});
+  const a=domande.filter(d=>d.tipo==="A").length,p=domande.filter(d=>d.p).length;
+  $("#qft-conta").textContent=domande.length+" domande · "+a+" aperte, "+(domande.length-a)+" chiuse · "+p+" di 3 prioritarie";
+}
+$("#qft-form").addEventListener("submit",e=>{e.preventDefault();const v=$("#qft-in").value.trim();if(!v)return;domande.push({t:/\?$/.test(v)?v:v+"?",tipo:/^(chi|che cosa|cosa|come|perch[eé]|quale|quali|in che modo|dove|quando|quanto)\b/i.test(v)?"A":"C",p:false});$("#qft-in").value="";salvaQ();disegnaQ()});
+$("#qft-svuota").onclick=()=>{domande=[];salvaQ();disegnaQ()};
+$("#qft-focus").addEventListener("input",salvaQ);
+disegnaQ();
+
+/* patto */
+const VS=["Dichiaro in quali fasi del lavoro ho usato l'IA e con quale scopo.","Consegno la conversazione completa insieme al prodotto finale.","Scrivo le mie domande prima di aprire qualunque assistente.","Verifico almeno due affermazioni su fonti esterne alla macchina.","Chiedo alla macchina obiezioni alle mie tesi, oltre che conferme.","So spiegare a voce ogni parte del mio lavoro, senza schermo.","Segnalo gli errori della macchina che ho trovato.","Non inserisco nella macchina dati personali miei o di altri."];
+const VD=["Valuto la conversazione oltre al prodotto finale.","Indico per ogni compito se l'IA è ammessa, in quale fase e con quale scopo.","Dedico momenti di lavoro senza schermo, in classe.","Mostro in classe come interrogo io la macchina, compresi i miei errori.","Uso solo strumenti previsti dal Piano d'Istituto, nel rispetto della privacy.","Premio le buone domande, anche quando le risposte non arrivano."];
+const sceltePatto=ls.get("sdd-patto")||{s:[0,1,2,3,5],d:[0,1,2,3]};
+function voci(id,arr,chiave){const box=$(id);arr.forEach((v,i)=>{const l=document.createElement("label");l.innerHTML='<input type="checkbox" '+(sceltePatto[chiave].includes(i)?"checked":"")+'><span>'+esc(v)+'</span>';l.querySelector("input").onchange=e=>{const s=new Set(sceltePatto[chiave]);e.target.checked?s.add(i):s.delete(i);sceltePatto[chiave]=[...s].sort((a,b)=>a-b);ls.set("sdd-patto",sceltePatto);disegnaPatto()};box.appendChild(l)})}
+voci("#voci-s",VS,"s");voci("#voci-d",VD,"d");
+function disegnaPatto(){$("#pt-s").innerHTML=sceltePatto.s.map(i=>"<li>"+esc(VS[i])+"</li>").join("")||'<li class="nota">Scegli almeno una voce.</li>';$("#pt-d").innerHTML=sceltePatto.d.map(i=>"<li>"+esc(VD[i])+"</li>").join("")||'<li class="nota">Scegli almeno una voce.</li>'}
+disegnaPatto();
+$("#copia-patto").onclick=function(){copia("PATTO D'AULA SULL'INTELLIGENZA ARTIFICIALE\nClasse "+$("#pt-classe").value+" · Anno scolastico "+$("#pt-anno").value+"\n\nLo studente si impegna a:\n"+sceltePatto.s.map((i,k)=>(k+1)+". "+VS[i]).join("\n")+"\n\nIl docente si impegna a:\n"+sceltePatto.d.map((i,k)=>(k+1)+". "+VD[i]).join("\n")+"\n\nPer la classe ____________________    Il docente ____________________",this)};
+})();
+</script>
+
+</body>
+</html>
