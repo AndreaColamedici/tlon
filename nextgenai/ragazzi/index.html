@@ -322,7 +322,7 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
     <p class="firma">Andrea Colamedici · filosofo, presidente di GenIA, AI Hub dell'Accademia di Arti e Nuove Tecnologie di Roma<br>Insegna Prompt Thinking all'Istituto Europeo di Design di Roma e alla 24ORE Business School</p>
     <div class="rito" aria-live="polite">
       <div id="rito-testo"><p class="passo">Pensate a un colore. E a un numero da 1 a 10.</p><p class="sotto-passo">Non ditelo a nessuno.</p></div>
-      <div class="riga"><button class="btn pieno" type="button" id="rito-avanti">Avanti</button><span class="chiave"><kbd>→</kbd> o il telecomando per scorrere · <kbd>P</kbd> proiezione</span></div>
+      <div class="riga"><button class="btn pieno" type="button" id="rito-avanti">Avanti</button></div>
     </div>
   </div>
 </section>
@@ -362,7 +362,7 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
           <button class="btn piccolo" type="button" id="ferma" hidden>Ferma</button>
         </div>
       </form>
-      <div class="deviazione riga"><button class="btn piccolo" type="button" id="pesca">Pesca una deviazione</button><span id="deviazione-testo">Aggiunge alla richiesta un vincolo che spinge la risposta fuori dalla media.</span></div>
+      <div class="deviazione riga"><button class="btn piccolo" type="button" id="pesca">Pesca una deviazione</button><span id="deviazione-testo"></span></div>
     </div>
     <div class="testa" style="margin-top:16px;margin-bottom:8px"><span class="occhiello">Il verdetto della sala, a colpi di applauso</span></div>
     <div class="tabellone" id="tabellone"></div>
@@ -370,8 +370,8 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
     <div id="scoperta-box"></div>
     <div class="avanti riga" id="avanti" style="justify-content:space-between;margin-top:20px"></div>
 
-    <details class="scheda regia" id="regia" style="margin-top:28px">
-      <summary><b>Regia</b> <span class="nota">· voce ElevenLabs, solo su questo computer. In condivisione schermo, tienila chiusa</span></summary>
+    <details class="scheda regia" id="regia" style="margin-top:28px" hidden>
+      <summary><b>Regia</b></summary>
       <div class="flusso" style="margin-top:14px">
         <label class="campo" for="el-agente">ID dell'agente ElevenLabs<input type="password" id="el-agente" placeholder="agent_..." autocomplete="off" spellcheck="false"></label>
         <div class="voci-el" id="voci-el"></div>
@@ -576,7 +576,7 @@ function evidenziaGia(html){if($("#evidenzia").getAttribute("aria-pressed")!=="t
 function md(t){return String(t).replace(/—/g,",").split(/\n+/).filter(x=>x.trim()).map(p=>"<p>"+esc(p.replace(/^[-*•]\s+/,"").replace(/\*\*(.+?)\*\*/g,"$1").replace(/\*(.+?)\*/g,"$1"))+"</p>").join("")}
 
 function disegnaChat(){const box=$("#chat"),m=mascheraAttiva(),t=turni[m.id];
-  if(!t.length){box.innerHTML='<p class="chat-vuota">'+(motoreOn()?(m.id==="vostra"&&!P.vostra.nome?"Prima inventate la maschera nella sfida qui sopra, poi parlatele.":"La sala propone, io scrivo. Premete «Presentati» per sentire la voce di "+esc(m.nome)+".")
+  if(!t.length){box.innerHTML='<p class="chat-vuota">'+(motoreOn()?(m.id==="vostra"&&!P.vostra.nome?"Prima inventiamo la maschera, poi le parliamo.":"Che cosa chiediamo a "+esc(m.nome)+"?")
     :"Il dialogo dal vivo funziona durante il panel. Per continuarlo a casa: «Che cosa abbiamo scoperto», poi «Guarda dietro la maschera», copiate le istruzioni e incollatele in qualunque assistente.")+'</p>';return}
   box.innerHTML="";t.forEach((x,i)=>{const d=document.createElement("div");d.className="bolla "+(x.role==="user"?"io":"ia");
     d.innerHTML='<span class="chi">'+(x.role==="user"?"La sala":esc(m.nome))+'</span>'+(x.role==="user"?md(x.content):evidenziaGia(md(x.content)));
@@ -629,9 +629,9 @@ const el={conv:null,id:null,avvio:null,ultimoTesto:"",mic:false};
 function motore(){const on=EL_OK();
   $("#presenta").hidden=!on;$("#microfono").hidden=!on;$("#voce-sel").hidden=on;$("#ritmo").hidden=on;
   $("#invia").disabled=false;$("#msg").disabled=false;$("#pesca").disabled=false;
-  if(on)statoLive("Voce ElevenLabs pronta. Presentati o scrivete la prima domanda.");
-  else if(sample)statoLive("Pronto con la voce del computer. Alla prima domanda Claude chiede il permesso.");
-  else statoLive("Dialogo dal vivo non attivo. Si attiva dalla Regia, in fondo alla sezione.");
+  if(on)statoLive("Pronto");
+  else if(sample)statoLive("Pronto");
+  else statoLive("");
   disegnaChat()}
 function aggiungi(id,role,content){turni[id].push({role,content});if(id===mascheraAttiva().id)disegnaChat()}
 async function elFerma(){const c=el.conv;el.conv=null;el.id=null;el.avvio=null;$("#tappa").classList.remove("parla");if(c){try{await c.endSession()}catch(e){}}}
@@ -648,17 +648,17 @@ function elAvvia(m,saluto){
       onMessage:({message,role,source})=>{const r=role||(source==="ai"?"agent":"user");if(!message||!message.trim())return;
         if(r==="user"){if(/^[.\s…]*$/.test(message))return;if(message.trim()===el.ultimoTesto.trim()){el.ultimoTesto="";return}aggiungi(id,"user",message)}else aggiungi(id,"assistant",message)},
       onModeChange:({mode})=>{if(id===mascheraAttiva().id)$("#tappa").classList.toggle("parla",mode==="speaking")},
-      onError:(msg)=>statoLive("ElevenLabs: "+msg,true),
-      onDisconnect:()=>{if(el.id===id){el.conv=null;el.id=null;el.avvio=null;$("#tappa").classList.remove("parla");statoLive("Conversazione chiusa. La prossima domanda la riapre.")}}
+      onError:(msg)=>{statoLive("Collegamento disturbato, riprova",true);try{console.warn("ElevenLabs",msg)}catch(e){}},
+      onDisconnect:()=>{if(el.id===id){el.conv=null;el.id=null;el.avvio=null;$("#tappa").classList.remove("parla");statoLive("")}}
     });
     try{conv.setMicMuted(!el.mic)}catch(e){}
     try{conv.setVolume({volume:voceOn?1:0})}catch(e){}
     if(el.id!==id){try{await conv.endSession()}catch(e){}throw new Error("superata")}
     el.conv=conv;statoLive(m.nome+" è in ascolto");return conv})();
-  el.avvio.catch(err=>{el.avvio=null;el.id=null;if(String(err&&err.message)!=="superata")statoLive("Collegamento ElevenLabs non riuscito: "+(err&&err.message||err),true)});
+  el.avvio.catch(err=>{el.avvio=null;el.id=null;if(String(err&&err.message)!=="superata")(statoLive("Collegamento non riuscito, riprova",true),console.warn(err))});
   return el.avvio}
 $("#presenta").onclick=()=>{const m=mascheraAttiva();if(el.conv&&el.id===m.id){statoLive(m.nome+" è già qui");return}elAvvia(m,true).catch(()=>{})};
-$("#microfono").onclick=function(){el.mic=!el.mic;this.setAttribute("aria-pressed",el.mic);try{el.conv&&el.conv.setMicMuted(!el.mic)}catch(e){}statoLive(el.mic?"Microfono aperto: la sala può parlare":"Microfono chiuso")};
+$("#microfono").onclick=function(){el.mic=!el.mic;this.setAttribute("aria-pressed",el.mic);try{el.conv&&el.conv.setMicMuted(!el.mic)}catch(e){}statoLive(el.mic?"Microfono aperto":"Microfono chiuso")};
 async function inviaEL(m,testo){aggiungi(m.id,"user",testo);el.ultimoTesto=testo;try{const c=await elAvvia(m,false);c.sendUserMessage(testo);statoLive(m.nome+" sta rispondendo…")}catch(e){}}
 async function inviaClaude(m,testo){const id=m.id;turni[id].push({role:"user",content:testo});disegnaChat();
   const box=$("#chat"),d=document.createElement("div");d.className="bolla ia";d.innerHTML='<span class="chi">'+esc(m.nome)+'</span><p class="nota">Ci sta pensando…</p>';box.appendChild(d);box.scrollTop=box.scrollHeight;
@@ -674,7 +674,7 @@ async function inviaClaude(m,testo){const id=m.id;turni[id].push({role:"user",co
   finally{inCorso=false;$("#invia").disabled=false;$("#ferma").hidden=true;disegnaChat()}}
 $("#form-chat").addEventListener("submit",e=>{e.preventDefault();const testo=$("#msg").value.trim();if(!testo||inCorso)return;const m=mascheraAttiva();
   if(EL_OK()){$("#msg").value="";inviaEL(m,testo)}else if(sample){$("#msg").value="";inviaClaude(m,testo)}
-  else{statoLive("Nessuna voce collegata: inserisci l'agente nella Regia qui sotto, poi premi Invio di nuovo.",true);const r=$("#regia");r.open=true;r.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>$("#el-agente").focus({preventScroll:true}),400)}});
+  else{statoLive("Voce non collegata",true);const r=$("#regia");r.hidden=false;r.open=true;r.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>$("#el-agente").focus({preventScroll:true}),400)}});
 $("#msg").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#form-chat").requestSubmit()}});
 $("#ferma").onclick=()=>{ctl&&ctl.abort();zitto()};
 $("#ricomincia-chat").onclick=()=>{ctl&&ctl.abort();zitto();const m=mascheraAttiva();if(el.id===m.id)elFerma();turni[m.id]=[];disegnaChat()};
@@ -686,6 +686,7 @@ $("#el-salva").onclick=()=>{REGIA.agente=$("#el-agente").value.trim();TAPPE.filt
 $("#el-spegni").onclick=()=>{REGIA.attiva=false;ls.set("pi-regia",REGIA);elFerma();disegnaRegia();motore()};
 
 
+document.addEventListener("keydown",e=>{const t=e.target;if(t.closest&&t.closest("input,textarea,select,[contenteditable=true]"))return;if(e.metaKey||e.ctrlKey||e.altKey)return;if(e.key==="r"||e.key==="R"){const r=$("#regia");r.hidden=!r.hidden;r.open=!r.hidden;if(!r.hidden)r.scrollIntoView({behavior:"smooth",block:"center"})}});
 $("#durata-tappa").value=ls.get("pi25-durata")||6;
 $("#durata-tappa").addEventListener("input",e=>{const v=parseInt(e.target.value,10);if(v>0){ls.set("pi25-durata",v);if(!tIv){tResto=null;mostraTimer(durata())}}});
 $("#azzera-tutto").onclick=()=>{if(el.id)elFerma();const v=P.vostra;Object.assign(P,{corrente:"pappagallo",fatte:{},scoperte:{},verdetti:{sorprende:0,ripete:0,domanda:0}});P.vostra={nome:"",chi:"",regola:"",voce:v.voce};for(const k in turni)turni[k]=[];salvaP();fermaTimer();rito=0;$("#rito-testo").innerHTML=RITO[0];$("#rito-avanti").textContent="Avanti";disegnaTabellone();disegnaTutto()};
