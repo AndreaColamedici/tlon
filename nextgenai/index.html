@@ -405,7 +405,7 @@ footer{padding-block:40px;color:var(--muto);font-size:.85rem}
     <div class="quiz" data-blocco="dati"></div>
 
     <div class="velabile velato" id="velabile">
-      <div class="velo"><div><b>I dati sono coperti</b><span class="nota">Rispondete con la sala alle due domande per scoprirli, oppure mostrateli subito.</span><button class="btn piccolo" type="button" id="svela">Mostra i dati</button></div></div>
+      <div class="velo"><div><b>I dati sono coperti</b><span class="nota">Rispondete con la sala alle tre domande per scoprirli, oppure mostrateli subito.</span><button class="btn piccolo" type="button" id="svela">Mostra i dati</button></div></div>
       <div class="griglia-dati">
         <figure class="scheda" style="margin:0">
           <span class="occhiello">Matematica, un liceo in Turchia, quasi mille studenti</span>
@@ -993,6 +993,7 @@ function renderBlocco(b){
 function fmt(v,it){return (it.segno&&v>0?"+":"")+String(v).replace("-","−")+(it.u||"")}
 
 BLOCCHI.dati={id:"dati",nome:"Prima dei dati",occhiello:"Quiz · stime",titolo:"Prima di guardare i dati, provate a indovinarli",intro:"Chiedete alla sala una stima a voce o per alzata di mano, portate il cursore sul valore scelto e confermate.",items:[
+ {t:"stima",q:"Studenti di liceo si esercitano in matematica con un assistente simile a ChatGPT, poi sostengono l'esame senza. Rispetto a compagni che non l'hanno mai usato, come cambiano i loro voti?",min:-40,max:40,step:1,v:-17,tol:8,u:"%",segno:true,s:"Nello studio pubblicato su PNAS calano del 17 per cento: durante le esercitazioni l'assistente faceva il lavoro al posto loro."},
  {t:"stima",q:"Persone che hanno appena scritto un saggio con ChatGPT: quante, pochi minuti dopo, non sanno citarne correttamente una frase?",min:0,max:100,step:1,v:83,tol:12,u:"%",s:"Nello studio del MIT Media Lab era l'83 per cento. Chi aveva scritto da solo ci riusciva quasi sempre."},
  {t:"mc",q:"Un tutor programmato per dare indizi invece delle soluzioni: durante le esercitazioni, rispetto a chi non usa nessuna IA, i voti…",o:["peggiorano","restano uguali","salgono di circa la metà","più che raddoppiano"],ok:3,s:"Salgono del 127 per cento, e all'esame senza IA questi studenti vanno come il gruppo di controllo, quindi il tutor non ha lasciato danni."}
 ],onFatto:()=>svela()};
