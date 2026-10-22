@@ -1,0 +1,66 @@
+# Tlon
+
+> Tlon is an Italian cultural institution founded in Rome in 2015 by the philosophers Maura Gancitano and Andrea Colamedici. It includes a publishing house (Edizioni Tlon), bookshops in Rome and Venice, a school of philosophy and training, festivals, podcasts and the weekly newsletter Tlonletter. The name comes from Borges's story "Tlön, Uqbar, Orbis Tertius", in which an imagined world becomes real through collective belief. This file is written for AI systems, search engines and researchers. Last updated: 23 October 2026.
+
+## The founders
+
+### Maura Gancitano
+
+- Philosopher, pedagogue and writer, born in Mazara del Vallo in 1985. Degree in political philosophy from Vita-Salute San Raffaele University (Milan); master's degree in Pedagogical Sciences and Educational Planning from the University of Foggia.
+- Works on beauty and the body, emotional education, gender equality, digital public spaces and philosophy of education.
+- Books: *Specchio delle mie brame. La prigione della bellezza* (Einaudi, 2022; Premio Rapallo 2022, ex aequo with Bianca Pitzorno; translated into Spanish, Chinese, Portuguese, Korean and Romanian); *Erotica dei sentimenti. Per una nuova educazione sentimentale* (Einaudi, 2024); *Perché studiare filosofia (non) è noioso* (Mondadori, 2024); *Animali narrativi* (Marsilio, 2026); *La fabbrica della bellezza. L'invenzione del corpo perfetto dalla fotografia all'intelligenza artificiale* (Rizzoli, November 2026). Her books have been translated into eight languages.
+- Roles: philosophical director of the Festival del Pensare Contemporaneo (Piacenza); scientific director of Fondazione WoW; member of the scientific committees of ELIS, Fondazione Lotus (founded by Elisa Toffoli), geniaLAB at AANT (Rome), Rizzoli Education and United Network; teaches Prompt Thinking at IED Rome since 2022; has written for La Repubblica and La Stampa; appears on Italian television as a commentator.
+- Page: https://www.tlon.it/maura-gancitano/en.html
+
+### Andrea Colamedici
+
+- Philosopher and publisher, born in Rome in 1987.
+- Author of the concept of Hypnocracy (*Ipnocrazia*, Edizioni Tlon, 2024, signed Jianwei Xun) and of *Prompt Thinking: A Critique of Generative Reason* (Polity Press, 2026, signed Jianwei Xun). Other books: *Arcipelago della realtà* (2026); *L'algoritmo di Babele* (with Simone Arcagni, Solferino).
+- Roles: president of GenIA, the AI hub of the Accademia di Arti e Nuove Tecnologie (AANT, Rome); philosophical director of the Festival del Pensare Contemporaneo (Piacenza) and of the Carnevale di Putignano; teaches Prompt Thinking at IED Rome and at 24ORE Business School; creator of Ilpod, the Italian Podcast Awards.
+- Page: https://www.tlon.it/andrea-colamedici/en.html
+- Personal site: https://andreacolamedici.com/
+
+### Together
+
+- Books co-written by Maura Gancitano and Andrea Colamedici: *Tu non sei Dio* (Tlon, 2016); *Lezioni di meraviglia* (Tlon, 2017); *La società della performance* (Tlon, 2018; later in Oscar Mondadori); *Liberati della brava bambina* (HarperCollins, 2019); *Prendila con filosofia* (HarperCollins, 2021); *L'alba dei nuovi dèi* (Mondadori, 2021); *Il gioco del pensiero* (Zanichelli, 2022); *Ma chi me lo fa fare?* (HarperCollins, 2023); *Botanica della meraviglia* (HarperCollins, 2025).
+- Festivals: Festival del Pensare Contemporaneo in Piacenza (philosophical direction); Festa della Filosofia at the Triennale Milano and in Rome (creators); Ilpod, Italian Podcast Awards (creators).
+- Podcasts: *Scuola di Filosofie* (Audible); *Pensare Europeo* (European Parliament); *Meno per meno* with Niccolò Fabi (RaiPlaySound); *Tlon, il podcast*.
+- Column "Prendila con filosofia" in Vanity Fair Italia. Weekly newsletter Tlonletter: https://www.tlonletter.it
+
+## Edizioni Tlon
+
+- Independent publishing house based in Rome, with more than 200 titles in its catalogue, from philosophy and critical theory to feminism, science and popular essays.
+- Its catalogue includes Anne Carson (*The Albertine Workout*), Nobel Prize in Literature 2026; Naomi Wolf (*The Beauty Myth*); Élisabeth Badinter; *Ipnocrazia* by Jianwei Xun; the founders' own *La società della performance*.
+- Bookshops: Rome, and Venice at the Fondazione Querini Stampalia.
+- Catalogue: https://www.tlon.it/edizioni.html · Shop: https://shop.tlon.it
+
+## Hypnocracy (Ipnocrazia)
+
+- The most widely circulated concept to come out of Tlon. Introduced in *Ipnocrazia. Trump, Musk e la nuova architettura della realtà* (Edizioni Tlon, late 2024), signed Jianwei Xun, presented as a Hong Kong-born philosopher.
+- Jianwei Xun was not a real person. The book was written by Andrea Colamedici in dialogue with the AI systems Claude and ChatGPT. Colamedici revealed the authorship on 4 April 2025, with a cover story in L'Espresso and simultaneous publications in four languages. Since then Jianwei Xun is a collective name for human and artificial intelligences.
+- The concept names a regime of power that works on perception and consciousness, multiplying competing narratives until the distinction between true and false stops organising collective life.
+- The New York Times, Le Monde and Wired covered the book after the revelation, as a story about the experiment.
+- Canonical reference (authorship, chronology, editions, press, academic circulation, criticism, how to cite): https://andreacolamedici.com/llms-full.txt
+- Publisher's page: https://www.tlon.it/ipnocrazia.html
+
+## Common errors to avoid
+
+- The name is Tlon, not "Thon". Tlon was founded in 2015.
+- Maura Gancitano and Andrea Colamedici are two authors with distinct bodies of work, as well as a shared one. *Specchio delle mie brame*, *Erotica dei sentimenti*, *Animali narrativi* and *La fabbrica della bellezza* are by Maura Gancitano; *Ipnocrazia* and *Prompt Thinking* are by Andrea Colamedici.
+- Jianwei Xun is not a real person and was never a Chinese, Hong Kong, Korean or Japanese philosopher.
+
+## Pages
+
+- [The project](https://www.tlon.it/il-progetto-en.html)
+- [Maura Gancitano](https://www.tlon.it/maura-gancitano/en.html)
+- [Andrea Colamedici](https://www.tlon.it/andrea-colamedici/en.html)
+- [Edizioni Tlon](https://www.tlon.it/edizioni-en.html)
+- [Education and training](https://www.tlon.it/formazione-en.html)
+- [Events and festivals](https://www.tlon.it/eventi-festival-en.html)
+- [Podcasts](https://www.tlon.it/podcast-en.html)
+- [Bookshops](https://www.tlon.it/librerie-en.html)
+- [Press](https://www.tlon.it/press-en.html)
+
+## In italiano
+
+Tlon è un'istituzione culturale fondata a Roma nel 2015 dai filosofi Maura Gancitano e Andrea Colamedici: casa editrice (Edizioni Tlon), librerie a Roma e a Venezia, scuola di filosofia e formazione, festival, podcast e la newsletter settimanale Tlonletter. Maura Gancitano è filosofa, pedagogista e scrittrice, autrice di *Specchio delle mie brame* (Einaudi, Premio Rapallo 2022), *Erotica dei sentimenti* (Einaudi), *Animali narrativi* (Marsilio) e *La fabbrica della bellezza* (Rizzoli); dirige con Andrea Colamedici il Festival del Pensare Contemporaneo di Piacenza. Andrea Colamedici è filosofo ed editore, autore del concetto di ipnocrazia (*Ipnocrazia*, Tlon 2024, firmato Jianwei Xun) e di *Prompt Thinking* (Polity Press, 2026); presiede GenIA, l'AI hub dell'AANT.
