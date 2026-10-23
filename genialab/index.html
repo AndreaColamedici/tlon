@@ -1480,10 +1480,20 @@ const MQ = (() => { try { const o = JSON.parse(localStorage.getItem(MQ_KEY) || "
 function mqSave() { try { const o = {}; Object.keys(MQ).forEach(k => { const m = MQ[k]; o[k] = { said: m.said || "", mq: m.mq || null, decision: m.decision || null, re: m.re || null }; }); localStorage.setItem(MQ_KEY, JSON.stringify(o)); } catch (e) {} }
 let REC = null, REC_J = null;
 function mqSet(j, patch) { MQ[j] = Object.assign(MQ[j] || {}, patch); mqSave(); const st = document.getElementById("mqStatus"); if (st && patch.status != null) st.textContent = patch.status; }
+/* ferma davvero: stacca i gestori, interrompe, dimentica l'istanza */
+function recHalt() {
+  if (REC_J != null && MQ[REC_J]) { MQ[REC_J].wantStop = true; MQ[REC_J].listening = false; mqSave(); }
+  const r = REC; REC = null; REC_J = null;
+  if (r) { r.onend = null; r.onerror = null; r.onresult = null; try { r.stop(); } catch (e) {} try { r.abort(); } catch (e) {} }
+}
+function paintListen(on) {
+  const b = document.getElementById("mqListen"); if (!b) return;
+  b.classList.toggle("on", on); b.innerHTML = on ? "<b>●</b>Sto ascoltando · ferma" : "<b>○</b>Ascolta la risposta";
+}
 function mqListen(j) {
   const m = MQ[j] || {};
-  if (m.listening) { m.wantStop = true; try { REC && REC.stop(); } catch (e) {} mqSet(j, { listening: false }); show(); return; }
-  if (REC_J != null && REC_J !== j && MQ[REC_J] && MQ[REC_J].listening) { MQ[REC_J].wantStop = true; MQ[REC_J].listening = false; try { REC && REC.stop(); } catch (e) {} }
+  if (m.listening || (REC && REC_J === j)) { recHalt(); paintListen(false); mqSet(j, { status: "" }); return; }
+  if (REC) recHalt();
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { mqSet(j, { status: "Il riconoscimento vocale non è disponibile qui: scrivete o incollate la risposta nel riquadro." }); return; }
   try {
@@ -1496,9 +1506,10 @@ function mqListen(j) {
       const ta = document.getElementById("mqText"); if (ta && +ta.dataset.j === j) { ta.value = finalText + (interim ? " " + interim : ""); ta.scrollTop = ta.scrollHeight; }
     };
     REC.onerror = ev => { mqSet(j, { status: ev.error === "not-allowed" ? "Microfono negato in questa vista: scrivete o incollate la risposta." : "Ascolto interrotto (" + ev.error + "). Si può riprendere." }); };
-    REC.onend = () => { if (MQ[j] && MQ[j].listening && !MQ[j].wantStop) { try { REC.start(); } catch (e) {} } else { mqSet(j, { listening: false }); } };
+    const me = REC;
+    REC.onend = () => { if (REC === me && MQ[j] && MQ[j].listening && !MQ[j].wantStop) { setTimeout(() => { if (REC === me) { try { me.start(); } catch (e) {} } }, 250); } };
     REC.start();
-    mqSet(j, { listening: true, wantStop: false, status: "" }); show();
+    mqSet(j, { listening: true, wantStop: false, status: "" }); paintListen(true);
   } catch (e) { mqSet(j, { status: "Impossibile avviare il microfono: scrivete o incollate la risposta." }); }
 }
 function routeSummary() {
@@ -1516,7 +1527,7 @@ ${prev ? `Prima di questa domanda ha parlato ${prev.name}. Trascrizione della su
 Costruisci la domanda come un ponte: riprendi UNA cosa precisa che ${prev.name} ha detto, con le sue parole tra virgolette basse, e portala a ${g.name}.` : `È la prima domanda della sessione, subito dopo il gioco: aggancia ${g.name} a ciò che la sala ha appena fatto.`}
 Regole: una sola domanda, in italiano, al massimo cinquanta parole. Specifica al lavoro dell'ospite come risulta dal dossier: non attribuirgli idee, libri o frasi che il dossier o la trascrizione non contengono. Nessun elogio, nessuna premessa, nessun «interessante», nessuna formula di cortesia. Deve mettere in difficoltà con rispetto. Rispondi solo con il testo della domanda.`; };
 async function runAsk(j) {
-  if (REC_J != null && MQ[REC_J] && MQ[REC_J].listening) { MQ[REC_J].wantStop = true; MQ[REC_J].listening = false; try { REC && REC.stop(); } catch (e) {} }
+  if (REC) recHalt();
   const prevM = j > 0 ? MQ[j - 1] : null, prev = prevM && prevM.said && prevM.said.trim() ? { name: PANEL[j - 1].name, said: prevM.said.trim() } : null;
   mqSet(j, { busy: true, mq: null, decision: null, re: null, status: "La macchina formula la domanda…" }); show();
   let sample = null;
@@ -1585,6 +1596,7 @@ function onPath(b) {
 }
 function go(d) {
   if (!AU.ctx) initAudio();
+  if (REC) recHalt();
   if (d > 0 && BEATS[state.idx].k === "fine") return;
   let i = state.idx + d;
   while (i >= 0 && i < BEATS.length && !onPath(BEATS[i])) i += d;
