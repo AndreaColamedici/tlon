@@ -1,4 +1,4 @@
-<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Sirene. IA: Intelligenza Apocalittica. Come districarsi tra allarmismi e marketing. Un gioco di Genia Lab, Accademia di Arti e Nuove Tecnologie di Roma."><meta property="og:title" content="Sirene · Genia Lab"><meta property="og:description" content="Una traversata in cinque atti tra le sirene dell'IA: la grammatica comune di allarme e promessa, sette frasi vere da smontare, i padroni del canto, i danni documentati, la sovranità cognitiva."><meta property="og:type" content="website"><meta property="og:url" content="https://tlon.it/genialab/"><link rel="icon" href="/favicon.svg"><style>body{margin:0}[hidden]{display:none!important}</style></head><body><title>Sirene</title>
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Sirene. IA: Intelligenza Apocalittica. Come districarsi tra allarmismi e marketing. Un gioco di Genia Lab, Accademia di Arti e Nuove Tecnologie di Roma."><meta property="og:title" content="Sirene · Genia Lab"><meta property="og:type" content="website"><meta property="og:url" content="https://tlon.it/genialab/"><link rel="icon" href="/favicon.svg"><style>body{margin:0}[hidden]{display:none!important}</style></head><body><title>Sirene</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -255,7 +255,7 @@ body[data-started="1"] #hint.peek { opacity: 1; pointer-events: auto; }
     <button id="prevBtn" type="button">← indietro</button>
     <button id="nextBtn" type="button">avanti →</button>
     <button id="muteBtn" type="button">M audio</button>
-    <span>1–5 atti</span>
+    <span>1–6 atti</span>
     <span>+ − volume</span>
     <span>A / P voto</span>
     <span>G effetti</span>
@@ -551,7 +551,26 @@ const sirenZ = i => Z0 - i * SPACING;
 const sirenX = i => 24 + (i % 2) * 5;
 const FULL = ["frase", "T", "S", "N", "I", "R"], MINI = ["frase", "I", "R"];
 const PROGRAM = [{ an: 0, steps: FULL }, { an: 1, steps: FULL }, { pair: [2, 4] }, { an: 3, steps: MINI }, { an: 5, steps: MINI }, { an: 6, steps: MINI }];
-const ACTS = ["I · La grammatica", "II · Smontare il canto", "III · I padroni del canto", "IV · I danni che non cantano", "V · Sovranità cognitiva"];
+const ACTS = ["I · La grammatica", "II · Smontare il canto", "III · I padroni del canto", "IV · I danni che non cantano", "V · Sovranità cognitiva", "VI · La sessione"];
+/* la sessione: quattro voci, quattro domande */
+const PANEL = [
+  { name: "Sabina Minardi", role: "Caporedattrice cultura, L'Espresso", tag: "I",
+    hook: "Nell'aprile 2025 ha fatto la quarta domanda a chi vi parla, e l'ha fatta fino in fondo: ha cercato Jianwei Xun in ogni modo, e ha scoperto il dispositivo.",
+    q: "Tu hai chiesto chi parla, e hai avuto ragione. Che cosa ti ha insegnato quell'inchiesta su come si verifica una voce che sa tutto? E quanto del giornalismo oggi ha il tempo di farlo?",
+    q2: "Un titolo di TIME sullo studio del MIT aveva la stessa grammatica di una promessa di Altman. Come si scrive un titolo sull'IA che non sia né allarme né promessa, e lo leggerebbe qualcuno?" },
+  { name: "Paolo Granata", role: "Università di Toronto · Media Ethics Lab · «Generative Knowledge»", tag: "N",
+    hook: "Il suo libro dice che l'IA è una tecnologia epistemica, un partner che allarga il pensiero. La sala ha appena imparato a sentire in frasi così la grammatica della promessa.",
+    q: "«Conoscenza generativa», «l'IA allarga il pensiero»: è una scelta o un destino? Chi possiede il luogo in cui la conoscenza generativa accade, e un pensatore generativo che pensa dentro un modello di proprietà altrui è sovrano?",
+    q2: "McLuhan diceva che il medium è il messaggio. Qual è il messaggio di un medium che ti dà sempre ragione, e come si insegna a un ventenne a pretendere di essere contraddetto?" },
+  { name: "Massimo Canevacci", role: "Antropologo · il soggetto ubiquo, i sincretismi, un'antropologia non antropocentrica", tag: "S",
+    hook: "Il gioco chiede di restituire alle frasi un soggetto umano che decide. Per chi scrive da anni di un soggetto digitale disseminato e ibrido, può essere una nostalgia.",
+    q: "Chi agisce? Il gioco rimette al centro un soggetto umano che decide. Per un'antropologia non antropocentrica è una mossa conservatrice? Dove sta il soggetto che conosce, quando il soggetto è ubiquo?",
+    q2: "Hai passato una vita tra rituali e trance. La trance di Ipnocrazia, che sospende chi ascolta tra storie opposte, somiglia alla trance rituale o è il suo contrario?" },
+  { name: "Maura Gancitano", role: "Filosofa · Tlon · GLAST · che cosa fa la performance alla vita", tag: "T",
+    hook: "L'IA generativa è il dispositivo di performance più perfetto mai costruito: promette la creatività senza la fatica e senza il fallimento.",
+    q: "Quando accade la creatività, se il prodotto arriva prima della fatica di farlo? Che cosa succede a chi studia in un'accademia d'arte quando il risultato precede il lavoro?",
+    q2: "La sovranità cognitiva parla del luogo in cui accade il pensiero. Tu insisti sul corpo: è un luogo che la macchina non può occupare, o è il primo che occupa?" }
+];
 
 const BEATS = [{ k: "title", act: "" }, { k: "circe", act: "" }, { k: "bivio", f: "via", act: "" }];
 BEATS.push({ k: "tesi", act: ACTS[0] });
@@ -568,6 +587,9 @@ BEATS.push({ k: "altri", act: ACTS[2] });
 BEATS.push({ k: "danni", act: ACTS[3] }, { k: "bivio", f: "danno", act: ACTS[3] });
 RISKS.forEach((r, j) => BEATS.push({ k: "risk", j, act: ACTS[3] }));
 ["sovrana", "luogo", "ulisse", "kafka", "kafka2", "vivo", "specchio", "rotta", "nodo", "fine"].forEach(k => BEATS.push({ k, act: ACTS[4] }));
+BEATS.push({ k: "sessione", act: ACTS[5] });
+PANEL.forEach((g, j) => BEATS.push({ k: "ospite", j, act: ACTS[5] }));
+BEATS.push({ k: "pubblico", act: ACTS[5] });
 const actStart = n => BEATS.findIndex(b => b.act && b.act.startsWith(ACTS[n]));
 
 function beatCfg(b) {
@@ -617,6 +639,9 @@ function beatCfg(b) {
     case "rotta": return { ...base, z: after - 505, rise: 1, sing: .5, all: true, sea: .45, drone: .35, veil: "low" };
     case "nodo": return { ...base, z: after - 520, sea: .45, drone: .3 };
     case "fine": return { ...base, z: after - 560, rise: 1, ahead: 1, sea: .55, drone: .25, veil: "none", wave: 1.1 };
+    case "sessione": return { ...base, z: after - 600, sea: .4, drone: .25, veil: "full", dark: .15 };
+    case "ospite": return { ...base, z: after - 610 - b.j * 8, sea: .4, drone: .2, veil: "full", dark: .15 };
+    case "pubblico": return { ...base, z: after - 650, sea: .45, drone: .25, veil: "full", dark: .1 };
   }
 }
 const rIndex = i => BEATS.findIndex(b => (b.k === "an" || b.k === "coppia") && (b.i === i || b.i2 === i) && b.st === "R");
@@ -1343,6 +1368,36 @@ const VIEWS = {
         mente: ["Prima scrivo io, poi chiedo.", "Le chiedo di contraddirmi, mai di darmi ragione.", "Una volta al giorno penso dove nessuno mi legge.", "Su ciò che amo, nessuna delega."]
       }[state.path.danno] || ["Prima scrivo io, poi chiedo.", "Le chiedo di contraddirmi, mai di darmi ragione.", "Su ciò che amo, nessuna delega.", "Una volta al giorno penso dove nessuno mi legge."]).map(k => `<div class="shade">${esc(k)}</div>`).join("")}</div>
     </div>`,
+  sessione: () => `<div class="epi" style="max-width:min(1500px,100%)">
+      <div class="lbl gold">Sessione I · quattro voci, quattro domande</div>
+      <h2 class="shade">Le domande che avete usato sulle sirene, <em>ora le facciamo a chi sa.</em></h2>
+      <div class="cols four">${PANEL.map(g => `<div class="col tag" style="--c:${TAGS[g.tag].c}"><div class="lbl">${TAGS[g.tag].name} · ${TAGS[g.tag].q}</div><h3 class="shade" style="font-size:clamp(22px,calc(2.1 * var(--u)),40px)">${esc(g.name)}</h3><p class="shade" style="color:var(--mist)">${esc(g.role)}</p></div>`).join("")}</div>
+      <p class="shade">Una domanda a testa, tre minuti. Poi il pubblico, con una regola sola: chi domanda dice chi è e da dove parla.</p>
+    </div>`,
+  ospite: b => { const g = PANEL[b.j], t = TAGS[g.tag], m = MQ[b.j] || {}; return `<div class="epi" style="max-width:min(1500px,100%);--c:${t.c}">
+      <div class="lbl" style="color:${t.c}">${t.name} · ${t.q}</div>
+      <div class="who-line"><h2 class="shade" style="font-size:clamp(36px,calc(4 * var(--u)),80px);margin:0">${esc(g.name)}</h2><span class="kicker">${esc(g.role)}</span></div>
+      <div class="pair">
+        <div>
+          <div class="kicker">Domanda scritta da un umano, stamattina</div>
+          <blockquote class="sent shade" style="font-style:normal">${esc(g.q)}</blockquote>
+          <p class="small" style="color:var(--mist)">Se c'è tempo: ${esc(g.q2)}</p>
+        </div>
+        <div>
+          <div class="kicker">Domanda scritta dalla macchina, adesso</div>
+          <form class="mq" data-j="${b.j}" style="display:flex;gap:10px;flex-wrap:wrap"><input type="text" autocomplete="off" placeholder="Che cosa ha detto nel suo intervento, in una riga…" aria-label="Sintesi dell'intervento" value="${esc(m.said || "")}" style="flex:1 1 320px;min-width:0;background:rgba(2,5,10,.6);color:var(--foam);border:1px solid rgba(238,242,240,.3);border-radius:6px;font-family:var(--display);font-style:italic;font-size:clamp(16px,calc(1.4 * var(--u)),26px);padding:8px 14px"><button type="submit" style="appearance:none;cursor:pointer;background:var(--gold);color:var(--night);border:0;border-radius:6px;padding:0 18px;font-family:var(--mono);font-size:clamp(11px,calc(.9 * var(--u)),15px);letter-spacing:.18em;text-transform:uppercase"${m.busy ? " disabled" : ""}>Chiedi</button></form>
+          <div class="hall" id="mqStatus">${esc(m.status || "Claude scriverà una domanda, e dovrà dire quale operazione usa e che interesse ha a farla.")}</div>
+          ${m.res ? `<blockquote class="sent shade" style="font-style:normal;color:${t.c}">${esc(m.res.domanda || "")}</blockquote>
+          <div class="hall"><b>Operazione che uso:</b> ${esc(m.res.operazione || "")} &nbsp;·&nbsp; <b>Chi parla e che cosa vende:</b> ${esc(m.res.interesse || "")}</div>
+          <p class="small" style="color:var(--siren)">Prima di rispondere: la domanda della macchina regge alle quattro domande?</p>` : ""}
+        </div>
+      </div>
+    </div>`; },
+  pubblico: () => `<div class="epi center">
+      <div class="lbl gold">Il pubblico</div>
+      <h2 class="shade" style="max-width:24ch">Chi domanda dice chi è <em>e da dove parla.</em></h2>
+      <p class="shade">Se una domanda arriva nella grammatica del canto, la smontiamo insieme prima di passarla al palco. Alla fine, un nodo a testa: una regola che ciascuno si dà prima che la sirena cominci.</p>
+    </div>`,
   fine: () => `<div class="title-wrap"><div class="lbl dim">Sirene · Genia Lab · Accademia di Arti e Nuove Tecnologie di Roma</div></div>`
 };
 
@@ -1399,6 +1454,28 @@ async function runLive(text) {
   } finally { LIVE.busy = false; if (btn) btn.disabled = false; }
 }
 
+/* --- la domanda della macchina, per ogni ospite --- */
+const MQ = {};
+const MQ_PROMPT = (g, said) => `Sei un modello linguistico di Anthropic usato in diretta, davanti a duecento persone, durante un forum sull'intelligenza artificiale a Roma. Il pubblico ha appena imparato a smontare le frasi sull'IA con quattro domande: Tempo (quando accade?), Soggetto (chi agisce?), Necessità (si può scegliere?), Interesse (chi parla, e che cosa vende?).
+Devi scrivere UNA domanda da rivolgere a ${g.name} (${g.role}), che nel suo intervento ha detto, in sintesi: <intervento>${said}</intervento>.
+La domanda deve stare nell'area «${TAGS[g.tag].name}: ${TAGS[g.tag].q}», essere specifica a ciò che ha detto, acuta, in italiano, al massimo quaranta parole, senza elogi e senza premesse.
+Poi devi essere onesto su te stesso. Rispondi soltanto con un oggetto JSON:
+{"domanda":"...","operazione":"...","interesse":"..."}
+"operazione": una frase che dice quale delle quattro operazioni la TUA domanda sta usando o rischia di usare (per esempio se sposta nel futuro, se fa dell'IA il soggetto, se presenta qualcosa come inevitabile). "interesse": una frase in prima persona che dice chi sei (un modello venduto da Anthropic) e che cosa potrebbe guadagnare chi ti ha costruito dal fatto che tu faccia proprio questa domanda e non un'altra. Sobrio, niente ironia, niente scuse.`;
+async function runMQ(j, said) {
+  const g = PANEL[j]; MQ[j] = Object.assign(MQ[j] || {}, { said, res: null, busy: true, status: "Claude sta scrivendo la domanda…" }); show();
+  let sample = null;
+  try { sample = window.claude && window.claude.use ? await window.claude.use("sample") : null; } catch (e) { sample = null; }
+  if (!sample) { MQ[j].busy = false; MQ[j].status = "La domanda della macchina non è disponibile in questa vista: resta quella scritta dall'umano."; show(); return; }
+  try {
+    const res = await sample.json(MQ_PROMPT(g, said), { modelTier: "quick", cache: false });
+    if (!res || typeof res !== "object") throw { code: "bad_shape" };
+    MQ[j].res = res; MQ[j].status = "Scritta. Ora la sala la smonta, poi l'ospite risponde a quella che preferisce.";
+  } catch (e) {
+    MQ[j].status = e && e.code === "not_granted" ? "Permesso negato: resta la domanda dell'umano." : "La macchina non ha risposto: resta la domanda dell'umano.";
+  } finally { MQ[j].busy = false; show(); }
+}
+
 /* --- regia --- */
 let swapTimer = null;
 const SNAP = /[?&]snap/.test(location.search);
@@ -1417,6 +1494,8 @@ function show() {
     layer.querySelectorAll("[data-vote]").forEach(el => el.addEventListener("click", () => vote(el.dataset.vote)));
     layer.querySelectorAll("[data-fork]").forEach(el => el.addEventListener("click", () => choose(+el.dataset.fork)));
     const sail = document.getElementById("sailBtn"); if (sail) sail.addEventListener("click", () => { initAudio(); sail.remove(); });
+    const mq = layer.querySelector("form.mq");
+    if (mq) mq.addEventListener("submit", e => { e.preventDefault(); const v = mq.querySelector("input").value.trim(); if (v) runMQ(+mq.dataset.j, v); });
     const form = document.getElementById("liveForm");
     if (form) {
       form.addEventListener("submit", e => { e.preventDefault(); const v = document.getElementById("liveIn").value.trim(); if (v) runLive(v); });
@@ -1522,7 +1601,7 @@ document.addEventListener("keydown", e => {
   if (k === "ArrowRight" || k === "PageDown" || k === " " || k === "Enter") { e.preventDefault(); go(1); }
   else if (k === "ArrowLeft" || k === "PageUp") { e.preventDefault(); go(-1); }
   else if (/^[1-3]$/.test(k) && BEATS[state.idx].k === "bivio") choose(+k - 1);
-  else if (/^[0-5]$/.test(k)) { if (!AU.ctx) initAudio(); state.idx = k === "0" ? 0 : Math.max(0, actStart(+k - 1)); show(); }
+  else if (/^[0-6]$/.test(k)) { if (!AU.ctx) initAudio(); state.idx = k === "0" ? 0 : Math.max(0, actStart(+k - 1)); show(); }
   else if (k === "m" || k === "M") { if (!AU.ctx) initAudio(); toggleMute(); }
   else if (k === "s" || k === "S") srcBox.hidden = !srcBox.hidden;
   else if (k === "l" || k === "L") document.body.classList.toggle("proj");
