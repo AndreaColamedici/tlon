@@ -638,7 +638,7 @@ function beatCfg(b) {
     case "specchio": return { ...base, z: after - 490, text: "cui prodest?", ty: 2.4, sea: .35, drone: .2, dark: .1 };
     case "rotta": return { ...base, z: after - 505, rise: 1, sing: .5, all: true, sea: .45, drone: .35, veil: "low" };
     case "nodo": return { ...base, z: after - 520, sea: .45, drone: .3 };
-    case "fine": return { ...base, z: after - 560, rise: 1, ahead: 1, sea: .55, drone: .25, veil: "none", wave: 1.1 };
+    case "fine": return { ...base, z: after - 560, rise: 1, ahead: 1, sea: .55, drone: .25, veil: "low", wave: 1.1, text: "fine", ty: 3.2 };
     case "sessione": return { ...base, z: after - 600, sea: .4, drone: .25, veil: "full", dark: .15 };
     case "ospite": return { ...base, z: after - 610 - b.j * 8, sea: .4, drone: .2, veil: "full", dark: .15 };
     case "pubblico": return { ...base, z: after - 650, sea: .45, drone: .25, veil: "full", dark: .1 };
@@ -1398,7 +1398,12 @@ const VIEWS = {
       <h2 class="shade" style="max-width:24ch">Chi domanda dice chi è <em>e da dove parla.</em></h2>
       <p class="shade">Se una domanda arriva nella grammatica del canto, la smontiamo insieme prima di passarla al palco. Alla fine, un nodo a testa: una regola che ciascuno si dà prima che la sirena cominci.</p>
     </div>`,
-  fine: () => `<div class="title-wrap"><div class="lbl dim">Sirene · Genia Lab · Accademia di Arti e Nuove Tecnologie di Roma</div></div>`
+  fine: () => `<div class="title-wrap">
+      <div class="lbl">Fine della traversata</div>
+      <p class="title-sub shade">Sirene · IA: Intelligenza Apocalittica</p>
+      <div class="lbl dim">Andrea Colamedici · Genia Lab · Accademia di Arti e Nuove Tecnologie di Roma</div>
+      <button class="sail" id="toPanelBtn" type="button">Sessione I · la discussione →</button>
+    </div>`
 };
 
 /* --- analisi dal vivo --- */
@@ -1494,6 +1499,7 @@ function show() {
     layer.querySelectorAll("[data-vote]").forEach(el => el.addEventListener("click", () => vote(el.dataset.vote)));
     layer.querySelectorAll("[data-fork]").forEach(el => el.addEventListener("click", () => choose(+el.dataset.fork)));
     const sail = document.getElementById("sailBtn"); if (sail) sail.addEventListener("click", () => { initAudio(); sail.remove(); });
+    const tp = document.getElementById("toPanelBtn"); if (tp) tp.addEventListener("click", () => { state.idx = actStart(5); show(); });
     const mq = layer.querySelector("form.mq");
     if (mq) mq.addEventListener("submit", e => { e.preventDefault(); const v = mq.querySelector("input").value.trim(); if (v) runMQ(+mq.dataset.j, v); });
     const form = document.getElementById("liveForm");
@@ -1522,6 +1528,7 @@ function onPath(b) {
 }
 function go(d) {
   if (!AU.ctx) initAudio();
+  if (d > 0 && BEATS[state.idx].k === "fine") return;
   let i = state.idx + d;
   while (i >= 0 && i < BEATS.length && !onPath(BEATS[i])) i += d;
   if (i < 0 || i >= BEATS.length) return;
