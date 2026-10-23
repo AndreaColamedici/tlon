@@ -58,6 +58,20 @@ body { margin: 0; background: var(--black); color: var(--white); overflow: hidde
 .cap .k { font-size: clamp(13px, 1.05vw, 18px); color: var(--ash); display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
 .cap .k b { font-family: var(--name); font-weight: 500; font-size: 1.05em; letter-spacing: -.01em; }
 .cap .k .prov { color: var(--smoke); }
+.reader { position: fixed; z-index: 4; left: max(clamp(16px, 3vw, 56px), env(safe-area-inset-left, 0px)); top: 190px; max-height: calc(100vh - 230px); width: min(470px, calc(100vw - 32px)); overflow-y: auto; background: rgba(0,0,0,.86); border: 1px solid var(--white); padding: clamp(18px, 2vw, 30px); pointer-events: auto; transition: opacity .4s ease; }
+.reader[hidden] { display: none; }
+.reader.r { left: auto; right: max(clamp(16px, 3vw, 56px), env(safe-area-inset-right, 0px)); }
+.reader .x { position: absolute; top: 10px; right: 12px; background: none; border: 0; color: var(--white); font: 400 26px/1 var(--text); cursor: pointer; padding: 4px 8px; }
+.reader .who { font-size: 15px; color: var(--ash); display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; padding-right: 36px; }
+.reader .who b { font-family: var(--name); font-weight: 500; font-size: 1.15em; }
+.reader h2 { font-family: var(--text); font-weight: 500; font-size: clamp(22px, 1.9vw, 32px); line-height: 1.15; margin: 14px 0 12px; color: var(--white); }
+.reader .full { font-size: clamp(16px, 1.25vw, 20px); line-height: 1.45; color: var(--white); margin: 0 0 22px; }
+.reader .fili { font-size: 14px; color: var(--ash); margin: 0 0 10px; border-top: 1px solid var(--smoke); padding-top: 14px; }
+.reader .filo { display: block; width: 100%; text-align: left; background: none; border: 0; border-left: 2px solid var(--ash); color: var(--white); font: 400 clamp(15px, 1.1vw, 18px)/1.35 var(--text); padding: 2px 0 2px 14px; margin: 0 0 16px; cursor: pointer; }
+.reader .filo:hover, .reader .filo:focus-visible { border-left-color: var(--white); outline: none; }
+.reader .filo span { display: block; font-size: .82em; color: var(--ash); margin-bottom: 4px; }
+.reader .filo span i { font-style: normal; color: var(--white); }
+@media (max-width: 700px) { .reader { top: auto; max-height: 62vh; } }
 .cap .list { margin: 12px 0 0; display: flex; flex-direction: column; gap: 12px; max-width: min(60ch, 80vw); max-height: 34vh; overflow-y: auto; pointer-events: auto; }
 .cap .list div { font-size: clamp(16px, 1.35vw, 24px); line-height: 1.25; border-left: 1px solid var(--white); padding-left: 16px; }
 .cap .list div span { display: block; font-size: .7em; color: var(--ash); margin-bottom: 3px; }
@@ -94,6 +108,7 @@ body { margin: 0; background: var(--black); color: var(--white); overflow: hidde
 <div class="filters"><button type="button" class="chip tog" id="fTog" aria-expanded="false">Filtri</button><div class="drawer" id="fDrawer" hidden><div class="row" id="fSp"></div><div class="row" id="fTh"></div><div class="row" id="fKi"></div></div></div>
 <div class="hint fade" id="hint">Rotella per avvicinarsi, clic su un pensiero per andarci, doppio clic per tornare. Tasti P, E, D per ponti, echi, divergenze.</div>
 <div class="empty" id="empty">La costellazione si accende a ogni intervento.</div>
+<aside class="reader" id="reader" hidden aria-live="polite"></aside>
 <div class="cap out" id="cap"><div class="k" id="capK"></div><p class="txt" id="capT"></p></div>
 <div class="time"><span>Tempo della sessione</span><span class="bar"><i id="tBar"></i></span><button type="button" id="replay">Riavvolgi</button></div>
 
@@ -190,6 +205,17 @@ let fly = null;
 const HOME = { pos: new T.Vector3(520, 280, 760), target: new T.Vector3() };
 function showNode(n) {
   clearTimeout(capTimer); cap.classList.add("out");
+  const R = document.getElementById("reader");
+  const ls = [...LINKS.values()].filter(L => L.d.a === n.id || L.d.b === n.id);
+  const kl = { ponte: "Ponte con", tensione: "Divergenza con", eco: "Eco con" };
+  const who = sp => sp >= 0 ? SPEAKERS[sp].short : "il gioco";
+  R.innerHTML = `<button class="x" aria-label="Chiudi">×</button><div class="who"><b style="color:${hex(colOf(n.sp))}">${esc(n.sp >= 0 ? SPEAKERS[n.sp].short : "Il gioco")}</b><span>${esc(n.d.time || "")}</span>${n.d.tema ? `<span>${esc(n.d.tema)}</span>` : ""}</div><h2>${esc(n.d.label || "")}</h2>${n.d.text ? `<p class="full">${esc(n.d.text)}</p>` : ""}<p class="fili">${ls.length ? ls.length + (ls.length === 1 ? " filo con altri pensieri" : " fili con altri pensieri") : "Nessun filo ancora con altri pensieri"}</p>` +
+    ls.map(L => { const o = L.d.a === n.id ? L.d.b : L.d.a, on = NODES.get(o), r = refOf(o); const name = on ? who(on.sp) : (r && r.sp !== undefined ? who(r.sp) : ""); return `<button class="filo" data-o="${esc(o)}"><span>${esc(kl[L.d.kind] || "Filo con")} ${esc(name)}${on ? ` · <i>${esc(on.d.label || "")}</i>` : ""}</span>${esc(L.d.text || "")}</button>`; }).join("");
+  const px = n.g.position.clone().project(camera).x; R.classList.toggle("r", px < 0 && innerWidth > 700);
+  R.hidden = false; R.scrollTop = 0;
+  R.querySelector(".x").onclick = () => clearNode();
+  R.querySelectorAll(".filo").forEach(b => b.onclick = () => { const o = NODES.get(b.dataset.o); if (o) flyTo(o); });
+  return;
   setTimeout(() => {
     const ls = [...LINKS.values()].filter(L => L.d.a === n.id || L.d.b === n.id);
     const lbl = { ponte: "Ponte con", tensione: "Divergenza con", eco: "Eco con" };
@@ -200,17 +226,10 @@ function showNode(n) {
     cap.classList.remove("out");
   }, 500);
 }
-function clearNode() { selNode = null; const list = cap.querySelector(".list"); if (list) list.remove(); cycle(); }
+function clearNode() { selNode = null; document.getElementById("reader").hidden = true; const list = cap.querySelector(".list"); if (list) list.remove(); cycle(); }
 function flyTo(n) {
   selNode = n.id; showNode(n);
-  const c = n.g.position.clone(); let k = 1; neighbors(n.id).forEach(id => { const r = refOf(id); if (r) { c.add(r.obj.position); k++; } }); c.multiplyScalar(1 / k);
-  const span = Math.max(160, ...[...neighbors(n.id)].map(id => { const r = refOf(id); return r ? r.obj.position.distanceTo(c) * 1.9 : 0; }));
-  const dir0 = camera.position.clone().sub(c).normalize();
-  fly = { target: c, pos: c.clone().addScaledVector(dir0, Math.min(900, span + 120)), node: null };
-  controls.autoRotate = false; return;
-  const dir = camera.position.clone().sub(n.g.position).normalize();
-  fly = { target: n.g.position.clone(), pos: n.g.position.clone().addScaledVector(dir, 150), node: n };
-  controls.autoRotate = false;
+  fly = null; controls.autoRotate = false;
 }
 function pickSpeaker(i) {
   if (activeSp === i) { setSp(-1); flyHome(); return; }
@@ -230,7 +249,8 @@ canvas.addEventListener("pointerup", e => {
   let best = null, bd = 1e9;
   for (const n of NODES.values()) { if (n.vis < .5) continue; const p = n.g.position.clone().project(camera); const d = Math.hypot((p.x - mouse.x) * innerWidth, (p.y - mouse.y) * innerHeight) / 2; if (d < 28 && d < bd) { bd = d; best = n; } }
   if (!best) for (const S of STARS) { const p = S.grp.position.clone().project(camera); const d = Math.hypot((p.x - mouse.x) * innerWidth, (p.y - mouse.y) * innerHeight) / 2; if (d < 60) { pickSpeaker(S.i); return; } }
-  if (best) flyTo(best); else if (fly && !fly.home) flyHome();
+  if (!best) for (const n of NODES.values()) { if (n.vis < .5 || !n.el || +getComputedStyle(n.el).opacity < .3) continue; const r = n.el.getBoundingClientRect(); if (r.width && e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) { best = n; break; } }
+  if (best) flyTo(best); else if (selNode) clearNode(); else if (fly && !fly.home) flyHome();
 });
 canvas.addEventListener("dblclick", () => flyHome());
 
@@ -346,13 +366,14 @@ function frame(now) {
   }
 
   if (fly) {
-    camera.position.lerp(fly.pos, .045); controls.target.lerp(fly.node ? fly.node.g.position : fly.target, .06);
+    if (fly.node) { const d = camera.position.clone().sub(fly.node.g.position).normalize(); fly.pos.copy(fly.node.g.position).addScaledVector(d, 210); }
+    camera.position.lerp(fly.pos, .07); controls.target.lerp(fly.node ? fly.node.g.position : fly.target, .06);
     if (camera.position.distanceTo(fly.pos) < 2) { if (fly.home) controls.autoRotate = !reduce; fly = null; }
   }
   const ct = new T.Vector3(); let cn = 0;
   if (anyFilter()) for (const n of NODES.values()) if (matches(n) && n.vis > .5) { ct.add(n.g.position); cn++; }
   if (cn) ct.multiplyScalar(1 / cn).multiplyScalar(.7);
-  if (!fly && anyFilter()) controls.target.lerp(ct, .03);
+  if (!fly && !selNode && anyFilter()) controls.target.lerp(ct, .03);
   controls.update();
   if (composer) composer.render(); else renderer.render(scene, camera);
 
