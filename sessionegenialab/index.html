@@ -26,6 +26,10 @@ body { margin: 0; background: var(--black); color: var(--white); overflow: hidde
 .lb .t { font-size: 17px; font-weight: 400; line-height: 1.1; letter-spacing: -.005em; text-shadow: 0 0 12px #000, 0 0 2px #000; }
 .lb .m { font-size: 11px; margin-top: 3px; font-variant-numeric: tabular-nums; }
 .lb.f { outline: 1px solid var(--white); outline-offset: 7px; }
+.lb .x { white-space: normal; width: 300px; font-size: 14px; line-height: 1.35; color: var(--white); opacity: .85; margin-top: 8px; display: none; text-shadow: 0 0 10px #000; }
+.lb.deep .x { display: block; }
+.lb.deep .t { font-size: 19px; }
+.hint { position: fixed; z-index: 4; left: max(clamp(16px, 3vw, 56px), env(safe-area-inset-left, 0px)); top: calc(env(safe-area-inset-top, 0px) + clamp(200px, 25vh, 260px)); font-size: 12px; color: var(--smoke); }
 .lb.star .t { font-family: var(--name); font-weight: 500; font-size: 30px; letter-spacing: -.02em; }
 .lb.star .m { font-size: 13px; text-align: center; margin-top: 6px; }
 .lb.axis .t { font-size: 13px; color: var(--ash); }
@@ -75,7 +79,8 @@ body { margin: 0; background: var(--black); color: var(--white); overflow: hidde
   <div class="brand"><h1>Costellazione</h1><p>Sessione I, nuove forme della conoscenza creativa. Ogni pensiero sta nel punto in cui lo mettono le tre domande del gioco; il tempo della sessione lo riavvolge.</p></div>
   <div class="state"><span class="dot"></span><span id="stateTxt">In ascolto</span></div>
 </div>
-<div class="filters"><div class="row" id="fSp"></div><div class="row" id="fTh"></div></div>
+<div class="filters"><div class="row" id="fSp"></div><div class="row" id="fTh"></div><div class="row" id="fKi"></div></div>
+<div class="hint">Rotella per avvicinarsi, clic su un pensiero per andarci, doppio clic per tornare. Tasti P, E, D per ponti, echi, divergenze.</div>
 <div class="empty" id="empty">La costellazione si accende a ogni intervento.</div>
 <div class="cap out" id="cap"><div class="k" id="capK"></div><p class="txt" id="capT"></p></div>
 <div class="time"><span>Tempo della sessione</span><span class="bar"><i id="tBar"></i></span><button type="button" id="replay">Riavvolgi</button></div>
@@ -115,7 +120,7 @@ const camera = new T.PerspectiveCamera(48, 1, 1, 6000);
 camera.position.set(520, 280, 760);
 const controls = new T.OrbitControls(camera, canvas);
 controls.enableDamping = true; controls.dampingFactor = .06; controls.autoRotate = !reduce; controls.autoRotateSpeed = .35;
-controls.minDistance = 260; controls.maxDistance = 1500; controls.enablePan = false;
+controls.minDistance = 45; controls.maxDistance = 1600; controls.enablePan = true; controls.zoomSpeed = .9; controls.screenSpacePanning = true;
 let composer = null, bloom = null;
 try {
   composer = new T.EffectComposer(renderer); composer.addPass(new T.RenderPass(scene, camera));
@@ -167,13 +172,34 @@ const STARS = SPEAKERS.map((sp, i) => {
   return S;
 });
 const tmpS = new T.Vector3(), tmpO = new T.Vector3();
+let fly = null;
+const HOME = { pos: new T.Vector3(520, 280, 760), target: new T.Vector3() };
+function flyTo(n) {
+  const dir = camera.position.clone().sub(n.g.position).normalize();
+  fly = { target: n.g.position.clone(), pos: n.g.position.clone().addScaledVector(dir, 150), node: n };
+  controls.autoRotate = false;
+}
+function flyHome() { fly = { target: HOME.target.clone(), pos: HOME.pos.clone(), home: true }; }
+const ray = new T.Raycaster(), mouse = new T.Vector2(); let downAt = null;
+canvas.addEventListener("pointerdown", e => { downAt = [e.clientX, e.clientY]; });
+canvas.addEventListener("pointerup", e => {
+  if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 5) return;
+  mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(mouse, camera);
+  let best = null, bd = 1e9;
+  for (const n of NODES.values()) { if (n.vis < .5) continue; const p = n.g.position.clone().project(camera); const d = Math.hypot((p.x - mouse.x) * innerWidth, (p.y - mouse.y) * innerHeight) / 2; if (d < 28 && d < bd) { bd = d; best = n; } }
+  if (best) flyTo(best); else if (fly && !fly.home) flyHome();
+});
+canvas.addEventListener("dblclick", () => flyHome());
 
 const NODES = new Map(), LINKS = new Map();
 let maxOrd = 1, shownOrd = Infinity;
 let activeSp = -1, activeTh = null;
 const THEMES = [];
-function matches(n) { if (!n) return true; return (activeSp < 0 || n.sp === activeSp) && (!activeTh || n.d.tema === activeTh); }
-function anyFilter() { return activeSp >= 0 || !!activeTh; }
+function matches(n) { if (!n) return true; return (activeSp < 0 || n.sp === activeSp) && (!activeTh || n.d.tema === activeTh) && endpointOfKind(n); }
+function anyFilter() { return activeSp >= 0 || !!activeTh || !!activeKind; }
+let activeKind = null;
+function kindHit(L) { return !activeKind || L.d.kind === activeKind; }
+function endpointOfKind(n) { if (!activeKind) return true; for (const L of LINKS.values()) if (L.d.kind === activeKind && (L.d.a === n.id || L.d.b === n.id)) return true; return false; }
 const colOf = sp => sp >= 0 && SPEAKERS[sp] ? SPEAKERS[sp].col : GAME_COL;
 const posOfData = d => { const p = d.pos || [0, 0, 0]; return new T.Vector3(p[0] || 0, p[1] || 0, p[2] || 0).multiplyScalar(SCALE); };
 function upsertNode(id, d, fresh) {
@@ -186,10 +212,12 @@ function upsertNode(id, d, fresh) {
     var spoke = new T.Line(sg, new T.LineBasicMaterial({ color: col, transparent: true, opacity: .15, blending: T.AdditiveBlending, depthWrite: false })); spoke.frustumCulled = false; scene.add(spoke);
     g.position.copy(sp >= 0 ? STARS[sp].grp.position : new T.Vector3());
     const el = addLabel(d.kind === "citazione" ? "q" : "", d.label || "", d.time || null, col);
+    const xd = document.createElement("div"); xd.className = "x"; el.appendChild(xd);
     n = { id, g, halo, dot, el, spoke, born: performance.now(), seed: Math.random() * 6.283, vis: 0, em: 1 };
     LABELS.push({ el, pos: () => n.g.position, kind: "node", align: 0, node: n });
     NODES.set(id, n);
   } else n.el.querySelector(".t").textContent = d.label || "";
+  n.el.querySelector(".x").textContent = d.text || ""; n.el.__w = 0;
   n.d = d; n.sp = sp; n.target = posOfData(d); n.ord = d.ord || 0; if (fresh) n.born = performance.now();
   maxOrd = Math.max(maxOrd, n.ord);
   if (d.tema && !THEMES.includes(d.tema)) { THEMES.push(d.tema); buildFilters(); }
@@ -260,22 +288,26 @@ function frame(now) {
     for (let k = 0; k <= L.segs; k++) { const u = k / L.segs; bez(pa, tC, pb, u, tA); pos.setXYZ(k, tA.x, tA.y, tA.z); cols.setXYZ(k, ca.r + (cb.r - ca.r) * u, ca.g + (cb.g - ca.g) * u, ca.b + (cb.b - ca.b) * u); }
     pos.needsUpdate = true; cols.needsUpdate = true;
     const na = NODES.get(L.d.a), nb = NODES.get(L.d.b);
-    const hit = !anyFilter() || matches(na) || matches(nb) || (/^sp/.test(L.d.a) && activeSp === +L.d.a[2]) || (/^sp/.test(L.d.b) && activeSp === +L.d.b[2]);
+    const hit = kindHit(L) && (!(activeSp >= 0 || activeTh) || matches(na) || matches(nb) || (/^sp/.test(L.d.a) && activeSp === +L.d.a[2]) || (/^sp/.test(L.d.b) && activeSp === +L.d.b[2]));
     L.em = (L.em == null ? 1 : L.em) + ((hit ? 1 : .05) - (L.em == null ? 1 : L.em)) * .08;
     const on = focus === L.id, age = Math.max(0, Math.min(1, (now - L.born) / 1800)) * L.em;
     L.line.visible = true; L.line.material.opacity = (L.d.provisional ? .2 : .5) * (on ? 2 : 1) * L.vis * age;
     L.parts.forEach((s, k) => {
-      const sp = L.d.kind === "tensione" ? .11 : .07, u = reduce ? (k + .5) / PN : (t * sp + k / PN + L.seed) % 1;
+      const sp = L.d.kind === "tensione" ? .1 : L.d.kind === "eco" ? .035 : .07; let u = reduce ? (k + .5) / PN : (t * sp + k / PN + L.seed) % 1; if (L.d.kind === "tensione" && k % 2) u = 1 - u;
       bez(pa, tC, pb, u, s.position); s.visible = true;
       s.material.color.setRGB(ca.r + (cb.r - ca.r) * u, ca.g + (cb.g - ca.g) * u, ca.b + (cb.b - ca.b) * u);
-      s.material.opacity = (on ? 1 : .6) * L.vis * age * (L.d.provisional ? .5 : 1); s.scale.setScalar(on ? 18 : 11);
+      s.material.opacity = (on ? 1 : .6) * L.vis * age * (L.d.provisional ? .5 : 1); s.scale.setScalar((on ? 18 : 11) * (L.d.kind === "eco" ? .7 : 1));
     });
   }
 
+  if (fly) {
+    camera.position.lerp(fly.pos, .045); controls.target.lerp(fly.node ? fly.node.g.position : fly.target, .06);
+    if (camera.position.distanceTo(fly.pos) < 2) { if (fly.home) controls.autoRotate = !reduce; fly = null; }
+  }
   const ct = new T.Vector3(); let cn = 0;
   if (anyFilter()) for (const n of NODES.values()) if (matches(n) && n.vis > .5) { ct.add(n.g.position); cn++; }
   if (cn) ct.multiplyScalar(1 / cn).multiplyScalar(.7);
-  controls.target.lerp(ct, .03);
+  if (!fly && anyFilter()) controls.target.lerp(ct, .03);
   controls.update();
   if (composer) composer.render(); else renderer.render(scene, camera);
 
@@ -291,7 +323,8 @@ function frame(now) {
       if (L.kind === "axis") { op *= axisGroup.visible ? .8 : 0; pri -= 2; }
       if (L.kind === "star") { op = (L.star.live ? Math.max(op, .9) : op * .55) * (L.star.em == null ? 1 : Math.max(.25, L.star.em)); pri += 20; }
       if (L.kind === "core") pri += 6;
-      const sc = base * Math.max(.7, Math.min(1.1, 700 / dist)), x = (v.x * .5 + .5) * W, y = (-v.y * .5 + .5) * H, dx = L.kind === "node" ? 12 * base : 0;
+      if (L.kind === "node") { const deep = dist < 300 && L.node.vis > .5 && !!L.node.d.text; if (deep !== !!L.deep) { L.deep = deep; L.el.classList.toggle("deep", deep); L.w = 0; } if (deep) pri += 4; }
+      const sc = base * Math.max(.7, Math.min(L.deep ? 1.25 : 1.1, 700 / dist)), x = (v.x * .5 + .5) * W, y = (-v.y * .5 + .5) * H, dx = L.kind === "node" ? 12 * base : 0;
       if (!L.w) { L.w = L.el.offsetWidth || 120; L.h = L.el.offsetHeight || 24; }
       const w = L.w * sc, h = L.h * sc, left = x + dx - L.align * w;
       L.tgt = op; L.sc = sc; L.x = x + dx; L.y = y; L.z = v.z;
@@ -327,11 +360,11 @@ function showLink(id) {
   cap.classList.add("out");
   setTimeout(() => {
     focus = id; const a = refOf(L.d.a), b = refOf(L.d.b);
-    capK.innerHTML = `<span>${esc({ ponte: "Ponte tra", tensione: "Tensione tra", eco: "Eco tra" }[L.d.kind] || "Filo tra")}</span><b style="color:${hex(colOf(a ? a.sp : -1))}">${esc(nameOf(L.d.a))}</b><span>e</span><b style="color:${hex(colOf(b ? b.sp : -1))}">${esc(nameOf(L.d.b))}</b>${L.d.provisional ? '<span class="prov">in attesa del secondo intervento</span>' : ""}`;
+    capK.innerHTML = `<span>${esc({ ponte: "Ponte tra", tensione: "Divergenza tra", eco: "Eco tra" }[L.d.kind] || "Filo tra")}</span><b style="color:${hex(colOf(a ? a.sp : -1))}">${esc(nameOf(L.d.a))}</b><span>e</span><b style="color:${hex(colOf(b ? b.sp : -1))}">${esc(nameOf(L.d.b))}</b>${L.d.provisional ? '<span class="prov">in attesa del secondo intervento</span>' : ""}`;
     capT.textContent = L.d.text || ""; cap.classList.remove("out");
   }, 700);
 }
-function relevant(id) { const L = LINKS.get(id); if (!L || !anyFilter()) return true; const a = NODES.get(L.d.a), b = NODES.get(L.d.b); return (a && matches(a)) || (b && matches(b)) || (/^sp/.test(L.d.a) && activeSp === +L.d.a[2]) || (/^sp/.test(L.d.b) && activeSp === +L.d.b[2]); }
+function relevant(id) { const L = LINKS.get(id); if (!L) return true; if (!kindHit(L)) return false; if (!(activeSp >= 0 || activeTh)) return true; const a = NODES.get(L.d.a), b = NODES.get(L.d.b); return (a && matches(a)) || (b && matches(b)) || (/^sp/.test(L.d.a) && activeSp === +L.d.a[2]) || (/^sp/.test(L.d.b) && activeSp === +L.d.b[2]); }
 function cycle() { clearTimeout(capTimer); const ord = order.filter(relevant); if (queue.length) showLink(queue.shift()); else if (ord.length) { const i = ord.indexOf(focus); showLink(ord[(i + 1) % ord.length]); } capTimer = setTimeout(cycle, 13000); }
 function buildFilters() {
   const fs = document.getElementById("fSp"), ft = document.getElementById("fTh");
@@ -341,12 +374,20 @@ function buildFilters() {
   SPEAKERS.forEach((sp, i) => mk(fs, sp.short, sp.col, activeSp === i, () => setSp(activeSp === i ? -1 : i)));
   mk(ft, "Tutti i temi", null, !activeTh, () => setTh(null));
   THEMES.forEach(th => mk(ft, th, null, activeTh === th, () => setTh(activeTh === th ? null : th)));
+  const fk = document.getElementById("fKi"); fk.querySelectorAll(".chip").forEach(c => c.remove());
+  mk(fk, "Tutti i fili", null, !activeKind, () => setKi(null));
+  [["ponte", "Ponti"], ["eco", "Echi"], ["tensione", "Divergenze"]].forEach(([k, l]) => mk(fk, l, null, activeKind === k, () => setKi(activeKind === k ? null : k)));
 }
 function setSp(i) { activeSp = i; buildFilters(); cycle(); }
 function setTh(t) { activeTh = t; buildFilters(); cycle(); }
+function setKi(k) { activeKind = k; buildFilters(); cycle(); }
 addEventListener("keydown", e => {
   if (/^[1-4]$/.test(e.key)) setSp(activeSp === +e.key - 1 ? -1 : +e.key - 1);
-  else if (e.key === "0") { activeSp = -1; activeTh = null; buildFilters(); cycle(); }
+  else if (e.key === "0") { activeSp = -1; activeTh = null; activeKind = null; buildFilters(); cycle(); flyHome(); }
+  else if (e.key === "p" || e.key === "P") setKi(activeKind === "ponte" ? null : "ponte");
+  else if (e.key === "e" || e.key === "E") setKi(activeKind === "eco" ? null : "eco");
+  else if (e.key === "d" || e.key === "D") setKi(activeKind === "tensione" ? null : "tensione");
+  else if (e.key === "Escape") flyHome();
   else if (e.key === "t" || e.key === "T") { const i = THEMES.indexOf(activeTh); setTh(i + 1 < THEMES.length ? THEMES[i + 1] : null); }
 });
 buildFilters();
