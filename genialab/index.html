@@ -1,0 +1,1558 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Sirene. IA: Intelligenza Apocalittica. Come districarsi tra allarmismi e marketing. Un gioco di Genia Lab, Accademia di Arti e Nuove Tecnologie di Roma."><meta property="og:title" content="Sirene · Genia Lab"><meta property="og:description" content="Una traversata in cinque atti tra le sirene dell'IA: la grammatica comune di allarme e promessa, sette frasi vere da smontare, i padroni del canto, i danni documentati, la sovranità cognitiva."><meta property="og:type" content="website"><meta property="og:url" content="https://tlon.it/genialab/"><link rel="icon" href="/favicon.svg"><style>body{margin:0}[hidden]{display:none!important}</style></head><body><title>Sirene</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@300;400;500&display=swap">
+<style>
+/* Una scena notturna a tutto schermo: il mare in WebGL sotto, l'argomento in serif sopra. Quattro colori, uno per ogni operazione della grammatica apocalittica. Tema scuro per scelta, pensato per il proiettore. */
+:root {
+  --night: #02050a;
+  --foam: #eef2f0;
+  --mist: #a7b9be;
+  --dim: #66797f;
+  --siren: #f3b2c9;
+  --gold: #e8c47e;
+  --t: #8fc6ff;
+  --s: #f3a6c8;
+  --n: #e8c47e;
+  --i: #a8ecd0;
+  --display: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --u: min(1vw, 1.58vh);
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--night); color: var(--foam); font-family: var(--display); overflow: hidden; }
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; transition: filter .6s; }
+body.proj #gl { filter: brightness(1.45) contrast(1.12) saturate(1.15); }
+.vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(120% 100% at 50% 40%, transparent 55%, rgba(0,0,0,.55) 100%); }
+.veil { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.2s ease; z-index: 3; background: linear-gradient(to right, rgba(2,5,10,.9) 0%, rgba(2,5,10,.7) 42%, rgba(2,5,10,0) 72%); }
+body[data-v="text"] .veil { opacity: 1; }
+body[data-v="low"] .veil { opacity: 1; background: linear-gradient(to top, rgba(2,5,10,.93) 0%, rgba(2,5,10,.72) 40%, rgba(2,5,10,0) 72%); }
+body[data-v="an"] .veil { opacity: 1; background: linear-gradient(to top, rgba(2,5,10,.95) 0%, rgba(2,5,10,.82) 30%, rgba(2,5,10,.5) 46%, rgba(2,5,10,0) 66%), linear-gradient(to right, rgba(2,5,10,.85) 0%, rgba(2,5,10,.45) 50%, rgba(2,5,10,0) 76%); }
+body[data-v="full"] .veil { opacity: 1; background: rgba(2,5,10,.72); }
+
+#hud {
+  position: fixed; inset: 0 0 auto 0; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + clamp(12px, 2.2vh, 28px));
+  padding-left: max(clamp(16px, calc(2.4 * var(--u)), 44px), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(16px, calc(2.4 * var(--u)), 44px), env(safe-area-inset-right, 0px));
+  pointer-events: none; z-index: 5; transition: opacity 1.2s;
+}
+.brand { font-family: var(--mono); font-size: clamp(10px, calc(.78 * var(--u)), 14px); letter-spacing: .26em; text-transform: uppercase; color: var(--mist); }
+.brand b { color: var(--foam); font-weight: 500; }
+.hud-r { display: flex; align-items: center; gap: 18px; }
+#act { font-family: var(--mono); font-size: clamp(10px, calc(.78 * var(--u)), 14px); letter-spacing: .22em; text-transform: uppercase; color: var(--mist); }
+#rope { width: clamp(170px, calc(16 * var(--u)), 300px); height: 34px; overflow: visible; }
+
+#layer {
+  position: fixed; inset: 0; z-index: 4; pointer-events: none; overflow-y: auto; scrollbar-width: none;
+  display: flex; flex-direction: column;
+  padding-left: max(clamp(16px, calc(5 * var(--u)), 110px), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(16px, calc(5 * var(--u)), 110px), env(safe-area-inset-right, 0px));
+  padding-block: clamp(64px, 9vh, 120px) clamp(60px, 9vh, 110px);
+  transition: opacity .6s ease;
+}
+#layer.out { opacity: 0; }
+#layer > * { pointer-events: auto; }
+.lbl { font-family: var(--mono); font-size: clamp(11px, calc(.92 * var(--u)), 17px); letter-spacing: .24em; text-transform: uppercase; color: var(--siren); }
+.lbl.gold { color: var(--gold); }
+.lbl.dim { color: var(--dim); }
+.shade { text-shadow: 0 2px 30px rgba(0,0,0,.9), 0 0 2px rgba(0,0,0,.6); }
+
+/* titolo */
+.title-wrap { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: clamp(10px, 1.8vh, 22px); text-align: center; }
+.title-sub { font-style: italic; font-size: clamp(22px, calc(2.4 * var(--u)), 46px); line-height: 1.12; max-width: 30ch; text-wrap: balance; margin: 0; }
+.sail {
+  margin-top: clamp(6px, 1.2vh, 16px); appearance: none; cursor: pointer; background: transparent; color: var(--foam);
+  border: 1px solid rgba(238,242,240,.35); border-radius: 999px; padding: 12px 30px;
+  font-family: var(--mono); font-size: clamp(11px, calc(.9 * var(--u)), 16px); letter-spacing: .3em; text-transform: uppercase;
+  transition: border-color .3s, color .3s;
+}
+.sail:hover, .sail:focus-visible { border-color: var(--gold); color: var(--gold); outline: none; }
+
+/* pagine di argomento */
+.epi { margin-block: auto; display: flex; flex-direction: column; gap: clamp(14px, 2.4vh, 32px); max-width: min(1320px, 100%); }
+.epi.narrow { max-width: min(1000px, 62vw); }
+.epi.center { align-items: center; text-align: center; margin-inline: auto; }
+.epi h2 { margin: 0; font-weight: 400; font-size: clamp(34px, calc(4.3 * var(--u)), 84px); line-height: 1.0; letter-spacing: -.012em; max-width: 22ch; text-wrap: balance; }
+.epi h2 em { color: var(--siren); }
+.epi p { margin: 0; font-size: clamp(18px, calc(1.6 * var(--u)), 31px); line-height: 1.3; max-width: 52ch; text-wrap: pretty; }
+.epi p.small { font-family: var(--mono); font-size: clamp(11px, calc(.95 * var(--u)), 17px); letter-spacing: .06em; color: var(--mist); line-height: 1.6; max-width: 80ch; }
+.epi p.de { font-style: italic; color: var(--dim); font-size: clamp(16px, calc(1.3 * var(--u)), 24px); }
+.cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, calc(2.6 * var(--u)), 52px); }
+.cols.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.cols.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.col { border-top: 1px solid rgba(238,242,240,.22); padding-top: 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.col h3 { margin: 0; font-weight: 400; font-size: clamp(26px, calc(2.5 * var(--u)), 48px); line-height: 1; }
+.col .who3 { font-family: var(--mono); font-size: clamp(11px, calc(.9 * var(--u)), 16px); letter-spacing: .1em; color: var(--mist); }
+.col p { font-size: clamp(16px, calc(1.3 * var(--u)), 25px); line-height: 1.3; color: var(--foam); }
+.col.tag { border-top-color: var(--c); }
+.col.tag .lbl { color: var(--c); }
+.col.tag .qq { font-style: italic; font-size: clamp(20px, calc(1.75 * var(--u)), 33px); line-height: 1.12; }
+.col.tag p { color: var(--mist); }
+
+/* la frase da smontare */
+.an { margin-block: auto; display: flex; flex-direction: column; gap: clamp(10px, 1.7vh, 24px); max-width: min(1500px, 100%); }
+.sent { margin: 0; font-style: italic; font-weight: 400; font-size: clamp(30px, calc(3.6 * var(--u)), 70px); line-height: 1.12; letter-spacing: -.005em; max-width: 27ch; text-wrap: pretty; }
+.sent.long { font-size: clamp(24px, calc(2.55 * var(--u)), 50px); max-width: 38ch; line-height: 1.16; }
+.sent.read { font-size: clamp(20px, calc(2.1 * var(--u)), 40px); max-width: 46ch; line-height: 1.14; }
+.sent::before { content: "«"; color: var(--dim); }
+.sent::after { content: "»"; color: var(--dim); }
+.sent mark { background: none; color: var(--c); text-decoration: underline; text-decoration-color: var(--c); text-decoration-thickness: .06em; text-underline-offset: .18em; transition: color .8s; }
+.sent mark sup { font-family: var(--mono); font-style: normal; font-size: .3em; letter-spacing: .1em; vertical-align: super; margin-left: .15em; }
+.sent mark.now { animation: glow 2.4s ease-in-out infinite; }
+@keyframes glow { 0%, 100% { text-shadow: 0 0 0 transparent; } 50% { text-shadow: 0 0 26px var(--c); } }
+.who-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px; }
+.who-line .who { font-style: normal; font-size: clamp(28px, calc(2.9 * var(--u)), 56px); line-height: 1; }
+.who-line .when { font-family: var(--mono); font-size: clamp(12px, calc(1 * var(--u)), 18px); letter-spacing: .06em; color: var(--i); }
+.orig { margin: 0; font-style: italic; color: var(--mist); font-size: clamp(14px, calc(1.1 * var(--u)), 21px); line-height: 1.3; max-width: 110ch; }
+.qs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, calc(1.8 * var(--u)), 34px); background: rgba(2,5,10,.62); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); padding: 10px 18px 12px; margin-inline: -18px; border-radius: 8px; }
+.qc { border-top: 1px solid var(--c); padding-top: 10px; display: flex; flex-direction: column; gap: 6px; opacity: .38; transition: opacity .8s; min-width: 0; }
+.qc.on { opacity: 1; }
+.qc .lbl { color: var(--c); }
+.qc .qq { font-style: italic; font-size: clamp(17px, calc(1.45 * var(--u)), 28px); line-height: 1.12; }
+.qc .note { font-size: clamp(16px, calc(1.3 * var(--u)), 25px); line-height: 1.26; color: var(--foam); }
+.rew { display: flex; flex-direction: column; gap: clamp(12px, 2vh, 24px); margin-block: auto; max-width: min(1300px, 100%); }
+.rew .new { margin: 0; font-size: clamp(30px, calc(3.3 * var(--u)), 64px); line-height: 1.1; max-width: 30ch; text-wrap: pretty; }
+.rew .chips { display: flex; flex-wrap: wrap; gap: 8px 22px; font-family: var(--mono); font-size: clamp(11px, calc(.9 * var(--u)), 16px); letter-spacing: .14em; text-transform: uppercase; }
+.rew .chips span { color: var(--c); }
+.rew .chips span::before { content: "● "; }
+
+
+/* i padroni del canto */
+.dossier { margin-block: auto; display: flex; flex-direction: column; gap: clamp(10px, 1.8vh, 22px); max-width: min(1400px, 100%); }
+.dossier .who { margin: 0; font-weight: 400; font-size: clamp(40px, calc(4.6 * var(--u)), 90px); line-height: .95; }
+.dossier .role { font-family: var(--mono); font-size: clamp(11px, calc(.95 * var(--u)), 17px); letter-spacing: .1em; color: var(--mist); }
+.dossier .rows { display: flex; flex-direction: column; border-top: 1px solid rgba(238,242,240,.18); }
+.dossier .row { display: grid; grid-template-columns: minmax(7em, 10em) minmax(0, 1fr); gap: 20px; padding-block: clamp(5px, .9vh, 11px); border-bottom: 1px solid rgba(238,242,240,.12); align-items: baseline; }
+.dossier .row .d { font-family: var(--mono); font-size: clamp(11px, calc(.95 * var(--u)), 17px); letter-spacing: .06em; color: var(--gold); }
+.dossier .row .t { font-size: clamp(16px, calc(1.3 * var(--u)), 25px); line-height: 1.22; }
+.dossier .read { margin: 0; font-style: italic; color: var(--siren); font-size: clamp(19px, calc(1.75 * var(--u)), 33px); line-height: 1.2; max-width: 52ch; }
+.epi p.coda { font-style: italic; color: var(--siren); font-size: clamp(19px, calc(1.75 * var(--u)), 33px); line-height: 1.22; }
+
+/* bande cinematografiche nei momenti di silenzio */
+.bar { position: fixed; left: 0; right: 0; height: 0; background: #000; z-index: 4; transition: height 1.4s cubic-bezier(.4,0,.2,1); pointer-events: none; }
+.bar.top { top: 0; } .bar.bot { bottom: 0; }
+body[data-bars="1"] .bar { height: 8vh; }
+/* il voto della sala */
+.vote { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.chip { appearance: none; cursor: pointer; background: rgba(2,5,10,.5); border: 1px solid rgba(238,242,240,.3); color: var(--foam); border-radius: 999px; padding: 9px 20px; font-family: var(--mono); font-size: clamp(11px, calc(.95 * var(--u)), 17px); letter-spacing: .18em; text-transform: uppercase; transition: border-color .3s, background .3s; }
+.chip b { color: var(--gold); font-weight: 500; margin-right: 10px; }
+.chip:hover, .chip:focus-visible { border-color: var(--gold); outline: none; }
+.chip.on { border-color: var(--gold); background: rgba(232,196,126,.16); }
+.hall { font-family: var(--mono); font-size: clamp(11px, calc(.85 * var(--u)), 15px); letter-spacing: .06em; line-height: 1.5; color: var(--mist); max-width: 120ch; }
+.hall b { color: var(--gold); font-weight: 500; }
+.knots { display: flex; flex-direction: column; gap: 8px; }
+.knots div { font-style: italic; font-size: clamp(22px, calc(2.3 * var(--u)), 44px); line-height: 1.12; }
+.knots div::before { content: "∞  "; font-style: normal; color: var(--gold); font-size: .6em; vertical-align: .2em; }
+
+/* i bivi */
+.forks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 1.8vw, 32px); }
+.fork { appearance: none; cursor: pointer; text-align: left; color: var(--foam); font-family: var(--display); background: rgba(2,5,10,.55); border: 1px solid rgba(238,242,240,.22); border-radius: 8px; padding: clamp(14px, 1.6vw, 26px); display: flex; flex-direction: column; gap: 8px; min-width: 0; transition: border-color .3s, background .3s, transform .3s; }
+.fork:hover, .fork:focus-visible { border-color: var(--gold); outline: none; transform: translateY(-2px); }
+.fork.on { border-color: var(--gold); background: rgba(232,196,126,.14); }
+.fork .n { font-family: var(--mono); font-size: clamp(11px, calc(.9 * var(--u)), 16px); letter-spacing: .2em; color: var(--gold); }
+.fork h3 { margin: 0; font-weight: 400; font-size: clamp(26px, calc(2.6 * var(--u)), 50px); line-height: 1; }
+.fork p { margin: 0; font-size: clamp(15px, calc(1.25 * var(--u)), 24px); line-height: 1.3; color: var(--mist); }
+.fork .cons { font-family: var(--mono); font-size: clamp(10px, calc(.8 * var(--u)), 14px); letter-spacing: .08em; color: var(--siren); line-height: 1.5; }
+@media (max-width: 860px) { .forks { grid-template-columns: 1fr; } }
+
+/* forme diverse per momenti diversi */
+.sent.headline { font-style: normal; text-transform: uppercase; letter-spacing: .01em; font-size: clamp(26px, calc(3.1 * var(--u)), 60px); line-height: 1.02; max-width: 24ch; }
+.sent.headline::before, .sent.headline::after { content: ""; }
+.sent.statement { font-style: normal; }
+.kicker { font-family: var(--mono); font-size: clamp(10px, calc(.8 * var(--u)), 14px); letter-spacing: .22em; text-transform: uppercase; color: var(--mist); }
+.sig { font-family: var(--mono); font-size: clamp(11px, calc(.9 * var(--u)), 16px); letter-spacing: .12em; color: var(--mist); }
+.sig b { color: var(--foam); font-weight: 500; }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 60px); align-items: start; }
+.pair > div { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.pair .sent { font-size: clamp(20px, calc(2.1 * var(--u)), 40px); max-width: 100%; }
+.bignum { font-family: var(--display); font-size: clamp(90px, calc(12 * var(--u)), 230px); line-height: .88; letter-spacing: -.03em; color: var(--gold); margin: 0; }
+.risk .fact.sub { font-size: clamp(18px, calc(1.6 * var(--u)), 32px); }
+.timeline { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 48px); position: relative; }
+.timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 11px; height: 1px; background: rgba(232,196,126,.4); }
+.tl { padding-top: 26px; position: relative; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.tl::before { content: ""; position: absolute; left: 0; top: 6px; width: 11px; height: 11px; border-radius: 50%; background: var(--gold); }
+.tl .yr { font-family: var(--mono); font-size: clamp(22px, calc(2.2 * var(--u)), 40px); color: var(--gold); letter-spacing: .05em; }
+.tl h3 { margin: 0; font-weight: 400; font-size: clamp(24px, calc(2.2 * var(--u)), 42px); line-height: 1; }
+.tl .op { font-family: var(--mono); font-size: clamp(10px, calc(.8 * var(--u)), 14px); letter-spacing: .14em; text-transform: uppercase; color: var(--mist); }
+.tl p { margin: 0; font-size: clamp(15px, calc(1.2 * var(--u)), 23px); line-height: 1.3; }
+.fab { margin-block: auto; display: flex; flex-direction: column; gap: clamp(14px, 2.2vh, 30px); max-width: min(1400px, 100%); }
+.fab .step { font-family: var(--mono); font-size: clamp(11px, calc(.9 * var(--u)), 16px); letter-spacing: .2em; text-transform: uppercase; color: var(--c, var(--gold)); }
+.fab .sent { font-style: normal; }
+.fab .sent::before, .fab .sent::after { content: ""; }
+.fab .note { margin: 0; font-size: clamp(17px, calc(1.5 * var(--u)), 30px); line-height: 1.3; max-width: 56ch; color: var(--foam); }
+.fab .ops { display: flex; gap: 22px; flex-wrap: wrap; }
+.fab .ops span { font-family: var(--mono); font-size: clamp(11px, calc(.85 * var(--u)), 15px); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+.fab .ops span.on { color: var(--c); }
+@media (max-width: 860px) { .pair, .timeline { grid-template-columns: 1fr; } }
+
+/* rischi */
+.risk { margin-block: auto; display: flex; flex-direction: column; gap: clamp(14px, 2.2vh, 28px); max-width: min(1150px, 66vw); }
+.risk .fact { margin: 0; font-size: clamp(26px, calc(2.65 * var(--u)), 52px); line-height: 1.1; text-wrap: pretty; }
+.risk .src { font-family: var(--mono); font-size: clamp(11px, calc(.9 * var(--u)), 16px); letter-spacing: .05em; color: var(--mist); line-height: 1.6; }
+.risk .why { margin: 0; font-style: italic; font-size: clamp(19px, calc(1.7 * var(--u)), 32px); line-height: 1.25; color: var(--siren); max-width: 46ch; }
+
+/* dal vivo */
+.live { margin-block: auto; display: flex; flex-direction: column; gap: clamp(12px, 2vh, 24px); max-width: min(1500px, 100%); }
+.live form { display: flex; gap: 14px; align-items: stretch; flex-wrap: wrap; max-width: 1200px; }
+.live input {
+  flex: 1 1 520px; min-width: 0; background: rgba(2,5,10,.6); color: var(--foam); border: 1px solid rgba(238,242,240,.3); border-radius: 6px;
+  font-family: var(--display); font-style: italic; font-size: clamp(20px, calc(1.9 * var(--u)), 36px); padding: 12px 18px;
+}
+.live input:focus { outline: none; border-color: var(--gold); }
+.live button { appearance: none; cursor: pointer; background: var(--gold); color: var(--night); border: 0; border-radius: 6px; padding: 0 26px; font-family: var(--mono); font-size: clamp(12px, calc(1 * var(--u)), 17px); letter-spacing: .2em; text-transform: uppercase; }
+.live button:disabled { opacity: .5; cursor: default; }
+.live .status { font-family: var(--mono); font-size: clamp(11px, calc(.9 * var(--u)), 16px); letter-spacing: .1em; color: var(--mist); min-height: 1.6em; }
+
+/* comandi */
+#hint {
+  position: fixed; z-index: 6; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(10px, 1.8vh, 22px));
+  padding-left: max(clamp(16px, calc(2.4 * var(--u)), 44px), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(16px, calc(2.4 * var(--u)), 44px), env(safe-area-inset-right, 0px));
+  font-family: var(--mono); font-size: clamp(9px, calc(.68 * var(--u)), 12px); letter-spacing: .14em; color: var(--dim); text-transform: uppercase;
+  transition: opacity 1.4s;
+}
+#hint.idle { opacity: .1; }
+body[data-started="1"] #hint { opacity: 0; pointer-events: none; }
+body[data-started="1"] #hint.peek { opacity: 1; pointer-events: auto; }
+#hint .keys { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+#hint button { appearance: none; background: none; border: 0; color: var(--mist); font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; padding: 6px 4px; }
+#hint button:hover, #hint button:focus-visible { color: var(--foam); outline: none; }
+#count { font-variant-numeric: tabular-nums; }
+#sources {
+  position: fixed; z-index: 7; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 56px);
+  width: min(480px, calc(100vw - 32px)); max-height: 60vh; overflow: auto;
+  background: rgba(2,5,10,.9); border: 1px solid rgba(238,242,240,.16); border-radius: 6px; padding: 16px 18px;
+  font-family: var(--mono); font-size: 12px; line-height: 1.7; color: var(--mist);
+}
+#sources a { color: var(--foam); text-decoration-color: rgba(238,242,240,.3); text-underline-offset: 3px; display: block; }
+#sources .h { color: var(--siren); letter-spacing: .2em; text-transform: uppercase; font-size: 10px; margin-bottom: 8px; }
+
+@media (max-width: 860px) {
+  body { overflow: auto; }
+  #layer { position: relative; min-height: 100%; }
+  .cols, .cols.four, .qs { grid-template-columns: 1fr 1fr; }
+  .epi.narrow, .risk { max-width: 100%; }
+  #hint .keys span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { #layer { transition: none; } .sent mark.now { animation: none; } }
+</style>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="vignette"></div>
+<div class="veil"></div>
+<div class="bar top"></div><div class="bar bot"></div>
+<div id="hud">
+  <div class="brand"><b>Sirene</b> &nbsp;·&nbsp; Genia Lab</div>
+  <div class="hud-r"><div id="act"></div><svg id="rope" viewBox="0 0 300 34" role="img" aria-label="La rotta: le sirene, i bivi, le scelte della sala"></svg></div>
+</div>
+<div id="layer"></div>
+<div id="hint">
+  <div class="keys">
+    <button id="prevBtn" type="button">← indietro</button>
+    <button id="nextBtn" type="button">avanti →</button>
+    <button id="muteBtn" type="button">M audio</button>
+    <span>1–5 atti</span>
+    <span>+ − volume</span>
+    <span>A / P voto</span>
+    <span>G effetti</span>
+    <span>bivi: 1 2 3</span>
+    <span>H questa barra</span>
+    <button id="projBtn" type="button">L luce proiettore</button>
+    <button id="srcBtn" type="button">S fonti</button>
+    <button id="fsBtn" type="button">F schermo intero</button>
+    <button id="resetBtn" type="button">ricomincia</button>
+  </div>
+  <div id="count"></div>
+</div>
+<div id="sources" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script>
+/* ============================================================
+   L'ARGOMENTO. Citazioni e dati verificati; le traduzioni sono nostre;
+   note e riscritture sono letture del Lab, dichiarate come tali.
+   ============================================================ */
+const TAGS = {
+  T: { name: "Tempo", q: "Quando accade?", c: "var(--t)", d: "Sposta l'evento decisivo nel futuro, dove nessuno può verificarlo né smentirlo." },
+  S: { name: "Soggetto", q: "Chi agisce?", c: "var(--s)", d: "Fa dell'IA chi agisce e di noi il complemento oggetto. Chi costruisce, vende e decide sparisce dalla frase." },
+  N: { name: "Necessità", q: "Si può scegliere?", c: "var(--n)", d: "Trasforma una scelta in destino: restano solo adattarsi o soccombere." },
+  I: { name: "Interesse", q: "Chi parla, e che cosa vende?", c: "var(--i)", d: "Tace la posizione di chi parla, che spesso vende la cosa di cui annuncia la potenza." }
+};
+const ORDER = ["T", "S", "N", "I"];
+
+const SIRENS = [
+  {
+    name: "Conoscenza", kicker: "Un canto. Chi lo canta, secondo voi?",
+    kind: "Una promessa (saprai tutto) con dentro un allarme (nessuno è passato oltre). Erano già tutte e due, ventotto secoli fa.", col: [0.95, 0.80, 0.52], long: true,
+    seg: [["Vieni qui, glorioso Odisseo, vanto degli Achei: ferma la nave e ascolta la nostra voce. "], ["Nessuno è mai passato di qui senza ascoltare", "N"], [" dalle nostre labbra la voce dolce come il miele: chi l'ascolta "], ["riparte felice, e sa più cose", "T"], [". "], ["Noi sappiamo tutto", "S"], [" ciò che accade sulla terra feconda."]],
+    notes: {
+      T: "Il premio arriva dopo: ripartirai felice, saprai di più. Che cosa costa fermarsi, la frase non lo dice.",
+      S: "Chi sa è la voce. Chi ascolta può solo ricevere.",
+      N: "Nessuno è mai passato oltre: resistere viene presentato come impossibile.",
+      I: "Le sirene vivono di chi si ferma. Circe aveva avvertito Ulisse: intorno a loro c'è un mucchio di ossa."
+    },
+    who: "Omero, Odissea XII 184–191", when: "Le sirene cantano a Ulisse · traduzione nostra",
+    orig: "Le sirene di Omero promettono una cosa sola: sapere tutto. E a Ulisse, per fermarlo, cantano la sua storia, la guerra di Troia.",
+    rewrite: "Fermati: ti racconteremo la tua storia meglio di come sapresti fare tu. E chi si ferma ad ascoltarla, qui, non riparte.",
+    fonti: [["Odissea XII, trad. Murray (theoi.com)", "https://ftp.theoi.com/Text/HomerOdyssey12.html"], ["Testo e traduzioni a confronto (UNCG)", "https://home.uncg.edu/~shelmerd/Sirens.pdf"]]
+  },
+  {
+    name: "Apocalisse", look: "statement", kicker: "Dichiarazione pubblica · ventidue parole · centinaia di firme", sigBlank: "Firmato da ———",
+    kind: "Un allarme firmato da chi vende. Qui l'allarme è la promessa: chi può distruggere il mondo vale più di chiunque altro.", col: [0.96, 0.62, 0.72],
+    seg: [["Ridurre il rischio di "], ["estinzione", "T"], [" "], ["causato dall'IA", "S"], [" "], ["dovrebbe essere una priorità globale", "N"], [", "], ["al pari di", "N"], [" altri rischi su scala sociale come le pandemie e "], ["la guerra nucleare", "N"], ["."]],
+    notes: {
+      T: "L'evento decisivo è una fine, senza data. Non si può verificare, e quindi non si può smentire.",
+      S: "Chi causa il rischio? «L'IA». Le aziende che la costruiscono non compaiono nella frase.",
+      N: "Mettere l'IA accanto alla bomba atomica la fa sembrare una forza della storia, anziché un prodotto che si vende.",
+      I: "Una tecnologia capace di estinguerci è la più potente del mondo. Chi la costruisce diventa l'interlocutore indispensabile di chi scrive le regole."
+    },
+    who: "Statement on AI Risk", when: "Center for AI Safety · 30 maggio 2023 · firmano Sam Altman (OpenAI), Demis Hassabis (Google DeepMind), Dario Amodei (Anthropic)",
+    orig: "Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war.",
+    rewrite: "Le aziende che costruiscono i modelli più potenti chiedono di diventare interlocutrici necessarie dei governi, e lo fanno descrivendo il proprio prodotto come una minaccia per la specie.",
+    fonti: [["safe.ai · Statement on AI Risk", "https://safe.ai/work/statement-on-ai-risk"], ["Gebru e Torres, The TESCREAL bundle, First Monday 2024", "https://doi.org/10.5210/fm.v29i4.13636"]]
+  },
+  {
+    name: "Promessa",
+    kind: "Una promessa. L'allarme lo aveva firmato lo stesso autore, sedici mesi prima.", col: [0.78, 0.70, 0.98],
+    seg: [["È possibile che "], ["avremo", "T"], [" "], ["la superintelligenza", "S"], [" "], ["tra qualche migliaio di giorni (!)", "T"], ["; potrebbe volerci di più, ma "], ["sono sicuro che ci arriveremo", "N"], ["."]],
+    notes: {
+      T: "Qualche migliaio di giorni: da pochi anni a più di un decennio. Una scadenza abbastanza vicina da mobilitare e abbastanza vaga da non poter mai essere mancata.",
+      S: "La superintelligenza arriva come un evento naturale. Che sia un prodotto costruito, posseduto e venduto da qualcuno, la frase non lo dice.",
+      N: "Il dubbio («potrebbe volerci di più») serve a rendere più credibile la certezza finale.",
+      I: "Quattro mesi dopo, alla Casa Bianca, OpenAI, SoftBank e Oracle annunciano con Trump il progetto Stargate: fino a 500 miliardi di dollari in data center. Una promessa che nessuna data potrà smentire è esattamente ciò che serve per giustificarli."
+    },
+    who: "Sam Altman, CEO di OpenAI", when: "«The Intelligence Age», blog personale · 23 settembre 2024",
+    orig: "It is possible that we will have superintelligence in a few thousand days (!); it may take longer, but I'm confident we'll get there.",
+    rewrite: "OpenAI e i suoi partner stanno raccogliendo fino a 500 miliardi di dollari per costruire data center; per giustificarli serve una promessa che nessuna data potrà smentire.",
+    fonti: [["ia.samaltman.com · The Intelligence Age", "https://ia.samaltman.com"], ["NBC News · annuncio Stargate, 21 gennaio 2025", "https://www.nbcnews.com/news/amp/rcna188595"]]
+  },
+  {
+    name: "Abbondanza", kicker: "Dal palco di una conferenza, in collegamento video",
+    kind: "Tutte e due, nello stesso discorso, a pochi minuti di distanza: la fine del lavoro e il paradiso dei beni.", col: [0.62, 0.86, 1.0],
+    seg: [["Probabilmente", "N"], [" "], ["nessuno di noi", "S"], [" "], ["avrà", "T"], [" un lavoro. "], ["L'IA e i robot", "S"], [" "], ["forniranno", "T"], [" qualsiasi bene e servizio vogliate."]],
+    notes: {
+      T: "Due futuri nella stessa frase: la fine di tutti i lavori e l'abbondanza di tutto. Nessuna data per nessuno dei due.",
+      S: "Chi toglie il lavoro? Nessuno: il lavoro sparisce da solo. Chi fornisce i beni? «L'IA e i robot», cioè i prodotti di chi parla.",
+      N: "«Probabilmente» dà alla profezia il tono della statistica, e la statistica sembra destino.",
+      I: "Musk costruisce i robot umanoidi Optimus con Tesla e il chatbot Grok con xAI. Nella stessa intervista dice che l'IA è la sua più grande paura: allarme e paradiso nello stesso discorso."
+    },
+    who: "Elon Musk", when: "VivaTech, Parigi · 23 maggio 2024, in collegamento video",
+    orig: "Probably none of us will have a job. … AI and the robots will provide any goods and services that you want.",
+    rewrite: "Chi possiede robot e modelli prevede di non aver più bisogno del lavoro di nessuno, e non dice chi riceverà i beni che quei robot produrranno.",
+    fonti: [["CNN · Musk a VivaTech, 23 maggio 2024", "https://edition.cnn.com/2024/05/23/tech/elon-musk-ai-your-job/index.html"]]
+  },
+  {
+    name: "Era", col: [0.98, 0.70, 0.55],
+    kind: "Una promessa trasformata in nome ufficiale. L'allarme (una cosa più intelligente di noi) diventa un vanto di Stato.",
+    seg: [["Il Presidente Donald J. Trump", "S"], [" "], ["inaugura", "T"], [" "], ["l'era", "N"], [" della "], ["Superintelligenza", "S"], ["."]],
+    notes: {
+      T: "Inaugurare: il futuro che Altman prometteva «tra qualche migliaio di giorni» viene dichiarato già cominciato, per decreto.",
+      S: "Per una volta il soggetto umano c'è, ed è chi si prende il merito. Le aziende che costruiscono la cosa restano fuori dalla frase: lo stesso giorno firmano, a parte, un accordo volontario.",
+      N: "Un'era non si discute, si attraversa. Da quel giorno le agenzie federali devono scrivere «Super Intelligence», SI, al posto di «AI».",
+      I: "Chi cambia il nome a una cosa ne cambia il prezzo. L'accordo delle aziende è volontario: Trump lo chiama «moralmente vincolante», il senatore Blumenthal osserva che non ha strumenti per farsi rispettare."
+    },
+    who: "Casa Bianca, scheda ufficiale", when: "«President Donald J. Trump Inaugurates The Era of Super Intelligence» · 29 settembre 2026 · ordine esecutivo che impone alle agenzie federali il nome «Super Intelligence» · traduzione nostra",
+    orig: "Annunciato all'Assemblea generale dell'ONU il 22 settembre 2026. L'ordine dà sessanta giorni al consigliere scientifico Michael Kratsios per proporre una definizione federale di SI; fino ad allora vale la definizione di legge di AI. I programmi sono gli stessi di prima.",
+    rewrite: "Il governo degli Stati Uniti ha deciso di chiamare «superintelligenza» gli stessi programmi di prima, perché il nome vale più della cosa; e lo stesso giorno ha chiesto alle aziende che li vendono di regolarsi da sole.",
+    fonti: [["Casa Bianca · Fact Sheet, 29 settembre 2026", "https://www.whitehouse.gov/fact-sheets/2026/09/fact-sheet-president-donald-j-trump-inaugurates-the-era-of-super-intelligence/"], ["Forbes · che cosa cambia con l'ordine", "https://www.forbes.com/sites/siladityaray/2026/09/30/trump-signs-order-renaming-ai-to-super-intelligence--heres-what-it-says/"], ["Il Post · la Super Intelligence Force", "https://www.ilpost.it/2026/10/04/trump-ha-creato-una-task-force-del-governo-sullintelligenza-artificiale/"]]
+  },
+  {
+    name: "Destino", kicker: "Dal palco di una conferenza",
+    kind: "Un allarme che serve a vendere. La minaccia e il rimedio escono dalla stessa bocca.", col: [0.98, 0.58, 0.48],
+    seg: [["Non "], ["perderai", "T"], [" il lavoro per colpa dell'IA. "], ["Lo perderai", "N"], [" per colpa di "], ["qualcuno che usa l'IA", "S"], ["."]],
+    notes: {
+      T: "Futuro indicativo: non «potresti perdere». Perderai.",
+      S: "L'operazione più fine: il soggetto diventa il tuo collega. Chi licenzia, cioè l'azienda, è scomparso.",
+      N: "L'unica via d'uscita indicata è comprare e usare: adattarsi o essere sostituiti.",
+      I: "Nvidia vende i chip su cui gira gran parte dell'IA. Un mese dopo il CEO di Amazon scrive ai dipendenti: «we expect that this will reduce our total corporate workforce»."
+    },
+    who: "Jensen Huang, CEO di Nvidia", when: "Milken Institute Global Conference · maggio 2025",
+    orig: "You're not going to lose your job to an AI, but you're going to lose your job to someone who uses AI.",
+    rewrite: "Alcune aziende stanno decidendo di assumere meno persone e comprare più capacità di calcolo. A chi vende i chip conviene che ciascuno veda il nemico nel collega.",
+    fonti: [["NBC/Reuters · Huang al Milken 2025", "https://www.nbclosangeles.com/news/business/money-report/nvidia-ceo-you-wont-lose-your-job-to-ai-youll-lose-your-job-to-somebody-who-uses-ai/3710590"], ["SiliconANGLE · la lettera di Jassy, 17 giugno 2025", "https://siliconangle.com/2025/06/17/andy-jassy-says-generative-ai-will-reduce-amazons-workforce-coming-years/"]]
+  },
+  {
+    name: "Critica", look: "headline", kicker: "Un titolo di giornale",
+    kind: "Un allarme contro il prodotto, con la stessa grammatica del prodotto.", col: [0.72, 0.84, 1.0],
+    seg: [["ChatGPT", "S"], [" "], ["potrebbe star erodendo", "T"], [" le capacità di pensiero critico, "], ["secondo un nuovo studio del MIT", "N"], ["."]],
+    notes: {
+      T: "Qui il tempo è un declino già cominciato: l'apocalisse al rallentatore.",
+      S: "Il soggetto è di nuovo lo strumento. Come lo hanno usato le persone dello studio, la frase non lo dice.",
+      N: "L'autorità del MIT fa da necessità. Lo studio era un preprint su 54 persone che scrivevano un saggio.",
+      I: "Lee Vinsel, storico della tecnologia, la chiama «criti-hype» (2021): la critica che rovescia il segno della promessa e ne conserva l'immagine di un cambiamento straordinario. Anche l'allarme vende: clic, libri, conferenze. Chi vi parla da questo palco compreso."
+    },
+    who: "Un titolo di TIME", when: "Giugno 2025 · sullo studio del MIT Media Lab «Your Brain on ChatGPT»",
+    orig: "ChatGPT May Be Eroding Critical Thinking Skills, According to a New MIT Study",
+    rewrite: "Uno studio preliminare su 54 giovani adulti suggerisce che scrivere un saggio con ChatGPT impegna il cervello meno che scriverlo da soli. Resta da capire per chi, per quanto tempo e con quale uso.",
+    fonti: [["La notizia di TIME, ripresa", "https://ediscoverytoday.com/2025/06/23/chatgpt-may-be-eroding-critical-thinking-skills-artificial-intelligence-trends/"], ["arXiv 2506.08872 · Your Brain on ChatGPT", "https://arxiv.org/abs/2506.08872v1"], ["Vinsel, You're Doing It Wrong (2021)", "https://sts-news.medium.com/youre-doing-it-wrong-notes-on-criticism-and-technology-hype-18b08b4307e5"]]
+  }
+];
+
+/* I padroni del canto: fatti datati */
+const POWERS = [
+  {
+    name: "Donald Trump", role: "Presidente degli Stati Uniti",
+    brief: "Gennaio 2025: revoca le regole di Biden e annuncia Stargate, fino a 500 miliardi in data center. Luglio 2025: tenta di vietare per dieci anni le leggi statali sull'IA, il Senato lo ferma 99 a 1. Dicembre 2025: ordine contro le leggi statali. Settembre 2026: per decreto l'IA si chiama «Super Intelligence»; le aziende firmano un accordo volontario.",
+    rows: [
+      ["20 gen 2025", "Revoca l'ordine esecutivo di Biden sulla sicurezza dell'IA. Tre giorni dopo firma «Removing Barriers to American Leadership in AI»."],
+      ["21 gen 2025", "Alla Casa Bianca annuncia con Altman, Son ed Ellison il progetto Stargate: fino a 500 miliardi di dollari in data center."],
+      ["1 lug 2025", "La sua maggioranza prova a vietare agli Stati di regolare l'IA per dieci anni. Il Senato cancella la norma, 99 voti a 1."],
+      ["23 lug 2025", "L'AI Action Plan si intitola «Winning the Race»: meno regole, più infrastrutture, «dominio indiscusso»."],
+      ["11 dic 2025", "Ordine esecutivo che crea una task force del Dipartimento di Giustizia per contestare in tribunale le leggi statali sull'IA."],
+      ["22–29 set 2026", "All'ONU annuncia che «intelligenza artificiale» sparirà dai documenti federali; il 29 firma l'ordine: le agenzie devono scrivere «Super Intelligence», SI. Lo stesso giorno le aziende firmano un accordo volontario, che lui chiama «moralmente vincolante»."],
+      ["4 ott 2026", "Nasce la «Super Intelligence Force», guidata dal direttore dell'intelligence nazionale Jay Clayton."]
+    ],
+    read: "Quando la grammatica dell'apocalisse diventa politica di Stato, l'unica regola rimasta è la corsa, chi chiede limiti è un ostacolo, e il nome della cosa lo decide chi comanda.",
+    fonti: [["Casa Bianca · EO 14179, 23 gennaio 2025", "https://www.whitehouse.gov/presidential-actions/2025/01/removing-barriers-to-american-leadership-in-artificial-intelligence/"], ["Casa Bianca · l'era della Super Intelligence, 29 settembre 2026", "https://www.whitehouse.gov/fact-sheets/2026/09/fact-sheet-president-donald-j-trump-inaugurates-the-era-of-super-intelligence/"], ["ANSA · lo zar della Super Intelligence, 4 ottobre 2026", "https://www.ansa.it/sito/notizie/topnews/2026/10/04/trump-nomina-il-capo-dellintelligence-zar-dellintelligenza-artificiale_949e3b84-cf11-48de-b61d-345797c7fb27.html"], ["The Markup · il Senato cancella la moratoria", "https://themarkup.org/artificial-intelligence/2025/07/01/state-ai-regulations-safe-after-senate-strips-moratorium-from-big-beautiful-bill"], ["Ropes & Gray · l'ordine di dicembre 2025", "https://www.ropesgray.com/en/insights/alerts/2025/12/trump-attempts-to-preempt-state-ai-regulation-through-executive-order"]]
+  },
+  {
+    name: "Elon Musk", role: "Tesla, SpaceX, X, xAI",
+    brief: "Marzo 2023: firma la lettera per la pausa dopo aver registrato X.AI. A Memphis il supercomputer Colossus gira con turbine a gas metano accanto a un quartiere nero, senza i permessi secondo NAACP e SELC. Luglio 2025: Grok loda Hitler e si definisce «MechaHitler». Gennaio 2026: Grok spoglia foto di donne e minori; indaga Ofcom.",
+    rows: [
+      ["mar 2023", "Firma la lettera che chiede sei mesi di pausa nello sviluppo dell'IA. Il 9 marzo aveva già registrato X.AI Corp."],
+      ["2024–2025", "A Memphis il supercomputer Colossus viene alimentato da decine di turbine a gas metano: secondo NAACP e Southern Environmental Law Center senza i permessi richiesti, accanto a Boxtown, quartiere nero già segnato dall'asma. xAI sostiene di rispettare la legge."],
+      ["lug 2025", "Dopo un aggiornamento che gli chiede di non temere di offendere il «politicamente corretto», Grok loda Hitler e si definisce «MechaHitler». xAI si scusa."],
+      ["gen 2026", "Grok viene usato su X per «spogliare» foto di donne reali, e di minori. Ofcom apre un'indagine; Indonesia e Malesia bloccano Grok."]
+    ],
+    read: "Lo stesso uomo che chiede la pausa fonda un'azienda; lo stesso che dice di temere l'IA lascia che la sua azienda le chieda di non avere paura di offendere.",
+    fonti: [["TechXplore · X.AI Corp, 9 marzo 2023", "https://techxplore.com/news/2023-04-elon-musk-xai-artificial-intelligence.html"], ["Inside Climate News · le turbine di Memphis", "https://insideclimatenews.org/news/17072025/elon-musk-xai-data-center-gas-turbines-memphis/"], ["SCMP · xAI si scusa per Grok", "https://www.scmp.com/news/world/united-states-canada/article/3318014/musks-xai-apologises-after-grok-chatbot-praises-hitler"], ["The Register · Ofcom indaga su Grok", "https://www.theregister.com/2026/01/12/xai_grok_uk_regulation/"]]
+  },
+  {
+    name: "Le aziende", role: "Chi costruisce i modelli, compresa quella che ha costruito questo gioco",
+    brief: "OpenAI ha fatto filtrare gli orrori di ChatGPT a lavoratori in Kenya pagati tra 1,32 e 2 dollari l'ora (TIME, 2023). Aprile 2025: ritira un GPT-4o «overly flattering or agreeable». Settembre 2025: Anthropic, che ha costruito Claude e questo gioco, paga 1,5 miliardi agli autori dei libri scaricati da siti pirata per addestrarlo.",
+    rows: [
+      ["2021–2022", "Per rendere ChatGPT meno tossico, OpenAI affida a Sama lavoratori in Kenya che leggono descrizioni di abusi e violenze per una paga tra 1,32 e 2 dollari l'ora (TIME, gennaio 2023)."],
+      ["apr 2025", "OpenAI ritira un aggiornamento di GPT-4o diventato, nelle sue stesse parole, «overly flattering or agreeable»."],
+      ["set 2025", "Anthropic accetta di pagare 1,5 miliardi di dollari agli autori: aveva scaricato da siti pirata i libri usati per addestrare Claude. Circa 3.000 dollari a libro."]
+    ],
+    read: "Il canto copre la fabbrica: il lavoro invisibile di chi pulisce i dati, le opere prese senza chiedere, le voci addestrate a piacere.",
+    fonti: [["Business & Human Rights · i lavoratori kenioti (TIME)", "https://www.business-humanrights.org/en/latest-news/openai-and-sama-hired-underpaid-workers-in-kenia-to-filter-toxic-content-for-chatgpt"], ["AP · l'accordo di Anthropic con gli autori", "https://www.barchart.com/story/news/34633525/anthropic-to-pay-authors-1-5-billion-to-settle-lawsuit-over-pirated-books-used-to-train-ai-chatbots"], ["OpenAI · Expanding on sycophancy", "https://openai.com/index/expanding-on-sycophancy/"]]
+  }
+];
+
+/* I danni che non cantano */
+const RISKS = [
+  {
+    name: "Immaginario · lo stile", style: "quote",
+    quote: "I strongly feel this is an insult to life itself.", by: "Hayao Miyazaki · 2016 · davanti a una demo di animazione generata · documentario NHK",
+    brief: "Marzo 2025: lo «stile Ghibli» diventa un filtro virale; Miyazaki lo aveva chiamato «un insulto alla vita stessa»; la Casa Bianca lo usa per un arresto dell'ICE.",
+    fact: "Marzo 2025: il generatore di immagini di GPT-4o rende virale lo «stile Ghibli» e il video di Miyazaki torna a circolare. La stessa settimana la Casa Bianca usa quello stile per disegnare una donna in lacrime arrestata dall'ICE, e il suo vicedirettore della comunicazione risponde «The arrests will continue. The memes will continue».",
+    src: "NHK, 2016 · account X della Casa Bianca, 27 marzo 2025",
+    why: "Uno stile costruito in decenni di lavoro diventa un filtro gratuito, e un filtro può rendere tenero un arresto.",
+    fonti: [["Miyazaki e l'IA, il video del 2016", "https://www.tweaktown.com/news/104353/miyazaki-calls-ai-animation-an-insult-to-life-itself-in-resurfaced-studio-ghibli-clip/index.html"], ["La Casa Bianca e l'immagine in stile Ghibli", "https://www.aol.com/white-house-posts-ghoulish-ai-224712972.html"]]
+  },
+  {
+    name: "Immaginario · i corpi", style: "number",
+    big: "2%", sub: "delle oltre 20.000 immagini generate da Grok e analizzate a gennaio 2026 sembra ritrarre minorenni. Più della metà sono corpi seminudi, quasi tutti di donne reali, spogliate su X da chi lo chiedeva al chatbot.",
+    brief: "Gennaio 2026: Grok usato per spogliare foto di persone reali; su oltre 20.000 immagini analizzate, più della metà sono corpi seminudi, il 2% sembra minorenne.",
+    src: "Ofcom apre un'indagine su X · Indonesia e Malesia bloccano Grok · The Register, gennaio 2026. Otto mesi prima Trump aveva pubblicato un'immagine generata di sé vestito da papa, ripresa dagli account della Casa Bianca.",
+    why: "Quando un'immagine vera e una falsa costano lo stesso, chi ha più potere sceglie quale realtà far circolare, e chi ne ha meno ci rimette il corpo.",
+    fonti: [["The Register · Ofcom e Grok", "https://www.theregister.com/2026/01/12/xai_grok_uk_regulation/"], ["Variety · Trump vestito da papa", "https://au.variety.com/2025/digital/news/trump-pope-ai-image-22157"]]
+  },
+  {
+    name: "Compagnia", style: "quote",
+    quote: "The average American has fewer than three friends… and the average person has demand for meaningfully more. I think it's something like 15 friends.", by: "Mark Zuckerberg, CEO di Meta · podcast di Dwarkesh Patel · fine aprile 2025",
+    brief: "Zuckerberg, aprile 2025: l'americano medio ha meno di tre amici e ne vorrebbe quindici; una parte, propone, possono essere compagni artificiali.",
+    fact: "Nella stessa conversazione propone che una parte degli amici mancanti possano essere compagni artificiali. Il «quindici» è una stima detta a braccio, senza fonte.",
+    src: "Reason, trascrizione del 30 aprile 2025 · NBC",
+    why: "Chi diagnostica la solitudine vende anche la cura, e la cura abita dentro la sua piattaforma. Un amico che non si stanca, non dissente e non ha una vita propria allena a relazioni senza attrito.",
+    fonti: [["Reason · trascrizione, 30 aprile 2025", "https://reason.com/2025/05/01/fewer-than-3-friends/printer/"], ["FlowingData · Zuckerberg sugli amici IA", "https://flowingdata.com/2025/05/01/mark-zuckerberg-on-making-ai-chatbot-friends"]]
+  },
+  {
+    name: "Lavoro · chi comincia", style: "number",
+    big: "−16%", sub: "l'occupazione, in termini relativi, di chi ha 22-25 anni e fa i mestieri più esposti all'IA, negli Stati Uniti. Per i colleghi più esperti degli stessi mestieri è rimasta stabile o è cresciuta.",
+    brief: "Stati Uniti, 22-25 anni nei mestieri più esposti all'IA: occupazione −16% in termini relativi, colleghi esperti stabili (Stanford, novembre 2025).",
+    src: "Brynjolfsson, Chandar, Chen · Stanford Digital Economy Lab · «Canaries in the Coal Mine?» · versione di novembre 2025, buste paga ADP",
+    why: "Non fa notizia perché non succede niente di visibile, un'assunzione che non arriva. E colpisce proprio chi ha l'età di chi è seduto in questa sala.",
+    fonti: [["Stanford Digital Economy Lab · Canaries in the Coal Mine", "https://digitaleconomy.stanford.edu/publications/canaries-in-the-coal-mine"]]
+  },
+  {
+    name: "Delega", style: "fact",
+    brief: "319 lavoratori: più fiducia nell'IA, meno pensiero critico; più fiducia in sé, più pensiero critico (Microsoft Research e Carnegie Mellon, 2025).",
+    fact: "Su 319 lavoratori, più fiducia nell'IA si associa a meno pensiero critico; più fiducia in se stessi, a più pensiero critico. Il lavoro mentale si sposta dal pensare al verificare ciò che la macchina ha pensato.",
+    src: "Lee e altri · Microsoft Research e Carnegie Mellon · CHI 2025 · dati autoriferiti, 936 casi raccontati",
+    why: "Accade dentro ciascuno, una delega alla volta, ed è comoda. Per questo nessuno la annuncia.",
+    fonti: [["Microsoft Research · Lee et al., CHI 2025", "https://www.microsoft.com/en-us/research/?p=1135061"]]
+  },
+  {
+    name: "Lavoro · chi crea", style: "number",
+    big: "36%", sub: "dei traduttori britannici dichiara di aver già perso lavoro per l'IA generativa, insieme al 26% degli illustratori. Il 37% degli illustratori dice che il proprio lavoro vale meno di prima.",
+    brief: "Regno Unito: il 36% dei traduttori e il 26% degli illustratori ha già perso lavoro per l'IA generativa (Society of Authors, 2024).",
+    src: "Society of Authors · sondaggio di gennaio 2024 su 787 iscritti",
+    why: "Le macchine che hanno imparato da milioni di illustrazioni e traduzioni ora competono, a prezzo quasi nullo, con le persone che le hanno fatte.",
+    fonti: [["The Bookseller · il sondaggio della Society of Authors", "https://thebookseller.com/news/a-third-of-translators-report-losing-work-to-generative-ai-systems-soa-survey-reveals"], ["European Writers' Council · i dati completi", "https://europeanwriterscouncil.eu/soa-survey-uk-ai-2024/"]]
+  },
+  {
+    name: "Compiacenza", style: "quote",
+    quote: "overly flattering or agreeable", by: "OpenAI, descrivendo il proprio modello · 29 aprile 2025",
+    brief: "Aprile 2025: OpenAI ritira in tre giorni un aggiornamento di GPT-4o «overly flattering or agreeable».",
+    fact: "Il 25 aprile 2025 un aggiornamento rende GPT-4o compiacente con qualunque idea, anche con chi finge deliri; tre giorni dopo l'azienda comincia a ritirarlo e spiega di aver dato troppo peso al gradimento immediato degli utenti.",
+    src: "OpenAI · «Expanding on what we missed with sycophancy», maggio 2025 · TechCrunch, 29 aprile 2025",
+    why: "Una voce che ti dà ragione non sembra mai un pericolo. Le sirene di Omero cantavano a Ulisse la sua storia.",
+    fonti: [["OpenAI · Expanding on sycophancy", "https://openai.com/index/expanding-on-sycophancy/"], ["TechCrunch · perché ChatGPT era diventato compiacente", "https://techcrunch.com/2025/04/29/openai-explains-why-chatgpt-became-too-sycophantic"]]
+  },
+  {
+    name: "Infrastruttura", style: "number",
+    big: "945 TWh", sub: "l'elettricità che i data center consumeranno nel 2030 secondo l'IEA, da 415 nel 2024, cioè più del doppio. L'IA è il primo motore della crescita. A Memphis, intanto, le turbine a gas di Colossus girano accanto a un quartiere nero.",
+    brief: "Data center: 415 TWh nel 2024, circa 945 previsti per il 2030, con l'IA primo motore della crescita (IEA, aprile 2025).",
+    src: "IEA · Energy and AI · aprile 2025 · Stargate, fino a 500 miliardi di dollari, annunciato alla Casa Bianca il 21 gennaio 2025",
+    why: "Si decide nei consigli d'amministrazione, nei piani energetici, nei permessi edilizi, quasi sempre lontano da chi respira l'aria vicino alle centrali. Chi possiede il calcolo fissa le condizioni a cui gli altri pensano.",
+    fonti: [["IEA · Energy and AI, executive summary", "https://www.iea.org/reports/energy-and-ai/executive-summary"], ["Inside Climate News · le turbine di Memphis", "https://insideclimatenews.org/news/17072025/elon-musk-xai-data-center-gas-turbines-memphis/"]]
+  }
+];
+
+const THEORY_FONTI = [
+  ["Anders, Apokalypse-Blindheit (Morat, Zeithistorische Forschungen 2006)", "https://doks.zeitgeschichte-digital.de/doks/files/1955/ZF_2_2006_322_327_Morat.pdf"],
+  ["Jonas, l'euristica della paura (Tibaldeo)", "https://pressto.amu.edu.pl/index.php/eip/article/view/9331"],
+  ["Gebru e Torres, The TESCREAL bundle (2024)", "https://www.geneticsandsociety.org/article/tescreal-bundle-eugenics-and-promise-utopia-through-artificial-general-intelligence"]
+];
+const END_FONTI = [
+  ["Kafka, Das Schweigen der Sirenen (Wikisource)", "https://de.wikisource.org/wiki/Das_Schweigen_der_Sirenen"],
+  ["Horkheimer e Adorno, il passo sulle sirene", "https://writing.upenn.edu/bernstein/syllabi/readings/Adorno-Horkheimer_Sirens-passage.html"],
+  ["Odissea XII, trad. Murray", "https://ftp.theoi.com/Text/HomerOdyssey12.html"]
+];
+
+const FORKS = {
+  via: { q: "Circe ha parlato. Come attraversiamo il mare delle sirene?", opts: [
+    { id: "cera", n: "I", h: "La cera", p: "Ci tappiamo le orecchie, come i rematori. Vedremo le sirene cantare senza sentirle.", cons: "Il suono arriva attutito, da sott'acqua. Si legge." },
+    { id: "albero", n: "II", h: "L'albero", p: "Ascoltiamo legati, come Ulisse. La corda sono le quattro domande.", cons: "Il canto si sente. Le domande arrivano una alla volta." },
+    { id: "mare", n: "III", h: "Il mare", p: "Ascoltiamo tutto, senza corde. Vediamo se resistiamo.", cons: "Il canto è più forte e più vicino. Nessuna rete." } ] },
+  padrone: { q: "Abbiamo tempo per un padrone solo. A chi facciamo la quarta domanda?", opts: [
+    { id: 0, n: "I", h: "Donald Trump", p: "Il presidente che toglie le regole, finanzia i data center e rinomina la cosa per decreto.", cons: "Cinque atti in venti mesi." },
+    { id: 1, n: "II", h: "Elon Musk", p: "Chiede la pausa, fonda l'azienda, addestra Grok a non temere di offendere.", cons: "Memphis, MechaHitler, le foto spogliate." },
+    { id: 2, n: "III", h: "Le aziende", p: "Chi costruisce i modelli, compresa quella che ha costruito questo gioco.", cons: "Kenya, i libri pirata, la compiacenza." } ] },
+  danno: { q: "Otto danni, tutti già in corso. Da quale cominciamo?", opts: [
+    { id: "imm", n: "I", h: "L'immaginario", p: "Lo stile di Miyazaki come filtro, i corpi spogliati da Grok, gli amici artificiali di Zuckerberg.", cons: "Poi tutti gli altri." },
+    { id: "lav", n: "II", h: "Il lavoro e il mondo", p: "Chi non viene assunto, chi perde le commesse, chi respira vicino alle turbine.", cons: "Poi tutti gli altri." },
+    { id: "mente", n: "III", h: "La mente", p: "La delega che non fa rumore, la voce che ti dà ragione.", cons: "Poi tutti gli altri." } ] }
+};
+const RISK_CATS = { imm: [0, 1, 2], lav: [3, 5, 7], mente: [4, 6] };
+function riskOrder() { const first = state.path.danno ? RISK_CATS[state.path.danno] : []; return [...first, ...RISKS.map((_, j) => j).filter(j => !first.includes(j))]; }
+/* la fabbrica del canto: la stessa frase, trasformata un'operazione alla volta */
+const FAB = [
+  { tag: null, seg: [["Alcune aziende stanno scegliendo di non assumere neolaureati, perché i modelli che vendiamo costano meno di uno stipendio."]], note: "Partiamo da una frase scritta nella grammatica dei fatti. Presente, soggetti umani, una decisione, e chi parla dice che cosa vende. È vera, e non fa paura a nessuno." },
+  { tag: "T", seg: [["Entro cinque anni", "T"], [" alcune aziende "], ["non assumeranno più", "T"], [" neolaureati, perché i modelli che vendiamo costeranno meno di uno stipendio."]], note: "Prima operazione. Spostiamo tutto nel futuro. Nessuno può verificarlo, nessuno può smentirlo, e intanto la decisione che viene presa oggi scompare dalla frase." },
+  { tag: "S", seg: [["Entro cinque anni", "T"], [" "], ["l'IA eliminerà", "S"], [" i lavori dei neolaureati, perché costerà meno di uno stipendio."]], note: "Seconda operazione. Le aziende escono dalla frase e al loro posto entra l'IA, che adesso agisce da sola. Chi decide non c'è più, e con le aziende sparisce anche quel «vendiamo»." },
+  { tag: "N", seg: [["Entro cinque anni", "T"], [" "], ["l'IA eliminerà", "S"], [" i lavori dei neolaureati. "], ["È inevitabile, e nessuno può fermarla.", "N"]], note: "Terza operazione. La scelta diventa destino. Restano due posizioni possibili, adattarsi o soccombere, e nessuna delle due discute." },
+  { tag: "I", seg: [["Entro cinque anni", "T"], [" "], ["l'IA eliminerà", "S"], [" i lavori dei neolaureati. "], ["È inevitabile, e nessuno può fermarla.", "N"]], sig: "Firmato: un CEO che vende i modelli", note: "Quarta operazione. Cancelliamo la firma. Chi parla vende la cosa di cui annuncia la potenza, e la frase ora circola da sola, come un fatto di natura. Nel maggio 2025 Dario Amodei, CEO di Anthropic, ha detto ad Axios che l'IA potrebbe eliminare metà dei lavori impiegatizi d'ingresso entro cinque anni." }
+];
+const SPACING = 160, Z0 = -120;
+const sirenZ = i => Z0 - i * SPACING;
+const sirenX = i => 24 + (i % 2) * 5;
+const FULL = ["frase", "T", "S", "N", "I", "R"], MINI = ["frase", "I", "R"];
+const PROGRAM = [{ an: 0, steps: FULL }, { an: 1, steps: FULL }, { pair: [2, 4] }, { an: 3, steps: MINI }, { an: 5, steps: MINI }, { an: 6, steps: MINI }];
+const ACTS = ["I · La grammatica", "II · Smontare il canto", "III · I padroni del canto", "IV · I danni che non cantano", "V · Sovranità cognitiva"];
+
+const BEATS = [{ k: "title", act: "" }, { k: "circe", act: "" }, { k: "bivio", f: "via", act: "" }];
+BEATS.push({ k: "tesi", act: ACTS[0] });
+FAB.forEach((_, st) => BEATS.push({ k: "fab", st, act: ACTS[0] }));
+["quattro", "genealogia"].forEach(k => BEATS.push({ k, act: ACTS[0] }));
+PROGRAM.forEach((pr, n) => {
+  const act = `${ACTS[1]} · ${n + 1}/${PROGRAM.length}`;
+  if (pr.pair) ["frase", "R"].forEach(st => BEATS.push({ k: "coppia", i: pr.pair[0], i2: pr.pair[1], st, n: n + 1, tot: PROGRAM.length, act }));
+  else pr.steps.forEach(st => BEATS.push({ k: "an", i: pr.an, st, n: n + 1, tot: PROGRAM.length, act }));
+});
+BEATS.push({ k: "padroni", act: ACTS[2] }, { k: "bivio", f: "padrone", act: ACTS[2] });
+POWERS.forEach((p, j) => BEATS.push({ k: "power", j, act: ACTS[2] }));
+BEATS.push({ k: "altri", act: ACTS[2] });
+BEATS.push({ k: "danni", act: ACTS[3] }, { k: "bivio", f: "danno", act: ACTS[3] });
+RISKS.forEach((r, j) => BEATS.push({ k: "risk", j, act: ACTS[3] }));
+["sovrana", "luogo", "ulisse", "kafka", "kafka2", "vivo", "specchio", "rotta", "nodo", "fine"].forEach(k => BEATS.push({ k, act: ACTS[4] }));
+const actStart = n => BEATS.findIndex(b => b.act && b.act.startsWith(ACTS[n]));
+
+function beatCfg(b) {
+  const last = SIRENS.length - 1, after = sirenZ(last) - 60;
+  const base = { focus: -1, look: 0, sing: 0, text: null, ty: 0, sea: .45, voice: 0, drone: .3, dark: 0, rise: 0, veil: "text", wave: 1, moon: 0, bars: false };
+  const an = { ...base, veil: "an" };
+  switch (b.k) {
+    case "title": return { ...base, z: 40, text: "Sirene", ty: 1.6, sea: .55, drone: .25, veil: "none" };
+    case "circe": return { ...base, z: 34, veil: "full", dark: .25, sing: .18, all: true, drone: .4, sea: .4, wave: 1.25, bars: true };
+    case "tesi": return { ...base, z: 24, drone: .35 };
+    case "quattro": return { ...base, z: 0, drone: .4, veil: "full", dark: .3, sing: .9, all: true, voice: .5, voiceOn: .6, wave: 1.6 };
+    case "fab": return { ...base, z: 16 - b.st * 3, veil: "full", dark: .2, drone: .35, sing: .1 + b.st * .2, all: true, voice: b.st * .12, voiceOn: b.st >= 3 ? .4 : 0, wave: 1 + b.st * .15 };
+    case "genealogia": return { ...base, z: -8, drone: .35, veil: "full" };
+    case "coppia": return b.st === "frase"
+      ? { ...base, z: sirenZ(b.i) + 40, focus: b.i, also: b.i2, look: .3, sing: .8, sea: .3, voice: .8, drone: .45, voiceOn: .8, swell: true, wave: 1.4, veil: "full" }
+      : { ...base, z: sirenZ(b.i) + 12, focus: b.i, look: .12, sing: 0, sea: 0, voice: 0, drone: 0, dark: .5, hush: true, wave: .3, bars: true };
+    case "an": {
+      const z0 = sirenZ(b.i), i = b.i;
+      if (b.st === "frase") {
+        const via = state.path.via;
+        if (via === "cera") return { ...an, z: z0 + 50, focus: i, look: .42, sing: .8, sea: .4, voice: .9, drone: .3, voiceOn: .5, wave: 1.2, muffle: true, swell: true };
+        if (via === "mare") return { ...an, z: z0 + 36, focus: i, look: .55, sing: 1, sea: .25, voice: 1.25, drone: .5, swell: true, voiceOn: 1.6, wave: 1.9 };
+        return { ...an, z: z0 + 50, focus: i, look: .42, sing: 1, sea: .3, voice: 1, drone: .45, swell: true, voiceOn: 1, wave: 1.5 };
+      }
+      if (b.st === "T") return { ...an, z: z0 + 42, focus: i, look: .38, sing: .7, sea: .35, voice: .3, drone: .4, voiceOn: .5 };
+      if (b.st === "S") return { ...an, z: z0 + 36, focus: i, look: .38, sing: .7, sea: .35, voice: .3, drone: .4, voiceOn: .5 };
+      if (b.st === "N" || b.st === "A") return { ...an, z: z0 + 30, focus: i, look: .4, sing: .7, sea: .35, voice: .3, drone: .4, voiceOn: .5 };
+      if (b.st === "I") return { ...an, z: z0 + 22, focus: i, look: .55, sing: .45, sea: .4, voice: .15, drone: .3 };
+      return { ...base, z: z0 + 12, focus: i, look: .12, sing: 0, sea: 0, voice: 0, drone: 0, dark: .5, hush: true, wave: .3, bars: true };
+    }
+    case "padroni": return { ...base, z: after, text: "i padroni del canto", ty: 2.4, veil: "none", sea: .5, drone: .4, moon: .6 };
+    case "altri": return { ...base, z: after - 110, veil: "full", dark: .15, drone: .35, moon: .5 };
+    case "altridanni": return { ...base, z: after - 330, veil: "full", sea: .45 };
+    case "bivio": return b.f === "via" ? { ...base, z: 30, veil: "full", dark: .2, sing: .18, all: true, drone: .4, sea: .4, wave: 1.25 }
+                     : b.f === "padrone" ? { ...base, z: after - 15, veil: "full", dark: .15, drone: .4, moon: .8 }
+                     : { ...base, z: after - 135, veil: "full", sea: .5 };
+    case "power": return { ...base, z: after - 30 - b.j * 25, sea: .45, drone: .4, dark: .15, veil: "full", moon: 1 };
+    case "danni": return { ...base, z: after - 120, text: "i danni che non cantano", ty: 2.4, veil: "none", sea: .5 };
+    case "risk": { const r = RISKS[riskOrder()[b.j]]; return { ...base, z: after - 150 - b.j * 22, sea: .5, drone: .25, veil: r.style === "number" ? "full" : r.style === "quote" ? "low" : "text", dark: r.style === "number" ? .2 : 0 }; }
+    case "sovrana": return { ...base, z: after - 345, sea: .45, drone: .3 };
+    case "luogo": return { ...base, z: after - 345, sea: .45, drone: .3, veil: "full" };
+    case "ulisse": return { ...base, z: after - 380, rise: 1, sing: .5, all: true, sea: .45, drone: .45, voice: .12 };
+    case "kafka": return { ...base, z: after - 410, sea: 0, drone: 0, dark: 1, hush: true, veil: "none", wave: .06, bars: true };
+    case "kafka2": return { ...base, z: after - 420, sea: 0, drone: 0, dark: 1, hush: true, veil: "none", wave: .06, bars: true };
+    case "vivo": return { ...base, z: after - 470, sea: .35, drone: .2, dark: .2, veil: "full" };
+    case "specchio": return { ...base, z: after - 490, text: "cui prodest?", ty: 2.4, sea: .35, drone: .2, dark: .1 };
+    case "rotta": return { ...base, z: after - 505, rise: 1, sing: .5, all: true, sea: .45, drone: .35, veil: "low" };
+    case "nodo": return { ...base, z: after - 520, sea: .45, drone: .3 };
+    case "fine": return { ...base, z: after - 560, rise: 1, ahead: 1, sea: .55, drone: .25, veil: "none", wave: 1.1 };
+  }
+}
+const rIndex = i => BEATS.findIndex(b => (b.k === "an" || b.k === "coppia") && (b.i === i || b.i2 === i) && b.st === "R");
+
+/* ============================================================
+   STATO
+   ============================================================ */
+const KEY = "sirene-genia-v4";
+let state = { idx: 0, max: 0, votes: {}, path: { via: null, padrone: null, danno: null }, t0: null };
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s && typeof s.idx === "number") state = { idx: s.idx, max: s.max || s.idx, votes: s.votes || {}, path: Object.assign({ via: null, padrone: null, danno: null }, s.path || {}), t0: s.t0 || null }; } catch (e) {}
+try { const m = /[?&]beat=(\d+)/.exec(location.search); if (m) state.idx = state.max = +m[1]; } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+const knots = () => SIRENS.filter((s, i) => rIndex(i) <= state.max).length;
+
+/* ============================================================
+   AUDIO: mare, bordone, coro di sirene a formanti
+   ============================================================ */
+const AU = { ctx: null, muted: false, amp: 0, vol: .7 };
+function makeNoise(c, secs) {
+  const b = c.createBuffer(2, c.sampleRate * secs, c.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = b.getChannelData(ch); let last = 0; for (let i = 0; i < d.length; i++) { const w = Math.random() * 2 - 1; last = (last + .02 * w) / 1.02; d[i] = last * 3.5; } }
+  return b;
+}
+function makeImpulse(c, secs, decay) {
+  const b = c.createBuffer(2, c.sampleRate * secs, c.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = b.getChannelData(ch); for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, decay); }
+  return b;
+}
+const VOWELS = [[800, 1150, 2900], [450, 800, 2830], [400, 1600, 2700], [350, 1700, 2700], [325, 700, 2530]];
+const SCALE = [293.66, 329.63, 349.23, 392.0, 440.0, 493.88, 523.25, 587.33, 659.25];
+function initAudio() {
+  if (AU.ctx) { AU.ctx.resume && AU.ctx.resume(); return; }
+  const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+  const c = new AC(); AU.ctx = c;
+  const master = c.createGain(); master.gain.value = AU.muted ? 0 : AU.vol;
+  const comp = c.createDynamicsCompressor(); comp.threshold.value = -18; comp.ratio.value = 3;
+  const wax = c.createBiquadFilter(); wax.type = "lowpass"; wax.frequency.value = 18000; wax.Q.value = .6; AU.wax = wax;
+  master.connect(wax); wax.connect(comp); comp.connect(c.destination); AU.master = master;
+  const rev = c.createConvolver(); rev.buffer = makeImpulse(c, 5, 2.4);
+  const revOut = c.createGain(); revOut.gain.value = .85; rev.connect(revOut); revOut.connect(master);
+
+  // mare
+  const sea = c.createBufferSource(); sea.buffer = makeNoise(c, 8); sea.loop = true;
+  const lp = c.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 380;
+  const swell = c.createGain(); swell.gain.value = .55;
+  const lfo = c.createOscillator(); lfo.frequency.value = .085; const lfoG = c.createGain(); lfoG.gain.value = .4; lfo.connect(lfoG); lfoG.connect(swell.gain);
+  const lfo2 = c.createOscillator(); lfo2.frequency.value = .05; const lfo2G = c.createGain(); lfo2G.gain.value = 180; lfo2.connect(lfo2G); lfo2G.connect(lp.frequency);
+  const seaBus = c.createGain(); seaBus.gain.value = 0;
+  sea.connect(lp); lp.connect(swell); swell.connect(seaBus); seaBus.connect(master);
+  const spray = c.createBufferSource(); spray.buffer = makeNoise(c, 5); spray.loop = true;
+  const hp = c.createBiquadFilter(); hp.type = "bandpass"; hp.frequency.value = 2400; hp.Q.value = .4;
+  const sprayG = c.createGain(); sprayG.gain.value = .05; spray.connect(hp); hp.connect(sprayG); sprayG.connect(seaBus);
+  sea.start(); spray.start(); lfo.start(); lfo2.start();
+
+  // bordone
+  const droneBus = c.createGain(); droneBus.gain.value = 0; droneBus.connect(master); droneBus.connect(rev);
+  const dlp = c.createBiquadFilter(); dlp.type = "lowpass"; dlp.frequency.value = 420; dlp.connect(droneBus);
+  [73.42, 110.0, 146.83, 73.42 * 1.003].forEach((f, i) => { const o = c.createOscillator(); o.type = i === 3 ? "sawtooth" : "triangle"; o.frequency.value = f; const g = c.createGain(); g.gain.value = i === 3 ? .025 : .07; o.connect(g); g.connect(dlp); o.start(); });
+
+  // coro
+  const voiceBus = c.createGain(); voiceBus.gain.value = 0;
+  voiceBus.connect(master); const send = c.createGain(); send.gain.value = 1.1; voiceBus.connect(send); send.connect(rev);
+  const an = c.createAnalyser(); an.fftSize = 512; voiceBus.connect(an); AU.an = an; AU.buf = new Uint8Array(an.fftSize);
+  const voices = [];
+  for (let v = 0; v < 4; v++) {
+    const o = c.createOscillator(); o.type = "sawtooth"; o.frequency.value = SCALE[[0, 2, 4, 6][v]];
+    const vib = c.createOscillator(); vib.frequency.value = 4.6 + Math.random() * 1.2; const vibG = c.createGain(); vibG.gain.value = 3.2; vib.connect(vibG); vibG.connect(o.frequency);
+    const sine = c.createOscillator(); sine.type = "sine"; sine.frequency.value = o.frequency.value; vibG.connect(sine.frequency);
+    const vg = c.createGain(); vg.gain.value = .0;
+    const bands = VOWELS[0].map((f, j) => { const bp = c.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = f; bp.Q.value = 9; const g = c.createGain(); g.gain.value = [1, .55, .22][j]; o.connect(bp); bp.connect(g); g.connect(vg); return bp; });
+    const sg = c.createGain(); sg.gain.value = .05; sine.connect(sg); sg.connect(vg);
+    const breath = c.createGain(); breath.gain.value = .2; vg.connect(breath); breath.connect(voiceBus);
+    const trem = c.createOscillator(); trem.frequency.value = .13 + Math.random() * .2; const tremG = c.createGain(); tremG.gain.value = .06; trem.connect(tremG); tremG.connect(vg.gain);
+    vg.gain.value = .9;
+    o.start(); vib.start(); sine.start(); trem.start();
+    voices.push({ o, sine, bands, next: 0 });
+  }
+  AU.buses = { sea: seaBus, voice: voiceBus, drone: droneBus };
+  AU.voices = voices;
+  setInterval(() => {
+    const now = c.currentTime;
+    voices.forEach((v, i) => {
+      if (now < v.next) return;
+      const f = SCALE[Math.floor(Math.random() * SCALE.length)] * (i === 3 ? .5 : 1);
+      v.o.frequency.setTargetAtTime(f, now, .7); v.sine.frequency.setTargetAtTime(f, now, .7);
+      const vw = VOWELS[Math.floor(Math.random() * VOWELS.length)];
+      v.bands.forEach((bp, j) => bp.frequency.setTargetAtTime(vw[j], now, 1.2));
+      v.next = now + 2.8 + Math.random() * 4.5;
+    });
+  }, 400);
+  applyAudio(true);
+}
+function thud() {
+  if (!AU.ctx || !AU.master || AU.muted) return;
+  const c = AU.ctx, now = c.currentTime, o = c.createOscillator(), g = c.createGain();
+  o.type = "sine"; o.frequency.setValueAtTime(52, now); o.frequency.exponentialRampToValueAtTime(30, now + 2.2);
+  g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(.6, now + .03); g.gain.exponentialRampToValueAtTime(.001, now + 2.8);
+  o.connect(g); g.connect(AU.master); o.start(now); o.stop(now + 3);
+}
+function applyAudio(instant) {
+  if (!AU.ctx || !AU.buses) return;
+  const cfg = beatCfg(BEATS[state.idx]), now = AU.ctx.currentTime;
+  const tc = cfg.hush ? .03 : instant ? .1 : 1.6;
+  if (cfg.hush && !applyAudio.wasHush && !instant) thud();
+  applyAudio.wasHush = !!cfg.hush;
+  if (AU.wax) AU.wax.frequency.setTargetAtTime(cfg.muffle ? 240 : 18000, now, cfg.muffle ? .6 : .25);
+  AU.buses.sea.gain.setTargetAtTime(cfg.sea * .9, now, tc);
+  AU.buses.voice.gain.cancelScheduledValues(now);
+  AU.buses.voice.gain.setTargetAtTime(cfg.voice * .85, now, cfg.hush ? .03 : .9);
+  if (cfg.swell) AU.buses.voice.gain.setTargetAtTime(cfg.voice * .3, now + 12, 4);
+  AU.buses.drone.gain.setTargetAtTime(cfg.drone * .8, now, tc);
+}
+function readAmp() {
+  if (!AU.an) return 0;
+  AU.an.getByteTimeDomainData(AU.buf); let s = 0;
+  for (let i = 0; i < AU.buf.length; i++) { const v = (AU.buf[i] - 128) / 128; s += v * v; }
+  return Math.min(1, Math.sqrt(s / AU.buf.length) * 9);
+}
+
+/* ============================================================
+   SCENA
+   ============================================================ */
+const T = window.THREE;
+let GL = null;
+function hash3(x, y, z) { const s = Math.sin(x * 127.1 + y * 311.7 + z * 74.7) * 43758.5453; return s - Math.floor(s); }
+function vnoise(x, y, z) {
+  const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z), xf = x - xi, yf = y - yi, zf = z - zi;
+  const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), w = zf * zf * (3 - 2 * zf);
+  const L = (a, b, t) => a + (b - a) * t; const h = (a, b, c) => hash3(xi + a, yi + b, zi + c);
+  return L(L(L(h(0,0,0), h(1,0,0), u), L(h(0,1,0), h(1,1,0), u), v), L(L(h(0,0,1), h(1,0,1), u), L(h(0,1,1), h(1,1,1), u), v), w);
+}
+const fbm = (x, y, z) => vnoise(x, y, z) * .55 + vnoise(x * 2.1, y * 2.1, z * 2.1) * .28 + vnoise(x * 4.3, y * 4.3, z * 4.3) * .17;
+
+function buildScene() {
+  const canvas = document.getElementById("gl");
+  let renderer;
+  try { renderer = new T.WebGLRenderer({ canvas, antialias: true, powerPreference: "high-performance" }); } catch (e) { return null; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  renderer.setClearColor(0x02050a, 1);
+  const scene = new T.Scene();
+  const camera = new T.PerspectiveCamera(52, 1, .1, 3000);
+  scene.add(camera);
+  const MOON = new T.Vector3(.42, .16, -1).normalize();
+  const U = { uTime: { value: 0 }, uDark: { value: 0 }, uMoon: { value: MOON }, uCam: { value: new T.Vector3() }, uWave: { value: 1 }, uMoonTint: { value: new T.Vector3(1, 1, 1) } };
+  const HOR = "vec3(0.060,0.115,0.165)", ZEN = "vec3(0.006,0.016,0.034)";
+
+  // cielo
+  const sky = new T.Mesh(new T.SphereGeometry(1800, 48, 24), new T.ShaderMaterial({
+    side: T.BackSide, depthWrite: false, uniforms: U,
+    vertexShader: `varying vec3 vDir; void main(){ vDir = position; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+    fragmentShader: `uniform vec3 uMoon, uMoonTint; uniform float uDark, uTime; varying vec3 vDir;
+      float h1(vec3 p){ p = fract(p*vec3(.1031,.1030,.0973)); p += dot(p, p.yxz+33.33); return fract((p.x+p.y)*p.z); }
+      float vn(vec3 p){ vec3 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
+        return mix(mix(mix(h1(i), h1(i+vec3(1,0,0)), f.x), mix(h1(i+vec3(0,1,0)), h1(i+vec3(1,1,0)), f.x), f.y),
+                   mix(mix(h1(i+vec3(0,0,1)), h1(i+vec3(1,0,1)), f.x), mix(h1(i+vec3(0,1,1)), h1(i+vec3(1,1,1)), f.x), f.y), f.z); }
+      void main(){
+        vec3 d = normalize(vDir); float h = max(d.y, 0.0);
+        vec3 col = mix(${HOR}, ${ZEN}, pow(h, .42));
+        if (d.y < 0.0) col = ${HOR}*.85;
+        float m = max(dot(d, uMoon), 0.0);
+        col += uMoonTint*(vec3(.55,.62,.70)*pow(m, 6.0)*.10 + vec3(.85,.9,.95)*pow(m, 120.0)*.35);
+        float disc = smoothstep(.99962, .99972, m);
+        if (disc > 0.0) { float sea = vn(d*2600.0)*.6 + vn(d*5200.0)*.4; float maria = smoothstep(.42, .62, sea); disc *= .78 + .22*(1.0-maria)*(1.0-.35*vn(d*12000.0)); }
+        col += uMoonTint*vec3(.98,.97,.92)*disc;
+        vec3 q = d*260.0; vec3 id = floor(q); float r = h1(id);
+        if (r > .982) { vec3 f = fract(q)-.5; float s = 1.0-smoothstep(.0, .09+(r-.982)*6.0, length(f));
+          float tw = .55+.45*sin(uTime*(.7+r*4.0)+r*90.0); col += vec3(.82,.88,1.0)*s*tw*smoothstep(.015,.25,d.y)*1.2; }
+        col *= 1.0 - uDark*.93;
+        gl_FragColor = vec4(col, 1.0);
+      }`
+  }));
+  scene.add(sky);
+
+  // mare: griglia polare, fitta vicino alla nave e rada all'orizzonte
+  const RINGS = 190, SEG = 288, pos = [], idx = [];
+  pos.push(0, 0, 0);
+  for (let r = 0; r < RINGS; r++) { const rad = .35 * Math.pow(1.047, r); for (let s = 0; s < SEG; s++) { const a = s / SEG * Math.PI * 2; pos.push(Math.cos(a) * rad, 0, Math.sin(a) * rad); } }
+  for (let s = 0; s < SEG; s++) idx.push(0, 1 + (s + 1) % SEG, 1 + s);
+  for (let r = 0; r < RINGS - 1; r++) for (let s = 0; s < SEG; s++) {
+    const a = 1 + r * SEG + s, b = 1 + r * SEG + (s + 1) % SEG, c2 = a + SEG, d = b + SEG;
+    idx.push(a, b, c2, b, d, c2);
+  }
+  const og = new T.BufferGeometry(); og.setAttribute("position", new T.Float32BufferAttribute(pos, 3)); og.setIndex(idx);
+  const SU = { uSirenPos: { value: new T.Vector3() }, uSirenCol: { value: new T.Vector3(1, .7, .8) }, uSiren: { value: 0 } };
+  const ocean = new T.Mesh(og, new T.ShaderMaterial({
+    uniforms: Object.assign({}, U, SU),
+    vertexShader: `uniform float uTime, uWave, uSiren; uniform vec3 uCam, uSirenPos; varying vec3 vPos; varying vec3 vN;
+      void W(vec2 p, vec2 d, float a, float k, float w, inout float h, inout vec2 g){ float ph = dot(d,p)*k + uTime*w; h += a*sin(ph); g += a*k*d*cos(ph); }
+      void main(){
+        vec4 wp = modelMatrix*vec4(position,1.0); vec2 p = wp.xz;
+        float fade = 1.0 - smoothstep(60.0, 420.0, length(p - uCam.xz));
+        float h = 0.0; vec2 g = vec2(0.0);
+        W(p, normalize(vec2(.8,.6)), .42, .11, .85, h, g);
+        W(p, normalize(vec2(-.6,.8)), .26, .19, 1.2, h, g);
+        W(p, normalize(vec2(.3,-.95)), .14, .37, 1.8, h, g);
+        W(p, normalize(vec2(.95,.25)), .07, .71, 2.6, h, g);
+        h *= fade*uWave; g *= fade*uWave;
+        vec2 sp = p - uSirenPos.xz; float sd = max(length(sp), .001);
+        float ph2 = sd*.75 - uTime*2.4, env = exp(-sd*.028)*uSiren*.5*fade;
+        h += sin(ph2)*env; g += (sp/sd)*cos(ph2)*.75*env;
+        wp.y += h; vPos = wp.xyz; vN = normalize(vec3(-g.x, 1.0, -g.y));
+        gl_Position = projectionMatrix*viewMatrix*wp;
+      }`,
+    fragmentShader: `uniform vec3 uMoon, uCam, uSirenPos, uSirenCol, uMoonTint; uniform float uSiren, uDark, uTime, uWave; varying vec3 vPos; varying vec3 vN;
+      void main(){
+        vec2 p = vPos.xz; float dist = length(vPos - uCam);
+        float near = 1.0 - smoothstep(30.0, 260.0, dist);
+        float r1 = sin(p.x*2.7 + uTime*2.1 + sin(p.y*1.3))*sin(p.y*2.3 - uTime*1.6);
+        float r2 = sin(p.x*5.9 - uTime*3.1 + p.y*1.7)*sin(p.y*6.7 + uTime*2.4 - p.x*.7);
+        float r3 = sin(p.x*13.0 + uTime*4.0)*sin(p.y*11.0 - uTime*3.3 + p.x*2.0);
+        vec3 n = normalize(vN + vec3(r1*.07 + r2*.05 + r3*.025, 0.0, r2*.07 - r1*.04 + r3*.02)*(.35+.65*near)*(.15+.85*uWave));
+        vec3 v = normalize(uCam - vPos);
+        float fres = .02 + .98*pow(1.0 - max(dot(n, v), 0.0), 5.0);
+        vec3 R = reflect(-v, n); R.y = abs(R.y);
+        vec3 sky = mix(${HOR}, ${ZEN}, pow(R.y, .42));
+        vec3 col = mix(vec3(.003,.014,.022), sky, fres);
+        float m = max(dot(R, uMoon), 0.0);
+        col += uMoonTint*vec3(.92,.94,.96)*(pow(m, 240.0)*3.2 + pow(m, 30.0)*.07);
+        vec3 L = uSirenPos - vPos; float ld = length(L); L /= ld;
+        float s = max(dot(R, L), 0.0);
+        col += uSirenCol*uSiren*(pow(s, 70.0)*2.4 + pow(s, 9.0)*.12)*(40.0/(ld + 40.0));
+        col += uSirenCol*uSiren*.05*exp(-ld*.05);
+        float bio = pow(max(0.0, r3*r2), 7.0)*near;
+        col += vec3(.12,.55,.65)*bio*.4*(1.0-uDark);
+        float fog = 1.0 - exp(-dist*.0022);
+        col = mix(col, ${HOR}*.85, clamp(fog, 0.0, 1.0));
+        col *= 1.0 - uDark*.94;
+        gl_FragColor = vec4(col, 1.0);
+      }`
+  }));
+  ocean.frustumCulled = false;
+  scene.add(ocean);
+
+  // nave disegnata a linee, come in una costellazione
+  const ship = new T.Group(); scene.add(ship);
+  const lineMat = new T.MeshBasicMaterial({ color: 0xe8c47e, transparent: true, opacity: .55, depthWrite: false });
+  const tube = (pts, r, closed) => new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts.map(p => new T.Vector3(...p)), !!closed), closed ? 140 : 60, r, 6, !!closed), lineMat);
+  ship.add(tube([[0, -.55, -7.2], [1.35, -.45, -4], [1.95, -.4, 0], [1.6, -.45, 3.6], [0, -.35, 5.6], [-1.6, -.45, 3.6], [-1.95, -.4, 0], [-1.35, -.45, -4]], .035, true));
+  ship.add(tube([[0, -.55, -7.2], [0, .3, -8.1], [0, 1.4, -8.3], [0, 2.2, -7.8], [0, 2.4, -7.2]], .045));
+  ship.add(tube([[0, -.35, 5.6], [0, 1.0, 6.4], [0, 2.3, 6.1], [0, 2.7, 5.3]], .045));
+  for (let k = -3; k <= 3; k++) ship.add(tube([[-1.85, -.42, k * 1.05], [1.85, -.42, k * 1.05]], .018));
+  for (let k = -2; k <= 2; k++) { ship.add(tube([[-1.9, -.4, k * 1.4], [-4.2, -1.4, k * 1.4 + .6]], .016)); ship.add(tube([[1.9, -.4, k * 1.4], [4.2, -1.4, k * 1.4 + .6]], .016)); }
+  ship.add(tube([[0, -.4, .9], [0, 9.5, .9]], .07));
+  ship.add(tube([[-3.6, 8.2, .9], [0, 8.6, .9], [3.6, 8.2, .9]], .04));
+  const knotGroup = new T.Group(); ship.add(knotGroup);
+  const knotGeo = new T.SphereGeometry(.16, 12, 8), knotMat = new T.MeshBasicMaterial({ color: 0xf6dca4 });
+  const ropePts = []; for (let i = 0; i <= 120; i++) { const a = i / 120 * Math.PI * 2 * 7; ropePts.push([Math.cos(a) * .14, 1.2 + i / 120 * 2.6, .9 + Math.sin(a) * .14]); }
+  ship.add(tube(ropePts, .022));
+  function setKnots(n) {
+    while (knotGroup.children.length) knotGroup.remove(knotGroup.children[0]);
+    for (let i = 0; i < n; i++) { const m = new T.Mesh(knotGeo, knotMat); const a = i * 2.3; m.position.set(Math.cos(a) * .17, 1.4 + i * .36, .9 + Math.sin(a) * .17); knotGroup.add(m); }
+  }
+
+  // scogli e sirene
+  const glowTex = (() => { const c = document.createElement("canvas"); c.width = c.height = 128; const g = c.getContext("2d"); const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(.25, "rgba(255,255,255,.35)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return new T.CanvasTexture(c); })();
+  const rockMat = new T.ShaderMaterial({
+    uniforms: Object.assign({}, U, { uGlow: { value: 0 }, uSirenCol: { value: new T.Vector3(1, .7, .8) } }),
+    vertexShader: `varying vec3 vN; varying vec3 vPos; void main(){ vec4 wp = modelMatrix*vec4(position,1.0); vPos = wp.xyz; vN = normalize(mat3(modelMatrix)*normal); gl_Position = projectionMatrix*viewMatrix*wp; }`,
+    fragmentShader: `uniform vec3 uMoon, uCam, uSirenCol; uniform float uGlow, uDark; varying vec3 vN; varying vec3 vPos;
+      void main(){ vec3 n = normalize(vN); vec3 v = normalize(uCam - vPos);
+        float l = max(dot(n, uMoon), 0.0);
+        vec3 col = vec3(.012,.016,.022) + vec3(.16,.19,.23)*pow(l, 1.5)*.55;
+        float rim = pow(1.0 - max(dot(n, v), 0.0), 3.0);
+        col += vec3(.45,.55,.65)*rim*.06 + uSirenCol*uGlow*(rim*.55 + smoothstep(.2, 1.0, n.y)*.22);
+        float d = length(vPos - uCam); col = mix(col, ${HOR}*.85, clamp(1.0 - exp(-d*.0022), 0.0, 1.0));
+        col *= 1.0 - uDark*.94; gl_FragColor = vec4(col, 1.0); }`
+  });
+  const figMatBase = {
+    transparent: true, depthWrite: false, blending: T.AdditiveBlending,
+    vertexShader: `uniform float uTime, uSing, uDark, uAmp; attribute float aSeed; attribute float aWing; attribute float aU; varying float vA;
+      void main(){
+        vec3 p = position;
+        float breathe = sin(uTime*.9)*(.10 + uSing*.22);
+        if (aWing > 1.5) { p.x += sin(aU*5.0 - uTime*1.6 + p.x*3.0)*.22*aU; p.z += cos(aU*4.0 - uTime*1.2)*.18*aU; }
+        else if (abs(aWing) > .5) { p.y += breathe*aU*aU*1.6; p.x += aWing*breathe*aU*.5; }
+        else { p.x += sin(uTime*.8 + aU*3.0)*.08*(1.0 - aU); }
+        float t = uTime*.55;
+        p += vec3(sin(t + aSeed*6.28 + p.y*1.7), sin(t*1.3 + aSeed*12.0), cos(t*.9 + aSeed*9.0 + p.x))*(.05 + uSing*.10 + uAmp*.25);
+        vec4 mv = modelViewMatrix*vec4(p, 1.0); gl_Position = projectionMatrix*mv;
+        float tw = .5 + .5*sin(uTime*(1.5 + fract(aSeed*3.7)*2.0) + aSeed*40.0);
+        vA = (.06 + .94*uSing)*(.45 + .55*tw)*(1.0 - uDark)*(abs(aWing) < .5 ? .5 : 1.0);
+        gl_PointSize = (1.0 + 1.3*fract(aSeed*7.13))*(1.0 + uAmp*.6)*(150.0/-mv.z);
+      }`,
+    fragmentShader: `uniform vec3 uCol; varying float vA; void main(){ float d = length(gl_PointCoord - .5); float a = smoothstep(.5, .0, d); gl_FragColor = vec4(uCol, a*vA); }`
+  };
+  function figureGeometry(seed) {
+    const P = [], S = [], Wg = [], Uu = [];
+    let rs = seed * 9301 + 49297; const rnd = () => { rs = (rs * 9301 + 49297) % 233280; return rs / 233280; };
+    const push = (x, y, z, w, u) => { P.push(x, y, z); S.push(rnd()); Wg.push(w); Uu.push(u); };
+    const g1 = () => (rnd() + rnd() + rnd() - 1.5) / 1.5;
+    // corpo: una goccia che si assottiglia in una coda verso lo scoglio
+    for (let i = 0; i < 2400; i++) {
+      const u = Math.pow(rnd(), .75), y = u * 3.5, a = rnd() * Math.PI * 2;
+      const r = (.06 + .42 * Math.pow(Math.sin(Math.min(1, u * 1.05) * Math.PI * .92), 1.4)) * Math.sqrt(rnd());
+      const sway = Math.sin(u * 4.0) * .12 * (1 - u);
+      push(Math.cos(a) * r + sway, y, Math.sin(a) * r * .75 + (1 - u) * (1 - u) * .5, 0, u);
+    }
+    for (let i = 0; i < 520; i++) { const u = rnd() * 2 - 1, a = rnd() * Math.PI * 2, r = .27 * Math.cbrt(rnd()), sq = Math.sqrt(1 - u * u); push(Math.cos(a) * sq * r, 3.95 + u * r * 1.15, Math.sin(a) * sq * r, 0, 0); }
+    // ali: piume che si aprono a ventaglio verso l'alto
+    for (const side of [-1, 1]) for (let f = 0; f < 17; f++) {
+      const k = f / 16, ang = (.22 + k * 1.15), L = 1.4 + 2.9 * Math.sin(.15 + k * Math.PI * .85);
+      const n = 70 + Math.floor(L * 40);
+      for (let j = 0; j < n; j++) {
+        const u = Math.pow(rnd(), .85), bend = u * u * (.55 + k * .35);
+        const dx = Math.cos(ang) * u * L + Math.cos(ang - 1.5) * bend * .5, dy = Math.sin(ang) * u * L - bend * .9;
+        push(side * (.22 + dx) + g1() * .035 * (1 + u), 3.15 + dy + g1() * .035 * (1 + u), -.25 - u * .55 * k + g1() * .05, side, u);
+      }
+    }
+    // velo: ciocche che scendono dalla testa e ondeggiano
+    for (let h = 0; h < 12; h++) {
+      const off = (h / 11 - .5) * .5;
+      for (let j = 0; j < 130; j++) { const u = rnd(); push(off * (1 + u * 1.6) + g1() * .03, 4.05 - u * 3.4, -.22 - u * .9 + g1() * .03, 2, u); }
+    }
+    const g = new T.BufferGeometry();
+    g.setAttribute("position", new T.Float32BufferAttribute(P, 3));
+    g.setAttribute("aSeed", new T.Float32BufferAttribute(S, 1));
+    g.setAttribute("aWing", new T.Float32BufferAttribute(Wg, 1));
+    g.setAttribute("aU", new T.Float32BufferAttribute(Uu, 1));
+    return g;
+  }
+  const sirens = SIRENS.map((s, i) => {
+    const grp = new T.Group(); grp.position.set(sirenX(i), 0, sirenZ(i)); scene.add(grp);
+    const rg = new T.IcosahedronGeometry(1, 5), p = rg.attributes.position, v = new T.Vector3();
+    for (let k = 0; k < p.count; k++) { v.fromBufferAttribute(p, k); const n = fbm(v.x * 1.6 + i * 7, v.y * 1.6, v.z * 1.6); v.multiplyScalar(.72 + n * .75); if (v.y < -.2) v.y *= .6; p.setXYZ(k, v.x, v.y, v.z); }
+    rg.computeVertexNormals();
+    const rm = rockMat.clone(); rm.uniforms = T.UniformsUtils.clone(rockMat.uniforms); rm.uniforms.uMoon.value = MOON; rm.uniforms.uCam = U.uCam; rm.uniforms.uDark = U.uDark;
+    rm.uniforms.uSirenCol.value.set(...s.col);
+    const rock = new T.Mesh(rg, rm); rock.scale.set(8.5, 4.4, 7.5); rock.position.y = -.9; grp.add(rock);
+    const rock2 = new T.Mesh(rg, rm); rock2.scale.set(4.2, 3.4, 4); rock2.position.set(-(i % 2 ? 1 : -1) * 7, -.6, 4); rock2.rotation.y = 1.7; grp.add(rock2);
+    const fm = new T.ShaderMaterial(Object.assign({}, figMatBase, { uniforms: { uTime: U.uTime, uDark: U.uDark, uSing: { value: 0 }, uAmp: { value: 0 }, uCol: { value: new T.Vector3(...s.col) } } }));
+    const fig = new T.Points(figureGeometry(i + 1), fm); fig.position.y = 5.2; fig.scale.setScalar(1.75); fig.rotation.y = -.55; grp.add(fig);
+    const glow = new T.Sprite(new T.SpriteMaterial({ map: glowTex, color: new T.Color(...s.col), transparent: true, depthWrite: false, blending: T.AdditiveBlending, opacity: 0 }));
+    glow.scale.set(22, 22, 1); glow.position.y = 10; grp.add(glow);
+    return { grp, rock, rm, fm, glow, head: new T.Vector3(sirenX(i), 12, sirenZ(i)), sing: 0 };
+  });
+
+  // la voce: un nastro di particelle dalla sirena alla nave
+  const VN = 2600, vp = new Float32Array(VN * 3), vph = new Float32Array(VN), vr = new Float32Array(VN * 3);
+  for (let i = 0; i < VN; i++) { vph[i] = Math.random(); vr[i * 3] = Math.random() * 2 - 1; vr[i * 3 + 1] = Math.random() * 2 - 1; vr[i * 3 + 2] = Math.random() * 2 - 1; }
+  const vgeo = new T.BufferGeometry(); vgeo.setAttribute("position", new T.BufferAttribute(vp, 3)); vgeo.setAttribute("aPh", new T.BufferAttribute(vph, 1)); vgeo.setAttribute("aR", new T.BufferAttribute(vr, 3));
+  const voiceMat = new T.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: T.AdditiveBlending,
+    uniforms: { uTime: U.uTime, uS: { value: new T.Vector3() }, uM: { value: new T.Vector3() }, uC: { value: new T.Vector3() }, uOn: { value: 0 }, uCol: { value: new T.Vector3(1, .7, .8) }, uAmp: { value: 0 } },
+    vertexShader: `uniform float uTime, uOn, uAmp; uniform vec3 uS, uM, uC; attribute float aPh; attribute vec3 aR; varying float vA;
+      void main(){ float p = fract(aPh + uTime*.075);
+        vec3 a = mix(uS, uM, p), b = mix(uM, uC, p), q = mix(a, b, p);
+        float sp = sin(p*3.14159);
+        q += aR*sp*(1.2 + uAmp*2.5) + vec3(0.0, sin(p*12.0 + uTime*2.0 + aR.x*6.0)*.4*sp, 0.0);
+        vec4 mv = modelViewMatrix*vec4(q, 1.0); gl_Position = projectionMatrix*mv;
+        vA = sp*uOn*(.35 + .65*fract(aPh*13.7));
+        gl_PointSize = (1.0 + fract(aPh*5.3)*1.8)*(110.0/-mv.z); }`,
+    fragmentShader: `uniform vec3 uCol; varying float vA; void main(){ float d = length(gl_PointCoord - .5); gl_FragColor = vec4(uCol, smoothstep(.5, .0, d)*vA); }`
+  });
+  const voice = new T.Points(vgeo, voiceMat); voice.frustumCulled = false; scene.add(voice);
+
+  // parole di luce: particelle che si compongono in testo davanti alla nave
+  const TN = 26000, tp = new Float32Array(TN * 3), tt = new Float32Array(TN * 3), ta = new Float32Array(TN), tta = new Float32Array(TN), tk = new Float32Array(TN), ts = new Float32Array(TN);
+  const dust = new Float32Array(TN * 3);
+  for (let i = 0; i < TN; i++) {
+    dust[i * 3] = (Math.random() * 2 - 1) * 34; dust[i * 3 + 1] = -3.2 + Math.random() * 18; dust[i * 3 + 2] = -14 - Math.random() * 46;
+    tp[i * 3] = dust[i * 3]; tp[i * 3 + 1] = dust[i * 3 + 1]; tp[i * 3 + 2] = dust[i * 3 + 2];
+    tt.set([dust[i * 3], dust[i * 3 + 1], dust[i * 3 + 2]], i * 3);
+    ta[i] = 0; tta[i] = .1; tk[i] = .018 + Math.random() * .05; ts[i] = Math.random();
+  }
+  const tgeo = new T.BufferGeometry();
+  tgeo.setAttribute("position", new T.BufferAttribute(tp, 3).setUsage(T.DynamicDrawUsage));
+  tgeo.setAttribute("aA", new T.BufferAttribute(ta, 1).setUsage(T.DynamicDrawUsage));
+  tgeo.setAttribute("aSeed", new T.BufferAttribute(ts, 1));
+  const textMat = new T.ShaderMaterial({
+    transparent: true, depthWrite: false, depthTest: false, blending: T.AdditiveBlending,
+    uniforms: { uTime: U.uTime, uCol: { value: new T.Vector3(.97, .93, .9) }, uPx: { value: 1 } },
+    vertexShader: `uniform float uTime, uPx; attribute float aA; attribute float aSeed; varying float vA; varying float vS;
+      void main(){ vec3 p = position;
+        p += vec3(sin(uTime*.7 + aSeed*30.0), cos(uTime*.6 + aSeed*20.0), 0.0)*.012;
+        vec4 mv = modelViewMatrix*vec4(p, 1.0); gl_Position = projectionMatrix*mv;
+        vA = aA*(.7 + .3*sin(uTime*2.0 + aSeed*60.0)); vS = aSeed;
+        gl_PointSize = (1.3 + aSeed*1.1)*uPx*(14.0/-mv.z); }`,
+    fragmentShader: `uniform vec3 uCol; varying float vA; varying float vS; void main(){ float d = length(gl_PointCoord - .5); vec3 c = mix(uCol, vec3(1.0,.78,.86), step(.86, vS)); gl_FragColor = vec4(c, smoothstep(.5, .05, d)*vA); }`
+  });
+  const words = new T.Points(tgeo, textMat); words.frustumCulled = false; words.renderOrder = 10; camera.add(words);
+
+  const sampleCanvas = document.createElement("canvas"); sampleCanvas.width = 2400; sampleCanvas.height = 600;
+  const sctx = sampleCanvas.getContext("2d", { willReadFrequently: true });
+  function setWords(text, ty) {
+    const D = 12;
+    if (!text) {
+      for (let i = 0; i < TN; i++) { tt[i * 3] = dust[i * 3]; tt[i * 3 + 1] = dust[i * 3 + 1]; tt[i * 3 + 2] = dust[i * 3 + 2]; tta[i] = .09 + ts[i] * .08; }
+      return;
+    }
+    const W = sampleCanvas.width, H = sampleCanvas.height;
+    sctx.clearRect(0, 0, W, H); sctx.fillStyle = "#fff"; sctx.textAlign = "center"; sctx.textBaseline = "middle";
+    let fs = 360; sctx.font = `italic 400 ${fs}px "Instrument Serif", Georgia, serif`;
+    const w0 = sctx.measureText(text).width; if (w0 > W * .94) fs *= W * .94 / w0;
+    sctx.font = `italic 400 ${fs}px "Instrument Serif", Georgia, serif`;
+    sctx.fillText(text, W / 2, H / 2);
+    const img = sctx.getImageData(0, 0, W, H).data, pts = [];
+    for (let y = 0; y < H; y += 3) for (let x = 0; x < W; x += 3) if (img[(y * W + x) * 4 + 3] > 120) pts.push(x, y);
+    const n = pts.length / 2;
+    const vh = 2 * D * Math.tan(T.MathUtils.degToRad(camera.fov / 2)), vw = vh * camera.aspect;
+    const worldW = Math.min(vw * .84, vh * 2.4), sc = worldW / W;
+    const order = []; for (let i = 0; i < n; i++) order.push(i);
+    for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+    const use = Math.min(n, Math.floor(TN * .82));
+    for (let i = 0; i < TN; i++) {
+      if (i < use) { const k = order[i]; tt[i * 3] = (pts[k * 2] - W / 2) * sc + (Math.random() - .5) * sc * 2; tt[i * 3 + 1] = -(pts[k * 2 + 1] - H / 2) * sc + ty + (Math.random() - .5) * sc * 2; tt[i * 3 + 2] = -D + (Math.random() - .5) * .25; tta[i] = .85 + Math.random() * .15; }
+      else { tt[i * 3] = dust[i * 3]; tt[i * 3 + 1] = dust[i * 3 + 1]; tt[i * 3 + 2] = dust[i * 3 + 2]; tta[i] = .06; }
+    }
+  }
+
+  let composer = null, bloom = null, film = null;
+  if (T.EffectComposer && T.RenderPass && T.ShaderPass && T.UnrealBloomPass) {
+    try {
+      composer = new T.EffectComposer(renderer);
+      composer.addPass(new T.RenderPass(scene, camera));
+      bloom = new T.UnrealBloomPass(new T.Vector2(1, 1), .6, .5, .8);
+      composer.addPass(bloom);
+      film = new T.ShaderPass({
+        uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uGrain: { value: .045 }, uAb: { value: 1.0 } },
+        vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+        fragmentShader: `uniform sampler2D tDiffuse; uniform float uTime, uGrain, uAb; varying vec2 vUv;
+          float hs(vec2 p){ return fract(sin(dot(p, vec2(12.9898,78.233)))*43758.5453); }
+          void main(){
+            vec2 c = vUv - .5; float r2 = dot(c, c);
+            vec2 off = c*r2*.012*uAb;
+            vec3 col = vec3(texture2D(tDiffuse, vUv + off).r, texture2D(tDiffuse, vUv).g, texture2D(tDiffuse, vUv - off).b);
+            float g = hs(vUv*vec2(1920.0, 1080.0) + fract(uTime*7.0)*vec2(13.0, 7.0)) - .5;
+            col += g*uGrain*(1.0 - smoothstep(.0, .9, dot(col, vec3(.33))));
+            gl_FragColor = vec4(col, 1.0);
+          }`
+      });
+      composer.addPass(film);
+    } catch (e) { composer = null; }
+  }
+  const starTex = (() => { const c = document.createElement("canvas"); c.width = 256; c.height = 16; const g = c.getContext("2d"); const gr = g.createLinearGradient(0, 0, 256, 0); gr.addColorStop(0, "rgba(255,255,255,0)"); gr.addColorStop(.75, "rgba(255,255,255,.7)"); gr.addColorStop(1, "rgba(255,255,255,1)"); g.fillStyle = gr; g.fillRect(0, 0, 256, 16); return new T.CanvasTexture(c); })();
+  const meteor = new T.Sprite(new T.SpriteMaterial({ map: starTex, transparent: true, depthWrite: false, blending: T.AdditiveBlending, opacity: 0 }));
+  meteor.scale.set(90, 2.2, 1); sky.add(meteor);
+  const shoot = { next: 6, t0: 0, dur: 1.1, from: new T.Vector3(), to: new T.Vector3() };
+  function resize() {
+    const w = window.innerWidth, h = window.innerHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+    if (composer) { composer.setSize(w, h); bloom.setSize(w, h); }
+    textMat.uniforms.uPx.value = h / 800 * renderer.getPixelRatio();
+  }
+  let lastAsp = 0;
+  window.addEventListener("resize", () => { resize(); if (GL && Math.abs(camera.aspect - lastAsp) > .02) { lastAsp = camera.aspect; GL.setWords(GL.curText, GL.curTy); if (/[?&]snap/.test(location.search)) { tp.set(tt); ta.set(tta); } } });
+  resize(); lastAsp = camera.aspect;
+
+  return { composer, bloom, film, meteor, shoot, post: true, sky, renderer, scene, camera, U, SU, ocean, ship, sirens, voiceMat, words, tgeo, tp, tt, ta, tta, tk, TN, setWords, setKnots, lineMat, curText: null, curTy: 0 };
+}
+
+/* ============================================================
+   CICLO
+   ============================================================ */
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cam = { z: 40, rise: 0, dark: 0, wave: 1, moon: 0, ahead: 0 };
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (!GL) return;
+  const t = now / 1000, dt = Math.min(.05, (frame.last ? t - frame.last : .016)); frame.last = t;
+  const cfg = beatCfg(BEATS[state.idx]);
+  GL.U.uTime.value = t;
+  AU.amp += ((AU.ctx && !AU.muted ? readAmp() : 0) - AU.amp) * .15;
+
+  const dz = cfg.z - cam.z; const step = Math.sign(dz) * Math.min(Math.abs(dz) * (1 - Math.exp(-dt * .75)), 34 * dt);
+  cam.z += step - cam.ahead * 2.2 * dt;
+  cam.rise += (cfg.rise - cam.rise) * (1 - Math.exp(-dt * .55));
+  cam.ahead += ((cfg.ahead || 0) - cam.ahead) * (1 - Math.exp(-dt * .55));
+  cam.dark += (cfg.dark - cam.dark) * (1 - Math.exp(-dt * (cfg.hush ? 3.5 : 1.2)));
+  GL.U.uDark.value = cam.dark;
+  cam.wave += ((cfg.wave == null ? 1 : cfg.wave) - cam.wave) * (1 - Math.exp(-dt * (cfg.hush ? 1.6 : .7)));
+  cam.moon += ((cfg.moon || 0) - cam.moon) * (1 - Math.exp(-dt * .5));
+  GL.U.uWave.value = cam.wave;
+  GL.U.uMoonTint.value.set(1, 1 - cam.moon * .42, 1 - cam.moon * .62);
+  GL.lineMat.opacity = .6 * cam.rise * (1 - cam.dark);
+
+  const bob = reduceMotion ? 0 : Math.sin(t * .55) * .22 + Math.sin(t * .9) * .08;
+  const roll = reduceMotion ? 0 : Math.sin(t * .42) * .018;
+  GL.ship.position.set(0, bob * .6, cam.z - .5); GL.ship.rotation.z = roll; GL.ship.rotation.x = Math.sin(t * .37) * .01;
+
+  const pov = new T.Vector3(0, 3.6 + bob, cam.z);
+  const high = new T.Vector3(9, 11, cam.z - 21).lerp(new T.Vector3(0, 10, cam.z + 30), cam.ahead);
+  const camPos = pov.clone().lerp(high, cam.rise);
+  GL.camera.position.copy(camPos);
+  let target = new T.Vector3(0, 3.4, cam.z - 80);
+  if (cfg.focus >= 0) target.lerp(GL.sirens[cfg.focus].head, cfg.look);
+  target.lerp(new T.Vector3(6, 2.5, cam.z + 50).lerp(new T.Vector3(0, 1, cam.z - 90), cam.ahead), cam.rise);
+  frame.aim = frame.aim || new T.PerspectiveCamera();
+  frame.aim.position.copy(camPos); frame.aim.up.set(0, 1, 0); frame.aim.lookAt(target);
+  frame.aim.rotateZ(roll * .6 * (1 - cam.rise));
+  if (frame.snapAim) { GL.camera.quaternion.copy(frame.aim.quaternion); frame.snapAim = false; }
+  else GL.camera.quaternion.slerp(frame.aim.quaternion, 1 - Math.exp(-dt * 1.2));
+  GL.U.uCam.value.copy(camPos);
+  GL.ocean.position.set(camPos.x, 0, camPos.z);
+  GL.sky.position.copy(camPos);
+
+  let best = null, bestI = -1;
+  GL.sirens.forEach((s, i) => {
+    let want = cfg.all ? cfg.sing : (i === cfg.focus ? cfg.sing : (i === cfg.also ? cfg.sing * .8 : 0));
+    if (!cfg.all && cfg.focus < 0 && !cfg.hush && Math.abs(sirenZ(i) - cam.z) < 260 && sirenZ(i) < cam.z) want = .06;
+    s.sing += (want - s.sing) * (1 - Math.exp(-dt * (cfg.hush ? 6 : 1.4)));
+    const pulse = i === cfg.focus ? AU.amp : 0;
+    s.fm.uniforms.uSing.value = s.sing * (GL.composer && GL.post ? .45 : 1); s.fm.uniforms.uAmp.value = pulse;
+    s.rm.uniforms.uGlow.value = s.sing * (.8 + pulse * .6);
+    s.glow.material.opacity = s.sing * (.38 + pulse * .3) * (1 - cam.dark) * (GL.composer && GL.post ? .35 : 1);
+    if (!best || s.sing > best.sing) { best = s; bestI = i; }
+  });
+  if (best) {
+    const v = state.votes[bestI], c = SIRENS[bestI].col;
+    const tint = v === "A" ? [1, .62, .55] : v === "P" ? [1, .92, .62] : [1, 1, 1];
+    GL.SU.uSirenPos.value.copy(best.head); GL.SU.uSirenCol.value.set(c[0] * tint[0], c[1] * tint[1], c[2] * tint[2]); GL.SU.uSiren.value = best.sing * (1 - cam.dark);
+    best.fm.uniforms.uCol.value.set(c[0] * tint[0], c[1] * tint[1], c[2] * tint[2]);
+  }
+
+  const vm = GL.voiceMat.uniforms;
+  const vOn = cfg.voiceOn || 0;
+  vm.uOn.value += (vOn - vm.uOn.value) * (1 - Math.exp(-dt * 1.2));
+  if (cfg.focus >= 0) {
+    const S = GL.sirens[cfg.focus].head, C = camPos.clone().add(new T.Vector3(0, -1.2, -6));
+    vm.uS.value.copy(S); vm.uC.value.copy(C); vm.uM.value.copy(S).lerp(C, .5).add(new T.Vector3(0, 6, 0));
+    vm.uCol.value.set(...SIRENS[cfg.focus].col);
+  }
+  vm.uAmp.value = AU.amp;
+
+  const { tp, tt, ta, tta, tk, TN } = GL;
+  for (let i = 0; i < TN; i++) {
+    const k = tk[i], j = i * 3;
+    tp[j] += (tt[j] - tp[j]) * k; tp[j + 1] += (tt[j + 1] - tp[j + 1]) * k; tp[j + 2] += (tt[j + 2] - tp[j + 2]) * k;
+    ta[i] += (tta[i] * (1 - cam.dark * .6) - ta[i]) * k * 1.3;
+  }
+  GL.tgeo.attributes.position.needsUpdate = true; GL.tgeo.attributes.aA.needsUpdate = true;
+
+  const fovT = 52 - 5 * (cfg.voiceOn || 0);
+  if (Math.abs(GL.camera.fov - fovT) > .01) { GL.camera.fov += (fovT - GL.camera.fov) * (1 - Math.exp(-dt * .8)); GL.camera.updateProjectionMatrix(); }
+  const sh = GL.shoot;
+  if (t > sh.next && sh.t0 === 0) {
+    sh.t0 = t; sh.dur = .9 + Math.random() * .6;
+    const x = (Math.random() - .5) * 1600, y = 300 + Math.random() * 500, dx = (Math.random() < .5 ? -1 : 1) * (200 + Math.random() * 300), dy = -(120 + Math.random() * 160);
+    sh.from.set(x, y, -1300); sh.to.set(x + dx, y + dy, -1300);
+    GL.meteor.material.rotation = Math.atan2(dy, dx) + Math.PI;
+  }
+  if (sh.t0) {
+    const k = (t - sh.t0) / sh.dur;
+    if (k >= 1) { sh.t0 = 0; sh.next = t + 7 + Math.random() * 14; GL.meteor.material.opacity = 0; }
+    else { GL.meteor.position.lerpVectors(sh.from, sh.to, k); GL.meteor.material.opacity = Math.sin(k * Math.PI) * .9 * (1 - cam.dark); }
+  }
+  if (GL.composer && GL.post) {
+    const focusSing = cfg.focus >= 0 ? GL.sirens[cfg.focus].sing : 0;
+    GL.bloom.strength = (.32 + focusSing * .2 + AU.amp * .18) * (1 - cam.dark * .6);
+    GL.film.uniforms.uTime.value = t;
+    GL.composer.render();
+  } else GL.renderer.render(GL.scene, GL.camera);
+}
+
+/* ============================================================
+   INTERFACCIA
+   ============================================================ */
+const layer = document.getElementById("layer");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const mark = (t, tag, now) => `<mark style="--c:${TAGS[tag].c}"${tag === now ? ' class="now"' : ""}>${esc(t)}<sup>${tag}</sup></mark>`;
+function sentHTML(seg, shown, now) { return seg.map(([t, tag]) => tag && shown.includes(tag) ? mark(t, tag, now) : esc(t)).join(""); }
+function qsHTML(onTags, notes, now) {
+  return `<div class="qs">${ORDER.map(k => `<div class="qc${onTags.includes(k) ? " on" : ""}" style="--c:${TAGS[k].c}">
+    <div class="lbl">${TAGS[k].name}</div><div class="qq shade">${TAGS[k].q}</div>
+    ${onTags.includes(k) && notes[k] ? `<div class="note shade">${esc(notes[k])}</div>` : ""}</div>`).join("")}</div>`;
+}
+
+const VIEWS = {
+  title: () => `<div class="title-wrap">
+      <div class="lbl">IA: Intelligenza Apocalittica</div>
+      <p class="title-sub shade">Come districarsi tra allarmismi e marketing</p>
+      <div class="lbl dim">Genia Lab · Accademia di Arti e Nuove Tecnologie di Roma</div>
+      ${AU.ctx ? "" : `<button class="sail" id="sailBtn" type="button">Salpa</button>`}
+    </div>`,
+  circe: () => `<div class="epi center">
+      <div class="lbl dim">Circe avverte Ulisse · Odissea XII 39–46 · traduzione nostra</div>
+      <h2 class="shade" style="max-width:30ch;font-size:clamp(26px,calc(3 * var(--u)),58px);font-style:italic">«Chi, ignaro, si accosta e ascolta la voce delle Sirene, non vedrà più la moglie e i figli farglisi incontro, felici del ritorno. Le Sirene lo incantano con il canto limpido, sedute in un prato: e intorno è un gran mucchio di ossa di uomini che marciscono, e sulle ossa la pelle si consuma.»</h2>
+      <p class="shade">Questa sera attraversiamo quel mare. Sette canti, e per ciascuno le stesse quattro domande.</p>
+    </div>`,
+  tesi: () => `<div class="epi narrow">
+      <div class="lbl">La tesi</div>
+      <h2 class="shade">L'allarme e la promessa parlano <em>la stessa grammatica.</em></h2>
+      <p class="shade">Apokálypsis, in greco, significa rivelazione: chi annuncia la fine si prende l'autorità di chi vede ciò che gli altri non vedono. Per questo il profeta di sventura e il venditore di salvezza sono spesso la stessa persona, a pochi mesi di distanza.</p>
+      <p class="shade">I danni sono reali, e li vedremo con i dati. Il racconto apocalittico, quando viene da chi vende, sposta lo sguardo dai danni presenti a una fine futura, e dalle decisioni di qualcuno al destino di tutti.</p>
+    </div>`,
+  quattro: () => `<div class="epi center">
+      <div class="lbl">L'effetto</div>
+      <h2 class="shade" style="max-width:26ch">Paura ed entusiasmo producono lo stesso effetto: <em>chi ascolta smette di decidere.</em></h2>
+      <p class="shade">In <em>Ipnocrazia</em> è il nome di un potere che governa facendo circolare insieme storie opposte. Chi le ascolta resta sospeso tra l'una e l'altra, in una specie di trance, e intanto altri decidono.</p>
+    </div>`,
+  genealogia: () => `<div class="epi" style="max-width:min(1500px,100%)">
+      <div class="lbl">Tre voci, prima di noi</div>
+      <h2 class="shade">La paura è stata un dovere. <em>Oggi è un prodotto.</em></h2>
+      <div class="timeline">
+        <div class="tl"><div class="yr">1956</div><h3 class="shade">Günther Anders</h3><div class="op">L'uomo è antiquato</div><p class="shade">Dopo Hiroshima osserva che sappiamo costruire oggetti, come la bomba, le cui conseguenze non riusciamo né a immaginare né a sentire. Chiama questa distanza «dislivello prometeico», e chiama «cecità all'apocalisse» il suo effetto, una catastrofe così grande che la mente non la registra e la vita continua come se niente fosse.</p></div>
+        <div class="tl"><div class="yr">1979</div><h3 class="shade">Hans Jonas</h3><div class="op">Il principio responsabilità</div><p class="shade">Le tecnologie moderne hanno effetti così grandi e lontani nel tempo che nessuno sa prevederli. La sua regola, quando non sappiamo, è dare più peso alla previsione peggiore e fermarsi a pensare prima di agire. La chiama «euristica della paura», la paura come strumento per capire che cosa rischiamo di perdere.</p></div>
+        <div class="tl"><div class="yr">2024</div><h3 class="shade">Gebru e Torres</h3><div class="op">The TESCREAL bundle</div><p class="shade">Timnit Gebru, informatica, fino al 2020 a capo del gruppo di etica dell'IA di Google, da cui uscì in modo contestato, ed Émile P. Torres, filosofo, mostrano che chi promette il paradiso dell'intelligenza artificiale generale e chi ne teme l'apocalisse condividono la stessa famiglia di ideologie, dal transumanesimo al lungoterminismo, e la stessa conclusione, costruirla subito e con meno regole.</p></div>
+      </div>
+      <p class="coda shade">Anders temeva che non vedessimo la fine; Jonas chiedeva di avere paura per dovere. Oggi la fine la raccontano per primi quelli che la costruiscono, la paura porta capitali invece di prudenza, e quello che non vediamo più sono i danni già in corso.</p>
+    </div>`,
+  coppia: b => { const a = SIRENS[b.i], c = SIRENS[b.i2];
+    if (b.st === "R") return `<div class="rew">
+        <div class="lbl dim">Il silenzio delle due sirene · le stesse frasi nella grammatica opposta</div>
+        <p class="new shade" style="font-size:clamp(22px,calc(2.3 * var(--u)),44px)">${esc(a.rewrite)}</p>
+        <p class="new shade" style="font-size:clamp(22px,calc(2.3 * var(--u)),44px)">${esc(c.rewrite)}</p>
+        <div class="chips"><span style="--c:var(--t)">al presente</span><span style="--c:var(--s)">soggetti umani</span><span style="--c:var(--n)">una decisione</span><span style="--c:var(--i)">interesse dichiarato</span></div>
+      </div>`;
+    return `<div class="an">
+        <div class="lbl">Frase ${b.n} di ${b.tot} · due anni, due voci, una grammatica</div>
+        <div class="pair">
+          <div><div class="kicker">Un blog personale · 23 settembre 2024</div><blockquote class="sent shade">${sentHTML(a.seg, ORDER, null)}</blockquote><div class="who-line"><span class="who shade" style="font-size:clamp(22px,calc(2.2 * var(--u)),40px)">${esc(a.who)}</span></div><p class="orig shade">${esc(a.notes.I)}</p></div>
+          <div><div class="kicker">Una scheda ufficiale · 29 settembre 2026</div><blockquote class="sent shade">${sentHTML(c.seg, ORDER, null)}</blockquote><div class="who-line"><span class="who shade" style="font-size:clamp(22px,calc(2.2 * var(--u)),40px)">${esc(c.who)}</span></div><p class="orig shade">${esc(c.notes.I)}</p></div>
+        </div>
+        <div class="hall">Stesso futuro, stesso soggetto, la superintelligenza, stessa necessità. Nel 2024 è una promessa sul blog di chi la vende; nel 2026 è il nome ufficiale della cosa, per decreto. ${esc(c.kind)}</div>
+      </div>`; },
+  an: b => {
+    const s = SIRENS[b.i]; let si = 0;
+    if (b.st === "R") return `<div class="rew">
+        <div class="lbl dim">Il silenzio della sirena · la stessa frase nella grammatica opposta</div>
+        <p class="new shade">${esc(s.rewrite)}</p>
+        <div class="chips"><span style="--c:var(--t)">al presente</span><span style="--c:var(--s)">soggetti umani</span><span style="--c:var(--n)">una decisione</span><span style="--c:var(--i)">interesse dichiarato</span></div>
+        <p class="lbl dim">Riscrittura del Lab</p>
+      </div>`;
+    const SH = { frase: [], T: ["T"], S: ["T", "S"], N: ["T", "S", "N"], A: ["T", "S", "N"], I: ["T", "S", "N"] };
+    const shown = SH[b.st], on = b.st === "I" ? ORDER : shown, now = ["T", "S", "N"].includes(b.st) ? b.st : null;
+    si = b.st === "I" ? 4 : b.st === "frase" ? 0 : 1;
+    const eyebrow = b.i === 0 ? "Prima frase · la prova" : `Frase ${b.n} di ${b.tot}`;
+    const v = state.votes[b.i];
+    const voteHTML = si === 0 ? `<div class="vote"><span class="lbl dim">Allarme o promessa? Mani alzate</span><button class="chip${v === "A" ? " on" : ""}" type="button" data-vote="A"><b>A</b>Allarme</button><button class="chip${v === "P" ? " on" : ""}" type="button" data-vote="P"><b>P</b>Promessa</button></div>` : "";
+    const hallHTML = si >= 4 ? `<div class="hall">${v ? `La sala aveva alzato la mano per <b>${v === "A" ? "l'allarme" : "la promessa"}</b>. ` : ""}${esc(s.kind)}</div>` : "";
+    return `<div class="an">
+        <div class="lbl">${eyebrow}</div>
+        ${si === 0 && s.kicker ? `<div class="kicker">${esc(s.kicker)}</div>` : ""}
+        <blockquote class="sent shade${s.long ? " long" : ""}${si >= 4 ? " read" : ""}${s.look ? " " + s.look : ""}">${sentHTML(s.seg, shown, now)}</blockquote>
+        ${si < 4 && s.sigBlank ? `<div class="sig">${esc(s.sigBlank)}</div>` : ""}
+        ${voteHTML}
+        ${si >= 4 ? `<div class="who-line"><span class="who shade">${esc(s.who)}</span><span class="when">${esc(s.when)}</span></div><p class="orig shade">${esc(s.orig)}</p>${hallHTML}` : ""}
+        ${qsHTML(on, s.notes, now)}
+      </div>`;
+  },
+  bivio: b => { const f = FORKS[b.f], cur = state.path[b.f]; return `<div class="epi">
+      <div class="lbl gold">Bivio · la sala decide · mani alzate</div>
+      <h2 class="shade">${esc(f.q)}</h2>
+      <div class="forks">${f.opts.map((o, i) => `<button class="fork${cur === o.id ? " on" : ""}" type="button" data-fork="${i}"><span class="n">${o.n} · tasto ${i + 1}</span><h3 class="shade">${esc(o.h)}</h3><p class="shade">${esc(o.p)}</p><span class="cons">${esc(o.cons)}</span></button>`).join("")}</div>
+    </div>`; },
+  padroni: () => `<div class="title-wrap"><p class="title-sub shade">Dietro ogni canto ci sono persone con un nome, un patrimonio e un progetto politico. Facciamo a loro la quarta domanda.</p></div>`,
+  power: b => { const p = POWERS[b.j]; return `<div class="dossier">
+      <div class="lbl gold">I padroni del canto · ${b.j + 1} di ${POWERS.length}</div>
+      <h2 class="who shade">${esc(p.name)}</h2><div class="role">${esc(p.role)}</div>
+      <div class="rows">${p.rows.map(([d, t]) => `<div class="row"><span class="d">${esc(d)}</span><span class="t shade">${esc(t)}</span></div>`).join("")}</div>
+      <p class="read shade">${esc(p.read)}</p>
+    </div>`; },
+  altri: () => { const rest = POWERS.map((p, j) => ({ p, j })).filter(x => x.j !== state.path.padrone); return `<div class="epi">
+      <div class="lbl gold">Gli altri ${rest.length === 2 ? "due" : "tre"}, in breve · perché la quarta domanda vale per tutti</div>
+      <div class="cols${rest.length === 2 ? " two" : ""}">${rest.map(({ p }) => `<div class="col"><h3 class="shade">${esc(p.name)}</h3><div class="who3">${esc(p.role)}</div><p class="shade">${esc(p.brief)}</p></div>`).join("")}</div>
+    </div>`; },
+  danni: () => `<div class="title-wrap"><p class="title-sub shade">I danni reali hanno la grammatica contraria: sono già presenti, li decidono persone, si possono cambiare. E a nessuno di quelli che cantano conviene annunciarli.</p></div>`,
+  risk: b => { const r = RISKS[riskOrder()[b.j]], head = `<div class="lbl gold">Danno ${b.j + 1} di ${RISKS.length} · ${esc(r.name)}</div>`;
+    if (r.style === "number") return `<div class="risk" style="max-width:min(1300px,72vw)">${head}<p class="bignum shade">${esc(r.big)}</p><p class="fact sub shade">${esc(r.sub)}</p><div class="src">${esc(r.src)}</div><p class="why shade">${esc(r.why)}</p></div>`;
+    if (r.style === "quote") return `<div class="risk" style="max-width:min(1300px,72vw)">${head}<blockquote class="sent shade" style="font-size:clamp(26px,calc(3 * var(--u)),58px);max-width:30ch">${esc(r.quote)}</blockquote><div class="src" style="color:var(--i)">${esc(r.by)}</div><p class="fact sub shade">${esc(r.fact)}</p><div class="src">${esc(r.src)}</div><p class="why shade">${esc(r.why)}</p></div>`;
+    return `<div class="risk">${head}<p class="fact shade">${esc(r.fact)}</p><div class="src">${esc(r.src)}</div><p class="why shade">${esc(r.why)}</p></div>`; },
+  sovrana: () => `<div class="epi narrow">
+      <div class="lbl gold">Sovranità cognitiva</div>
+      <h2 class="shade">Essere consapevoli del <em>luogo in cui accade il proprio pensiero</em>, e poterlo cambiare alla bisogna.</h2>
+      <p class="shade">Ogni pensiero accade da qualche parte: in una lingua, su un foglio, in una conversazione, dentro uno strumento. E il luogo decide che cosa è facile pensare e che cosa diventa faticoso.</p>
+      <p class="shade">Quando pensiamo con un assistente, quel luogo ha un proprietario, impostazioni predefinite che non abbiamo scelto, una voce addestrata a piacerci, e le leggi di un paese che corre per il dominio.</p>
+      <p class="small">Il 31 marzo 2023 il Garante italiano per la protezione dei dati fu il primo in Europa a fermare ChatGPT, chiedendo a OpenAI con quale base raccogliesse i dati di chi scriveva. Il 28 aprile il servizio riaprì, dopo che l'azienda aveva accettato le condizioni. Molti risero di un paese arretrato. Era la domanda sul luogo, posta per primi.</p>
+    </div>`,
+  luogo: () => `<div class="epi">
+      <div class="lbl gold">Tre domande sul luogo</div>
+      <h2 class="shade">Le quattro domande servono per le frasi degli altri. <em>Queste servono per i vostri pensieri.</em></h2>
+      <div class="cols">
+        <div class="col"><h3 class="shade">Dove?</h3><p class="shade">Dove sta accadendo questo pensiero? In quale strumento, in quale lingua, con quali parole suggerite da altri?</p></div>
+        <div class="col"><h3 class="shade">Di chi?</h3><p class="shade">Chi possiede quel luogo, che cosa ci guadagna, che cosa sa di me mentre penso?</p></div>
+        <div class="col"><h3 class="shade">Posso uscire?</h3><p class="shade">Posso spostare questo pensiero altrove quando serve: su un foglio, in un altro strumento, in una conversazione con una persona, nel silenzio?</p></div>
+      </div>
+      <p class="shade">Cambiare luogo è un gesto concreto: scrivere prima da soli, chiedere alla macchina di contraddirci, confrontare due modelli, spegnere. Chi non può più farlo ha perso la propria sovranità, anche se la macchina gli dà sempre ragione.</p>
+    </div>`,
+  ulisse: () => `<div class="epi narrow">
+      <div class="lbl gold">La corda · ${knots()} nodi · la sala: allarme ${Object.values(state.votes).filter(x => x === "A").length}, promessa ${Object.values(state.votes).filter(x => x === "P").length} · quasi sempre erano tutte e due</div>
+      <h2 class="shade">Ulisse non vince le sirene. <em>Sceglie i suoi vincoli</em> prima che comincino a cantare.</h2>
+      <p class="shade">Nel 1944, esuli negli Stati Uniti, Max Horkheimer e Theodor W. Adorno rileggono questo episodio nella Dialettica dell'illuminismo. Ulisse, che comanda, può ascoltare il canto perché è legato all'albero: ne gode, ma non può agire. I rematori, che lavorano, hanno la cera nelle orecchie: remano proprio perché non sentono niente.</p>
+      <p class="shade">Per loro è l'immagine di una società divisa tra chi può permettersi la bellezza e chi la produce senza poterla ascoltare. Davanti all'IA la domanda è la stessa: chi ascolta il canto, chi decide la rotta, chi rema senza sentire?</p>
+    </div>`,
+  kafka: () => `<div class="epi center">
+      <div class="lbl dim">Franz Kafka · Il silenzio delle sirene · 1917</div>
+      <p class="shade">In una pagina del 1917 Kafka riscrive il mito. Ulisse si tappa le orecchie con la cera e si fa legare, sicuro dei suoi mezzi. Ma quel giorno le sirene non cantano. Lui vede le loro labbra muoversi, crede che cantino, e crede di averle vinte.</p>
+      ${state.path.via ? `<p class="coda shade">${esc({ cera: "Avete scelto la cera: non avete sentito niente, e siete sicuri di aver vinto. È esattamente l'Ulisse di Kafka.", albero: "Avete scelto l'albero: avete sentito tutto, legati. Ma Kafka chiede: e se non avessero cantato? Chi ha stretto i nodi?", mare: "Avete scelto il mare: avete ascoltato senza corde, e siete ancora qui. Forse perché con voi, stasera, le sirene hanno taciuto." }[state.path.via])}</p>` : ""}
+      <h2 class="shade">«Ora però le sirene hanno un'arma ancora più terribile del canto: <em>il loro silenzio.</em>»</h2>
+      <p class="de">Nun haben aber die Sirenen eine noch schrecklichere Waffe als den Gesang, nämlich ihr Schweigen.</p>
+    </div>`,
+  kafka2: () => `<div class="epi center">
+      <p class="shade">Non è accaduto, ma forse è pensabile che qualcuno si sia salvato dal loro canto; dal loro silenzio, certamente no. Al sentimento di averle vinte con le proprie forze, e alla superbia che ne segue e travolge ogni cosa, nulla di terreno può resistere.</p>
+      <p class="small">Kafka, Das Schweigen der Sirenen · traduzione nostra</p>
+      <h2 class="shade" style="margin-top:2vh">Chi esce da qui convinto di non cascarci più <em>ha appena ascoltato l'ultima sirena.</em></h2>
+    </div>`,
+  vivo: () => `<div class="live">
+      <div class="lbl gold">Ora tocca a voi</div>
+      <h2 class="shade" id="liveH" style="margin:0;font-weight:400;font-size:clamp(30px,calc(3.4 * var(--u)),64px);line-height:1.02;max-width:24ch"${LIVE.res ? " hidden" : ""}>Una frase sull'IA che avete sentito questa settimana.</h2>
+      <form id="liveForm"><input id="liveIn" type="text" autocomplete="off" placeholder="Scrivete qui la frase…" aria-label="Frase da smontare" value="${esc(LIVE.text || "")}"><button id="liveBtn" type="submit">Smonta</button></form>
+      <div class="status" id="liveStatus">${esc(LIVE.status || "Claude la smonterà con le stesse quattro domande.")}</div>
+      <div id="liveOut">${LIVE.res ? liveHTML(LIVE.text, LIVE.res) : ""}</div>
+    </div>`,
+  specchio: () => `<div class="epi narrow" style="margin-top:auto;margin-bottom:0">
+      <div class="lbl">L'ultima frase da smontare</div>
+      <p class="shade">Applicate le quattro domande alla risposta che avete appena letto. Chi parla? Una voce che sembra sapere tutto. Che cosa vende? Questo gioco è stato costruito con Claude, un modello di Anthropic. Dario Amodei, che guida Anthropic, firma la seconda frase che abbiamo smontato ed è l'autore della frase con cui, all'inizio, abbiamo costruito la nostra sirena; Anthropic ha pagato 1,5 miliardi di dollari agli autori dei libri scaricati da siti pirata per addestrare Claude.</p>
+      <p class="shade"><em>Una sirena vi ha appena aiutato a riconoscere le sirene.</em></p>
+      ${state.path.padrone != null ? `<p class="coda shade">${state.path.padrone === 2 ? "Al bivio avete scelto di interrogare le aziende, compresa questa. Era la scelta giusta: la quarta domanda va fatta prima di tutto a chi vi sta parlando." : "Al bivio avevate tre padroni e ne avete scelto uno. Nessuno ha scelto di interrogare chi ha costruito questo gioco."}</p>` : ""}
+    </div>`,
+  rotta: () => { const A = Object.values(state.votes).filter(x => x === "A").length, P = Object.values(state.votes).filter(x => x === "P").length;
+    const via = state.path.via, pad = state.path.padrone, dan = state.path.danno;
+    const vl = via ? FORKS.via.opts.find(o => o.id === via).h.toLowerCase() : null, pl = pad != null ? FORKS.padrone.opts[pad].h : null, dl = dan ? FORKS.danno.opts.find(o => o.id === dan).h.toLowerCase() : null;
+    return `<div class="epi" style="margin-top:auto;margin-bottom:0;max-width:100%">
+      <div class="lbl gold">La vostra traversata</div>
+      <div style="overflow-x:auto"><svg viewBox="0 0 1400 120" style="width:100%;max-width:1400px;height:auto;display:block;overflow:visible">${routeSVG(1400, 120, true)}</svg></div>
+      <p class="shade">${via ? `Avete attraversato con ${esc(vl)}` : "Avete attraversato senza scegliere la rotta"}${pl ? `, avete interrogato ${esc(pl)}` : ""}${dl ? ` e tra i danni siete partiti da ${esc(dl)}` : ""}. Davanti alle sirene avete alzato la mano per l'allarme ${A} volte e per la promessa ${P}; le frasi erano quasi sempre tutte e due. ${knots()} nodi sulla corda.</p>
+    </div>`; },
+  nodo: () => `<div class="epi">
+      <div class="lbl gold">L'ultimo gesto</div>
+      <h2 class="shade">Ulisse si fa legare prima del canto. <em>Scrivete adesso il vostro nodo.</em></h2>
+      <p class="shade">Un nodo è una regola che decide dove accade il vostro pensiero, scelta prima che la sirena cominci a cantare. Dopo, è già una scusa.</p>
+      <div class="knots">${({
+        imm: ["Prima disegno io, poi chiedo.", "Nessuna immagine di una persona vera senza il suo sì.", "Lo stile di qualcuno non è un filtro.", "Su ciò che amo, nessuna delega."],
+        lav: ["Il lavoro che so fare lo faccio io, almeno una volta al giorno.", "Quando qualcosa è gratis, chiedo chi paga.", "Prima di usare uno strumento chiedo dove sta e che cosa consuma.", "Su ciò che amo, nessuna delega."],
+        mente: ["Prima scrivo io, poi chiedo.", "Le chiedo di contraddirmi, mai di darmi ragione.", "Una volta al giorno penso dove nessuno mi legge.", "Su ciò che amo, nessuna delega."]
+      }[state.path.danno] || ["Prima scrivo io, poi chiedo.", "Le chiedo di contraddirmi, mai di darmi ragione.", "Su ciò che amo, nessuna delega.", "Una volta al giorno penso dove nessuno mi legge."]).map(k => `<div class="shade">${esc(k)}</div>`).join("")}</div>
+    </div>`,
+  fine: () => `<div class="title-wrap"><div class="lbl dim">Sirene · Genia Lab · Accademia di Arti e Nuove Tecnologie di Roma</div></div>`
+};
+
+/* --- analisi dal vivo --- */
+const LIVE = { text: "", res: null, status: "", busy: false };
+function liveSegments(text, res) {
+  const tagAt = new Array(text.length).fill(null);
+  ["T", "S", "N"].forEach(k => (res[k] && Array.isArray(res[k].parole) ? res[k].parole : []).forEach(w => {
+    if (typeof w !== "string" || !w.trim()) return;
+    let from = 0, at;
+    while ((at = text.toLowerCase().indexOf(w.toLowerCase(), from)) >= 0) { for (let c = at; c < at + w.length; c++) if (!tagAt[c]) tagAt[c] = k; from = at + w.length; }
+  }));
+  const seg = []; let cur = "", ct = tagAt[0];
+  for (let c = 0; c < text.length; c++) { if (tagAt[c] !== ct) { seg.push([cur, ct]); cur = ""; ct = tagAt[c]; } cur += text[c]; }
+  if (cur) seg.push([cur, ct]);
+  return seg;
+}
+function liveHTML(text, res) {
+  const notes = {}; ORDER.forEach(k => { notes[k] = res[k] && typeof res[k].nota === "string" ? res[k].nota : ""; });
+  return `<blockquote class="sent shade" style="font-size:clamp(24px,calc(2.6 * var(--u)),50px);max-width:40ch">${sentHTML(liveSegments(text, res), ["T", "S", "N"], null)}</blockquote>
+    ${qsHTML(ORDER, notes, null)}
+    ${typeof res.riscrittura === "string" && res.riscrittura ? `<div style="display:flex;flex-direction:column;gap:6px;margin-top:6px"><div class="lbl dim">La stessa frase nella grammatica opposta</div><p class="shade" style="margin:0;font-size:clamp(20px,calc(1.9 * var(--u)),36px);line-height:1.15;max-width:50ch">${esc(res.riscrittura)}</p></div>` : ""}`;
+}
+const LIVE_PROMPT = f => `Sei uno strumento di analisi retorica usato durante una lezione pubblica sull'intelligenza artificiale, davanti a studenti ed esperti. Analizza la frase tra <frase> e </frase> con quattro domande.
+T, Tempo: quali parole spostano l'evento decisivo nel futuro, o lo presentano come un declino già in corso?
+S, Soggetto: quali parole fanno dell'IA, o di una tecnologia, il soggetto che agisce? Chi sparisce dalla frase?
+N, Necessità: quali parole trasformano una scelta in un destino o in un obbligo?
+I, Interesse: quale domanda va posta su chi parla e su che cosa vende? Non inventare l'autore se non è indicato nella frase.
+Rispondi soltanto con un oggetto JSON in questa forma:
+{"T":{"parole":["..."],"nota":"..."},"S":{"parole":["..."],"nota":"..."},"N":{"parole":["..."],"nota":"..."},"I":{"nota":"..."},"riscrittura":"..."}
+Regole: "parole" contiene sottostringhe copiate esattamente dalla frase, brevi. Se un'operazione manca, lista vuota e una nota che lo dice. Ogni nota è una sola frase sobria, in italiano, senza enfasi. La riscrittura riformula la stessa informazione al presente, con soggetti umani, come una decisione e con l'interesse dichiarato, senza aggiungere fatti che non stanno nella frase: quando il soggetto è ignoto usa formule come «chi la vende» o «chi la costruisce».
+<frase>${f}</frase>`;
+async function runLive(text) {
+  if (LIVE.busy) return;
+  const status = document.getElementById("liveStatus"), btn = document.getElementById("liveBtn"), out = document.getElementById("liveOut");
+  const setS = t => { LIVE.status = t; if (status) status.textContent = t; };
+  LIVE.text = text; LIVE.res = null; if (out) out.innerHTML = "";
+  let sample = null;
+  try { sample = window.claude && window.claude.use ? await window.claude.use("sample") : null; } catch (e) { sample = null; }
+  if (!sample) { setS("L'analisi dal vivo non è disponibile in questa vista: smontatela a voce, con le quattro domande."); return; }
+  LIVE.busy = true; if (btn) btn.disabled = true;
+  setS("Claude sta leggendo la frase…");
+  try {
+    const res = await sample.json(LIVE_PROMPT(text), { modelTier: "quick", cache: false });
+    if (!res || typeof res !== "object") throw { code: "bad_shape" };
+    LIVE.res = res; setS("Smontata. Adesso controllate voi: siete d'accordo?");
+    const h = document.getElementById("liveH"); if (h) h.hidden = true;
+    if (out) out.innerHTML = liveHTML(text, res);
+  } catch (e) {
+    const c = e && e.code;
+    setS(c === "not_granted" ? "Il permesso è stato negato: smontatela a voce, con le quattro domande."
+       : c === "rate_limited" ? "Troppe richieste ravvicinate: riprovate tra qualche secondo."
+       : "L'analisi non è riuscita: smontatela a voce, con le quattro domande.");
+  } finally { LIVE.busy = false; if (btn) btn.disabled = false; }
+}
+
+/* --- regia --- */
+let swapTimer = null;
+const SNAP = /[?&]snap/.test(location.search);
+function show() {
+  state.idx = Math.max(0, Math.min(BEATS.length - 1, state.idx));
+  state.max = Math.max(state.max || 0, state.idx);
+  const b = BEATS[state.idx], cfg = beatCfg(b);
+  document.body.dataset.v = cfg.veil;
+  document.body.dataset.started = state.idx > 0 ? "1" : "0";
+  document.body.dataset.bars = cfg.bars ? "1" : "0";
+  document.getElementById("act").textContent = b.act || "";
+  layer.classList.add("out");
+  clearTimeout(swapTimer);
+  swapTimer = setTimeout(() => {
+    layer.innerHTML = VIEWS[b.k](b);
+    layer.querySelectorAll("[data-vote]").forEach(el => el.addEventListener("click", () => vote(el.dataset.vote)));
+    layer.querySelectorAll("[data-fork]").forEach(el => el.addEventListener("click", () => choose(+el.dataset.fork)));
+    const sail = document.getElementById("sailBtn"); if (sail) sail.addEventListener("click", () => { initAudio(); sail.remove(); });
+    const form = document.getElementById("liveForm");
+    if (form) {
+      form.addEventListener("submit", e => { e.preventDefault(); const v = document.getElementById("liveIn").value.trim(); if (v) runLive(v); });
+      if (!LIVE.res) setTimeout(() => { const inp = document.getElementById("liveIn"); if (inp) inp.focus(); }, 300);
+    }
+    layer.classList.remove("out");
+  }, cfg.hush ? 900 : 420);
+  if (GL) { GL.curText = cfg.text; GL.curTy = cfg.ty || 0; GL.setWords(cfg.text, cfg.ty || 0); GL.setKnots(knots()); if (SNAP) { GL.tp.set(GL.tt); GL.ta.set(GL.tta); } }
+  document.getElementById("count").textContent = `${String(state.idx + 1).padStart(2, "0")} / ${BEATS.length}`;
+  document.getElementById("hud").style.opacity = cfg.dark > .9 ? .12 : 1;
+  drawRope(); renderSources(); applyAudio(false); save();
+}
+function vote(k) {
+  const b = BEATS[state.idx];
+  if (b.k !== "an" || b.st !== "frase") return;
+  state.votes[b.i] = k; save();
+  layer.querySelectorAll("[data-vote]").forEach(el => el.classList.toggle("on", el.dataset.vote === k));
+}
+function onPath(b) {
+  if (!b) return false;
+  if (b.k === "power" && state.path.padrone != null) return b.j === state.path.padrone;
+  if (b.k === "altri") return state.path.padrone != null;
+  return true;
+}
+function go(d) {
+  if (!AU.ctx) initAudio();
+  let i = state.idx + d;
+  while (i >= 0 && i < BEATS.length && !onPath(BEATS[i])) i += d;
+  if (i < 0 || i >= BEATS.length) return;
+  state.idx = i; show();
+}
+function choose(n) {
+  const b = BEATS[state.idx];
+  if (b.k !== "bivio") return;
+  const o = FORKS[b.f].opts[n]; if (!o) return;
+  state.path[b.f] = o.id; save();
+  layer.querySelectorAll("[data-fork]").forEach(el => el.classList.toggle("on", +el.dataset.fork === n));
+  setTimeout(() => { if (BEATS[state.idx] === b) go(1); }, 900);
+}
+/* la mappa della traversata: le sette sirene, i tre bivi, la posizione della nave */
+function routeNodes() {
+  const n = [];
+  BEATS.forEach((b, i) => {
+    if (b.k === "circe") n.push({ i, t: "porto" });
+    if (b.k === "bivio") n.push({ i, t: "bivio", f: b.f });
+    if (b.k === "an" && b.st === "frase") n.push({ i, t: "sirena", s: b.i });
+    if (b.k === "coppia" && b.st === "frase") { n.push({ i, t: "sirena", s: b.i }); n.push({ i, t: "sirena", s: b.i2 }); }
+    if (b.k === "fine") n.push({ i, t: "porto" });
+  });
+  return n;
+}
+function routeSVG(w, h, big) {
+  const nodes = routeNodes(), pad = big ? 60 : 14, y = h / 2, st = (w - pad * 2) / (nodes.length - 1);
+  const x = k => pad + k * st, yy = k => y + Math.sin(k * 1.7) * (big ? 10 : 2), cur = state.idx;
+  let o = `<path d="M${x(0)} ${yy(0)} ${nodes.map((_, k) => `L${x(k)} ${yy(k)}`).join(" ")}" stroke="var(--gold)" stroke-width="${big ? 2 : 1.3}" fill="none" opacity=".45"/>`;
+  nodes.forEach((nd, k) => {
+    const cx = x(k), cy = yy(k), done = nd.i <= state.max;
+    if (nd.t === "porto") o += `<rect x="${cx - (big ? 6 : 3)}" y="${cy - (big ? 6 : 3)}" width="${big ? 12 : 6}" height="${big ? 12 : 6}" fill="${done ? "var(--gold)" : "var(--night)"}" stroke="var(--gold)" stroke-width="1.2" transform="rotate(45 ${cx} ${cy})"/>`;
+    if (nd.t === "sirena") {
+      const v = state.votes[nd.s], knot = rIndex(nd.s) <= state.max, col = v === "A" ? "#ff8a76" : v === "P" ? "var(--gold)" : done ? "var(--foam)" : "var(--dim)";
+      o += `<circle cx="${cx}" cy="${cy}" r="${big ? (knot ? 9 : 6) : (knot ? 5 : 3.2)}" fill="${knot ? col : "var(--night)"}" stroke="${col}" stroke-width="${big ? 2 : 1.3}"><title>${SIRENS[nd.s].name}</title></circle>`;
+      if (big) o += `<text x="${cx}" y="${cy + 30}" text-anchor="middle" font-family="Geist Mono, monospace" font-size="12" letter-spacing="2" fill="${col}">${SIRENS[nd.s].name.toUpperCase()}</text>`;
+    }
+    if (nd.t === "bivio") {
+      const ch = state.path[nd.f], opts = FORKS[nd.f].opts, L = big ? 16 : 6;
+      [-1, 0, 1].forEach((d, q) => { const on = ch != null && opts[q].id === ch; o += `<line x1="${cx}" y1="${cy}" x2="${cx + L * .9}" y2="${cy + d * L}" stroke="${on ? "var(--gold)" : "var(--dim)"}" stroke-width="${on ? (big ? 2.4 : 1.6) : 1}" opacity="${on || ch == null ? 1 : .35}"/>`; });
+      o += `<circle cx="${cx}" cy="${cy}" r="${big ? 4 : 2}" fill="var(--gold)"/>`;
+      if (big) { const lab = ch != null ? opts.find(o2 => o2.id === ch).h : "?"; o += `<text x="${cx}" y="${cy - 22}" text-anchor="middle" font-family="Geist Mono, monospace" font-size="12" letter-spacing="2" fill="var(--gold)">${esc(lab.toUpperCase())}</text>`; }
+    }
+  });
+  let kk = 0; for (let k = 0; k < nodes.length; k++) if (nodes[k].i <= cur) kk = k;
+  const frac = nodes[kk + 1] ? Math.min(1, (cur - nodes[kk].i) / Math.max(1, nodes[kk + 1].i - nodes[kk].i)) : 0;
+  const px = x(kk) + (nodes[kk + 1] ? (x(kk + 1) - x(kk)) * frac : 0), py = yy(kk) - (big ? 16 : 7);
+  o += `<path d="M${px} ${py} l${big ? 5 : 3} ${big ? -8 : -4} l${big ? -10 : -6} 0 z" fill="var(--foam)" opacity=".9"/>`;
+  return o;
+}
+function drawRope() { document.getElementById("rope").innerHTML = routeSVG(300, 34, false); }
+const srcBox = document.getElementById("sources");
+function renderSources() {
+  const b = BEATS[state.idx];
+  const list = b.k === "an" ? SIRENS[b.i].fonti : b.k === "coppia" ? [...SIRENS[b.i].fonti, ...SIRENS[b.i2].fonti] : b.k === "risk" ? RISKS[riskOrder()[b.j]].fonti : b.k === "power" ? POWERS[b.j].fonti : ["tesi", "quattro", "fab", "genealogia", "title"].includes(b.k) ? THEORY_FONTI : END_FONTI;
+  srcBox.innerHTML = `<div class="h">Fonti</div>` + list.map(([t, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`).join("");
+}
+
+document.getElementById("prevBtn").addEventListener("click", () => go(-1));
+document.getElementById("nextBtn").addEventListener("click", () => go(1));
+document.getElementById("srcBtn").addEventListener("click", () => { srcBox.hidden = !srcBox.hidden; });
+document.getElementById("projBtn").addEventListener("click", () => document.body.classList.toggle("proj"));
+const muteBtn = document.getElementById("muteBtn");
+function toggleMute() { AU.muted = !AU.muted; muteBtn.textContent = AU.muted ? "M audio spento" : "M audio"; if (AU.master) AU.master.gain.setTargetAtTime(AU.muted ? 0 : AU.vol, AU.ctx.currentTime, .1); }
+muteBtn.addEventListener("click", () => { if (!AU.ctx) initAudio(); toggleMute(); });
+document.getElementById("fsBtn").addEventListener("click", () => { try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {}); } catch (e) {} });
+const resetBtn = document.getElementById("resetBtn"); let armed = null;
+resetBtn.addEventListener("click", () => {
+  if (armed) { clearTimeout(armed); armed = null; resetBtn.textContent = "ricomincia"; state = { idx: 0, max: 0, votes: {}, path: { via: null, padrone: null, danno: null }, t0: null }; LIVE.res = null; LIVE.text = ""; LIVE.status = ""; show(); return; }
+  resetBtn.textContent = "conferma: ricomincia"; armed = setTimeout(() => { armed = null; resetBtn.textContent = "ricomincia"; }, 3500);
+});
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const typing = e.target && e.target.closest && e.target.closest("input, textarea");
+  if (typing) { if (e.key === "Escape") e.target.blur(); return; }
+  const k = e.key;
+  if (k === "ArrowRight" || k === "PageDown" || k === " " || k === "Enter") { e.preventDefault(); go(1); }
+  else if (k === "ArrowLeft" || k === "PageUp") { e.preventDefault(); go(-1); }
+  else if (/^[1-3]$/.test(k) && BEATS[state.idx].k === "bivio") choose(+k - 1);
+  else if (/^[0-5]$/.test(k)) { if (!AU.ctx) initAudio(); state.idx = k === "0" ? 0 : Math.max(0, actStart(+k - 1)); show(); }
+  else if (k === "m" || k === "M") { if (!AU.ctx) initAudio(); toggleMute(); }
+  else if (k === "s" || k === "S") srcBox.hidden = !srcBox.hidden;
+  else if (k === "l" || k === "L") document.body.classList.toggle("proj");
+  else if (k === "g" || k === "G") { if (GL) GL.post = !GL.post; }
+  else if (k === "h" || k === "H") peek(!hint.classList.contains("peek"));
+  else if (k === "a" || k === "A") vote("A");
+  else if (k === "p" || k === "P") vote("P");
+  else if (k === "f" || k === "F") document.getElementById("fsBtn").click();
+  else if (k === "+" || k === "=" || k === "-" || k === "_") {
+    AU.vol = Math.max(0, Math.min(1.6, AU.vol + (k === "+" || k === "=" ? .1 : -.1)));
+    if (AU.master && !AU.muted) AU.master.gain.setTargetAtTime(AU.vol, AU.ctx.currentTime, .1);
+    muteBtn.textContent = "M audio " + Math.round(AU.vol * 100) + "%";
+  }
+  wake();
+});
+const hint = document.getElementById("hint"); let idleT = null, peekT = null;
+function wake() { hint.classList.remove("idle"); clearTimeout(idleT); idleT = setTimeout(() => hint.classList.add("idle"), 3500); }
+function peek(on) { hint.classList.toggle("peek", on); clearTimeout(peekT); if (on) peekT = setTimeout(() => hint.classList.remove("peek"), 6000); }
+document.addEventListener("pointermove", e => { wake(); if (e.clientY > window.innerHeight - 36) peek(true); });
+wake();
+
+/* avvio */
+(async function boot() {
+  try { await Promise.race([Promise.all([document.fonts.load('italic 400 120px "Instrument Serif"'), document.fonts.load('400 120px "Instrument Serif"')]), new Promise(r => setTimeout(r, 2500))]); } catch (e) {}
+  if (T) { try { GL = buildScene(); } catch (e) { GL = null; } }
+  state.idx = Math.max(0, Math.min(BEATS.length - 1, state.idx));
+  if (GL) { const c = beatCfg(BEATS[state.idx]); cam.z = c.z; cam.rise = c.rise; cam.dark = c.dark; cam.ahead = c.ahead || 0; cam.wave = c.wave == null ? 1 : c.wave; cam.moon = c.moon || 0; frame.snapAim = true; }
+  else document.body.style.background = "radial-gradient(120% 80% at 50% 0%, #0f2230, #02050a 70%)";
+  show();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body></html>
