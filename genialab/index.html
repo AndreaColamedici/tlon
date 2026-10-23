@@ -552,7 +552,14 @@ const sirenX = i => 24 + (i % 2) * 5;
 const FULL = ["frase", "T", "S", "N", "I", "R"], MINI = ["frase", "I", "R"];
 const PROGRAM = [{ an: 0, steps: FULL }, { an: 1, steps: FULL }, { pair: [2, 4] }, { an: 3, steps: MINI }, { an: 5, steps: MINI }, { an: 6, steps: MINI }];
 const ACTS = ["I · La grammatica", "II · Smontare il canto", "III · I padroni del canto", "IV · I danni che non cantano", "V · Sovranità cognitiva", "VI · La sessione"];
-/* la sessione: quattro voci, quattro domande */
+/* la sessione: quattro voci, quattro domande; dossier verificati il 23 ottobre 2026 */
+const FORUM = "Primo forum annuale di geniaLAB, «Nuove forme della conoscenza creativa», AANT, via Monza 21, Roma, 23 ottobre 2026. Prima della sessione Andrea Colamedici ha presentato «IA: Intelligenza Apocalittica. Come districarsi tra allarmismi e marketing», un gioco in cui la sala ha smontato sette frasi vere sull'IA (Omero, lo Statement on AI Risk, Altman, il decreto di Trump sulla «Super Intelligence», Musk, Huang, un titolo di TIME) con quattro domande, ha visto i padroni del canto e otto danni documentati, e ha chiuso sulla sovranità cognitiva: essere consapevoli del luogo in cui accade il proprio pensiero e poterlo cambiare.";
+const DOSSIER = [
+  "Massimo Canevacci, antropologo, ha insegnato a lungo alla Sapienza di Roma; decenni di ricerca sul campo con i Bororo del Mato Grosso, in Brasile. Libri noti: «Antropologia della comunicazione visuale», «La città polifonica», «Culture eXtreme» (1999). Negli ultimi anni lavora su un'«antropologia non antropocentrica» e sull'ubiquità digitale (intervista ad Antrocom, 2016), sul «soggetto ubiquo» come figura tipica della cultura digitale ('900 Transnazionale, 2020), sulle «costellazioni ubique», dove la divisione dei saperi in discipline si dissolve nell'universo digitale tra sincretismi, polifonie e diaspore (Matrizes, USP, 2021). Nel 2018 a Roma ha dialogato sull'IA in un incontro intitolato «Fake Intelligence: Artificial Intelligence and new anthropologies in the remix-humanity». Nel 2025 Forbes Italia lo cita sui sincretismi tra moda e tecnologia, con l'IA come estensione del corpo.",
+  "Paolo Granata insegna Book and Media Studies all'Università di Toronto (St. Michael's College), dirige il Media Ethics Lab, è stato Marshall McLuhan Centenary Fellow nel 2011 ed è legato alla McLuhan Foundation. Il suo libro recente è «Generative Knowledge: Think, Learn, Create with AI» (Wiley), in italiano «Conoscenza generativa» (Luiss University Press): l'IA come tecnologia epistemica, un partner che allarga il pensiero; la conoscenza generativa come processo ricorsivo e sociale in cui il sapere ne produce altro. In aprile 2026 ne ha discusso all'AANT con Andrea Colamedici e Derrick de Kerckhove; Agenda Digitale (3 giugno 2026) riassume: la scuola deve formare «pensatori generativi», non «utenti competenti».",
+  "Maura Gancitano, filosofa, cofondatrice di Tlon con Andrea Colamedici, membro del comitato scientifico di geniaLAB, modera la sessione del pomeriggio. Lavora su che cosa fa la performance alla vita (è coautrice de «La società della performance»), sul corpo, sulla bellezza come dispositivo di potere («Specchio delle mie brame»), e sui sei territori di GLAST.",
+  "Sabina Minardi è caporedattrice cultura de L'Espresso. Il suo mestiere è la quarta domanda: chi parla, da dove, che cosa vende. Nel gioco l'ultima frase smontata era un titolo di TIME sullo studio del MIT «Your Brain on ChatGPT», che usava la stessa grammatica di una promessa di Altman."
+];
 const PANEL = [
   { name: "Massimo Canevacci", role: "Antropologo · il soggetto ubiquo, i sincretismi, un'antropologia non antropocentrica", tag: "S",
     hook: "Il gioco chiede di restituire alle frasi un soggetto umano che decide. Per chi scrive da anni di un soggetto digitale disseminato e ibrido, può essere una nostalgia.",
@@ -1372,31 +1379,27 @@ const VIEWS = {
       <div class="lbl gold">Sessione I · quattro voci, quattro domande</div>
       <h2 class="shade">Le domande che avete usato sulle sirene, <em>ora le facciamo a chi sa.</em></h2>
       <div class="cols four">${PANEL.map(g => `<div class="col tag" style="--c:${TAGS[g.tag].c}"><div class="lbl">${TAGS[g.tag].name} · ${TAGS[g.tag].q}</div><h3 class="shade" style="font-size:clamp(22px,calc(2.1 * var(--u)),40px)">${esc(g.name)}</h3><p class="shade" style="color:var(--mist)">${esc(g.role)}</p></div>`).join("")}</div>
-      <p class="shade">La macchina ha ascoltato gli interventi. Per ciascuno formula una domanda nell'area che gli tocca; il moderatore, davanti a voi, la accetta, la riformula o la rifiuta. Poi il pubblico, con una regola sola: chi domanda dice chi è e da dove parla.</p>
+      <p class="shade">Le domande le formula la macchina. La prima nasce da ciò che sappiamo dell'ospite e da ciò che avete appena giocato; le altre ascoltano la risposta di chi ha parlato prima. Il moderatore, davanti a voi, le accetta, le riformula o le rifiuta. Poi il pubblico, con una regola sola: chi domanda dice chi è e da dove parla.</p>
     </div>`,
-  ospite: b => { const g = PANEL[b.j], t = TAGS[g.tag], m = MQ[b.j] || {}; const dec = m.decision;
+  ospite: b => { const g = PANEL[b.j], t = TAGS[g.tag], m = MQ[b.j] || {}, dec = m.decision, prevName = b.j > 0 ? PANEL[b.j - 1].name : null, nx = PANEL[b.j + 1];
     const decLabel = dec === "ok" ? "accettata" : dec === "re" ? "riformulata dal moderatore" : dec === "no" ? "rifiutata · si fa quella del moderatore" : null;
     return `<div class="epi" style="max-width:min(1500px,100%);--c:${t.c}">
       <div class="lbl" style="color:${t.c}">${t.name} · ${t.q}</div>
       <div class="who-line"><h2 class="shade" style="font-size:clamp(36px,calc(4 * var(--u)),80px);margin:0">${esc(g.name)}</h2><span class="kicker">${esc(g.role)}</span></div>
       <div class="pair">
         <div>
-          <div class="kicker">Quello che la macchina ha ascoltato</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-            <button type="button" class="chip${m.listening ? " on" : ""}" id="mqListen" data-j="${b.j}"><b>${m.listening ? "●" : "○"}</b>${m.listening ? "Sto ascoltando · ferma" : "Ascolta"}</button>
-            <button type="button" class="chip" id="mqAsk" data-j="${b.j}"${m.busy ? " disabled" : ""}><b>?</b>${m.mq ? "Un'altra domanda" : "Formula la domanda"}</button>
-          </div>
-          <textarea id="mqText" data-j="${b.j}" rows="5" placeholder="Intervento e risposte, trascritti dal microfono. Si può anche scrivere o incollare." aria-label="Trascrizione" style="width:100%;box-sizing:border-box;background:rgba(2,5,10,.55);color:var(--mist);border:1px solid rgba(238,242,240,.2);border-radius:6px;font-family:var(--display);font-size:clamp(14px,calc(1.1 * var(--u)),20px);line-height:1.3;padding:8px 12px;resize:vertical">${esc(m.said || "")}</textarea>
-          <span class="hall" id="mqStatus">${esc(m.status || (m.said ? (m.said.trim().split(/\s+/).length + " parole ascoltate") : ""))}</span>
-          <p class="small" style="color:var(--dim)">Riserva del moderatore: ${esc(g.q)}</p>
-        </div>
-        <div>
           <div class="kicker">La domanda della macchina${decLabel ? ` · <span style="color:var(--gold)">${decLabel}</span>` : ""}</div>
-          ${m.mq ? `<blockquote class="sent shade" style="font-style:normal;color:${dec === "no" ? "var(--dim)" : t.c};${dec === "no" ? "text-decoration:line-through;font-size:clamp(16px,calc(1.4 * var(--u)),26px)" : ""}">${esc(m.mq)}</blockquote>` : `<p class="shade" style="color:var(--dim)">Ancora nessuna domanda. Prima si ascolta.</p>`}
+          <div class="vote"><button type="button" class="chip" id="mqAsk" data-j="${b.j}"${m.busy ? " disabled" : ""}><b>?</b>${m.mq ? "Un'altra domanda" : "Formula la domanda"}</button><span class="hall" id="mqStatus">${esc(m.status || (prevName ? `parte dalla risposta di ${prevName.split(" ").pop()} e dal dossier` : "parte dal dossier, dal tema del forum e dal gioco"))}</span></div>
+          ${m.mq ? `<blockquote class="sent shade" style="font-style:normal;color:${dec === "no" ? "var(--dim)" : t.c};${dec === "no" ? "text-decoration:line-through;font-size:clamp(16px,calc(1.4 * var(--u)),26px)" : ""}">${esc(m.mq)}</blockquote>` : ""}
           ${m.mq && dec !== "re_edit" ? `<div class="vote"><button type="button" class="chip${dec === "ok" ? " on" : ""}" data-dec="ok"><b>A</b>Accetto</button><button type="button" class="chip${dec === "re" ? " on" : ""}" data-dec="re_edit"><b>R</b>Riformulo</button><button type="button" class="chip${dec === "no" ? " on" : ""}" data-dec="no"><b>X</b>Rifiuto</button></div>` : ""}
           ${dec === "re_edit" ? `<textarea id="mqRe" rows="3" aria-label="Riformulazione" style="width:100%;box-sizing:border-box;background:rgba(2,5,10,.6);color:var(--foam);border:1px solid var(--gold);border-radius:6px;font-family:var(--display);font-size:clamp(18px,calc(1.7 * var(--u)),32px);line-height:1.2;padding:10px 14px;resize:vertical">${esc(m.re || m.mq || "")}</textarea><div class="vote"><button type="button" class="chip" data-dec="re"><b>✓</b>Questa</button></div>` : ""}
           ${dec === "re" && m.re ? `<blockquote class="sent shade" style="font-style:normal;color:var(--gold)">${esc(m.re)}</blockquote>` : ""}
-          ${dec === "no" ? `<blockquote class="sent shade" style="font-style:normal;color:var(--gold)">${esc(g.q)}</blockquote>` : ""}
+          ${dec === "no" || (!m.mq && !m.busy) ? `<p class="small" style="color:${dec === "no" ? "var(--gold)" : "var(--dim)"}">${dec === "no" ? "" : "Riserva del moderatore: "}${esc(g.q)}</p>` : ""}
+        </div>
+        <div>
+          <div class="kicker">La risposta di ${esc(g.name.split(" ").pop())}${nx ? `, che servirà per la domanda a ${esc(nx.name.split(" ").pop())}` : ""}</div>
+          <div class="vote"><button type="button" class="chip${m.listening ? " on" : ""}" id="mqListen" data-j="${b.j}"><b>${m.listening ? "●" : "○"}</b>${m.listening ? "Sto ascoltando · ferma" : "Ascolta la risposta"}</button><span class="hall">${m.said ? m.said.trim().split(/\s+/).length + " parole" : ""}</span></div>
+          <textarea id="mqText" data-j="${b.j}" rows="7" placeholder="Trascrizione dal microfono. Si può anche scrivere o incollare." aria-label="Trascrizione della risposta" style="width:100%;box-sizing:border-box;background:rgba(2,5,10,.55);color:var(--mist);border:1px solid rgba(238,242,240,.2);border-radius:6px;font-family:var(--display);font-size:clamp(14px,calc(1.1 * var(--u)),20px);line-height:1.3;padding:8px 12px;resize:vertical">${esc(m.said || "")}</textarea>
         </div>
       </div>
     </div>`; },
@@ -1467,7 +1470,7 @@ async function runLive(text) {
 }
 
 /* --- la macchina ascolta la risposta e scrive il ponte --- */
-const MQ_KEY = "sirene-genia-panel";
+const MQ_KEY = "sirene-genia-panel-v2";
 const MQ = (() => { try { const o = JSON.parse(localStorage.getItem(MQ_KEY) || "{}"); Object.values(o).forEach(m => { m.listening = false; m.busy = false; m.status = ""; }); return o; } catch (e) { return {}; } })();
 function mqSave() { try { const o = {}; Object.keys(MQ).forEach(k => { const m = MQ[k]; o[k] = { said: m.said || "", mq: m.mq || null, decision: m.decision || null, re: m.re || null }; }); localStorage.setItem(MQ_KEY, JSON.stringify(o)); } catch (e) {} }
 let REC = null, REC_J = null;
@@ -1499,25 +1502,23 @@ function routeSummary() {
   const pad = state.path.padrone != null ? FORKS.padrone.opts[state.path.padrone].h : "nessuna scelta";
   return `Al bivio iniziale la sala ha scelto «${via}»; tra i padroni del canto ha interrogato «${pad}»; davanti alle sette frasi ha alzato la mano per l'allarme ${A} volte e per la promessa ${P}.`;
 }
-const ASK_PROMPT = (g, said, prev) => `Sei un modello linguistico usato in diretta durante un forum sull'intelligenza artificiale a Roma, davanti a duecento persone, studenti ed esperti. Un'ora fa il pubblico ha giocato a smontare frasi sull'IA con quattro domande: Tempo (quando accade?), Soggetto (chi agisce?), Necessità (si può scegliere?), Interesse (chi parla, e che cosa vende?). ${routeSummary()}
-Ora devi formulare UNA domanda per ${g.name} (${g.role}). La domanda deve stare nell'area «${TAGS[g.tag].name}: ${TAGS[g.tag].q}».
-Quello che ${g.name} ha detto nel suo intervento e finora, trascritto dal microfono con possibili errori di riconoscimento:
-<ascoltato>${said || "(niente: la trascrizione è vuota)"}</ascoltato>
-${prev ? `Quello che ha appena detto l'ospite precedente, ${prev.name}, rispondendo alla sua domanda:
-<precedente>${prev.said}</precedente>
-Se c'è un aggancio preciso tra i due, usalo.` : ""}
-Regole: una sola domanda, in italiano, al massimo quarantacinque parole, specifica a ciò che è stato detto, con una citazione breve delle parole dell'ospite tra virgolette basse se la trascrizione lo consente. Nessun elogio, nessuna premessa, nessun «interessante», nessuna formula di cortesia. Deve mettere in difficoltà con rispetto, come farebbe un moderatore preparato. Se la trascrizione è vuota, formula comunque la domanda a partire dal ruolo dell'ospite e dall'area indicata. Rispondi solo con il testo della domanda.`;
+const ASK_PROMPT = (j, prev) => { const g = PANEL[j]; return `Sei un modello linguistico usato in diretta da un moderatore, Andrea Colamedici, durante un forum sull'intelligenza artificiale a Roma, davanti a duecento persone, studenti ed esperti. Formuli tu la domanda; il moderatore la leggerà, la discuterà davanti alla sala e la accetterà, la riformulerà o la rifiuterà.
+Contesto del forum: ${FORUM} ${routeSummary()}
+Ospite a cui fare la domanda: ${g.name}. Dossier verificato: ${DOSSIER[j]}
+La domanda deve stare nell'area «${TAGS[g.tag].name}: ${TAGS[g.tag].q}» e legarsi al tema del forum, la conoscenza creativa.
+${prev ? `Prima di questa domanda ha parlato ${prev.name}. Trascrizione della sua risposta, dal microfono, con possibili errori di riconoscimento:
+<risposta_precedente>${prev.said}</risposta_precedente>
+Costruisci la domanda come un ponte: riprendi UNA cosa precisa che ${prev.name} ha detto, con le sue parole tra virgolette basse, e portala a ${g.name}.` : `È la prima domanda della sessione, subito dopo il gioco: aggancia ${g.name} a ciò che la sala ha appena fatto.`}
+Regole: una sola domanda, in italiano, al massimo cinquanta parole. Specifica al lavoro dell'ospite come risulta dal dossier: non attribuirgli idee, libri o frasi che il dossier o la trascrizione non contengono. Nessun elogio, nessuna premessa, nessun «interessante», nessuna formula di cortesia. Deve mettere in difficoltà con rispetto. Rispondi solo con il testo della domanda.`; };
 async function runAsk(j) {
-  const g = PANEL[j], ta = document.getElementById("mqText");
-  const said = ((ta && ta.value) || (MQ[j] && MQ[j].said) || "").trim();
-  if (MQ[j] && MQ[j].listening) { MQ[j].wantStop = true; try { REC && REC.stop(); } catch (e) {} }
-  const prevM = j > 0 ? MQ[j - 1] : null, prev = prevM && prevM.said ? { name: PANEL[j - 1].name, said: prevM.said } : null;
-  mqSet(j, { said, listening: false, busy: true, mq: null, decision: null, re: null, status: "La macchina formula la domanda…" }); show();
+  if (REC_J != null && MQ[REC_J] && MQ[REC_J].listening) { MQ[REC_J].wantStop = true; MQ[REC_J].listening = false; try { REC && REC.stop(); } catch (e) {} }
+  const prevM = j > 0 ? MQ[j - 1] : null, prev = prevM && prevM.said && prevM.said.trim() ? { name: PANEL[j - 1].name, said: prevM.said.trim() } : null;
+  mqSet(j, { busy: true, mq: null, decision: null, re: null, status: "La macchina formula la domanda…" }); show();
   let sample = null;
   try { sample = window.claude && window.claude.use ? await window.claude.use("sample") : null; } catch (e) { sample = null; }
   if (!sample) { mqSet(j, { busy: false, status: "La domanda della macchina non è disponibile in questa vista: si fa quella del moderatore." }); show(); return; }
   try {
-    const { text } = await sample(ASK_PROMPT(g, said, prev), { modelTier: "quick", cache: false });
+    const { text } = await sample(ASK_PROMPT(j, prev), { modelTier: "quick", cache: false });
     mqSet(j, { mq: (text || "").trim().replace(/^«|»$/g, ""), status: "" });
   } catch (e) {
     mqSet(j, { status: e && e.code === "not_granted" ? "Permesso negato: si fa la domanda del moderatore." : "La macchina non ha risposto: si fa la domanda del moderatore." });
