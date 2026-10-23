@@ -58,6 +58,9 @@ body { margin: 0; background: var(--black); color: var(--white); overflow: hidde
 .cap .k { font-size: clamp(13px, 1.05vw, 18px); color: var(--ash); display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
 .cap .k b { font-family: var(--name); font-weight: 500; font-size: 1.05em; letter-spacing: -.01em; }
 .cap .k .prov { color: var(--smoke); }
+.cap .list { margin: 12px 0 0; display: flex; flex-direction: column; gap: 12px; max-width: min(60ch, 80vw); max-height: 34vh; overflow-y: auto; pointer-events: auto; }
+.cap .list div { font-size: clamp(16px, 1.35vw, 24px); line-height: 1.25; border-left: 1px solid var(--white); padding-left: 16px; }
+.cap .list div span { display: block; font-size: .7em; color: var(--ash); margin-bottom: 3px; }
 .cap .txt { margin: 12px 0 0; font-size: clamp(22px, 2.15vw, 40px); line-height: 1.2; letter-spacing: -.012em; max-width: min(46ch, 70vw); text-wrap: pretty; border-left: 1px solid var(--white); padding-left: 22px; }
 .time {
   position: fixed; right: max(clamp(16px, 3vw, 56px), env(safe-area-inset-right, 0px)); top: calc(env(safe-area-inset-top, 0px) + clamp(52px, 7vh, 80px));
@@ -185,7 +188,26 @@ const STARS = SPEAKERS.map((sp, i) => {
 const tmpS = new T.Vector3(), tmpO = new T.Vector3();
 let fly = null;
 const HOME = { pos: new T.Vector3(520, 280, 760), target: new T.Vector3() };
+function showNode(n) {
+  clearTimeout(capTimer); cap.classList.add("out");
+  setTimeout(() => {
+    const ls = [...LINKS.values()].filter(L => L.d.a === n.id || L.d.b === n.id);
+    const lbl = { ponte: "Ponte con", tensione: "Divergenza con", eco: "Eco con" };
+    capK.innerHTML = `<b style="color:${hex(colOf(n.sp))}">${esc(n.sp >= 0 ? SPEAKERS[n.sp].short : "Il gioco")}</b><span>${esc(n.d.time || "")}</span><span>${ls.length ? ls.length + (ls.length === 1 ? " filo" : " fili") : "nessun filo ancora"}</span>`;
+    capT.textContent = n.d.label || "";
+    let list = cap.querySelector(".list"); if (!list) { list = document.createElement("div"); list.className = "list"; cap.appendChild(list); }
+    list.innerHTML = ls.map(L => { const o = L.d.a === n.id ? L.d.b : L.d.a, on = refOf(o), oname = on ? (on.sp >= 0 ? SPEAKERS[on.sp].short : "il gioco") : ""; const olab = NODES.get(o) ? NODES.get(o).d.label : ""; return `<div><span>${esc(lbl[L.d.kind] || "Filo con")} ${esc(oname)}${olab ? " · " + esc(olab) : ""}</span>${esc(L.d.text || "")}</div>`; }).join("");
+    cap.classList.remove("out");
+  }, 500);
+}
+function clearNode() { selNode = null; const list = cap.querySelector(".list"); if (list) list.remove(); cycle(); }
 function flyTo(n) {
+  selNode = n.id; showNode(n);
+  const c = n.g.position.clone(); let k = 1; neighbors(n.id).forEach(id => { const r = refOf(id); if (r) { c.add(r.obj.position); k++; } }); c.multiplyScalar(1 / k);
+  const span = Math.max(160, ...[...neighbors(n.id)].map(id => { const r = refOf(id); return r ? r.obj.position.distanceTo(c) * 1.9 : 0; }));
+  const dir0 = camera.position.clone().sub(c).normalize();
+  fly = { target: c, pos: c.clone().addScaledVector(dir0, Math.min(900, span + 120)), node: null };
+  controls.autoRotate = false; return;
   const dir = camera.position.clone().sub(n.g.position).normalize();
   fly = { target: n.g.position.clone(), pos: n.g.position.clone().addScaledVector(dir, 150), node: n };
   controls.autoRotate = false;
@@ -198,7 +220,8 @@ function pickSpeaker(i) {
   const dir = camera.position.clone().sub(c).normalize();
   fly = { target: c, pos: c.clone().addScaledVector(dir, 430) }; controls.autoRotate = false;
 }
-function flyHome() { fly = { target: HOME.target.clone(), pos: HOME.pos.clone(), home: true }; }
+function flyHome() {
+  if (selNode) clearNode(); fly = { target: HOME.target.clone(), pos: HOME.pos.clone(), home: true }; }
 const ray = new T.Raycaster(), mouse = new T.Vector2(); let downAt = null;
 canvas.addEventListener("pointerdown", e => { downAt = [e.clientX, e.clientY]; });
 canvas.addEventListener("pointerup", e => {
@@ -215,9 +238,11 @@ const NODES = new Map(), LINKS = new Map();
 let maxOrd = 1, shownOrd = Infinity;
 let activeSp = -1, activeTh = null;
 const THEMES = [];
-function matches(n) { if (!n) return true; return (activeSp < 0 || n.sp === activeSp) && (!activeTh || n.d.tema === activeTh) && endpointOfKind(n); }
-function anyFilter() { return activeSp >= 0 || !!activeTh || !!activeKind; }
-let activeKind = null;
+function matches(n) { if (!n) return true; if (selNode) return nodeSel(n); return (activeSp < 0 || n.sp === activeSp) && (!activeTh || n.d.tema === activeTh) && endpointOfKind(n); }
+function anyFilter() { return activeSp >= 0 || !!activeTh || !!activeKind || !!selNode; }
+let activeKind = null, selNode = null;
+function neighbors(id) { const out = new Set(); for (const L of LINKS.values()) { if (L.d.a === id) out.add(L.d.b); if (L.d.b === id) out.add(L.d.a); } return out; }
+function nodeSel(n) { if (!selNode) return true; return n.id === selNode || neighbors(selNode).has(n.id); }
 function kindHit(L) { return !activeKind || L.d.kind === activeKind; }
 function endpointOfKind(n) { if (!activeKind) return true; for (const L of LINKS.values()) if (L.d.kind === activeKind && (L.d.a === n.id || L.d.b === n.id)) return true; return false; }
 const colOf = sp => sp >= 0 && SPEAKERS[sp] ? SPEAKERS[sp].col : GAME_COL;
@@ -308,7 +333,7 @@ function frame(now) {
     for (let k = 0; k <= L.segs; k++) { const u = k / L.segs; bez(pa, tC, pb, u, tA); pos.setXYZ(k, tA.x, tA.y, tA.z); cols.setXYZ(k, ca.r + (cb.r - ca.r) * u, ca.g + (cb.g - ca.g) * u, ca.b + (cb.b - ca.b) * u); }
     pos.needsUpdate = true; cols.needsUpdate = true;
     const na = NODES.get(L.d.a), nb = NODES.get(L.d.b);
-    const hit = kindHit(L) && (!(activeSp >= 0 || activeTh) || matches(na) || matches(nb) || (/^sp/.test(L.d.a) && activeSp === +L.d.a[2]) || (/^sp/.test(L.d.b) && activeSp === +L.d.b[2]));
+    const hit = selNode ? (L.d.a === selNode || L.d.b === selNode) : kindHit(L) && (!(activeSp >= 0 || activeTh) || matches(na) || matches(nb) || (/^sp/.test(L.d.a) && activeSp === +L.d.a[2]) || (/^sp/.test(L.d.b) && activeSp === +L.d.b[2]));
     L.em = (L.em == null ? 1 : L.em) + ((hit ? 1 : .05) - (L.em == null ? 1 : L.em)) * .08;
     const on = focus === L.id, age = Math.max(0, Math.min(1, (now - L.born) / 1800)) * L.em;
     L.line.visible = true; L.line.material.opacity = (L.d.provisional ? .2 : .5) * (on ? 2 : 1) * L.vis * age;
@@ -385,7 +410,7 @@ function showLink(id) {
   }, 700);
 }
 function relevant(id) { const L = LINKS.get(id); if (!L) return true; if (!kindHit(L)) return false; if (!(activeSp >= 0 || activeTh)) return true; const a = NODES.get(L.d.a), b = NODES.get(L.d.b); return (a && matches(a)) || (b && matches(b)) || (/^sp/.test(L.d.a) && activeSp === +L.d.a[2]) || (/^sp/.test(L.d.b) && activeSp === +L.d.b[2]); }
-function cycle() { clearTimeout(capTimer); const ord = order.filter(relevant); if (queue.length) showLink(queue.shift()); else if (ord.length) { const i = ord.indexOf(focus); showLink(ord[(i + 1) % ord.length]); } capTimer = setTimeout(cycle, 13000); }
+function cycle() { if (selNode) return; clearTimeout(capTimer); const ord = order.filter(relevant); if (queue.length) showLink(queue.shift()); else if (ord.length) { const i = ord.indexOf(focus); showLink(ord[(i + 1) % ord.length]); } capTimer = setTimeout(cycle, 13000); }
 function buildFilters() {
   const fs = document.getElementById("fSp"), ft = document.getElementById("fTh");
   fs.querySelectorAll(".chip").forEach(c => c.remove()); ft.querySelectorAll(".chip").forEach(c => c.remove());
