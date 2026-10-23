@@ -1381,6 +1381,7 @@ const VIEWS = {
     </div>`,
   sessione: () => `<div class="epi center">
       <div class="lbl gold">Sessione I</div>
+      <div class="shade" style="font-family:var(--mono);font-size:clamp(14px,calc(1.4 * var(--u)),26px);letter-spacing:.2em;line-height:1.35;text-transform:uppercase;color:var(--foam);margin-bottom:clamp(6px,1.6vh,20px)">Nuove forme<br>della conoscenza<br>creativa</div>
       <div style="display:flex;flex-direction:column;gap:clamp(6px,1.4vh,18px);align-items:center">${PANEL.map(g => `<h2 class="shade" style="font-size:clamp(40px,calc(5 * var(--u)),100px);margin:0;line-height:1">${esc(g.name)}</h2>`).join("")}</div>
     </div>`,
   ospite: b => { const g = PANEL[b.j], t = TAGS[g.tag]; return `<div class="epi" style="max-width:min(1300px,100%);--c:${t.c}">
@@ -1391,6 +1392,7 @@ const VIEWS = {
     </div>`; },
   pubblico: () => `<div class="epi center">
       <div class="lbl gold">Sessione I</div>
+      <div class="shade" style="font-family:var(--mono);font-size:clamp(14px,calc(1.4 * var(--u)),26px);letter-spacing:.2em;line-height:1.35;text-transform:uppercase;color:var(--foam);margin-bottom:clamp(6px,1.6vh,20px)">Nuove forme<br>della conoscenza<br>creativa</div>
       <h2 class="shade" style="font-size:clamp(64px,calc(9 * var(--u)),180px);margin:0;line-height:.9">Dialogo</h2>
       <p class="shade" style="font-style:italic;font-size:clamp(22px,calc(2.3 * var(--u)),44px);color:var(--mist)">Le vostre domande. Chi domanda dice chi è e da dove parla.</p>
     </div>`,
