@@ -1387,7 +1387,7 @@ const VIEWS = {
             <button type="button" class="chip" id="mqAsk" data-j="${b.j}"${m.busy ? " disabled" : ""}><b>?</b>${m.mq ? "Un'altra domanda" : "Formula la domanda"}</button>
           </div>
           <textarea id="mqText" data-j="${b.j}" rows="5" placeholder="Intervento e risposte, trascritti dal microfono. Si può anche scrivere o incollare." aria-label="Trascrizione" style="width:100%;box-sizing:border-box;background:rgba(2,5,10,.55);color:var(--mist);border:1px solid rgba(238,242,240,.2);border-radius:6px;font-family:var(--display);font-size:clamp(14px,calc(1.1 * var(--u)),20px);line-height:1.3;padding:8px 12px;resize:vertical">${esc(m.said || "")}</textarea>
-          <span class="hall" id="mqStatus">${esc(m.status || "")}</span>
+          <span class="hall" id="mqStatus">${esc(m.status || (m.said ? (m.said.trim().split(/\s+/).length + " parole ascoltate") : ""))}</span>
           <p class="small" style="color:var(--dim)">Riserva del moderatore: ${esc(g.q)}</p>
         </div>
         <div>
@@ -1467,21 +1467,24 @@ async function runLive(text) {
 }
 
 /* --- la macchina ascolta la risposta e scrive il ponte --- */
-const MQ = {};
-let REC = null;
-function mqSet(j, patch) { MQ[j] = Object.assign(MQ[j] || {}, patch); const st = document.getElementById("mqStatus"); if (st && patch.status != null) st.textContent = patch.status; }
+const MQ_KEY = "sirene-genia-panel";
+const MQ = (() => { try { const o = JSON.parse(localStorage.getItem(MQ_KEY) || "{}"); Object.values(o).forEach(m => { m.listening = false; m.busy = false; m.status = ""; }); return o; } catch (e) { return {}; } })();
+function mqSave() { try { const o = {}; Object.keys(MQ).forEach(k => { const m = MQ[k]; o[k] = { said: m.said || "", mq: m.mq || null, decision: m.decision || null, re: m.re || null }; }); localStorage.setItem(MQ_KEY, JSON.stringify(o)); } catch (e) {} }
+let REC = null, REC_J = null;
+function mqSet(j, patch) { MQ[j] = Object.assign(MQ[j] || {}, patch); mqSave(); const st = document.getElementById("mqStatus"); if (st && patch.status != null) st.textContent = patch.status; }
 function mqListen(j) {
   const m = MQ[j] || {};
   if (m.listening) { m.wantStop = true; try { REC && REC.stop(); } catch (e) {} mqSet(j, { listening: false }); show(); return; }
+  if (REC_J != null && REC_J !== j && MQ[REC_J] && MQ[REC_J].listening) { MQ[REC_J].wantStop = true; MQ[REC_J].listening = false; try { REC && REC.stop(); } catch (e) {} }
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { mqSet(j, { status: "Il riconoscimento vocale non è disponibile qui: scrivete o incollate la risposta nel riquadro." }); return; }
   try {
-    REC = new SR(); REC.lang = "it-IT"; REC.continuous = true; REC.interimResults = true;
+    REC = new SR(); REC_J = j; REC.lang = "it-IT"; REC.continuous = true; REC.interimResults = true;
     let finalText = (m.said || "").trim();
     REC.onresult = ev => {
       let interim = "";
       for (let k = ev.resultIndex; k < ev.results.length; k++) { const r = ev.results[k]; if (r.isFinal) finalText = (finalText + " " + r[0].transcript).trim(); else interim += r[0].transcript; }
-      MQ[j].said = finalText;
+      MQ[j].said = finalText; mqSave();
       const ta = document.getElementById("mqText"); if (ta && +ta.dataset.j === j) { ta.value = finalText + (interim ? " " + interim : ""); ta.scrollTop = ta.scrollHeight; }
     };
     REC.onerror = ev => { mqSet(j, { status: ev.error === "not-allowed" ? "Microfono negato in questa vista: scrivete o incollate la risposta." : "Ascolto interrotto (" + ev.error + "). Si può riprendere." }); };
@@ -1549,7 +1552,7 @@ function show() {
     const mb = document.getElementById("mqAsk"); if (mb) mb.addEventListener("click", () => runAsk(+mb.dataset.j));
     layer.querySelectorAll("[data-dec]").forEach(el => el.addEventListener("click", () => decide(BEATS[state.idx].j, el.dataset.dec)));
     const re = document.getElementById("mqRe"); if (re) setTimeout(() => re.focus(), 200);
-    const mt = document.getElementById("mqText"); if (mt) mt.addEventListener("input", () => { MQ[+mt.dataset.j] = Object.assign(MQ[+mt.dataset.j] || {}, { said: mt.value }); });
+    const mt = document.getElementById("mqText"); if (mt) mt.addEventListener("input", () => { MQ[+mt.dataset.j] = Object.assign(MQ[+mt.dataset.j] || {}, { said: mt.value }); mqSave(); });
     const form = document.getElementById("liveForm");
     if (form) {
       form.addEventListener("submit", e => { e.preventDefault(); const v = document.getElementById("liveIn").value.trim(); if (v) runLive(v); });
@@ -1645,7 +1648,7 @@ muteBtn.addEventListener("click", () => { if (!AU.ctx) initAudio(); toggleMute()
 document.getElementById("fsBtn").addEventListener("click", () => { try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {}); } catch (e) {} });
 const resetBtn = document.getElementById("resetBtn"); let armed = null;
 resetBtn.addEventListener("click", () => {
-  if (armed) { clearTimeout(armed); armed = null; resetBtn.textContent = "ricomincia"; state = { idx: 0, max: 0, votes: {}, path: { via: null, padrone: null, danno: null }, t0: null }; LIVE.res = null; LIVE.text = ""; LIVE.status = ""; show(); return; }
+  if (armed) { clearTimeout(armed); armed = null; resetBtn.textContent = "ricomincia"; state = { idx: 0, max: 0, votes: {}, path: { via: null, padrone: null, danno: null }, t0: null }; Object.keys(MQ).forEach(k => delete MQ[k]); mqSave(); LIVE.res = null; LIVE.text = ""; LIVE.status = ""; show(); return; }
   resetBtn.textContent = "conferma: ricomincia"; armed = setTimeout(() => { armed = null; resetBtn.textContent = "ricomincia"; }, 3500);
 });
 document.addEventListener("keydown", e => {
