@@ -1,0 +1,34 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ascolto · Sirene</title><meta name="robots" content="noindex">
+<style>
+:root{--bg:#02050a;--fg:#eef2f0;--mist:#a7b9be;--gold:#e8c47e;--rose:#f3b2c9;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Iowan Old Style",Georgia,serif;padding:24px max(16px,4vw)}
+h1{font-weight:400;font-size:28px;margin:0 0 6px}p{color:var(--mist);margin:0 0 16px;font-size:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+button{appearance:none;cursor:pointer;background:transparent;color:var(--fg);border:1px solid rgba(238,242,240,.35);border-radius:999px;padding:10px 20px;font:14px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase}
+button.on{border-color:var(--gold);color:var(--gold)}button:focus-visible{outline:2px solid var(--gold)}
+textarea{width:100%;box-sizing:border-box;min-height:55vh;background:#060b12;color:var(--fg);border:1px solid rgba(238,242,240,.2);border-radius:8px;padding:14px;font:20px/1.4 "Iowan Old Style",Georgia,serif}
+#st{font:13px ui-monospace,Menlo,monospace;color:var(--rose);letter-spacing:.06em}
+</style></head><body>
+<h1>Ascolto</h1>
+<p>Trascrive dal microfono di questo computer. Poi «Copia» e incolla nel riquadro della scheda dell'ospite, nella pagina del gioco.</p>
+<div class="row"><button id="go" type="button">○ Ascolta</button><button id="cp" type="button">Copia</button><button id="clr" type="button">Svuota</button><span id="st"></span></div>
+<textarea id="t" aria-label="Trascrizione" placeholder="La trascrizione compare qui."></textarea>
+<script>
+const t=document.getElementById("t"),go=document.getElementById("go"),st=document.getElementById("st");
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,on=false,fin="",heard=0;
+try{fin=localStorage.getItem("ascolto")||"";t.value=fin}catch(e){}
+function save(){try{localStorage.setItem("ascolto",t.value)}catch(e){}}
+function words(){const n=t.value.trim()?t.value.trim().split(/\s+/).length:0;return n+" parole"}
+function paint(){go.classList.toggle("on",on);go.textContent=on?"● Sto ascoltando · ferma":"○ Ascolta";}
+function start(){if(!SR){st.textContent="Questo browser non trascrive: usate Chrome.";return}
+ fin=t.value.trim();rec=new SR();rec.lang="it-IT";rec.continuous=true;rec.interimResults=true;const me=rec;
+ rec.onresult=e=>{heard++;let it="";for(let k=e.resultIndex;k<e.results.length;k++){const r=e.results[k];if(r.isFinal)fin=(fin+" "+r[0].transcript).trim();else it+=r[0].transcript}t.value=fin+(it?" "+it:"");t.scrollTop=t.scrollHeight;save();st.textContent=words()};
+ rec.onerror=e=>{if(e.error==="not-allowed"||e.error==="service-not-allowed"){on=false;paint();st.textContent="Microfono negato: consentitelo dall'icona nella barra degli indirizzi."}else if(e.error!=="no-speech"&&e.error!=="aborted")st.textContent="Interruzione ("+e.error+"), riprendo…"};
+ rec.onend=()=>{if(on&&rec===me)setTimeout(()=>{if(on&&rec===me){try{me.start()}catch(e){}}},250)};
+ try{rec.start();on=true;paint();st.textContent="In ascolto…"}catch(e){st.textContent="Impossibile avviare il microfono."}}
+function stop(){on=false;const r=rec;rec=null;if(r){r.onend=null;try{r.stop()}catch(e){}}paint();st.textContent=words()}
+go.onclick=()=>on?stop():start();
+document.getElementById("cp").onclick=async()=>{try{await navigator.clipboard.writeText(t.value);st.textContent="Copiato · "+words()}catch(e){t.select();document.execCommand("copy");st.textContent="Copiato · "+words()}};
+document.getElementById("clr").onclick=()=>{t.value="";fin="";save();st.textContent="Svuotato"};
+t.oninput=()=>{fin=t.value;save()};
+</script></body></html>
