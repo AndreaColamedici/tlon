@@ -1495,21 +1495,24 @@ function mqListen(j) {
   if (m.listening || (REC && REC_J === j)) { recHalt(); paintListen(false); mqSet(j, { status: "" }); return; }
   if (REC) recHalt();
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { mqSet(j, { status: "Il riconoscimento vocale non è disponibile qui: scrivete o incollate la risposta nel riquadro." }); return; }
+  const ta0 = document.getElementById("mqText"); if (ta0) { ta0.focus(); ta0.setSelectionRange(ta0.value.length, ta0.value.length); }
+  if (!SR) { mqSet(j, { status: "Il microfono non arriva a questa pagina. Usate la dettatura del Mac: il cursore è già nel riquadro, premete due volte il tasto fn (o 🌐) e parlate." }); return; }
   try {
     REC = new SR(); REC_J = j; REC.lang = "it-IT"; REC.continuous = true; REC.interimResults = true;
     let finalText = (m.said || "").trim();
     REC.onresult = ev => {
       let interim = "";
       for (let k = ev.resultIndex; k < ev.results.length; k++) { const r = ev.results[k]; if (r.isFinal) finalText = (finalText + " " + r[0].transcript).trim(); else interim += r[0].transcript; }
-      MQ[j].said = finalText; mqSave();
+      MQ[j].said = finalText; MQ[j].heard = true; mqSave();
       const ta = document.getElementById("mqText"); if (ta && +ta.dataset.j === j) { ta.value = finalText + (interim ? " " + interim : ""); ta.scrollTop = ta.scrollHeight; }
     };
-    REC.onerror = ev => { mqSet(j, { status: ev.error === "not-allowed" ? "Microfono negato in questa vista: scrivete o incollate la risposta." : "Ascolto interrotto (" + ev.error + "). Si può riprendere." }); };
+    REC.onerror = ev => { if (ev.error === "not-allowed" || ev.error === "service-not-allowed" || ev.error === "audio-capture") { recHalt(); paintListen(false); const t = document.getElementById("mqText"); if (t) t.focus(); mqSet(j, { status: "Il microfono non arriva a questa pagina. Usate la dettatura del Mac: il cursore è già nel riquadro, premete due volte il tasto fn (o 🌐) e parlate." }); } else if (ev.error !== "no-speech" && ev.error !== "aborted") mqSet(j, { status: "Ascolto interrotto (" + ev.error + "): si riprende da solo." }); };
     const me = REC;
     REC.onend = () => { if (REC === me && MQ[j] && MQ[j].listening && !MQ[j].wantStop) { setTimeout(() => { if (REC === me) { try { me.start(); } catch (e) {} } }, 250); } };
     REC.start();
-    mqSet(j, { listening: true, wantStop: false, status: "" }); paintListen(true);
+    MQ[j] = Object.assign(MQ[j] || {}, { heard: false });
+    mqSet(j, { listening: true, wantStop: false, status: "In ascolto…" }); paintListen(true);
+    setTimeout(() => { if (REC === me && MQ[j] && !MQ[j].heard) { recHalt(); paintListen(false); const t = document.getElementById("mqText"); if (t) t.focus(); mqSet(j, { status: "Il microfono non arriva a questa pagina. Usate la dettatura del Mac: il cursore è già nel riquadro, premete due volte il tasto fn (o 🌐) e parlate." }); } }, 7000);
   } catch (e) { mqSet(j, { status: "Impossibile avviare il microfono: scrivete o incollate la risposta." }); }
 }
 function routeSummary() {
