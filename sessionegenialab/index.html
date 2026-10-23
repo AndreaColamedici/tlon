@@ -29,7 +29,7 @@ body { margin: 0; background: var(--black); color: var(--white); overflow: hidde
 .lb .x { white-space: normal; width: 300px; font-size: 14px; line-height: 1.35; color: var(--white); opacity: .85; margin-top: 8px; display: none; text-shadow: 0 0 10px #000; }
 .lb.deep .x { display: block; }
 .lb.deep .t { font-size: 19px; }
-.hint { position: fixed; z-index: 4; left: max(clamp(16px, 3vw, 56px), env(safe-area-inset-left, 0px)); top: calc(env(safe-area-inset-top, 0px) + clamp(200px, 25vh, 260px)); font-size: 12px; color: var(--smoke); }
+.hint { position: fixed; z-index: 4; left: max(clamp(16px, 3vw, 56px), env(safe-area-inset-left, 0px)); top: calc(env(safe-area-inset-top, 0px) + clamp(110px, 14vh, 150px)); font-size: 12px; color: var(--ash); max-width: 40ch; }
 .lb.star .t { font-family: var(--name); font-weight: 500; font-size: 30px; letter-spacing: -.02em; }
 .lb.star .m { font-size: 13px; text-align: center; margin-top: 6px; }
 .lb.axis .t { font-size: 13px; color: var(--ash); }
@@ -64,7 +64,13 @@ body { margin: 0; background: var(--black); color: var(--white); overflow: hidde
 .time button:hover, .time button:focus-visible, .chip:hover, .chip:focus-visible { color: var(--white); border-color: var(--white); outline: none; }
 .time .bar { width: 160px; height: 1px; background: var(--smoke); position: relative; }
 .time .bar i { position: absolute; left: 0; top: -1px; height: 3px; background: var(--ember); width: 100%; }
-.filters { position: fixed; z-index: 4; left: max(clamp(16px, 3vw, 56px), env(safe-area-inset-left, 0px)); top: calc(env(safe-area-inset-top, 0px) + clamp(118px, 15vh, 160px)); display: flex; flex-direction: column; gap: 8px; }
+.filters { position: fixed; z-index: 4; right: max(clamp(16px, 3vw, 56px), env(safe-area-inset-right, 0px)); top: calc(env(safe-area-inset-top, 0px) + clamp(96px, 12vh, 130px)); display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.filters .row { justify-content: flex-end; }
+.drawer { display: flex; flex-direction: column; gap: 6px; background: rgba(0,0,0,.82); padding: 10px; outline: 1px solid var(--smoke); }
+.drawer[hidden] { display: none; }
+.chip.tog b { font-weight: 400; color: var(--ash); margin-left: 8px; }
+.fade { transition: opacity 1.2s ease; }
+.fade.gone { opacity: 0; pointer-events: none; }
 .filters .row { display: flex; flex-wrap: wrap; gap: 5px; max-width: 40vw; }
 .chip i { display: inline-block; width: 8px; height: 8px; margin-right: 8px; background: var(--c, var(--ash)); vertical-align: 0; }
 .chip.on { color: var(--white); border-color: var(--white); }
@@ -76,11 +82,11 @@ body { margin: 0; background: var(--black); color: var(--white); overflow: hidde
 <canvas id="gl" aria-label="Costellazione tridimensionale degli interventi della Sessione I"></canvas>
 <div id="labels"></div>
 <div class="top">
-  <div class="brand"><h1>Costellazione</h1><p>Sessione I, nuove forme della conoscenza creativa. Ogni pensiero sta nel punto in cui lo mettono le tre domande del gioco; il tempo della sessione lo riavvolge.</p></div>
+  <div class="brand"><h1>Costellazione</h1><p class="fade" id="intro">Sessione I, nuove forme della conoscenza creativa. Ogni pensiero sta nel punto in cui lo mettono le tre domande del gioco; il tempo della sessione lo riavvolge.</p></div>
   <div class="state"><span class="dot"></span><span id="stateTxt">In ascolto</span></div>
 </div>
-<div class="filters"><div class="row" id="fSp"></div><div class="row" id="fTh"></div><div class="row" id="fKi"></div></div>
-<div class="hint">Rotella per avvicinarsi, clic su un pensiero per andarci, doppio clic per tornare. Tasti P, E, D per ponti, echi, divergenze.</div>
+<div class="filters"><button type="button" class="chip tog" id="fTog" aria-expanded="false">Filtri</button><div class="drawer" id="fDrawer" hidden><div class="row" id="fSp"></div><div class="row" id="fTh"></div><div class="row" id="fKi"></div></div></div>
+<div class="hint fade" id="hint">Rotella per avvicinarsi, clic su un pensiero per andarci, doppio clic per tornare. Tasti P, E, D per ponti, echi, divergenze.</div>
 <div class="empty" id="empty">La costellazione si accende a ogni intervento.</div>
 <div class="cap out" id="cap"><div class="k" id="capK"></div><p class="txt" id="capT"></p></div>
 <div class="time"><span>Tempo della sessione</span><span class="bar"><i id="tBar"></i></span><button type="button" id="replay">Riavvolgi</button></div>
@@ -374,11 +380,18 @@ function buildFilters() {
   SPEAKERS.forEach((sp, i) => mk(fs, sp.short, sp.col, activeSp === i, () => setSp(activeSp === i ? -1 : i)));
   mk(ft, "Tutti i temi", null, !activeTh, () => setTh(null));
   THEMES.forEach(th => mk(ft, th, null, activeTh === th, () => setTh(activeTh === th ? null : th)));
+  if (typeof paintTog === "function") paintTog();
   const fk = document.getElementById("fKi"); fk.querySelectorAll(".chip").forEach(c => c.remove());
   mk(fk, "Tutti i fili", null, !activeKind, () => setKi(null));
   [["ponte", "Ponti"], ["eco", "Echi"], ["tensione", "Divergenze"]].forEach(([k, l]) => mk(fk, l, null, activeKind === k, () => setKi(activeKind === k ? null : k)));
 }
 function setSp(i) { activeSp = i; buildFilters(); cycle(); }
+function summary() { const p = []; if (activeSp >= 0) p.push(SPEAKERS[activeSp].short); if (activeTh) p.push(activeTh); if (activeKind) p.push({ ponte: "ponti", eco: "echi", tensione: "divergenze" }[activeKind]); return p.join(", "); }
+const fTog = document.getElementById("fTog"), fDrawer = document.getElementById("fDrawer");
+function paintTog() { const sm = summary(); fTog.innerHTML = "Filtri" + (sm ? "<b>" + esc(sm) + "</b>" : ""); fTog.classList.toggle("on", !!sm); fTog.setAttribute("aria-expanded", String(!fDrawer.hidden)); }
+fTog.addEventListener("click", () => { fDrawer.hidden = !fDrawer.hidden; paintTog(); });
+canvas.addEventListener("pointerdown", () => { if (!fDrawer.hidden) { fDrawer.hidden = true; paintTog(); } });
+setTimeout(() => { document.getElementById("intro").classList.add("gone"); document.getElementById("hint").classList.add("gone"); }, 9000);
 function setTh(t) { activeTh = t; buildFilters(); cycle(); }
 function setKi(k) { activeKind = k; buildFilters(); cycle(); }
 addEventListener("keydown", e => {
@@ -387,7 +400,8 @@ addEventListener("keydown", e => {
   else if (e.key === "p" || e.key === "P") setKi(activeKind === "ponte" ? null : "ponte");
   else if (e.key === "e" || e.key === "E") setKi(activeKind === "eco" ? null : "eco");
   else if (e.key === "d" || e.key === "D") setKi(activeKind === "tensione" ? null : "tensione");
-  else if (e.key === "Escape") flyHome();
+  else if (e.key === "Escape") { flyHome(); fDrawer.hidden = true; paintTog(); }
+  else if (e.key === "f" || e.key === "F") { fDrawer.hidden = !fDrawer.hidden; paintTog(); }
   else if (e.key === "t" || e.key === "T") { const i = THEMES.indexOf(activeTh); setTh(i + 1 < THEMES.length ? THEMES[i + 1] : null); }
 });
 buildFilters();
