@@ -30,6 +30,9 @@ body { margin: 0; background: var(--black); color: var(--white); overflow: hidde
 .lb.deep .x { display: block; }
 .lb.deep .t { font-size: 19px; }
 .hint { position: fixed; z-index: 4; left: max(clamp(16px, 3vw, 56px), env(safe-area-inset-left, 0px)); top: calc(env(safe-area-inset-top, 0px) + clamp(110px, 14vh, 150px)); font-size: 12px; color: var(--ash); max-width: 40ch; }
+.lb.star { pointer-events: auto; cursor: pointer; }
+.lb.star:hover .t, .lb.star:focus-visible .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
+.lb.star.sel { outline: 1px solid var(--white); outline-offset: 10px; }
 .lb.star .t { font-family: var(--name); font-weight: 500; font-size: 30px; letter-spacing: -.02em; }
 .lb.star .m { font-size: 13px; text-align: center; margin-top: 6px; }
 .lb.axis .t { font-size: 13px; color: var(--ash); }
@@ -173,6 +176,8 @@ const STARS = SPEAKERS.map((sp, i) => {
   const glow = sprite(sp.col, 90, .18), core = cloud(sp.col, 1100, 32, 2.8), grp = new T.Group(); grp.add(glow); grp.add(core); scene.add(grp);
   const home = new T.Vector3(...sp.home).multiplyScalar(SCALE * 1.2); grp.position.copy(home);
   const el = addLabel("star", sp.short, sp.area, sp.col);
+  el.setAttribute("role", "button"); el.tabIndex = 0; el.setAttribute("aria-label", "Mostra i pensieri di " + sp.short);
+  el.addEventListener("click", () => pickSpeaker(i)); el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); pickSpeaker(i); } });
   const S = { i, grp, glow, core, home, target: home.clone(), el, live: false };
   LABELS.push({ el, pos: () => tmpS.copy(grp.position).add(tmpO.set(0, 30, 0)), kind: "star", align: .5, star: S });
   return S;
@@ -185,6 +190,14 @@ function flyTo(n) {
   fly = { target: n.g.position.clone(), pos: n.g.position.clone().addScaledVector(dir, 150), node: n };
   controls.autoRotate = false;
 }
+function pickSpeaker(i) {
+  if (activeSp === i) { setSp(-1); flyHome(); return; }
+  setSp(i);
+  const c = new T.Vector3(); let k = 0; for (const n of NODES.values()) if (n.sp === i && n.vis > .5) { c.add(n.target); k++; }
+  if (!k) c.copy(STARS[i].grp.position); else c.multiplyScalar(1 / k);
+  const dir = camera.position.clone().sub(c).normalize();
+  fly = { target: c, pos: c.clone().addScaledVector(dir, 430) }; controls.autoRotate = false;
+}
 function flyHome() { fly = { target: HOME.target.clone(), pos: HOME.pos.clone(), home: true }; }
 const ray = new T.Raycaster(), mouse = new T.Vector2(); let downAt = null;
 canvas.addEventListener("pointerdown", e => { downAt = [e.clientX, e.clientY]; });
@@ -193,6 +206,7 @@ canvas.addEventListener("pointerup", e => {
   mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(mouse, camera);
   let best = null, bd = 1e9;
   for (const n of NODES.values()) { if (n.vis < .5) continue; const p = n.g.position.clone().project(camera); const d = Math.hypot((p.x - mouse.x) * innerWidth, (p.y - mouse.y) * innerHeight) / 2; if (d < 28 && d < bd) { bd = d; best = n; } }
+  if (!best) for (const S of STARS) { const p = S.grp.position.clone().project(camera); const d = Math.hypot((p.x - mouse.x) * innerWidth, (p.y - mouse.y) * innerHeight) / 2; if (d < 60) { pickSpeaker(S.i); return; } }
   if (best) flyTo(best); else if (fly && !fly.home) flyHome();
 });
 canvas.addEventListener("dblclick", () => flyHome());
@@ -327,7 +341,7 @@ function frame(now) {
       let op = Math.max(.35, Math.min(1, 1.9 - dist / 1000)), pri = 1 - v.z;
       if (L.kind === "node") { const sel = anyFilter() ? matches(L.node) : inFocus(L.node.id); op *= L.node.vis * Math.max(.06, L.node.em); if (sel) { op = Math.max(op, .98 * L.node.vis); pri += 10; } if (anyFilter() && !matches(L.node)) pri -= 5; }
       if (L.kind === "axis") { op *= axisGroup.visible ? .8 : 0; pri -= 2; }
-      if (L.kind === "star") { op = (L.star.live ? Math.max(op, .9) : op * .55) * (L.star.em == null ? 1 : Math.max(.25, L.star.em)); pri += 20; }
+      if (L.kind === "star") { L.el.classList.toggle("sel", activeSp === L.star.i); op = (L.star.live ? Math.max(op, .9) : op * .55) * (L.star.em == null ? 1 : Math.max(.25, L.star.em)); pri += 20; }
       if (L.kind === "core") pri += 6;
       if (L.kind === "node") { const deep = dist < 300 && L.node.vis > .5 && !!L.node.d.text; if (deep !== !!L.deep) { L.deep = deep; L.el.classList.toggle("deep", deep); L.w = 0; } if (deep) pri += 4; }
       const sc = base * Math.max(.7, Math.min(L.deep ? 1.25 : 1.1, 700 / dist)), x = (v.x * .5 + .5) * W, y = (-v.y * .5 + .5) * H, dx = L.kind === "node" ? 12 * base : 0;
@@ -395,7 +409,7 @@ setTimeout(() => { document.getElementById("intro").classList.add("gone"); docum
 function setTh(t) { activeTh = t; buildFilters(); cycle(); }
 function setKi(k) { activeKind = k; buildFilters(); cycle(); }
 addEventListener("keydown", e => {
-  if (/^[1-4]$/.test(e.key)) setSp(activeSp === +e.key - 1 ? -1 : +e.key - 1);
+  if (/^[1-4]$/.test(e.key)) pickSpeaker(+e.key - 1);
   else if (e.key === "0") { activeSp = -1; activeTh = null; activeKind = null; buildFilters(); cycle(); flyHome(); }
   else if (e.key === "p" || e.key === "P") setKi(activeKind === "ponte" ? null : "ponte");
   else if (e.key === "e" || e.key === "E") setKi(activeKind === "eco" ? null : "eco");
