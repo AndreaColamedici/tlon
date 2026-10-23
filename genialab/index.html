@@ -557,23 +557,27 @@ const FORUM = "Primo forum annuale di geniaLAB, «Nuove forme della conoscenza c
 const DOSSIER = [
   "Massimo Canevacci, antropologo, ha insegnato a lungo alla Sapienza di Roma; decenni di ricerca sul campo con i Bororo del Mato Grosso, in Brasile. Libri noti: «Antropologia della comunicazione visuale», «La città polifonica», «Culture eXtreme» (1999). Negli ultimi anni lavora su un'«antropologia non antropocentrica» e sull'ubiquità digitale (intervista ad Antrocom, 2016), sul «soggetto ubiquo» come figura tipica della cultura digitale ('900 Transnazionale, 2020), sulle «costellazioni ubique», dove la divisione dei saperi in discipline si dissolve nell'universo digitale tra sincretismi, polifonie e diaspore (Matrizes, USP, 2021). Nel 2018 a Roma ha dialogato sull'IA in un incontro intitolato «Fake Intelligence: Artificial Intelligence and new anthropologies in the remix-humanity». Nel 2025 Forbes Italia lo cita sui sincretismi tra moda e tecnologia, con l'IA come estensione del corpo.",
   "Paolo Granata insegna Book and Media Studies all'Università di Toronto (St. Michael's College), dirige il Media Ethics Lab, è stato Marshall McLuhan Centenary Fellow nel 2011 ed è legato alla McLuhan Foundation. Il suo libro recente è «Generative Knowledge: Think, Learn, Create with AI» (Wiley), in italiano «Conoscenza generativa» (Luiss University Press): l'IA come tecnologia epistemica, un partner che allarga il pensiero; la conoscenza generativa come processo ricorsivo e sociale in cui il sapere ne produce altro. In aprile 2026 ne ha discusso all'AANT con Andrea Colamedici e Derrick de Kerckhove; Agenda Digitale (3 giugno 2026) riassume: la scuola deve formare «pensatori generativi», non «utenti competenti».",
-  "Maura Gancitano, filosofa, cofondatrice di Tlon con Andrea Colamedici, membro del comitato scientifico di geniaLAB, modera la sessione del pomeriggio. Lavora su che cosa fa la performance alla vita (è coautrice de «La società della performance»), sul corpo, sulla bellezza come dispositivo di potere («Specchio delle mie brame»), e sui sei territori di GLAST.",
+  "Maura Gancitano, filosofa e scrittrice, cofondatrice di Tlon con Andrea Colamedici, membro del comitato scientifico di geniaLAB, modera la sessione del pomeriggio. Lavora su che cosa fa la performance alla vita (è coautrice de «La società della performance»), sul corpo e sulla bellezza come dispositivo di potere («Specchio delle mie brame», Einaudi).",
   "Sabina Minardi è caporedattrice cultura de L'Espresso. Il suo mestiere è la quarta domanda: chi parla, da dove, che cosa vende. Nel gioco l'ultima frase smontata era un titolo di TIME sullo studio del MIT «Your Brain on ChatGPT», che usava la stessa grammatica di una promessa di Altman."
 ];
 const PANEL = [
-  { name: "Massimo Canevacci", role: "Antropologo · il soggetto ubiquo, i sincretismi, un'antropologia non antropocentrica", tag: "S",
+  { name: "Massimo Canevacci", role: "Antropologo", tag: "S",
+    bio: "Antropologo, ha insegnato alla Sapienza di Roma. Ha passato decenni sul campo con i Bororo del Brasile e studiato le culture visive delle metropoli («La città polifonica»). Oggi scrive del «soggetto ubiquo», la persona disseminata e ibrida nata con il digitale.",
     hook: "Il gioco chiede di restituire alle frasi un soggetto umano che decide. Per chi scrive da anni di un soggetto digitale disseminato e ibrido, può essere una nostalgia.",
     q: "Chi agisce? Il gioco rimette al centro un soggetto umano che decide. Per un'antropologia non antropocentrica è una mossa conservatrice? Dove sta il soggetto che conosce, quando il soggetto è ubiquo?",
     q2: "Hai passato una vita tra rituali e trance. La trance di Ipnocrazia, che sospende chi ascolta tra storie opposte, somiglia alla trance rituale o è il suo contrario?" },
-  { name: "Paolo Granata", role: "Università di Toronto · Media Ethics Lab · «Generative Knowledge»", tag: "N",
+  { name: "Paolo Granata", role: "Studioso dei media, Università di Toronto", tag: "N",
+    bio: "Insegna Book and Media Studies all'Università di Toronto, dove dirige il Media Ethics Lab, e lavora nella tradizione di Marshall McLuhan. Il suo ultimo libro è «Generative Knowledge», in italiano «Conoscenza generativa» (Luiss University Press).",
     hook: "Il suo libro dice che l'IA è una tecnologia epistemica, un partner che allarga il pensiero. La sala ha appena imparato a sentire in frasi così la grammatica della promessa.",
     q: "«Conoscenza generativa», «l'IA allarga il pensiero»: è una scelta o un destino? Chi possiede il luogo in cui la conoscenza generativa accade, e un pensatore generativo che pensa dentro un modello di proprietà altrui è sovrano?",
     q2: "McLuhan diceva che il medium è il messaggio. Qual è il messaggio di un medium che ti dà sempre ragione, e come si insegna a un ventenne a pretendere di essere contraddetto?" },
-  { name: "Maura Gancitano", role: "Filosofa · Tlon · GLAST · che cosa fa la performance alla vita", tag: "T",
+  { name: "Maura Gancitano", role: "Filosofa e scrittrice", tag: "T",
+    bio: "Filosofa e scrittrice, ha fondato Tlon con Andrea Colamedici. Ha scritto «Specchio delle mie brame» (Einaudi) e, con Colamedici, «La società della performance». È nel comitato scientifico di geniaLAB.",
     hook: "L'IA generativa è il dispositivo di performance più perfetto mai costruito: promette la creatività senza la fatica e senza il fallimento.",
     q: "Quando accade la creatività, se il prodotto arriva prima della fatica di farlo? Che cosa succede a chi studia in un'accademia d'arte quando il risultato precede il lavoro?",
     q2: "La sovranità cognitiva parla del luogo in cui accade il pensiero. Tu insisti sul corpo: è un luogo che la macchina non può occupare, o è il primo che occupa?" },
-  { name: "Sabina Minardi", role: "Caporedattrice cultura, L'Espresso", tag: "I",
+  { name: "Sabina Minardi", role: "Giornalista, L'Espresso", tag: "I",
+    bio: "Giornalista, guida la redazione cultura de L'Espresso come caporedattrice.",
     hook: "Il giornalismo culturale fa di mestiere la quarta domanda: chi parla, da dove, e che cosa vende. Il gioco ha mostrato che anche un titolo critico può usare la grammatica del prodotto.",
     q: "Quanto tempo resta oggi, in una redazione, per chiedere davvero chi parla e che cosa vende? E come si scrive un titolo sull'IA che non sia né allarme né promessa, e che qualcuno legga?",
     q2: "Nel gioco un titolo di TIME sullo studio del MIT aveva la stessa grammatica di una promessa di Altman. Quel titolo lo vuole il lettore, o lo vuole il giornale?" }
@@ -1378,14 +1382,15 @@ const VIEWS = {
   sessione: () => `<div class="epi" style="max-width:min(1500px,100%)">
       <div class="lbl gold">Sessione I · quattro voci, quattro domande</div>
       <h2 class="shade">Le domande che avete usato sulle sirene, <em>ora le facciamo a chi sa.</em></h2>
-      <div class="cols four">${PANEL.map(g => `<div class="col tag" style="--c:${TAGS[g.tag].c}"><div class="lbl">${TAGS[g.tag].name} · ${TAGS[g.tag].q}</div><h3 class="shade" style="font-size:clamp(22px,calc(2.1 * var(--u)),40px)">${esc(g.name)}</h3><p class="shade" style="color:var(--mist)">${esc(g.role)}</p></div>`).join("")}</div>
+      <div class="cols four">${PANEL.map(g => `<div class="col tag" style="--c:${TAGS[g.tag].c}"><div class="lbl">${TAGS[g.tag].name} · ${TAGS[g.tag].q}</div><h3 class="shade" style="font-size:clamp(22px,calc(2.1 * var(--u)),40px)">${esc(g.name)}</h3><p class="shade" style="color:var(--mist)">${esc(g.bio)}</p></div>`).join("")}</div>
       <p class="shade">Le domande le formula la macchina. La prima nasce da ciò che sappiamo dell'ospite e da ciò che avete appena giocato; le altre ascoltano la risposta di chi ha parlato prima. Il moderatore, davanti a voi, le accetta, le riformula o le rifiuta. Poi il pubblico, con una regola sola: chi domanda dice chi è e da dove parla.</p>
     </div>`,
   ospite: b => { const g = PANEL[b.j], t = TAGS[g.tag], m = MQ[b.j] || {}, dec = m.decision, prevName = b.j > 0 ? PANEL[b.j - 1].name : null, nx = PANEL[b.j + 1];
     const decLabel = dec === "ok" ? "accettata" : dec === "re" ? "riformulata dal moderatore" : dec === "no" ? "rifiutata · si fa quella del moderatore" : null;
     return `<div class="epi" style="max-width:min(1500px,100%);--c:${t.c}">
       <div class="lbl" style="color:${t.c}">${t.name} · ${t.q}</div>
-      <div class="who-line"><h2 class="shade" style="font-size:clamp(36px,calc(4 * var(--u)),80px);margin:0">${esc(g.name)}</h2><span class="kicker">${esc(g.role)}</span></div>
+      <h2 class="shade" style="font-size:clamp(36px,calc(4 * var(--u)),80px);margin:0">${esc(g.name)}</h2>
+      <p class="shade" style="color:var(--mist);max-width:80ch;font-size:clamp(16px,calc(1.3 * var(--u)),24px);margin:0">${esc(g.bio)}</p>
       <div class="pair">
         <div>
           <div class="kicker">La domanda della macchina${decLabel ? ` · <span style="color:var(--gold)">${decLabel}</span>` : ""}</div>
