@@ -1,0 +1,392 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Costellazione della Sessione I del Forum geniaLAB, Nuove forme della conoscenza creativa: Canevacci, Granata, Gancitano, Minardi."><link rel="icon" href="/favicon.svg"><style>body{margin:0}[hidden]{display:none!important}</style></head><body><title>Costellazione Sessione I</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700&family=Schibsted+Grotesk:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+/* L'identità del forum: nero pieno, corpi di particelle color brace, rettangoli bianchi che inquadrano. Tre assi del gioco nello spazio; il tempo della sessione è la quarta dimensione. Un solo look, da proiettare. */
+:root {
+  --black: #000000;
+  --ember: #ff5a1f;
+  --amber: #ffbf47;
+  --white: #f4f1ec;
+  --crimson: #e8223f;
+  --ash: #8a8580;
+  --smoke: #4a4744;
+  --name: "Unbounded", "Avenir Next", system-ui, sans-serif;
+  --text: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { margin: 0; background: var(--black); color: var(--white); overflow: hidden; font-family: var(--text); }
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; }
+#gl:active { cursor: grabbing; }
+#labels { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.lb { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform, opacity; transform-origin: 0 50%; }
+.lb .t { font-size: 17px; font-weight: 400; line-height: 1.1; letter-spacing: -.005em; text-shadow: 0 0 12px #000, 0 0 2px #000; }
+.lb .m { font-size: 11px; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.lb.f { outline: 1px solid var(--white); outline-offset: 7px; }
+.lb.star .t { font-family: var(--name); font-weight: 500; font-size: 30px; letter-spacing: -.02em; }
+.lb.star .m { font-size: 13px; text-align: center; margin-top: 6px; }
+.lb.axis .t { font-size: 13px; color: var(--ash); }
+.lb.core .t { font-family: var(--name); font-weight: 300; font-size: 13px; color: var(--ash); text-align: center; line-height: 1.35; }
+.top {
+  position: fixed; inset: 0 0 auto 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; pointer-events: none; z-index: 3;
+  padding-top: calc(env(safe-area-inset-top, 0px) + clamp(18px, 3vh, 36px));
+  padding-left: max(clamp(16px, 3vw, 56px), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(16px, 3vw, 56px), env(safe-area-inset-right, 0px));
+}
+.brand h1 { margin: 0; font-family: var(--name); font-weight: 700; font-size: clamp(20px, 2vw, 38px); letter-spacing: -.03em; line-height: 1; }
+.brand p { margin: 8px 0 0; font-size: clamp(12px, .9vw, 16px); color: var(--ash); max-width: 46ch; line-height: 1.35; }
+.state { font-size: clamp(13px, 1vw, 17px); color: var(--ember); display: flex; align-items: center; gap: 10px; }
+.state .dot { width: 9px; height: 9px; background: var(--ember); animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+.cap {
+  position: fixed; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 2;
+  padding: 16vh max(clamp(16px, 3vw, 56px), env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + clamp(22px, 4.5vh, 60px)) max(clamp(16px, 3vw, 56px), env(safe-area-inset-left, 0px));
+  background: linear-gradient(to top, #000 0%, rgba(0,0,0,.75) 50%, rgba(0,0,0,0) 100%);
+  transition: opacity .9s ease;
+}
+.cap.out { opacity: 0; }
+.cap .k { font-size: clamp(13px, 1.05vw, 18px); color: var(--ash); display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+.cap .k b { font-family: var(--name); font-weight: 500; font-size: 1.05em; letter-spacing: -.01em; }
+.cap .k .prov { color: var(--smoke); }
+.cap .txt { margin: 12px 0 0; font-size: clamp(22px, 2.15vw, 40px); line-height: 1.2; letter-spacing: -.012em; max-width: min(46ch, 70vw); text-wrap: pretty; border-left: 1px solid var(--white); padding-left: 22px; }
+.time {
+  position: fixed; right: max(clamp(16px, 3vw, 56px), env(safe-area-inset-right, 0px)); top: calc(env(safe-area-inset-top, 0px) + clamp(52px, 7vh, 80px));
+  display: flex; align-items: center; gap: 14px; font-size: 13px; color: var(--ash); z-index: 4;
+}
+.time button, .chip { appearance: none; cursor: pointer; background: #000; border: 1px solid var(--smoke); color: var(--ash); border-radius: 0; padding: 5px 10px; font: 500 12px var(--text); transition: border-color .25s, color .25s; }
+.time button:hover, .time button:focus-visible, .chip:hover, .chip:focus-visible { color: var(--white); border-color: var(--white); outline: none; }
+.time .bar { width: 160px; height: 1px; background: var(--smoke); position: relative; }
+.time .bar i { position: absolute; left: 0; top: -1px; height: 3px; background: var(--ember); width: 100%; }
+.filters { position: fixed; z-index: 4; left: max(clamp(16px, 3vw, 56px), env(safe-area-inset-left, 0px)); top: calc(env(safe-area-inset-top, 0px) + clamp(118px, 15vh, 160px)); display: flex; flex-direction: column; gap: 8px; }
+.filters .row { display: flex; flex-wrap: wrap; gap: 5px; max-width: 40vw; }
+.chip i { display: inline-block; width: 8px; height: 8px; margin-right: 8px; background: var(--c, var(--ash)); vertical-align: 0; }
+.chip.on { color: var(--white); border-color: var(--white); }
+.empty { position: fixed; inset: 0; display: grid; place-items: center; pointer-events: none; font-size: 15px; color: var(--smoke); }
+@media (max-width: 760px) { .time .bar { width: 70px; } .lb.star .t { font-size: 22px; } .filters .row { max-width: 92vw; } }
+@media (prefers-reduced-motion: reduce) { .state .dot { animation: none; } }
+</style>
+
+<canvas id="gl" aria-label="Costellazione tridimensionale degli interventi della Sessione I"></canvas>
+<div id="labels"></div>
+<div class="top">
+  <div class="brand"><h1>Costellazione</h1><p>Sessione I, nuove forme della conoscenza creativa. Ogni pensiero sta nel punto in cui lo mettono le tre domande del gioco; il tempo della sessione lo riavvolge.</p></div>
+  <div class="state"><span class="dot"></span><span id="stateTxt">In ascolto</span></div>
+</div>
+<div class="filters"><div class="row" id="fSp"></div><div class="row" id="fTh"></div></div>
+<div class="empty" id="empty">La costellazione si accende a ogni intervento.</div>
+<div class="cap out" id="cap"><div class="k" id="capK"></div><p class="txt" id="capT"></p></div>
+<div class="time"><span>Tempo della sessione</span><span class="bar"><i id="tBar"></i></span><button type="button" id="replay">Riavvolgi</button></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script>
+const SPEAKERS = [
+  { short: "Canevacci", area: "Soggetto", col: 0xff5a1f, home: [-1, .45, .2] },
+  { short: "Granata", area: "Necessità", col: 0xffbf47, home: [1, .45, -.2] },
+  { short: "Gancitano", area: "Tempo", col: 0xf4f1ec, home: [1, -.55, .3] },
+  { short: "Minardi", area: "Delega", col: 0xe8223f, home: [-1, -.55, -.3] }
+];
+const GAME_COL = 0x8a8580;
+const KIND_LABEL = { ponte: "Ponte", tensione: "Tensione", eco: "Eco" };
+const SCALE = 230;
+const AXES = [
+  { v: [1, 0, 0], neg: "decide un soggetto umano", pos: "agisce l'ibrido, la macchina", col: 0x6a6560 },
+  { v: [0, 1, 0], neg: "già in corso", pos: "a venire", col: 0x6a6560 },
+  { v: [0, 0, 1], neg: "si può scegliere", pos: "è destino", col: 0x6a6560 }
+];
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const T = THREE;
+
+const canvas = document.getElementById("gl");
+const renderer = new T.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.6));
+renderer.setClearColor(0x000000, 1);
+const scene = new T.Scene();
+const camera = new T.PerspectiveCamera(48, 1, 1, 6000);
+camera.position.set(520, 280, 760);
+const controls = new T.OrbitControls(camera, canvas);
+controls.enableDamping = true; controls.dampingFactor = .06; controls.autoRotate = !reduce; controls.autoRotateSpeed = .35;
+controls.minDistance = 260; controls.maxDistance = 1500; controls.enablePan = false;
+let composer = null, bloom = null;
+try {
+  composer = new T.EffectComposer(renderer); composer.addPass(new T.RenderPass(scene, camera));
+  bloom = new T.UnrealBloomPass(new T.Vector2(1, 1), .55, .4, .2); composer.addPass(bloom);
+} catch (e) { composer = null; }
+
+const dotTex = (() => { const c = document.createElement("canvas"); c.width = c.height = 32; const g = c.getContext("2d"); const gr = g.createRadialGradient(16, 16, 0, 16, 16, 16); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(.45, "rgba(255,255,255,.6)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 32, 32); return new T.CanvasTexture(c); })();
+function cloud(col, n, r, size) {
+  const p = new Float32Array(n * 3); for (let i = 0; i < n; i++) { const u = Math.random(), v = Math.random(), th = u * 6.283, ph = Math.acos(2 * v - 1), rr = r * Math.pow(Math.random(), .6); p[i * 3] = rr * Math.sin(ph) * Math.cos(th); p[i * 3 + 1] = rr * Math.cos(ph) * 1.25; p[i * 3 + 2] = rr * Math.sin(ph) * Math.sin(th); }
+  const g = new T.BufferGeometry(); g.setAttribute("position", new T.BufferAttribute(p, 3));
+  return new T.Points(g, new T.PointsMaterial({ color: col, size, map: dotTex, transparent: true, depthWrite: false, blending: T.AdditiveBlending, opacity: .9 }));
+}
+const glowTex = (() => { const c = document.createElement("canvas"); c.width = c.height = 128; const g = c.getContext("2d"); const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(.18, "rgba(255,255,255,.55)"); gr.addColorStop(.5, "rgba(255,255,255,.12)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return new T.CanvasTexture(c); })();
+function sprite(col, size, op) { const m = new T.SpriteMaterial({ map: glowTex, color: col, transparent: true, depthWrite: false, blending: T.AdditiveBlending, opacity: op }); const s = new T.Sprite(m); s.scale.set(size, size, 1); return s; }
+
+(() => { const n = 2600, p = new Float32Array(n * 3); for (let i = 0; i < n; i++) { const r = 1500 + Math.random() * 1800, th = Math.random() * 6.283, ph = Math.acos(2 * Math.random() - 1); p[i * 3] = r * Math.sin(ph) * Math.cos(th); p[i * 3 + 1] = r * Math.cos(ph); p[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th); }
+  const g = new T.BufferGeometry(); g.setAttribute("position", new T.BufferAttribute(p, 3));
+  scene.add(new T.Points(g, new T.PointsMaterial({ color: 0x8a8580, size: 1.6, sizeAttenuation: false, transparent: true, opacity: .4 }))); })();
+
+const axisGroup = new T.Group(); scene.add(axisGroup);
+const labelsEl = document.getElementById("labels");
+const LABELS = [];
+const hex = c => "#" + new T.Color(c).getHexString();
+function addLabel(cls, text, meta, col) {
+  const d = document.createElement("div"); d.className = "lb " + cls;
+  const t = document.createElement("div"); t.className = "t"; t.textContent = text; d.appendChild(t);
+  if (meta != null) { const m = document.createElement("div"); m.className = "m"; m.textContent = meta; if (col != null) m.style.color = hex(col); d.appendChild(m); }
+  labelsEl.appendChild(d); return d;
+}
+AXES.forEach(ax => {
+  const v = new T.Vector3(...ax.v).multiplyScalar(SCALE * 1.35);
+  const line = new T.Line(new T.BufferGeometry().setFromPoints([v.clone().negate(), v]), new T.LineDashedMaterial({ color: ax.col, transparent: true, opacity: .35, dashSize: 2, gapSize: 10 }));
+  line.computeLineDistances(); axisGroup.add(line);
+  [[-1, ax.neg], [1, ax.pos]].forEach(([s, t]) => {
+    const p = v.clone().multiplyScalar(s * 1.05), el = addLabel("axis", t, null, null);
+    LABELS.push({ el, pos: () => p, kind: "axis", align: .5 });
+    const tip = sprite(ax.col, 10, .5); tip.position.copy(v.clone().multiplyScalar(s)); axisGroup.add(tip);
+  });
+});
+scene.add(sprite(0x8a8580, 60, .15));
+{ const el = addLabel("core", "", null, null); el.querySelector(".t").innerHTML = "Nuove forme<br>della conoscenza<br>creativa"; LABELS.push({ el, pos: () => new T.Vector3(0, -26, 0), kind: "core", align: .5 }); }
+
+const STARS = SPEAKERS.map((sp, i) => {
+  const glow = sprite(sp.col, 90, .18), core = cloud(sp.col, 1100, 32, 2.8), grp = new T.Group(); grp.add(glow); grp.add(core); scene.add(grp);
+  const home = new T.Vector3(...sp.home).multiplyScalar(SCALE * 1.2); grp.position.copy(home);
+  const el = addLabel("star", sp.short, sp.area, sp.col);
+  const S = { i, grp, glow, core, home, target: home.clone(), el, live: false };
+  LABELS.push({ el, pos: () => tmpS.copy(grp.position).add(tmpO.set(0, 30, 0)), kind: "star", align: .5, star: S });
+  return S;
+});
+const tmpS = new T.Vector3(), tmpO = new T.Vector3();
+
+const NODES = new Map(), LINKS = new Map();
+let maxOrd = 1, shownOrd = Infinity;
+let activeSp = -1, activeTh = null;
+const THEMES = [];
+function matches(n) { if (!n) return true; return (activeSp < 0 || n.sp === activeSp) && (!activeTh || n.d.tema === activeTh); }
+function anyFilter() { return activeSp >= 0 || !!activeTh; }
+const colOf = sp => sp >= 0 && SPEAKERS[sp] ? SPEAKERS[sp].col : GAME_COL;
+const posOfData = d => { const p = d.pos || [0, 0, 0]; return new T.Vector3(p[0] || 0, p[1] || 0, p[2] || 0).multiplyScalar(SCALE); };
+function upsertNode(id, d, fresh) {
+  let n = NODES.get(id);
+  const sp = typeof d.speaker === "number" ? d.speaker : -1, col = colOf(sp);
+  if (!n) {
+    const g = new T.Group(), halo = sprite(col, 40, .3), dot = cloud(col, d.kind === "citazione" ? 120 : 180, d.kind === "citazione" ? 7 : 10, 2.4);
+    g.add(halo); g.add(dot); scene.add(g);
+    const sg = new T.BufferGeometry(); sg.setAttribute("position", new T.BufferAttribute(new Float32Array(6), 3));
+    var spoke = new T.Line(sg, new T.LineBasicMaterial({ color: col, transparent: true, opacity: .15, blending: T.AdditiveBlending, depthWrite: false })); spoke.frustumCulled = false; scene.add(spoke);
+    g.position.copy(sp >= 0 ? STARS[sp].grp.position : new T.Vector3());
+    const el = addLabel(d.kind === "citazione" ? "q" : "", d.label || "", d.time || null, col);
+    n = { id, g, halo, dot, el, spoke, born: performance.now(), seed: Math.random() * 6.283, vis: 0, em: 1 };
+    LABELS.push({ el, pos: () => n.g.position, kind: "node", align: 0, node: n });
+    NODES.set(id, n);
+  } else n.el.querySelector(".t").textContent = d.label || "";
+  n.d = d; n.sp = sp; n.target = posOfData(d); n.ord = d.ord || 0; if (fresh) n.born = performance.now();
+  maxOrd = Math.max(maxOrd, n.ord);
+  if (d.tema && !THEMES.includes(d.tema)) { THEMES.push(d.tema); buildFilters(); }
+}
+function refOf(id) {
+  if (/^sp[0-3]$/.test(id)) return { obj: STARS[+id[2]].grp, sp: +id[2], ord: 0 };
+  const n = NODES.get(id); return n ? { obj: n.g, sp: n.sp, ord: n.ord } : null;
+}
+const PN = 7;
+function upsertLink(id, d, fresh) {
+  let L = LINKS.get(id);
+  if (!L) {
+    const segs = 48, g = new T.BufferGeometry();
+    g.setAttribute("position", new T.BufferAttribute(new Float32Array((segs + 1) * 3), 3)); g.setAttribute("color", new T.BufferAttribute(new Float32Array((segs + 1) * 3), 3));
+    const line = new T.Line(g, new T.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: .5, blending: T.AdditiveBlending, depthWrite: false }));
+    line.frustumCulled = false; scene.add(line);
+    const parts = []; for (let k = 0; k < PN; k++) { const s = sprite(0xffffff, 12, .9); scene.add(s); parts.push(s); }
+    L = { id, line, segs, parts, seed: Math.random(), born: performance.now(), vis: 0 }; LINKS.set(id, L);
+  }
+  L.d = d; if (fresh) L.born = performance.now();
+}
+const tA = new T.Vector3(), tB = new T.Vector3(), tC = new T.Vector3(), ca = new T.Color(), cb = new T.Color();
+function bez(a, c, b, t, out) { const u = 1 - t; return out.set(u * u * a.x + 2 * u * t * c.x + t * t * b.x, u * u * a.y + 2 * u * t * c.y + t * t * b.y, u * u * a.z + 2 * u * t * c.z + t * t * b.z); }
+
+let replayT0 = 0;
+document.getElementById("replay").addEventListener("click", () => { replayT0 = performance.now(); });
+addEventListener("keydown", e => { if (e.key === "r" || e.key === "R") replayT0 = performance.now(); if (e.key === "a" || e.key === "A") axisGroup.visible = !axisGroup.visible; if (e.key === " ") { controls.autoRotate = !controls.autoRotate; e.preventDefault(); } });
+
+let focus = null;
+const inFocus = id => { const L = focus && LINKS.get(focus); return !!L && (L.d.a === id || L.d.b === id); };
+function frame(now) {
+  requestAnimationFrame(frame);
+  const t = now * .001;
+  if (replayT0) { const k = (now - replayT0) / 24000; shownOrd = k >= 1 ? Infinity : k * (maxOrd + 1); if (k >= 1) replayT0 = 0; }
+  document.getElementById("tBar").style.width = (shownOrd === Infinity ? 100 : Math.min(100, shownOrd / (maxOrd + 1) * 100)) + "%";
+
+  const sums = SPEAKERS.map(() => ({ v: new T.Vector3(), n: 0 }));
+  for (const n of NODES.values()) if (n.sp >= 0 && n.ord <= shownOrd) { sums[n.sp].v.add(n.target); sums[n.sp].n++; }
+  STARS.forEach((S, i) => {
+    S.live = sums[i].n > 0;
+    if (S.live) S.target.copy(sums[i].v.multiplyScalar(1 / sums[i].n)).multiplyScalar(.25).addScaledVector(S.home, .8); else S.target.copy(S.home);
+    S.grp.position.lerp(S.target, .02);
+    const pul = reduce ? 1 : 1 + .08 * Math.sin(t * 1.4 + i);
+    const se = activeSp < 0 || activeSp === i ? 1 : .2;
+    S.glow.scale.setScalar((S.live ? 110 : 70) * pul * (activeSp === i ? 1.3 : 1)); S.glow.material.opacity = (S.live ? .22 : .08) * se; S.core.material.opacity = (S.live ? .6 : .3) * se; S.core.rotation.y = t * .12 + i; S.core.rotation.x = Math.sin(t * .2 + i) * .3; S.core.scale.setScalar(pul); S.em = se;
+  });
+
+  for (const n of NODES.values()) {
+    n.vis += ((n.ord <= shownOrd ? 1 : 0) - n.vis) * .06;
+    const dr = reduce ? 0 : 7;
+    tA.copy(n.target).add(tB.set(Math.sin(t * .4 + n.seed) * dr, Math.cos(t * .33 + n.seed * 2) * dr, Math.sin(t * .27 + n.seed * 3) * dr));
+    n.g.position.lerp(tA, .035);
+    const flash = Math.max(0, Math.min(1, 1 - (now - n.born) / 2800)), f = inFocus(n.id) && !anyFilter();
+    n.em += ((matches(n) ? 1 : .08) - n.em) * .08;
+    const sel = anyFilter() && matches(n) ? .35 : 0;
+    n.halo.material.opacity = (.18 + flash * .6 + (f ? .3 : 0) + sel * .5) * n.vis * n.em; n.halo.scale.setScalar(36 + flash * 140 + (f ? 30 : 0) + sel * 50); n.dot.rotation.y = t * .3 + n.seed;
+    n.dot.material.opacity = n.vis * Math.max(.15, n.em);
+    if (n.spoke) { const st = n.sp >= 0 ? STARS[n.sp].grp.position : null; n.spoke.visible = !!st; if (st) { const a = n.spoke.geometry.attributes.position; a.setXYZ(0, st.x, st.y, st.z); a.setXYZ(1, n.g.position.x, n.g.position.y, n.g.position.z); a.needsUpdate = true; n.spoke.material.opacity = (.12 + sel * .5) * n.vis * n.em; } }
+  }
+
+  for (const L of LINKS.values()) {
+    const a = refOf(L.d.a), b = refOf(L.d.b);
+    if (!a || !b) { L.line.visible = false; L.parts.forEach(p => p.visible = false); continue; }
+    L.vis += ((Math.max(a.ord, b.ord) <= shownOrd ? 1 : 0) - L.vis) * .05;
+    const pa = a.obj.position, pb = b.obj.position; tC.copy(pa).add(pb).multiplyScalar(.22);
+    ca.setHex(colOf(a.sp)); cb.setHex(colOf(b.sp));
+    const pos = L.line.geometry.attributes.position, cols = L.line.geometry.attributes.color;
+    for (let k = 0; k <= L.segs; k++) { const u = k / L.segs; bez(pa, tC, pb, u, tA); pos.setXYZ(k, tA.x, tA.y, tA.z); cols.setXYZ(k, ca.r + (cb.r - ca.r) * u, ca.g + (cb.g - ca.g) * u, ca.b + (cb.b - ca.b) * u); }
+    pos.needsUpdate = true; cols.needsUpdate = true;
+    const na = NODES.get(L.d.a), nb = NODES.get(L.d.b);
+    const hit = !anyFilter() || matches(na) || matches(nb) || (/^sp/.test(L.d.a) && activeSp === +L.d.a[2]) || (/^sp/.test(L.d.b) && activeSp === +L.d.b[2]);
+    L.em = (L.em == null ? 1 : L.em) + ((hit ? 1 : .05) - (L.em == null ? 1 : L.em)) * .08;
+    const on = focus === L.id, age = Math.max(0, Math.min(1, (now - L.born) / 1800)) * L.em;
+    L.line.visible = true; L.line.material.opacity = (L.d.provisional ? .2 : .5) * (on ? 2 : 1) * L.vis * age;
+    L.parts.forEach((s, k) => {
+      const sp = L.d.kind === "tensione" ? .11 : .07, u = reduce ? (k + .5) / PN : (t * sp + k / PN + L.seed) % 1;
+      bez(pa, tC, pb, u, s.position); s.visible = true;
+      s.material.color.setRGB(ca.r + (cb.r - ca.r) * u, ca.g + (cb.g - ca.g) * u, ca.b + (cb.b - ca.b) * u);
+      s.material.opacity = (on ? 1 : .6) * L.vis * age * (L.d.provisional ? .5 : 1); s.scale.setScalar(on ? 18 : 11);
+    });
+  }
+
+  const ct = new T.Vector3(); let cn = 0;
+  if (anyFilter()) for (const n of NODES.values()) if (matches(n) && n.vis > .5) { ct.add(n.g.position); cn++; }
+  if (cn) ct.multiplyScalar(1 / cn).multiplyScalar(.7);
+  controls.target.lerp(ct, .03);
+  controls.update();
+  if (composer) composer.render(); else renderer.render(scene, camera);
+
+  /* etichette: proiettate, scalate sul viewport, e mai sovrapposte (vince la più importante, poi la più vicina) */
+  const W = innerWidth, H = innerHeight, v = new T.Vector3(), base = Math.max(.62, Math.min(1.15, Math.min(W / 1700, H / 950)));
+  const cand = [];
+  for (const L of LABELS) {
+    v.copy(L.pos()); const dist = camera.position.distanceTo(v); v.project(camera);
+    if (v.z > 1 || v.z < -1) { L.tgt = 0; L.hide = true; } else {
+      L.hide = false;
+      let op = Math.max(.35, Math.min(1, 1.9 - dist / 1000)), pri = 1 - v.z;
+      if (L.kind === "node") { const sel = anyFilter() ? matches(L.node) : inFocus(L.node.id); op *= L.node.vis * Math.max(.06, L.node.em); if (sel) { op = Math.max(op, .98 * L.node.vis); pri += 10; } if (anyFilter() && !matches(L.node)) pri -= 5; }
+      if (L.kind === "axis") { op *= axisGroup.visible ? .8 : 0; pri -= 2; }
+      if (L.kind === "star") { op = (L.star.live ? Math.max(op, .9) : op * .55) * (L.star.em == null ? 1 : Math.max(.25, L.star.em)); pri += 20; }
+      if (L.kind === "core") pri += 6;
+      const sc = base * Math.max(.7, Math.min(1.1, 700 / dist)), x = (v.x * .5 + .5) * W, y = (-v.y * .5 + .5) * H, dx = L.kind === "node" ? 12 * base : 0;
+      if (!L.w) { L.w = L.el.offsetWidth || 120; L.h = L.el.offsetHeight || 24; }
+      const w = L.w * sc, h = L.h * sc, left = x + dx - L.align * w;
+      L.tgt = op; L.sc = sc; L.x = x + dx; L.y = y; L.z = v.z;
+      cand.push({ L, pri, r: [left - 6, y - h / 2 - 3, left + w + 6, y + h / 2 + 3] });
+    }
+  }
+  cand.sort((a, b) => b.pri - a.pri);
+  const placed = [];
+  for (const c of cand) {
+    if (c.L.tgt < .04) continue;
+    const hit = placed.some(r => !(c.r[2] < r[0] || c.r[0] > r[2] || c.r[3] < r[1] || c.r[1] > r[3]));
+    if (hit && c.L.kind !== "star") c.L.tgt = 0; else placed.push(c.r);
+  }
+  for (const L of LABELS) {
+    L.op = (L.op || 0) + ((L.tgt || 0) - (L.op || 0)) * .25;
+    L.el.style.opacity = L.op.toFixed(3);
+    if (L.hide) continue;
+    if (L.kind === "node") L.el.classList.toggle("f", (anyFilter() ? matches(L.node) && !!activeTh : inFocus(L.node.id)) && L.node.vis > .5);
+    L.el.style.transform = `translate(${L.x.toFixed(1)}px, ${L.y.toFixed(1)}px) translate(${-L.align * 100}%, -50%) scale(${L.sc.toFixed(3)})`;
+    L.el.style.zIndex = String(Math.round((1 - L.z) * 1000));
+  }
+}
+function resize() { const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); if (composer) { composer.setSize(w, h); bloom.setSize(w, h); } }
+addEventListener("resize", resize); resize();
+requestAnimationFrame(frame);
+
+const cap = document.getElementById("cap"), capK = document.getElementById("capK"), capT = document.getElementById("capT");
+let queue = [], order = [], capTimer = null;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const nameOf = id => { const r = refOf(id); return !r ? "" : r.sp >= 0 ? SPEAKERS[r.sp].short : "il gioco"; };
+function showLink(id) {
+  const L = LINKS.get(id); if (!L) return;
+  cap.classList.add("out");
+  setTimeout(() => {
+    focus = id; const a = refOf(L.d.a), b = refOf(L.d.b);
+    capK.innerHTML = `<span>${esc({ ponte: "Ponte tra", tensione: "Tensione tra", eco: "Eco tra" }[L.d.kind] || "Filo tra")}</span><b style="color:${hex(colOf(a ? a.sp : -1))}">${esc(nameOf(L.d.a))}</b><span>e</span><b style="color:${hex(colOf(b ? b.sp : -1))}">${esc(nameOf(L.d.b))}</b>${L.d.provisional ? '<span class="prov">in attesa del secondo intervento</span>' : ""}`;
+    capT.textContent = L.d.text || ""; cap.classList.remove("out");
+  }, 700);
+}
+function relevant(id) { const L = LINKS.get(id); if (!L || !anyFilter()) return true; const a = NODES.get(L.d.a), b = NODES.get(L.d.b); return (a && matches(a)) || (b && matches(b)) || (/^sp/.test(L.d.a) && activeSp === +L.d.a[2]) || (/^sp/.test(L.d.b) && activeSp === +L.d.b[2]); }
+function cycle() { clearTimeout(capTimer); const ord = order.filter(relevant); if (queue.length) showLink(queue.shift()); else if (ord.length) { const i = ord.indexOf(focus); showLink(ord[(i + 1) % ord.length]); } capTimer = setTimeout(cycle, 13000); }
+function buildFilters() {
+  const fs = document.getElementById("fSp"), ft = document.getElementById("fTh");
+  fs.querySelectorAll(".chip").forEach(c => c.remove()); ft.querySelectorAll(".chip").forEach(c => c.remove());
+  const mk = (row, label, col, on, fn) => { const b = document.createElement("button"); b.type = "button"; b.className = "chip" + (on ? " on" : ""); label = label.charAt(0).toUpperCase() + label.slice(1); if (col != null) b.style.setProperty("--c", hex(col)); b.innerHTML = (col != null ? "<i></i>" : "") + esc(label); b.onclick = fn; row.appendChild(b); };
+  mk(fs, "Tutte le voci", null, activeSp < 0, () => setSp(-1));
+  SPEAKERS.forEach((sp, i) => mk(fs, sp.short, sp.col, activeSp === i, () => setSp(activeSp === i ? -1 : i)));
+  mk(ft, "Tutti i temi", null, !activeTh, () => setTh(null));
+  THEMES.forEach(th => mk(ft, th, null, activeTh === th, () => setTh(activeTh === th ? null : th)));
+}
+function setSp(i) { activeSp = i; buildFilters(); cycle(); }
+function setTh(t) { activeTh = t; buildFilters(); cycle(); }
+addEventListener("keydown", e => {
+  if (/^[1-4]$/.test(e.key)) setSp(activeSp === +e.key - 1 ? -1 : +e.key - 1);
+  else if (e.key === "0") { activeSp = -1; activeTh = null; buildFilters(); cycle(); }
+  else if (e.key === "t" || e.key === "T") { const i = THEMES.indexOf(activeTh); setTh(i + 1 < THEMES.length ? THEMES[i + 1] : null); }
+});
+buildFilters();
+
+/* fuori dal viewer: legge la fotografia pubblicata accanto alla pagina e la aggiorna ogni 20 secondi */
+async function staticFeed() {
+  let seenN = {}, seenL = {}, first = true;
+  const pull = async () => {
+    let data; try { const r = await fetch("data.json?t=" + Date.now(), { cache: "no-store" }); if (!r.ok) return; data = await r.json(); } catch (e) { return; }
+    Object.entries(data.nodes || {}).forEach(([id, d]) => { const k = JSON.stringify(d); if (seenN[id] !== k) { upsertNode(id, d, !first && !seenN[id]); seenN[id] = k; } });
+    Object.entries(data.links || {}).forEach(([id, d]) => { const k = JSON.stringify(d); if (seenL[id] !== k) { const isNew = !seenL[id]; upsertLink(id, d, !first); seenL[id] = k; if (!first) queue.push(id); } });
+    order = [...LINKS.values()].sort((x, y) => (y.d.order || 0) - (x.d.order || 0)).map(x => x.id);
+    if (data.stato && data.stato.text) document.getElementById("stateTxt").textContent = data.stato.text;
+    document.getElementById("empty").style.display = NODES.size ? "none" : "";
+    if (first) { first = false; cycle(); } else if (queue.length) cycle();
+  };
+  await pull(); setInterval(pull, 20000);
+}
+(async () => {
+  let db = null;
+  try { db = window.claude && window.claude.use ? await window.claude.use("db") : null; } catch (e) { db = null; }
+  if (!db) { staticFeed(); return; }
+  let first = true;
+  db.collection("nodes").onSnapshot(snap => {
+    snap.docChanges().forEach(ch => {
+      if (ch.type === "removed") { const n = NODES.get(ch.doc.id); if (n) { scene.remove(n.g); n.el.remove(); NODES.delete(ch.doc.id); const i = LABELS.findIndex(l => l.node === n); if (i >= 0) LABELS.splice(i, 1); } }
+      else upsertNode(ch.doc.id, ch.doc.data() || {}, ch.type === "added" && !first);
+    });
+    first = false; document.getElementById("empty").style.display = NODES.size ? "none" : "";
+  }, () => {});
+  let firstL = true;
+  db.collection("links").onSnapshot(snap => {
+    snap.docChanges().forEach(ch => {
+      if (ch.type === "removed") { const L = LINKS.get(ch.doc.id); if (L) { scene.remove(L.line); L.parts.forEach(p => scene.remove(p)); LINKS.delete(ch.doc.id); } return; }
+      upsertLink(ch.doc.id, ch.doc.data() || {}, !firstL); if (!firstL) queue.push(ch.doc.id);
+    });
+    order = [...LINKS.values()].sort((x, y) => (y.d.order || 0) - (x.d.order || 0)).map(x => x.id);
+    if (firstL) { firstL = false; cycle(); } else if (queue.length) cycle();
+  }, () => {});
+  db.doc("stato/ora").onSnapshot(d => { const v = d.exists ? d.data() : null; if (v && v.text) document.getElementById("stateTxt").textContent = v.text; }, () => {});
+})();
+</script>
+</body></html>
