@@ -1379,11 +1379,9 @@ const VIEWS = {
         mente: ["Prima scrivo io, poi chiedo.", "Le chiedo di contraddirmi, mai di darmi ragione.", "Una volta al giorno penso dove nessuno mi legge.", "Su ciò che amo, nessuna delega."]
       }[state.path.danno] || ["Prima scrivo io, poi chiedo.", "Le chiedo di contraddirmi, mai di darmi ragione.", "Su ciò che amo, nessuna delega.", "Una volta al giorno penso dove nessuno mi legge."]).map(k => `<div class="shade">${esc(k)}</div>`).join("")}</div>
     </div>`,
-  sessione: () => `<div class="epi" style="max-width:min(1500px,100%)">
-      <div class="lbl gold">Sessione I · il comitato scientifico di geniaLAB · quattro voci, quattro domande</div>
-      <h2 class="shade">Le domande che avete usato sulle sirene, <em>ora le facciamo a chi sa.</em></h2>
-      <div class="cols four">${PANEL.map(g => `<div class="col tag" style="--c:${TAGS[g.tag].c}"><div class="lbl">${g.area || TAGS[g.tag].name} · ${g.areaQ || TAGS[g.tag].q}</div><h3 class="shade" style="font-size:clamp(22px,calc(2.1 * var(--u)),40px)">${esc(g.name)}</h3><p class="shade" style="color:var(--mist)">${esc(g.bio)}</p></div>`).join("")}</div>
-      <p class="shade">Quattro voci del comitato scientifico, una domanda a testa, nell'area che le tocca. Poi il pubblico, con una regola sola: chi domanda dice chi è e da dove parla.</p>
+  sessione: () => `<div class="epi center">
+      <div class="lbl gold">Sessione I</div>
+      <div style="display:flex;flex-direction:column;gap:clamp(6px,1.4vh,18px);align-items:center">${PANEL.map(g => `<h2 class="shade" style="font-size:clamp(40px,calc(5 * var(--u)),100px);margin:0;line-height:1">${esc(g.name)}</h2>`).join("")}</div>
     </div>`,
   ospite: b => { const g = PANEL[b.j], t = TAGS[g.tag]; return `<div class="epi" style="max-width:min(1300px,100%);--c:${t.c}">
       <div class="lbl" style="color:${t.c}">Sessione I · ${b.j + 1} di ${PANEL.length} · ${g.area || t.name} · ${g.areaQ || t.q}</div>
