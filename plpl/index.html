@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: arredi spostabili, grafiche sulle pareti, copertine sui tavoli, schermo al posto dei ripiani.">
+<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: arredi spostabili, grafiche sulle pareti, copertine sui tavoli, due schermi.">
 <style>body{margin:0}img{max-width:100%}</style>
 <title>Stand PLPL 16 mq</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -226,11 +226,12 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       </section>
 
       <section class="sec">
-        <h2>Schermo al posto dei ripiani</h2>
-        <label class="tg"><input class="opt" type="checkbox" id="optScreen"> Togli i ripiani A e monta uno schermo</label>
+        <h2>Schermi</h2>
+        <label class="tg"><input class="opt" type="checkbox" id="optScreen" checked> Togli i ripiani A e monta uno schermo sulla parete di fondo</label>
+        <label class="tg"><input class="opt" type="checkbox" id="optScreen2" checked> Secondo schermo uguale, al centro della parete sinistra</label>
         <div class="sub" id="scrOpts" hidden>
           <div class="fld"><label for="scrSize">Diagonale</label>
-            <select class="opt" id="scrSize"><option value="55">55″ · 122 × 69 cm</option><option value="65" selected>65″ · 144 × 81 cm</option><option value="75">75″ · 166 × 93 cm</option><option value="86">86″ · 190 × 107 cm</option></select></div>
+            <select class="opt" id="scrSize"><option value="55">55″ · 122 × 69 cm</option><option value="65">65″ · 144 × 81 cm</option><option value="75" selected>75″ · 166 × 93 cm</option><option value="86">86″ · 190 × 107 cm</option></select></div>
           <div class="fld"><label for="scrMount">Montaggio</label>
             <select class="opt" id="scrMount"><option value="wall">A parete, sul pannello</option><option value="stand">Su piantana a terra</option></select></div>
           <div class="fld"><label for="scrH">Centro da terra</label>
@@ -240,7 +241,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
             <label class="btn primary" for="upScreen">Carica immagine o video</label>
             <button type="button" id="scrIdle">Contenuto di prova</button>
           </div>
-          <p class="note">Lo schermo si trascina lungo la parete di fondo, e anche in altezza se è montato a parete. I video si vedono finché la pagina resta aperta; le immagini restano salvate.</p>
+          <p class="note">Diagonale e montaggio valgono per entrambi. Ogni schermo si trascina lungo la sua parete, e anche in altezza se è montato a parete. Il cursore dell'altezza e il contenuto caricato vanno sullo schermo selezionato, o su tutti e due se non ne hai selezionato nessuno. I video si vedono finché la pagina resta aperta; le immagini restano salvate.</p>
         </div>
       </section>
 
@@ -520,17 +521,16 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     scene.add(p); shelfPivots.push(p);
   }
 
-  /* ---------- schermo al posto dei ripiani ---------- */
+  /* ---------- schermi al posto dei ripiani ---------- */
   const SIZES = { 55: [121.8, 68.5], 65: [143.9, 80.9], 75: [166, 93.4], 86: [190.4, 107.1] };   // area visibile 16:9
-  const scr = { kind: 'screen', u: 200, v: 150, img: null, video: null, on: false, bad: false };
-  const scrGroup = new THREE.Group(); scene.add(scrGroup);
-  const scrFrameM = mat(0x0d0e10, .35, .3), scrMountM = mat(0x2b2e33, .5, .6);
-  const scrDisplayM = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  // ogni schermo vive nel sistema della sua parete: u lungo la parete, z locale = distanza dal pannello
+  const SCREEN_WALLS = {
+    back: { name: 'parete di fondo', along: 'da sinistra', place: (g, u) => { g.position.copy(W(u, 0, 0)); g.rotation.y = 0; }, normal: [0, 0, 1], at: d => W(0, d, 0), u: p => p.x + S / 2, foot: (u, d) => ({ x: u, z: d, rot: 0 }) },
+    left: { name: 'parete sinistra', along: 'dal fondo', place: (g, u) => { g.position.copy(W(0, u, 0)); g.rotation.y = 90 * DEG; }, normal: [1, 0, 0], at: d => W(d, 0, 0), u: p => p.z + S / 2, foot: (u, d) => ({ x: d, z: u, rot: 90 }) }
+  };
+  const scrMountM = mat(0x2b2e33, .5, .6);
   const scrIdleC = document.createElement('canvas'); scrIdleC.width = 1920; scrIdleC.height = 1080;
   const scrIdleT = new THREE.CanvasTexture(scrIdleC); scrIdleT.anisotropy = ANISO;
-  let scrTex = scrIdleT;
-  const scrTagEl = tag('Schermo', '', 'mov');
-  let scrLabel = null, scrOutline = null;
   function drawIdle(text) {
     const g = scrIdleC.getContext('2d');
     const gr = g.createLinearGradient(0, 0, 1920, 1080); gr.addColorStop(0, '#141a26'); gr.addColorStop(1, '#2b0e14');
@@ -547,73 +547,93 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     g.fillText('Contenuto di prova · carica un\'immagine o un video dal pannello', 150, 960);
     scrIdleT.needsUpdate = true;
   }
-  const scrSize = () => SIZES[$('#scrSize').value] || SIZES[65];
-  const scrStand = () => $('#scrMount').value === 'stand';
-  const scrZ = () => scrStand() ? 16 : 7;     // centro della cornice dal filo della parete di fondo
-  function clampScreen() {
-    const [w, h] = scrSize();
-    scr.u = Math.min(Math.max(scr.u, w / 2 + 2), S - w / 2 - 2);
-    scr.v = scrStand() ? Math.min(Math.max(scr.v, h / 2 + 45), 215) : Math.min(Math.max(scr.v, h / 2 + 2), WALL_H - h / 2 - 2);
+  function makeScreen(key, title) {
+    const s = { kind: 'screen', key, title, u: 200, v: 150, img: null, video: null, on: false, bad: false,
+      group: new THREE.Group(), frameM: mat(0x0d0e10, .35, .3), displayM: new THREE.MeshBasicMaterial({ color: 0xffffff, map: scrIdleT }),
+      tex: scrIdleT, tagEl: tag(title, '', 'mov'), labelObj: null, outline: null };
+    s.tagEl.addEventListener('click', () => select(s));
+    scene.add(s.group);
+    return s;
   }
-  function buildScreen() {
-    if (scrLabel) { scrLabel.removeFromParent(); scrLabel = null; }
-    for (const c of [...scrGroup.children]) { scrGroup.remove(c); c.traverse(o => { if (o.geometry) o.geometry.dispose(); }); }
-    if (!scr.on) return;
-    clampScreen();
-    const [w, h] = scrSize(), v = scr.v, zc = scrZ(), stand = scrStand();
-    scrGroup.position.copy(W(scr.u, 0, 0));
-    const frame = box(w + 2, h + 2, 5, scrFrameM); frame.position.set(0, v, zc); frame.userData.screen = true; scrGroup.add(frame);
-    const disp = new THREE.Mesh(new THREE.PlaneGeometry(w, h), scrDisplayM); disp.position.set(0, v, zc + 2.55); disp.userData.screen = true; scrGroup.add(disp);
-    scrOutline = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-w / 2 - 2, v - h / 2 - 2, zc + 2.7), new THREE.Vector3(w / 2 + 2, v - h / 2 - 2, zc + 2.7), new THREE.Vector3(w / 2 + 2, v + h / 2 + 2, zc + 2.7), new THREE.Vector3(-w / 2 - 2, v + h / 2 + 2, zc + 2.7)]), new THREE.LineBasicMaterial({ color: 0x2b6fd6 }));
-    scrGroup.add(scrOutline);
+  const screens = [makeScreen('back', 'Schermo 1'), makeScreen('left', 'Schermo 2')];
+  const scrSize = () => SIZES[$('#scrSize').value] || SIZES[75];
+  const scrStand = () => $('#scrMount').value === 'stand';
+  const scrZ = () => scrStand() ? 16 : 7;     // centro della cornice dal filo della parete
+  function clampScreen(s) {
+    const [w, h] = scrSize();
+    s.u = Math.min(Math.max(s.u, w / 2 + 2), S - w / 2 - 2);
+    s.v = scrStand() ? Math.min(Math.max(s.v, h / 2 + 45), 215) : Math.min(Math.max(s.v, h / 2 + 2), WALL_H - h / 2 - 2);
+  }
+  function buildScreen(s) {
+    if (s.labelObj) { s.labelObj.removeFromParent(); s.labelObj = null; }
+    for (const c of [...s.group.children]) { s.group.remove(c); c.traverse(o => { if (o.geometry) o.geometry.dispose(); }); }
+    s.outline = null;
+    if (!s.on) return;
+    clampScreen(s);
+    const [w, h] = scrSize(), v = s.v, zc = scrZ(), stand = scrStand(), g = s.group;
+    SCREEN_WALLS[s.key].place(g, s.u);
+    const frame = box(w + 2, h + 2, 5, s.frameM); frame.position.set(0, v, zc); frame.userData.screen = s; g.add(frame);
+    const disp = new THREE.Mesh(new THREE.PlaneGeometry(w, h), s.displayM); disp.position.set(0, v, zc + 2.55); disp.userData.screen = s; g.add(disp);
+    s.outline = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-w / 2 - 2, v - h / 2 - 2, zc + 2.7), new THREE.Vector3(w / 2 + 2, v - h / 2 - 2, zc + 2.7), new THREE.Vector3(w / 2 + 2, v + h / 2 + 2, zc + 2.7), new THREE.Vector3(-w / 2 - 2, v + h / 2 + 2, zc + 2.7)]), new THREE.LineBasicMaterial({ color: 0x2b6fd6 }));
+    g.add(s.outline);
     if (stand) {
       const px = Math.min(w * .3, 45);
       for (const sx of [-1, 1]) {
-        const up = box(5, v + 10, 4, scrMountM); up.position.set(sx * px, (v + 10) / 2, zc - 4.5); up.userData.screen = true; scrGroup.add(up);
-        const foot = box(6, 3, 60, scrMountM); foot.position.set(sx * px, 1.5, 30); foot.userData.screen = true; scrGroup.add(foot);
+        const up = box(5, v + 10, 4, scrMountM); up.position.set(sx * px, (v + 10) / 2, zc - 4.5); up.userData.screen = s; g.add(up);
+        const foot = box(6, 3, 60, scrMountM); foot.position.set(sx * px, 1.5, 30); foot.userData.screen = s; g.add(foot);
       }
-      const bar = box(px * 2 + 5, 4, 3, scrMountM); bar.position.set(0, 30, zc - 4.5); scrGroup.add(bar);
+      const bar = box(px * 2 + 5, 4, 3, scrMountM); bar.position.set(0, 30, zc - 4.5); g.add(bar);
     } else {
-      const br = box(Math.min(w * .45, 60), Math.min(h * .45, 40), 4, scrMountM); br.position.set(0, v, 2.4); scrGroup.add(br);
+      const br = box(Math.min(w * .45, 60), Math.min(h * .45, 40), 4, scrMountM); br.position.set(0, v, 2.4); g.add(br);
     }
-    scrTagEl.querySelector('b').textContent = `Schermo ${$('#scrSize').value}″`;
-    scrLabel = label2d(scrTagEl, new THREE.Vector3(0, v + h / 2 + 12, zc), scrGroup);
+    s.tagEl.querySelector('b').textContent = `${s.title} · ${$('#scrSize').value}″`;
+    s.labelObj = label2d(s.tagEl, new THREE.Vector3(0, v + h / 2 + 12, zc), g);
+  }
+  function sliderScreen() { return selected && selected.kind === 'screen' ? selected : screens.find(x => x.on) || screens[0]; }
+  function updateSlider() {
+    const s = sliderScreen(), [, h] = scrSize(), stand = scrStand();
     $('#scrH').min = Math.ceil(stand ? h / 2 + 45 : h / 2 + 2); $('#scrH').max = Math.floor(stand ? 215 : WALL_H - h / 2 - 2);
-    $('#scrH').value = Math.round(v); $('#scrHv').textContent = Math.round(v) + ' cm';
-    tintScreen();
+    $('#scrH').value = Math.round(s.v); $('#scrHv').textContent = Math.round(s.v) + ' cm';
   }
-  function tintScreen() {
-    if (!scrOutline) return;
-    const sel = selected === scr;
-    scrOutline.visible = sel || scr.bad;
-    scrOutline.material.color.setHex(scr.bad ? 0xc4161c : 0x2b6fd6);
-    scrFrameM.emissive.setHex(scr.bad ? 0x7a0000 : 0x000000); scrFrameM.emissiveIntensity = scr.bad ? .8 : 0;
-    scrTagEl.classList.toggle('on', sel && !scr.bad); scrTagEl.classList.toggle('bad', scr.bad);
+  function buildScreens() { screens.forEach(buildScreen); updateSlider(); tintScreens(); }
+  function tintScreens() {
+    for (const s of screens) {
+      if (!s.outline) continue;
+      const sel = selected === s;
+      s.outline.visible = sel || s.bad;
+      s.outline.material.color.setHex(s.bad ? 0xc4161c : 0x2b6fd6);
+      s.frameM.emissive.setHex(s.bad ? 0x7a0000 : 0x000000); s.frameM.emissiveIntensity = s.bad ? .8 : 0;
+      s.tagEl.classList.toggle('on', sel && !s.bad); s.tagEl.classList.toggle('bad', s.bad);
+    }
   }
-  // impronta dello schermo per il controllo degli ingombri
-  function screenFoot() {
+  // impronta a terra dello schermo, per il controllo degli ingombri
+  function screenFoot(s) {
     const [w] = scrSize(), stand = scrStand();
-    return { x: scr.u, z: stand ? 30 : 4.5, rot: 0, stand, t: { w: stand ? Math.min(w * .6, 90) + 6 : w + 2, d: stand ? 60 : 9 } };
+    return Object.assign(SCREEN_WALLS[s.key].foot(s.u, stand ? 30 : 4.5), { stand, t: { w: stand ? Math.min(w * .6, 90) + 6 : w + 2, d: stand ? 60 : 9 } });
   }
   function fitCover(t, a) {
-    const s = 16 / 9; t.repeat.set(1, 1); t.offset.set(0, 0);
-    if (a > s) { t.repeat.x = s / a; t.offset.x = (1 - t.repeat.x) / 2; } else { t.repeat.y = a / s; t.offset.y = (1 - t.repeat.y) / 2; }
+    const r = 16 / 9; t.repeat.set(1, 1); t.offset.set(0, 0);
+    if (a > r) { t.repeat.x = r / a; t.offset.x = (1 - t.repeat.x) / 2; } else { t.repeat.y = a / r; t.offset.y = (1 - t.repeat.y) / 2; }
   }
-  function applyScreenContent() {
-    if (scrTex !== scrIdleT) scrTex.dispose();
-    if (scr.video) {
-      const vd = scr.video, t = new THREE.VideoTexture(vd);
+  function applyScreenContent(s) {
+    if (s.tex !== scrIdleT) s.tex.dispose();
+    if (s.video) {
+      const vd = s.video, t = new THREE.VideoTexture(vd);
       const fit = () => fitCover(t, vd.videoWidth / vd.videoHeight);
       if (vd.videoWidth) fit(); else vd.addEventListener('loadedmetadata', fit, { once: true });
-      scrTex = t;
-    } else if (scr.img) {
+      s.tex = t;
+    } else if (s.img) {
       const im = new Image(), t = new THREE.Texture(im); t.anisotropy = ANISO;
       im.onload = () => { fitCover(t, im.width / im.height); t.needsUpdate = true; };
-      im.src = scr.img; scrTex = t;
-    } else scrTex = scrIdleT;
-    scrDisplayM.map = scrTex; scrDisplayM.needsUpdate = true;
+      im.src = s.img; s.tex = t;
+    } else s.tex = scrIdleT;
+    s.displayM.map = s.tex; s.displayM.needsUpdate = true;
   }
-  function stopVideo() { if (scr.video) { scr.video.pause(); URL.revokeObjectURL(scr.video.src); scr.video = null; } }
+  function stopVideo(s) {
+    const vd = s.video; s.video = null;
+    if (vd && !screens.some(x => x.video === vd)) { vd.pause(); URL.revokeObjectURL(vd.src); }
+  }
+  const screenTargets = () => selected && selected.kind === 'screen' ? [selected] : screens.filter(x => x.on);
 
   /* ---------- costruttori degli arredi ---------- */
   function makeTable(it) {
@@ -918,10 +938,11 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     for (let i = 0; i < solids.length; i++) for (let j = i + 1; j < solids.length; j++) {
       if (overlap(solids[i], solids[j])) { solids[i].bad = solids[j].bad = true; pairs.push(solids[i].id + ' e ' + solids[j].id); }
     }
-    scr.bad = false;
-    if (scr.on) {
-      const f = screenFoot(), bottom = scr.v - scrSize()[1] / 2 - 1;
-      for (const s of solids) if (overlap(f, s) && (f.stand || bottom < s.t.h + 1)) { s.bad = scr.bad = true; pairs.push('schermo e ' + s.id); }
+    for (const sc of screens) {
+      sc.bad = false;
+      if (!sc.on) continue;
+      const f = screenFoot(sc), bottom = sc.v - scrSize()[1] / 2 - 1;
+      for (const s of solids) if (overlap(f, s) && (f.stand || bottom < s.t.h + 1)) { s.bad = sc.bad = true; pairs.push(sc.title.toLowerCase() + ' e ' + s.id); }
     }
     const al = $('#alert');
     al.hidden = !pairs.length;
@@ -942,7 +963,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       it.tagEl.classList.toggle('bad', bad);
     }
     for (const gr of graphics) { const sel = gr === selected; gr.outline.visible = sel; gr.tagEl.classList.toggle('on', sel); }
-    tintScreen();
+    tintScreens();
   }
 
   /* ---------- pannello selezione ---------- */
@@ -968,9 +989,11 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     if (isS) {
       const [w, h] = scrSize();
       $('#selDup').hidden = $('#selDel').hidden = true;
-      setName('Schermo', `${$('#scrSize').value}″ ${scrStand() ? 'su piantana' : 'a parete'}`);
-      kvRows([['schermo', `${fmt(w)} × ${fmt(h)} cm`], ['da sinistra', `${fmt(scr.u - w / 2)} → ${fmt(scr.u + w / 2)}`],
-        ['da terra', `${fmt(scr.v - h / 2)} → ${fmt(scr.v + h / 2)}`], ['contenuto', scr.video ? 'video' : scr.img ? 'immagine' : 'di prova']]);
+      const sw = SCREEN_WALLS[o.key];
+      setName(o.title, `${$('#scrSize').value}″ ${scrStand() ? 'su piantana' : 'a parete'}, ${sw.name}`);
+      kvRows([['schermo', `${fmt(w)} × ${fmt(h)} cm`], [sw.along, `${fmt(o.u - w / 2)} → ${fmt(o.u + w / 2)}`],
+        ['da terra', `${fmt(o.v - h / 2)} → ${fmt(o.v + h / 2)}`], ['contenuto', o.video ? 'video' : o.img ? 'immagine' : 'di prova']]);
+      updateSlider();
       return;
     }
     $('#selDup').hidden = !user;
@@ -1051,7 +1074,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   }
   function nudge(dx, dz) {
     const o = selected; if (!o) return;
-    if (o.kind === 'screen') { scr.u += dx; scr.v -= dz; buildScreen(); validate(); updatePanel(); save(); return; }
+    if (o.kind === 'screen') { o.u += dx; o.v -= dz; buildScreen(o); validate(); updatePanel(); save(); return; }
     pushHistory();
     if (o.kind === 'graphic') { o.u += dx; o.v -= dz; changed(o); return; }
     const riders = ridersOf(o);
@@ -1082,7 +1105,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   function setNdc(e) { const r = renderer.domElement.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, activeCam); }
   function pick(e) {
     setNdc(e);
-    const objs = items.filter(i => i.group.visible).map(i => i.group).concat(graphics.map(g => g.mesh), scrGroup.children);
+    const objs = items.filter(i => i.group.visible).map(i => i.group).concat(graphics.map(g => g.mesh), screens.flatMap(x => x.group.children));
     if (!$('#optXray').checked) objs.push(...wallMeshes);
     for (const h of ray.intersectObjects(objs, true)) {
       let o = h.object;
@@ -1091,7 +1114,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       for (let p = o; p; p = p.parent) if (!p.visible) { vis = false; break; }
       if (!vis) continue;
       if (o.userData.graphic) return o.userData.graphic;
-      if (o.userData.screen) return scr;
+      if (o.userData.screen) return o.userData.screen;
       if (o.userData.wall) return null;
       while (o && !o.userData.item) o = o.parent;
       if (o) return o.userData.item;
@@ -1103,8 +1126,9 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     const o = pick(e);
     let ok = false;
     if (o && o.kind === 'screen') {
-      const pl = new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 0, 1), W(0, scrZ(), 0));
-      if (ray.ray.intersectPlane(pl, hit)) { ok = true; drag = { o, pl, ou: hit.x + S / 2 - scr.u, ov: hit.y - scr.v }; }
+      const sw = SCREEN_WALLS[o.key];
+      const pl = new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(...sw.normal), sw.at(scrZ()));
+      if (ray.ray.intersectPlane(pl, hit)) { ok = true; drag = { o, pl, ou: sw.u(hit) - o.u, ov: hit.y - o.v }; }
     } else if (o && o.kind === 'graphic') {
       if (ray.ray.intersectPlane(WALLS[o.wall].plane, hit)) {
         ok = true;
@@ -1133,10 +1157,10 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       const o = drag.o, snapOn = $('#optSnap').checked;
       if (o.kind === 'screen') {
         if (!ray.ray.intersectPlane(drag.pl, hit)) return;
-        scr.u = hit.x + S / 2 - drag.ou;
-        if (!scrStand()) scr.v = hit.y - drag.ov;
-        if (snapOn) { scr.u = Math.round(scr.u / 5) * 5; scr.v = Math.round(scr.v / 5) * 5; }
-        buildScreen(); validate();
+        o.u = SCREEN_WALLS[o.key].u(hit) - drag.ou;
+        if (!scrStand()) o.v = hit.y - drag.ov;
+        if (snapOn) { o.u = Math.round(o.u / 5) * 5; o.v = Math.round(o.v / 5) * 5; }
+        buildScreen(o); updateSlider(); validate();
       } else if (o.kind === 'graphic') {
         if (!ray.ray.intersectPlane(WALLS[o.wall].plane, hit)) return;
         o.u = WALLS[o.wall].u(hit) - drag.ou; o.v = hit.y - drag.ov;
@@ -1340,8 +1364,8 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       lines.push(`${displayName(it)} ${it.t.name}: x ${fmt(it.x - hx)}–${fmt(it.x + hx)}, z ${fmt(it.z - hz)}–${fmt(it.z + hz)}, rotazione ${fmt(norm(it.rot))}°`);
     }
     for (const g of graphics) lines.push(`Grafica ${g.id.split('-')[1]} su ${WALLS[g.wall].name.toLowerCase()}: ${fmt(g.w)} × ${fmt(gH(g))} cm, da ${fmt(g.u - g.w / 2)} a ${fmt(g.u + g.w / 2)}, da terra ${fmt(g.v - gH(g) / 2)}–${fmt(g.v + gH(g) / 2)}`);
-    if (scr.on) { const [w, h] = scrSize(); lines.push(`Schermo ${$('#scrSize').value}″ ${scrStand() ? 'su piantana' : 'a parete'} al posto dei ripiani A: ${fmt(w)} × ${fmt(h)} cm, da sinistra ${fmt(scr.u - w / 2)}–${fmt(scr.u + w / 2)}, da terra ${fmt(scr.v - h / 2)}–${fmt(scr.v + h / 2)}`); }
-    else lines.push(`Ripiani A inclinati di ${$('#tilt').value}°.`);
+    for (const sc of screens) if (sc.on) { const [w, h] = scrSize(), sw = SCREEN_WALLS[sc.key]; lines.push(`${sc.title} ${$('#scrSize').value}″ ${scrStand() ? 'su piantana' : 'a parete'}, ${sw.name}: ${fmt(w)} × ${fmt(h)} cm, ${sw.along} ${fmt(sc.u - w / 2)}–${fmt(sc.u + w / 2)}, da terra ${fmt(sc.v - h / 2)}–${fmt(sc.v + h / 2)}`); }
+    if (!screens[0].on) lines.push(`Ripiani A inclinati di ${$('#tilt').value}°.`);
     lines.push(`Fascia: ${$('#sign').value}`);
     const text = lines.join('\n');
     const p = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(text) : Promise.reject();
@@ -1388,8 +1412,8 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     const o = {};
     for (const id of OPT_IDS) o[id] = $('#' + id).checked;
     o.tilt = +$('#tilt').value; o.sign = $('#sign').value;
-    o.optScreen = $('#optScreen').checked; o.scrSize = $('#scrSize').value; o.scrMount = $('#scrMount').value;
-    o.scrU = scr.u; o.scrV = scr.v; o.scrImg = scr.img;
+    o.optScreen = $('#optScreen').checked; o.optScreen2 = $('#optScreen2').checked; o.scrSize = $('#scrSize').value; o.scrMount = $('#scrMount').value;
+    o.screens = screens.map(x => ({ key: x.key, u: x.u, v: x.v, img: x.img })); o.cfg = 3;
     return o;
   }
   function applyOpts() {
@@ -1404,35 +1428,36 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     shelfPivots.forEach(p => p.rotation.x = o.tilt * DEG);
     $('#tiltV').textContent = o.tilt + '°';
     drawSign(o.sign); drawIdle(o.sign);
-    scr.on = o.optScreen;
-    shelfPivots.forEach(p => p.visible = !scr.on);
-    uprights.forEach(u => u.visible = !scr.on);
-    aTags.forEach(t => t.visible = !scr.on);
-    $('#scrOpts').hidden = !scr.on; $('#tiltSec').hidden = scr.on;
-    if (!scr.on && selected === scr) selected = null;
-    buildScreen();
+    screens[0].on = o.optScreen; screens[1].on = o.optScreen2;
+    const anyScr = screens.some(x => x.on);
+    shelfPivots.forEach(p => p.visible = !screens[0].on);
+    uprights.forEach(u => u.visible = !screens[0].on);
+    aTags.forEach(t => t.visible = !screens[0].on);
+    $('#scrOpts').hidden = !anyScr; $('#tiltSec').hidden = screens[0].on;
+    if (selected && selected.kind === 'screen' && !selected.on) selected = null;
+    buildScreens();
   }
   document.querySelectorAll('.opt').forEach(i => i.addEventListener('input', () => { applyOpts(); validate(); updatePanel(); save(); }));
-  $('#scrH').addEventListener('input', () => { scr.v = +$('#scrH').value; buildScreen(); validate(); updatePanel(); });
+  $('#scrH').addEventListener('input', () => { for (const sc of screenTargets()) { sc.v = +$('#scrH').value; buildScreen(sc); } updateSlider(); tintScreens(); validate(); updatePanel(); });
   $('#scrH').addEventListener('change', save);
-  scrTagEl.addEventListener('click', () => select(scr));
   $('#upScreen').addEventListener('change', async e => {
     const f = e.target.files[0]; e.target.value = '';
-    if (!f) return;
+    const targets = screenTargets();
+    if (!f || !targets.length) return;
     if (f.type.startsWith('video/')) {
-      stopVideo(); scr.img = null;
       const vd = document.createElement('video');
       vd.muted = true; vd.loop = true; vd.playsInline = true; vd.src = URL.createObjectURL(f);
       vd.play().catch(() => {});
-      scr.video = vd;
+      for (const sc of targets) { stopVideo(sc); sc.img = null; sc.video = vd; }
     } else if (f.type.startsWith('image/')) {
-      try { const im = await readImage(f, 1920); stopVideo(); scr.img = im.url; }
+      try { const im = await readImage(f, 1920); for (const sc of targets) { stopVideo(sc); sc.img = im.url; } }
       catch (err) { toast('Non riesco a leggere ' + f.name + '.'); return; }
     } else { toast('Servono un\'immagine o un video.'); return; }
-    applyScreenContent(); select(scr); save();
-    toast(scr.video ? 'Video sullo schermo: resta finché la pagina è aperta.' : 'Immagine sullo schermo.');
+    targets.forEach(applyScreenContent); updatePanel(); save();
+    const on = targets.length > 1 ? 'su entrambi gli schermi' : 'sullo ' + targets[0].title.toLowerCase();
+    toast(f.type.startsWith('video/') ? `Video ${on}: resta finché la pagina è aperta.` : `Immagine ${on}.`);
   });
-  $('#scrIdle').onclick = () => { stopVideo(); scr.img = null; applyScreenContent(); updatePanel(); save(); };
+  $('#scrIdle').onclick = () => { for (const sc of screenTargets()) { stopVideo(sc); sc.img = null; applyScreenContent(sc); } updatePanel(); save(); };
 
   // fornitura dal PDF
   const FORN = [
@@ -1487,11 +1512,14 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   const saved = store.get(KEY);
   if (saved && saved.opts) {
     for (const [k, v] of Object.entries(saved.opts)) { const el = $('#' + k); if (!el) continue; if (el.type === 'checkbox') el.checked = !!v; else el.value = v; }
-    if (saved.opts.scrU != null) scr.u = saved.opts.scrU;
-    if (saved.opts.scrV != null) scr.v = saved.opts.scrV;
-    if (saved.opts.scrImg) scr.img = saved.opts.scrImg;
+    for (const d of saved.opts.screens || []) { const sc = screens.find(x => x.key === d.key); if (sc) Object.assign(sc, { u: d.u, v: d.v, img: d.img }); }
+    if (saved.opts.scrImg) screens[0].img = saved.opts.scrImg;
+    if (!(saved.opts.cfg >= 3)) {   // configurazione richiesta: due 75 pollici a parete, al centro
+      $('#optScreen').checked = $('#optScreen2').checked = true; $('#scrSize').value = '75'; $('#scrMount').value = 'wall';
+      screens.forEach(x => { x.u = 200; x.v = 150; });
+    }
   }
-  applyScreenContent();
+  screens.forEach(applyScreenContent);
   if (saved && saved.layout) {
     for (const s of saved.layout.items || []) if (s.type === 'book') seq.book = Math.max(seq.book, +s.id.split('-')[1] || 0);
     for (const g of saved.layout.graphics || []) seq.graf = Math.max(seq.graf, +g.id.split('-')[1] || 0);
