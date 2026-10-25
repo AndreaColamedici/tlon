@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: tavoli in esposizione, pareti con motivo botanico, grafiche, due schermi.">
+<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: tavoli in esposizione, pareti con motivo botanico e lettori nascosti, grafiche, due schermi.">
 <style>body{margin:0}img{max-width:100%}</style>
 <title>Stand PLPL 16 mq</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -260,7 +260,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
           <label class="tg"><input class="pat" type="checkbox" id="patSym" checked> Simmetria a specchio, come nella copertina</label>
           <div class="row"><button type="button" id="patNew">Nuova variante</button></div>
           <div class="row"><button type="button" id="svgBack">SVG fondo</button><button type="button" id="svgLeft">SVG sinistra</button><button type="button" id="svgRight">SVG destra</button></div>
-          <p class="note">Il motivo è disegnato dal modello sulla scia dell'illustrazione del Mostruoso femminile: felci, drosere, piante carnivore, foglie, funghi, occhi-fiore, falene, viticci. Ogni parete ha la sua composizione. Gli SVG sono vettoriali in scala 1:1, misurati in centimetri e pronti per la tipografia; il download funziona dalla pagina su tlon.it.</p>
+          <p class="note">Il motivo è disegnato dal modello sulla scia dell'illustrazione del Mostruoso femminile: felci, drosere, piante carnivore, foglie, funghi, occhi-fiore, falene, viticci. Tra le piante si nascondono lettori seduti su pile di libri, sdraiati, in piedi o appollaiati su un ramo, e libri aperti che volano. Ogni parete ha la sua composizione. Gli SVG sono vettoriali in scala 1:1, misurati in centimetri e pronti per la tipografia; il download funziona dalla pagina su tlon.it.</p>
         </div>
       </section>
 
@@ -639,6 +639,61 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
         leaf(x, y + s * .4, UP, s * .85, s * .1, spot);
         for (const sgn of [-1, 1]) add(`M${P(x, y - s * .4)} Q${P(x + sgn * s * .25, y - s * .85)} ${P(x + sgn * s * .45, y - s * .95)}`, { stroke: spot, sw: .2 });
       }
+      // lettori e libri nascosti: silhouette in coordinate unitarie, v = 1 è il piano d'appoggio dei piedi, rivolte a destra
+      const SEATED = [
+        { c: [.47, .14], r: .085 }, { l: [[.43, .2], [.41, .27]], w: .07 },
+        { l: [[.40, .27], [.34, .5], [.30, .74]], w: .15 },
+        { l: [[.30, .76], [.50, .62], [.62, .54]], w: .11 }, { l: [[.62, .54], [.70, .78], [.74, .97]], w: .09 }, { l: [[.74, .98], [.84, .99]], w: .06 },
+        { l: [[.40, .31], [.52, .46], [.62, .40]], w: .06 },
+        { poly: [[.56, .38], [.64, .42], [.74, .35], [.73, .30], [.64, .36], [.57, .32]], page: true }
+      ];
+      const STANDING = [
+        { c: [.535, .075], r: .055 }, { l: [[.515, .12], [.505, .16]], w: .04 },
+        { l: [[.50, .17], [.49, .34], [.48, .52]], w: .12 },
+        { l: [[.47, .52], [.45, .75], [.44, .98]], w: .065 }, { l: [[.50, .52], [.54, .75], [.57, .98]], w: .065 },
+        { l: [[.44, .985], [.50, .99]], w: .035 }, { l: [[.57, .985], [.63, .99]], w: .035 },
+        { l: [[.50, .19], [.56, .31], [.62, .25]], w: .04 },
+        { poly: [[.58, .25], [.63, .28], [.70, .23], [.69, .195], [.63, .24], [.585, .215]], page: true }
+      ];
+      const LYING = [
+        { c: [.80, .66], r: .075 },
+        { l: [[.72, .80], [.50, .88], [.32, .90]], w: .13 },
+        { l: [[.32, .90], [.12, .93]], w: .075 }, { l: [[.32, .89], [.18, .86], [.16, .66]], w: .07 },
+        { l: [[.72, .80], [.80, .94], [.90, .93]], w: .05 },
+        { poly: [[.86, .965], [.93, .94], [1, .965], [1, .985], [.93, .96], [.86, .985]], page: true }
+      ];
+      function figure(cx, by, sz, flip, col, parts) {
+        const T = (u, v) => [cx + (u - .5) * sz * (flip ? -1 : 1), by - (1 - v) * sz];
+        for (const q of parts) {
+          if (q.c) { const [x, y] = T(q.c[0], q.c[1]); add(circle(x, y, q.r * sz), { fill: col }); }
+          else if (q.poly) add('M' + q.poly.map(t => P(...T(t[0], t[1]))).join(' L') + 'Z', { fill: q.page ? pal.eye : col });
+          else add(line(q.l.map(t => T(t[0], t[1]))), { stroke: col, sw: q.w * sz });
+        }
+      }
+      function stack(x, y) {
+        let top = y;
+        for (let i = 0, n = 3 + Math.floor(R() * 3); i < n; i++) {
+          const w = rr(18, 28), h = rr(2.8, 4), a = rr(-.06, .06), cx = x + rr(-2.5, 2.5), cy = top - h / 2;
+          const pts = [[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]].map(([u, v]) => [cx + u * Math.cos(a) - v * Math.sin(a), cy + u * Math.sin(a) + v * Math.cos(a)]);
+          add('M' + pts.map(t => P(t[0], t[1])).join(' L') + 'Z', { fill: pick(pal.fern) });
+          add(`M${P(cx - w / 2 + 1.5, cy)} L${P(cx + w / 2 - 1.5, cy)}`, { stroke: pal.eye, sw: h * .22 });
+          top -= h;
+        }
+        return top;
+      }
+      function seatedOnStack(x, col) {
+        const top = stack(x, H), sz = Math.min(70, Math.max(32, (H - top) / .22)), flip = R() < .5;
+        figure(x + .2 * sz * (flip ? -1 : 1), top + .24 * sz, sz, flip, col, SEATED);
+      }
+      function flyingBook(x, y, sz, a, col) {
+        const T = (u, v) => [x + (u * Math.cos(a) - v * Math.sin(a)) * sz, y + (u * Math.sin(a) + v * Math.cos(a)) * sz];
+        for (const g of [-1, 1]) {
+          add(`M${P(...T(0, .2))} Q${P(...T(g * .45, .05))} ${P(...T(g * .95, .12))} L${P(...T(g * .85, -.42))} Q${P(...T(g * .45, -.55))} ${P(...T(0, -.32))}Z`, { fill: pal.eye });
+          for (let k = 1; k < 4; k++) add(`M${P(...T(g * .12, -.3 + k * .11))} Q${P(...T(g * .45, -.4 + k * .12))} ${P(...T(g * .78, -.33 + k * .11))}`, { stroke: col, sw: .035 * sz });
+          add(`M${P(...T(0, .25))} Q${P(...T(g * .45, .11))} ${P(...T(g * 1, .17))}`, { stroke: col, sw: .07 * sz });
+        }
+        add(`M${P(...T(0, .22))} L${P(...T(0, -.32))}`, { stroke: col, sw: .05 * sz });
+      }
       function serpent(x, y, col, stripe) {
         const pts = walk(x, y, UP + rr(-.4, .4), rr(80, 140), 0, 60);
         let a = 0;
@@ -655,8 +710,17 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       for (let i = 0; i < cnt(10); i++) fern(rr(-10, W2), H + 2, UP + rr(-.6, .6), rr(90, 210), rr(-.7, .7), pick(pal.lo), .9);
       for (let i = 0; i < cnt(6); i++) bigLeaf(rr(0, W2), rr(H - 80, H + 5), UP + rr(-1.1, 1.1), rr(32, 58), pick(pal.lo), pal.bg, .95);
       for (let i = 0; i < cnt(7); i++) vine(rr(0, W2), -3, Math.PI / 2 + rr(-.35, .35), rr(35, 120), rr(-.9, .9), pick(pal.hi));
+      for (let i = 0; i < cnt(1); i++) figure(rr(15, W2 - 15), H, rr(70, 100), R() < .5, pick(pal.fern), STANDING);
       for (let i = 0; i < cnt(3); i++) fern(rr(0, W2 * .3), H + 2, UP + rr(-.15, .3), rr(190, 250), rr(-.4, .4), pick(pal.fern));
       for (let i = 0; i < cnt(9); i++) fern(rr(0, W2), H + 2, UP + rr(-.5, .5), rr(70, 200), rr(-.9, .9), pick(pal.fern));
+      for (let i = 0; i < cnt(1.6); i++) seatedOnStack(rr(15, W2 - 15), pick(pal.fern));
+      for (let i = 0; i < cnt(.9); i++) figure(rr(20, W2 - 30), H, rr(55, 80), R() < .5, pick(pal.fern), LYING);
+      for (let i = 0; i < cnt(1.4); i++) stack(rr(10, W2 - 10), H);
+      if (R() < .75 && W2 > 60) {   // un lettore seduto su un ramo, a mezza altezza
+        const x = rr(25, W2 - 25), y = rr(105, 165), sz = rr(28, 38), flip = R() < .5;
+        add(line(walk(x - 30, y + 1, rr(-.08, .08), 62, rr(-.25, .25), 12)), { stroke: pick(pal.fern), sw: 1.5 });
+        figure(x + .2 * sz * (flip ? -1 : 1), y + .24 * sz, sz, flip, pick(pal.hi), SEATED);
+      }
       for (let i = 0; i < cnt(4); i++) bigLeaf(rr(0, W2), rr(H - 50, H + 3), UP + rr(-1.2, 1.2), rr(22, 40), pick(pal.fern), pal.bg);
       for (let i = 0; i < cnt(8); i++) drosera(rr(0, W2), H + 1, UP + rr(-.4, .4), rr(60, 205), rr(-.6, .6), pick(pal.hi), pick(pal.hi));
       for (let i = 0; i < cnt(5); i++) flytrap(rr(0, W2), H + 1, UP + rr(-.5, .5), rr(25, 85), pick(pal.hi), pick(pal.hi));
@@ -669,6 +733,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
         eye(e[0], e[1], rr(3.5, 6), pick(pal.hi), pick(pal.hi));
       }
       for (let i = 0; i < cnt(4); i++) moth(rr(8, W2), rr(40, 170), rr(5, 9), pick(pal.hi), pick(pal.hi));
+      for (let i = 0; i < cnt(3); i++) flyingBook(rr(10, W2), rr(25, 150), rr(6, 11), rr(-.5, .5), pick(pal.hi));
       if (R() < .55 * D && W2 > 60) serpent(rr(20, W2 - 20), H + 2, pick(pal.hi), pal.bg);
     }
     return shapes;
