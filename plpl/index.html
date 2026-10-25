@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: arredi spostabili, grafiche sulle pareti, copertine sui tavoli, due schermi.">
+<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: arredi spostabili, pareti con motivo botanico, grafiche, copertine sui tavoli, due schermi.">
 <style>body{margin:0}img{max-width:100%}</style>
 <title>Stand PLPL 16 mq</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -245,6 +245,21 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
         </div>
       </section>
 
+      <section class="sec">
+        <h2>Rivestimento pareti</h2>
+        <label class="tg"><input class="pat" type="checkbox" id="patOn" checked> Pareti scure con motivo botanico</label>
+        <div class="sub" id="patOpts">
+          <div class="fld"><label for="patPal">Tavolozza</label>
+            <select class="pat" id="patPal"><option value="notte">Notturno, verdi e rosa</option><option value="lilla">Crepuscolo, lilla e acqua</option><option value="oro">Inchiostro e oro</option></select></div>
+          <div class="fld"><label for="patDens">Densità</label>
+            <div class="range"><input class="pat" type="range" id="patDens" min="0.4" max="1.8" step="0.1" value="1"><span id="patDensV">1</span></div></div>
+          <label class="tg"><input class="pat" type="checkbox" id="patSym" checked> Simmetria a specchio, come nella copertina</label>
+          <div class="row"><button type="button" id="patNew">Nuova variante</button></div>
+          <div class="row"><button type="button" id="svgBack">SVG fondo</button><button type="button" id="svgLeft">SVG sinistra</button><button type="button" id="svgRight">SVG destra</button></div>
+          <p class="note">Il motivo è disegnato dal modello sulla scia dell'illustrazione del Mostruoso femminile: felci, drosere, piante carnivore, foglie, funghi, occhi-fiore, falene, viticci. Ogni parete ha la sua composizione. Gli SVG sono vettoriali in scala 1:1, misurati in centimetri e pronti per la tipografia; il download funziona dalla pagina su tlon.it.</p>
+        </div>
+      </section>
+
       <section class="sec" id="tiltSec">
         <h2>Ripiani A · inclinazione</h2>
         <div class="range"><input class="opt" type="range" id="tilt" min="0" max="30" step="1" value="12" aria-label="Inclinazione dei ripiani in gradi"><span id="tiltV">12°</span></div>
@@ -434,7 +449,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   const wallMats = [matJ, matK];
   addPart('J', matJ); addPart('K', matK);
   const T = 2.5;   // spessore pannello, tutto all'esterno del filo dello stand
-  const wallMeshes = [];
+  const wallMeshes = [], wallFaces = [];
 
   function wall(x0, z0, x1, z1, h, m, key) {
     const len = Math.hypot(x1 - x0, z1 - z0);
@@ -442,6 +457,9 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     o.position.copy(W((x0 + x1) / 2, (z0 + z1) / 2, h / 2));
     o.rotation.y = -Math.atan2(z1 - z0, x1 - x0);
     o.userData.wall = key;
+    // faccia interna e punto d'inizio del motivo, letto da sinistra a destra da chi sta dentro lo stand
+    const face = { back: [4, Math.min(x0, x1)], left: [5, S - Math.max(z0, z1)], right: [4, Math.min(z0, z1)] }[key];
+    wallFaces.push({ o, key, m, len, idx: face[0], u0: face[1] });
     scene.add(o); wallMeshes.push(o); return o;
   }
   function post(x, z, h, m = postM, s = 4) { const o = box(s, h, s, m); o.position.copy(W(x, z, h / 2)); scene.add(o); return o; }
@@ -494,6 +512,219 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   const presaM = mat(0xf7f7f5, .6); addPart('presa', presaM);
   { const p = box(28, 6, 5, presaM); p.position.copy(W(94, 3, 22)); scene.add(p);
     const sw = box(3, 3, 1, mat(0xd7121f, .5)); sw.position.copy(W(82, 5.8, 22)); scene.add(sw); }
+
+  /* ---------- motivo botanico delle pareti ---------- */
+  // ogni forma è un tracciato in centimetri sulla parete (origine in alto a sinistra): lo stesso dato disegna la texture e l'SVG di stampa
+  const PALETTES = {
+    notte: { bg: '#24262a', speck: ['#383b40', '#43464c'], hi: ['#a8e6bf', '#c4e65a', '#f2a9b8', '#ec8f86', '#b083c2', '#5fbdb8', '#93cbe8', '#efe8d4'], lo: ['#3c675b', '#563f6d', '#3a5c72', '#6a4859'], fern: ['#a8e6bf', '#c4e65a', '#f2a9b8', '#ec8f86', '#b083c2', '#5fbdb8', '#93cbe8'], eye: '#efe8d4' },
+    lilla: { bg: '#221e29', speck: ['#332e3a', '#3b3543'], hi: ['#c9a6e0', '#f0b8c8', '#9fd8cf', '#e8dcc0', '#a58bd6', '#7fc4a0'], lo: ['#4a3c5d', '#3c4e59', '#593c4e'], fern: ['#c9a6e0', '#f0b8c8', '#9fd8cf', '#a58bd6', '#7fc4a0'], eye: '#f1e9d8' },
+    oro:   { bg: '#141519', speck: ['#25252a', '#2e2c29'], hi: ['#d9b46a', '#ecd39a', '#b48c4a', '#f1e7cf', '#c9a45c'], lo: ['#4a3d26', '#3a3226', '#33302a'], fern: ['#d9b46a', '#b48c4a', '#c9a45c'], eye: '#f1e7cf' }
+  };
+  function genWall(L, H, opt) {
+    const shapes = [];
+    const pal = PALETTES[opt.pal] || PALETTES.notte, D = opt.dens;
+    const TAU = Math.PI * 2, UP = -Math.PI / 2;
+    for (const mir of opt.sym ? [false, true] : [false]) {
+      const R = mulberry32(opt.seed * 7919 + L * 31 + 5);
+      const W2 = opt.sym ? L / 2 + 10 : L;
+      const f = n => Math.round(n * 10) / 10;
+      const P = (x, y) => f(mir ? L - x : x) + ' ' + f(y);
+      const add = (d, o) => shapes.push(Object.assign({ d }, o));
+      const rr = (a, b) => a + R() * (b - a);
+      const pick = a => a[Math.floor(R() * a.length)];
+      const cnt = k => Math.max(0, Math.round(k * D * W2 / 200 + (R() - .5)));
+      const dirPt = (x, y, a, l) => [x + Math.cos(a) * l, y + Math.sin(a) * l];
+      const circle = (x, y, r) => `M${P(x - r, y)} A${f(r)} ${f(r)} 0 1 0 ${P(x + r, y)} A${f(r)} ${f(r)} 0 1 0 ${P(x - r, y)}Z`;
+      const line = pts => 'M' + pts.map(p => P(p[0], p[1])).join(' L');
+      function walk(x, y, a, len, bend, n = 24, curl = 0) {
+        const pts = [[x, y, a]], st = len / n;
+        for (let i = 0; i < n; i++) { a += bend / n + (i > n * .55 ? curl * (i / n - .55) * 24 / n : 0); x += Math.cos(a) * st; y += Math.sin(a) * st; pts.push([x, y, a]); }
+        return pts;
+      }
+      function leaf(x, y, a, len, wid, col, op = 1, vein = null) {
+        const [tx, ty] = dirPt(x, y, a, len), px = Math.cos(a + Math.PI / 2) * wid, py = Math.sin(a + Math.PI / 2) * wid;
+        const [ax, ay] = dirPt(x, y, a, len * .3), [bx, by] = dirPt(x, y, a, len * .75);
+        add(`M${P(x, y)} C${P(ax + px, ay + py)} ${P(bx + px * .8, by + py * .8)} ${P(tx, ty)} C${P(bx - px * .8, by - py * .8)} ${P(ax - px, ay - py)} ${P(x, y)}Z`, { fill: col, op });
+        if (vein) add(`M${P(x, y)} L${P(tx, ty)}`, { stroke: vein, sw: Math.max(.15, wid * .1), op: op * .8 });
+      }
+      function fern(x, y, a, len, bend, col, op = 1) {
+        const pts = walk(x, y, a, len, bend, 30);
+        add(line(pts), { stroke: col, sw: len * .01 + .25, op });
+        for (let i = 3; i < pts.length - 1; i++) {
+          const [px, py, pa] = pts[i], t = i / pts.length, l = len * .15 * (1 - t * .85) + 1.2;
+          leaf(px, py, pa - 1.05 + t * .45, l, l * .2, col, op);
+          leaf(px, py, pa + 1.05 - t * .45, l, l * .2, col, op);
+        }
+      }
+      function bigLeaf(x, y, a, len, col, vein, op = 1) {
+        leaf(x, y, a, len, len * .42, col, op, vein);
+        for (let j = 1; j < 6; j++) {
+          const [vx, vy] = dirPt(x, y, a, len * j / 6.5);
+          for (const s of [-1, 1]) add(`M${P(vx, vy)} Q${P(...dirPt(vx, vy, a + s * .5, len * .12))} ${P(...dirPt(vx, vy, a + s * .9, len * .24 * (1 - j / 8)))}`, { stroke: vein, sw: .25, op: op * .8 });
+        }
+      }
+      function flower(x, y, r, col, center) {
+        const a0 = rr(0, 1);
+        for (let k = 0; k < 6; k++) leaf(x, y, a0 + k * TAU / 6, r, r * .32, col);
+        add(circle(x, y, r * .22), { fill: center });
+      }
+      function sprig(x, y, a, len, bend, col, fcol) {
+        const pts = walk(x, y, a, len, bend, 12);
+        add(line(pts), { stroke: col, sw: .3 });
+        for (let i = 2; i < pts.length - 1; i += 2) leaf(pts[i][0], pts[i][1], pts[i][2] + (i % 4 ? .8 : -.8), len * .14, len * .05, col);
+        const e = pts[pts.length - 1];
+        flower(e[0], e[1], rr(1.8, 3.6), fcol, col);
+      }
+      function vine(x, y, a, len, bend, col) {
+        const pts = walk(x, y, a, len, bend, 64, rr(-1, 1) * 4);
+        add(line(pts), { stroke: col, sw: .4 });
+        for (let i = 4; i < pts.length - 10; i += 5) leaf(pts[i][0], pts[i][1], pts[i][2] + (i % 2 ? 1 : -1), rr(3, 6), rr(1, 1.8), col);
+        if (R() < .5) { const e = pts[pts.length - 1]; flower(e[0], e[1], rr(2, 3.5), pick(pal.hi), col); }
+      }
+      function tendril(x, y, a, len, col) {
+        add(line(walk(x, y, a, len, rr(-.6, .6), 110, (R() < .5 ? -1 : 1) * rr(16, 26))), { stroke: col, sw: .28 });
+      }
+      function drosera(x, y, a, len, bend, col, dew) {
+        const pts = walk(x, y, a, len, bend, 20);
+        add(line(pts), { stroke: col, sw: .35 });
+        const [hx, hy, ha] = pts[pts.length - 1];
+        for (let k = 0; k < 14; k++) {
+          const [ex, ey] = dirPt(hx, hy, ha + (k / 13 - .5) * 2.8, rr(3, 5.5));
+          add(`M${P(hx, hy)} L${P(ex, ey)}`, { stroke: col, sw: .2 });
+          add(circle(ex, ey, rr(.45, .75)), { fill: dew });
+        }
+        add(circle(hx, hy, 1.1), { fill: col });
+      }
+      function flytrap(x, y, a, len, col, inner) {
+        const pts = walk(x, y, a, len, rr(-.5, .5), 16);
+        add(line(pts), { stroke: col, sw: .6 });
+        for (let i = 4; i < pts.length - 3; i += 5) leaf(pts[i][0], pts[i][1], pts[i][2] + (i % 2 ? .9 : -.9), len * .22, len * .07, col, .9);
+        const [hx, hy, ha] = pts[pts.length - 1], Lb = rr(7, 11);
+        for (const s of [-1, 1]) {
+          const la = ha + s * .5, wd = Lb * .42;
+          leaf(hx, hy, la, Lb, wd, col);
+          leaf(hx, hy, la, Lb * .8, wd * .6, inner);
+          for (let j = 1; j < 8; j++) {
+            const t = j / 8, [bx, by] = dirPt(hx, hy, la, Lb * t), o = s * wd * Math.sin(Math.PI * t) * .85;
+            const sx = bx + Math.cos(la + Math.PI / 2) * o, sy = by + Math.sin(la + Math.PI / 2) * o;
+            add(`M${P(sx, sy)} L${P(...dirPt(sx, sy, la + s * 1.3, 2))}`, { stroke: col, sw: .3 });
+          }
+        }
+      }
+      function mushrooms(x, y, col, dot) {
+        for (let k = 0; k < 3; k++) {
+          const mx = x + rr(-8, 8), h = rr(6, 16), w = rr(6, 13), tilt = rr(-.15, .15);
+          const tx = mx + tilt * h * 3;
+          add(`M${P(mx - w * .09, y)} Q${P((mx + tx) / 2 - w * .12, y - h / 2)} ${P(tx - w * .08, y - h)} L${P(tx + w * .08, y - h)} Q${P((mx + tx) / 2 + w * .12, y - h / 2)} ${P(mx + w * .09, y)}Z`, { fill: dot });
+          add(`M${P(tx - w / 2, y - h)} Q${P(tx, y - h - w * .75)} ${P(tx + w / 2, y - h)} Q${P(tx, y - h + w * .12)} ${P(tx - w / 2, y - h)}Z`, { fill: col });
+          for (let d = 0; d < 4; d++) add(circle(tx + rr(-w * .3, w * .3), y - h - rr(w * .08, w * .38), rr(.35, .8)), { fill: dot });
+        }
+      }
+      function eye(x, y, r, col, iris) {
+        for (let k = 0; k < 12; k++) leaf(x, y, k * TAU / 12, r * 2, r * .32, col, .9);
+        add(`M${P(x - r * 1.5, y)} Q${P(x, y - r * 1.15)} ${P(x + r * 1.5, y)} Q${P(x, y + r * 1.15)} ${P(x - r * 1.5, y)}Z`, { fill: pal.eye });
+        add(circle(x, y, r * .55), { fill: iris });
+        add(circle(x, y, r * .24), { fill: pal.bg });
+        add(circle(x + r * .16, y - r * .2, r * .1), { fill: '#ffffff', op: .9 });
+      }
+      function moth(x, y, s, col, spot) {
+        for (const [a, l] of [[UP - 1.05, 1], [UP + 1.05, 1], [Math.PI / 2 + .7, .7], [Math.PI / 2 - .7, .7]]) {
+          leaf(x, y, a, s * l, s * l * .42, col);
+          const [cx, cy] = dirPt(x, y, a, s * l * .6); add(circle(cx, cy, s * l * .1), { fill: spot });
+        }
+        leaf(x, y + s * .4, UP, s * .85, s * .1, spot);
+        for (const sgn of [-1, 1]) add(`M${P(x, y - s * .4)} Q${P(x + sgn * s * .25, y - s * .85)} ${P(x + sgn * s * .45, y - s * .95)}`, { stroke: spot, sw: .2 });
+      }
+      function serpent(x, y, col, stripe) {
+        const pts = walk(x, y, UP + rr(-.4, .4), rr(80, 140), 0, 60);
+        let a = 0;
+        for (const p of pts) { a += .18; p[0] += Math.sin(a) * 6; }
+        add(line(pts), { stroke: col, sw: 2.6 });
+        add(line(pts), { stroke: stripe, sw: .7, dash: [1.4, 2.2] });
+        const e = pts[pts.length - 1];
+        leaf(e[0], e[1] + 1.5, UP, 5, 2, col);
+        add(circle(e[0] + .8, e[1], .45), { fill: stripe });
+      }
+
+      if (!mir) { const Rs = mulberry32(opt.seed * 13 + L), r2 = (a, b) => a + Rs() * (b - a);
+        for (let i = 0, n = Math.round(L * H / 26); i < n; i++) add(circle(r2(0, L), r2(0, H), r2(.12, .32)), { fill: Rs() < .85 ? pal.speck[Math.floor(Rs() * pal.speck.length)] : pal.hi[Math.floor(Rs() * pal.hi.length)], op: .7 }); }
+      for (let i = 0; i < cnt(10); i++) fern(rr(-10, W2), H + 2, UP + rr(-.6, .6), rr(90, 210), rr(-.7, .7), pick(pal.lo), .9);
+      for (let i = 0; i < cnt(6); i++) bigLeaf(rr(0, W2), rr(H - 80, H + 5), UP + rr(-1.1, 1.1), rr(32, 58), pick(pal.lo), pal.bg, .95);
+      for (let i = 0; i < cnt(7); i++) vine(rr(0, W2), -3, Math.PI / 2 + rr(-.35, .35), rr(35, 120), rr(-.9, .9), pick(pal.hi));
+      for (let i = 0; i < cnt(3); i++) fern(rr(0, W2 * .3), H + 2, UP + rr(-.15, .3), rr(190, 250), rr(-.4, .4), pick(pal.fern));
+      for (let i = 0; i < cnt(9); i++) fern(rr(0, W2), H + 2, UP + rr(-.5, .5), rr(70, 200), rr(-.9, .9), pick(pal.fern));
+      for (let i = 0; i < cnt(4); i++) bigLeaf(rr(0, W2), rr(H - 50, H + 3), UP + rr(-1.2, 1.2), rr(22, 40), pick(pal.fern), pal.bg);
+      for (let i = 0; i < cnt(8); i++) drosera(rr(0, W2), H + 1, UP + rr(-.4, .4), rr(60, 205), rr(-.6, .6), pick(pal.hi), pick(pal.hi));
+      for (let i = 0; i < cnt(5); i++) flytrap(rr(0, W2), H + 1, UP + rr(-.5, .5), rr(25, 85), pick(pal.hi), pick(pal.hi));
+      for (let i = 0; i < cnt(4); i++) mushrooms(rr(0, W2), H, pick(pal.hi), pick(pal.hi));
+      for (let i = 0; i < cnt(18); i++) sprig(rr(0, W2), rr(35, 195), rr(0, TAU), rr(10, 35), rr(-1, 1), pick(pal.hi), pick(pal.hi));
+      for (let i = 0; i < cnt(10); i++) tendril(rr(0, W2), rr(10, H - 20), rr(0, TAU), rr(12, 30), pick(pal.hi));
+      for (let i = 0; i < cnt(2); i++) {
+        const x = rr(12, W2 - 8), st = walk(x, H + 1, UP + rr(-.25, .25), rr(80, 170), rr(-.4, .4), 24), e = st[st.length - 1];
+        add(line(st), { stroke: pick(pal.hi), sw: .45 });
+        eye(e[0], e[1], rr(3.5, 6), pick(pal.hi), pick(pal.hi));
+      }
+      for (let i = 0; i < cnt(4); i++) moth(rr(8, W2), rr(40, 170), rr(5, 9), pick(pal.hi), pick(pal.hi));
+      if (R() < .55 * D && W2 > 60) serpent(rr(20, W2 - 20), H + 2, pick(pal.hi), pal.bg);
+    }
+    return shapes;
+  }
+  function paintWall(shapes, L, H, pal, k) {
+    const c = document.createElement('canvas'); c.width = Math.round(L * k); c.height = Math.round(H * k);
+    const g = c.getContext('2d'); g.scale(k, k);
+    g.fillStyle = pal.bg; g.fillRect(0, 0, L, H);
+    g.lineCap = 'round'; g.lineJoin = 'round';
+    for (const s of shapes) {
+      const p = new Path2D(s.d);
+      g.globalAlpha = s.op == null ? 1 : s.op;
+      if (s.fill) { g.fillStyle = s.fill; g.fill(p); }
+      if (s.stroke) { g.strokeStyle = s.stroke; g.lineWidth = s.sw || .3; g.setLineDash(s.dash || []); g.stroke(p); }
+    }
+    return c;
+  }
+  function wallSVG(shapes, L, H, pal) {
+    const out = [`<svg xmlns="http://www.w3.org/2000/svg" width="${L}cm" height="${H}cm" viewBox="0 0 ${L} ${H}"><rect width="${L}" height="${H}" fill="${pal.bg}"/><g stroke-linecap="round" stroke-linejoin="round">`];
+    for (const s of shapes) out.push(`<path d="${s.d}" fill="${s.fill || 'none'}"${s.stroke ? ` stroke="${s.stroke}" stroke-width="${s.sw || .3}"` : ''}${s.dash ? ` stroke-dasharray="${s.dash.join(' ')}"` : ''}${s.op != null && s.op < 1 ? ` opacity="${s.op}"` : ''}/>`);
+    out.push('</g></svg>');
+    return out.join('');
+  }
+  const PAT_LEN = { back: S, left: S, right: 50 };
+  const PAT_SEED = { back: 0, left: 101, right: 202 };
+  let patSeed = 7, patShapes = {}, patMats = [], patTimer = null;
+  function patOpts(key) { return { seed: patSeed + PAT_SEED[key], pal: $('#patPal').value, dens: +$('#patDens').value, sym: $('#patSym').checked }; }
+  function applyPattern() {
+    patMats.forEach(m => { m.map.dispose(); m.dispose(); }); patMats = [];
+    Object.values(patShapes).forEach(p => p.tex.dispose()); patShapes = {};
+    $('#patOpts').hidden = !$('#patOn').checked;
+    $('#patDensV').textContent = (+$('#patDens').value).toLocaleString('it-IT');
+    if (!$('#patOn').checked) { wallFaces.forEach(w => w.o.material = w.m); return; }
+    const pal = PALETTES[$('#patPal').value] || PALETTES.notte;
+    for (const [key, L] of Object.entries(PAT_LEN)) {
+      const shapes = genWall(L, WALL_H, patOpts(key));
+      const tex = new THREE.CanvasTexture(paintWall(shapes, L, WALL_H, pal, 5)); tex.anisotropy = ANISO;
+      patShapes[key] = { shapes, tex };
+    }
+    for (const w of wallFaces) {
+      const t = patShapes[w.key].tex.clone(); t.needsUpdate = true;
+      t.repeat.set(w.len / PAT_LEN[w.key], 1); t.offset.set(w.u0 / PAT_LEN[w.key], 0);
+      const pm = new THREE.MeshStandardMaterial({ map: t, roughness: .88 }); patMats.push(pm);
+      const arr = [w.m, w.m, w.m, w.m, w.m, w.m]; arr[w.idx] = pm; w.o.material = arr;
+    }
+    applyXray();
+  }
+  function applyXray() {
+    const on = $('#optXray').checked;
+    for (const m of [...wallMats, ...patMats]) { m.transparent = on; m.opacity = on ? .22 : 1; m.depthWrite = !on; m.needsUpdate = true; }
+  }
+  function downloadSVG(key) {
+    const L = PAT_LEN[key], pal = PALETTES[$('#patPal').value] || PALETTES.notte;
+    const shapes = patShapes[key] ? patShapes[key].shapes : genWall(L, WALL_H, patOpts(key));
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([wallSVG(shapes, L, WALL_H, pal)], { type: 'image/svg+xml' }));
+    a.download = `plpl-parete-${key}-${L}x${WALL_H}cm-variante-${patSeed}.svg`;
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  }
 
   /* ---------- A: ripiani inclinabili, libri d'esempio ---------- */
   const shelfM = mat(0xd5d9de, .4, .5); addPart('A', shelfM);
@@ -1413,7 +1644,8 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     for (const id of OPT_IDS) o[id] = $('#' + id).checked;
     o.tilt = +$('#tilt').value; o.sign = $('#sign').value;
     o.optScreen = $('#optScreen').checked; o.optScreen2 = $('#optScreen2').checked; o.scrSize = $('#scrSize').value; o.scrMount = $('#scrMount').value;
-    o.screens = screens.map(x => ({ key: x.key, u: x.u, v: x.v, img: x.img })); o.cfg = 3;
+    o.screens = screens.map(x => ({ key: x.key, u: x.u, v: x.v, img: x.img })); o.cfg = 4;
+    o.patOn = $('#patOn').checked; o.patPal = $('#patPal').value; o.patDens = +$('#patDens').value; o.patSym = $('#patSym').checked; o.patSeed = patSeed;
     return o;
   }
   function applyOpts() {
@@ -1424,7 +1656,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     sampleBooks.forEach(b => b.visible = o.optBooks);
     spotGroup.forEach(s => s.visible = o.optSpots);
     byId.P.group.visible = o.optPerson;
-    for (const m of wallMats) { m.transparent = o.optXray; m.opacity = o.optXray ? .22 : 1; m.depthWrite = !o.optXray; m.needsUpdate = true; }
+    applyXray();
     shelfPivots.forEach(p => p.rotation.x = o.tilt * DEG);
     $('#tiltV').textContent = o.tilt + '°';
     drawSign(o.sign); drawIdle(o.sign);
@@ -1438,6 +1670,14 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     buildScreens();
   }
   document.querySelectorAll('.opt').forEach(i => i.addEventListener('input', () => { applyOpts(); validate(); updatePanel(); save(); }));
+  document.querySelectorAll('.pat').forEach(i => i.addEventListener('input', () => {
+    $('#patDensV').textContent = (+$('#patDens').value).toLocaleString('it-IT');
+    clearTimeout(patTimer); patTimer = setTimeout(() => { applyPattern(); save(); }, 180);
+  }));
+  $('#patNew').onclick = () => { patSeed++; applyPattern(); save(); toast('Variante ' + patSeed + ' del motivo.'); };
+  $('#svgBack').onclick = () => downloadSVG('back');
+  $('#svgLeft').onclick = () => downloadSVG('left');
+  $('#svgRight').onclick = () => downloadSVG('right');
   $('#scrH').addEventListener('input', () => { for (const sc of screenTargets()) { sc.v = +$('#scrH').value; buildScreen(sc); } updateSlider(); tintScreens(); validate(); updatePanel(); });
   $('#scrH').addEventListener('change', save);
   $('#upScreen').addEventListener('change', async e => {
@@ -1514,6 +1754,8 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     for (const [k, v] of Object.entries(saved.opts)) { const el = $('#' + k); if (!el) continue; if (el.type === 'checkbox') el.checked = !!v; else el.value = v; }
     for (const d of saved.opts.screens || []) { const sc = screens.find(x => x.key === d.key); if (sc) Object.assign(sc, { u: d.u, v: d.v, img: d.img }); }
     if (saved.opts.scrImg) screens[0].img = saved.opts.scrImg;
+    if (saved.opts.patSeed) patSeed = saved.opts.patSeed;
+    if (!(saved.opts.cfg >= 4)) $('#patOn').checked = true;   // motivo botanico acceso per chi aveva già aperto la pagina
     if (!(saved.opts.cfg >= 3)) {   // configurazione richiesta: due 75 pollici a parete, al centro
       $('#optScreen').checked = $('#optScreen2').checked = true; $('#scrSize').value = '75'; $('#scrMount').value = 'wall';
       screens.forEach(x => { x.u = 200; x.v = 150; });
@@ -1525,7 +1767,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     for (const g of saved.layout.graphics || []) seq.graf = Math.max(seq.graf, +g.id.split('-')[1] || 0);
     restore(saved.layout);
   } else validate();
-  applyOpts(); validate(); applyTheme(); resize();
+  applyOpts(); applyPattern(); validate(); applyTheme(); resize();
   persp.position.copy(VIEWS.axo.pos); ctlP.target.copy(VIEWS.axo.target); ctlP.update();
   if (document.fonts) { document.fonts.load('700 100px "Barlow Condensed"').then(() => { drawSign($('#sign').value); drawIdle($('#sign').value); }).catch(() => {}); }
 
