@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: arredi spostabili, grafiche sulle pareti, copertine sui tavoli.">
+<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: arredi spostabili, grafiche sulle pareti, copertine sui tavoli, schermo al posto dei ripiani.">
 <style>body{margin:0}img{max-width:100%}</style>
 <title>Stand PLPL 16 mq</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -226,6 +226,25 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       </section>
 
       <section class="sec">
+        <h2>Schermo al posto dei ripiani</h2>
+        <label class="tg"><input class="opt" type="checkbox" id="optScreen"> Togli i ripiani A e monta uno schermo</label>
+        <div class="sub" id="scrOpts" hidden>
+          <div class="fld"><label for="scrSize">Diagonale</label>
+            <select class="opt" id="scrSize"><option value="55">55″ · 122 × 69 cm</option><option value="65" selected>65″ · 144 × 81 cm</option><option value="75">75″ · 166 × 93 cm</option><option value="86">86″ · 190 × 107 cm</option></select></div>
+          <div class="fld"><label for="scrMount">Montaggio</label>
+            <select class="opt" id="scrMount"><option value="wall">A parete, sul pannello</option><option value="stand">Su piantana a terra</option></select></div>
+          <div class="fld"><label for="scrH">Centro da terra</label>
+            <div class="range"><input type="range" id="scrH" min="40" max="220" step="1" value="150"><span id="scrHv">150 cm</span></div></div>
+          <div class="up">
+            <input class="vh" type="file" id="upScreen" accept="image/*,video/*">
+            <label class="btn primary" for="upScreen">Carica immagine o video</label>
+            <button type="button" id="scrIdle">Contenuto di prova</button>
+          </div>
+          <p class="note">Lo schermo si trascina lungo la parete di fondo, e anche in altezza se è montato a parete. I video si vedono finché la pagina resta aperta; le immagini restano salvate.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="tiltSec">
         <h2>Ripiani A · inclinazione</h2>
         <div class="range"><input class="opt" type="range" id="tilt" min="0" max="30" step="1" value="12" aria-label="Inclinazione dei ripiani in gradi"><span id="tiltV">12°</span></div>
       </section>
@@ -487,7 +506,8 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     const b = new THREE.Mesh(bookGeo, [pageM, pageM, coverMats[ci], coverMats[ci], pageM, coverMats[ci]]);
     b.castShadow = true; b.receiveShadow = true; b.userData.noTint = true; sampleBooks.push(b); return b;
   }
-  for (const x of [100.5, 199.5, 298.5]) { const u = box(2.5, 125, 1.2, shelfM); u.position.copy(W(x, .6, 132)); scene.add(u); }
+  const uprights = [];
+  for (const x of [100.5, 199.5, 298.5]) { const u = box(2.5, 125, 1.2, shelfM); u.position.copy(W(x, .6, 132)); scene.add(u); uprights.push(u); }
   for (const cx of [148.5, 250.5]) for (const y of [95, 130, 165]) {
     const p = new THREE.Group(); p.position.copy(W(cx, 0.2, y));
     const plate = box(97, 1.2, 33, shelfM); plate.position.set(0, 0, 16.5); p.add(plate);
@@ -499,6 +519,101 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     }
     scene.add(p); shelfPivots.push(p);
   }
+
+  /* ---------- schermo al posto dei ripiani ---------- */
+  const SIZES = { 55: [121.8, 68.5], 65: [143.9, 80.9], 75: [166, 93.4], 86: [190.4, 107.1] };   // area visibile 16:9
+  const scr = { kind: 'screen', u: 200, v: 150, img: null, video: null, on: false, bad: false };
+  const scrGroup = new THREE.Group(); scene.add(scrGroup);
+  const scrFrameM = mat(0x0d0e10, .35, .3), scrMountM = mat(0x2b2e33, .5, .6);
+  const scrDisplayM = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const scrIdleC = document.createElement('canvas'); scrIdleC.width = 1920; scrIdleC.height = 1080;
+  const scrIdleT = new THREE.CanvasTexture(scrIdleC); scrIdleT.anisotropy = ANISO;
+  let scrTex = scrIdleT;
+  const scrTagEl = tag('Schermo', '', 'mov');
+  let scrLabel = null, scrOutline = null;
+  function drawIdle(text) {
+    const g = scrIdleC.getContext('2d');
+    const gr = g.createLinearGradient(0, 0, 1920, 1080); gr.addColorStop(0, '#141a26'); gr.addColorStop(1, '#2b0e14');
+    g.fillStyle = gr; g.fillRect(0, 0, 1920, 1080);
+    g.fillStyle = '#d7121f'; g.fillRect(150, 330, 100, 12);
+    const t = (text || '').toUpperCase();
+    let fs = 200;
+    const setF = () => { g.font = `700 ${fs}px "Barlow Condensed", "Arial Narrow", sans-serif`; };
+    setF(); while (g.measureText(t).width > 1620 && fs > 60) { fs -= 8; setF(); }
+    g.fillStyle = '#f3f4f6'; g.textBaseline = 'alphabetic'; g.fillText(t, 150, 380 + fs * .8);
+    g.font = '500 56px "Barlow", "Helvetica Neue", Arial, sans-serif'; g.fillStyle = '#b8bfcc';
+    g.fillText('Più Libri Più Liberi · La Nuvola, Roma · 4–8 dicembre 2026', 150, 380 + fs * .8 + 110);
+    g.font = '500 34px "IBM Plex Mono", Menlo, monospace'; g.fillStyle = '#7d8696';
+    g.fillText('Contenuto di prova · carica un\'immagine o un video dal pannello', 150, 960);
+    scrIdleT.needsUpdate = true;
+  }
+  const scrSize = () => SIZES[$('#scrSize').value] || SIZES[65];
+  const scrStand = () => $('#scrMount').value === 'stand';
+  const scrZ = () => scrStand() ? 16 : 7;     // centro della cornice dal filo della parete di fondo
+  function clampScreen() {
+    const [w, h] = scrSize();
+    scr.u = Math.min(Math.max(scr.u, w / 2 + 2), S - w / 2 - 2);
+    scr.v = scrStand() ? Math.min(Math.max(scr.v, h / 2 + 45), 215) : Math.min(Math.max(scr.v, h / 2 + 2), WALL_H - h / 2 - 2);
+  }
+  function buildScreen() {
+    if (scrLabel) { scrLabel.removeFromParent(); scrLabel = null; }
+    for (const c of [...scrGroup.children]) { scrGroup.remove(c); c.traverse(o => { if (o.geometry) o.geometry.dispose(); }); }
+    if (!scr.on) return;
+    clampScreen();
+    const [w, h] = scrSize(), v = scr.v, zc = scrZ(), stand = scrStand();
+    scrGroup.position.copy(W(scr.u, 0, 0));
+    const frame = box(w + 2, h + 2, 5, scrFrameM); frame.position.set(0, v, zc); frame.userData.screen = true; scrGroup.add(frame);
+    const disp = new THREE.Mesh(new THREE.PlaneGeometry(w, h), scrDisplayM); disp.position.set(0, v, zc + 2.55); disp.userData.screen = true; scrGroup.add(disp);
+    scrOutline = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-w / 2 - 2, v - h / 2 - 2, zc + 2.7), new THREE.Vector3(w / 2 + 2, v - h / 2 - 2, zc + 2.7), new THREE.Vector3(w / 2 + 2, v + h / 2 + 2, zc + 2.7), new THREE.Vector3(-w / 2 - 2, v + h / 2 + 2, zc + 2.7)]), new THREE.LineBasicMaterial({ color: 0x2b6fd6 }));
+    scrGroup.add(scrOutline);
+    if (stand) {
+      const px = Math.min(w * .3, 45);
+      for (const sx of [-1, 1]) {
+        const up = box(5, v + 10, 4, scrMountM); up.position.set(sx * px, (v + 10) / 2, zc - 4.5); up.userData.screen = true; scrGroup.add(up);
+        const foot = box(6, 3, 60, scrMountM); foot.position.set(sx * px, 1.5, 30); foot.userData.screen = true; scrGroup.add(foot);
+      }
+      const bar = box(px * 2 + 5, 4, 3, scrMountM); bar.position.set(0, 30, zc - 4.5); scrGroup.add(bar);
+    } else {
+      const br = box(Math.min(w * .45, 60), Math.min(h * .45, 40), 4, scrMountM); br.position.set(0, v, 2.4); scrGroup.add(br);
+    }
+    scrTagEl.querySelector('b').textContent = `Schermo ${$('#scrSize').value}″`;
+    scrLabel = label2d(scrTagEl, new THREE.Vector3(0, v + h / 2 + 12, zc), scrGroup);
+    $('#scrH').min = Math.ceil(stand ? h / 2 + 45 : h / 2 + 2); $('#scrH').max = Math.floor(stand ? 215 : WALL_H - h / 2 - 2);
+    $('#scrH').value = Math.round(v); $('#scrHv').textContent = Math.round(v) + ' cm';
+    tintScreen();
+  }
+  function tintScreen() {
+    if (!scrOutline) return;
+    const sel = selected === scr;
+    scrOutline.visible = sel || scr.bad;
+    scrOutline.material.color.setHex(scr.bad ? 0xc4161c : 0x2b6fd6);
+    scrFrameM.emissive.setHex(scr.bad ? 0x7a0000 : 0x000000); scrFrameM.emissiveIntensity = scr.bad ? .8 : 0;
+    scrTagEl.classList.toggle('on', sel && !scr.bad); scrTagEl.classList.toggle('bad', scr.bad);
+  }
+  // impronta dello schermo per il controllo degli ingombri
+  function screenFoot() {
+    const [w] = scrSize(), stand = scrStand();
+    return { x: scr.u, z: stand ? 30 : 4.5, rot: 0, stand, t: { w: stand ? Math.min(w * .6, 90) + 6 : w + 2, d: stand ? 60 : 9 } };
+  }
+  function fitCover(t, a) {
+    const s = 16 / 9; t.repeat.set(1, 1); t.offset.set(0, 0);
+    if (a > s) { t.repeat.x = s / a; t.offset.x = (1 - t.repeat.x) / 2; } else { t.repeat.y = a / s; t.offset.y = (1 - t.repeat.y) / 2; }
+  }
+  function applyScreenContent() {
+    if (scrTex !== scrIdleT) scrTex.dispose();
+    if (scr.video) {
+      const vd = scr.video, t = new THREE.VideoTexture(vd);
+      const fit = () => fitCover(t, vd.videoWidth / vd.videoHeight);
+      if (vd.videoWidth) fit(); else vd.addEventListener('loadedmetadata', fit, { once: true });
+      scrTex = t;
+    } else if (scr.img) {
+      const im = new Image(), t = new THREE.Texture(im); t.anisotropy = ANISO;
+      im.onload = () => { fitCover(t, im.width / im.height); t.needsUpdate = true; };
+      im.src = scr.img; scrTex = t;
+    } else scrTex = scrIdleT;
+    scrDisplayM.map = scrTex; scrDisplayM.needsUpdate = true;
+  }
+  function stopVideo() { if (scr.video) { scr.video.pause(); URL.revokeObjectURL(scr.video.src); scr.video = null; } }
 
   /* ---------- costruttori degli arredi ---------- */
   function makeTable(it) {
@@ -682,10 +797,12 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     ['Faro', 'LED 30 W, posizione stimata', W(125, S - 8, PORTAL_H - 80)], ['Faro', 'LED 30 W, posizione stimata', W(275, S - 8, PORTAL_H - 80)],
     ['Presa', 'Multipla IT/DE, max 300 W, posizione da concordare', W(94, 6, 34)]
   ];
+  const aTags = [];
   for (const [l, n, p] of fixedTags) {
     const el = tag(l, n);
     el.addEventListener('click', () => flashPart(l === 'Faro' ? 'faro' : l === 'Presa' ? 'presa' : l));
-    label2d(el, p);
+    const o = label2d(el, p);
+    if (l === 'A') aTags.push(o);
   }
 
   /* ---------- grafiche sulle pareti ---------- */
@@ -801,6 +918,11 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     for (let i = 0; i < solids.length; i++) for (let j = i + 1; j < solids.length; j++) {
       if (overlap(solids[i], solids[j])) { solids[i].bad = solids[j].bad = true; pairs.push(solids[i].id + ' e ' + solids[j].id); }
     }
+    scr.bad = false;
+    if (scr.on) {
+      const f = screenFoot(), bottom = scr.v - scrSize()[1] / 2 - 1;
+      for (const s of solids) if (overlap(f, s) && (f.stand || bottom < s.t.h + 1)) { s.bad = scr.bad = true; pairs.push('schermo e ' + s.id); }
+    }
     const al = $('#alert');
     al.hidden = !pairs.length;
     al.textContent = pairs.length ? 'Si sovrappongono: ' + pairs.join(', ') : '';
@@ -820,6 +942,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       it.tagEl.classList.toggle('bad', bad);
     }
     for (const gr of graphics) { const sel = gr === selected; gr.outline.visible = sel; gr.tagEl.classList.toggle('on', sel); }
+    tintScreen();
   }
 
   /* ---------- pannello selezione ---------- */
@@ -837,11 +960,19 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     const o = selected;
     $('#selEmpty').hidden = !!o; $('#selCard').hidden = !o;
     if (!o) return;
-    const isG = o.kind === 'graphic', isBook = !isG && o.type === 'book', user = isG || isBook;
-    $('#ctlRot').hidden = isG;
+    const isS = o.kind === 'screen', isG = o.kind === 'graphic', isBook = !isG && !isS && o.type === 'book', user = isG || isBook;
+    $('#ctlRot').hidden = isG || isS;
     $('#ctlBook').hidden = !isBook;
     $('#ctlGraf').hidden = !isG;
-    $('#selReset').hidden = user;
+    $('#selReset').hidden = user || isS;
+    if (isS) {
+      const [w, h] = scrSize();
+      $('#selDup').hidden = $('#selDel').hidden = true;
+      setName('Schermo', `${$('#scrSize').value}″ ${scrStand() ? 'su piantana' : 'a parete'}`);
+      kvRows([['schermo', `${fmt(w)} × ${fmt(h)} cm`], ['da sinistra', `${fmt(scr.u - w / 2)} → ${fmt(scr.u + w / 2)}`],
+        ['da terra', `${fmt(scr.v - h / 2)} → ${fmt(scr.v + h / 2)}`], ['contenuto', scr.video ? 'video' : scr.img ? 'immagine' : 'di prova']]);
+      return;
+    }
     $('#selDup').hidden = !user;
     $('#selDel').hidden = !user;
     if (isG) {
@@ -911,7 +1042,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   const nextId = k => k + '-' + (++seq[k]);
 
   function rotateSel(dr) {
-    const o = selected; if (!o || o.kind === 'graphic') return;
+    const o = selected; if (!o || o.kind) return;
     pushHistory();
     const riders = ridersOf(o);
     o.rot = norm(o.rot + dr); clampItem(o); apply(o);
@@ -920,6 +1051,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   }
   function nudge(dx, dz) {
     const o = selected; if (!o) return;
+    if (o.kind === 'screen') { scr.u += dx; scr.v -= dz; buildScreen(); validate(); updatePanel(); save(); return; }
     pushHistory();
     if (o.kind === 'graphic') { o.u += dx; o.v -= dz; changed(o); return; }
     const riders = ridersOf(o);
@@ -950,7 +1082,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   function setNdc(e) { const r = renderer.domElement.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, activeCam); }
   function pick(e) {
     setNdc(e);
-    const objs = items.filter(i => i.group.visible).map(i => i.group).concat(graphics.map(g => g.mesh));
+    const objs = items.filter(i => i.group.visible).map(i => i.group).concat(graphics.map(g => g.mesh), scrGroup.children);
     if (!$('#optXray').checked) objs.push(...wallMeshes);
     for (const h of ray.intersectObjects(objs, true)) {
       let o = h.object;
@@ -959,6 +1091,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       for (let p = o; p; p = p.parent) if (!p.visible) { vis = false; break; }
       if (!vis) continue;
       if (o.userData.graphic) return o.userData.graphic;
+      if (o.userData.screen) return scr;
       if (o.userData.wall) return null;
       while (o && !o.userData.item) o = o.parent;
       if (o) return o.userData.item;
@@ -969,7 +1102,10 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     if (!e.isPrimary || e.button > 0) return;
     const o = pick(e);
     let ok = false;
-    if (o && o.kind === 'graphic') {
+    if (o && o.kind === 'screen') {
+      const pl = new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 0, 1), W(0, scrZ(), 0));
+      if (ray.ray.intersectPlane(pl, hit)) { ok = true; drag = { o, pl, ou: hit.x + S / 2 - scr.u, ov: hit.y - scr.v }; }
+    } else if (o && o.kind === 'graphic') {
       if (ray.ray.intersectPlane(WALLS[o.wall].plane, hit)) {
         ok = true;
         drag = { o, ou: WALLS[o.wall].u(hit) - o.u, ov: hit.y - o.v };
@@ -995,7 +1131,13 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     if (drag && e.pointerId === drag.id) {
       setNdc(e);
       const o = drag.o, snapOn = $('#optSnap').checked;
-      if (o.kind === 'graphic') {
+      if (o.kind === 'screen') {
+        if (!ray.ray.intersectPlane(drag.pl, hit)) return;
+        scr.u = hit.x + S / 2 - drag.ou;
+        if (!scrStand()) scr.v = hit.y - drag.ov;
+        if (snapOn) { scr.u = Math.round(scr.u / 5) * 5; scr.v = Math.round(scr.v / 5) * 5; }
+        buildScreen(); validate();
+      } else if (o.kind === 'graphic') {
         if (!ray.ray.intersectPlane(WALLS[o.wall].plane, hit)) return;
         o.u = WALLS[o.wall].u(hit) - drag.ou; o.v = hit.y - drag.ov;
         if (snapOn) { o.u = Math.round((o.u - o.w / 2) / 5) * 5 + o.w / 2; o.v = Math.round((o.v - gH(o) / 2) / 5) * 5 + gH(o) / 2; }
@@ -1198,7 +1340,9 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       lines.push(`${displayName(it)} ${it.t.name}: x ${fmt(it.x - hx)}–${fmt(it.x + hx)}, z ${fmt(it.z - hz)}–${fmt(it.z + hz)}, rotazione ${fmt(norm(it.rot))}°`);
     }
     for (const g of graphics) lines.push(`Grafica ${g.id.split('-')[1]} su ${WALLS[g.wall].name.toLowerCase()}: ${fmt(g.w)} × ${fmt(gH(g))} cm, da ${fmt(g.u - g.w / 2)} a ${fmt(g.u + g.w / 2)}, da terra ${fmt(g.v - gH(g) / 2)}–${fmt(g.v + gH(g) / 2)}`);
-    lines.push(`Ripiani A inclinati di ${$('#tilt').value}°. Fascia: ${$('#sign').value}`);
+    if (scr.on) { const [w, h] = scrSize(); lines.push(`Schermo ${$('#scrSize').value}″ ${scrStand() ? 'su piantana' : 'a parete'} al posto dei ripiani A: ${fmt(w)} × ${fmt(h)} cm, da sinistra ${fmt(scr.u - w / 2)}–${fmt(scr.u + w / 2)}, da terra ${fmt(scr.v - h / 2)}–${fmt(scr.v + h / 2)}`); }
+    else lines.push(`Ripiani A inclinati di ${$('#tilt').value}°.`);
+    lines.push(`Fascia: ${$('#sign').value}`);
     const text = lines.join('\n');
     const p = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(text) : Promise.reject();
     p.then(() => toast('Posizioni copiate negli appunti.')).catch(() => toast('Copia non riuscita in questa finestra.'));
@@ -1244,6 +1388,8 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     const o = {};
     for (const id of OPT_IDS) o[id] = $('#' + id).checked;
     o.tilt = +$('#tilt').value; o.sign = $('#sign').value;
+    o.optScreen = $('#optScreen').checked; o.scrSize = $('#scrSize').value; o.scrMount = $('#scrMount').value;
+    o.scrU = scr.u; o.scrV = scr.v; o.scrImg = scr.img;
     return o;
   }
   function applyOpts() {
@@ -1257,9 +1403,36 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     for (const m of wallMats) { m.transparent = o.optXray; m.opacity = o.optXray ? .22 : 1; m.depthWrite = !o.optXray; m.needsUpdate = true; }
     shelfPivots.forEach(p => p.rotation.x = o.tilt * DEG);
     $('#tiltV').textContent = o.tilt + '°';
-    drawSign(o.sign);
+    drawSign(o.sign); drawIdle(o.sign);
+    scr.on = o.optScreen;
+    shelfPivots.forEach(p => p.visible = !scr.on);
+    uprights.forEach(u => u.visible = !scr.on);
+    aTags.forEach(t => t.visible = !scr.on);
+    $('#scrOpts').hidden = !scr.on; $('#tiltSec').hidden = scr.on;
+    if (!scr.on && selected === scr) selected = null;
+    buildScreen();
   }
-  document.querySelectorAll('.opt').forEach(i => i.addEventListener('input', () => { applyOpts(); save(); }));
+  document.querySelectorAll('.opt').forEach(i => i.addEventListener('input', () => { applyOpts(); validate(); updatePanel(); save(); }));
+  $('#scrH').addEventListener('input', () => { scr.v = +$('#scrH').value; buildScreen(); validate(); updatePanel(); });
+  $('#scrH').addEventListener('change', save);
+  scrTagEl.addEventListener('click', () => select(scr));
+  $('#upScreen').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = '';
+    if (!f) return;
+    if (f.type.startsWith('video/')) {
+      stopVideo(); scr.img = null;
+      const vd = document.createElement('video');
+      vd.muted = true; vd.loop = true; vd.playsInline = true; vd.src = URL.createObjectURL(f);
+      vd.play().catch(() => {});
+      scr.video = vd;
+    } else if (f.type.startsWith('image/')) {
+      try { const im = await readImage(f, 1920); stopVideo(); scr.img = im.url; }
+      catch (err) { toast('Non riesco a leggere ' + f.name + '.'); return; }
+    } else { toast('Servono un\'immagine o un video.'); return; }
+    applyScreenContent(); select(scr); save();
+    toast(scr.video ? 'Video sullo schermo: resta finché la pagina è aperta.' : 'Immagine sullo schermo.');
+  });
+  $('#scrIdle').onclick = () => { stopVideo(); scr.img = null; applyScreenContent(); updatePanel(); save(); };
 
   // fornitura dal PDF
   const FORN = [
@@ -1314,15 +1487,19 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   const saved = store.get(KEY);
   if (saved && saved.opts) {
     for (const [k, v] of Object.entries(saved.opts)) { const el = $('#' + k); if (!el) continue; if (el.type === 'checkbox') el.checked = !!v; else el.value = v; }
+    if (saved.opts.scrU != null) scr.u = saved.opts.scrU;
+    if (saved.opts.scrV != null) scr.v = saved.opts.scrV;
+    if (saved.opts.scrImg) scr.img = saved.opts.scrImg;
   }
+  applyScreenContent();
   if (saved && saved.layout) {
     for (const s of saved.layout.items || []) if (s.type === 'book') seq.book = Math.max(seq.book, +s.id.split('-')[1] || 0);
     for (const g of saved.layout.graphics || []) seq.graf = Math.max(seq.graf, +g.id.split('-')[1] || 0);
     restore(saved.layout);
   } else validate();
-  applyOpts(); applyTheme(); resize();
+  applyOpts(); validate(); applyTheme(); resize();
   persp.position.copy(VIEWS.axo.pos); ctlP.target.copy(VIEWS.axo.target); ctlP.update();
-  if (document.fonts) { document.fonts.load('700 100px "Barlow Condensed"').then(() => drawSign($('#sign').value)).catch(() => {}); }
+  if (document.fonts) { document.fonts.load('700 100px "Barlow Condensed"').then(() => { drawSign($('#sign').value); drawIdle($('#sign').value); }).catch(() => {}); }
 
   const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   function loop(now) {
