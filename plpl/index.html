@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: arredi spostabili, pareti con motivo botanico, grafiche, copertine sui tavoli, due schermi.">
+<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: tavoli in esposizione, pareti con motivo botanico, grafiche, due schermi.">
 <style>body{margin:0}img{max-width:100%}</style>
 <title>Stand PLPL 16 mq</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -207,8 +207,12 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
           <select id="upPose" aria-label="Come appoggiare i libri"><option value="flat">Piatti, in pila da 5</option><option value="stand">In piedi su leggio</option></select>
           <input class="vh" type="file" id="upBook" accept="image/*" multiple>
           <label class="btn primary" for="upBook">Carica copertine</label>
+          <h3>Esposizione sui tavoli</h3>
+          <input class="vh" type="file" id="upDisplay" accept="image/*" multiple>
+          <label class="btn primary" for="upDisplay">Copertine per l'esposizione</label>
+          <button type="button" id="dispProto">Copertine di prova</button>
         </div>
-        <p class="note">Puoi anche trascinare le immagini direttamente sulla scena: su una parete diventano grafica, su un tavolo diventano libri. Ogni copertina diventa un libro; se c'è un tavolo selezionato vanno lì. Formati PNG, JPG o WebP; un PDF va esportato prima come immagine.</p>
+        <p class="note">Puoi anche trascinare le immagini direttamente sulla scena: su una parete diventano grafica, su un tavolo diventano libri. Con «Carica copertine» ogni immagine diventa un singolo libro da spostare; se c'è un tavolo selezionato va lì. Con «Copertine per l'esposizione» le immagini riempiono tutti i tavoli a rotazione, in pile e sui leggii. Formati PNG, JPG o WebP; un PDF va esportato prima come immagine.</p>
       </section>
 
       <section class="sec">
@@ -218,7 +222,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
           <label class="tg"><input class="opt" type="checkbox" id="optDims" checked> Quote</label>
           <label class="tg"><input class="opt" type="checkbox" id="optGrid" checked> Griglia 50 cm</label>
           <label class="tg"><input class="opt" type="checkbox" id="optSnap" checked> Aggancio</label>
-          <label class="tg"><input class="opt" type="checkbox" id="optBooks" checked> Libri d'esempio</label>
+          <label class="tg"><input class="opt" type="checkbox" id="optBooks" checked> Libri in esposizione</label>
           <label class="tg"><input class="opt" type="checkbox" id="optXray"> Pareti trasparenti</label>
           <label class="tg"><input class="opt" type="checkbox" id="optSpots" checked> Fari accesi</label>
           <label class="tg"><input class="opt" type="checkbox" id="optPerson" checked> Persona 175 cm</label>
@@ -866,6 +870,80 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   }
   const screenTargets = () => selected && selected.kind === 'screen' ? [selected] : screens.filter(x => x.on);
 
+  /* ---------- esposizione sui tavoli ---------- */
+  // copertine di prova: colore, un segno grafico, righe al posto di titolo e autore (nessun titolo vero)
+  const BOOK_TONES = ['#1f3a5f', '#c8553d', '#2a9d8f', '#e9c46a', '#6d597a', '#264653', '#b5838d', '#f4a261', '#3d405b', '#81b29a', '#d7121f', '#151515', '#efe6d2', '#7a9e7e', '#9c6644', '#4a4e69', '#e07a5f', '#f2cc8f'];
+  const LIGHT_TONES = ['#efe6d2', '#e9c46a', '#f2cc8f', '#f4a261', '#81b29a'];
+  function proceduralCover(i) {
+    const c = document.createElement('canvas'); c.width = 300; c.height = 450;
+    const g = c.getContext('2d'), R = mulberry32(i * 977 + 3);
+    const bg = BOOK_TONES[i % BOOK_TONES.length], ink = LIGHT_TONES.includes(bg) ? '#1d1f24' : '#f4efe4';
+    let acc = BOOK_TONES[(i * 7 + 5) % BOOK_TONES.length]; if (acc === bg) acc = ink;
+    g.fillStyle = bg; g.fillRect(0, 0, 300, 450);
+    const v = i % 5;
+    if (v === 0) { g.fillStyle = acc; g.beginPath(); g.arc(150, 260, 85, 0, Math.PI * 2); g.fill(); }
+    else if (v === 1) { g.strokeStyle = ink; g.lineWidth = 6; g.strokeRect(22, 22, 256, 406); g.fillStyle = acc; g.fillRect(60, 200, 180, 150); }
+    else if (v === 2) { g.fillStyle = acc; for (let k = 0; k < 6; k++) g.fillRect(0, 200 + k * 26, 300, 12); }
+    else if (v === 3) { g.fillStyle = acc; g.fillRect(0, 250, 300, 200); }
+    else { const gr = g.createLinearGradient(0, 120, 0, 380); gr.addColorStop(0, acc); gr.addColorStop(1, bg); g.fillStyle = gr; g.fillRect(40, 130, 220, 240); }
+    g.fillStyle = v === 3 ? (LIGHT_TONES.includes(acc) ? '#1d1f24' : '#f4efe4') : ink;
+    const ty = v === 3 ? 290 : 62, tw = 140 + R() * 100;
+    g.fillRect(40, ty, tw, 22); g.fillRect(40, ty + 32, tw * .7, 22);
+    g.globalAlpha = .75; g.fillRect(40, v === 3 ? 395 : 145, 110, 10); g.globalAlpha = 1;
+    g.fillStyle = ink; g.beginPath(); g.arc(150, 426, 6, 0, Math.PI * 2); g.fill();
+    const t = new THREE.CanvasTexture(c); t.anisotropy = ANISO;
+    return { tex: t, spine: bg, aspect: 1.5 };
+  }
+  const PROTO_COVERS = Array.from({ length: 18 }, (_, i) => proceduralCover(i));
+  let userCovers = [];   // copertine caricate per l'esposizione: { url, tex, spine, aspect }
+  const coverMatCache = new Map(), geoCache = new Map();
+  function bookMats(c) {
+    if (!coverMatCache.has(c)) {
+      const cov = new THREE.MeshStandardMaterial({ map: c.tex, roughness: .55 }), sp = new THREE.MeshStandardMaterial({ color: c.spine, roughness: .6 });
+      // piatto: +x taglio, -x dorso, +y copertina; in piedi: +z copertina, -z retro
+      coverMatCache.set(c, { flat: [pageM, sp, cov, sp, pageM, pageM], stand: [pageM, sp, pageM, pageM, cov, sp] });
+    }
+    return coverMatCache.get(c);
+  }
+  const geo = (w, h, d) => { const k = w + 'x' + h + 'x' + d; if (!geoCache.has(k)) geoCache.set(k, new THREE.BoxGeometry(w, h, d)); return geoCache.get(k); };
+  const acrylM = new THREE.MeshStandardMaterial({ color: 0xdfeaf2, roughness: .15, metalness: .1, transparent: true, opacity: .35 });
+  const displays = [];
+  // il lato +z del tavolo è sempre quello verso chi guarda: fila di leggii in fondo, due file di pile davanti
+  function makeDisplay(it) {
+    const g = new THREE.Group(); g.name = 'display';
+    const pool = userCovers.length ? userCovers : PROTO_COVERS;
+    const R = mulberry32(it.id.charCodeAt(1) * 131 + pool.length);
+    let ci = Math.floor(R() * pool.length);
+    const next = () => pool[(ci++) % pool.length];
+    const mesh = (gm, mt) => { const m = new THREE.Mesh(gm, mt); m.castShadow = true; m.receiveShadow = true; m.userData.noTint = true; return m; };
+    for (let k = 0; k < 7; k++) {
+      const c = next(), bw = 14, bh = Math.round(Math.min(24, Math.max(15, bw * c.aspect)) * 2) / 2, th = 2, x = -66 + k * 22;
+      const p = new THREE.Group(); p.position.set(x, TABLE_H + .4, -24); p.rotation.x = -.26; g.add(p);
+      const b = mesh(geo(bw, bh, th), bookMats(c).stand); b.position.set(0, bh / 2, -th / 2); p.add(b);
+      const back = mesh(geo(8, 12, .4), acrylM); back.position.set(0, 7, -th - .4); p.add(back);
+      const base = mesh(geo(10, .4, 9), acrylM); base.position.set(x, TABLE_H + .2, -27); g.add(base);
+    }
+    for (const [z, lo, hi] of [[-2, 2, 5], [24, 1, 3]]) for (let k = 0; k < 9; k++) {
+      const c = next(), bw = 14, bh = Math.round(Math.min(22, Math.max(15, bw * c.aspect)) * 2) / 2, n = lo + Math.floor(R() * (hi - lo + 1));
+      for (let i = 0; i < n; i++) {
+        const b = mesh(geo(bw, 2.2, bh), bookMats(c).flat);
+        b.position.set(-70 + k * 17.5 + (R() - .5) * .8, TABLE_H + 1.1 + i * 2.2, z + (R() - .5) * .8);
+        b.rotation.y = i === n - 1 ? (R() - .5) * .03 : (R() - .5) * .07;
+        g.add(b);
+      }
+    }
+    g.visible = !document.querySelector('#optBooks') || document.querySelector('#optBooks').checked;
+    displays.push(g);
+    return g;
+  }
+  function rebuildDisplays() {
+    displays.length = 0;
+    for (const it of items) if (it.type === 'table') {
+      const old = it.group.getObjectByName('display'); if (old) it.group.remove(old);
+      it.group.add(makeDisplay(it));
+    }
+  }
+
   /* ---------- costruttori degli arredi ---------- */
   function makeTable(it) {
     const g = new THREE.Group();
@@ -873,15 +951,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     const legM = mat(0xb6bbc2, .35, .5);
     for (const sx of [-1, 1]) for (const sz of [-1, 1]) { const l = box(4, 72, 4, legM); l.position.set(sx * 76, 36, sz * 36); g.add(l); }
     for (const sz of [-1, 1]) { const s = box(148, 6, 1.5, legM); s.position.set(0, 69, sz * 36.5); g.add(s); }
-    const n = it.id.charCodeAt(1);
-    [-55, -5, 45].forEach((px, k) => {
-      const ci = (n * 3 + k * 5) % COVERS.length, count = 2 + ((n + k) % 5);
-      for (let i = 0; i < count; i++) {
-        const b = makeSample(ci);
-        b.position.set(px + (rnd() - .5) * 1.5, TABLE_H + 1.2 + i * 2.4, -8 + (rnd() - .5) * 1.5);
-        b.rotation.y = (rnd() - .5) * .12; g.add(b);
-      }
-    });
+    g.add(makeDisplay(it));
     return g;
   }
   function makeChair() {
@@ -1516,6 +1586,24 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   }
   $('#upGraf').addEventListener('change', e => { addGraphics(e.target.files, $('#upWall').value); e.target.value = ''; });
   $('#upBook').addEventListener('change', e => { addBooks(e.target.files, $('#upPose').value); e.target.value = ''; });
+  function setUserCovers(list) {
+    userCovers = list.map(c => ({ url: c.url, spine: c.spine, aspect: c.aspect, tex: texFor(c.url) }));
+    rebuildDisplays(); refreshTints();
+  }
+  $('#upDisplay').addEventListener('change', async e => {
+    const fs = images(e.target.files); e.target.value = '';
+    if (!fs.length) { toast('Servono immagini PNG, JPG o WebP.'); return; }
+    const list = [];
+    for (const f of fs) {
+      try { const im = await readImage(f, 600); list.push({ url: im.url, spine: '#' + im.color.toString(16).padStart(6, '0'), aspect: im.h / im.w }); }
+      catch (err) { toast('Non riesco a leggere ' + f.name + '.'); }
+    }
+    if (!list.length) return;
+    $('#optBooks').checked = true; applyOpts();
+    setUserCovers(list); save();
+    toast(`${list.length} copertine distribuite su tutti i tavoli.`);
+  });
+  $('#dispProto').onclick = () => { setUserCovers([]); save(); toast('Esposizione con le copertine di prova.'); };
 
   stage.addEventListener('dragover', e => { if ([...e.dataTransfer.types].includes('Files')) { e.preventDefault(); stage.classList.add('drop'); } });
   stage.addEventListener('dragleave', e => { if (e.target === stage || !stage.contains(e.relatedTarget)) stage.classList.remove('drop'); });
@@ -1645,6 +1733,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     o.tilt = +$('#tilt').value; o.sign = $('#sign').value;
     o.optScreen = $('#optScreen').checked; o.optScreen2 = $('#optScreen2').checked; o.scrSize = $('#scrSize').value; o.scrMount = $('#scrMount').value;
     o.screens = screens.map(x => ({ key: x.key, u: x.u, v: x.v, img: x.img })); o.cfg = 4;
+    o.dispCovers = userCovers.map(c => ({ url: c.url, spine: c.spine, aspect: c.aspect }));
     o.patOn = $('#patOn').checked; o.patPal = $('#patPal').value; o.patDens = +$('#patDens').value; o.patSym = $('#patSym').checked; o.patSeed = patSeed;
     return o;
   }
@@ -1654,6 +1743,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     dimGroup.visible = o.optDims;
     gridGroup.visible = o.optGrid;
     sampleBooks.forEach(b => b.visible = o.optBooks);
+    displays.forEach(d => d.visible = o.optBooks);
     spotGroup.forEach(s => s.visible = o.optSpots);
     byId.P.group.visible = o.optPerson;
     applyXray();
@@ -1755,6 +1845,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     for (const d of saved.opts.screens || []) { const sc = screens.find(x => x.key === d.key); if (sc) Object.assign(sc, { u: d.u, v: d.v, img: d.img }); }
     if (saved.opts.scrImg) screens[0].img = saved.opts.scrImg;
     if (saved.opts.patSeed) patSeed = saved.opts.patSeed;
+    if (saved.opts.dispCovers && saved.opts.dispCovers.length) setUserCovers(saved.opts.dispCovers);
     if (!(saved.opts.cfg >= 4)) $('#patOn').checked = true;   // motivo botanico acceso per chi aveva già aperto la pagina
     if (!(saved.opts.cfg >= 3)) {   // configurazione richiesta: due 75 pollici a parete, al centro
       $('#optScreen').checked = $('#optScreen2').checked = true; $('#scrSize').value = '75'; $('#scrMount').value = 'wall';
