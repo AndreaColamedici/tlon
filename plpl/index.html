@@ -527,222 +527,244 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   /* ---------- motivo botanico delle pareti ---------- */
   // ogni forma è un tracciato in centimetri sulla parete (origine in alto a sinistra): lo stesso dato disegna la texture e l'SVG di stampa
   const PALETTES = {
-    notte: { bg: '#24262a', speck: ['#383b40', '#43464c'], hi: ['#a8e6bf', '#c4e65a', '#f2a9b8', '#ec8f86', '#b083c2', '#5fbdb8', '#93cbe8', '#efe8d4'], lo: ['#3c675b', '#563f6d', '#3a5c72', '#6a4859'], fern: ['#a8e6bf', '#c4e65a', '#f2a9b8', '#ec8f86', '#b083c2', '#5fbdb8', '#93cbe8'], eye: '#efe8d4' },
-    lilla: { bg: '#221e29', speck: ['#332e3a', '#3b3543'], hi: ['#c9a6e0', '#f0b8c8', '#9fd8cf', '#e8dcc0', '#a58bd6', '#7fc4a0'], lo: ['#4a3c5d', '#3c4e59', '#593c4e'], fern: ['#c9a6e0', '#f0b8c8', '#9fd8cf', '#a58bd6', '#7fc4a0'], eye: '#f1e9d8' },
-    oro:   { bg: '#141519', speck: ['#25252a', '#2e2c29'], hi: ['#d9b46a', '#ecd39a', '#b48c4a', '#f1e7cf', '#c9a45c'], lo: ['#4a3d26', '#3a3226', '#33302a'], fern: ['#d9b46a', '#b48c4a', '#c9a45c'], eye: '#f1e7cf' }
+    notte: { bg: '#27292c', speck: ['#3a3d42', '#45484e'], fern: ['#9cd3b0', '#c3df5c', '#e9a3b3', '#e38a83', '#a47cb8', '#55aea9', '#86bfdc', '#7fae8c'], lo: ['#35564f', '#4d3a5c', '#33495c', '#5b3f4f', '#3f5a3c'], hi: ['#eee6cf', '#f2b6c3', '#a8e2c0', '#c9e36a', '#8cc8e6', '#b48ac6', '#ef9a8f'], dew: '#f06f7d', trap: '#f2a1b0', hatch: '#8e6aa6', ink: '#5fb7b1', eye: '#eee6cf' },
+    lilla: { bg: '#221f28', speck: ['#332f3a', '#3b3644'], fern: ['#c4a3dc', '#ecb3c4', '#9dd4ca', '#a58bd6', '#7fc0a0', '#e7d9bd'], lo: ['#463a58', '#3a4b56', '#55394b'], hi: ['#f1e9d8', '#f0b8c8', '#9fd8cf', '#c9a6e0'], dew: '#ee8fa8', trap: '#f0b8c8', hatch: '#7f6aa8', ink: '#9fd8cf', eye: '#f1e9d8' },
+    oro:   { bg: '#141519', speck: ['#25252a', '#2e2c29'], fern: ['#d6b06a', '#b48c4a', '#c9a45c', '#e8cf96'], lo: ['#463a25', '#3a3226', '#2f2b25'], hi: ['#f1e7cf', '#ecd39a', '#d9b46a'], dew: '#e8c27a', trap: '#ecd39a', hatch: '#8f7440', ink: '#d9b46a', eye: '#f1e7cf' }
   };
+  const mixHex = (a, b, t) => { const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)), A = p(a), B = p(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join(''); };
+  // composizione ispirata alla copertina del Mostruoso femminile: simmetria a specchio, vuoto centrale tratteggiato, felci fitte ai lati, ghirlande in alto, grana da stampa
   function genWall(L, H, opt) {
     const shapes = [];
     const pal = PALETTES[opt.pal] || PALETTES.notte, D = opt.dens;
     const TAU = Math.PI * 2, UP = -Math.PI / 2;
-    for (const mir of opt.sym ? [false, true] : [false]) {
-      const R = mulberry32(opt.seed * 7919 + L * 31 + 5);
-      const W2 = opt.sym ? L / 2 + 10 : L;
-      const f = n => Math.round(n * 10) / 10;
-      const P = (x, y) => f(mir ? L - x : x) + ' ' + f(y);
-      const add = (d, o) => shapes.push(Object.assign({ d }, o));
-      const rr = (a, b) => a + R() * (b - a);
-      const pick = a => a[Math.floor(R() * a.length)];
-      const cnt = k => Math.max(0, Math.round(k * D * W2 / 200 + (R() - .5)));
-      const dirPt = (x, y, a, l) => [x + Math.cos(a) * l, y + Math.sin(a) * l];
-      const circle = (x, y, r) => `M${P(x - r, y)} A${f(r)} ${f(r)} 0 1 0 ${P(x + r, y)} A${f(r)} ${f(r)} 0 1 0 ${P(x - r, y)}Z`;
-      const line = pts => 'M' + pts.map(p => P(p[0], p[1])).join(' L');
-      function walk(x, y, a, len, bend, n = 24, curl = 0) {
-        const pts = [[x, y, a]], st = len / n;
-        for (let i = 0; i < n; i++) { a += bend / n + (i > n * .55 ? curl * (i / n - .55) * 24 / n : 0); x += Math.cos(a) * st; y += Math.sin(a) * st; pts.push([x, y, a]); }
-        return pts;
+    const f = n => Math.round(n * 10) / 10;
+    let mir = false;
+    const P = (x, y) => f(mir ? L - x : x) + ' ' + f(y);
+    const add = (d, o) => shapes.push(Object.assign({ d }, o));
+    let R = mulberry32(1);
+    const rr = (a, b) => a + R() * (b - a);
+    const pick = a => a[Math.floor(R() * a.length)];
+    const dirPt = (x, y, a, l) => [x + Math.cos(a) * l, y + Math.sin(a) * l];
+    const circle = (x, y, r) => `M${P(x - r, y)} A${f(r)} ${f(r)} 0 1 0 ${P(x + r, y)} A${f(r)} ${f(r)} 0 1 0 ${P(x - r, y)}Z`;
+    const line = pts => 'M' + pts.map(p => P(p[0], p[1])).join(' L');
+    function walk(x, y, a, len, bend, n = 24, curl = 0) {
+      const pts = [[x, y, a]], st = len / n;
+      for (let i = 0; i < n; i++) { a += bend / n + (i > n * .55 ? curl * (i / n - .55) * 24 / n : 0); x += Math.cos(a) * st; y += Math.sin(a) * st; pts.push([x, y, a]); }
+      return pts;
+    }
+    // foglia affusolata, con una leggera curvatura
+    function leaf(x, y, a, len, wid, col, op = 1, vein = null, curve = 0) {
+      const ca = Math.cos(a), sa = Math.sin(a), nx = -sa, ny = ca;
+      const p = (t, o) => [x + ca * len * t + nx * (o + curve * len * t * t), y + sa * len * t + ny * (o + curve * len * t * t)];
+      const tip = p(1, 0);
+      add(`M${P(x, y)} C${P(...p(.22, wid))} ${P(...p(.72, wid * .8))} ${P(...tip)} C${P(...p(.72, -wid * .8))} ${P(...p(.22, -wid))} ${P(x, y)}Z`, { fill: col, op });
+      if (vein) add(`M${P(x, y)} Q${P(...p(.5, 0))} ${P(...tip)}`, { stroke: vein, sw: Math.max(.12, wid * .07), op });
+    }
+    function fern(x, y, a, len, bend, col, op = 1) {
+      const n = Math.max(10, Math.round(len / 3.4)), pts = walk(x, y, a, len, bend, n);
+      const light = mixHex(col, '#ffffff', .18), dark = mixHex(col, pal.bg, .25);
+      add(line(pts), { stroke: dark, sw: len * .005 + .22, op });
+      for (let i = 2; i < pts.length - 1; i++) {
+        const [px, py, pa] = pts[i], t = i / pts.length;
+        const l = len * .1 * Math.sin(Math.PI * Math.min(1, t * 1.1 + .08)) + .9;
+        for (const s of [-1, 1]) leaf(px, py, pa + s * (1.2 - t * .45), l, l * .11, R() < .28 ? light : col, op, null, -s * .14);
       }
-      function leaf(x, y, a, len, wid, col, op = 1, vein = null) {
-        const [tx, ty] = dirPt(x, y, a, len), px = Math.cos(a + Math.PI / 2) * wid, py = Math.sin(a + Math.PI / 2) * wid;
-        const [ax, ay] = dirPt(x, y, a, len * .3), [bx, by] = dirPt(x, y, a, len * .75);
-        add(`M${P(x, y)} C${P(ax + px, ay + py)} ${P(bx + px * .8, by + py * .8)} ${P(tx, ty)} C${P(bx - px * .8, by - py * .8)} ${P(ax - px, ay - py)} ${P(x, y)}Z`, { fill: col, op });
-        if (vein) add(`M${P(x, y)} L${P(tx, ty)}`, { stroke: vein, sw: Math.max(.15, wid * .1), op: op * .8 });
+      const e = pts[pts.length - 1];
+      leaf(e[0], e[1], e[2], len * .025 + 1, len * .006 + .35, col, op);
+    }
+    function blade(x, y, col, op = 1) { leaf(x, y, UP + rr(-.5, .5), rr(8, 30), rr(.4, .9), col, op, null, rr(-.35, .35)); }
+    function bigLeaf(x, y, a, len, col, vcol, op = 1) {
+      const c = rr(-.12, .12), ca = Math.cos(a), sa = Math.sin(a), nx = -sa, ny = ca;
+      const p = (t, o) => [x + ca * len * t + nx * (o + c * len * t * t), y + sa * len * t + ny * (o + c * len * t * t)];
+      leaf(x, y, a, len, len * .36, col, op, null, c);
+      add(`M${P(x, y)} Q${P(...p(.5, 0))} ${P(...p(1, 0))}`, { stroke: vcol, sw: .3, op });
+      for (let j = 1; j < 11; j++) {
+        const t = j / 12, w = len * .36 * Math.sin(Math.PI * Math.min(1, t * 1.05 + .05)) * .75;
+        for (const s of [-1, 1]) add(`M${P(...p(t, 0))} Q${P(...p(t + .04, s * w * .55))} ${P(...p(t + .09, s * w))}`, { stroke: vcol, sw: .16, op });
       }
-      function fern(x, y, a, len, bend, col, op = 1) {
-        const pts = walk(x, y, a, len, bend, 30);
-        add(line(pts), { stroke: col, sw: len * .01 + .25, op });
-        for (let i = 3; i < pts.length - 1; i++) {
-          const [px, py, pa] = pts[i], t = i / pts.length, l = len * .15 * (1 - t * .85) + 1.2;
-          leaf(px, py, pa - 1.05 + t * .45, l, l * .2, col, op);
-          leaf(px, py, pa + 1.05 - t * .45, l, l * .2, col, op);
+    }
+    function star(x, y, r, petal, center) {
+      const a0 = rr(0, 1);
+      for (let k = 0; k < 6; k++) leaf(x, y, a0 + k * TAU / 6, r, r * .26, petal);
+      add(circle(x, y, r * .2), { fill: center });
+    }
+    function starCluster(x, y, size) {
+      const stem = pick(pal.fern), petal = R() < .6 ? pal.eye : pick(pal.hi), center = pick(pal.hi);
+      for (let k = 0, n = 5 + Math.floor(R() * 5); k < n; k++) {
+        const a = UP + rr(-1.2, 1.2), d = rr(.4, 1) * size, [fx, fy] = dirPt(x, y, a, d);
+        add(`M${P(x, y + size * .5)} Q${P(x + (fx - x) * .3, y)} ${P(fx, fy)}`, { stroke: stem, sw: .2 });
+        star(fx, fy, rr(1.6, 3.2), petal, center);
+      }
+    }
+    function sprig(x, y, a, len, bend, col) {
+      const pts = walk(x, y, a, len, bend, 14);
+      add(line(pts), { stroke: col, sw: .25 });
+      for (let i = 2; i < pts.length - 1; i += 2) leaf(pts[i][0], pts[i][1], pts[i][2] + (i % 4 ? .85 : -.85), len * .13, len * .035, col, 1, null, .1);
+      const e = pts[pts.length - 1];
+      star(e[0], e[1], rr(1.6, 3), pick(pal.hi), col);
+    }
+    function vine(x, y, a, len, bend, col) {
+      const pts = walk(x, y, a, len, bend, 64, rr(-1, 1) * 4);
+      add(line(pts), { stroke: col, sw: .3 });
+      for (let i = 4; i < pts.length - 10; i += 4) leaf(pts[i][0], pts[i][1], pts[i][2] + (i % 8 ? 1 : -1), rr(2.5, 5), rr(.8, 1.4), R() < .3 ? mixHex(col, '#ffffff', .2) : col, 1, null, .15);
+      if (R() < .55) { const e = pts[pts.length - 1]; star(e[0], e[1], rr(1.8, 3), pal.eye, col); }
+    }
+    function tendril(x, y, a, len, col) { add(line(walk(x, y, a, len, rr(-.6, .6), 110, (R() < .5 ? -1 : 1) * rr(16, 26))), { stroke: col, sw: .22 }); }
+    function drosera(x, y, a, len, bend, col) {
+      const pts = walk(x, y, a, len, bend, 24);
+      add(line(pts), { stroke: col, sw: .3 });
+      const [hx, hy, ha] = pts[pts.length - 1], hair = mixHex(pal.trap, col, .4);
+      leaf(hx, hy, ha + Math.PI, 3.5, 1.4, col);
+      for (let k = 0; k < 18; k++) {
+        const [ex, ey] = dirPt(hx, hy, ha + (k / 17 - .5) * 3, rr(2.8, 5));
+        add(`M${P(hx, hy)} L${P(ex, ey)}`, { stroke: hair, sw: .14 });
+        add(circle(ex, ey, rr(.38, .62)), { fill: pal.dew });
+      }
+    }
+    function flytrap(x, y, a, len, col) {
+      const pts = walk(x, y, a, len, rr(-.5, .5), 18);
+      add(line(pts), { stroke: mixHex(col, pal.bg, .2), sw: .55 });
+      for (let i = 5; i < pts.length - 4; i += 5) leaf(pts[i][0], pts[i][1], pts[i][2] + (i % 2 ? .9 : -.9), len * .2, len * .05, col, 1, null, .15);
+      const [hx, hy, ha] = pts[pts.length - 1], Lb = rr(7, 11);
+      for (const s of [-1, 1]) {
+        const la = ha + s * .52, wd = Lb * .42;
+        leaf(hx, hy, la, Lb, wd, col);
+        leaf(hx, hy, la, Lb * .82, wd * .62, pal.trap);
+        for (let j = 1; j < 12; j++) {
+          const t = j / 12, [bx, by] = dirPt(hx, hy, la, Lb * t), o = s * wd * Math.sin(Math.PI * t) * .82;
+          const sx = bx + Math.cos(la + Math.PI / 2) * o, sy = by + Math.sin(la + Math.PI / 2) * o;
+          add(`M${P(sx, sy)} L${P(...dirPt(sx, sy, la + s * 1.35, rr(2.2, 3.2)))}`, { stroke: col, sw: .16 });
         }
       }
-      function bigLeaf(x, y, a, len, col, vein, op = 1) {
-        leaf(x, y, a, len, len * .42, col, op, vein);
-        for (let j = 1; j < 6; j++) {
-          const [vx, vy] = dirPt(x, y, a, len * j / 6.5);
-          for (const s of [-1, 1]) add(`M${P(vx, vy)} Q${P(...dirPt(vx, vy, a + s * .5, len * .12))} ${P(...dirPt(vx, vy, a + s * .9, len * .24 * (1 - j / 8)))}`, { stroke: vein, sw: .25, op: op * .8 });
-        }
+    }
+    function mushrooms(x, y) {
+      const col = pick(pal.hi), dot = pal.eye;
+      for (let k = 0; k < 3; k++) {
+        const mx = x + rr(-8, 8), h = rr(6, 15), w = rr(6, 12), tx = mx + rr(-.15, .15) * h * 3;
+        add(`M${P(mx - w * .08, y)} Q${P((mx + tx) / 2 - w * .1, y - h / 2)} ${P(tx - w * .07, y - h)} L${P(tx + w * .07, y - h)} Q${P((mx + tx) / 2 + w * .1, y - h / 2)} ${P(mx + w * .08, y)}Z`, { fill: dot, op: .9 });
+        add(`M${P(tx - w / 2, y - h)} Q${P(tx, y - h - w * .75)} ${P(tx + w / 2, y - h)} Q${P(tx, y - h + w * .1)} ${P(tx - w / 2, y - h)}Z`, { fill: col });
+        for (let g = 1; g < 6; g++) add(`M${P(tx - w * .42 + g * w * .14, y - h + .2)} L${P(tx - w * .3 + g * w * .1, y - h - w * .25)}`, { stroke: mixHex(col, pal.bg, .35), sw: .12 });
       }
-      function flower(x, y, r, col, center) {
-        const a0 = rr(0, 1);
-        for (let k = 0; k < 6; k++) leaf(x, y, a0 + k * TAU / 6, r, r * .32, col);
-        add(circle(x, y, r * .22), { fill: center });
+    }
+    function eye(x, y, r, col, iris) {
+      for (let k = 0; k < 14; k++) leaf(x, y, k * TAU / 14, r * 2, r * .26, col, .95, null, .08);
+      add(`M${P(x - r * 1.5, y)} Q${P(x, y - r * 1.15)} ${P(x + r * 1.5, y)} Q${P(x, y + r * 1.15)} ${P(x - r * 1.5, y)}Z`, { fill: pal.eye });
+      add(circle(x, y, r * .55), { fill: iris });
+      add(circle(x, y, r * .24), { fill: pal.bg });
+      add(circle(x + r * .16, y - r * .2, r * .1), { fill: '#ffffff', op: .9 });
+    }
+    function moth(x, y, s, col, spot) {
+      for (const [a, l] of [[UP - 1.05, 1], [UP + 1.05, 1], [Math.PI / 2 + .7, .7], [Math.PI / 2 - .7, .7]]) {
+        leaf(x, y, a, s * l, s * l * .42, col);
+        leaf(x, y, a, s * l * .7, s * l * .24, mixHex(col, '#ffffff', .25));
+        const [cx, cy] = dirPt(x, y, a, s * l * .62); add(circle(cx, cy, s * l * .09), { fill: spot });
       }
-      function sprig(x, y, a, len, bend, col, fcol) {
-        const pts = walk(x, y, a, len, bend, 12);
-        add(line(pts), { stroke: col, sw: .3 });
-        for (let i = 2; i < pts.length - 1; i += 2) leaf(pts[i][0], pts[i][1], pts[i][2] + (i % 4 ? .8 : -.8), len * .14, len * .05, col);
-        const e = pts[pts.length - 1];
-        flower(e[0], e[1], rr(1.8, 3.6), fcol, col);
+      leaf(x, y + s * .4, UP, s * .85, s * .09, pal.bg);
+      for (const g of [-1, 1]) add(`M${P(x, y - s * .4)} Q${P(x + g * s * .25, y - s * .85)} ${P(x + g * s * .45, y - s * .95)}`, { stroke: col, sw: .16 });
+    }
+    function serpent(x, y, col) {
+      const pts = walk(x, y, UP + rr(-.4, .4), rr(80, 140), 0, 70);
+      let a = 0; for (const p of pts) { a += .17; p[0] += Math.sin(a) * 6; }
+      add(line(pts), { stroke: col, sw: 2.6 });
+      add(line(pts), { stroke: pal.bg, sw: .55, dash: [.8, 1.6] });
+      const e = pts[pts.length - 1];
+      leaf(e[0], e[1] + 1.5, UP, 5, 2, col);
+      add(circle(e[0] + .8, e[1], .42), { fill: pal.bg });
+    }
+    // lettori disegnati a contorno, come la figura al centro della copertina
+    const SEATED = [{ c: [.47, .14], r: .085 }, { l: [[.43, .2], [.41, .27]], w: .07 }, { l: [[.40, .27], [.34, .5], [.30, .74]], w: .15 }, { l: [[.30, .76], [.50, .62], [.62, .54]], w: .11 }, { l: [[.62, .54], [.70, .78], [.74, .97]], w: .09 }, { l: [[.74, .98], [.84, .99]], w: .06 }, { l: [[.40, .31], [.52, .46], [.62, .40]], w: .06 }, { poly: [[.56, .38], [.64, .42], [.74, .35], [.73, .30], [.64, .36], [.57, .32]] }];
+    const STANDING = [{ c: [.535, .075], r: .055 }, { l: [[.515, .12], [.505, .16]], w: .04 }, { l: [[.50, .17], [.49, .34], [.48, .52]], w: .12 }, { l: [[.47, .52], [.45, .75], [.44, .98]], w: .065 }, { l: [[.50, .52], [.54, .75], [.57, .98]], w: .065 }, { l: [[.44, .985], [.50, .99]], w: .035 }, { l: [[.57, .985], [.63, .99]], w: .035 }, { l: [[.50, .19], [.56, .31], [.62, .25]], w: .04 }, { poly: [[.58, .25], [.63, .28], [.70, .23], [.69, .195], [.63, .24], [.585, .215]] }];
+    const LYING = [{ c: [.80, .66], r: .075 }, { l: [[.72, .80], [.50, .88], [.32, .90]], w: .13 }, { l: [[.32, .90], [.12, .93]], w: .075 }, { l: [[.32, .89], [.18, .86], [.16, .66]], w: .07 }, { l: [[.72, .80], [.80, .94], [.90, .93]], w: .05 }, { poly: [[.86, .965], [.93, .94], [1, .965], [1, .985], [.93, .96], [.86, .985]] }];
+    function figure(cx, by, sz, flip, col, parts) {
+      const T = (u, v) => [cx + (u - .5) * sz * (flip ? -1 : 1), by - (1 - v) * sz];
+      const lw = Math.max(.3, sz * .011);
+      for (const pass of [0, 1]) for (const q of parts) {
+        const c = pass ? pal.bg : col, d = pass ? -lw * 2 : 0;
+        if (q.c) { const [x, y] = T(q.c[0], q.c[1]); add(circle(x, y, q.r * sz + d / 2), { fill: c }); }
+        else if (q.l) add(line(q.l.map(t => T(t[0], t[1]))), { stroke: c, sw: Math.max(.1, q.w * sz + d) });
       }
-      function vine(x, y, a, len, bend, col) {
-        const pts = walk(x, y, a, len, bend, 64, rr(-1, 1) * 4);
-        add(line(pts), { stroke: col, sw: .4 });
-        for (let i = 4; i < pts.length - 10; i += 5) leaf(pts[i][0], pts[i][1], pts[i][2] + (i % 2 ? 1 : -1), rr(3, 6), rr(1, 1.8), col);
-        if (R() < .5) { const e = pts[pts.length - 1]; flower(e[0], e[1], rr(2, 3.5), pick(pal.hi), col); }
+      for (const q of parts) if (q.poly) add('M' + q.poly.map(t => P(...T(t[0], t[1]))).join(' L') + 'Z', { fill: pal.eye, stroke: col, sw: lw * .8 });
+    }
+    function stack(x, y) {
+      let top = y;
+      for (let i = 0, n = 3 + Math.floor(R() * 3); i < n; i++) {
+        const w = rr(18, 28), h = rr(2.8, 4), a = rr(-.06, .06), cx = x + rr(-2.5, 2.5), cy = top - h / 2, col = pick(pal.fern);
+        const pts = [[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]].map(([u, v]) => [cx + u * Math.cos(a) - v * Math.sin(a), cy + u * Math.sin(a) + v * Math.cos(a)]);
+        add('M' + pts.map(t => P(t[0], t[1])).join(' L') + 'Z', { fill: col });
+        add(`M${P(cx - w / 2 + 1.5, cy)} L${P(cx + w / 2 - 1.5, cy)}`, { stroke: pal.eye, sw: h * .22 });
+        add(`M${P(cx - w / 2 + .8, cy - h / 2)} L${P(cx - w / 2 + .8, cy + h / 2)}`, { stroke: mixHex(col, pal.bg, .4), sw: .5 });
+        top -= h;
       }
-      function tendril(x, y, a, len, col) {
-        add(line(walk(x, y, a, len, rr(-.6, .6), 110, (R() < .5 ? -1 : 1) * rr(16, 26))), { stroke: col, sw: .28 });
+      return top;
+    }
+    function seatedOnStack(x, col) {
+      const top = stack(x, H), sz = Math.min(70, Math.max(32, (H - top) / .22)), flip = R() < .5;
+      figure(x + .2 * sz * (flip ? -1 : 1), top + .24 * sz, sz, flip, col, SEATED);
+    }
+    function flyingBook(x, y, sz, a, col) {
+      const T = (u, v) => [x + (u * Math.cos(a) - v * Math.sin(a)) * sz, y + (u * Math.sin(a) + v * Math.cos(a)) * sz];
+      for (const g of [-1, 1]) {
+        add(`M${P(...T(0, .2))} Q${P(...T(g * .45, .05))} ${P(...T(g * .95, .12))} L${P(...T(g * .85, -.42))} Q${P(...T(g * .45, -.55))} ${P(...T(0, -.32))}Z`, { fill: pal.eye });
+        for (let k = 1; k < 4; k++) add(`M${P(...T(g * .12, -.3 + k * .11))} Q${P(...T(g * .45, -.4 + k * .12))} ${P(...T(g * .78, -.33 + k * .11))}`, { stroke: col, sw: .03 * sz });
+        add(`M${P(...T(0, .25))} Q${P(...T(g * .45, .11))} ${P(...T(g * 1, .17))}`, { stroke: col, sw: .07 * sz });
       }
-      function drosera(x, y, a, len, bend, col, dew) {
-        const pts = walk(x, y, a, len, bend, 20);
-        add(line(pts), { stroke: col, sw: .35 });
-        const [hx, hy, ha] = pts[pts.length - 1];
-        for (let k = 0; k < 14; k++) {
-          const [ex, ey] = dirPt(hx, hy, ha + (k / 13 - .5) * 2.8, rr(3, 5.5));
-          add(`M${P(hx, hy)} L${P(ex, ey)}`, { stroke: col, sw: .2 });
-          add(circle(ex, ey, rr(.45, .75)), { fill: dew });
-        }
-        add(circle(hx, hy, 1.1), { fill: col });
-      }
-      function flytrap(x, y, a, len, col, inner) {
-        const pts = walk(x, y, a, len, rr(-.5, .5), 16);
-        add(line(pts), { stroke: col, sw: .6 });
-        for (let i = 4; i < pts.length - 3; i += 5) leaf(pts[i][0], pts[i][1], pts[i][2] + (i % 2 ? .9 : -.9), len * .22, len * .07, col, .9);
-        const [hx, hy, ha] = pts[pts.length - 1], Lb = rr(7, 11);
-        for (const s of [-1, 1]) {
-          const la = ha + s * .5, wd = Lb * .42;
-          leaf(hx, hy, la, Lb, wd, col);
-          leaf(hx, hy, la, Lb * .8, wd * .6, inner);
-          for (let j = 1; j < 8; j++) {
-            const t = j / 8, [bx, by] = dirPt(hx, hy, la, Lb * t), o = s * wd * Math.sin(Math.PI * t) * .85;
-            const sx = bx + Math.cos(la + Math.PI / 2) * o, sy = by + Math.sin(la + Math.PI / 2) * o;
-            add(`M${P(sx, sy)} L${P(...dirPt(sx, sy, la + s * 1.3, 2))}`, { stroke: col, sw: .3 });
-          }
-        }
-      }
-      function mushrooms(x, y, col, dot) {
-        for (let k = 0; k < 3; k++) {
-          const mx = x + rr(-8, 8), h = rr(6, 16), w = rr(6, 13), tilt = rr(-.15, .15);
-          const tx = mx + tilt * h * 3;
-          add(`M${P(mx - w * .09, y)} Q${P((mx + tx) / 2 - w * .12, y - h / 2)} ${P(tx - w * .08, y - h)} L${P(tx + w * .08, y - h)} Q${P((mx + tx) / 2 + w * .12, y - h / 2)} ${P(mx + w * .09, y)}Z`, { fill: dot });
-          add(`M${P(tx - w / 2, y - h)} Q${P(tx, y - h - w * .75)} ${P(tx + w / 2, y - h)} Q${P(tx, y - h + w * .12)} ${P(tx - w / 2, y - h)}Z`, { fill: col });
-          for (let d = 0; d < 4; d++) add(circle(tx + rr(-w * .3, w * .3), y - h - rr(w * .08, w * .38), rr(.35, .8)), { fill: dot });
-        }
-      }
-      function eye(x, y, r, col, iris) {
-        for (let k = 0; k < 12; k++) leaf(x, y, k * TAU / 12, r * 2, r * .32, col, .9);
-        add(`M${P(x - r * 1.5, y)} Q${P(x, y - r * 1.15)} ${P(x + r * 1.5, y)} Q${P(x, y + r * 1.15)} ${P(x - r * 1.5, y)}Z`, { fill: pal.eye });
-        add(circle(x, y, r * .55), { fill: iris });
-        add(circle(x, y, r * .24), { fill: pal.bg });
-        add(circle(x + r * .16, y - r * .2, r * .1), { fill: '#ffffff', op: .9 });
-      }
-      function moth(x, y, s, col, spot) {
-        for (const [a, l] of [[UP - 1.05, 1], [UP + 1.05, 1], [Math.PI / 2 + .7, .7], [Math.PI / 2 - .7, .7]]) {
-          leaf(x, y, a, s * l, s * l * .42, col);
-          const [cx, cy] = dirPt(x, y, a, s * l * .6); add(circle(cx, cy, s * l * .1), { fill: spot });
-        }
-        leaf(x, y + s * .4, UP, s * .85, s * .1, spot);
-        for (const sgn of [-1, 1]) add(`M${P(x, y - s * .4)} Q${P(x + sgn * s * .25, y - s * .85)} ${P(x + sgn * s * .45, y - s * .95)}`, { stroke: spot, sw: .2 });
-      }
-      // lettori e libri nascosti: silhouette in coordinate unitarie, v = 1 è il piano d'appoggio dei piedi, rivolte a destra
-      const SEATED = [
-        { c: [.47, .14], r: .085 }, { l: [[.43, .2], [.41, .27]], w: .07 },
-        { l: [[.40, .27], [.34, .5], [.30, .74]], w: .15 },
-        { l: [[.30, .76], [.50, .62], [.62, .54]], w: .11 }, { l: [[.62, .54], [.70, .78], [.74, .97]], w: .09 }, { l: [[.74, .98], [.84, .99]], w: .06 },
-        { l: [[.40, .31], [.52, .46], [.62, .40]], w: .06 },
-        { poly: [[.56, .38], [.64, .42], [.74, .35], [.73, .30], [.64, .36], [.57, .32]], page: true }
-      ];
-      const STANDING = [
-        { c: [.535, .075], r: .055 }, { l: [[.515, .12], [.505, .16]], w: .04 },
-        { l: [[.50, .17], [.49, .34], [.48, .52]], w: .12 },
-        { l: [[.47, .52], [.45, .75], [.44, .98]], w: .065 }, { l: [[.50, .52], [.54, .75], [.57, .98]], w: .065 },
-        { l: [[.44, .985], [.50, .99]], w: .035 }, { l: [[.57, .985], [.63, .99]], w: .035 },
-        { l: [[.50, .19], [.56, .31], [.62, .25]], w: .04 },
-        { poly: [[.58, .25], [.63, .28], [.70, .23], [.69, .195], [.63, .24], [.585, .215]], page: true }
-      ];
-      const LYING = [
-        { c: [.80, .66], r: .075 },
-        { l: [[.72, .80], [.50, .88], [.32, .90]], w: .13 },
-        { l: [[.32, .90], [.12, .93]], w: .075 }, { l: [[.32, .89], [.18, .86], [.16, .66]], w: .07 },
-        { l: [[.72, .80], [.80, .94], [.90, .93]], w: .05 },
-        { poly: [[.86, .965], [.93, .94], [1, .965], [1, .985], [.93, .96], [.86, .985]], page: true }
-      ];
-      function figure(cx, by, sz, flip, col, parts) {
-        const T = (u, v) => [cx + (u - .5) * sz * (flip ? -1 : 1), by - (1 - v) * sz];
-        for (const q of parts) {
-          if (q.c) { const [x, y] = T(q.c[0], q.c[1]); add(circle(x, y, q.r * sz), { fill: col }); }
-          else if (q.poly) add('M' + q.poly.map(t => P(...T(t[0], t[1]))).join(' L') + 'Z', { fill: q.page ? pal.eye : col });
-          else add(line(q.l.map(t => T(t[0], t[1]))), { stroke: col, sw: q.w * sz });
-        }
-      }
-      function stack(x, y) {
-        let top = y;
-        for (let i = 0, n = 3 + Math.floor(R() * 3); i < n; i++) {
-          const w = rr(18, 28), h = rr(2.8, 4), a = rr(-.06, .06), cx = x + rr(-2.5, 2.5), cy = top - h / 2;
-          const pts = [[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]].map(([u, v]) => [cx + u * Math.cos(a) - v * Math.sin(a), cy + u * Math.sin(a) + v * Math.cos(a)]);
-          add('M' + pts.map(t => P(t[0], t[1])).join(' L') + 'Z', { fill: pick(pal.fern) });
-          add(`M${P(cx - w / 2 + 1.5, cy)} L${P(cx + w / 2 - 1.5, cy)}`, { stroke: pal.eye, sw: h * .22 });
-          top -= h;
-        }
-        return top;
-      }
-      function seatedOnStack(x, col) {
-        const top = stack(x, H), sz = Math.min(70, Math.max(32, (H - top) / .22)), flip = R() < .5;
-        figure(x + .2 * sz * (flip ? -1 : 1), top + .24 * sz, sz, flip, col, SEATED);
-      }
-      function flyingBook(x, y, sz, a, col) {
-        const T = (u, v) => [x + (u * Math.cos(a) - v * Math.sin(a)) * sz, y + (u * Math.sin(a) + v * Math.cos(a)) * sz];
-        for (const g of [-1, 1]) {
-          add(`M${P(...T(0, .2))} Q${P(...T(g * .45, .05))} ${P(...T(g * .95, .12))} L${P(...T(g * .85, -.42))} Q${P(...T(g * .45, -.55))} ${P(...T(0, -.32))}Z`, { fill: pal.eye });
-          for (let k = 1; k < 4; k++) add(`M${P(...T(g * .12, -.3 + k * .11))} Q${P(...T(g * .45, -.4 + k * .12))} ${P(...T(g * .78, -.33 + k * .11))}`, { stroke: col, sw: .035 * sz });
-          add(`M${P(...T(0, .25))} Q${P(...T(g * .45, .11))} ${P(...T(g * 1, .17))}`, { stroke: col, sw: .07 * sz });
-        }
-        add(`M${P(...T(0, .22))} L${P(...T(0, -.32))}`, { stroke: col, sw: .05 * sz });
-      }
-      function serpent(x, y, col, stripe) {
-        const pts = walk(x, y, UP + rr(-.4, .4), rr(80, 140), 0, 60);
-        let a = 0;
-        for (const p of pts) { a += .18; p[0] += Math.sin(a) * 6; }
-        add(line(pts), { stroke: col, sw: 2.6 });
-        add(line(pts), { stroke: stripe, sw: .7, dash: [1.4, 2.2] });
-        const e = pts[pts.length - 1];
-        leaf(e[0], e[1] + 1.5, UP, 5, 2, col);
-        add(circle(e[0] + .8, e[1], .45), { fill: stripe });
-      }
+      add(`M${P(...T(0, .22))} L${P(...T(0, -.32))}`, { stroke: col, sw: .05 * sz });
+    }
 
-      if (!mir) { const Rs = mulberry32(opt.seed * 13 + L), r2 = (a, b) => a + Rs() * (b - a);
-        for (let i = 0, n = Math.round(L * H / 26); i < n; i++) add(circle(r2(0, L), r2(0, H), r2(.12, .32)), { fill: Rs() < .85 ? pal.speck[Math.floor(Rs() * pal.speck.length)] : pal.hi[Math.floor(Rs() * pal.hi.length)], op: .7 }); }
-      for (let i = 0; i < cnt(10); i++) fern(rr(-10, W2), H + 2, UP + rr(-.6, .6), rr(90, 210), rr(-.7, .7), pick(pal.lo), .9);
-      for (let i = 0; i < cnt(6); i++) bigLeaf(rr(0, W2), rr(H - 80, H + 5), UP + rr(-1.1, 1.1), rr(32, 58), pick(pal.lo), pal.bg, .95);
-      for (let i = 0; i < cnt(7); i++) vine(rr(0, W2), -3, Math.PI / 2 + rr(-.35, .35), rr(35, 120), rr(-.9, .9), pick(pal.hi));
-      for (let i = 0; i < cnt(1); i++) figure(rr(15, W2 - 15), H, rr(70, 100), R() < .5, pick(pal.fern), STANDING);
-      for (let i = 0; i < cnt(3); i++) fern(rr(0, W2 * .3), H + 2, UP + rr(-.15, .3), rr(190, 250), rr(-.4, .4), pick(pal.fern));
-      for (let i = 0; i < cnt(9); i++) fern(rr(0, W2), H + 2, UP + rr(-.5, .5), rr(70, 200), rr(-.9, .9), pick(pal.fern));
-      for (let i = 0; i < cnt(1.6); i++) seatedOnStack(rr(15, W2 - 15), pick(pal.fern));
-      for (let i = 0; i < cnt(.9); i++) figure(rr(20, W2 - 30), H, rr(55, 80), R() < .5, pick(pal.fern), LYING);
-      for (let i = 0; i < cnt(1.4); i++) stack(rr(10, W2 - 10), H);
-      if (R() < .75 && W2 > 60) {   // un lettore seduto su un ramo, a mezza altezza
+    // fondo: granelli chiari
+    R = mulberry32(opt.seed * 13 + L);
+    for (let i = 0, n = Math.round(L * H / 22); i < n; i++) add(circle(rr(0, L), rr(0, H), rr(.1, .3)), { fill: R() < .88 ? pick(pal.speck) : pick(pal.hi), op: .75 });
+    // vuoto centrale: triangolo rovesciato a righe ondulate, con una lettrice disegnata a contorno
+    if (opt.sym && L >= 150) {
+      const top = H * .24, apex = H * .8, hw0 = L * .21, cx = L / 2;
+      for (let y0 = top + .8; y0 < apex - 1; y0 += 1.5) {
+        const hw = hw0 * (apex - y0) / (apex - top), pts = [];
+        for (let x = cx - hw; x <= cx + hw + .01; x += Math.max(1, hw / 40)) pts.push([x, y0 + Math.sin(x * .16 + y0 * .21) * .45]);
+        if (pts.length > 1) add(line(pts), { stroke: pal.hatch, sw: .5, op: .85 });
+      }
+      figure(cx - 4, apex - (apex - top) * .18, (apex - top) * .62, false, pal.ink, SEATED);
+    }
+    for (const m of opt.sym ? [false, true] : [false]) {
+      mir = m;
+      R = mulberry32(opt.seed * 7919 + L * 31 + 5);
+      const W2 = opt.sym ? L / 2 + 8 : L;
+      const cnt = k => Math.max(0, Math.round(k * D * W2 / 200 + (R() - .5)));
+      const edge = () => opt.sym ? rr(0, W2 * .62) : rr(0, W2);   // con la simmetria la vegetazione fitta resta ai lati
+      for (let i = 0; i < cnt(12); i++) fern(edge(), H + 2, UP + rr(-.5, .6), rr(110, 240), rr(-.6, .6), pick(pal.lo), .95);
+      for (let i = 0; i < cnt(7); i++) bigLeaf(edge(), rr(H - 90, H + 4), UP + rr(-1.1, 1.1), rr(30, 58), pick(pal.lo), mixHex(pick(pal.lo), '#ffffff', .2), .95);
+      for (let i = 0; i < cnt(26); i++) blade(rr(0, W2), H + 1, pick(pal.lo));
+      for (let i = 0; i < cnt(9); i++) vine(rr(0, W2), -3, Math.PI / 2 + rr(-.35, .35), rr(30, 115), rr(-.9, .9), pick(pal.fern));
+      for (let i = 0; i < cnt(3); i++) starCluster(rr(4, W2 * .45), rr(8, 45), rr(8, 14));
+      for (let i = 0; i < cnt(1); i++) figure(rr(15, W2 * .6), H, rr(70, 100), R() < .5, pick(pal.fern), STANDING);
+      for (let i = 0; i < cnt(4); i++) fern(rr(0, W2 * .28), H + 2, UP + rr(-.15, .3), rr(190, 260), rr(-.4, .4), pick(pal.fern));
+      for (let i = 0; i < cnt(10); i++) fern(edge(), H + 2, UP + rr(-.55, .55), rr(60, 190), rr(-.9, .9), pick(pal.fern));
+      for (let i = 0; i < cnt(1.6); i++) seatedOnStack(rr(15, W2 * .7), pick(pal.fern));
+      for (let i = 0; i < cnt(.9); i++) figure(rr(20, W2 * .65), H, rr(55, 80), R() < .5, pick(pal.fern), LYING);
+      for (let i = 0; i < cnt(1.4); i++) stack(rr(10, W2 * .8), H);
+      if (R() < .75 && W2 > 60) {
         const x = rr(25, W2 - 25), y = rr(105, 165), sz = rr(28, 38), flip = R() < .5;
-        add(line(walk(x - 30, y + 1, rr(-.08, .08), 62, rr(-.25, .25), 12)), { stroke: pick(pal.fern), sw: 1.5 });
+        add(line(walk(x - 30, y + 1, rr(-.08, .08), 62, rr(-.25, .25), 12)), { stroke: pick(pal.fern), sw: 1.3 });
         figure(x + .2 * sz * (flip ? -1 : 1), y + .24 * sz, sz, flip, pick(pal.hi), SEATED);
       }
-      for (let i = 0; i < cnt(4); i++) bigLeaf(rr(0, W2), rr(H - 50, H + 3), UP + rr(-1.2, 1.2), rr(22, 40), pick(pal.fern), pal.bg);
-      for (let i = 0; i < cnt(8); i++) drosera(rr(0, W2), H + 1, UP + rr(-.4, .4), rr(60, 205), rr(-.6, .6), pick(pal.hi), pick(pal.hi));
-      for (let i = 0; i < cnt(5); i++) flytrap(rr(0, W2), H + 1, UP + rr(-.5, .5), rr(25, 85), pick(pal.hi), pick(pal.hi));
-      for (let i = 0; i < cnt(4); i++) mushrooms(rr(0, W2), H, pick(pal.hi), pick(pal.hi));
-      for (let i = 0; i < cnt(18); i++) sprig(rr(0, W2), rr(35, 195), rr(0, TAU), rr(10, 35), rr(-1, 1), pick(pal.hi), pick(pal.hi));
+      for (let i = 0; i < cnt(5); i++) bigLeaf(edge(), rr(H - 55, H + 3), UP + rr(-1.2, 1.2), rr(22, 40), pick(pal.fern), mixHex(pal.bg, '#000000', .1));
+      for (let i = 0; i < cnt(8); i++) drosera(edge(), H + 1, UP + rr(-.35, .35), rr(40, 140), rr(-.6, .6), pick(pal.fern));
+      for (let i = 0; i < cnt(5); i++) flytrap(edge(), H + 1, UP + rr(-.5, .5), rr(25, 85), pick(pal.fern));
+      for (let i = 0; i < cnt(3); i++) mushrooms(rr(0, W2), H);
+      for (let i = 0; i < cnt(30); i++) blade(rr(0, W2), H + 1, pick(pal.fern), .95);
+      for (let i = 0; i < cnt(16); i++) sprig(edge(), rr(35, 195), rr(0, TAU), rr(10, 32), rr(-1, 1), pick(pal.fern));
       for (let i = 0; i < cnt(10); i++) tendril(rr(0, W2), rr(10, H - 20), rr(0, TAU), rr(12, 30), pick(pal.hi));
       for (let i = 0; i < cnt(2); i++) {
         const x = rr(12, W2 - 8), st = walk(x, H + 1, UP + rr(-.25, .25), rr(80, 170), rr(-.4, .4), 24), e = st[st.length - 1];
-        add(line(st), { stroke: pick(pal.hi), sw: .45 });
-        eye(e[0], e[1], rr(3.5, 6), pick(pal.hi), pick(pal.hi));
+        add(line(st), { stroke: pick(pal.fern), sw: .4 });
+        eye(e[0], e[1], rr(3.5, 6), pick(pal.fern), pick(pal.fern));
       }
-      for (let i = 0; i < cnt(4); i++) moth(rr(8, W2), rr(40, 170), rr(5, 9), pick(pal.hi), pick(pal.hi));
-      for (let i = 0; i < cnt(3); i++) flyingBook(rr(10, W2), rr(25, 150), rr(6, 11), rr(-.5, .5), pick(pal.hi));
-      if (R() < .55 * D && W2 > 60) serpent(rr(20, W2 - 20), H + 2, pick(pal.hi), pal.bg);
+      for (let i = 0; i < cnt(4); i++) moth(rr(8, W2), rr(40, 170), rr(5, 9), pick(pal.hi), pal.bg);
+      for (let i = 0; i < cnt(3); i++) flyingBook(rr(10, W2), rr(25, 150), rr(6, 11), rr(-.5, .5), pick(pal.fern));
+      if (R() < .55 * D && W2 > 60) serpent(rr(20, W2 - 20), H + 2, pick(pal.fern));
     }
+    // grana da stampa sopra a tutto
+    mir = false; R = mulberry32(opt.seed * 31 + L * 7);
+    for (let i = 0, n = Math.round(L * H / 16); i < n; i++) add(circle(rr(0, L), rr(0, H), rr(.08, .22)), { fill: pal.bg, op: .45 });
     return shapes;
   }
   function paintWall(shapes, L, H, pal, k, crop) {
