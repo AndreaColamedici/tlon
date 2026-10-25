@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: tavoli in esposizione, pareti con motivo botanico e lettori nascosti, grafiche, due schermi.">
+<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: pareti e fronti dei tavoli con motivo botanico, file di stampa nei formati PLPL, due schermi.">
 <style>body{margin:0}img{max-width:100%}</style>
 <title>Stand PLPL 16 mq</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -171,6 +171,9 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
             <button type="button" id="r15" aria-label="Ruota di 15 gradi in senso orario">↻ 15°</button>
             <button type="button" id="r90" aria-label="Ruota di 90 gradi in senso orario">↻ 90°</button>
           </div>
+          <div class="sub" id="ctlTable" hidden>
+            <label class="tg"><input type="checkbox" id="tPanel"> Pannello stampato sul lato del pubblico</label>
+          </div>
           <div class="sub" id="ctlBook" hidden>
             <div class="fld"><label for="bPose">Posa</label>
               <select id="bPose"><option value="flat">Piatto, in pila</option><option value="stand">In piedi su leggio</option></select></div>
@@ -226,6 +229,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
           <label class="tg"><input class="opt" type="checkbox" id="optXray"> Pareti trasparenti</label>
           <label class="tg"><input class="opt" type="checkbox" id="optSpots" checked> Fari accesi</label>
           <label class="tg"><input class="opt" type="checkbox" id="optPerson" checked> Persona 175 cm</label>
+          <label class="tg"><input class="opt" type="checkbox" id="optBoxes" checked> Scatole sotto i tavoli</label>
         </div>
       </section>
 
@@ -259,8 +263,9 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
             <div class="range"><input class="pat" type="range" id="patDens" min="0.4" max="1.8" step="0.1" value="1"><span id="patDensV">1</span></div></div>
           <label class="tg"><input class="pat" type="checkbox" id="patSym" checked> Simmetria a specchio, come nella copertina</label>
           <div class="row"><button type="button" id="patNew">Nuova variante</button></div>
-          <div class="row"><button type="button" id="svgBack">SVG fondo</button><button type="button" id="svgLeft">SVG sinistra</button><button type="button" id="svgRight">SVG destra</button></div>
-          <p class="note">Il motivo è disegnato dal modello sulla scia dell'illustrazione del Mostruoso femminile: felci, drosere, piante carnivore, foglie, funghi, occhi-fiore, falene, viticci. Tra le piante si nascondono lettori seduti su pile di libri, sdraiati, in piedi o appollaiati su un ramo, e libri aperti che volano. Ogni parete ha la sua composizione. Gli SVG sono vettoriali in scala 1:1, misurati in centimetri e pronti per la tipografia; il download funziona dalla pagina su tlon.it.</p>
+          <div class="fld"><label for="panelSel">File di stampa</label><select id="panelSel"></select></div>
+          <div class="row"><button type="button" id="panelDl">Scarica SVG del pannello</button></div>
+          <p class="note">Il motivo è disegnato dal modello sulla scia dell'illustrazione del Mostruoso femminile: felci, drosere, piante carnivore, foglie, funghi, occhi-fiore, falene, viticci. Tra le piante si nascondono lettori seduti su pile di libri, sdraiati, in piedi o appollaiati su un ramo, e libri aperti che volano. Ogni parete ha la sua composizione. Ogni file di stampa ha il formato esatto della scheda PLPL (J1 96,7 × 239,7, J2 96,7 × 289,7, K2 294,7 × 153,7, J3 47,2 × 239,7) ed è vettoriale in scala 1:1, al vivo e senza abbondanze; i fronti dei tavoli sono 160 × 70, da stampare a metro quadro. I file vanno inviati in PDF entro il 28 ottobre; il download funziona dalla pagina su tlon.it.</p>
         </div>
       </section>
 
@@ -455,24 +460,26 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   const T = 2.5;   // spessore pannello, tutto all'esterno del filo dello stand
   const wallMeshes = [], wallFaces = [];
 
-  function wall(x0, z0, x1, z1, h, m, key) {
+  function wall(x0, z0, x1, z1, h, m, key, y0 = 0) {
     const len = Math.hypot(x1 - x0, z1 - z0);
     const o = box(len, h, T, m);
-    o.position.copy(W((x0 + x1) / 2, (z0 + z1) / 2, h / 2));
+    o.position.copy(W((x0 + x1) / 2, (z0 + z1) / 2, y0 + h / 2));
     o.rotation.y = -Math.atan2(z1 - z0, x1 - x0);
     o.userData.wall = key;
     // faccia interna e punto d'inizio del motivo, letto da sinistra a destra da chi sta dentro lo stand
     const face = { back: [4, Math.min(x0, x1)], left: [5, S - Math.max(z0, z1)], right: [4, Math.min(z0, z1)] }[key];
-    wallFaces.push({ o, key, m, len, idx: face[0], u0: face[1] });
+    wallFaces.push({ o, key, m, len, h, y0, idx: face[0], u0: face[1] });
     scene.add(o); wallMeshes.push(o); return o;
   }
   function post(x, z, h, m = postM, s = 4) { const o = box(s, h, s, m); o.position.copy(W(x, z, h / 2)); scene.add(o); return o; }
 
   for (let i = 0; i < 4; i++) wall(i * 100, -T / 2, i * 100 + 100, -T / 2, WALL_H, matJ, 'back');
   for (let i = 1; i < 4; i++) post(i * 100, -T / 2, WALL_H, postM, 3);
-  for (let i = 0; i < 3; i++) wall(-T / 2, i * 100, -T / 2, i * 100 + 100, WALL_H, matK, 'left');
-  wall(-T / 2, 300, -T / 2, 400, WALL_H, matJ, 'left');
-  for (let i = 1; i < 4; i++) post(-T / 2, i * 100, WALL_H, postM, 3);
+  // sinistra, dalle schede PLPL: K2 è una fascia 300 × 164 con le traverse (grafica a vista 152), J2 davanti è alto 300.
+  // La quota di K2 (traversa inferiore a 50 cm da terra) è letta da un disegno non in scala: da verificare.
+  wall(-T / 2, 0, -T / 2, 300, 164, matK, 'left', 50);
+  wall(-T / 2, 300, -T / 2, 400, PORTAL_H, matJ, 'left');
+  post(-T / 2, 300, PORTAL_H, postM, 3);
   wall(S + T / 2, 0, S + T / 2, 50, WALL_H, matJ, 'right');
   post(S + 2, 50, WALL_H, postM, 3);
   post(-2, -2, 275); post(S + 2, -2, 275);
@@ -738,9 +745,10 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     }
     return shapes;
   }
-  function paintWall(shapes, L, H, pal, k) {
-    const c = document.createElement('canvas'); c.width = Math.round(L * k); c.height = Math.round(H * k);
-    const g = c.getContext('2d'); g.scale(k, k);
+  function paintWall(shapes, L, H, pal, k, crop) {
+    const r = crop || { x: 0, y: 0, w: L, h: H };
+    const c = document.createElement('canvas'); c.width = Math.round(r.w * k); c.height = Math.round(r.h * k);
+    const g = c.getContext('2d'); g.scale(k, k); g.translate(-r.x, -r.y);
     g.fillStyle = pal.bg; g.fillRect(0, 0, L, H);
     g.lineCap = 'round'; g.lineJoin = 'round';
     for (const s of shapes) {
@@ -751,46 +759,79 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     }
     return c;
   }
-  function wallSVG(shapes, L, H, pal) {
-    const out = [`<svg xmlns="http://www.w3.org/2000/svg" width="${L}cm" height="${H}cm" viewBox="0 0 ${L} ${H}"><rect width="${L}" height="${H}" fill="${pal.bg}"/><g stroke-linecap="round" stroke-linejoin="round">`];
+  function wallSVG(shapes, L, H, pal, crop) {
+    const r = crop || { x: 0, y: 0, w: L, h: H };
+    const out = [`<svg xmlns="http://www.w3.org/2000/svg" width="${r.w}cm" height="${r.h}cm" viewBox="${r.x} ${r.y} ${r.w} ${r.h}"><rect width="${L}" height="${H}" fill="${pal.bg}"/><g stroke-linecap="round" stroke-linejoin="round">`];
     for (const s of shapes) out.push(`<path d="${s.d}" fill="${s.fill || 'none'}"${s.stroke ? ` stroke="${s.stroke}" stroke-width="${s.sw || .3}"` : ''}${s.dash ? ` stroke-dasharray="${s.dash.join(' ')}"` : ''}${s.op != null && s.op < 1 ? ` opacity="${s.op}"` : ''}/>`);
     out.push('</g></svg>');
     return out.join('');
   }
   const PAT_LEN = { back: S, left: S, right: 50 };
+  const PAT_H = { back: WALL_H, left: PORTAL_H, right: WALL_H };
   const PAT_SEED = { back: 0, left: 101, right: 202 };
+  const TABLE_CROP = { x: 0, y: 180, w: 160, h: 70 };   // il fronte del tavolo è la fascia bassa di una composizione alta 250: il prato, le pile, i lettori seduti
   let patSeed = 7, patShapes = {}, patMats = [], patTimer = null;
-  function patOpts(key) { return { seed: patSeed + PAT_SEED[key], pal: $('#patPal').value, dens: +$('#patDens').value, sym: $('#patSym').checked }; }
+  const forexM = mat(0xf4f4f2, .6);
+  function patOpts(key) { return { seed: patSeed + (PAT_SEED[key] || 0), pal: $('#patPal').value, dens: +$('#patDens').value, sym: $('#patSym').checked }; }
   function applyPattern() {
     patMats.forEach(m => { m.map.dispose(); m.dispose(); }); patMats = [];
     Object.values(patShapes).forEach(p => p.tex.dispose()); patShapes = {};
-    $('#patOpts').hidden = !$('#patOn').checked;
+    const on = $('#patOn').checked;
+    $('#patOpts').hidden = !on;
     $('#patDensV').textContent = (+$('#patDens').value).toLocaleString('it-IT');
-    if (!$('#patOn').checked) { wallFaces.forEach(w => w.o.material = w.m); return; }
     const pal = PALETTES[$('#patPal').value] || PALETTES.notte;
-    for (const [key, L] of Object.entries(PAT_LEN)) {
-      const shapes = genWall(L, WALL_H, patOpts(key));
-      const tex = new THREE.CanvasTexture(paintWall(shapes, L, WALL_H, pal, 5)); tex.anisotropy = ANISO;
-      patShapes[key] = { shapes, tex };
+    if (!on) wallFaces.forEach(w => w.o.material = w.m);
+    else {
+      for (const [key, L] of Object.entries(PAT_LEN)) {
+        const H = PAT_H[key], shapes = genWall(L, H, patOpts(key));
+        const tex = new THREE.CanvasTexture(paintWall(shapes, L, H, pal, 5)); tex.anisotropy = ANISO;
+        patShapes[key] = { shapes, tex, L, H };
+      }
+      for (const w of wallFaces) {
+        const H = PAT_H[w.key], t = patShapes[w.key].tex.clone(); t.needsUpdate = true;
+        t.repeat.set(w.len / PAT_LEN[w.key], w.h / H); t.offset.set(w.u0 / PAT_LEN[w.key], w.y0 / H);
+        const pm = new THREE.MeshStandardMaterial({ map: t, roughness: .88 }); patMats.push(pm);
+        const arr = [w.m, w.m, w.m, w.m, w.m, w.m]; arr[w.idx] = pm; w.o.material = arr;
+      }
     }
-    for (const w of wallFaces) {
-      const t = patShapes[w.key].tex.clone(); t.needsUpdate = true;
-      t.repeat.set(w.len / PAT_LEN[w.key], 1); t.offset.set(w.u0 / PAT_LEN[w.key], 0);
-      const pm = new THREE.MeshStandardMaterial({ map: t, roughness: .88 }); patMats.push(pm);
-      const arr = [w.m, w.m, w.m, w.m, w.m, w.m]; arr[w.idx] = pm; w.o.material = arr;
+    for (const it of items) if (it.type === 'table' && it.panelMesh) {
+      if (!on) { it.panelMesh.material = forexM; continue; }
+      const shapes = genWall(160, WALL_H, Object.assign(patOpts('back'), { seed: patSeed + 300 + parseInt(it.id.slice(1), 10) }));
+      const tex = new THREE.CanvasTexture(paintWall(shapes, 160, WALL_H, pal, 5, TABLE_CROP)); tex.anisotropy = ANISO;
+      patShapes['table:' + it.id] = { shapes, tex, L: 160, H: WALL_H };
+      const pm = new THREE.MeshStandardMaterial({ map: tex, roughness: .7 }); patMats.push(pm);
+      it.panelMesh.material = [forexM, forexM, forexM, forexM, pm, forexM];
     }
+    fillPanelList();
     applyXray();
   }
   function applyXray() {
     const on = $('#optXray').checked;
     for (const m of [...wallMats, ...patMats]) { m.transparent = on; m.opacity = on ? .22 : 1; m.depthWrite = !on; m.needsUpdate = true; }
   }
-  function downloadSVG(key) {
-    const L = PAT_LEN[key], pal = PALETTES[$('#patPal').value] || PALETTES.notte;
-    const shapes = patShapes[key] ? patShapes[key].shapes : genWall(L, WALL_H, patOpts(key));
+  // formati dalle schede PLPL: ogni file è la porzione di parete coperta dal pannello, centrata nel suo modulo
+  function panelList() {
+    const out = [];
+    for (let i = 0; i < 4; i++) out.push({ id: 'J1-' + (i + 1), name: `J1 fondo, ${i + 1}° da sinistra · 96,7 × 239,7`, key: 'back', crop: { x: i * 100 + 1.65, y: WALL_H - 244.85, w: 96.7, h: 239.7 } });
+    out.push({ id: 'J2', name: 'J2 sinistra, davanti · 96,7 × 289,7', key: 'left', crop: { x: 1.65, y: PORTAL_H - 294.85, w: 96.7, h: 289.7 } });
+    out.push({ id: 'K2', name: 'K2 sinistra · 294,7 × 153,7', key: 'left', crop: { x: 102.65, y: PORTAL_H - 208.85, w: 294.7, h: 153.7 } });
+    out.push({ id: 'J3', name: 'J3 destra · 47,2 × 239,7', key: 'right', crop: { x: 1.4, y: WALL_H - 244.85, w: 47.2, h: 239.7 } });
+    for (const it of items) if (it.type === 'table' && it.panel !== false) out.push({ id: 'fronte-' + it.id, name: `Fronte tavolo ${it.id} · 160 × 70, al mq`, key: 'table:' + it.id, crop: TABLE_CROP });
+    return out;
+  }
+  function fillPanelList() {
+    const sel = $('#panelSel'), cur = sel.value;
+    sel.innerHTML = '';
+    for (const p of panelList()) { const o = document.createElement('option'); o.value = p.id; o.textContent = p.name; sel.append(o); }
+    if ([...sel.options].some(o => o.value === cur)) sel.value = cur;
+  }
+  function downloadPanel() {
+    const p = panelList().find(x => x.id === $('#panelSel').value), src = p && patShapes[p.key];
+    if (!src) { toast('Accendi il motivo delle pareti per generare i file.'); return; }
+    const pal = PALETTES[$('#patPal').value] || PALETTES.notte;
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([wallSVG(shapes, L, WALL_H, pal)], { type: 'image/svg+xml' }));
-    a.download = `plpl-parete-${key}-${L}x${WALL_H}cm-variante-${patSeed}.svg`;
+    a.href = URL.createObjectURL(new Blob([wallSVG(src.shapes, src.L, src.H, pal, p.crop)], { type: 'image/svg+xml' }));
+    a.download = `plpl2026-${p.id}-${String(p.crop.w).replace('.', ',')}x${String(p.crop.h).replace('.', ',')}cm-variante-${patSeed}.svg`;
     document.body.append(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 10000);
   }
@@ -862,7 +903,10 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   function clampScreen(s) {
     const [w, h] = scrSize();
     s.u = Math.min(Math.max(s.u, w / 2 + 2), S - w / 2 - 2);
-    s.v = scrStand() ? Math.min(Math.max(s.v, h / 2 + 45), 215) : Math.min(Math.max(s.v, h / 2 + 2), WALL_H - h / 2 - 2);
+    if (s.key === 'left' && !scrStand()) {   // a parete sulla sinistra c'è solo la fascia K2: 300 cm di lunghezza, grafica a vista fra 56 e 208 cm
+      s.u = Math.min(s.u, 300 - w / 2 - 2);
+      s.v = h + 4 > 152 ? 132 : Math.min(Math.max(s.v, 56 + h / 2), 208 - h / 2);
+    } else s.v = scrStand() ? Math.min(Math.max(s.v, h / 2 + 45), 215) : Math.min(Math.max(s.v, h / 2 + 2), WALL_H - h / 2 - 2);
   }
   function buildScreen(s) {
     if (s.labelObj) { s.labelObj.removeFromParent(); s.labelObj = null; }
@@ -1017,6 +1061,16 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     for (const sx of [-1, 1]) for (const sz of [-1, 1]) { const l = box(4, 72, 4, legM); l.position.set(sx * 76, 36, sz * 36); g.add(l); }
     for (const sz of [-1, 1]) { const s = box(148, 6, 1.5, legM); s.position.set(0, 69, sz * 36.5); g.add(s); }
     g.add(makeDisplay(it));
+    const pn = box(160, 70, .4, forexM); pn.position.set(0, 37, 40.3); pn.name = 'panel'; pn.userData.noTint = true;
+    pn.visible = it.panel !== false; it.panelMesh = pn; g.add(pn);
+    const bx = new THREE.Group(); bx.name = 'boxes';
+    const card = mat(0xb48a5a, .9), tape = mat(0xd9c39a, .7);
+    for (const [px, w, h, d] of [[-52, 40, 30, 30], [-6, 44, 34, 32], [44, 38, 28, 30]]) {
+      const b = box(w, h, d, card); b.position.set(px, h / 2, -18); b.userData.noTint = true; bx.add(b);
+      const t = box(w + .2, .3, 6, tape); t.position.set(px, h + .1, -18); t.userData.noTint = true; bx.add(t);
+    }
+    bx.visible = !document.querySelector('#optBoxes') || document.querySelector('#optBoxes').checked;
+    g.add(bx);
     return g;
   }
   function makeChair() {
@@ -1175,7 +1229,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   // etichette delle parti fisse, come nel disegno
   const fixedTags = [
     ['J', 'Pannello parete', W(50, 1, 220)], ['J', 'Pannello parete', W(350, 1, 220)],
-    ['K', 'Pannello di separazione laterale', W(1, 150, 220)], ['J', 'Pannello parete', W(1, 350, 220)],
+    ['K', 'Pannello di separazione laterale, fascia 300 × 150', W(1, 150, 200)], ['J', 'Pannello parete J2, alto 300', W(1, 350, 220)],
     ['J', 'Pannello parete, 50 cm', W(S - 1, 25, 220)],
     ['A', 'Ripiani metallici inclinabili 97 × 33', W(148, 18, 182)], ['A', 'Ripiani metallici inclinabili 97 × 33', W(250, 18, 182)],
     ['F', 'Fascione con ragione sociale, h 300', W(S / 2, S + 8, PORTAL_H - 4)],
@@ -1351,6 +1405,8 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     $('#ctlRot').hidden = isG || isS;
     $('#ctlBook').hidden = !isBook;
     $('#ctlGraf').hidden = !isG;
+    $('#ctlTable').hidden = o.type !== 'table';
+    if (o.type === 'table') $('#tPanel').checked = o.panel !== false;
     $('#selReset').hidden = user || isS;
     if (isS) {
       const [w, h] = scrSize();
@@ -1391,7 +1447,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
 
   /* ---------- storia, salvataggio ---------- */
   const history = [];
-  const dataOf = it => { const d = { id: it.id, type: it.type, x: it.x, z: it.z, rot: it.rot }; if (it.type === 'book') BOOK_KEYS.forEach(k => d[k] = it[k]); return d; };
+  const dataOf = it => { const d = { id: it.id, type: it.type, x: it.x, z: it.z, rot: it.rot }; if (it.type === 'book') BOOK_KEYS.forEach(k => d[k] = it[k]); if (it.type === 'table') d.panel = it.panel !== false; return d; };
   const dataOfG = g => ({ id: g.id, wall: g.wall, u: g.u, v: g.v, w: g.w, aspect: g.aspect, img: g.img });
   const snap = () => ({ items: items.map(dataOf), graphics: graphics.map(dataOfG) });
   function pushHistory() { history.push(snap()); if (history.length > 60) history.shift(); $('#undo').disabled = false; }
@@ -1419,6 +1475,8 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       }
     }
     items.forEach(apply);
+    items.forEach(it => { if (it.panelMesh) it.panelMesh.visible = it.panel !== false; });
+    if (typeof fillPanelList === 'function' && $('#panelSel')) fillPanelList();
     validate(); updatePanel();
   }
   function save() { store.set(KEY, { layout: snap(), opts: readOpts() }); }
@@ -1791,7 +1849,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   }
 
   /* ---------- opzioni ---------- */
-  const OPT_IDS = ['optLabels', 'optDims', 'optGrid', 'optSnap', 'optBooks', 'optXray', 'optSpots', 'optPerson'];
+  const OPT_IDS = ['optLabels', 'optDims', 'optGrid', 'optSnap', 'optBooks', 'optXray', 'optSpots', 'optPerson', 'optBoxes'];
   function readOpts() {
     const o = {};
     for (const id of OPT_IDS) o[id] = $('#' + id).checked;
@@ -1811,6 +1869,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     displays.forEach(d => d.visible = o.optBooks);
     spotGroup.forEach(s => s.visible = o.optSpots);
     byId.P.group.visible = o.optPerson;
+    items.forEach(it => { const b = it.type === 'table' && it.group.getObjectByName('boxes'); if (b) b.visible = o.optBoxes; });
     applyXray();
     shelfPivots.forEach(p => p.rotation.x = o.tilt * DEG);
     $('#tiltV').textContent = o.tilt + '°';
@@ -1830,9 +1889,11 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     clearTimeout(patTimer); patTimer = setTimeout(() => { applyPattern(); save(); }, 180);
   }));
   $('#patNew').onclick = () => { patSeed++; applyPattern(); save(); toast('Variante ' + patSeed + ' del motivo.'); };
-  $('#svgBack').onclick = () => downloadSVG('back');
-  $('#svgLeft').onclick = () => downloadSVG('left');
-  $('#svgRight').onclick = () => downloadSVG('right');
+  $('#panelDl').onclick = downloadPanel;
+  $('#tPanel').addEventListener('change', () => {
+    const o = selected; if (!o || o.type !== 'table') return;
+    pushHistory(); o.panel = $('#tPanel').checked; o.panelMesh.visible = o.panel; fillPanelList(); save();
+  });
   $('#scrH').addEventListener('input', () => { for (const sc of screenTargets()) { sc.v = +$('#scrH').value; buildScreen(sc); } updateSlider(); tintScreens(); validate(); updatePanel(); });
   $('#scrH').addEventListener('change', save);
   $('#upScreen').addEventListener('change', async e => {
