@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: muro di copertine, loghi Tlon sui fronti dei tavoli, file di stampa nei formati PLPL.">
+<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: muro di copertine negli spazi visibili, loghi Tlon sui fronti dei tavoli, file di stampa nei formati PLPL.">
 <style>body{margin:0}img{max-width:100%}</style>
 <title>Stand PLPL 16 mq</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -269,8 +269,10 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
           <div class="sub" id="covOpts">
             <div class="fld"><label for="covStyle">Copertine</label>
               <select class="pat" id="covStyle"><option value="frame" selected>Con cornice</option><option value="full">Senza cornice, a tutto campo</option><option value="color">Su colore, distanziate</option></select></div>
-            <div class="fld"><label for="covN">Quante</label>
-              <select class="pat" id="covN"><option value="24">24 sul fondo, 2 × 3 per pannello</option><option value="32" selected>32 sul fondo, 2 × 4 per pannello</option><option value="40">40 sul fondo, 2 × 5 per pannello</option><option value="60">60 sul fondo, 3 × 5 per pannello</option></select></div>
+            <div class="fld"><label for="covSize">Altezza</label>
+              <select class="pat" id="covSize"><option value="32">32 cm, poco più del doppio del libro</option><option value="42" selected>42 cm, tre file esatte sopra i tavoli</option><option value="44">44 cm, il triplo del libro</option><option value="56">56 cm, quattro volte</option><option value="70">70 cm, cinque volte</option></select></div>
+            <label class="tg"><input class="pat" type="checkbox" id="covAvoid" checked> Solo dove si vedono, non dietro tavoli, libri e schermi</label>
+            <p class="note" id="covCount"></p>
             <div class="fld"><label for="covBg">Colore di fondo</label><input class="pat" type="color" id="covBg" value="#1f2024"></div>
             <div class="row" id="covSw">
               <button type="button" class="sw" data-bg="#1f2024" style="background:#1f2024" aria-label="Antracite"></button>
@@ -280,7 +282,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
               <button type="button" class="sw" data-bg="#14213d" style="background:#14213d" aria-label="Blu notte"></button>
               <button type="button" class="sw" data-bg="#7a4e86" style="background:#7a4e86" aria-label="Prugna"></button>
             </div>
-            <p class="note">Quaranta copertine di Edizioni Tlon prese dallo shop. Ogni copertina sta dentro l'area a vista di un pannello, così nessun montante la taglia. Per la stampa servono i file originali in alta risoluzione: quelli dello shop bastano per la prova, non per i 100 dpi richiesti.</p>
+            <p class="note">Quaranta copertine di Edizioni Tlon prese dallo shop. Ogni copertina sta dentro l'area a vista di un pannello, così nessun montante la taglia; con la seconda opzione le copertine evitano le zone nascoste da tavoli, libri e schermi e si riallineano quando li sposti. Per la stampa servono i file originali in alta risoluzione: quelli dello shop bastano per la prova, non per i 100 dpi richiesti.</p>
           </div>
           <div class="fld"><label for="patPal">Tavolozza</label>
             <select class="pat" id="patPal"><option value="notte">Notturno, verdi e rosa</option><option value="lilla">Crepuscolo, lilla e acqua</option><option value="oro">Inchiostro e oro</option></select></div>
@@ -820,7 +822,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   let patSeed = 7, patShapes = {}, patMats = [], patTimer = null;
   const forexM = mat(0xf4f4f2, .6);
   function patOpts(key) { return { seed: patSeed + (PAT_SEED[key] || 0), pal: $('#patPal').value, dens: +$('#patDens').value, sym: $('#patSym').checked }; }
-  const COV_GRID = { 24: [2, 3], 32: [2, 4], 40: [2, 5], 60: [3, 5] };
+  const COV_ASPECT = 1.47;   // proporzione media delle copertine Tlon
   // aree a vista dei pannelli, nelle coordinate del disegno di ciascuna parete (origine in alto a sinistra)
   const COV_REGIONS = {
     back: [0, 1, 2, 3].map(i => ({ x: i * 100 + 2.5, y: WALL_H - 244, w: 95, h: 238 })),
@@ -876,11 +878,11 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     return cells;
   }
   // versione composta: i tre pallini sopra, la scritta sotto (geometria dei pallini dal favicon del sito)
-  const MARK = [[50, 30, '#c72b2c'], [20, 70, '#111214'], [80, 70, '#111214']];
+  // logo composto misurato su una copertina: raggio r, pallini in basso a ±1,97 r e 2,79 r sotto il rosso, scritta larga 4,9 r un raggio più giù
   function bigLogoGeom(L, H) {
-    const s = 32 / 94, tw = 50, th = logoText ? tw * logoText.sh / logoText.sw : 9, markH = 74 * s, gap = 5.5;
-    const top = (H - (markH + gap + th)) / 2;
-    return { s, ox: L / 2 - 50 * s, oy: top - 13 * s, tx: L / 2 - tw / 2, ty: top + markH + gap, tw, th };
+    const r = 7, tw = 4.9 * r, th = logoText ? tw * logoText.sh / logoText.sw : 1.21 * r;
+    const top = (H - (r + 2.79 * r + 2 * r + th)) / 2, cx = L / 2, cy = top + r;
+    return { r, dots: [[cx, cy, '#c72b2c'], [cx - 1.97 * r, cy + 2.79 * r, '#111214'], [cx + 1.97 * r, cy + 2.79 * r, '#111214']], tx: cx - tw / 2, ty: cy + 2.79 * r + 2 * r, tw, th };
   }
   function logoTextCanvas() {
     if (!logoText) return null;
@@ -892,14 +894,14 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     const c = document.createElement('canvas'); c.width = Math.round(L * k); c.height = Math.round(H * k);
     const g = c.getContext('2d'); g.scale(k, k); g.fillStyle = '#ffffff'; g.fillRect(0, 0, L, H);
     const q = bigLogoGeom(L, H);
-    for (const [cx, cy, col] of MARK) { g.fillStyle = col; g.beginPath(); g.arc(q.ox + cx * q.s, q.oy + cy * q.s, 17 * q.s, 0, Math.PI * 2); g.fill(); }
+    for (const [x, y, col] of q.dots) { g.fillStyle = col; g.beginPath(); g.arc(x, y, q.r, 0, Math.PI * 2); g.fill(); }
     const t = logoTextCanvas(); if (t) g.drawImage(t, q.tx, q.ty, q.tw, q.th);
     return c;
   }
   function bigLogoSVG(L, H) {
     const q = bigLogoGeom(L, H), n = v => Math.round(v * 100) / 100, t = logoTextCanvas();
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${L}cm" height="${H}cm" viewBox="0 0 ${L} ${H}"><rect width="${L}" height="${H}" fill="#ffffff"/>` +
-      MARK.map(([cx, cy, col]) => `<circle cx="${n(q.ox + cx * q.s)}" cy="${n(q.oy + cy * q.s)}" r="${n(17 * q.s)}" fill="${col}"/>`).join('') +
+      q.dots.map(([x, y, col]) => `<circle cx="${n(x)}" cy="${n(y)}" r="${n(q.r)}" fill="${col}"/>`).join('') +
       (t ? `<image href="${t.toDataURL('image/png')}" x="${n(q.tx)}" y="${n(q.ty)}" width="${n(q.tw)}" height="${n(q.th)}"/>` : '') + '</svg>';
   }
   function paintLogos(cells, L, H, k) {
@@ -914,27 +916,47 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${L}cm" height="${H}cm" viewBox="0 0 ${L} ${H}"><rect width="${L}" height="${H}" fill="${bg}"/>` +
       cells.map(q => `<image href="${href}" x="${n(q.x)}" y="${n(q.y)}" width="${n(q.w)}" height="${n(q.h)}"/>`).join('') + '</svg>';
   }
-  function coverLayout(regions) {
-    const [c0, r0] = COV_GRID[$('#covN').value] || COV_GRID[32], ch = 238 / r0, cw = 95 / c0, cells = [];
-    for (const g of regions) {
-      const r = Math.max(1, Math.round(g.h / ch)), c = Math.max(1, Math.round(g.w / cw));
-      for (let j = 0; j < r; j++) for (let i = 0; i < c; i++) cells.push({ x: g.x + i * g.w / c, y: g.y + j * g.h / r, w: g.w / c, h: g.h / r, ci: covOrder[(covCursor++) % covOrder.length] });
+  // ingombri davanti alle pareti, nelle coordinate del disegno di ciascuna parete (y dall'alto)
+  function wallObstacles(key, H) {
+    const out = [];
+    if (!$('#covAvoid').checked) return out;
+    const sc = screens.find(x => x.key === key && x.on);
+    if (sc) {
+      const [w, h] = scrSize(), u = key === 'left' ? S - sc.u : sc.u;
+      out.push({ x: u - w / 2 - 4, y: H - (sc.v + h / 2 + 4), w: w + 8, h: h + 8 });
+      if (scrStand()) { const px = Math.min(w * .3, 45) + 6; out.push({ x: u - px, y: H - sc.v, w: 2 * px, h: sc.v }); }
     }
-    return cells;
+    if (key === 'back' && !screens[0].on) out.push({ x: 98, y: H - 192, w: 204, h: 102 });   // ripiani A
+    for (const it of items) {
+      if (it.type !== 'table' && it.type !== 'cabinet') continue;
+      const [hx, hz] = halfAabb(it), top = it.type === 'table' ? 99 : 76;   // piano del tavolo più i libri sui leggii
+      if (key === 'back' && it.z - hz < 30) out.push({ x: it.x - hx, y: H - top, w: 2 * hx, h: top });
+      if (key === 'left' && it.x - hx < 30) out.push({ x: S - (it.z + hz), y: H - top, w: 2 * hz, h: top });
+      if (key === 'right' && it.x + hx > S - 30 && it.z - hz < 50) out.push({ x: it.z - hz, y: H - top, w: 2 * hz, h: top });
+    }
+    return out;
   }
-  function coverRects(cell, style) {
-    const a = 1.47;
-    if (style === 'full') return { img: { x: cell.x, y: cell.y, w: cell.w, h: cell.h } };
-    const m = Math.min(cell.w, cell.h) * (style === 'frame' ? .08 : .15);
-    let w = cell.w - 2 * m, h = cell.h - 2 * m;
-    if (style === 'frame') {
-      const b = Math.max(.8, Math.min(w, h) * .045); w -= 2 * b; h -= 2 * b;
-      if (h / w > a) h = w * a; else w = h / a;
-      const x = cell.x + (cell.w - w) / 2, y = cell.y + (cell.h - h) / 2;
-      return { frame: { x: x - b, y: y - b, w: w + 2 * b, h: h + 2 * b }, img: { x, y, w, h } };
+  const overlaps = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+  function coverLayout(regions, obstacles = [], maxH = 1e9) {
+    const style = $('#covStyle').value, Hc = Math.min(+$('#covSize').value, maxH), Wc = Hc / COV_ASPECT;
+    const b = style === 'frame' ? Math.max(.8, Wc * .045) : 0, g = style === 'full' ? 0 : style === 'frame' ? 3 : Hc * .16;
+    const out = [];
+    for (const R of regions) {
+      let iw = Wc + 2 * b, ih = Hc + 2 * b, c, r;
+      if (style === 'full') { c = Math.max(1, Math.round(R.w / Wc)); iw = R.w / c; ih = iw * COV_ASPECT; }
+      else {
+        const k = Math.min(1, (R.w - g) / iw, (R.h - g) / ih); iw *= k; ih *= k;
+        c = Math.max(1, Math.floor(R.w / (iw + g)));
+      }
+      r = Math.max(1, Math.floor((R.h - g / 2) / (ih + g) + .02));
+      const x0 = R.x + (R.w - (c * iw + (c - 1) * g)) / 2, y0 = R.y + g / 2;
+      for (let j = 0; j < r; j++) for (let i = 0; i < c; i++) {
+        const q = { x: x0 + i * (iw + g), y: y0 + j * (ih + g), w: iw, h: ih };
+        if (q.y + q.h > R.y + R.h + .01 || obstacles.some(o => overlaps(q, o))) continue;
+        out.push({ frame: b ? q : null, img: b ? { x: q.x + b, y: q.y + b, w: iw - 2 * b, h: ih - 2 * b } : q, shadow: style === 'color', ci: covOrder[(covCursor++) % covOrder.length] });
+      }
     }
-    if (h / w > a) h = w * a; else w = h / a;
-    return { img: { x: cell.x + (cell.w - w) / 2, y: cell.y + (cell.h - h) / 2, w, h }, shadow: true };
+    return out;
   }
   function drawCoverImg(g, im, r) {
     if (!im || !im.complete || !im.naturalWidth) return;
@@ -944,36 +966,39 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     g.drawImage(im, sx, sy, sw, sh, r.x, r.y, r.w, r.h);
   }
   function paintCovers(cells, L, H, k) {
-    const style = $('#covStyle').value, bg = $('#covBg').value;
+    const bg = $('#covBg').value;
     const c = document.createElement('canvas'); c.width = Math.round(L * k); c.height = Math.round(H * k);
     const g = c.getContext('2d'); g.scale(k, k);
     g.fillStyle = bg; g.fillRect(0, 0, L, H);
-    for (const cell of cells) {
-      const q = coverRects(cell, style), sh = q.frame || (q.shadow && q.img);
+    for (const q of cells) {
+      const sh = q.frame || (q.shadow && q.img);
       if (sh) { g.fillStyle = 'rgba(0,0,0,.28)'; g.fillRect(sh.x + .5, sh.y + .7, sh.w, sh.h); }
       if (q.frame) { g.fillStyle = '#f4f1ea'; g.fillRect(q.frame.x, q.frame.y, q.frame.w, q.frame.h); g.strokeStyle = 'rgba(0,0,0,.35)'; g.lineWidth = .12; g.strokeRect(q.frame.x, q.frame.y, q.frame.w, q.frame.h); }
-      drawCoverImg(g, coverImgs[cell.ci], q.img);
+      drawCoverImg(g, coverImgs[q.ci], q.img);
     }
     return c;
   }
   function coversSVG(cells, L, H, crop) {
-    const r0 = crop || { x: 0, y: 0, w: L, h: H }, style = $('#covStyle').value, bg = $('#covBg').value;
+    const r0 = crop || { x: 0, y: 0, w: L, h: H }, bg = $('#covBg').value, n = v => Math.round(v * 100) / 100;
     const out = [`<svg xmlns="http://www.w3.org/2000/svg" width="${r0.w}cm" height="${r0.h}cm" viewBox="${r0.x} ${r0.y} ${r0.w} ${r0.h}"><rect width="${L}" height="${H}" fill="${bg}"/>`];
-    const n = v => Math.round(v * 100) / 100;
-    for (const cell of cells) {
-      const q = coverRects(cell, style), sh = q.frame || (q.shadow && q.img);
+    for (const q of cells) {
+      const sh = q.frame || (q.shadow && q.img);
       if (sh) out.push(`<rect x="${n(sh.x + .5)}" y="${n(sh.y + .7)}" width="${n(sh.w)}" height="${n(sh.h)}" fill="#000" opacity=".28"/>`);
       if (q.frame) out.push(`<rect x="${n(q.frame.x)}" y="${n(q.frame.y)}" width="${n(q.frame.w)}" height="${n(q.frame.h)}" fill="#f4f1ea" stroke="#000" stroke-opacity=".35" stroke-width=".12"/>`);
-      out.push(`<image href="${TLON_COVERS[cell.ci]}" x="${n(q.img.x)}" y="${n(q.img.y)}" width="${n(q.img.w)}" height="${n(q.img.h)}" preserveAspectRatio="xMidYMid slice"/>`);
+      out.push(`<image href="${TLON_COVERS[q.ci]}" x="${n(q.img.x)}" y="${n(q.img.y)}" width="${n(q.img.w)}" height="${n(q.img.h)}" preserveAspectRatio="xMidYMid slice"/>`);
     }
     out.push('</svg>');
     return out.join('');
   }
+  let lastObsSig = '';
+  const obstacleSig = () => JSON.stringify(['back', 'left', 'right'].map(k => wallObstacles(k, PAT_H[k]).map(o => [o.x, o.y, o.w, o.h].map(Math.round))));
   const surfaceMode = key => !$('#patOn').checked ? 'off' : key === 'back' ? $('#modeBack').value : key === 'table' ? $('#modeTables').value : $('#modeSides').value;
   function syncTablePanels() { for (const it of items) if (it.panelMesh) it.panelMesh.visible = $('#optTablePanels').checked && it.panel !== false; }
   function applyPattern() {
     patMats.forEach(m => { m.map.dispose(); m.dispose(); }); patMats = [];
-    Object.values(patShapes).forEach(p => p.tex.dispose()); patShapes = {};
+    const old = patShapes; patShapes = {};
+    const reuse = (key, sig) => old[key] && old[key].sig === sig ? old[key] : null;
+    let wallCovers = 0;
     const on = $('#patOn').checked;
     $('#patOpts').hidden = !on;
     $('#patDensV').textContent = (+$('#patDens').value).toLocaleString('it-IT');
@@ -987,14 +1012,17 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       for (const [key, L] of Object.entries(PAT_LEN)) {
         const H = PAT_H[key];
         if (surfaceMode(key) === 'covers' && covOrder.length) {
-          const cells = coverLayout(COV_REGIONS[key]);
+          const cells = coverLayout(COV_REGIONS[key], wallObstacles(key, H));
+          wallCovers += cells.length;
           const tex = new THREE.CanvasTexture(paintCovers(cells, L, H, 6)); tex.anisotropy = ANISO;
           patShapes[key] = { covers: cells, tex, L, H };
           continue;
         }
+        const sig = 'bot|' + JSON.stringify(patOpts(key)) + '|' + L + 'x' + H, hit = reuse(key, sig);
+        if (hit) { patShapes[key] = hit; continue; }
         const shapes = genWall(L, H, patOpts(key));
         const tex = new THREE.CanvasTexture(paintWall(shapes, L, H, pal, 5)); tex.anisotropy = ANISO;
-        patShapes[key] = { shapes, tex, L, H };
+        patShapes[key] = { shapes, tex, L, H, sig };
       }
       for (const w of wallFaces) {
         const H = PAT_H[w.key], t = patShapes[w.key].tex.clone(); t.needsUpdate = true;
@@ -1021,19 +1049,27 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
         continue;
       }
       if (surfaceMode('table') === 'covers' && covOrder.length) {
-        const cells = coverLayout(COV_REGIONS.table);
+        const cells = coverLayout(COV_REGIONS.table, [], 60);
         const tex = new THREE.CanvasTexture(paintCovers(cells, 160, 70, 6)); tex.anisotropy = ANISO;
         patShapes['table:' + it.id] = { covers: cells, tex, L: 160, H: 70 };
         const pm = new THREE.MeshStandardMaterial({ map: tex, roughness: .7 }); patMats.push(pm);
         it.panelMesh.material = [forexM, forexM, forexM, forexM, pm, forexM];
         continue;
       }
-      const shapes = genWall(160, WALL_H, Object.assign(patOpts('back'), { seed: patSeed + 300 + parseInt(it.id.slice(1), 10) }));
-      const tex = new THREE.CanvasTexture(paintWall(shapes, 160, WALL_H, pal, 5, TABLE_CROP)); tex.anisotropy = ANISO;
-      patShapes['table:' + it.id] = { shapes, tex, L: 160, H: WALL_H };
-      const pm = new THREE.MeshStandardMaterial({ map: tex, roughness: .7 }); patMats.push(pm);
+      const topts = Object.assign(patOpts('back'), { seed: patSeed + 300 + parseInt(it.id.slice(1), 10) }), tsig = 'bot|' + JSON.stringify(topts), thit = reuse('table:' + it.id, tsig);
+      if (thit) patShapes['table:' + it.id] = thit;
+      else {
+        const shapes = genWall(160, WALL_H, topts);
+        const tex = new THREE.CanvasTexture(paintWall(shapes, 160, WALL_H, pal, 5, TABLE_CROP)); tex.anisotropy = ANISO;
+        patShapes['table:' + it.id] = { shapes, tex, L: 160, H: WALL_H, sig: tsig };
+      }
+      const tt = patShapes['table:' + it.id].tex.clone(); tt.needsUpdate = true;
+      const pm = new THREE.MeshStandardMaterial({ map: tt, roughness: .7 }); patMats.push(pm);
       it.panelMesh.material = [forexM, forexM, forexM, forexM, pm, forexM];
     }
+    for (const k in old) if (!Object.values(patShapes).includes(old[k])) old[k].tex.dispose();
+    $('#covCount').textContent = wallCovers ? `In vista sulle pareti: ${wallCovers} copertine, ${Math.min(wallCovers, TLON_COVERS.length)} titoli diversi.` : '';
+    lastObsSig = obstacleSig();
     syncTablePanels();
     fillPanelList();
     applyXray();
@@ -1130,6 +1166,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     return s;
   }
   const screens = [makeScreen('back', 'Schermo 1'), makeScreen('left', 'Schermo 2')];
+  screens[0].v = 140;   // a 140 cm resta sopra lo schermo una fila di copertine da 42 cm
   const scrSize = () => SIZES[$('#scrSize').value] || SIZES[75];
   const scrStand = () => $('#scrMount').value === 'stand';
   const scrZ = () => scrStand() ? 16 : 7;     // centro della cornice dal filo della parete
@@ -1729,7 +1766,10 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     if (typeof fillPanelList === 'function' && $('#panelSel')) fillPanelList();
     validate(); updatePanel();
   }
-  function save() { store.set(KEY, { layout: snap(), opts: readOpts() }); }
+  function save() {
+    store.set(KEY, { layout: snap(), opts: readOpts() });
+    if (['back', 'left'].some(k => surfaceMode(k) === 'covers') && obstacleSig() !== lastObsSig) { clearTimeout(patTimer); patTimer = setTimeout(applyPattern, 250); }
+  }
   function changed(o = selected) {
     if (o && o.kind === 'graphic') { clampGraphic(o); applyGraphic(o); }
     else if (o) { clampItem(o); apply(o); }
@@ -2105,9 +2145,9 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     for (const id of OPT_IDS) o[id] = $('#' + id).checked;
     o.tilt = +$('#tilt').value; o.sign = $('#sign').value;
     o.optScreen = $('#optScreen').checked; o.optScreen2 = $('#optScreen2').checked; o.scrSize = $('#scrSize').value; o.scrMount = $('#scrMount').value;
-    o.screens = screens.map(x => ({ key: x.key, u: x.u, v: x.v, img: x.img })); o.cfg = 7;
+    o.screens = screens.map(x => ({ key: x.key, u: x.u, v: x.v, img: x.img })); o.cfg = 8;
     o.dispCovers = userCovers.map(c => ({ url: c.url, spine: c.spine, aspect: c.aspect }));
-    o.patOn = $('#patOn').checked; for (const id of ['modeBack', 'modeSides', 'modeTables', 'covStyle', 'covN', 'covBg']) o[id] = $('#' + id).value; o.optTablePanels = $('#optTablePanels').checked; o.patPal = $('#patPal').value; o.patDens = +$('#patDens').value; o.patSym = $('#patSym').checked; o.patSeed = patSeed;
+    o.patOn = $('#patOn').checked; for (const id of ['modeBack', 'modeSides', 'modeTables', 'covStyle', 'covSize', 'covBg']) o[id] = $('#' + id).value; o.covAvoid = $('#covAvoid').checked; o.optTablePanels = $('#optTablePanels').checked; o.patPal = $('#patPal').value; o.patDens = +$('#patDens').value; o.patSym = $('#patSym').checked; o.patSeed = patSeed;
     return o;
   }
   function applyOpts() {
@@ -2225,6 +2265,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     if (saved.opts.dispCovers && saved.opts.dispCovers.length) setUserCovers(saved.opts.dispCovers);
     if (!(saved.opts.cfg >= 4)) $('#patOn').checked = true;
     if (!(saved.opts.cfg >= 5)) $('#modeSides').value = 'covers';
+    if (!(saved.opts.cfg >= 8)) { $('#covSize').value = '42'; const b = (saved.opts.screens || []).find(x => x.key === 'back'); if (!b || b.v === 150) screens[0].v = 140; }
     if (!(saved.opts.cfg >= 7)) $('#modeTables').value = 'biglogo';   // logo grande su bianco sui fronti dei tavoli   // copertine anche sulle pareti laterali   // motivo botanico acceso per chi aveva già aperto la pagina
     if (!(saved.opts.cfg >= 3)) {   // configurazione richiesta: due 75 pollici a parete, al centro
       $('#optScreen').checked = $('#optScreen2').checked = true; $('#scrSize').value = '75'; $('#scrMount').value = 'wall';
