@@ -262,7 +262,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
           <div class="fld"><label for="modeBack">Parete di fondo</label>
             <select class="pat" id="modeBack"><option value="covers" selected>Copertine</option><option value="pattern">Motivo botanico</option></select></div>
           <div class="fld"><label for="modeSides">Pareti laterali</label>
-            <select class="pat" id="modeSides"><option value="pattern" selected>Motivo botanico</option><option value="covers">Copertine</option></select></div>
+            <select class="pat" id="modeSides"><option value="covers" selected>Copertine</option><option value="pattern">Motivo botanico</option></select></div>
           <div class="fld"><label for="modeTables">Fronti dei tavoli</label>
             <select class="pat" id="modeTables"><option value="pattern" selected>Motivo botanico</option><option value="covers">Copertine</option></select></div>
           <label class="tg"><input class="pat" type="checkbox" id="optTablePanels" checked> Pannelli sui fronti dei tavoli</label>
@@ -2004,7 +2004,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     for (const id of OPT_IDS) o[id] = $('#' + id).checked;
     o.tilt = +$('#tilt').value; o.sign = $('#sign').value;
     o.optScreen = $('#optScreen').checked; o.optScreen2 = $('#optScreen2').checked; o.scrSize = $('#scrSize').value; o.scrMount = $('#scrMount').value;
-    o.screens = screens.map(x => ({ key: x.key, u: x.u, v: x.v, img: x.img })); o.cfg = 4;
+    o.screens = screens.map(x => ({ key: x.key, u: x.u, v: x.v, img: x.img })); o.cfg = 5;
     o.dispCovers = userCovers.map(c => ({ url: c.url, spine: c.spine, aspect: c.aspect }));
     o.patOn = $('#patOn').checked; for (const id of ['modeBack', 'modeSides', 'modeTables', 'covStyle', 'covN', 'covBg']) o[id] = $('#' + id).value; o.optTablePanels = $('#optTablePanels').checked; o.patPal = $('#patPal').value; o.patDens = +$('#patDens').value; o.patSym = $('#patSym').checked; o.patSeed = patSeed;
     return o;
@@ -2122,7 +2122,8 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     if (saved.opts.scrImg) screens[0].img = saved.opts.scrImg;
     if (saved.opts.patSeed) patSeed = saved.opts.patSeed;
     if (saved.opts.dispCovers && saved.opts.dispCovers.length) setUserCovers(saved.opts.dispCovers);
-    if (!(saved.opts.cfg >= 4)) $('#patOn').checked = true;   // motivo botanico acceso per chi aveva già aperto la pagina
+    if (!(saved.opts.cfg >= 4)) $('#patOn').checked = true;
+    if (!(saved.opts.cfg >= 5)) $('#modeSides').value = 'covers';   // copertine anche sulle pareti laterali   // motivo botanico acceso per chi aveva già aperto la pagina
     if (!(saved.opts.cfg >= 3)) {   // configurazione richiesta: due 75 pollici a parete, al centro
       $('#optScreen').checked = $('#optScreen2').checked = true; $('#scrSize').value = '75'; $('#scrMount').value = 'wall';
       screens.forEach(x => { x.u = 200; x.v = 150; });
