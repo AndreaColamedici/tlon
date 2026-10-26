@@ -1,0 +1,64 @@
+/* Il labirinto · collegamento dal vivo tra il palco e i telefoni.
+   Incollare qui l'URL del progetto Supabase e la chiave pubblica
+   (Project Settings > API Keys: la "publishable key" sb_publishable_..., oppure la vecchia "anon key").
+   Con i due campi vuoti le pagine funzionano lo stesso, in modalità autonoma. */
+(function(){
+"use strict";
+const CONFIG={
+  url:"",   // es. "https://abcdefghijkl.supabase.co"
+  key:""    // es. "sb_publishable_..."
+};
+const attivo=!!(CONFIG.url&&CONFIG.key);
+const base=CONFIG.url.replace(/\/+$/,"");
+const intestazioni=()=>{const h={"apikey":CONFIG.key,"Content-Type":"application/json"};if(!/^sb_/.test(CONFIG.key))h.Authorization="Bearer "+CONFIG.key;return h};
+const ls={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const uuid=()=>(window.crypto&&crypto.randomUUID)?crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==="x"?r:(r&3|8)).toString(16)});
+let dispositivo=ls.get("dg-dispositivo");if(!dispositivo){dispositivo=uuid();ls.set("dg-dispositivo",dispositivo)}
+async function rpc(nome,corpo){const r=await fetch(base+"/rest/v1/rpc/"+nome,{method:"POST",headers:intestazioni(),body:JSON.stringify(corpo||{})});if(!r.ok){let m="HTTP "+r.status;try{const j=await r.json();m=j.message||m}catch(e){}throw new Error(m)}return r.json()}
+
+/* scelte in uscita, con coda che sopravvive alla rete che cade */
+let coda=ls.get("dg-coda")||[],inVolo=false,attesa=0,timer=0;
+function invia(stanza,chiave,valore){
+  if(!attivo)return;
+  coda=coda.filter(r=>!(r.stanza===stanza&&r.chiave===chiave));
+  coda.push({dispositivo,stanza,chiave,valore:String(valore).slice(0,20)});ls.set("dg-coda",coda);
+  clearTimeout(timer);timer=setTimeout(svuota,300);
+}
+async function svuota(){
+  if(!attivo||inVolo||!coda.length)return;
+  inVolo=true;const lotto=coda.slice(0,40);
+  try{const r=await fetch(base+"/rest/v1/dg_voti",{method:"POST",headers:{...intestazioni(),"Prefer":"return=minimal"},body:JSON.stringify(lotto),keepalive:true});
+    if(!r.ok)throw new Error("HTTP "+r.status);coda=coda.filter(x=>!lotto.includes(x));ls.set("dg-coda",coda);attesa=0}
+  catch(e){attesa=Math.min(30000,(attesa||1500)*2)}
+  inVolo=false;if(coda.length)timer=setTimeout(svuota,attesa||200);
+}
+addEventListener("online",()=>{attesa=0;svuota()});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")svuota()});
+if(coda.length)setTimeout(svuota,800);
+
+/* orologio del server, per far cadere la moneta nello stesso istante su tutti i telefoni */
+let scarto=0,scartoMisurato=false;
+const oraServer=()=>Date.now()+scarto;
+async function stato(){const t0=Date.now();const s=await rpc("dg_stato");const t1=Date.now();
+  if(s&&s.ora){const stima=Date.parse(s.ora)-(t0+t1)/2;scarto=scartoMisurato?scarto*.6+stima*.4:stima;scartoMisurato=true}return s}
+
+/* ascolto della scena: tempo reale quando c'è, interrogazione periodica sempre */
+function ascolta(cb){
+  if(!attivo)return ()=>{};
+  let ultimo="",fermo=false,rt=false,pt=0;
+  const consegna=s=>{if(!s)return;const firma=[s.s,s.b,s.evento_id].join("|");if(firma!==ultimo){ultimo=firma;cb(s)}};
+  const giro=async()=>{if(fermo)return;try{consegna(await stato());ascolta.ok=true}catch(e){ascolta.ok=false}
+    const passo=rt?12000:2200+Math.random()*900;pt=setTimeout(giro,document.hidden?6000:passo)};
+  giro();
+  try{if(window.supabase&&window.supabase.createClient){
+    const cl=window.supabase.createClient(base,CONFIG.key,{auth:{persistSession:false,autoRefreshToken:false}});
+    cl.channel("scena").on("postgres_changes",{event:"UPDATE",schema:"public",table:"dg_scena"},p=>consegna(p.new))
+      .subscribe(st=>{rt=(st==="SUBSCRIBED")});
+  }}catch(e){}
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden){clearTimeout(pt);giro()}});
+  return ()=>{fermo=true;clearTimeout(pt)};
+}
+const vai=(parola,s,b,evento,dato,ritardo)=>rpc("dg_vai",{parola,s,b,evento:evento||null,dato:dato==null?null:String(dato),ritardo_ms:ritardo||0}).then(x=>{if(x&&x.ora){scarto=Date.parse(x.ora)-Date.now()}return x});
+const conteggi=dal=>rpc("dg_conteggi",{dal:new Date(dal).toISOString()});
+window.DGLive={attivo,invia,conteggi,stato,ascolta,vai,oraServer,dispositivo};
+})();
