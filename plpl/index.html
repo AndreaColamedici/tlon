@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: muro di copertine curato, loghi Tlon sui fronti dei tavoli, file di stampa nei formati PLPL.">
+<meta name="description" content="Modello 3D del prellestito 16 mq per Più Libri Più Liberi: muro di copertine curato, loghi Tlon sui fronti e sui fianchi dei tavoli, file di stampa nei formati PLPL.">
 <style>body{margin:0}img{max-width:100%}</style>
 <title>Stand PLPL 16 mq</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -266,6 +266,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
           <div class="fld"><label for="modeTables">Fronti dei tavoli</label>
             <select class="pat" id="modeTables"><option value="biglogo" selected>Logo grande su bianco</option><option value="logos">Serie di loghi su colore</option><option value="pattern">Motivo botanico</option><option value="covers">Copertine</option></select></div>
           <label class="tg"><input class="pat" type="checkbox" id="optTablePanels" checked> Pannelli sui fronti dei tavoli</label>
+          <label class="tg"><input class="pat" type="checkbox" id="optEndPanels" checked> Pannelli anche sui fianchi dei tavoli verso la corsia</label>
           <div class="sub" id="covOpts">
             <div class="fld"><label for="covStyle">Copertine</label>
               <select class="pat" id="covStyle"><option value="frame" selected>Con cornice</option><option value="full">Senza cornice, a tutto campo</option><option value="color">Su colore, distanziate</option></select></div>
@@ -870,9 +871,9 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   }
   // file sfalsate di loghi interi: 4 e 3 per riga, alternate
   function logoLayout(L, H) {
-    const lw = 30, lh = lw * 117 / 459, rows = 4, cells = [];
+    const lw = 30, lh = lw * 117 / 459, rows = 4, cells = [], cols = Math.max(1, Math.round(L / 40)), step = L / cols;
     for (let j = 0; j < rows; j++) {
-      const cy = H / rows * (j + .5), n = j % 2 ? 3 : 4, step = L / 4;
+      const cy = H / rows * (j + .5), n = j % 2 ? cols - 1 : cols;
       for (let i = 0; i < n; i++) { const cx = (j % 2 ? step : step / 2) + i * step; cells.push({ x: cx - lw / 2, y: cy - lh / 2, w: lw, h: lh }); }
     }
     return cells;
@@ -1017,7 +1018,16 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   let lastObsSig = '';
   const obstacleSig = () => JSON.stringify(['back', 'left', 'right'].map(k => wallObstacles(k, PAT_H[k]).map(o => [o.x, o.y, o.w, o.h].map(Math.round))));
   const surfaceMode = key => !$('#patOn').checked ? 'off' : key === 'back' ? $('#modeBack').value : key === 'table' ? $('#modeTables').value : $('#modeSides').value;
-  function syncTablePanels() { for (const it of items) if (it.panelMesh) it.panelMesh.visible = $('#optTablePanels').checked && it.panel !== false; }
+  function endFacesAisle(it, sd) {   // l'asse lungo del tavolo in pianta è (cos r, −sin r)
+    const r = it.rot * Math.PI / 180, x = it.x + sd * 82 * Math.cos(r), z = it.z - sd * 82 * Math.sin(r);
+    return x > S + .5 || z > S + .5;
+  }
+  function updateEnds(it) {
+    if (!it.endMeshes) return;
+    const on = !!document.querySelector('#optEndPanels') && $('#optEndPanels').checked;
+    for (const e of it.endMeshes) e.visible = on && endFacesAisle(it, e.userData.side);
+  }
+  function syncTablePanels() { for (const it of items) if (it.panelMesh) { it.panelMesh.visible = $('#optTablePanels').checked && it.panel !== false; updateEnds(it); } }
   function applyPattern() {
     patMats.forEach(m => { m.map.dispose(); m.dispose(); }); patMats = [];
     const old = patShapes; patShapes = {};
@@ -1092,6 +1102,17 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
       const pm = new THREE.MeshStandardMaterial({ map: tt, roughness: .7 }); patMats.push(pm);
       it.panelMesh.material = [forexM, forexM, forexM, forexM, pm, forexM];
     }
+    // grafica dei fianchi verso la corsia, 80 × 70, nello stesso stile dei fronti
+    let endMat = forexM;
+    if (on) {
+      const m = surfaceMode('table'); let tex;
+      if (m === 'biglogo') tex = new THREE.CanvasTexture(paintBigLogo(80, 70, 8));
+      else if (m === 'logos') tex = new THREE.CanvasTexture(paintLogos(logoLayout(80, 70), 80, 70, 8));
+      else if (m === 'covers') tex = new THREE.CanvasTexture(paintCovers(fitCells(coverLayout([{ x: 0, y: 0, w: 80, h: 70 }], [], 60)), 80, 70, 6));
+      else tex = new THREE.CanvasTexture(paintWall(genWall(80, WALL_H, Object.assign(patOpts('back'), { seed: patSeed + 400 })), 80, WALL_H, pal, 5, { x: 0, y: 180, w: 80, h: 70 }));
+      tex.anisotropy = ANISO; endMat = new THREE.MeshStandardMaterial({ map: tex, roughness: .6 }); patMats.push(endMat);
+    }
+    for (const it of items) if (it.endMeshes) for (const e of it.endMeshes) e.material = e.userData.side > 0 ? [endMat, forexM, forexM, forexM, forexM, forexM] : [forexM, endMat, forexM, forexM, forexM, forexM];
     for (const k in old) if (!Object.values(patShapes).includes(old[k])) old[k].tex.dispose();
     $('#covCount').textContent = wallCovers ? `In vista sulle pareti: ${wallCovers} copertine, ${Math.min(wallCovers, TLON_COVERS.length)} titoli diversi.` : '';
     lastObsSig = obstacleSig();
@@ -1381,6 +1402,8 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     g.add(makeDisplay(it));
     const pn = box(160, 70, .4, forexM); pn.position.set(0, 37, 40.3); pn.name = 'panel'; pn.userData.noTint = true;
     pn.visible = it.panel !== false; it.panelMesh = pn; g.add(pn);
+    // fianchi corti, 80 × 70: si mostrano solo quelli che danno sulla corsia
+    it.endMeshes = [-1, 1].map(sd => { const e = box(.4, 70, 80, forexM); e.position.set(sd * 80.3, 37, 0); e.userData.noTint = true; e.userData.side = sd; e.visible = false; g.add(e); return e; });
     const bx = new THREE.Group(); bx.name = 'boxes';
     const card = mat(0xb48a5a, .9), tape = mat(0xd9c39a, .7);
     for (const [px, w, h, d] of [[-52, 40, 30, 30], [-6, 44, 34, 32], [44, 38, 28, 30]]) {
@@ -1668,6 +1691,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     if (it.t.book) { const s = supportOf(it.x, it.z); y = s ? s.t.h : 0; }
     it.group.position.copy(W(it.x, it.z, y));
     it.group.rotation.y = it.rot * DEG;
+    if (it.endMeshes && typeof updateEnds === 'function') updateEnds(it);
   }
   function validate() {
     const solids = items.filter(i => i.t.solid);
@@ -2178,7 +2202,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     o.optScreen = $('#optScreen').checked; o.optScreen2 = $('#optScreen2').checked; o.scrSize = $('#scrSize').value; o.scrMount = $('#scrMount').value;
     o.screens = screens.map(x => ({ key: x.key, u: x.u, v: x.v, img: x.img })); o.cfg = 9;
     o.dispCovers = userCovers.map(c => ({ url: c.url, spine: c.spine, aspect: c.aspect }));
-    o.patOn = $('#patOn').checked; for (const id of ['modeBack', 'modeSides', 'modeTables', 'covStyle', 'covSize', 'covBg']) o[id] = $('#' + id).value; o.covAvoid = $('#covAvoid').checked; o.optTablePanels = $('#optTablePanels').checked; o.patPal = $('#patPal').value; o.patDens = +$('#patDens').value; o.patSym = $('#patSym').checked; o.patSeed = patSeed;
+    o.patOn = $('#patOn').checked; for (const id of ['modeBack', 'modeSides', 'modeTables', 'covStyle', 'covSize', 'covBg']) o[id] = $('#' + id).value; o.covAvoid = $('#covAvoid').checked; o.optTablePanels = $('#optTablePanels').checked; o.optEndPanels = $('#optEndPanels').checked; o.patPal = $('#patPal').value; o.patDens = +$('#patDens').value; o.patSym = $('#patSym').checked; o.patSeed = patSeed;
     return o;
   }
   function applyOpts() {
