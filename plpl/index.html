@@ -266,7 +266,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
           <div class="fld"><label for="modeTables">Fronti dei tavoli</label>
             <select class="pat" id="modeTables"><option value="biglogo" selected>Logo grande su bianco</option><option value="logos">Serie di loghi su colore</option><option value="pattern">Motivo botanico</option><option value="covers">Copertine</option></select></div>
           <label class="tg"><input class="pat" type="checkbox" id="optTablePanels" checked> Pannelli sui fronti dei tavoli</label>
-          <label class="tg"><input class="pat" type="checkbox" id="optEndPanels" checked> Pannelli anche sui fianchi dei tavoli verso la corsia</label>
+          <label class="tg"><input class="pat" type="checkbox" id="optEndPanels" checked> Pannelli anche sui fianchi dei tavoli che restano in vista</label>
           <div class="sub" id="covOpts">
             <div class="fld"><label for="covStyle">Copertine</label>
               <select class="pat" id="covStyle"><option value="frame" selected>Con cornice</option><option value="full">Senza cornice, a tutto campo</option><option value="color">Su colore, distanziate</option></select></div>
@@ -1018,14 +1018,23 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
   let lastObsSig = '';
   const obstacleSig = () => JSON.stringify(['back', 'left', 'right'].map(k => wallObstacles(k, PAT_H[k]).map(o => [o.x, o.y, o.w, o.h].map(Math.round))));
   const surfaceMode = key => !$('#patOn').checked ? 'off' : key === 'back' ? $('#modeBack').value : key === 'table' ? $('#modeTables').value : $('#modeSides').value;
-  function endFacesAisle(it, sd) {   // l'asse lungo del tavolo in pianta è (cos r, −sin r)
-    const r = it.rot * Math.PI / 180, x = it.x + sd * 82 * Math.cos(r), z = it.z - sd * 82 * Math.sin(r);
-    return x > S + .5 || z > S + .5;
+  // un fianco resta aperto solo se tocca una parete o un altro tavolo (o l'armadietto); altrimenti si vede e va chiuso
+  function endExposed(it, sd) {
+    const r = it.rot * Math.PI / 180, px = it.x + sd * 83 * Math.cos(r), pz = it.z - sd * 83 * Math.sin(r);
+    if (px > S + .5 || pz > S + .5) return true;
+    if (px < 3 || pz < 3 || (px > S - 3 && pz < 50)) return false;
+    for (const o of items) {
+      if (o === it || !o.t || (o.type !== 'table' && o.type !== 'cabinet')) continue;
+      const q = o.rot * Math.PI / 180, dx = px - o.x, dz = pz - o.z;
+      const lx = dx * Math.cos(q) - dz * Math.sin(q), lz = dx * Math.sin(q) + dz * Math.cos(q);
+      if (Math.abs(lx) <= o.t.w / 2 + 1 && Math.abs(lz) <= o.t.d / 2 + 1) return false;
+    }
+    return true;
   }
   function updateEnds(it) {
     if (!it.endMeshes) return;
     const on = !!document.querySelector('#optEndPanels') && $('#optEndPanels').checked;
-    for (const e of it.endMeshes) e.visible = on && endFacesAisle(it, e.userData.side);
+    for (const e of it.endMeshes) e.visible = on && endExposed(it, e.userData.side);
   }
   function syncTablePanels() { for (const it of items) if (it.panelMesh) { it.panelMesh.visible = $('#optTablePanels').checked && it.panel !== false; updateEnds(it); } }
   function applyPattern() {
@@ -1691,7 +1700,7 @@ kbd { font: 500 11px var(--f-mono); border: 1px solid var(--line); border-radius
     if (it.t.book) { const s = supportOf(it.x, it.z); y = s ? s.t.h : 0; }
     it.group.position.copy(W(it.x, it.z, y));
     it.group.rotation.y = it.rot * DEG;
-    if (it.endMeshes && typeof updateEnds === 'function') updateEnds(it);
+    if ((it.type === 'table' || it.type === 'cabinet') && typeof updateEnds === 'function') for (const o of items) if (o.endMeshes) updateEnds(o);
   }
   function validate() {
     const solids = items.filter(i => i.t.solid);
