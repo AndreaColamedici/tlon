@@ -17,14 +17,14 @@ const canale = "BroadcastChannel" in window ? new BroadcastChannel("tlon-dagrand
 const manda = m => { try { canale && canale.postMessage(m) } catch (e) { } };
 
 export const CAPITOLI = [
-  { k: "soglia", eta: "", titolo: "Da grande", sotto: "Inquadra il codice ed entra nel labirinto", zona: null },
-  { k: "cameretta", eta: "5 anni", titolo: "Cosa vuoi fare da grande?", zona: [0, 0], nota: "A cinque anni si sceglie <i>di</i>: ogni porta è possibile, anche quella col punto interrogativo. Guarda quante persone l'hanno aperta: non sapere cosa fare della propria vita comincia presto, ed è normale." },
-  { k: "scuola", eta: "18 anni", titolo: "Le porte", zona: [1, 0], nota: "Adesso si sceglie <i>tra</i>. Metà sala aveva ventiquattro porte, l'altra metà sei: confronta il tempo e la certezza. E guarda chi ha riaperto la porta del sogno." },
-  { k: "notte", eta: "23 anni", titolo: "La moneta", zona: [2, 0], nota: "Pancia e intuito. La moneta non decide niente: mentre è in aria ti fa sapere cosa speri. Quanti hanno seguito la speranza contro la moneta?" },
-  { k: "oracolo", eta: "28 anni", titolo: "L'oracolo", zona: [2, 1], nota: "L'IA come strumento e come fine. Chi ha chiesto la strada è arrivato dove arrivano quasi tutti; chi ha chiesto una domanda ha tenuto la propria strada." },
-  { k: "vicolo", eta: "35 anni", titolo: "Il vicolo cieco", zona: [2, 2], nota: "Il fallimento non è un valore in sé: conta cosa fai davanti al muro. I segni che vedete sono stati lasciati da questa sala: chi è passato dopo li ha trovati sulla sua strada." },
-  { k: "centro", eta: "Da grande", titolo: "Il centro", zona: [1, 1], nota: "Giochi finiti e infiniti. La coppa chiude il gioco: hai vinto, è finita. Oltre la coppa il labirinto continua, e si vedono le luci di tutti gli altri." },
-  { k: "fine", eta: "", titolo: "Il labirinto continua", sotto: "Grazie", zona: null },
+  { k: "soglia", eta: "", titolo: "Da grande", sotto: "Inquadra il codice ed entra nel labirinto", zona: null, nota: "Il codice resta sullo schermo mentre la sala entra: i telefoni aspettano nella cameretta. Quando le luci sono abbastanza, la freccia apre il primo movimento (cinque e diciotto anni, di seguito)." },
+  { k: "cameretta", eta: "5 anni", titolo: "Cosa vuoi fare da grande?", zona: [0, 0], nota: "Primo movimento, in corso: i telefoni passano da soli ai diciotto anni. Qui guardi il punto interrogativo. Quando il contatore dice che quasi tutti hanno finito, freccia: dati delle porte." },
+  { k: "scuola", eta: "18 anni", titolo: "Le porte", zona: [1, 0], nota: "Fine del primo movimento: i telefoni sono fermi. Scegliere <i>di</i> e scegliere <i>tra</i>. Poi la freccia apre il secondo movimento (ventitré e ventotto anni)." },
+  { k: "notte", eta: "23 anni", titolo: "La moneta", zona: [2, 0], nota: "Secondo movimento, in corso: dopo la moneta i telefoni vanno da soli all'oracolo. Quando il contatore sale, freccia: dati dell'oracolo." },
+  { k: "oracolo", eta: "28 anni", titolo: "L'oracolo", zona: [2, 1], nota: "Fine del secondo movimento: i telefoni sono fermi. La pancia e la delega, due modi di non decidere da soli. Poi la freccia apre il terzo movimento (il vicolo e il centro)." },
+  { k: "vicolo", eta: "35 anni", titolo: "Il vicolo cieco", zona: [2, 2], nota: "Terzo movimento, in corso: dal vicolo i telefoni arrivano al centro e si fermano davanti alla coppa. Intanto si riempie la galleria dei segni." },
+  { k: "centro", eta: "Da grande", titolo: "Il centro", zona: [1, 1], nota: "I telefoni sono fermi al centro, dopo la scelta della coppa. Giochi finiti e infiniti. Quando sei pronto, la freccia fa salire tutta la sala sopra i muri nello stesso momento." },
+  { k: "fine", eta: "", titolo: "Il labirinto continua", sotto: "Grazie", zona: null, nota: "Tutti i telefoni salgono sopra i muri: ognuno vede il suo filo rosso e il labirinto che continua. Congedo." },
 ];
 const SOGNI = { luna: "andare sulla luna", animali: "curare gli animali", gol: "fare gol", ballare: "ballare", incendi: "spegnere gli incendi", scoprire: "scoprire cose nuove", dipingere: "dipingere", insegnare: "insegnare", cantare: "cantare", cucinare: "cucinare", volare: "pilotare gli aerei", misteri: "risolvere misteri", curare: "curare le persone", inventare: "inventare macchine", esplorare: "esplorare il mondo", scavare: "scavare tesori antichi" };
 const STRADE = ["Medicina", "Giurisprudenza", "Ingegneria", "Economia", "Lettere", "Filosofia", "Psicologia", "Architettura", "Design", "Informatica", "Biologia", "Lingue", "Scienze politiche", "Belle Arti", "Conservatorio", "Fisica", "Matematica", "Infermieristica", "Scienze della formazione", "Cinema", "Agraria", "Lavorare subito", "Un anno all'estero", "Servizio civile"];
@@ -134,7 +134,7 @@ function disegnaDati() {
   const s = cur, box = $("#dati"), D = dati, presenti = somma(D.ingresso?.entrato);
   $("#conta").innerHTML = `<b>${fmt(presenti)}</b> ${presenti === 1 ? "luce" : "luci"} nel labirinto`;
   { const prog = D.progresso?.capitolo || {}; let fatti = 0, dentro = 0; for (const [v, n] of Object.entries(prog)) { const [k, m] = v.split(".").map(Number); dentro += n; if (k > s || (k === s && m >= 2)) fatti += n }
-    $("#finiti").innerHTML = s >= 1 && s <= 6 && dentro ? `<b>${fmt(fatti)}</b> su ${fmt(Math.max(dentro, presenti))} hanno finito il capitolo` : ""; manda({ t: "finiti", testo: $("#finiti").textContent }) }
+    $("#finiti").innerHTML = s >= 1 && s <= 6 && dentro ? `<b>${fmt(fatti)}</b> su ${fmt(Math.max(dentro, presenti))} ${fatti === 1 ? "ha" : "hanno"} finito il capitolo` : ""; manda({ t: "finiti", testo: $("#finiti").textContent }) }
   let h = "";
   if (s === 1) {
     const so = Object.entries(D.cameretta?.sogno || {}).filter(([k]) => k !== "nonlo").sort((a, b) => b[1] - a[1]).slice(0, 5), nl = D.cameretta?.sogno?.nonlo || 0, tot = somma(D.cameretta?.sogno);
@@ -186,7 +186,7 @@ async function sincronizza() {
 function aggiornaRegia() {
   if (!REGIA) return;
   const c = CAPITOLI[cur], n = CAPITOLI[cur + 1];
-  $("#r-ora").innerHTML = `<b>${cur}. ${c.titolo}</b>${c.eta ? " · " + c.eta : ""}`; $("#r-nota").innerHTML = c.nota || (cur === 0 ? "Lascia il codice sullo schermo mentre la sala entra. Quando le luci sono abbastanza, apri il primo capitolo con la freccia." : "Congedo.");
+  $("#r-ora").innerHTML = `<b>${cur}. ${c.titolo}</b>${c.eta ? " · " + c.eta : ""}`; $("#r-nota").innerHTML = c.nota || "";
   $("#r-poi").textContent = n ? "Dopo: " + n.titolo : "";
   $$("#r-scaletta li").forEach((li, i) => li.classList.toggle("ora", i === cur));
 }

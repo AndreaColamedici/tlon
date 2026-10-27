@@ -79,7 +79,7 @@ function cammina(punti, { velocita, guarda = 1.6 } = {}) {
   if (pts.length < 2) return Promise.resolve();
   const curva = new THREE.CatmullRomCurve3(pts, false, "centripetal", .5), L = curva.getLength();
   S.cammino.push(...pts.slice(1));
-  return new Promise(res => { cam.giro = { curva, L, s: 0, v: velocita, guarda, res } });
+  return new Promise(res => { cam.giro = { curva, L, s: 0, v: velocita, vmin: L / 22, guarda, res } }); // nessun tratto dura più di 22 secondi
 }
 const celle = cs => cs.map(([x, z]) => M.centroCella(x, z));
 function guardaVerso(p, subito) { const d = p.clone().sub(cam.pos); cam.yawT = Math.atan2(-d.x, -d.z); if (subito) cam.yaw = cam.yawT }
@@ -87,7 +87,7 @@ function zonaQui() { const x = Math.floor((cam.pos.x + M.N * M.C / 2) / M.C), z 
 function animaCamera(dt, t) {
   const Z = M.ZONE[zonaQui()];
   if (cam.giro) {
-    const g = cam.giro, v = (g.v || Z.passo) * VEL; g.s = Math.min(g.L, g.s + v * dt);
+    const g = cam.giro, v = Math.max(g.v || Z.passo, g.vmin || 0) * VEL; g.s = Math.min(g.L, g.s + v * dt);
     const p = g.curva.getPointAt(g.s / g.L), a = g.curva.getPointAt(Math.min(1, (g.s + g.guarda) / g.L));
     cam.pos.copy(p); filo.aggiungi(p); const d = a.sub(p); if (d.lengthSq() > .0004) cam.yawT = Math.atan2(-d.x, -d.z);
     const prima = Math.sin(cam.passi); cam.passi += dt * v * 3.7; if (prima > 0 && Math.sin(cam.passi) <= 0 || prima < 0 && Math.sin(cam.passi) >= 0) suono.passo(zonaQui());
@@ -272,23 +272,31 @@ export const STRADE = ["Medicina", "Giurisprudenza", "Ingegneria", "Economia", "
 /* ---------- capitoli ---------- */
 const r = M.caso(M.semeDa(SEME + "scelte"));
 function puntoAttesa(da, a) { const p = M.centroCella(...da), q = M.centroCella(...a); return p.lerp(q, .38) }
-async function attendi(k) {
+/* tre movimenti: 5 e 18 anni, 23 e 28 anni, 35 anni e il centro.
+   Dentro un movimento si cammina di seguito; tra un movimento e l'altro si aspetta il palco. */
+const SOGLIE = [3, 5, 7];
+async function attendi(k, prossimo = k + 1) {
   invia("progresso", "capitolo", k + ".2");
-  if (S.palco >= k + 1) return;
+  if (!SOGLIE.includes(prossimo)) return;
+  if (S.palco >= prossimo) return;
   if (LV.attivo && S.live && !LIBERO) {
     // durante l'evento si va avanti solo quando il capitolo si apre dal palco
-    UI.dici("Alza gli occhi verso il palco.");
+    UI.dici(prossimo === 7 ? "Resta qui. Tra poco si sale tutti insieme." : "Alza gli occhi verso il palco.");
     raccontaSala(k);
     let senzaRete = 0; const guardia = setInterval(() => { senzaRete = window.DGLive && DGLive.ascolta && DGLive.ascolta.ok === false ? senzaRete + 5 : 0; if (senzaRete >= 180) { clearInterval(guardia); S.sblocca && S.sblocca(true) } }, 5000);
-    const forzato = await new Promise(res => { S.sblocca = (forza) => { if (forza || S.palco >= k + 1) { S.sblocca = null; res(!!forza) } } });
+    const forzato = await new Promise(res => { S.sblocca = (forza) => { if (forza || S.palco >= prossimo) { S.sblocca = null; res(!!forza) } } });
     clearInterval(guardia); UI.dici(""); $("#sala").classList.remove("on");
     if (forzato) { UI.dici("Il collegamento con il palco si è interrotto: prosegui da solo."); await UI.scegli([["vai", "Prosegui"]], "una"); UI.dici("") }
     return;
   }
-  await pausa(900); await UI.scegli([["vai", "Prosegui"]], "una");
+  await pausa(900); await UI.scegli([["vai", prossimo === 7 ? "Sali" : "Prosegui"]], "una");
 }
 /* mentre aspetti: tu e la sala, a confronto */
 async function raccontaSala(k) {
+  if (k === 2 || k === 4) { await raccontaSala1(k - 1, true); return raccontaSala1(k, false, true) }
+  return raccontaSala1(k);
+}
+async function raccontaSala1(k, soloSalva, aggiungi) {
   if (!LV.conteggi) return; let D = {};
   try { for (const r0 of await LV.conteggi(Date.now() - 3 * 3600e3)) { ((D[r0.stanza] = D[r0.stanza] || {})[r0.chiave] = D[r0.stanza][r0.chiave] || {})[r0.valore] = Number(r0.n) } } catch (e) { return }
   const som = o => o ? Object.values(o).reduce((a, b) => a + b, 0) : 0, pc = (a, b) => b ? Math.round(a / b * 100) : 0, sc = S.scelte; let t = "";
@@ -297,7 +305,9 @@ async function raccontaSala(k) {
   if (k === 3) { const sg = D.notte?.seguito || {}, div = (sg.moneta || 0) + (sg.speranza || 0), tot = div + (sg.uguali || 0); if (tot > 1) t = `${pc(div, tot)}% della sala ha sperato il contrario di quello che è uscito. Di questi, ${pc(sg.speranza || 0, div)}% ha seguito la speranza.` }
   if (k === 4) { const o = D.oracolo?.scelta || {}, tot = som(o); if (tot > 1) t = `${pc(o.strada || 0, tot)}% della sala ha chiesto la strada all'oracolo.` }
   if (k === 5) { const a = D.vicolo?.azione || {}; if (som(a) > 1) t = `${a.segno || 0} persone hanno lasciato un segno nel vicolo cieco.` }
-  if (t) { $("#sala").innerHTML = `<b>La sala</b>${t}`; $("#sala").classList.add("on") }
+  if (soloSalva) { S._sala = t; return }
+  const tutto = [aggiungi ? S._sala : "", t].filter(Boolean).join("<br><br>"); S._sala = "";
+  if (tutto) { $("#sala").innerHTML = `<b>La sala</b>${tutto}`; $("#sala").classList.add("on") }
 }
 async function porte(lista, { zona, rett, doppie, stile, colori, larg = .95 }) {
   const posti = M.postiPorta(S.lab, zona, rett, lista.length, doppie);
@@ -516,6 +526,7 @@ async function capitolo6() {
     invia("centro", "continua", "1"); S.scelte.continua = true; salva();
     $("#fine").classList.remove("on"); coppa.position.copy(da); await UI.velo("#fff3d6", 0, 1400);
   }
+  await attendi(6, 7);
   await oltre();
 }
 async function oltre() {
