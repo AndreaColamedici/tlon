@@ -75,6 +75,18 @@ export function genera(seme) {
   lab.passa = (x, z, nx, nz) => { if (nx < 0 || nz < 0 || nx >= N || nz >= N) return false; if (nx === x + 1) return !V[z][x + 1]; if (nx === x - 1) return !V[z][x]; if (nz === z + 1) return !H[z + 1][x]; return !H[z][x] };
   lab.pareti = (x, z) => [H[z][x], H[z + 1][x], V[z][x], V[z][x + 1]].reduce((s, v) => s + v, 0);
   lab.cammino = (da, a, zone) => bfs(lab, da, a, zone);
+  // le stanze delle porte tengono solo i varchi della strada vera: così restano muri per tutte le porte
+  const chiudi = (zona, rett, da, verso) => {
+    const dentro = inRett(zona, rett), tieni = new Set();
+    for (const c of [lab.cammino(da, dentro, [zona]), lab.cammino(lab.cammino(da, dentro, [zona]).at(-1), verso, [zona])])
+      for (let i = 1; i < c.length; i++) { const [a, b] = c[i - 1], [x, z] = c[i]; if (dentro(a, b) !== dentro(x, z)) tieni.add([a, b, x, z].join()) }
+    const [x0, z0] = glob(zona, rett[0], rett[1]), [x1, z1] = glob(zona, rett[2], rett[3]);
+    const muro = (a, b, x, z) => { if (tieni.has([a, b, x, z].join()) || tieni.has([x, z, a, b].join())) return; if (x === a + 1) V[b][x] = 1; else if (x === a - 1) V[b][a] = 1; else if (z === b + 1) H[z][a] = 1; else H[b][a] = 1 };
+    for (let x = x0; x <= x1; x++) { muro(x, z0, x, z0 - 1); muro(x, z1, x, z1 + 1) }
+    for (let z = z0; z <= z1; z++) { muro(x0, z, x0 - 1, z); muro(x1, z, x1 + 1, z) }
+  };
+  chiudi("cameretta", PIANTA.cameretta.sala, glob("cameretta", 1, 1), glob("cameretta", ...PIANTA.cameretta.uscita));
+  chiudi("scuola", PIANTA.scuola.sala, glob("scuola", ...PIANTA.scuola.ingresso), glob("scuola", ...PIANTA.scuola.uscita));
   lab.percorsi = percorsi(lab, r);
   return lab;
 }

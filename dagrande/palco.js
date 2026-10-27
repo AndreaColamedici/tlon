@@ -106,7 +106,7 @@ async function interroga() {
 }
 let segniCache = [], segniT = 0;
 async function prendiSegni() { if (demo) return; if (!LV.attivo || Date.now() - segniT < 6000) return; segniT = Date.now(); try { segniCache = await LV.segni(24) || [] } catch (e) { } }
-function stato(t, c) { const s = $("#stato"); s.textContent = t; s.className = "stato " + c }
+function stato(t, c) { const s = $("#stato"); s.textContent = t; s.className = "stato " + c; manda({ t: "stato", testo: t, c }); if (REGIA) { const r = $("#r-stato"); r.textContent = t; r.className = "stato " + c } }
 
 /* simulazione per le prove: numeri inventati, sempre dichiarati come tali */
 function simula() {
@@ -164,7 +164,8 @@ function disegnaDati() {
 function disegnaSegni() { $$(".segni canvas").forEach(c => { const g = c.getContext("2d"); g.fillStyle = "#1a1714"; g.fillRect(0, 0, 160, 120); let tr = []; try { tr = JSON.parse(c.dataset.punti) } catch (e) { } g.strokeStyle = "rgba(245,240,230,.9)"; g.lineWidth = 2.4; g.lineCap = "round"; for (const t of tr) { g.beginPath(); t.forEach(([x, y], i) => i ? g.lineTo(x * 1.6, y * 1.2) : g.moveTo(x * 1.6, y * 1.2)); g.stroke() } }) }
 
 /* ---------- capitoli ---------- */
-let cur = Math.max(0, Math.min(CAPITOLI.length - 1, ls.get("dg3-cap") || 0));
+// ogni apertura della pagina riparte dall'inizio: un valore rimasto dalle prove non deve aprire i telefoni
+let cur = 0;
 function vai(s, daRemoto) {
   cur = Math.max(0, Math.min(CAPITOLI.length - 1, s)); ls.set("dg3-cap", cur);
   const c = CAPITOLI[cur];
@@ -174,12 +175,17 @@ function vai(s, daRemoto) {
   if (lab) puntaA(cur);
   if (infinito) infinito.userData.k = cur === 7 ? 1 : 0;
   disegnaDati(); if (cur === 5) { segniT = 0; prendiSegni().then(disegnaDati) }
-  if (!daRemoto) { manda({ t: "vai", s: cur }); sincronizza() }
+  if (!daRemoto) manda({ t: "vai", s: cur });
+  if (!REGIA && lab) sincronizza(); // solo la finestra del palco parla con i telefoni, anche quando il comando arriva dalla regia
   aggiornaRegia();
 }
+/* il comando arriva ai telefoni anche se la rete perde un colpo: si ritenta, e si ripete ogni dieci secondi */
+let sincro = 0, inviato = -1;
 async function sincronizza() {
-  const p = ls.get("dg-parola"); if (!LV.attivo || !p) return;
-  try { await LV.vai(p, cur, 0); stato("dal vivo", "vivo") } catch (e) { stato(String(e.message).includes("parola") ? "parola di regia errata" : "comando non arrivato", "ko") }
+  clearTimeout(sincro); const p = ls.get("dg-parola"); if (!LV.attivo || !p || REGIA) return;
+  const s = cur;
+  try { await LV.vai(p, s, 0); inviato = s; stato("dal vivo · capitolo " + s + " aperto", "vivo"); sincro = setTimeout(sincronizza, 10000) }
+  catch (e) { const parola = String(e.message).includes("parola"); stato(parola ? "parola di regia errata (P)" : "comando non arrivato, ritento…", "ko"); if (!parola) sincro = setTimeout(sincronizza, 2500) }
 }
 
 /* ---------- regia ---------- */
@@ -196,10 +202,15 @@ if (REGIA) {
   $("#r-scaletta").onclick = e => { const li = e.target.closest("li"); if (li) vai(+li.dataset.i) };
   $("#r-parola").value = ls.get("dg-parola") || ""; $("#r-parola").onchange = e => { ls.set("dg-parola", e.target.value.trim()); sincronizza() };
   $("#r-avanti").onclick = () => vai(cur + 1); $("#r-indietro").onclick = () => vai(cur - 1);
-  $("#r-azzera").ondblclick = () => { manda({ t: "azzera" }) };
+  $("#r-azzera").ondblclick = async () => {
+    const p = ls.get("dg-parola"); if (!LV.attivo || !p) { $("#r-azzera").textContent = "Serve il collegamento e la parola di regia"; return }
+    try { await LV.azzera(p); manda({ t: "azzera" }); manda({ t: "vai", s: 0 }); $("#r-azzera").textContent = "Dati delle prove cancellati, scena all'inizio" } catch (e) { $("#r-azzera").textContent = "Non riuscito: " + e.message }
+  };
   setInterval(() => { const d = new Date(); $("#r-orologio").textContent = d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }) }, 1000);
 }
-canale && (canale.onmessage = e => { const m = e.data; if (m.t === "finiti" && REGIA) $("#r-finiti").textContent = m.testo; if (m.t === "vai" && m.s !== cur) vai(m.s, true); if (m.t === "azzera" && !REGIA) { liveDal = Date.now(); ls.set("dg3-dal", liveDal); dati = {}; disegnaDati() } });
+canale && (canale.onmessage = e => { const m = e.data; if (m.t === "finiti" && REGIA) $("#r-finiti").textContent = m.testo; if (m.t === "chiedi" && !REGIA) manda({ t: "vai", s: cur }); if (m.t === "stato" && REGIA) { const r = $("#r-stato"); r.textContent = m.testo; r.className = "stato " + m.c } if (m.t === "vai" && m.s !== cur) vai(m.s, true); if (m.t === "azzera" && !REGIA) { liveDal = Date.now(); ls.set("dg3-dal", liveDal); dati = {}; disegnaDati() } });
+
+addEventListener("storage", e => { if (e.key === "dg-parola" && !REGIA) sincronizza() }); // parola inserita nella finestra di regia
 
 /* ---------- tasti ---------- */
 addEventListener("keydown", e => {
@@ -231,14 +242,14 @@ function ciclo() {
   requestAnimationFrame(ciclo);
 }
 async function avvia() {
-  if (REGIA) { vai(cur, true); return }
+  if (REGIA) { vai(cur, true); manda({ t: "chiedi" }); return }
   try { await Promise.race([Promise.all(["48px Caveat", "48px Marcellus"].map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 2000))]) } catch (e) { }
   adatta();
   lab = M.genera("palco"); mondo = await M.costruisci(scena, lab, { base: "./", env });
   for (const so of mondo.soffitti || []) so.visible = false;
   creaLuci(); creaInfinito(); vai(cur, true); vista.t.copy(vista.bersaglio); vista.r = vista.raggio; vista.a = vista.alt;
   requestAnimationFrame(ciclo);
-  if (LV.attivo) { stato(ls.get("dg-parola") ? "collegamento…" : "manca la parola di regia (P)", "ko"); interroga(); setInterval(interroga, 2000); setInterval(() => { if (cur === 5) prendiSegni().then(disegnaDati) }, 6000) }
+  if (LV.attivo) { stato(ls.get("dg-parola") ? "collegamento…" : "manca la parola di regia (P)", "ko"); sincronizza(); interroga(); setInterval(interroga, 2000); setInterval(() => { if (cur === 5) prendiSegni().then(disegnaDati) }, 6000) }
   else stato("senza collegamento", "ko");
 }
 avvia();

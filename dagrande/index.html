@@ -73,11 +73,11 @@ body.regia{overflow:auto;background:#111}body.regia>*:not(#regia){display:none!i
 <div id="aiuto" hidden><dl><dt>→ ←</dt><dd>capitolo avanti e indietro</dd><dt>0 … 7</dt><dd>vai a un capitolo</dd><dt>R</dt><dd>apre la finestra di regia</dd><dt>P</dt><dd>parola di regia, per aprire i capitoli sui telefoni</dd><dt>X</dt><dd>simulazione con numeri di prova</dd><dt>F</dt><dd>schermo intero</dd><dt>?</dt><dd>questo aiuto</dd></dl></div>
 <section id="regia">
   <h1><span>Regia · Da grande</span><span id="r-orologio"></span></h1>
-  <div id="r-ora"></div><div id="r-finiti" style="font:500 14px 'DM Mono',monospace;color:#E2523F;margin-bottom:8px"></div><div id="r-nota"></div><div id="r-poi"></div>
+  <div id="r-stato" class="stato" style="font-size:12px;margin-bottom:6px"></div><div id="r-ora"></div><div id="r-finiti" style="font:500 14px 'DM Mono',monospace;color:#E2523F;margin-bottom:8px"></div><div id="r-nota"></div><div id="r-poi"></div>
   <div class="bott"><button id="r-indietro">←</button><button id="r-avanti">Avanti →</button></div>
   <ol id="r-scaletta"></ol>
   <label>Parola di regia<input id="r-parola" type="password" autocomplete="off"></label>
-  <button id="r-azzera" title="Doppio clic">Azzera i dati delle prove (doppio clic)</button>
+  <button id="r-azzera" title="Doppio clic">Prima dell'evento: cancella i dati delle prove e riporta tutti all'inizio (doppio clic)</button>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" async></script>
 <script src="live.js"></script>

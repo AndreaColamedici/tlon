@@ -54,6 +54,7 @@ const emisfero = new THREE.HemisphereLight(0x8070a0, 0x201810, .5); scena.add(em
 const pool = Array.from({ length: 4 }, () => { const l = new THREE.PointLight(0xffffff, 0, 18, 2); scena.add(l); return { l, anc: null, cur: 0 } });
 const torcia = new THREE.SpotLight(0xfff0d0, 0, 26, .42, .55, 1.6); camera.add(torcia); torcia.position.set(.15, -.1, 0); camera.add(torcia.target); torcia.target.position.set(0, -.3, -5);
 let oscurita = 1; // 1 = luci normali, 0 = buio
+const luceMoneta = new THREE.PointLight(0xffe0a0, 0, 2, 2); camera.add(luceMoneta); luceMoneta.position.set(0, .1, -.3);
 const luna = new THREE.DirectionalLight(0xffe2b8, 0); luna.position.set(-30, 80, 20); scena.add(luna); let cielo = 0;
 
 /* ---------- stato ---------- */
@@ -109,7 +110,7 @@ function animaCamera(dt, t) {
 /* tocchi e trascinamenti */
 {
   let giu = null;
-  tela.addEventListener("pointerdown", e => { giu = { x: e.clientX, y: e.clientY, t: performance.now(), lx: e.clientX, ly: e.clientY }; tela.setPointerCapture(e.pointerId); if (S.disegno) S.disegno.inizia(e) });
+  tela.addEventListener("pointerdown", e => { try { suono.ctx && suono.ctx.state !== "running" && suono.ctx.resume() } catch (er) { } giu = { x: e.clientX, y: e.clientY, t: performance.now(), lx: e.clientX, ly: e.clientY }; tela.setPointerCapture(e.pointerId); if (S.disegno) S.disegno.inizia(e) });
   tela.addEventListener("pointermove", e => {
     if (!giu) return; if (S.disegno) { S.disegno.muovi(e); return }
     cam.yawU += (e.clientX - giu.lx) * .0055; cam.pitchU = Math.max(-1.1, Math.min(1.1, cam.pitchU + (e.clientY - giu.ly) * .0045)); giu.lx = e.clientX; giu.ly = e.clientY;
@@ -257,7 +258,7 @@ function ciclo() {
     if (pioggia) { const vis = z === "vicolo"; pioggia.visible = vis; if (vis) { pioggia.position.set(camera.position.x, 0, camera.position.z); pioggia.position.y = -((t * 9) % 9) + 0 ; pioggia.material.opacity = .3 } }
     finitura.uniforms.t.value = t;
     for (const f of S.extra || []) f(dt, t);
-    composer.render(dt);
+    if (!S.sblocca || t - (S._ultimoRender || 0) > .08) { S._ultimoRender = t; composer.render(dt) }
     // qualità adattiva
     tAcc += dt; frames++; if (tAcc > 2.5) { const fps = frames / tAcc; tAcc = 0; frames = 0; if (fps < 32 && qualitaPR > .85) { qualitaPR = Math.max(.85, qualitaPR - .3); renderer.setPixelRatio(qualitaPR); adatta() } else if (fps < 24 && bloom.enabled) bloom.enabled = false }
   }
@@ -291,6 +292,8 @@ async function attendi(k, prossimo = k + 1) {
   }
   await pausa(900); await UI.scegli([["vai", prossimo === 7 ? "Sali" : "Prosegui"]], "una");
 }
+/* le porte di un capitolo passato si tolgono: liberano memoria sui telefoni più vecchi */
+function liberaPorte(ps) { for (const p of ps || []) { p.gruppo.traverse(o => { if (o.isMesh) { o.geometry.dispose(); for (const m of [].concat(o.material)) { if (m.map) m.map.dispose(); m.dispose() } } }); scena.remove(p.gruppo) } }
 /* mentre aspetti: tu e la sala, a confronto */
 async function raccontaSala(k) {
   if (k === 2 || k === 4) { await raccontaSala1(k - 1, true); return raccontaSala1(k, false, true) }
@@ -298,19 +301,21 @@ async function raccontaSala(k) {
 }
 async function raccontaSala1(k, soloSalva, aggiungi) {
   if (!LV.conteggi) return; let D = {};
-  try { for (const r0 of await LV.conteggi(Date.now() - 3 * 3600e3)) { ((D[r0.stanza] = D[r0.stanza] || {})[r0.chiave] = D[r0.stanza][r0.chiave] || {})[r0.valore] = Number(r0.n) } } catch (e) { return }
+  try { if (!S._dati || Date.now() - S._dati.t > 4000) S._dati = { t: Date.now(), p: LV.conteggi(Date.now() - 3 * 3600e3) }; for (const r0 of await S._dati.p) { ((D[r0.stanza] = D[r0.stanza] || {})[r0.chiave] = D[r0.stanza][r0.chiave] || {})[r0.valore] = Number(r0.n) } } catch (e) { return }
   const som = o => o ? Object.values(o).reduce((a, b) => a + b, 0) : 0, pc = (a, b) => b ? Math.round(a / b * 100) : 0, sc = S.scelte; let t = "";
   if (k === 1) { const so = D.cameretta?.sogno || {}, tot = som(so); if (tot > 1) t = sc.sogno === "nonlo" ? `Come te, ${so.nonlo || 1} ${so.nonlo === 1 ? "persona" : "persone"} su ${tot} ha${so.nonlo === 1 ? "" : "nno"} aperto la porta col punto interrogativo.` : `In questa sala ${so[sc.sogno] || 1} su ${tot} ${(so[sc.sogno] || 1) === 1 ? "vuole" : "vogliono"} ${sc.sognoTesto}. ${pc(so.nonlo || 0, tot)}% ha aperto la porta col punto interrogativo.` }
   if (k === 2) { const se = D.scuola?.secondi || {}; let a = 0, n = 0; for (const [v, c] of Object.entries(se)) { a += v * c; n += c } if (n > 1) t = `Tu hai scelto in ${sc.secondi} secondi. La sala, in media, in ${Math.round(a / n)}.` }
   if (k === 3) { const sg = D.notte?.seguito || {}, div = (sg.moneta || 0) + (sg.speranza || 0), tot = div + (sg.uguali || 0); if (tot > 1) t = `${pc(div, tot)}% della sala ha sperato il contrario di quello che è uscito. Di questi, ${pc(sg.speranza || 0, div)}% ha seguito la speranza.` }
   if (k === 4) { const o = D.oracolo?.scelta || {}, tot = som(o); if (tot > 1) t = `${pc(o.strada || 0, tot)}% della sala ha chiesto la strada all'oracolo.` }
   if (k === 5) { const a = D.vicolo?.azione || {}; if (som(a) > 1) t = `${a.segno || 0} persone hanno lasciato un segno nel vicolo cieco.` }
+  if (k === 6) { const c = D.centro?.scelta || {}, tot = som(c); if (tot > 1) t = `${pc(c.coppa || 0, tot)}% della sala ha preso la coppa. ${pc(c.oltre || 0, tot)}% ha superato la coppa.` }
   if (soloSalva) { S._sala = t; return }
   const tutto = [aggiungi ? S._sala : "", t].filter(Boolean).join("<br><br>"); S._sala = "";
   if (tutto) { $("#sala").innerHTML = `<b>La sala</b>${tutto}`; $("#sala").classList.add("on") }
 }
 async function porte(lista, { zona, rett, doppie, stile, colori, larg = .95 }) {
   const posti = M.postiPorta(S.lab, zona, rett, lista.length, doppie);
+  if (posti.length < lista.length) lista = lista.filter(e => e.codice === "nonlo" || e.codice === "sogno").concat(lista.filter(e => e.codice !== "nonlo" && e.codice !== "sogno")).slice(0, posti.length);
   const porte = lista.slice(0, posti.length).map((e, i) => { const p = M.porta(scena, posti[i], { etichetta: e.testo, stile: e.stile || stile, colore: e.colore || (colori ? colori[i % colori.length] : 0x8a8f99), larg, env, r }); p.codice = e.codice; return p });
   return porte;
 }
@@ -341,6 +346,7 @@ async function capitolo1() {
   UI.dici(p.codice === "nonlo" ? "Non lo sai. A cinque anni va benissimo." : `Da grande vuoi ${p.etichetta}.`, 3600);
   filo.stacca(); cam.pos.copy(M.centroCella(...P.ritorno[0])); await UI.velo("#fff8ea", 0, 1400);
   await cammina(celle(P.ritorno).concat([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.scuola.andata[0])]));
+  liberaPorte(ps);
   await attendi(1);
 }
 
@@ -371,6 +377,7 @@ async function capitolo2() {
   const sic = await UI.scegli([["1", "Poca"], ["2", "Abbastanza"], ["3", "Tutta"]]); S.scelte.sicurezza = sic; salva(); invia("scuola", "sicurezza", sic); UI.dici("");
   filo.stacca(); cam.pos.copy(M.centroCella(...P.ritorno[0])); await UI.velo("#fff8ea", 0, 1400);
   await cammina(celle(P.ritorno).concat([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.notte.andata[0])]));
+  liberaPorte(ps);
   await attendi(2);
 }
 
@@ -387,7 +394,7 @@ async function capitolo3() {
   const oro = new THREE.MeshStandardMaterial({ color: 0xe8b850, metalness: 1, roughness: .25, envMap: env });
   const moneta = new THREE.Mesh(new THREE.CylinderGeometry(.07, .07, .008, 48), [oro, new THREE.MeshStandardMaterial({ map: facce[0], metalness: .9, roughness: .3, envMap: env }), new THREE.MeshStandardMaterial({ map: facce[1], metalness: .9, roughness: .3, envMap: env })]);
   camera.add(moneta); moneta.position.set(0, -.1, -.62); moneta.rotation.x = 1.25;
-  const luceMoneta = new THREE.PointLight(0xffe0a0, .18, 2, 2); camera.add(luceMoneta); luceMoneta.position.set(0, .1, -.3);
+  luceMoneta.intensity = .18;
   S.interattivi = [moneta]; moneta.userData.azione = { moneta: true };
   UI.dici("Testa: vai a sinistra. Croce: vai a destra. Tocca la moneta per lanciarla.");
   const battiti = setInterval(() => suono.cuore(.6), 1100);
@@ -415,7 +422,7 @@ async function capitolo3() {
   if (speranza === esito) { dir = lato; UI.dici(`Vai a ${lato}.`, 2000) }
   else { UI.dici("Da che parte vai?"); dir = await UI.scegli([[lato, `A ${lato}, come dice la moneta`], [lato === "sinistra" ? "destra" : "sinistra", `A ${lato === "sinistra" ? "destra" : "sinistra"}, come speravi`]]) }
   const seguito = speranza === esito ? "uguali" : (dir === lato ? "moneta" : "speranza"); S.scelte.seguito = seguito; salva(); invia("notte", "seguito", seguito); UI.dici("");
-  camera.remove(moneta); camera.remove(luceMoneta);
+  camera.remove(moneta); luceMoneta.intensity = 0;
   cam.yawT = cam.yaw + (dir === "sinistra" ? Math.PI / 2 : -Math.PI / 2); await pausa(900);
   const avanti = new THREE.Vector3(-Math.sin(cam.yawT), 0, -Math.cos(cam.yawT)); await cammina([cam.pos.clone().addScaledVector(avanti, 2.4)], { velocita: 1.2 });
   await UI.velo("#000", 1, 900); torcia.intensity = 0; oscurita = 1; finitura.uniforms.buio.value = 0;
@@ -479,16 +486,17 @@ async function capitolo5() {
   await attendi(5);
 }
 async function spinta(f) { suono.colpo(); const b = cam.pos.clone(); await animaValore(v => cam.pos.copy(b).addScaledVector(f.n, -v * .35), 0, 1, 180); await animaValore(v => cam.pos.copy(b).addScaledVector(f.n, -v * .35), 1, 0, 420) }
-function superficieSegno(f, larg = 1.9, alt = 1.5) {
-  const c = document.createElement("canvas"); c.width = 760; c.height = 600; const g = c.getContext("2d");
+function superficieSegno(f, larg = 1.9, alt = 1.5, cw = 760, ch = 600) {
+  const c = document.createElement("canvas"); c.width = cw; c.height = ch; const g = c.getContext("2d");
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
   const m = new THREE.Mesh(new THREE.PlaneGeometry(larg, alt), new THREE.MeshStandardMaterial({ map: t, transparent: true, roughness: 1, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: .12 }));
   M.sulMuro(m, f, 1.55); m.position.addScaledVector(f.n, .012); scena.add(m); return { m, g, t, c };
 }
 function gessoTratto(g, a, b, w = 7) { g.strokeStyle = "rgba(245,240,230,.85)"; g.lineCap = "round"; for (let i = 0; i < 3; i++) { g.lineWidth = w * (.6 + Math.random() * .6); g.globalAlpha = .5; g.beginPath(); g.moveTo(a[0] + (Math.random() - .5) * 3, a[1] + (Math.random() - .5) * 3); g.lineTo(b[0] + (Math.random() - .5) * 3, b[1] + (Math.random() - .5) * 3); g.stroke() } g.globalAlpha = 1 }
 function posaSegno(f, s) {
-  const sup = superficieSegno(f, 1.3, 1.03); let tratti = []; try { tratti = typeof s.punti === "string" ? JSON.parse(s.punti) : s.punti } catch (e) { return }
-  for (const tr of tratti || []) for (let i = 1; i < tr.length; i++) gessoTratto(sup.g, [tr[i - 1][0] * 7.6, tr[i - 1][1] * 6], [tr[i][0] * 7.6, tr[i][1] * 6], 9);
+  let tratti = []; try { tratti = typeof s.punti === "string" ? JSON.parse(s.punti) : s.punti } catch (e) { return }
+  const sup = superficieSegno(f, 1.3, 1.03, 256, 200);
+  for (const tr of tratti || []) for (let i = 1; i < tr.length; i++) gessoTratto(sup.g, [tr[i - 1][0] * 2.56, tr[i - 1][1] * 2], [tr[i][0] * 2.56, tr[i][1] * 2], 3.5);
   sup.t.needsUpdate = true;
 }
 function disegna(f) {
@@ -545,7 +553,7 @@ async function oltre() {
       float fade=exp(-max(0.,dist-lato)*.012)*k;vec3 col=mix(vec3(.08,.05,.03),vec3(.95,.66,.27),m);gl_FragColor=vec4(col,fade*(.35+m*.65));}` }));
   infinito.rotation.x = -Math.PI / 2; infinito.position.y = .02; scena.add(infinito);
   // le luci degli altri
-  let n = 1; try { if (LV.presenti) n = Math.max(1, await LV.presenti()) } catch (e) { }
+  let n = 1; try { if (LV.presenti) n = Math.max(1, await Promise.race([LV.presenti(), pausa(2000).then(() => 1)])) } catch (e) { }
   const luci = new THREE.Points(new THREE.BufferGeometry().setAttribute("position", new THREE.Float32BufferAttribute(Array.from({ length: Math.min(n - 1, 600) * 3 }, (_, i) => i % 3 === 1 ? 1.2 : (Math.floor(Math.random() * M.N) + .5) * M.C - M.N * M.C / 2), 3)), new THREE.PointsMaterial({ color: 0xffd58a, size: 1.4, sizeAttenuation: true, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending }));
   scena.add(luci);
   const da = cam.pos.clone(), occhio0 = cam.occhio; cam.occhioFisso = cam.occhio; S.nebbiaX = 1;
@@ -613,17 +621,24 @@ async function prepara() {
 async function entra() {
   suono.avvia(); try { suono.ctx && suono.ctx.resume() } catch (e) { }
   try { if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) await DeviceOrientationEvent.requestPermission() } catch (e) { }
-  try { if (navigator.wakeLock) await navigator.wakeLock.request("screen") } catch (e) { }
+  const sveglia = async () => { try { if (navigator.wakeLock && !(S.blocco && !S.blocco.released)) S.blocco = await navigator.wakeLock.request("screen") } catch (e) { } };
+  await sveglia(); document.addEventListener("visibilitychange", () => { if (!document.hidden) sveglia() }); tela.addEventListener("pointerdown", sveglia);
   invia("ingresso", "entrato", "1");
   $("#ingresso").classList.add("via"); setTimeout(() => $("#ingresso").remove(), 1500);
   UI.eta("5 anni"); await pausa(1200);
   UI.dici("Hai cinque anni. Muovi il telefono, o trascina il dito, per guardarti intorno.", 5200);
   if (LV.attivo && !LIBERO) {
     S.live = true;
-    LV.ascolta(st => { S.palco = Math.max(S.palco, +st.s || 0); $("#vivo").textContent = "dal vivo"; $("#vivo").className = "vivo"; S.sblocca && S.sblocca() });
+    LV.ascolta(st => { S.palco = +st.s || 0; $("#vivo").textContent = "dal vivo"; $("#vivo").className = "vivo"; S.sblocca && S.sblocca() });
   }
   await pausa(3500);
-  if (S.live && S.palco < 1) { UI.dici("Aspetta: il primo capitolo si apre dal palco."); await new Promise(res => { S.sblocca = () => { if (S.palco >= 1) { S.sblocca = null; res() } } }); UI.dici("") }
+  if (S.live && S.palco < 1) {
+    UI.dici("Aspetta: il primo capitolo si apre dal palco.");
+    let senzaRete = 0; const guardia = setInterval(() => { senzaRete = window.DGLive && DGLive.ascolta && DGLive.ascolta.ok === false ? senzaRete + 5 : 0; if (senzaRete >= 180) { clearInterval(guardia); S.sblocca && S.sblocca(true) } }, 5000);
+    const forzato = await new Promise(res => { S.sblocca = (forza) => { if (forza || S.palco >= 1) { S.sblocca = null; res(!!forza) } } });
+    clearInterval(guardia); UI.dici("");
+    if (forzato) { UI.dici("Il collegamento con il palco si è interrotto: entra da solo."); await UI.scegli([["vai", "Entra nel labirinto"]], "una"); UI.dici("") }
+  }
   const capitoli = [capitolo1, capitolo2, capitolo3, capitolo4, capitolo5, capitolo6];
   // per le prove: ?cap=N parte dal capitolo N
   const da = Math.max(1, Math.min(6, +PARAM.get("cap") || 1));
