@@ -8,6 +8,7 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import * as M from "../mondo.js";
+import { decoraMuri, tabellaAltezza } from "./voci.js";
 
 const $ = s => document.querySelector(s);
 const LV = window.DGLive || { attivo: false, invia() { }, ascolta() { return () => { } }, dispositivo: "x" };
@@ -246,7 +247,7 @@ function aggiornaLuci(dt, t) {
   }
   for (const p of pool) { const tgt = p.anc && !p.via ? p.anc.int * oscurita * (p.anc.zona === "cameretta" ? 1.2 : 2.3) : 0; p.cur = lerp(p.cur, tgt, 1 - Math.exp(-dt * 3)); p.l.intensity = p.cur * (p.anc && p.anc.tremola ? p.anc.tremola(t) : 1) }
   const Z = M.ZONE[zonaQui()];
-  nebbia.col.lerp(tmpC.setHex(Z.fog), 1 - Math.exp(-dt * .8)); nebbia.dens = lerp(nebbia.dens, Z.dens * (S.nebbiaX || 1), 1 - Math.exp(-dt * .8));
+  nebbia.col.lerp(tmpC.setHex(Z.fog), 1 - Math.exp(-dt * .8)); nebbia.dens = lerp(nebbia.dens, Z.dens * (S.nebbiaX || 1), 1 - Math.exp(-dt * (cielo > .01 ? 4 : .8)));
   scena.fog.color.copy(nebbia.col); scena.fog.density = nebbia.dens; scena.background.copy(nebbia.col);
   emisfero.color.lerp(cielo > .01 ? tmpC.setHex(0xc8b8ff) : tmpC.setHex(Z.emi).multiplyScalar(3), 1 - Math.exp(-dt)); emisfero.intensity = lerp(emisfero.intensity, .9 * oscurita + .05 + cielo * 2, 1 - Math.exp(-dt * 2)); luna.intensity = cielo * 4.5; finitura.uniforms.vign.value = .85 - cielo * .5; finitura.uniforms.ab.value = 1 - cielo * .85;
 }
@@ -300,6 +301,8 @@ async function attendi(k, prossimo = k + 1) {
   }
   await pausa(900); await UI.scegli([["vai", prossimo === 7 ? "Sali" : "Prosegui"]], "una");
 }
+/* anche le voci sui muri di un'età passata si tolgono */
+function liberaVoci(...zone) { const via = []; scena.traverse(o => { if (o.userData.voce && zone.includes(o.userData.voce)) via.push(o) }); for (const o of via) { o.geometry.dispose(); if (o.material.map) o.material.map.dispose(); o.material.dispose(); scena.remove(o) } }
 /* le porte di un capitolo passato si tolgono: liberano memoria sui telefoni più vecchi */
 function liberaPorte(ps) { for (const p of ps || []) { p.gruppo.traverse(o => { if (o.isMesh) { o.geometry.dispose(); for (const m of [].concat(o.material)) { if (m.map && !m.map.userData.condivisa) m.map.dispose(); m.dispose() } } }); scena.remove(p.gruppo) } }
 /* mentre aspetti: tu e la sala, a confronto */
@@ -352,6 +355,22 @@ async function attraversa(p) {
   await pausa(700); await UI.velo("#fff8ea", 1, 1000);
 }
 
+/* i muri della cameretta per la tabella dell'altezza e per il primo disegno */
+function muroCameretta() {
+  const cand = [[1, 0, "N"], [2, 0, "N"], [0, 1, "W"], [0, 2, "W"], [1, 2, "S"], [2, 2, "S"], [2, 1, "E"], [2, 0, "E"]].map(([x, z, l]) => M.facciaMuro(S.lab, x, z, l)).filter(Boolean);
+  if (!cand.length) return null;
+  const da = cam.pos.clone(); cand.sort((a, b) => a.p.distanceTo(da) - b.p.distanceTo(da));
+  return { disegno: cand[0], altezza: cand[1] || cand[0] };
+}
+/* mentre la sala entra: come ti vedi da grande, disegnato col dito sul muro */
+async function disegnoIniziale() {
+  const m = muroCameretta(); if (!m) return; const f = m.disegno;
+  guardaVerso(f.p); await cammina([f.p.clone().addScaledVector(f.n, 1.25).setY(0)], { velocita: .9, guarda: .3, mira: f.p.clone().setY(0) });
+  guardaVerso(f.p); await pausa(600);
+  const tratti = await disegna(f, { pastelli: true, invito: "Mentre aspetti: disegna sul muro come ti vedi da grande.", larg: 1.4, alt: 1.05, y: 1.05 });
+  if (tratti) { S.scelte.disegno = tratti; salva(); UI.dici("Lo ritroverai.", 2600) }
+  cam.yawT = cam.yaw + Math.PI * .6;
+}
 async function capitolo1() {
   S.cap = 1; const P = S.lab.percorsi.cameretta; UI.eta("5 anni"); invia("progresso", "capitolo", "1.0");
   await cammina(celle(P.andata).concat([P.sala]));
@@ -374,7 +393,7 @@ async function capitolo1() {
 async function capitolo2() {
   S.cap = 2; const P = S.lab.percorsi.scuola; invia("progresso", "capitolo", "2.0");
   suono.cresci(); UI.eta("18 anni"); UI.dici("Tredici anni dopo.", 2600);
-  await cammina(celle(P.andata).concat([P.sala]));
+  await cammina(celle(P.andata).concat([P.sala])); liberaVoci("cameretta");
   let gruppo = ls.get("dg3-gruppo"); if (!gruppo) { gruppo = r() < .5 ? 24 : 6; ls.set("dg3-gruppo", gruppo) }
   const strade = [...STRADE.keys()].sort(() => r() - .5).slice(0, gruppo - 1).map(i => ({ testo: STRADE[i], codice: "s" + i }));
   const sogno = S.scelte.sognoTesto && S.scelte.sogno !== "nonlo" ? S.scelte.sognoTesto : "?";
@@ -405,7 +424,7 @@ async function capitolo2() {
 async function capitolo3() {
   S.cap = 3; const P = S.lab.percorsi.notte; invia("progresso", "capitolo", "3.0");
   suono.cresci(); UI.eta("23 anni"); UI.dici("La città, di notte.", 2600);
-  await cammina(celle(P.andata).concat([P.sala]));
+  await cammina(celle(P.andata).concat([P.sala])); liberaVoci("scuola");
   // si spegne la luce
   UI.dici("Si è spenta la luce."); suono.colpo();
   await animaValore(v => { oscurita = v; finitura.uniforms.buio.value = (1 - v) * .9 }, 1, .04, 1600);
@@ -413,7 +432,7 @@ async function capitolo3() {
   // la moneta
   const facce = ["TESTA", "CROCE"].map((t, i) => M.tela(256, 256, (g, w, h) => { const gr = g.createRadialGradient(w / 2, h / 2, 10, w / 2, h / 2, 128); gr.addColorStop(0, "#f7dc8c"); gr.addColorStop(1, "#b98a2e"); g.fillStyle = gr; g.fillRect(0, 0, w, h); g.strokeStyle = "#7a5512"; g.lineWidth = 8; g.beginPath(); g.arc(w / 2, h / 2, 112, 0, 7); g.stroke(); g.fillStyle = "#6b4a10"; g.font = "600 40px Marcellus, serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(t, w / 2, h / 2 + 52); if (i === 0) { g.beginPath(); g.arc(w / 2, h / 2 - 18, 34, 0, 7); g.lineWidth = 7; g.stroke(); g.beginPath(); g.arc(w / 2, h / 2 - 18, 14, 0, 7); g.stroke() } else { g.fillRect(w / 2 - 6, h / 2 - 60, 12, 80); g.fillRect(w / 2 - 34, h / 2 - 32, 68, 12) } }));
   const oro = new THREE.MeshStandardMaterial({ color: 0xe8b850, metalness: 1, roughness: .25, envMap: env });
-  const moneta = new THREE.Mesh(new THREE.CylinderGeometry(.07, .07, .008, 48), [oro, new THREE.MeshStandardMaterial({ map: facce[0], metalness: .9, roughness: .3, envMap: env }), new THREE.MeshStandardMaterial({ map: facce[1], metalness: .9, roughness: .3, envMap: env })]);
+  const moneta = new THREE.Mesh(new THREE.CylinderGeometry(.07, .07, .008, 48), [oro, new THREE.MeshBasicMaterial({ map: facce[0], color: 0xd8c8a0 }), new THREE.MeshBasicMaterial({ map: facce[1], color: 0xd8c8a0 })]); // facce senza luce: la torcia non le brucia
   camera.add(moneta); moneta.position.set(0, -.1, -.62); moneta.rotation.x = 1.25;
   luceMoneta.intensity = .18;
   S.interattivi = [moneta]; moneta.userData.azione = { moneta: true };
@@ -457,7 +476,7 @@ async function capitolo4() {
   S.cap = 4; const P = S.lab.percorsi.oracolo, sfera = S.mondo.sfera; invia("progresso", "capitolo", "4.0");
   suono.cresci(); UI.eta("28 anni"); UI.dici("Vetro e schermi.", 2400);
   const ultima = M.centroCella(...P.andata.at(-1)), dir = P.sala.clone().sub(ultima).setY(0); const stop = P.sala.clone().sub(dir.lengthSq() > .01 ? dir.normalize().multiplyScalar(2.3) : new THREE.Vector3(0, 0, -2.3));
-  await cammina(celle(P.andata).concat([stop]));
+  await cammina(celle(P.andata).concat([stop])); liberaVoci("notte");
   guardaVerso(sfera.position); suono.oracolo(); cam.pitchExtra = .12;
   UI.dici("Conosco ogni strada di questo labirinto. Vuoi che ti dica qual è la tua?");
   const sc = await UI.scegli([["strada", "Dimmi la strada"], ["domanda", "Fammi una domanda"]]);
@@ -485,7 +504,7 @@ async function capitolo5() {
   S.cap = 5; const P = S.lab.percorsi.vicolo; invia("progresso", "capitolo", "5.0");
   suono.cresci(); UI.eta("35 anni"); UI.dici("Piove.", 2000);
   let altri = []; try { if (LV.segni) altri = (await LV.segni()) || [] } catch (e) { }
-  await cammina(celle(P.andata));
+  await cammina(celle(P.andata)); liberaVoci("oracolo");
   const [cx, cz] = P.cieco, prima = P.andata.at(-2) || P.andata[0], lato = cx > prima[0] ? "E" : cx < prima[0] ? "W" : cz > prima[1] ? "S" : "N";
   const f = M.facciaMuro(S.lab, cx, cz, lato) || M.facciaMuro(S.lab, cx, cz, "NSEW".split("").find(l => M.facciaMuro(S.lab, cx, cz, l)));
   guardaVerso(f.p); await cammina([f.p.clone().addScaledVector(f.n, .95)], { velocita: .8, guarda: .3 });
@@ -513,23 +532,25 @@ function superficieSegno(f, larg = 1.9, alt = 1.5, cw = 760, ch = 600) {
   const m = new THREE.Mesh(new THREE.PlaneGeometry(larg, alt), new THREE.MeshStandardMaterial({ map: t, transparent: true, roughness: 1, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: .12 }));
   M.sulMuro(m, f, 1.55); m.position.addScaledVector(f.n, .012); scena.add(m); return { m, g, t, c };
 }
-function gessoTratto(g, a, b, w = 7) { g.strokeStyle = "rgba(245,240,230,.85)"; g.lineCap = "round"; for (let i = 0; i < 3; i++) { g.lineWidth = w * (.6 + Math.random() * .6); g.globalAlpha = .5; g.beginPath(); g.moveTo(a[0] + (Math.random() - .5) * 3, a[1] + (Math.random() - .5) * 3); g.lineTo(b[0] + (Math.random() - .5) * 3, b[1] + (Math.random() - .5) * 3); g.stroke() } g.globalAlpha = 1 }
+function gessoTratto(g, a, b, w = 7, colore = "rgba(245,240,230,.85)") { g.strokeStyle = colore; g.lineCap = "round"; for (let i = 0; i < 3; i++) { g.lineWidth = w * (.6 + Math.random() * .6); g.globalAlpha = .5; g.beginPath(); g.moveTo(a[0] + (Math.random() - .5) * 3, a[1] + (Math.random() - .5) * 3); g.lineTo(b[0] + (Math.random() - .5) * 3, b[1] + (Math.random() - .5) * 3); g.stroke() } g.globalAlpha = 1 }
 function posaSegno(f, s) {
   let tratti = []; try { tratti = typeof s.punti === "string" ? JSON.parse(s.punti) : s.punti } catch (e) { return }
   const sup = superficieSegno(f, 1.3, 1.03, 256, 200);
   for (const tr of tratti || []) for (let i = 1; i < tr.length; i++) gessoTratto(sup.g, [tr[i - 1][0] * 2.56, tr[i - 1][1] * 2], [tr[i][0] * 2.56, tr[i][1] * 2], 3.5);
   sup.t.needsUpdate = true;
 }
-function disegna(f) {
+function disegna(f, { pastelli = false, invito = "Disegna sul muro con il dito.", larg, alt, y } = {}) {
   return new Promise(res => {
-    const sup = superficieSegno(f); const tratti = []; let cur = null, totale = 0;
+    const sup = superficieSegno(f, larg, alt); if (y) sup.m.position.y = y; const tratti = []; let cur = null, totale = 0;
+    const COLORI = ["#d0462f", "#3d7fd9", "#3c9a3c", "#e0a020", "#8a4fc0"];
+    const colore = () => pastelli ? COLORI[(tratti.length - 1 + 5) % 5] : undefined;
     const uvDa = e => { ndc.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); const h = ray.intersectObject(sup.m)[0]; return h ? [Math.round(h.uv.x * 99), Math.round((1 - h.uv.y) * 99)] : null };
     S.disegno = {
       inizia(e) { const p = uvDa(e); if (p && totale < 320) { cur = [p]; tratti.push(cur) } },
-      muovi(e) { if (!cur) return; const p = uvDa(e); if (!p) return; const q = cur[cur.length - 1]; if (Math.hypot(p[0] - q[0], p[1] - q[1]) < 1.5 || totale >= 320) return; cur.push(p); totale++; gessoTratto(sup.g, [q[0] * 7.6, q[1] * 6], [p[0] * 7.6, p[1] * 6]); sup.t.needsUpdate = true; if (totale % 3 === 0) suono.gesso() },
+      muovi(e) { if (!cur) return; const p = uvDa(e); if (!p) return; const q = cur[cur.length - 1]; if (Math.hypot(p[0] - q[0], p[1] - q[1]) < 1.5 || totale >= 320) return; cur.push(p); totale++; gessoTratto(sup.g, [q[0] * 7.6, q[1] * 6], [p[0] * 7.6, p[1] * 6], pastelli ? 11 : 7, colore()); sup.t.needsUpdate = true; if (totale % 3 === 0) suono.gesso() },
       fine() { cur = null }
     };
-    cam.yawU = 0; cam.pitchU = 0; UI.dici("Disegna sul muro con il dito.");
+    cam.yawU = 0; cam.pitchU = 0; UI.dici(invito);
     UI.scegli([["fatto", "Fatto"], ["no", "Lascia stare"]]).then(v => { S.disegno = null; UI.dici(""); if (v === "no" || !tratti.length) { scena.remove(sup.m); res(null) } else res(JSON.stringify(tratti.filter(t => t.length > 1)).slice(0, 4000)) });
   });
 }
@@ -539,7 +560,9 @@ async function capitolo6() {
   suono.cresci(); UI.eta("Da grande"); UI.dici("La pietra più antica.", 2600);
   const ultima = M.centroCella(...P.andata.at(-1)), dir = P.sala.clone().sub(ultima).setY(0); const stop = P.sala.clone().sub(dir.lengthSq() > .01 ? dir.normalize().multiplyScalar(1.9) : new THREE.Vector3(0, 0, -1.9));
   M.sulMuro(S.mondo.scrittaCoppa, { p: P.sala.clone().addScaledVector(dir.clone().normalize().negate(), .47), n: dir.clone().normalize().negate() }, .7);
-  await cammina(celle(P.andata).concat([stop]));
+  const quadro = S.scelte.disegno ? appendiDisegno(P, dir) : null;
+  await cammina(celle(P.andata).concat([stop])); liberaVoci("vicolo", "ritorno");
+  if (quadro) { guardaVerso(quadro.position); cam.pitchExtra = .3; UI.dici("L'hai disegnato a cinque anni."); await pausa(4200) }
   guardaVerso(coppa.position); cam.pitchExtra = -.1; suono.vittoria();
   UI.dici("Sei al centro.");
   await pausa(1400);
@@ -555,6 +578,7 @@ async function capitolo6() {
     invia("centro", "continua", "1"); S.scelte.continua = true; salva();
     $("#fine").classList.remove("on"); coppa.position.copy(da); await UI.velo("#fff3d6", 0, 1400);
   }
+  await letteraAlBambino();
   await attendi(6, 7);
   await oltre();
 }
@@ -590,6 +614,36 @@ async function oltre() {
   await cartaFinale();
 }
 
+/* il disegno dei cinque anni, incorniciato sul muro dietro la coppa */
+function appendiDisegno(P, dir) {
+  let tratti = []; try { tratti = JSON.parse(S.scelte.disegno) } catch (e) { return null }
+  const d = dir.lengthSq() > .01 ? dir.clone().normalize() : new THREE.Vector3(0, 0, -1);
+  const [a, b, c, e] = P.rett, x0 = 9 + a, z0 = 9 + b, x1 = 9 + c, z1 = 9 + e, mx = 9 + Math.round((a + c) / 2), mz = 9 + Math.round((b + e) / 2);
+  const lato = Math.abs(d.x) > Math.abs(d.z) ? (d.x > 0 ? "E" : "W") : (d.z > 0 ? "S" : "N");
+  const cella = { N: [mx, z0], S: [mx, z1], W: [x0, mz], E: [x1, mz] }[lato];
+  let f = M.facciaMuro(S.lab, cella[0], cella[1], lato);
+  if (!f) for (const k of [-1, 1]) { const cc = lato === "N" || lato === "S" ? [cella[0] + k, cella[1]] : [cella[0], cella[1] + k]; f = M.facciaMuro(S.lab, cc[0], cc[1], lato); if (f) break }
+  if (!f) return null;
+  const g = new THREE.Group();
+  const tela2 = M.tela(512, 384, (cx, w, h) => { cx.fillStyle = "#f6f0e2"; cx.fillRect(0, 0, w, h); const COL = ["#d0462f", "#3d7fd9", "#3c9a3c", "#e0a020", "#8a4fc0"]; tratti.forEach((t, i) => { for (let j = 1; j < t.length; j++) gessoTratto(cx, [t[j - 1][0] * 5.12, t[j - 1][1] * 3.84], [t[j][0] * 5.12, t[j][1] * 3.84], 8, COL[i % 5]) }) });
+  const foglio = new THREE.Mesh(new THREE.PlaneGeometry(1.2, .9), new THREE.MeshStandardMaterial({ map: tela2, roughness: .9, emissive: 0xffffff, emissiveMap: tela2, emissiveIntensity: .18 })); foglio.position.z = .03; g.add(foglio);
+  const oro = new THREE.MeshStandardMaterial({ color: 0xb8892e, metalness: .7, roughness: .4 });
+  for (const [w, h, x, y] of [[1.36, .08, 0, .49], [1.36, .08, 0, -.49], [.08, 1.06, -.64, 0], [.08, 1.06, .64, 0]]) { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, .06), oro); m.position.set(x, y, .03); g.add(m) }
+  const targa = new THREE.Mesh(new THREE.PlaneGeometry(.7, .12), new THREE.MeshStandardMaterial({ map: M.tela(512, 88, (cx, w, h) => { cx.fillStyle = "#2a2018"; cx.fillRect(0, 0, w, h); cx.fillStyle = "#e8c06a"; cx.font = "34px Marcellus, serif"; cx.textAlign = "center"; cx.textBaseline = "middle"; cx.fillText(S.nome ? S.nome + ", a cinque anni" : "A cinque anni", w / 2, h / 2 + 2) }), roughness: .6 }));
+  targa.position.set(0, -.62, .03); g.add(targa);
+  M.sulMuro(g, f, 3.35); scena.add(g); return g; // sopra le torce e il fregio
+}
+/* mentre si aspetta la salita: un messaggio a chi eri. Resta sul telefono. */
+function letteraAlBambino() {
+  return new Promise(res => {
+    const box = $("#lettera"), campo = $("#lettera-testo"); box.classList.add("on"); UI.dici("");
+    $("#lettera-titolo").textContent = S.nome ? `Cosa diresti a ${S.nome}, a cinque anni?` : "Cosa diresti a chi eri a cinque anni?";
+    const chiudi = v => { box.classList.remove("on"); campo.blur(); if (v) { S.scelte.messaggio = v.slice(0, 160); salva() } res() };
+    $("#lettera-fatto").onclick = () => { suono.tocco(); chiudi(campo.value.trim()) };
+    $("#lettera-salta").onclick = () => { suono.tocco(); chiudi("") };
+  });
+}
+
 /* ---------- la carta finale ---------- */
 async function cartaFinale() {
   const s = S.scelte, righe = [];
@@ -599,6 +653,7 @@ async function cartaFinale() {
   if (s.oracolo) righe.push(["28 anni", s.oracolo === "strada" ? "hai chiesto la strada all'oracolo" : "hai chiesto all'oracolo di farti una domanda"]);
   if (s.segno !== undefined) righe.push(["35 anni", s.segno ? "hai lasciato un segno nel vicolo cieco" : s.spinte ? "hai spinto il muro " + s.spinte + (s.spinte > 1 ? " volte" : " volta") : "hai girato le spalle al muro"]);
   if (s.centro) righe.push(["Da grande", s.centro === "coppa" ? "hai preso la coppa, poi l'hai rimessa a posto" : "hai superato la coppa e hai continuato"]);
+  if (s.messaggio) righe.push([S.nome ? "A " + S.nome : "A te, a 5 anni", "«" + s.messaggio + "»"]);
   $("#carta-righe").innerHTML = righe.map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join("");
   // istantanea dall'alto
   composer.render(); let foto = null; try { foto = tela.toDataURL("image/jpeg", .9) } catch (e) { }
@@ -631,7 +686,7 @@ $("#ancora").onclick = () => { $("#carta").classList.remove("on") };
 async function prepara() {
   const barra = $("#barra i");
   THREE.DefaultLoadingManager.onProgress = (u, a, b) => { barra.style.width = Math.round(a / b * 100) + "%" };
-  try { await Promise.race([Promise.all(["48px Caveat", "48px Marcellus", "48px 'Familjen Grotesk'", "20px 'DM Mono'"].map(f => document.fonts.load(f))), pausa(2500)]) } catch (e) { }
+  try { await Promise.race([Promise.all(["48px Caveat", "48px Marcellus", "48px 'Familjen Grotesk'", "20px 'DM Mono'", "48px 'Permanent Marker'"].map(f => document.fonts.load(f))), pausa(2500)]) } catch (e) { }
   S.lab = M.genera(SEME);
   S.mondo = await M.costruisci(scena, S.lab, { base: "../", env });
   S.extra = []; creaPioggia();
@@ -645,6 +700,10 @@ async function entra() {
   const sveglia = async () => { try { if (navigator.wakeLock && !(S.blocco && !S.blocco.released)) S.blocco = await navigator.wakeLock.request("screen") } catch (e) { } };
   await sveglia(); document.addEventListener("visibilitychange", () => { if (!document.hidden) sveglia() }); tela.addEventListener("pointerdown", sveglia);
   invia("ingresso", "entrato", "1");
+  // il soprannome resta sul telefono: serve solo alle voci sui muri
+  S.nome = ($("#nome-bimbo").value || "").replace(/[^\p{L}' .-]/gu, "").trim().slice(0, 14); ls.set("dg3-nome", S.nome);
+  try { decoraMuri(scena, S.lab, M, S.nome, M.caso(M.semeDa(SEME + "voci"))) } catch (e) { console.warn(e) }
+  try { const f = muroCameretta(); if (f) tabellaAltezza(scena, M, f.altezza, S.nome) } catch (e) { console.warn(e) }
   $("#ingresso").classList.add("via"); setTimeout(() => $("#ingresso").remove(), 1500);
   UI.eta("5 anni"); await pausa(1200);
   UI.dici("Hai cinque anni. Muovi il telefono, o trascina il dito, per guardarti intorno.", 5200);
@@ -653,6 +712,7 @@ async function entra() {
     LV.ascolta(st => { S.palco = +st.s || 0; $("#vivo").textContent = "dal vivo"; $("#vivo").className = "vivo"; S.sblocca && S.sblocca() });
   }
   await pausa(3500);
+  if (!PARAM.get("cap") || PARAM.get("cap") === "1") await disegnoIniziale();
   if (S.live && S.palco < 1) {
     UI.dici("Aspetta: il primo capitolo si apre dal palco.");
     let senzaRete = 0; const guardia = setInterval(() => { senzaRete = window.DGLive && DGLive.ascolta && DGLive.ascolta.ok === false ? senzaRete + 5 : 0; if (senzaRete >= 180) { clearInterval(guardia); S.sblocca && S.sblocca(true) } }, 5000);
@@ -669,4 +729,4 @@ async function entra() {
 $("#entra").onclick = entra;
 prepara().catch(e => { console.error(e); $("#entra").textContent = "Il telefono non regge il 3D"; });
 requestAnimationFrame(ciclo);
-window.__dg = { S, cam, UI, M, scena, camera, renderer, salta: k => S.palco = k, oltre };
+window.__dg = { S, cam, UI, M, scena, camera, renderer, salta: k => S.palco = k, oltre, finitura, emisfero, luna, get oscurita() { return oscurita } };

@@ -7,7 +7,7 @@
 <title>Da grande · il tuo labirinto</title>
 <meta name="description" content="Entri a cinque anni. Ogni scelta ti fa crescere. Da Grande Fest, BASE Milano.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=DM+Mono:wght@400;500&family=Familjen+Grotesk:wght@400;500;600&family=Marcellus&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Permanent+Marker&family=DM+Mono:wght@400;500&family=Familjen+Grotesk:wght@400;500;600&family=Marcellus&display=swap" rel="stylesheet">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 <style>
 :root{--notte:#0c0a08;--ocra:#DCA645;--robbia:#E2523F;--intonaco:#EFE6D2;--vetro:rgba(20,16,12,.55)}
@@ -36,13 +36,19 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
 #ingresso{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:flex-end;padding:calc(env(safe-area-inset-top) + 28px) 24px calc(env(safe-area-inset-bottom) + 28px);background:radial-gradient(120% 70% at 50% 18%,rgba(220,166,69,.18),transparent 60%),linear-gradient(#0c0a08 0%,#120d08 100%);transition:opacity 1.4s ease}
 #ingresso.via{opacity:0;pointer-events:none}
 #ingresso .alto{position:absolute;top:calc(env(safe-area-inset-top) + 26px);left:24px;right:24px;font:500 11px/1.5 "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ocra);display:flex;justify-content:space-between}
-#ingresso svg{position:absolute;left:50%;top:44%;width:min(78vw,380px);transform:translate(-50%,-50%);opacity:.9}
-#ingresso h1{font-family:Marcellus,serif;font-weight:400;font-size:clamp(52px,15vw,88px);line-height:.95;letter-spacing:-.01em}
-#ingresso p{font-size:18px;line-height:1.45;margin:14px 0 22px;color:rgba(239,230,210,.82);max-width:24em}
+#ingresso svg{position:absolute;left:50%;top:27%;width:min(52vw,46vh,300px);transform:translate(-50%,-50%);opacity:.9}
+#ingresso h1{font-family:Marcellus,serif;font-weight:400;font-size:clamp(46px,13vw,84px);line-height:.95;letter-spacing:-.01em}
+#ingresso p{font-size:16.5px;line-height:1.42;margin:10px 0 16px;color:rgba(239,230,210,.82);max-width:24em}
 #entra{font:500 19px "Familjen Grotesk",sans-serif;color:#120d08;background:var(--ocra);border:0;border-radius:16px;padding:18px;width:100%;cursor:pointer;box-shadow:0 10px 40px rgba(220,166,69,.3)}
 #entra:disabled{background:rgba(220,166,69,.25);color:rgba(239,230,210,.7)}
 #barra{height:2px;background:rgba(239,230,210,.12);border-radius:2px;margin:0 0 14px;overflow:hidden}#barra i{display:block;height:100%;width:0;background:var(--ocra);transition:width .3s}
 #ingresso small{display:block;margin-top:12px;font-size:12.5px;line-height:1.45;color:rgba(239,230,210,.5)}
+#nome-box{display:block;margin:0 0 16px}#nome-box span{display:block;font-size:15px;line-height:1.35;color:rgba(239,230,210,.85);margin-bottom:8px}#nome-box em{font-style:normal;color:rgba(239,230,210,.5);font-size:13px}
+#nome-bimbo{width:100%;font:500 18px "Familjen Grotesk",sans-serif;color:var(--intonaco);background:rgba(239,230,210,.07);border:1px solid rgba(220,166,69,.45);border-radius:12px;padding:13px 14px;outline:none}#nome-bimbo:focus{border-color:var(--ocra)}
+#lettera{position:fixed;left:0;right:0;bottom:0;z-index:8;padding:22px 20px calc(env(safe-area-inset-bottom) + 20px);background:linear-gradient(rgba(12,10,8,0),rgba(12,10,8,.92) 22%);opacity:0;pointer-events:none;transform:translateY(20px);transition:opacity .8s,transform .8s}#lettera.on{opacity:1;pointer-events:auto;transform:none}
+#lettera h2{font-family:Marcellus,serif;font-weight:400;font-size:26px;line-height:1.2;margin-top:30px}#lettera p{font-size:14px;color:rgba(239,230,210,.6);margin:6px 0 12px}
+#lettera textarea{width:100%;font:400 18px/1.4 "Familjen Grotesk",sans-serif;color:var(--intonaco);background:rgba(239,230,210,.08);border:1px solid rgba(220,166,69,.5);border-radius:12px;padding:12px;resize:none;outline:none}
+#lettera .az{display:flex;gap:10px;margin-top:12px}#lettera button{flex:1;font:500 16px "Familjen Grotesk",sans-serif;border-radius:12px;padding:14px;border:1px solid var(--ocra);background:transparent;color:var(--intonaco)}#lettera-fatto{background:var(--ocra)!important;color:#120d08!important}
 #fine{position:fixed;inset:0;z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;color:#3a2610;opacity:0;pointer-events:none;transition:opacity 1.2s}
 #fine.on{opacity:1;pointer-events:auto}
 #fine h2{font-family:Marcellus,serif;font-weight:400;font-size:84px;letter-spacing:.08em}
@@ -74,9 +80,17 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
   <svg viewBox="-60 -60 120 120" aria-hidden="true"><g fill="none" stroke="#DCA645" stroke-width="2.2" stroke-linecap="round" opacity=".85"><path id="cretese"/></g><circle r="2.6" fill="#E2523F"><animate attributeName="r" values="2.2;3.4;2.2" dur="2.6s" repeatCount="indefinite"/></circle></svg>
   <h1>Da grande</h1>
   <p>Entri in un labirinto a cinque anni. Ogni scelta ti fa crescere. Tieni il telefono davanti a te, come una finestra.</p>
+  <label id="nome-box"><span>Come ti chiamavano da bambino? <em>Facoltativo. Resta sul tuo telefono.</em></span><input id="nome-bimbo" maxlength="14" autocomplete="off" autocapitalize="words" placeholder="un soprannome, un nome"></label>
   <div id="barra"><i></i></div>
   <button id="entra" disabled>Sto preparando il labirinto…</button>
   <small>Le tue scelte arrivano allo schermo del palco in forma anonima, insieme a quelle di tutta la sala. Non chiediamo nomi né dati.</small>
+</section>
+
+<section id="lettera">
+  <h2 id="lettera-titolo">Cosa diresti a chi eri a cinque anni?</h2>
+  <p>Resta solo sul tuo telefono. Lo ritrovi alla fine.</p>
+  <textarea id="lettera-testo" maxlength="160" rows="3" placeholder="Scrivi qui"></textarea>
+  <div class="az"><button id="lettera-fatto">Fatto</button><button id="lettera-salta">Preferisco di no</button></div>
 </section>
 
 <section id="fine">
