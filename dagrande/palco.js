@@ -26,6 +26,7 @@ export const CAPITOLI = [
   { k: "centro", eta: "Da grande", titolo: "Il centro", zona: [1, 1], nota: "Giochi finiti e infiniti. La coppa chiude il gioco: hai vinto, è finita. Oltre la coppa il labirinto continua, e si vedono le luci di tutti gli altri." },
   { k: "fine", eta: "", titolo: "Il labirinto continua", sotto: "Grazie", zona: null },
 ];
+const SOGNI = { luna: "andare sulla luna", animali: "curare gli animali", gol: "fare gol", ballare: "ballare", incendi: "spegnere gli incendi", scoprire: "scoprire cose nuove", dipingere: "dipingere", insegnare: "insegnare", cantare: "cantare", cucinare: "cucinare", volare: "pilotare gli aerei", misteri: "risolvere misteri", curare: "curare le persone", inventare: "inventare macchine", esplorare: "esplorare il mondo", scavare: "scavare tesori antichi" };
 const STRADE = ["Medicina", "Giurisprudenza", "Ingegneria", "Economia", "Lettere", "Filosofia", "Psicologia", "Architettura", "Design", "Informatica", "Biologia", "Lingue", "Scienze politiche", "Belle Arti", "Conservatorio", "Fisica", "Matematica", "Infermieristica", "Scienze della formazione", "Cinema", "Agraria", "Lavorare subito", "Un anno all'estero", "Servizio civile"];
 
 /* ---------- scena ---------- */
@@ -111,7 +112,7 @@ function stato(t, c) { const s = $("#stato"); s.textContent = t; s.className = "
 function simula() {
   demo = !demo; $("#simulazione").hidden = !demo;
   if (!demo) { dati = {}; segniCache = []; disegnaDati(); interroga(); return }
-  const n = 240, sogni = { astronauta: 31, veterinaria: 24, calciatore: 19, ballerina: 14, pompiere: 9, scienziata: 22, pittore: 11, maestra: 13, cantante: 17, cuoco: 7, pilota: 12, detective: 8, dottoressa: 15, inventore: 6, esploratrice: 5, archeologo: 4, nonlo: 23 };
+  const n = 240, sogni = { luna: 31, animali: 24, gol: 19, ballare: 14, incendi: 9, scoprire: 22, dipingere: 11, insegnare: 13, cantare: 17, cucinare: 7, volare: 12, misteri: 8, curare: 15, inventare: 6, esplorare: 5, scavare: 4, nonlo: 23 };
   dati = { ingresso: { entrato: { 1: n } }, cameretta: { sogno: sogni },
     scuola: { gruppo: { 24: 118, 6: 113 }, porta: { s5: 14, s0: 21, sogno: 26, s21: 18, s3: 17, s8: 15, s9: 22 }, secondi: { 4: 20, 7: 30, 11: 25, 16: 30, 23: 26, 31: 22, 45: 18, 62: 11 }, sicurezza: { 1: 71, 2: 104, 3: 52 } },
     notte: { speranza: { testa: 118, croce: 104 }, esito: { testa: 109, croce: 113 }, seguito: { uguali: 104, moneta: 41, speranza: 77 } },
@@ -132,10 +133,12 @@ const fmt = n => n.toLocaleString("it-IT");
 function disegnaDati() {
   const s = cur, box = $("#dati"), D = dati, presenti = somma(D.ingresso?.entrato);
   $("#conta").innerHTML = `<b>${fmt(presenti)}</b> ${presenti === 1 ? "luce" : "luci"} nel labirinto`;
+  { const prog = D.progresso?.capitolo || {}; let fatti = 0, dentro = 0; for (const [v, n] of Object.entries(prog)) { const [k, m] = v.split(".").map(Number); dentro += n; if (k > s || (k === s && m >= 2)) fatti += n }
+    $("#finiti").innerHTML = s >= 1 && s <= 6 && dentro ? `<b>${fmt(fatti)}</b> su ${fmt(Math.max(dentro, presenti))} hanno finito il capitolo` : ""; manda({ t: "finiti", testo: $("#finiti").textContent }) }
   let h = "";
   if (s === 1) {
     const so = Object.entries(D.cameretta?.sogno || {}).filter(([k]) => k !== "nonlo").sort((a, b) => b[1] - a[1]).slice(0, 5), nl = D.cameretta?.sogno?.nonlo || 0, tot = somma(D.cameretta?.sogno);
-    h = `<div class="cifra"><b>${pct(nl, tot)}%</b><span>ha aperto la porta col punto interrogativo</span></div>${barre(so.map(([k, n]) => [k, n]), so[0]?.[1] || 1)}`;
+    h = `<div class="cifra"><b>${pct(nl, tot)}%</b><span>ha aperto la porta col punto interrogativo</span></div>${barre(so.map(([k, n]) => [SOGNI[k] || k, n]), so[0]?.[1] || 1)}`;
   } else if (s === 2) {
     const g = D.scuola?.gruppo || {}, sic = D.scuola?.sicurezza || {}, sec = D.scuola?.secondi || {}, porte = D.scuola?.porta || {}, tot = somma(porte);
     h = `<div class="due"><div class="cifra"><b>${Math.round(media(sec))}<small>s</small></b><span>per scegliere una porta</span></div><div class="cifra"><b>${pct(porte.sogno || 0, tot)}%</b><span>ha riaperto la porta del sogno</span></div></div>
@@ -196,7 +199,7 @@ if (REGIA) {
   $("#r-azzera").ondblclick = () => { manda({ t: "azzera" }) };
   setInterval(() => { const d = new Date(); $("#r-orologio").textContent = d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }) }, 1000);
 }
-canale && (canale.onmessage = e => { const m = e.data; if (m.t === "vai" && m.s !== cur) vai(m.s, true); if (m.t === "azzera" && !REGIA) { liveDal = Date.now(); ls.set("dg3-dal", liveDal); dati = {}; disegnaDati() } });
+canale && (canale.onmessage = e => { const m = e.data; if (m.t === "finiti" && REGIA) $("#r-finiti").textContent = m.testo; if (m.t === "vai" && m.s !== cur) vai(m.s, true); if (m.t === "azzera" && !REGIA) { liveDal = Date.now(); ls.set("dg3-dal", liveDal); dati = {}; disegnaDati() } });
 
 /* ---------- tasti ---------- */
 addEventListener("keydown", e => {

@@ -30,6 +30,7 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
 #scelte button{font:500 17px/1.2 "Familjen Grotesk",sans-serif;color:var(--intonaco);background:rgba(18,14,10,.62);border:1px solid rgba(220,166,69,.55);border-radius:14px;padding:15px 16px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 30px rgba(0,0,0,.35),inset 0 0 22px rgba(220,166,69,.08);cursor:pointer}
 #scelte button:active{transform:scale(.98);background:rgba(220,166,69,.3)}
 #scelte:not(.una) button:first-child{border-color:var(--ocra)}
+#sala{position:fixed;left:16px;right:16px;top:calc(env(safe-area-inset-top) + 58px);z-index:6;font-size:16px;line-height:1.4;padding:12px 14px;border-radius:14px;background:rgba(10,8,6,.62);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(220,166,69,.35);opacity:0;transform:translateY(-8px);transition:opacity .8s,transform .8s;pointer-events:none}#sala.on{opacity:1;transform:none}#sala b{display:block;font:500 10px "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:#DCA645;margin-bottom:4px}
 #mirino{position:fixed;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:rgba(239,230,210,.55);box-shadow:0 0 8px rgba(0,0,0,.6);z-index:4;pointer-events:none}
 #ingresso{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:flex-end;padding:calc(env(safe-area-inset-top) + 28px) 24px calc(env(safe-area-inset-bottom) + 28px);background:radial-gradient(120% 70% at 50% 18%,rgba(220,166,69,.18),transparent 60%),linear-gradient(#0c0a08 0%,#120d08 100%);transition:opacity 1.4s ease}
 #ingresso.via{opacity:0;pointer-events:none}
@@ -62,6 +63,7 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
 <div id="velo"></div>
 <div id="mirino"></div>
 <header><div id="eta"></div><div id="vivo">da solo</div></header>
+<div id="sala"></div>
 <div id="sotto"></div>
 <div id="scelte"></div>
 

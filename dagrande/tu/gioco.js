@@ -14,7 +14,8 @@ const LV = window.DGLive || { attivo: false, invia() { }, ascolta() { return () 
 const ls = { get(k) { try { return JSON.parse(localStorage.getItem(k)) } catch (e) { return null } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)) } catch (e) { } } };
 const PARAM = new URLSearchParams(location.search);
 const PROVA = PARAM.has("prova");
-const VEL = +PARAM.get("veloce") || 1;    // per le prove: cammino accelerato         // per le prove: ?prova salta le attese
+const VEL = +PARAM.get("veloce") || 1;
+const LIBERO = PARAM.has("libero");      // da soli, senza aspettare il palco (prove, o dopo l'evento)    // per le prove: cammino accelerato         // per le prove: ?prova salta le attese
 const SEME = PARAM.get("seme") || LV.dispositivo || String(Math.random());
 const pausa = ms => new Promise(r => setTimeout(r, PROVA ? Math.min(ms, 250) : ms));
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -264,7 +265,8 @@ function ciclo() {
 }
 
 /* ---------- etichette ---------- */
-const SOGNI = ["astronauta", "veterinaria", "calciatore", "ballerina", "pompiere", "scienziata", "pittore", "maestra", "cantante", "cuoco", "pilota", "detective", "dottoressa", "inventore", "esploratrice", "archeologo"];
+/* a cinque anni si risponde con un verbo: quello che si vuole fare, prima del nome del mestiere */
+export const SOGNI = { luna: "andare sulla luna", animali: "curare gli animali", gol: "fare gol", ballare: "ballare", incendi: "spegnere gli incendi", scoprire: "scoprire cose nuove", dipingere: "dipingere", insegnare: "insegnare", cantare: "cantare", cucinare: "cucinare", volare: "pilotare gli aerei", misteri: "risolvere misteri", curare: "curare le persone", inventare: "inventare macchine", esplorare: "esplorare il mondo", scavare: "scavare tesori antichi" };
 export const STRADE = ["Medicina", "Giurisprudenza", "Ingegneria", "Economia", "Lettere", "Filosofia", "Psicologia", "Architettura", "Design", "Informatica", "Biologia", "Lingue", "Scienze politiche", "Belle Arti", "Conservatorio", "Fisica", "Matematica", "Infermieristica", "Scienze della formazione", "Cinema", "Agraria", "Lavorare subito", "Un anno all'estero", "Servizio civile"];
 
 /* ---------- capitoli ---------- */
@@ -273,8 +275,29 @@ function puntoAttesa(da, a) { const p = M.centroCella(...da), q = M.centroCella(
 async function attendi(k) {
   invia("progresso", "capitolo", k + ".2");
   if (S.palco >= k + 1) return;
-  if (LV.attivo && S.live) { UI.dici("Fermati qui. Il prossimo capitolo si apre dal palco."); await new Promise(res => { S.sblocca = () => { if (S.palco >= k + 1) { S.sblocca = null; res() } } }); UI.dici(""); return }
+  if (LV.attivo && S.live && !LIBERO) {
+    // durante l'evento si va avanti solo quando il capitolo si apre dal palco
+    UI.dici("Alza gli occhi verso il palco.");
+    raccontaSala(k);
+    let senzaRete = 0; const guardia = setInterval(() => { senzaRete = window.DGLive && DGLive.ascolta && DGLive.ascolta.ok === false ? senzaRete + 5 : 0; if (senzaRete >= 180) { clearInterval(guardia); S.sblocca && S.sblocca(true) } }, 5000);
+    const forzato = await new Promise(res => { S.sblocca = (forza) => { if (forza || S.palco >= k + 1) { S.sblocca = null; res(!!forza) } } });
+    clearInterval(guardia); UI.dici(""); $("#sala").classList.remove("on");
+    if (forzato) { UI.dici("Il collegamento con il palco si è interrotto: prosegui da solo."); await UI.scegli([["vai", "Prosegui"]], "una"); UI.dici("") }
+    return;
+  }
   await pausa(900); await UI.scegli([["vai", "Prosegui"]], "una");
+}
+/* mentre aspetti: tu e la sala, a confronto */
+async function raccontaSala(k) {
+  if (!LV.conteggi) return; let D = {};
+  try { for (const r0 of await LV.conteggi(Date.now() - 3 * 3600e3)) { ((D[r0.stanza] = D[r0.stanza] || {})[r0.chiave] = D[r0.stanza][r0.chiave] || {})[r0.valore] = Number(r0.n) } } catch (e) { return }
+  const som = o => o ? Object.values(o).reduce((a, b) => a + b, 0) : 0, pc = (a, b) => b ? Math.round(a / b * 100) : 0, sc = S.scelte; let t = "";
+  if (k === 1) { const so = D.cameretta?.sogno || {}, tot = som(so); if (tot > 1) t = sc.sogno === "nonlo" ? `Come te, ${so.nonlo || 1} ${so.nonlo === 1 ? "persona" : "persone"} su ${tot} ha${so.nonlo === 1 ? "" : "nno"} aperto la porta col punto interrogativo.` : `In questa sala ${so[sc.sogno] || 1} su ${tot} ${(so[sc.sogno] || 1) === 1 ? "vuole" : "vogliono"} ${sc.sognoTesto}. ${pc(so.nonlo || 0, tot)}% ha aperto la porta col punto interrogativo.` }
+  if (k === 2) { const se = D.scuola?.secondi || {}; let a = 0, n = 0; for (const [v, c] of Object.entries(se)) { a += v * c; n += c } if (n > 1) t = `Tu hai scelto in ${sc.secondi} secondi. La sala, in media, in ${Math.round(a / n)}.` }
+  if (k === 3) { const sg = D.notte?.seguito || {}, div = (sg.moneta || 0) + (sg.speranza || 0), tot = div + (sg.uguali || 0); if (tot > 1) t = `${pc(div, tot)}% della sala ha sperato il contrario di quello che è uscito. Di questi, ${pc(sg.speranza || 0, div)}% ha seguito la speranza.` }
+  if (k === 4) { const o = D.oracolo?.scelta || {}, tot = som(o); if (tot > 1) t = `${pc(o.strada || 0, tot)}% della sala ha chiesto la strada all'oracolo.` }
+  if (k === 5) { const a = D.vicolo?.azione || {}; if (som(a) > 1) t = `${a.segno || 0} persone hanno lasciato un segno nel vicolo cieco.` }
+  if (t) { $("#sala").innerHTML = `<b>La sala</b>${t}`; $("#sala").classList.add("on") }
 }
 async function porte(lista, { zona, rett, doppie, stile, colori, larg = .95 }) {
   const posti = M.postiPorta(S.lab, zona, rett, lista.length, doppie);
@@ -296,7 +319,7 @@ async function attraversa(p) {
 async function capitolo1() {
   S.cap = 1; const P = S.lab.percorsi.cameretta; UI.eta("5 anni"); invia("progresso", "capitolo", "1.0");
   await cammina(celle(P.andata).concat([P.sala]));
-  const sale = [...SOGNI].sort(() => r() - .5).slice(0, 6).map(s => ({ testo: s, codice: s })); sale.splice(Math.floor(r() * 7), 0, { testo: "?", codice: "nonlo" });
+  const sale = Object.keys(SOGNI).sort(() => r() - .5).slice(0, 6).map(k => ({ testo: SOGNI[k], codice: k })); sale.splice(Math.floor(r() * 7), 0, { testo: "?", codice: "nonlo" });
   const ps = await porte(sale, { zona: "cameretta", rett: P.rett, stile: "pastello", colori: [0xf2a7a0, 0xa9cff2, 0xf7dc8c, 0xb8e3c4, 0xd6bdf0, 0xf5c19a, 0xc4e0f5] });
   // la domanda scritta sul muro
   const sala = P.sala; const scritta = new THREE.Mesh(new THREE.PlaneGeometry(2.4, .8), new THREE.MeshStandardMaterial({ map: M.tela(768, 256, (g, w, h) => M.pastello(g, "Cosa vuoi fare da grande?", w / 2, h / 2, 74, "#2a2238")), transparent: true, roughness: 1 }));
@@ -305,12 +328,11 @@ async function capitolo1() {
   UI.dici("Cosa vuoi fare da grande? Guardati intorno e tocca una porta.");
   const p = await scegliPorta(ps); UI.dici(""); S.scelte.sogno = p.codice; S.scelte.sognoTesto = p.etichetta; salva(); invia("cameretta", "sogno", p.codice);
   await attraversa(p);
-  UI.dici(p.codice === "nonlo" ? "Non lo sai. A cinque anni va benissimo." : `Da grande vuoi fare ${articolo(p.etichetta)}.`, 3600);
+  UI.dici(p.codice === "nonlo" ? "Non lo sai. A cinque anni va benissimo." : `Da grande vuoi ${p.etichetta}.`, 3600);
   filo.stacca(); cam.pos.copy(M.centroCella(...P.ritorno[0])); await UI.velo("#fff8ea", 0, 1400);
   await cammina(celle(P.ritorno).concat([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.scuola.andata[0])]));
   await attendi(1);
 }
-const articolo = s => /^[aeiou]/i.test(s) ? "l'" + s : (/^(sc|st|sp|z|ps|gn)/i.test(s) ? "lo " + s : (/a$/.test(s) && !/(pilota|astronauta)$/.test(s) ? "la " + s : "il " + s));
 
 async function capitolo2() {
   S.cap = 2; const P = S.lab.percorsi.scuola; invia("progresso", "capitolo", "2.0");
@@ -413,7 +435,7 @@ async function capitolo4() {
     await cammina([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.vicolo.andata[0])]);
   } else {
     const sogno = S.scelte.sognoTesto; const domande = ["Che cosa faresti anche se nessuno lo vedesse?", "Quando hai perso l'ultima volta la cognizione del tempo?", "Quale domanda eviti di farti?", "Chi saresti se non dovessi dimostrare niente?"];
-    const q = sogno && S.scelte.sogno !== "nonlo" && r() < .6 ? `A cinque anni volevi fare ${articolo(sogno)}. Che cosa ne resta?` : domande[Math.floor(r() * domande.length)];
+    const q = sogno && S.scelte.sogno !== "nonlo" && r() < .6 ? `A cinque anni volevi ${sogno}. Che cosa ne resta?` : domande[Math.floor(r() * domande.length)];
     suono.oracolo(); UI.dici(q);
     await pausa(1600); await UI.scegli([["ok", "Ci penso mentre cammino"]]); UI.dici("");
     await cammina(celle(P.ritorno).concat([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.vicolo.andata[0])]));
@@ -531,7 +553,7 @@ async function oltre() {
 /* ---------- la carta finale ---------- */
 async function cartaFinale() {
   const s = S.scelte, righe = [];
-  if (s.sogno) righe.push(["5 anni", s.sogno === "nonlo" ? "non sapevi cosa volevi fare" : "volevi fare " + articolo(s.sognoTesto)]);
+  if (s.sogno) righe.push(["5 anni", s.sogno === "nonlo" ? "non sapevi cosa volevi fare" : "volevi " + s.sognoTesto]);
   if (s.strada) righe.push(["18 anni", (s.strada === "sogno" ? "hai riaperto la porta del sogno" : "hai scelto " + s.stradaTesto) + `, in ${s.secondi} secondi, tra ${s.gruppo} porte`]);
   if (s.esito) righe.push(["23 anni", s.speranza === s.esito ? "la moneta ha detto quello che speravi" : (s.seguito === "speranza" ? "hai seguito la speranza, contro la moneta" : "hai seguito la moneta, contro la speranza")]);
   if (s.oracolo) righe.push(["28 anni", s.oracolo === "strada" ? "hai chiesto la strada all'oracolo" : "hai chiesto all'oracolo di farti una domanda"]);
@@ -585,7 +607,7 @@ async function entra() {
   $("#ingresso").classList.add("via"); setTimeout(() => $("#ingresso").remove(), 1500);
   UI.eta("5 anni"); await pausa(1200);
   UI.dici("Hai cinque anni. Muovi il telefono, o trascina il dito, per guardarti intorno.", 5200);
-  if (LV.attivo) {
+  if (LV.attivo && !LIBERO) {
     S.live = true;
     LV.ascolta(st => { S.palco = Math.max(S.palco, +st.s || 0); $("#vivo").textContent = "dal vivo"; $("#vivo").className = "vivo"; S.sblocca && S.sblocca() });
   }
