@@ -5,8 +5,8 @@
 (function(){
 "use strict";
 const CONFIG={
-  url:"",   // es. "https://abcdefghijkl.supabase.co"
-  key:""    // es. "sb_publishable_..."
+  url:"https://tfddbzrvfdoldcbsekvx.supabase.co",
+  key:"sb_publishable_P-iweh7iJ7HRhKwUcpZGZQ_-73AXybS"   // chiave pubblica: può stare nel sito
 };
 const attivo=!!(CONFIG.url&&CONFIG.key);
 const base=CONFIG.url.replace(/\/+$/,"");
