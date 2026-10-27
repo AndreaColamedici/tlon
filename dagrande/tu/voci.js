@@ -79,14 +79,14 @@ const VOCI = {
     { s: "pastello", testo: "CASA", w: .6, h: .3, y: .5, colore: "#3c9a3c" },
   ],
   scuola: [
-    { s: "manifesto", testa: "SILENZIO", corpo: "Esame in corso.", w: .5, h: .5, y: 2.2, colore: "#24201c" },
+    { s: "manifesto", testa: "SILENZIO", corpo: "Esame in corso.", w: .5, h: .5, y: 2.5, colore: "#24201c" },
     { s: "postit", testo: "Scegli qualcosa di sicuro", w: .3, h: .3, y: 1.5, colore: "#f6e27a" },
     { s: "postit", testo: "Non sprecare il tuo talento", w: .3, h: .3, y: 1.52, colore: "#f7b9c4" },
     { s: "graffito", testo: "chi sarò?", w: 1, h: .4, y: 2.3, colore: "#2d6a4f" },
-    { s: "manifesto", testa: "OPEN DAY", corpo: "Scegli il tuo futuro. Aula magna, ore 10.", w: .62, h: .86, y: 2.25, colore: "#3b6fb6" },
-    { s: "manifesto", testa: "TEST DI AMMISSIONE", corpo: "Iscrizioni entro il 30 aprile. Posti limitati.", w: .62, h: .86, y: 2.25, colore: "#b84a3b" },
-    { s: "manifesto", testa: "ORIENTAMENTO", corpo: "Che cosa farai dopo la maturità? Incontro con gli ex studenti.", w: .62, h: .86, y: 2.25, colore: "#3f8f73" },
-    { s: "manifesto", testa: "MATURITÀ", corpo: "Calendario delle prove scritte e orali.", w: .6, h: .84, y: 2.25, colore: "#6d5a9a" },
+    { s: "manifesto", testa: "OPEN DAY", corpo: "Scegli il tuo futuro. Aula magna, ore 10.", w: .62, h: .86, y: 2.6, colore: "#3b6fb6" },
+    { s: "manifesto", testa: "TEST DI AMMISSIONE", corpo: "Iscrizioni entro il 30 aprile. Posti limitati.", w: .62, h: .86, y: 2.6, colore: "#b84a3b" },
+    { s: "manifesto", testa: "ORIENTAMENTO", corpo: "Che cosa farai dopo la maturità? Incontro con gli ex studenti.", w: .62, h: .86, y: 2.6, colore: "#3f8f73" },
+    { s: "manifesto", testa: "MATURITÀ", corpo: "Calendario delle prove scritte e orali.", w: .6, h: .84, y: 2.6, colore: "#6d5a9a" },
     { s: "postit", testo: "Segui la tua passione", w: .3, h: .3, y: 1.5 },
     { s: "postit", testo: "Pensa a cosa ti dà da mangiare", w: .3, h: .3, y: 1.45, colore: "#f7b9c4" },
     { s: "postit", testo: "Hai tempo per decidere", w: .3, h: .3, y: 1.55, colore: "#b8e3c4" },
@@ -141,7 +141,7 @@ const VOCI = {
   ],
 };
 
-export function decoraMuri(scena, lab, M, nome, r = Math.random) {
+export function decoraMuri(scena, lab, M, nome, r = Math.random, soloZone = null) {
   const n = (nome || "").trim();
   const sost = t => {
     if (!t) return t;
@@ -155,11 +155,12 @@ export function decoraMuri(scena, lab, M, nome, r = Math.random) {
   const percorsiZona = { cameretta: P.cameretta.andata.concat(P.cameretta.ritorno), scuola: P.scuola.andata.concat(P.scuola.ritorno), notte: P.notte.andata.concat(P.notte.ritorno), oracolo: P.oracolo.andata.concat(P.oracolo.ritorno), vicolo: P.vicolo.andata.concat(P.vicolo.ritorno), centro: P.centro.andata };
   const usati = []; const su = new THREE.Vector3(0, 1, 0);
   for (const [zona, lista] of Object.entries(voci)) {
+    if (soloZone && !soloZone.includes(zona)) continue;
     const celle = (zona === "ritorno" ? P.vicolo.ritorno : percorsiZona[zona] || []).filter(([x, z]) => M.zonaDi(x, z) === zona && (zona === "centro" || !inStanza(x, z)));
     const facce = []; celle.forEach(([x, z], i) => { if (i < 1) return; for (const l of "NSEW") { const f = M.facciaMuro(lab, x, z, l); if (f) facce.push({ f, i }) } });
     if (!facce.length) continue;
     const passo = facce.length / lista.length;
-    lista.forEach((v, k) => {
+    lista.forEach((v0, k) => { const v = { ...v0, w: Math.min(M.C - .3, v0.w * 1.6), h: v0.h * 1.6, y: v0.s === "pastello" ? v0.y + .1 : v0.y + (v0.y > 2 ? 0 : .05) }; // più grandi: si leggono camminando
       for (let t = 0; t < 10; t++) {
         const c = facce[Math.floor((k * passo + t * 1.7 + r() * passo) % facce.length)], lat = new THREE.Vector3().crossVectors(c.f.n, su);
         const gioco = Math.max(0, (M.C - v.w) / 2 - .12), off = (r() - .5) * 2 * gioco;
@@ -167,7 +168,7 @@ export function decoraMuri(scena, lab, M, nome, r = Math.random) {
         if (usati.some(u => u.distanceTo(pos) < Math.max(.65, v.w * .7))) continue;
         usati.push(pos);
         // tele piccole: sono decine, e la memoria grafica dei telefoni è poca
-        const cw = { postit: 192, foglio: 256, manifesto: 320, lettera: 320, bolla: 384, graffito: 384, pastello: 384, inciso: 384 }[v.s] || 256;
+        const cw = { postit: 240, foglio: 320, manifesto: 400, lettera: 400, bolla: 480, graffito: 480, pastello: 480, inciso: 480 }[v.s] || 320;
         const ch = Math.max(48, Math.round(cw * v.h / v.w / 4) * 4), sc = cw / 512;
         const tx = M.tela(cw, ch, (g, w, h) => { g.scale(sc, sc); STILI[v.s](g, 512, h / sc, v, M) }); tx.anisotropy = 4;
         const mat = new THREE.MeshStandardMaterial({ map: tx, transparent: true, roughness: .9, polygonOffset: true, polygonOffsetFactor: -2 });

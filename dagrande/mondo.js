@@ -420,7 +420,7 @@ function arreda(scena, lab, mondo, r, base, env) {
     const fm = new THREE.SpriteMaterial({ map: fiamma, color: 0xffffff, blending: THREE.AdditiveBlending, depthWrite: false });
     const sost = new THREE.Mesh(new THREE.CylinderGeometry(.05, .03, .45, 8), new THREE.MeshStandardMaterial({ color: 0x2b1d12, roughness: .9 }));
     const torcia = (f, y, zona) => {
-      const g = new THREE.Group(); const s = sost.clone(); s.rotation.x = .35; g.add(s); const sp = new THREE.Sprite(fm); sp.scale.set(.32, .62, 1); sp.position.set(0, .4, .08); g.add(sp);
+      const g = new THREE.Group(); g.userData.torcia = true; const s = sost.clone(); s.rotation.x = .35; g.add(s); const sp = new THREE.Sprite(fm); sp.scale.set(.32, .62, 1); sp.position.set(0, .4, .08); g.add(sp);
       sulMuro(g, f, y); g.position.addScaledVector(f.n, .12); scena.add(g); const o = r() * 10;
       mondo.anima.push(t => { const k = 1 + Math.sin(t * 13 + o) * .08 + Math.sin(t * 7.3 + o) * .06; sp.scale.set(.32 * k, .62 * (2 - k), 1) });
       an(g.position.clone().addScaledVector(f.n, .35).setY(y + .4), zona, null, null);

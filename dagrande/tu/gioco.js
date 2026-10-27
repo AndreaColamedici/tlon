@@ -86,7 +86,7 @@ function cammina(punti, { velocita, guarda = 1.6, mira = null } = {}) {
   if (pts.length < 2) return Promise.resolve();
   const curva = new THREE.CatmullRomCurve3(pts, false, "centripetal", .5), L = curva.getLength();
   S.cammino.push(...pts.slice(1));
-  return new Promise(res => { cam.giro = { curva, L, s: 0, v: velocita, vmin: L / 22, guarda, mira, res } }); // nessun tratto dura più di 22 secondi
+  return new Promise(res => { cam.giro = { curva, L, s: 0, v: velocita, vmin: L / 26, guarda, mira, res } }); // nessun tratto dura più di 26 secondi (più le soste davanti alle voci)
 }
 const celle = cs => cs.map(([x, z]) => M.centroCella(x, z));
 function guardaVerso(p, subito) { const d = p.clone().sub(cam.pos); cam.yawT = Math.atan2(-d.x, -d.z); if (subito) cam.yaw = cam.yawT }
@@ -94,7 +94,7 @@ function zonaQui() { const x = Math.floor((cam.pos.x + M.N * M.C / 2) / M.C), z 
 function animaCamera(dt, t) {
   const Z = M.ZONE[zonaQui()];
   if (cam.giro) {
-    const g = cam.giro, v = Math.max(g.v || Z.passo, g.vmin || 0) * VEL; g.s = Math.min(g.L, g.s + v * dt);
+    const g = cam.giro, v = Math.max(g.v || Z.passo, g.vmin || 0) * VEL * rallenta(); g.s = Math.min(g.L, g.s + v * dt);
     const p = g.curva.getPointAt(g.s / g.L), a = g.curva.getPointAt(Math.min(1, (g.s + g.guarda) / g.L));
     cam.pos.copy(p); filo.aggiungi(p); const d = g.mira ? g.mira.clone().sub(p) : a.sub(p); if (d.lengthSq() > .0004) cam.yawT = Math.atan2(-d.x, -d.z); // con una mira si cammina guardandola
     const prima = Math.sin(cam.passi); cam.passi += dt * v * 3.7; if (prima > 0 && Math.sin(cam.passi) <= 0 || prima < 0 && Math.sin(cam.passi) >= 0) suono.passo(zonaQui());
@@ -113,6 +113,15 @@ function animaCamera(dt, t) {
   camera.rotation.set(Math.max(-1.35, Math.min(1.35, cam.pitchU + gp + (cam.pitchExtra || 0))), cam.yaw + cam.yawU + gy, gr);
 }
 
+/* le voci di un'età si scrivono sui muri quando quell'età comincia: poche tele vive alla volta */
+function vociPer(...zone) { try { decoraMuri(scena, S.lab, M, S.nome, M.caso(M.semeDa(SEME + "voci" + zone[0])), zone); S.voci = []; scena.traverse(o => { if (o.userData.voce) S.voci.push(o) }) } catch (e) { console.warn(e) } }
+/* si rallenta passando davanti alle voci sui muri, per avere il tempo di leggerle */
+let _rall = 1, _rallT = 0;
+function rallenta() {
+  const t = performance.now(); if (t - _rallT < 150) return _rall; _rallT = t;
+  let vicina = 9; for (const v of S.voci || []) { if (!v.parent) continue; const d = v.position.distanceTo(camera.position); if (d < vicina) vicina = d }
+  const meta = vicina < 3.2 ? .5 : 1; _rall += (meta - _rall) * .35; return _rall;
+}
 /* tocchi e trascinamenti */
 {
   let giu = null;
@@ -391,6 +400,7 @@ async function capitolo1() {
 }
 
 async function capitolo2() {
+  vociPer("scuola");
   S.cap = 2; const P = S.lab.percorsi.scuola; invia("progresso", "capitolo", "2.0");
   suono.cresci(); UI.eta("18 anni"); UI.dici("Tredici anni dopo.", 2600);
   await cammina(celle(P.andata).concat([P.sala])); liberaVoci("cameretta");
@@ -422,6 +432,7 @@ async function capitolo2() {
 }
 
 async function capitolo3() {
+  vociPer("notte");
   S.cap = 3; const P = S.lab.percorsi.notte; invia("progresso", "capitolo", "3.0");
   suono.cresci(); UI.eta("23 anni"); UI.dici("La città, di notte.", 2600);
   await cammina(celle(P.andata).concat([P.sala])); liberaVoci("scuola");
@@ -473,6 +484,7 @@ async function capitolo3() {
 function animaValore(set, da, a, ms) { return new Promise(res => { const t0 = performance.now(); const f = () => { const k = Math.min(1, (performance.now() - t0) / (PROVA ? 100 : ms)); set(da + (a - da) * (k * k * (3 - 2 * k))); k < 1 ? requestAnimationFrame(f) : res() }; f() }) }
 
 async function capitolo4() {
+  vociPer("oracolo");
   S.cap = 4; const P = S.lab.percorsi.oracolo, sfera = S.mondo.sfera; invia("progresso", "capitolo", "4.0");
   suono.cresci(); UI.eta("28 anni"); UI.dici("Vetro e schermi.", 2400);
   const ultima = M.centroCella(...P.andata.at(-1)), dir = P.sala.clone().sub(ultima).setY(0); const stop = P.sala.clone().sub(dir.lengthSq() > .01 ? dir.normalize().multiplyScalar(2.3) : new THREE.Vector3(0, 0, -2.3));
@@ -501,6 +513,7 @@ async function capitolo4() {
 }
 
 async function capitolo5() {
+  vociPer("vicolo", "ritorno");
   S.cap = 5; const P = S.lab.percorsi.vicolo; invia("progresso", "capitolo", "5.0");
   suono.cresci(); UI.eta("35 anni"); UI.dici("Piove.", 2000);
   let altri = []; try { if (LV.segni) altri = (await LV.segni()) || [] } catch (e) { }
@@ -556,13 +569,14 @@ function disegna(f, { pastelli = false, invito = "Disegna sul muro con il dito."
 }
 
 async function capitolo6() {
+  vociPer("centro");
   S.cap = 6; const P = S.lab.percorsi.centro, coppa = S.mondo.coppa; invia("progresso", "capitolo", "6.0");
   suono.cresci(); UI.eta("Da grande"); UI.dici("La pietra più antica.", 2600);
   const ultima = M.centroCella(...P.andata.at(-1)), dir = P.sala.clone().sub(ultima).setY(0); const stop = P.sala.clone().sub(dir.lengthSq() > .01 ? dir.normalize().multiplyScalar(1.9) : new THREE.Vector3(0, 0, -1.9));
   M.sulMuro(S.mondo.scrittaCoppa, { p: P.sala.clone().addScaledVector(dir.clone().normalize().negate(), .47), n: dir.clone().normalize().negate() }, .7);
   const quadro = S.scelte.disegno ? appendiDisegno(P, dir) : null;
   await cammina(celle(P.andata).concat([stop])); liberaVoci("vicolo", "ritorno");
-  if (quadro) { guardaVerso(quadro.position); cam.pitchExtra = .3; UI.dici("L'hai disegnato a cinque anni."); await pausa(4200) }
+  if (quadro) { guardaVerso(quadro.position); cam.pitchExtra = .16; UI.dici("L'hai disegnato a cinque anni."); await pausa(4200) }
   guardaVerso(coppa.position); cam.pitchExtra = -.1; suono.vittoria();
   UI.dici("Sei al centro.");
   await pausa(1400);
@@ -625,13 +639,17 @@ function appendiDisegno(P, dir) {
   if (!f) for (const k of [-1, 1]) { const cc = lato === "N" || lato === "S" ? [cella[0] + k, cella[1]] : [cella[0], cella[1] + k]; f = M.facciaMuro(S.lab, cc[0], cc[1], lato); if (f) break }
   if (!f) return null;
   const g = new THREE.Group();
-  const tela2 = M.tela(512, 384, (cx, w, h) => { cx.fillStyle = "#f6f0e2"; cx.fillRect(0, 0, w, h); const COL = ["#d0462f", "#3d7fd9", "#3c9a3c", "#e0a020", "#8a4fc0"]; tratti.forEach((t, i) => { for (let j = 1; j < t.length; j++) gessoTratto(cx, [t[j - 1][0] * 5.12, t[j - 1][1] * 3.84], [t[j][0] * 5.12, t[j][1] * 3.84], 8, COL[i % 5]) }) });
-  const foglio = new THREE.Mesh(new THREE.PlaneGeometry(1.2, .9), new THREE.MeshStandardMaterial({ map: tela2, roughness: .9, emissive: 0xffffff, emissiveMap: tela2, emissiveIntensity: .18 })); foglio.position.z = .03; g.add(foglio);
-  const oro = new THREE.MeshStandardMaterial({ color: 0xb8892e, metalness: .7, roughness: .4 });
-  for (const [w, h, x, y] of [[1.36, .08, 0, .49], [1.36, .08, 0, -.49], [.08, 1.06, -.64, 0], [.08, 1.06, .64, 0]]) { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, .06), oro); m.position.set(x, y, .03); g.add(m) }
-  const targa = new THREE.Mesh(new THREE.PlaneGeometry(.7, .12), new THREE.MeshStandardMaterial({ map: M.tela(512, 88, (cx, w, h) => { cx.fillStyle = "#2a2018"; cx.fillRect(0, 0, w, h); cx.fillStyle = "#e8c06a"; cx.font = "34px Marcellus, serif"; cx.textAlign = "center"; cx.textBaseline = "middle"; cx.fillText(S.nome ? S.nome + ", a cinque anni" : "A cinque anni", w / 2, h / 2 + 2) }), roughness: .6 }));
-  targa.position.set(0, -.62, .03); g.add(targa);
-  M.sulMuro(g, f, 3.35); scena.add(g); return g; // sopra le torce e il fregio
+  const tela2 = M.tela(768, 576, (cx, w, h) => { cx.fillStyle = "#efe7d4"; cx.fillRect(0, 0, w, h); for (let i = 0; i < 2500; i++) { cx.fillStyle = `rgba(120,90,50,${Math.random() * .06})`; cx.fillRect(Math.random() * w, Math.random() * h, 2, 2) } const COL = ["#d0462f", "#3d7fd9", "#3c9a3c", "#e0a020", "#8a4fc0"]; tratti.forEach((t, i) => { for (let j = 1; j < t.length; j++) gessoTratto(cx, [t[j - 1][0] * 7.68, t[j - 1][1] * 5.76], [t[j][0] * 7.68, t[j][1] * 5.76], 16, COL[i % 5]) }) });
+  // carta senza luce propria: sotto il fascio del centro non deve accendersi in un riquadro bianco
+  const foglio = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 1.35), new THREE.MeshBasicMaterial({ map: tela2, color: 0xcfc6b2 })); foglio.position.z = .03; g.add(foglio);
+  const oro = new THREE.MeshStandardMaterial({ color: 0xb8892e, metalness: .6, roughness: .5 });
+  for (const [w, h, x, y] of [[2, .1, 0, .725], [2, .1, 0, -.725], [.1, 1.55, -.95, 0], [.1, 1.55, .95, 0]]) { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, .07), oro); m.position.set(x, y, .035); g.add(m) }
+  const targa = new THREE.Mesh(new THREE.PlaneGeometry(.9, .15), new THREE.MeshBasicMaterial({ map: M.tela(512, 84, (cx, w, h) => { cx.fillStyle = "#2a2018"; cx.fillRect(0, 0, w, h); cx.fillStyle = "#e8c06a"; cx.font = "34px Marcellus, serif"; cx.textAlign = "center"; cx.textBaseline = "middle"; cx.fillText(S.nome ? S.nome + ", a cinque anni" : "A cinque anni", w / 2, h / 2 + 2) }) }));
+  targa.position.set(0, -.88, .03); g.add(targa);
+  M.sulMuro(g, f, 2.55); scena.add(g);
+  // le torce troppo vicine al quadro si spostano via
+  const via = []; scena.traverse(o => { if (o.userData.torcia && o.position.distanceTo(g.position) < 1.6) via.push(o) }); via.forEach(o => scena.remove(o));
+  return g;
 }
 /* mentre si aspetta la salita: un messaggio a chi eri. Resta sul telefono. */
 function letteraAlBambino() {
@@ -702,7 +720,7 @@ async function entra() {
   invia("ingresso", "entrato", "1");
   // il soprannome resta sul telefono: serve solo alle voci sui muri
   S.nome = ($("#nome-bimbo").value || "").replace(/[^\p{L}' .-]/gu, "").trim().slice(0, 14); ls.set("dg3-nome", S.nome);
-  try { decoraMuri(scena, S.lab, M, S.nome, M.caso(M.semeDa(SEME + "voci"))) } catch (e) { console.warn(e) }
+  vociPer("cameretta");
   try { const f = muroCameretta(); if (f) tabellaAltezza(scena, M, f.altezza, S.nome) } catch (e) { console.warn(e) }
   $("#ingresso").classList.add("via"); setTimeout(() => $("#ingresso").remove(), 1500);
   UI.eta("5 anni"); await pausa(1200);
