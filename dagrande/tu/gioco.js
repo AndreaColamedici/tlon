@@ -34,7 +34,7 @@ const env = pmrem.fromScene(new RoomEnvironment(), .04).texture;
 scena.fog = new THREE.FogExp2(0x231b31, .08); scena.background = new THREE.Color(0x231b31);
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scena, camera));
-const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .8, .55, .82); composer.addPass(bloom);
+const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .75, .5, .9); composer.addPass(bloom);
 composer.addPass(new OutputPass());
 const finitura = new ShaderPass({
   uniforms: { tDiffuse: { value: null }, t: { value: 0 }, vign: { value: .85 }, buio: { value: 0 }, ab: { value: 1 } },
@@ -122,9 +122,12 @@ const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
 function colpito(x, y) { ndc.set(x / innerWidth * 2 - 1, -(y / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); const h = ray.intersectObjects(S.interattivi, true)[0]; return h ? (h.object.userData.porta || h.object.userData.azione || h.object.parent?.userData.azione) : null }
 function tocca(x, y) { if (!S.onTap) return; const c = colpito(x, y); if (c) S.onTap(c) }
 let mira = null;
+/* il nome della porta che stai guardando, scritto grande sotto il mirino */
+function nome(t) { const e = $("#nome"); if (e.textContent !== t) { e.textContent = t; e.classList.toggle("on", !!t) } }
 function aggiornaMira() {
-  if (!S.interattivi.length) { if (mira) { mira.evidenzia?.(false); mira = null } return }
+  if (!S.interattivi.length) { if (mira) { mira.evidenzia?.(false); mira = null } nome(""); return }
   const c = colpito(innerWidth / 2, innerHeight / 2); if (c !== mira) { mira?.evidenzia?.(false); c?.evidenzia?.(true); mira = c }
+  nome(c && c.etichetta ? (c.etichetta === "?" ? "?" : c.etichetta) : "");
 }
 
 /* ---------- interfaccia ---------- */
@@ -319,9 +322,22 @@ async function porte(lista, { zona, rett, doppie, stile, colori, larg = .95 }) {
   const porte = lista.slice(0, posti.length).map((e, i) => { const p = M.porta(scena, posti[i], { etichetta: e.testo, stile: e.stile || stile, colore: e.colore || (colori ? colori[i % colori.length] : 0x8a8f99), larg, env, r }); p.codice = e.codice; return p });
   return porte;
 }
+/* si sceglie in due tempi: un tocco ti porta davanti alla porta, un secondo tocco la apre */
 function scegliPorta(porte) {
-  S.interattivi = porte.map(p => p.pannello);
-  return new Promise(res => { S.onTap = p => { if (!p.pannello) return; S.onTap = null; S.interattivi = []; res(p) } });
+  S.interattivi = porte.map(p => p.pannello); let vicina = null;
+  return new Promise(res => {
+    S.onTap = async p => {
+      if (!p.pannello) return;
+      if (p === vicina && !cam.giro) { S.onTap = null; S.interattivi = []; nome(""); res(p); return }
+      vicina = p; suono.tocco(); const n = new THREE.Vector3(); p.gruppo.getWorldDirection(n);
+      const meta = p.gruppo.position.clone().addScaledVector(n, 1.85).setY(0);
+      UI.dici("");
+      await cammina([meta], { velocita: 2.4, guarda: .3 });
+      if (vicina !== p) return;
+      guardaVerso(p.gruppo.position); cam.yawU = 0; cam.pitchU = 0;
+      UI.dici(`<b>${p.etichetta === "?" ? "La porta del punto interrogativo" : p.etichetta}</b><br>Tocca di nuovo la porta per aprirla, o scegline un'altra.`);
+    };
+  });
 }
 async function attraversa(p) {
   suono.porta(); const n = new THREE.Vector3(); p.gruppo.getWorldDirection(n);
@@ -340,7 +356,7 @@ async function capitolo1() {
   const sala = P.sala; const scritta = new THREE.Mesh(new THREE.PlaneGeometry(2.4, .8), new THREE.MeshStandardMaterial({ map: M.tela(768, 256, (g, w, h) => M.pastello(g, "Cosa vuoi fare da grande?", w / 2, h / 2, 74, "#2a2238")), transparent: true, roughness: 1 }));
   const vista = ps[Math.floor(ps.length / 2)]; scritta.position.copy(vista.gruppo.position).setY(2.45); scritta.quaternion.copy(vista.gruppo.quaternion); scritta.position.addScaledVector(new THREE.Vector3(0, 0, 1).applyQuaternion(vista.gruppo.quaternion), .01); scena.add(scritta);
   guardaVerso(scritta.position);
-  UI.dici("Cosa vuoi fare da grande? Guardati intorno e tocca una porta.");
+  UI.dici("Cosa vuoi fare da grande? Guardati intorno: tocca una porta per avvicinarti.");
   const p = await scegliPorta(ps); UI.dici(""); S.scelte.sogno = p.codice; S.scelte.sognoTesto = p.etichetta; salva(); invia("cameretta", "sogno", p.codice);
   await attraversa(p);
   UI.dici(p.codice === "nonlo" ? "Non lo sai. A cinque anni va benissimo." : `Da grande vuoi ${p.etichetta}.`, 3600);
@@ -368,7 +384,7 @@ async function capitolo2() {
   const t0 = performance.now(); let ultimoSec = -1;
   const ticchettio = () => { const s = Math.floor((performance.now() - t0) / 1000); lancetta.rotation.z = -s / 60 * Math.PI * 2; if (s !== ultimoSec) { ultimoSec = s; suono.ticchetta() } };
   S.extra.push(ticchettio);
-  UI.dici(gruppo > 12 ? "Adesso le porte sono tante. Scegline una." : "Adesso le porte sono sei. Scegline una.");
+  UI.dici(gruppo > 12 ? "Adesso le porte sono tante. Tocca una porta per avvicinarti." : "Adesso le porte sono sei. Tocca una porta per avvicinarti.");
   const p = await scegliPorta(ps); UI.dici(""); const sec = Math.round((performance.now() - t0) / 1000); S.extra.splice(S.extra.indexOf(ticchettio), 1);
   Object.assign(S.scelte, { strada: p.codice, stradaTesto: p.etichetta, secondi: sec, gruppo }); salva();
   invia("scuola", "gruppo", gruppo); invia("scuola", "porta", p.codice); invia("scuola", "secondi", Math.min(sec, 600));
