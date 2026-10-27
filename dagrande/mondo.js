@@ -478,6 +478,7 @@ export function postiPorta(lab, zona, rett, quante, doppie) {
   if (out.length <= quante) return out;
   const passo = out.length / quante; return Array.from({ length: quante }, (_, i) => out[Math.floor(i * passo)]);
 }
+const FACCE = {};
 export function porta(scena, posto, { larg = .95, alt = 2.1, colore = 0x8a8f99, etichetta, stile = "targa", env, r = Math.random }) {
   const g = new THREE.Group(), f = posto.f, lat = new THREE.Vector3().crossVectors(f.n, new THREE.Vector3(0, 1, 0));
   sulMuro(g, f, 0); g.position.addScaledVector(lat, posto.s);
@@ -485,24 +486,43 @@ export function porta(scena, posto, { larg = .95, alt = 2.1, colore = 0x8a8f99, 
   for (const [w, h, x, y] of [[.07, alt + .07, -larg / 2 - .035, (alt + .07) / 2], [.07, alt + .07, larg / 2 + .035, (alt + .07) / 2], [larg + .14, .07, 0, alt + .035]]) { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, .08), tel); m.position.set(x, y, .03); g.add(m) }
   const luce = new THREE.Mesh(new THREE.PlaneGeometry(larg, alt), new THREE.MeshBasicMaterial({ color: 0xfff6e0 })); luce.position.set(0, alt / 2, .004); luce.visible = false; g.add(luce);
   const cerniera = new THREE.Group(); cerniera.position.set(-larg / 2, 0, .025); g.add(cerniera);
-  let fronte;
-  if (stile === "pastello") {
-    fronte = tela(512, 1120, (cx, W, H) => { cx.scale(2, 2); const w = W / 2, h = H / 2; cx.fillStyle = "#" + colore.toString(16).padStart(6, "0"); cx.fillRect(0, 0, w, h); for (let i = 0; i < 3000; i++) { cx.fillStyle = `rgba(255,255,255,${r() * .08})`; cx.fillRect(r() * w, r() * h, 3, 2) } tratto(cx, [[14, 14], [w - 14, 16], [w - 16, h - 14], [16, h - 16], [14, 14]], "#2b2b2b", 9, r); tratto(cx, Array.from({ length: 16 }, (_, i) => [w - 52 + Math.cos(i / 2.4) * 12, h * .55 + Math.sin(i / 2.4) * 12]), "#f2d032", 9, r); if (etichetta) { cx.fillStyle = "rgba(255,255,255,.82)"; cx.fillRect(16, 120, w - 32, 120); const parole = etichetta.split(" "), righe = []; let rg = ""; for (const pa of parole) { if ((rg + " " + pa).trim().length > 11 && rg) { righe.push(rg); rg = pa } else rg = (rg + " " + pa).trim() } righe.push(rg); const lung = Math.max(...righe.map(x => x.length)), sz = Math.min(60, Math.floor(400 / Math.max(5, lung))); righe.forEach((x, i) => pastello(cx, x, w / 2, 180 + (i - (righe.length - 1) / 2) * sz * .95, sz, "#1d1d1d", r)) } });
-  } else {
-    fronte = tela(512, 1120, (cx, W, H) => { cx.scale(2, 2); const w = W / 2, h = H / 2; cx.fillStyle = "#" + colore.toString(16).padStart(6, "0"); cx.fillRect(0, 0, w, h); cx.strokeStyle = "rgba(0,0,0,.18)"; cx.lineWidth = 6; cx.strokeRect(26, 26, w - 52, h * .42); cx.strokeRect(26, h * .5, w - 52, h * .45); for (let i = 0; i < 1500; i++) { cx.fillStyle = `rgba(0,0,0,${r() * .05})`; cx.fillRect(r() * w, r() * h, 2, 2) }
-      if (etichetta) { cx.fillStyle = "#24201c"; cx.fillRect(22, 52, w - 44, 128); cx.strokeStyle = "#8a7a5a"; cx.lineWidth = 3; cx.strokeRect(22, 52, w - 44, 128); cx.fillStyle = "#f1e6cf"; cx.textAlign = "center"; cx.textBaseline = "middle";
-        const parole = etichetta.split(" "), righe = []; let rg = ""; for (const pa of parole) { if ((rg + " " + pa).trim().length > 12 && rg) { righe.push(rg); rg = pa } else rg = (rg + " " + pa).trim() } righe.push(rg);
-        let sz = righe.length > 1 ? 34 : 40; cx.font = `600 ${sz}px Familjen Grotesk, sans-serif`; while (Math.max(...righe.map(x => cx.measureText(x).width)) > w - 60 && sz > 18) { sz--; cx.font = `600 ${sz}px Familjen Grotesk, sans-serif` }
-        righe.slice(0, 2).forEach((x, i) => cx.fillText(x, w / 2, 116 + (i - (Math.min(2, righe.length) - 1) / 2) * sz * 1.1)) } });
-  }
-  const pm = new THREE.MeshStandardMaterial({ map: fronte, roughness: .55, envMap: env, envMapIntensity: .3 }), lati = new THREE.MeshStandardMaterial({ color: colore, roughness: .6 });
+  // la faccia della porta è condivisa tra porte uguali; la scritta è una targa a parte, piccola e nitida.
+  // (una tela grande per ogni porta riempiva la memoria grafica dei telefoni e le porte diventavano nere)
+  const chiave = stile + colore;
+  const fronte = FACCE[chiave] || (FACCE[chiave] = stile === "pastello"
+    ? tela(256, 512, (cx, w, h) => { cx.fillStyle = "#" + colore.toString(16).padStart(6, "0"); cx.fillRect(0, 0, w, h); for (let i = 0; i < 2500; i++) { cx.fillStyle = `rgba(255,255,255,${Math.random() * .08})`; cx.fillRect(Math.random() * w, Math.random() * h, 3, 2) } tratto(cx, [[14, 14], [w - 14, 16], [w - 16, h - 14], [16, h - 16], [14, 14]], "#2b2b2b", 9); tratto(cx, Array.from({ length: 16 }, (_, i) => [w - 52 + Math.cos(i / 2.4) * 12, h * .55 + Math.sin(i / 2.4) * 12]), "#f2d032", 9) })
+    : tela(256, 512, (cx, w, h) => { cx.fillStyle = "#" + colore.toString(16).padStart(6, "0"); cx.fillRect(0, 0, w, h); cx.strokeStyle = "rgba(0,0,0,.18)"; cx.lineWidth = 6; cx.strokeRect(26, 26, w - 52, h * .42); cx.strokeRect(26, h * .5, w - 52, h * .45); for (let i = 0; i < 1500; i++) { cx.fillStyle = `rgba(0,0,0,${Math.random() * .05})`; cx.fillRect(Math.random() * w, Math.random() * h, 2, 2) } }));
+  fronte.userData.condivisa = true;
+  const pm = new THREE.MeshStandardMaterial({ map: fronte, roughness: .55 }), lati = new THREE.MeshStandardMaterial({ color: colore, roughness: .6 });
   const pannello = new THREE.Mesh(new THREE.BoxGeometry(larg, alt, .045), [lati, lati, lati, lati, pm, lati]); pannello.position.set(larg / 2, alt / 2, 0); cerniera.add(pannello);
-  const maniglia = new THREE.Mesh(new THREE.SphereGeometry(.035, 12, 8), new THREE.MeshStandardMaterial({ color: 0xc8b070, metalness: 1, roughness: .3, envMap: env })); maniglia.position.set(larg - .1, alt * .47, .05); cerniera.add(maniglia);
+  const maniglia = new THREE.Mesh(new THREE.SphereGeometry(.035, 12, 8), new THREE.MeshStandardMaterial({ color: 0xc8b070, metalness: .8, roughness: .45 })); maniglia.position.set(larg - .1, alt * .47, .05); cerniera.add(maniglia);
+  let targa = null;
+  if (etichetta) {
+    const parole = etichetta.split(" "), righe = []; let rg = ""; const max = stile === "pastello" ? 11 : 12;
+    for (const pa of parole) { if ((rg + " " + pa).trim().length > max && rg) { righe.push(rg); rg = pa } else rg = (rg + " " + pa).trim() } righe.push(rg);
+    const tw = larg - .12, th = stile === "pastello" ? .36 : .3;
+    const tx = tela(512, Math.round(512 * th / tw / 2) * 2, (cx, w, h) => {
+      if (stile === "pastello") {
+        cx.fillStyle = "rgba(255,255,255,.9)"; cx.fillRect(0, 0, w, h);
+        const lung = Math.max(...righe.map(x => x.length)), sz = Math.min(h * .62, Math.floor(w * 1.6 / Math.max(5, lung)));
+        righe.forEach((x, i) => pastello(cx, x, w / 2, h / 2 + (i - (righe.length - 1) / 2) * sz * .95, sz, "#1d1d1d"));
+      } else {
+        cx.fillStyle = "#24201c"; cx.fillRect(0, 0, w, h); cx.strokeStyle = "#8a7a5a"; cx.lineWidth = 6; cx.strokeRect(3, 3, w - 6, h - 6);
+        cx.fillStyle = "#f1e6cf"; cx.textAlign = "center"; cx.textBaseline = "middle";
+        let sz = righe.length > 1 ? h * .34 : h * .44; cx.font = `600 ${sz}px Familjen Grotesk, sans-serif`;
+        while (Math.max(...righe.map(x => cx.measureText(x).width)) > w - 40 && sz > 20) { sz -= 2; cx.font = `600 ${sz}px Familjen Grotesk, sans-serif` }
+        righe.slice(0, 2).forEach((x, i) => cx.fillText(x, w / 2, h / 2 + (i - (Math.min(2, righe.length) - 1) / 2) * sz * 1.1));
+      }
+    });
+    targa = new THREE.Mesh(new THREE.PlaneGeometry(tw, th), new THREE.MeshStandardMaterial({ map: tx, roughness: .7 }));
+    targa.position.set(0, stile === "pastello" ? alt * .17 : alt * .3, .024); pannello.add(targa);
+  }
   scena.add(g);
   const P = { gruppo: g, pannello, cerniera, luce, etichetta, materiale: pm, aperta: 0,
     evidenzia(on) { pm.emissive.setHex(on ? 0x14100a : 0x000000) },
     apri(dt) { P.aperta = Math.min(1, P.aperta + dt * .7); luce.visible = true; cerniera.rotation.y = -P.aperta * 1.45 }
   };
+  if (targa) targa.userData.porta = P;
   pannello.userData.porta = P;
   return P;
 }

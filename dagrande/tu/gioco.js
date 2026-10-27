@@ -79,13 +79,13 @@ const giroscopio = { on: false, yaw: 0, pitch: 0, roll: 0, cy: null, cp: 0 };
     if (giroscopio.cy === null) { giroscopio.cy = e2.y; giroscopio.cp = e2.x } giroscopio.on = true;
   });
 }
-function cammina(punti, { velocita, guarda = 1.6 } = {}) {
+function cammina(punti, { velocita, guarda = 1.6, mira = null } = {}) {
   const pts = [cam.pos.clone().setY(0)];
   for (const p of punti) if (p.distanceTo(pts[pts.length - 1]) > .35) pts.push(p.clone().setY(0));
   if (pts.length < 2) return Promise.resolve();
   const curva = new THREE.CatmullRomCurve3(pts, false, "centripetal", .5), L = curva.getLength();
   S.cammino.push(...pts.slice(1));
-  return new Promise(res => { cam.giro = { curva, L, s: 0, v: velocita, vmin: L / 22, guarda, res } }); // nessun tratto dura più di 22 secondi
+  return new Promise(res => { cam.giro = { curva, L, s: 0, v: velocita, vmin: L / 22, guarda, mira, res } }); // nessun tratto dura più di 22 secondi
 }
 const celle = cs => cs.map(([x, z]) => M.centroCella(x, z));
 function guardaVerso(p, subito) { const d = p.clone().sub(cam.pos); cam.yawT = Math.atan2(-d.x, -d.z); if (subito) cam.yaw = cam.yawT }
@@ -95,7 +95,7 @@ function animaCamera(dt, t) {
   if (cam.giro) {
     const g = cam.giro, v = Math.max(g.v || Z.passo, g.vmin || 0) * VEL; g.s = Math.min(g.L, g.s + v * dt);
     const p = g.curva.getPointAt(g.s / g.L), a = g.curva.getPointAt(Math.min(1, (g.s + g.guarda) / g.L));
-    cam.pos.copy(p); filo.aggiungi(p); const d = a.sub(p); if (d.lengthSq() > .0004) cam.yawT = Math.atan2(-d.x, -d.z);
+    cam.pos.copy(p); filo.aggiungi(p); const d = g.mira ? g.mira.clone().sub(p) : a.sub(p); if (d.lengthSq() > .0004) cam.yawT = Math.atan2(-d.x, -d.z); // con una mira si cammina guardandola
     const prima = Math.sin(cam.passi); cam.passi += dt * v * 3.7; if (prima > 0 && Math.sin(cam.passi) <= 0 || prima < 0 && Math.sin(cam.passi) >= 0) suono.passo(zonaQui());
     cam.yawU *= Math.exp(-dt * 1.1); cam.pitchU *= Math.exp(-dt * 1.1);
     if (giroscopio.on) { giroscopio.cy = angolo(giroscopio.cy, giroscopio.yaw, 1 - Math.exp(-dt * .9)) }
@@ -301,7 +301,7 @@ async function attendi(k, prossimo = k + 1) {
   await pausa(900); await UI.scegli([["vai", prossimo === 7 ? "Sali" : "Prosegui"]], "una");
 }
 /* le porte di un capitolo passato si tolgono: liberano memoria sui telefoni più vecchi */
-function liberaPorte(ps) { for (const p of ps || []) { p.gruppo.traverse(o => { if (o.isMesh) { o.geometry.dispose(); for (const m of [].concat(o.material)) { if (m.map) m.map.dispose(); m.dispose() } } }); scena.remove(p.gruppo) } }
+function liberaPorte(ps) { for (const p of ps || []) { p.gruppo.traverse(o => { if (o.isMesh) { o.geometry.dispose(); for (const m of [].concat(o.material)) { if (m.map && !m.map.userData.condivisa) m.map.dispose(); m.dispose() } } }); scena.remove(p.gruppo) } }
 /* mentre aspetti: tu e la sala, a confronto */
 async function raccontaSala(k) {
   if (k === 2 || k === 4) { await raccontaSala1(k - 1, true); return raccontaSala1(k, false, true) }
@@ -337,7 +337,7 @@ function scegliPorta(porte) {
       vicina = p; suono.tocco(); const n = new THREE.Vector3(); p.gruppo.getWorldDirection(n);
       const meta = p.gruppo.position.clone().addScaledVector(n, 1.85).setY(0);
       UI.dici("");
-      await cammina([meta], { velocita: 2.4, guarda: .3 });
+      await cammina([meta], { velocita: 2.4, guarda: .3, mira: p.gruppo.position.clone().setY(0) });
       if (vicina !== p) return;
       guardaVerso(p.gruppo.position); cam.yawU = 0; cam.pitchU = 0;
       UI.dici(`<b>${p.etichetta === "?" ? "La porta del punto interrogativo" : p.etichetta}</b><br>Tocca di nuovo la porta per aprirla, o scegline un'altra.`);
