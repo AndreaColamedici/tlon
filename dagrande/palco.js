@@ -7,6 +7,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import * as M from "./mondo.js";
 
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
@@ -38,7 +39,9 @@ const camera = new THREE.PerspectiveCamera(38, 16 / 9, 1, 1200);
 const env = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), .04).texture;
 scena.add(new THREE.HemisphereLight(0xbfb0ff, 0x302010, 1.1));
 const sole = new THREE.DirectionalLight(0xffd7a0, 2.2); sole.position.set(-30, 60, 20); scena.add(sole);
-const composer = new EffectComposer(renderer); composer.addPass(new RenderPass(scena, camera));
+const composer = new EffectComposer(renderer); composer.addPass(new RenderPass(scena, camera)); composer.addPass(new ShaderPass({ uniforms: { tDiffuse: { value: null } }, vertexShader: `varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+  fragmentShader: `uniform sampler2D tDiffuse;varying vec2 vUv;void main(){vec4 c=texture2D(tDiffuse,vUv);
+    if(any(isnan(c.rgb))||any(isinf(c.rgb))||!(c.r==c.r)||c.r>6e4||c.g>6e4||c.b>6e4)c=vec4(0.,0.,0.,1.);gl_FragColor=vec4(min(c.rgb,vec3(64.)),c.a);}` }));
 const bloom = new UnrealBloomPass(new THREE.Vector2(512, 512), .9, .5, .8); composer.addPass(bloom); composer.addPass(new OutputPass());
 function adatta() { const w = tela.clientWidth, h = tela.clientHeight; renderer.setSize(w, h, false); composer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix() }
 addEventListener("resize", adatta);

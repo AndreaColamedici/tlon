@@ -34,7 +34,12 @@ const env = pmrem.fromScene(new RoomEnvironment(), .04).texture;
 scena.fog = new THREE.FogExp2(0x231b31, .08); scena.background = new THREE.Color(0x231b31);
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scena, camera));
+// un pixel malformato (NaN) su alcune GPU dei telefoni, sfocato dal bagliore, può annerire mezzo schermo: lo si neutralizza prima
+composer.addPass(new ShaderPass({ uniforms: { tDiffuse: { value: null } }, vertexShader: `varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+  fragmentShader: `uniform sampler2D tDiffuse;varying vec2 vUv;void main(){vec4 c=texture2D(tDiffuse,vUv);
+    if(any(isnan(c.rgb))||any(isinf(c.rgb))||!(c.r==c.r)||c.r>6e4||c.g>6e4||c.b>6e4)c=vec4(0.,0.,0.,1.);gl_FragColor=vec4(min(c.rgb,vec3(64.)),c.a);}` }));
 const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .75, .5, .9); composer.addPass(bloom);
+if (PARAM.has("semplice")) bloom.enabled = false; // ?semplice: senza bagliore, per i telefoni che danno problemi
 composer.addPass(new OutputPass());
 const finitura = new ShaderPass({
   uniforms: { tDiffuse: { value: null }, t: { value: 0 }, vign: { value: .85 }, buio: { value: 0 }, ab: { value: 1 } },
