@@ -1,4 +1,4 @@
-/* Il labirinto · collegamento dal vivo tra il palco e i telefoni.
+/* Da grande · collegamento dal vivo tra il palco e i telefoni.
    Incollare qui l'URL del progetto Supabase e la chiave pubblica
    (Project Settings > API Keys: la "publishable key" sb_publishable_..., oppure la vecchia "anon key").
    Con i due campi vuoti le pagine funzionano lo stesso, in modalità autonoma. */
@@ -60,5 +60,9 @@ function ascolta(cb){
 }
 const vai=(parola,s,b,evento,dato,ritardo)=>rpc("dg_vai",{parola,s,b,evento:evento||null,dato:dato==null?null:String(dato),ritardo_ms:ritardo||0}).then(x=>{if(x&&x.ora){scarto=Date.parse(x.ora)-Date.now()}return x});
 const conteggi=dal=>rpc("dg_conteggi",{dal:new Date(dal).toISOString()});
-window.DGLive={attivo,invia,conteggi,stato,ascolta,vai,oraServer,dispositivo};
+/* segni lasciati nel vicolo cieco: piccoli disegni a gesso, visibili a chi passa dopo */
+async function inviaSegno(punti){if(!attivo)return;await fetch(base+"/rest/v1/dg_segni",{method:"POST",headers:{...intestazioni(),"Prefer":"return=minimal"},body:JSON.stringify({dispositivo,punti:String(punti).slice(0,4000)}),keepalive:true})}
+const segni=(quanti)=>attivo?rpc("dg_segni_recenti",{quanti:quanti||14,escluso:dispositivo}):Promise.resolve([]);
+async function presenti(){if(!attivo)return 1;const c=await conteggi(Date.now()-3*3600e3);return c.filter(r=>r.stanza==="ingresso").reduce((s,r)=>s+Number(r.n),0)||1}
+window.DGLive={attivo,invia,conteggi,stato,ascolta,vai,oraServer,dispositivo,inviaSegno,segni,presenti};
 })();
