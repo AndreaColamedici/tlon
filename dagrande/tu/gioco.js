@@ -720,8 +720,8 @@ async function entra() {
   invia("ingresso", "entrato", "1");
   // il soprannome resta sul telefono: serve solo alle voci sui muri
   S.nome = ($("#nome-bimbo").value || "").replace(/[^\p{L}' .-]/gu, "").trim().slice(0, 14); ls.set("dg3-nome", S.nome);
-  vociPer("cameretta");
   try { const f = muroCameretta(); if (f) tabellaAltezza(scena, M, f.altezza, S.nome) } catch (e) { console.warn(e) }
+  vociPer("cameretta");
   $("#ingresso").classList.add("via"); setTimeout(() => $("#ingresso").remove(), 1500);
   UI.eta("5 anni"); await pausa(1200);
   UI.dici("Hai cinque anni. Muovi il telefono, o trascina il dito, per guardarti intorno.", 5200);

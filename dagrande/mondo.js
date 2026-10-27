@@ -319,7 +319,7 @@ function arreda(scena, lab, mondo, r, base, env) {
     const soggetti = [disegnoSole, disegnoCasa, disegnoFamiglia, disegnoArcobaleno, disegnoRazzo, disegnoAlbero];
     let k = 0; const celle = P.cameretta.andata.concat(P.cameretta.ritorno);
     lungoIlCammino(lab, celle, 2, ([x, z]) => {
-      for (const lato of mescola([..."NSEW"], r)) { const f = facciaMuro(lab, x, z, lato); if (!f) continue; const d = new THREE.Mesh(new THREE.PlaneGeometry(.9, .7), new THREE.MeshStandardMaterial({ map: tela(360, 280, soggetti[k++ % soggetti.length]), transparent: true, roughness: 1 })); sulMuro(d, f, .7 + r() * .4); scena.add(d); break }
+      for (const lato of mescola([..."NSEW"], r)) { const f = facciaMuro(lab, x, z, lato); if (!f) continue; const d = new THREE.Mesh(new THREE.PlaneGeometry(.9, .7), new THREE.MeshStandardMaterial({ map: tela(360, 280, soggetti[k++ % soggetti.length]), transparent: true, roughness: 1 })); sulMuro(d, f, .7 + r() * .4); d.userData.ingombro = { w: .9, h: .7 }; scena.add(d); break }
     });
     lungoIlCammino(lab, celle, 4, ([x, z]) => an(centroCella(x, z, 2.2), "cameretta"));
     mondo.anima.push(pulviscolo(scena, centroCella(1, 1), 3, 160, 0xffe2b0));

@@ -154,6 +154,7 @@ export function decoraMuri(scena, lab, M, nome, r = Math.random, soloZone = null
   const inStanza = (x, z) => { const c = M.centroCella(x, z); return stanze.some(s => Math.abs(c.x - s.c.x) < s.mezzo && Math.abs(c.z - s.c.z) < s.mezzo) };
   const percorsiZona = { cameretta: P.cameretta.andata.concat(P.cameretta.ritorno), scuola: P.scuola.andata.concat(P.scuola.ritorno), notte: P.notte.andata.concat(P.notte.ritorno), oracolo: P.oracolo.andata.concat(P.oracolo.ritorno), vicolo: P.vicolo.andata.concat(P.vicolo.ritorno), centro: P.centro.andata };
   const usati = []; const su = new THREE.Vector3(0, 1, 0);
+  scena.traverse(o => { if (o.userData.ingombro) usati.push({ p: o.position.clone(), ...o.userData.ingombro }) }); // disegni e tabelle già appesi
   for (const [zona, lista] of Object.entries(voci)) {
     if (soloZone && !soloZone.includes(zona)) continue;
     const celle = (zona === "ritorno" ? P.vicolo.ritorno : percorsiZona[zona] || []).filter(([x, z]) => M.zonaDi(x, z) === zona && (zona === "centro" || !inStanza(x, z)));
@@ -161,19 +162,20 @@ export function decoraMuri(scena, lab, M, nome, r = Math.random, soloZone = null
     if (!facce.length) continue;
     const passo = facce.length / lista.length;
     lista.forEach((v0, k) => { const v = { ...v0, w: Math.min(M.C - .3, v0.w * 1.6), h: v0.h * 1.6, y: v0.s === "pastello" ? v0.y + .1 : v0.y + (v0.y > 2 ? 0 : .05) }; // più grandi: si leggono camminando
-      for (let t = 0; t < 10; t++) {
+      for (let t = 0; t < 14; t++) {
         const c = facce[Math.floor((k * passo + t * 1.7 + r() * passo) % facce.length)], lat = new THREE.Vector3().crossVectors(c.f.n, su);
         const gioco = Math.max(0, (M.C - v.w) / 2 - .12), off = (r() - .5) * 2 * gioco;
         const pos = c.f.p.clone().addScaledVector(lat, off).setY(v.y);
-        if (usati.some(u => u.distanceTo(pos) < Math.max(.65, v.w * .7))) continue;
-        usati.push(pos);
+        // niente sovrapposizioni: si confrontano i rettangoli, non solo i centri
+        if (usati.some(u => Math.hypot(u.p.x - pos.x, u.p.z - pos.z) < (u.w + v.w) / 2 + .08 && Math.abs(u.p.y - pos.y) < (u.h + v.h) / 2 + .05)) continue;
+        usati.push({ p: pos, w: v.w, h: v.h });
         // tele piccole: sono decine, e la memoria grafica dei telefoni è poca
         const cw = { postit: 240, foglio: 320, manifesto: 400, lettera: 400, bolla: 480, graffito: 480, pastello: 480, inciso: 480 }[v.s] || 320;
         const ch = Math.max(48, Math.round(cw * v.h / v.w / 4) * 4), sc = cw / 512;
         const tx = M.tela(cw, ch, (g, w, h) => { g.scale(sc, sc); STILI[v.s](g, 512, h / sc, v, M) }); tx.anisotropy = 4;
         const mat = new THREE.MeshStandardMaterial({ map: tx, transparent: true, roughness: .9, polygonOffset: true, polygonOffsetFactor: -2 });
         const m = new THREE.Mesh(new THREE.PlaneGeometry(v.w, v.h), mat);
-        M.sulMuro(m, c.f, v.y); m.position.addScaledVector(lat, off).addScaledVector(c.f.n, .006 + usati.length * .0004); m.rotateZ((r() - .5) * (v.s === "postit" || v.s === "foglio" ? .12 : .03));
+        M.sulMuro(m, c.f, v.y); m.position.addScaledVector(lat, off).addScaledVector(c.f.n, .006 + (usati.length % 20) * .0004); m.rotateZ((r() - .5) * (v.s === "postit" || v.s === "foglio" ? .12 : .03));
         m.userData.voce = zona; scena.add(m); break;
       }
     });
@@ -190,5 +192,5 @@ export function tabellaAltezza(scena, M, f, nome) {
     if (nome) { g.save(); g.translate(w - 22, 120); g.rotate(Math.PI / 2); g.fillStyle = "#3d2a1a"; g.font = "600 40px Caveat, cursive"; g.fillText(nome, 0, 0); g.restore() }
   });
   const m = new THREE.Mesh(new THREE.PlaneGeometry(.14, 1.1), new THREE.MeshStandardMaterial({ map: tx, roughness: .8 }));
-  M.sulMuro(m, f, .4 + .55); m.position.addScaledVector(f.n, .008); scena.add(m); return m;
+  M.sulMuro(m, f, .4 + .55); m.position.addScaledVector(f.n, .008); m.userData.ingombro = { w: .3, h: 1.1 }; scena.add(m); return m;
 }
