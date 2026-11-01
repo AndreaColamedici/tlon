@@ -257,6 +257,41 @@ footer{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-columns
   .chiusura{padding:var(--s6) var(--pad)}
 }
 @media print{.barra{display:none}.piena{height:auto}}
+
+/* vita: ciò che accade sulla pagina (parallasse, lente, cassetto, indice, parole) */
+.js h1.posa,.js h2.posa{--dy:0px}
+.js h1.posa .w,.js h2.posa .w{display:inline-block;opacity:0;transform:translateY(.5em);transition:opacity var(--posa) var(--expo),transform var(--posa) var(--expo);transition-delay:calc(var(--i,0)*70ms)}
+.js h1.posa.in .w,.js h2.posa.in .w{opacity:1;transform:none}
+.apertura .quadro{transform:translate3d(var(--px,0px),var(--py,0px),0);will-change:transform}
+.apertura .testo{transform:translate3d(calc(var(--px,0px)*-.4),calc(var(--py,0px)*-.4),0)}
+.js .apertura .quadro{animation:entra 1400ms var(--expo) both}
+@keyframes entra{from{opacity:0}to{opacity:1}}
+.volume figure{perspective:1400px}
+.volume-quadro{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform 240ms linear;will-change:transform}
+.piena .quadro{cursor:crosshair}
+.piena.lente-attiva .quadro{cursor:none}
+.lente{position:absolute;left:0;top:0;width:260px;height:260px;border-radius:50%;pointer-events:none;z-index:3;opacity:0;transform:translate(-50%,-50%) scale(.7);transition:opacity 320ms var(--expo),transform 520ms var(--expo);background-repeat:no-repeat;background-color:var(--blu-2)}
+.piena.lente-attiva .lente{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.indice{position:relative;overflow:hidden}
+.indice-ghost{position:absolute;right:calc(var(--pad) - .03em);top:0;margin:0;font-size:clamp(200px,34vw,520px);line-height:.8;letter-spacing:-.05em;color:var(--blu-3);opacity:0;transform:translateY(calc(-50% + .08em));transition:opacity 500ms var(--expo),transform 700ms var(--expo);pointer-events:none;z-index:0}
+.indice-ghost.su{opacity:1;transform:translateY(-50%)}
+.indice h2,.parte{position:relative;z-index:1}
+.archivio{padding:var(--s6) 0 var(--s8)}
+.archivio-testa{padding:0 var(--pad);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s3) var(--s6);align-items:end;margin-bottom:var(--s5)}
+.archivio h2{font-size:clamp(48px,7vw,96px);line-height:.92}
+.archivio-testa p{max-width:40ch;color:var(--perla-2);font-size:18px;margin:0}
+.cassetto{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;scroll-padding-inline:var(--pad);scrollbar-width:none;cursor:grab;padding:0 var(--pad) var(--s2)}
+.cassetto::-webkit-scrollbar{display:none}
+.cassetto.preso{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.cassetto ul{list-style:none;margin:0;padding:0;display:flex;gap:var(--s4);width:max-content}
+.cassetto li{scroll-snap-align:start;flex:none}
+.cassetto figure{margin:0}
+.cassetto img{height:46vh;min-height:260px;max-height:560px;width:auto;display:block;background:var(--blu-2);-webkit-user-drag:none;transform-origin:50% 100%;transition:transform 600ms var(--expo)}
+.cassetto figcaption{font-size:16px;color:var(--perla-2);margin-top:var(--s2);max-width:34ch}
+@media(hover:hover){.cassetto li:hover img{transform:translateY(-8px)}}
+@media(max-width:900px){.archivio-testa{grid-template-columns:1fr}.cassetto img{height:40vh}.indice-ghost{font-size:200px}}
+@media(prefers-reduced-motion:reduce){.js h1.posa .w,.js h2.posa .w{opacity:1;transform:none;transition:none}.js .apertura .quadro{animation:none}.volume-quadro,.cassetto img,.lente,.indice-ghost{transition:none}}
+
 </style>
 </head>
 <body>
@@ -307,6 +342,7 @@ footer{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-columns
 
 <section class="indice" aria-labelledby="indice-titolo">
   <h2 id="indice-titolo" class="posa">Indice</h2>
+  <p class="indice-ghost g" aria-hidden="true"></p>
   <div class="parte posa">
     <h3>Quando l’immagine diventò più vera del corpo</h3>
     <ol>
@@ -383,6 +419,7 @@ footer{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-columns
     <div class="citazione"><p class="dalibro">L’ultima parte del libro va a cercare le bellezze che sfuggono: il gesto, il tempo vissuto, il corpo sentito dall’interno. Lo specchio della copertina è già in mano alla Superbia di Bosch, cinque secoli fa.</p><p class="dalibro-fonte">La terza parte, <em>Bellezze che sfuggono</em></p></div>
   </div>
 
+  <section class="archivio" aria-labelledby="archivio-titolo"><div class="archivio-testa"><h2 id="archivio-titolo" class="posa">L’archivio</h2><p class="posa" style="--i:1">Tutte le tavole di questa pagina in un solo cassetto, nell’ordine del libro. Si trascina con il mouse, si scorre di lato con il dito.</p></div><div class="cassetto" tabindex="0" aria-label="Le tavole, scorrevoli di lato"><ul><li><figure><img class="" src="img/boulevard-du-temple-1838-1800.webp" srcset="img/boulevard-du-temple-1838-900.webp 900w, img/boulevard-du-temple-1838-1800.webp 1526w" sizes="60vh" width="1526" height="1084" alt="Il Boulevard du Temple a Parigi fotografato da Daguerre: la strada appare deserta, due figure ferme in basso a sinistra" loading="lazy" decoding="async"><figcaption>Il primo dagherrotipo: Louis Daguerre, <em>Boulevard du Temple</em>, 1838.</figcaption></figure></li><li><figure><img class="" src="img/arago-1839-1800.webp" srcset="img/arago-1839-900.webp 900w, img/arago-1839-1800.webp 1800w" sizes="60vh" width="1800" height="1714" alt="Incisione: François Arago parla davanti all’Accademia delle scienze gremita" loading="lazy" decoding="async"><figcaption>François Arago annuncia la scoperta di Jacques Daguerre, 1839.</figcaption></figure></li><li><figure><img class="" src="img/daguerreotypomanie-1839-1800.webp" srcset="img/daguerreotypomanie-1839-900.webp 900w, img/daguerreotypomanie-1839-1800.webp 1395w" sizes="60vh" width="1395" height="929" alt="Caricatura con folle che corrono a farsi fotografare, mongolfiere e cavalletti" loading="lazy" decoding="async"><figcaption>Théodore Maurisset, <em>La Daguerréotypomanie</em>, 1839.</figcaption></figure></li><li><figure><img class="" src="img/figurini-1839-1800.webp" srcset="img/figurini-1839-900.webp 581w, img/figurini-1839-1800.webp 1162w" sizes="60vh" width="1162" height="1800" alt="Tavola di moda con otto acconciature femminili dell’epoca" loading="lazy" decoding="async"><figcaption>Figurini di moda femminile, 1839.</figcaption></figure></li><li><figure><img class="" src="img/berthe-1862-1800.webp" srcset="img/berthe-1862-900.webp 827w, img/berthe-1862-1800.webp 1186w" sizes="60vh" width="1186" height="1291" alt="Sei pose della stessa donna in abito scuro accanto a una statua, su una lastra per carte de visite" loading="lazy" decoding="async"><figcaption>André-Adolphe-Eugène Disdéri, <em>Berthe</em>, 1862, carte de visite.</figcaption></figure></li><li><figure><img class="" src="img/lobkowitz-1858-1800.webp" srcset="img/lobkowitz-1858-900.webp 900w, img/lobkowitz-1858-1800.webp 1199w" sizes="60vh" width="1199" height="1040" alt="Sei pose di un uomo in redingote, in piedi e seduto, sulla stessa lastra" loading="lazy" decoding="async"><figcaption>André-Adolphe-Eugène Disdéri, <em>Prince Lobkowitz</em>, 1858, carte de visite.</figcaption></figure></li><li><figure><img class="" src="img/bernhardt-1864-1800.webp" srcset="img/bernhardt-1864-900.webp 594w, img/bernhardt-1864-1800.webp 1189w" sizes="60vh" width="1189" height="1800" alt="Ritratto fotografico di Sarah Bernhardt giovane, in abito bianco di pizzo" loading="lazy" decoding="async"><figcaption>Nadar, <em>Madame Sarah Bernhardt</em>, 1864 circa.</figcaption></figure></li><li><figure><img class="" src="img/karr-1877-1800.webp" srcset="img/karr-1877-900.webp 671w, img/karr-1877-1800.webp 1341w" sizes="60vh" width="1341" height="1800" alt="Ritratto di spalle di un uomo con mantello drappeggiato, il volto di profilo" loading="lazy" decoding="async"><figcaption>Samuel Adam-Salomon, <em>Alphonse Karr</em>, 1877 circa.</figcaption></figure></li><li><figure><img class="" src="img/isenring-1860-1800.webp" srcset="img/isenring-1860-900.webp 754w, img/isenring-1860-1800.webp 1166w" sizes="60vh" width="1166" height="1392" alt="Dagherrotipo ovale colorato a mano di un giovane uomo seduto" loading="lazy" decoding="async"><figcaption>Johann Baptist Isenring, dagherrotipo colorato a mano, 1860 circa.</figcaption></figure></li><li><figure><img class="" src="img/bertillon-orecchie-1894-1800.webp" srcset="img/bertillon-orecchie-1894-900.webp 900w, img/bertillon-orecchie-1894-1800.webp 1182w" sizes="60vh" width="1182" height="773" alt="Tavola di orecchie fotografate e classificate per forma" loading="lazy" decoding="async"><figcaption>Sistema antropometrico di Bertillon: forme comparative dell’orecchio, 1894.</figcaption></figure></li><li><figure><img class="" src="img/quetelet-1800.webp" srcset="img/quetelet-900.webp 900w, img/quetelet-1800.webp 1190w" sizes="60vh" width="1190" height="850" alt="Diagramma a campana con la popolazione media, tra «nain» e «géant»" loading="lazy" decoding="async"><figcaption>Diagramma tratto da Adolphe Quetelet, <em>Anthropométrie</em>.</figcaption></figure></li><li><figure><img class="" src="img/galton-compositi-1800.webp" srcset="img/galton-compositi-900.webp 580w, img/galton-compositi-1800.webp 1160w" sizes="60vh" width="1160" height="1800" alt="Frontespizio con specimen di ritratti compositi: famiglia, salute, malattia, criminalità" loading="lazy" decoding="async"><figcaption>Francis Galton, ritratti compositi dal frontespizio di <em>Inquiries into Human Faculty</em>.</figcaption></figure></li><li><figure><img class="" src="img/galton-criminali-1800.webp" srcset="img/galton-criminali-900.webp 667w, img/galton-criminali-1800.webp 1334w" sizes="60vh" width="1334" height="1800" alt="Tavola di volti sovrapposti ottenuti da fotografie segnaletiche" loading="lazy" decoding="async"><figcaption>Francis Galton, ritratto composito da fotografie di criminali.</figcaption></figure></li><li><figure><img class="" src="img/cartellino-segnaletico-1800.webp" srcset="img/cartellino-segnaletico-900.webp 854w, img/cartellino-segnaletico-1800.webp 1289w" sizes="60vh" width="1289" height="1359" alt="Cartellino segnaletico con due fotografie, di fronte e di profilo, e misure antropometriche" loading="lazy" decoding="async"><figcaption>Cartellino con fotografia segnaletica e dati antropometrici di un ricercato.</figcaption></figure></li><li><figure><img class="" src="img/grande-magazzino-1800.webp" srcset="img/grande-magazzino-900.webp 900w, img/grande-magazzino-1800.webp 1722w" sizes="60vh" width="1722" height="1219" alt="Illustrazione a colori dell’interno di un grande magazzino ottocentesco affollato di clienti" loading="lazy" decoding="async"><figcaption>Illustrazione a colori di uno dei primi grandi magazzini di New York.</figcaption></figure></li><li><figure><img class="" src="img/kodak-1893-1800.webp" srcset="img/kodak-1893-900.webp 493w, img/kodak-1893-1800.webp 986w" sizes="60vh" width="986" height="1800" alt="Pubblicità Kodak: «The Camera that takes the World!»" loading="lazy" decoding="async"><figcaption>Pubblicità della Kodak su «The Illustrated London News», 16 settembre 1893.</figcaption></figure></li><li><figure><img class="" src="img/kodak-natale-1800.webp" srcset="img/kodak-natale-900.webp 573w, img/kodak-natale-1800.webp 1146w" sizes="60vh" width="1146" height="1800" alt="Illustrazione a colori: una famiglia apre una Kodak sotto l’albero di Natale" loading="lazy" decoding="async"><figcaption>Pubblicità natalizia della Kodak, illustrazione di Edward Penfield.</figcaption></figure></li><li><figure><img class="" src="img/cheret-jardin-de-paris-1800.webp" srcset="img/cheret-jardin-de-paris-900.webp 669w, img/cheret-jardin-de-paris-1800.webp 1338w" sizes="60vh" width="1338" height="1800" alt="Manifesto colorato di Jules Chéret per il Jardin de Paris, con una ballerina che danza" loading="lazy" decoding="async"><figcaption>Manifesto di Jules Chéret per il Jardin de Paris.</figcaption></figure></li><li><figure><img class="" src="img/bosch-superbia-1500-1800.webp" srcset="img/bosch-superbia-1500-900.webp 692w, img/bosch-superbia-1500-1800.webp 1186w" sizes="60vh" width="1186" height="1542" alt="Dettaglio della Superbia di Bosch: una donna di spalle si specchia in uno specchio retto da un demone" loading="lazy" decoding="async"><figcaption>Hieronymus Bosch, <em>Tavola dei sette peccati capitali</em>, dettaglio della Superbia, 1500 circa.</figcaption></figure></li><li><figure><img class="" src="img/spinario-1800.webp" srcset="img/spinario-900.webp 581w, img/spinario-1800.webp 1162w" sizes="60vh" width="1162" height="1800" alt="Statuetta di bronzo di un ragazzo seduto che si toglie una spina dal piede" loading="lazy" decoding="async"><figcaption>Lo Spinario, fine XV secolo, New York, The Metropolitan Museum of Art.</figcaption></figure></li></ul></div></section>
   <div class="nellibro posa">
     <h3>Nel libro, e non in questa pagina</h3>
     <p>Le immagini del Novecento e di oggi restano tra le pagine, per i diritti che le proteggono: <em>Adobe Photoshop 1.0, 1990, una cabina purikura a Tokyo, il filtro Bold Glamour di TikTok, Cindy Sherman, Untitled Film Still #21, 1978, Francesca Woodman, Space², 1976, Yoko Ono, Cut Piece, 1964, Marina Abramović, Rhythm 0, 1974, il New Look di Christian Dior, 1947, ORLAN, Omniprésence, 1993, la campagna Dove Real Beauty, 2004, Trevor Paglen, Faces of ImageNet, 2022, Shudu Gram, la prima top model digitale, Lil Miquela, Adam Harvey, CV Dazzle, Zach Blas, Fag Face Mask, 2012, il Dazzle Club a Soho, 2021, Lygia Clark, Caminhando, 1963, Marina Abramović, The Artist is Present, 2010, Cézanne, La montagna Sainte-Victoire, Pina Bausch, Kontakthof con donne e uomini over 65, Steve Paxton e la Contact Improvisation, una rudbeckia come la vede un’ape, Silvia Giambrone, Mirror n.12</em>.</p>
@@ -515,6 +552,133 @@ document.documentElement.classList.add('js');
     els.forEach(function(el){ io.observe(el); });
   } else { els.forEach(function(el){ el.classList.add('in'); }); }
   setTimeout(function(){ els.forEach(function(el){ el.classList.add('in'); }); },6000);
+})();
+</script>
+<script>(function(){
+var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+/* le parole dei titoli salgono una per una */
+function spezza(el){
+  var nodi=Array.prototype.slice.call(el.childNodes),i=0;
+  nodi.forEach(function(n){
+    if(n.nodeType===3){
+      var frag=document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(function(p){
+        if(!p)return;
+        if(/^\s+$/.test(p)){frag.appendChild(document.createTextNode(p));return;}
+        var s=document.createElement('span');s.className='w';s.style.setProperty('--i',i++);s.textContent=p;frag.appendChild(s);
+      });
+      el.replaceChild(frag,n);
+    }else if(n.nodeType===1&&n.tagName!=='BR'){n.classList.add('w');n.style.setProperty('--i',i++);}
+  });
+}
+document.querySelectorAll('h1.posa, h2.posa').forEach(spezza);
+
+/* l'apertura segue il puntatore */
+var ap=document.querySelector('.apertura');
+if(ap&&fine&&!rm){
+  var tx=0,ty=0,cx=0,cy=0,raf=null;
+  var tick=function(){
+    cx+=(tx-cx)*.08;cy+=(ty-cy)*.08;
+    ap.style.setProperty('--px',cx.toFixed(2)+'px');ap.style.setProperty('--py',cy.toFixed(2)+'px');
+    if(Math.abs(tx-cx)>.05||Math.abs(ty-cy)>.05)raf=requestAnimationFrame(tick);else raf=null;
+  };
+  ap.addEventListener('pointermove',function(e){
+    var r=ap.getBoundingClientRect();
+    tx=((e.clientX-r.left)/r.width-.5)*28;ty=((e.clientY-r.top)/r.height-.5)*20;
+    if(!raf)raf=requestAnimationFrame(tick);
+  },{passive:true});
+  ap.addEventListener('pointerleave',function(){tx=0;ty=0;if(!raf)raf=requestAnimationFrame(tick);});
+}
+
+/* il volume si inclina sotto la mano */
+var vf=document.querySelector('.volume figure'),vq=document.querySelector('.volume-quadro');
+if(vf&&vq&&fine&&!rm){
+  vf.addEventListener('pointermove',function(e){
+    var r=vq.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    vq.style.setProperty('--ry',(x*10).toFixed(2)+'deg');vq.style.setProperty('--rx',(-y*8).toFixed(2)+'deg');
+  },{passive:true});
+  vf.addEventListener('pointerleave',function(){vq.style.setProperty('--ry','0deg');vq.style.setProperty('--rx','0deg');});
+}
+
+/* la lente sulle tavole a tutto schermo */
+document.querySelectorAll('.piena').forEach(function(f){
+  var im=f.querySelector('img');if(!im)return;
+  var lente=document.createElement('div');lente.className='lente';lente.setAttribute('aria-hidden','true');f.appendChild(lente);
+  var Z=2.4,R=130,attiva=false,px=0,py=0,lx=0,ly=0,raf=null;
+  function pos(){
+    raf=null;
+    if(!im.naturalWidth){return;}
+    var r=im.getBoundingClientRect(),fr=f.getBoundingClientRect();
+    var sc=Math.max(r.width/im.naturalWidth,r.height/im.naturalHeight),dw=im.naturalWidth*sc,dh=im.naturalHeight*sc;
+    var op=(getComputedStyle(im).objectPosition||'50% 50%').split(' ');
+    var ox=parseFloat(op[0])/100,oy=parseFloat(op[1]||'50%')/100;
+    var offx=(r.width-dw)*ox,offy=(r.height-dh)*oy;
+    lx+=(px-lx)*.22;ly+=(py-ly)*.22;
+    var ix=lx-r.left-offx,iy=ly-r.top-offy;
+    lente.style.backgroundImage='url("'+(im.currentSrc||im.src)+'")';
+    lente.style.backgroundSize=(dw*Z)+'px '+(dh*Z)+'px';
+    lente.style.backgroundPosition=(R-ix*Z)+'px '+(R-iy*Z)+'px';
+    lente.style.left=(lx-fr.left)+'px';lente.style.top=(ly-fr.top)+'px';
+    if(attiva&&(Math.abs(px-lx)>.3||Math.abs(py-ly)>.3))raf=requestAnimationFrame(pos);
+  }
+  function via(){attiva=false;f.classList.remove('lente-attiva');}
+  f.addEventListener('pointermove',function(e){
+    if(e.pointerType==='touch'&&!attiva)return;
+    px=e.clientX;py=e.clientY;
+    if(!attiva){attiva=true;lx=px;ly=py;f.classList.add('lente-attiva');}
+    if(!raf)raf=requestAnimationFrame(pos);
+  },{passive:true});
+  f.addEventListener('pointerdown',function(e){
+    if(e.pointerType!=='touch')return;
+    px=lx=e.clientX;py=ly=e.clientY;attiva=true;f.classList.add('lente-attiva');
+    if(!raf)raf=requestAnimationFrame(pos);
+  });
+  f.addEventListener('pointerup',function(e){if(e.pointerType==='touch')via();});
+  f.addEventListener('pointercancel',via);
+  f.addEventListener('pointerleave',via);
+});
+
+/* l'indice: il numero del capitolo affiora */
+var ind=document.querySelector('.indice'),ghost=ind&&ind.querySelector('.indice-ghost');
+if(ghost){
+  ind.querySelectorAll('.parte li').forEach(function(el,n){
+    el.addEventListener('pointerenter',function(){
+      var r=el.getBoundingClientRect(),ri=ind.getBoundingClientRect();
+      ghost.style.top=(r.top-ri.top+r.height/2)+'px';ghost.textContent=n+1;ghost.classList.add('su');
+    });
+    el.addEventListener('pointerleave',function(){ghost.classList.remove('su');});
+  });
+}
+
+/* il cassetto delle tavole si trascina, con inerzia */
+var c=document.querySelector('.cassetto');
+if(c&&fine){
+  var giu=false,sx=0,sl=0,vx=0,last=0,lastT=0,inerzia=null,mosso=false;
+  c.addEventListener('pointerdown',function(e){
+    if(e.pointerType==='touch')return;
+    giu=true;mosso=false;sx=e.clientX;sl=c.scrollLeft;vx=0;last=e.clientX;lastT=performance.now();
+    c.classList.add('preso');if(inerzia){cancelAnimationFrame(inerzia);inerzia=null;}
+    c.setPointerCapture(e.pointerId);
+  });
+  c.addEventListener('pointermove',function(e){
+    if(!giu)return;
+    var now=performance.now();
+    c.scrollLeft=sl-(e.clientX-sx);
+    if(Math.abs(e.clientX-sx)>6)mosso=true;
+    vx=(e.clientX-last)/Math.max(1,now-lastT);last=e.clientX;lastT=now;
+  });
+  var lascia=function(){
+    if(!giu)return;giu=false;c.classList.remove('preso');
+    var v=-vx*16;
+    var fr=function(){v*=.94;c.scrollLeft+=v;if(Math.abs(v)>.3)inerzia=requestAnimationFrame(fr);else inerzia=null;};
+    inerzia=requestAnimationFrame(fr);
+  };
+  c.addEventListener('pointerup',lascia);c.addEventListener('pointercancel',lascia);
+  c.addEventListener('click',function(e){if(mosso)e.preventDefault();},true);
+}
 })();
 </script>
 </body>
