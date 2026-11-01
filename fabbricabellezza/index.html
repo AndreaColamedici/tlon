@@ -80,6 +80,13 @@ p,figcaption{margin:0;text-wrap:pretty}
 .link{text-decoration:underline;text-underline-offset:.25em;text-decoration-thickness:.07em;text-decoration-color:rgba(243,236,223,.4);transition:text-decoration-color var(--breve) ease}
 @media(hover:hover){.link:hover{text-decoration-color:currentColor}}
 
+/* il libro come oggetto, subito sotto l'apertura */
+.volume{padding:var(--s6) var(--pad) var(--s4);display:grid;justify-items:center}
+.volume figure{margin:0;width:min(46vw,640px);display:grid;gap:var(--s3);justify-items:start}
+.volume-quadro{width:100%}
+.volume-quadro img{display:block;width:100%;height:auto;transform-origin:50% 100%}
+.volume figcaption{font-size:16px;line-height:1.5;color:var(--perla-2);max-width:44ch}
+
 /* la frase */
 .frase{padding:var(--s7) var(--pad);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--s4) var(--s6);align-items:end}
 .frase .grande{font-size:clamp(40px,7vw,96px);line-height:.92;max-width:16ch;grid-row:1/3}
@@ -87,7 +94,7 @@ p,figcaption{margin:0;text-wrap:pretty}
 .frase .fonte{font-size:16px;color:var(--perla-2);margin:0}
 
 /* il libro */
-.libro{padding:0 var(--pad) var(--s8);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s5) var(--s6);align-items:start}
+.libro{padding:0 var(--pad) var(--s7);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s5) var(--s6);align-items:start}
 .libro h2{grid-column:1/-1;font-size:clamp(48px,7vw,96px);line-height:.92}
 .cifre{display:grid;gap:var(--s4);position:sticky;top:var(--s5)}
 .cifra .g{font-size:clamp(72px,9vw,96px);line-height:.85;display:block}
@@ -97,7 +104,7 @@ p,figcaption{margin:0;text-wrap:pretty}
 .quarta .button{margin-top:var(--s3)}
 
 /* indice */
-.indice{padding:0 var(--pad) var(--s8)}
+.indice{padding:0 var(--pad) var(--s7)}
 .indice h2{font-size:clamp(48px,7vw,96px);line-height:.92;margin-bottom:var(--s5)}
 .parte{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s3) var(--s6);padding:var(--s5) 0}
 .parte+.parte{padding-top:0}
@@ -167,12 +174,11 @@ p,figcaption{margin:0;text-wrap:pretty}
 .autrice .fonte{font-size:16px;color:var(--perla-2);margin-top:var(--s2)}
 
 /* la chiusura */
-.chiusura{padding:var(--s7) var(--pad);background:var(--blu-2);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,4fr);gap:var(--s5) var(--s6);align-items:end}
-.chiusura blockquote{margin:0;font-family:var(--g);font-size:clamp(24px,2.2vw,32px);line-height:1.2;letter-spacing:-.01em;max-width:22ch}
+.chiusura{padding:var(--s7) var(--pad);background:var(--blu-2);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--s5) var(--s6);align-items:end}
+.chiusura blockquote{margin:0;font-family:var(--g);font-size:clamp(28px,3vw,40px);line-height:1.1;letter-spacing:-.015em}
 .chiusura .fonte{margin-top:var(--s3);font-size:16px;color:var(--perla-2);max-width:48ch}
-.chiusura h2{font-size:clamp(40px,3.9vw,56px);line-height:.95;margin-bottom:var(--s3)}
+.chiusura h2{font-size:clamp(40px,5vw,72px);line-height:.95;margin-bottom:var(--s3)}
 .chiusura p{max-width:38ch;margin-bottom:var(--s4)}
-.chiusura .oggetto{margin:0} .chiusura .oggetto img{display:block;width:100%;height:auto;max-width:360px}
 
 /* piede */
 footer{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s5)}
@@ -194,6 +200,8 @@ footer{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-columns
   @media(prefers-reduced-motion:no-preference){
     .apertura .quadro img{animation:avvicina linear both;animation-timeline:scroll(root);animation-range:0 100svh}
     @keyframes avvicina{from{transform:scale(1)}to{transform:scale(1.16)}}
+    .volume-quadro img{animation:posa-libro linear both;animation-timeline:view();animation-range:entry 0% cover 40%}
+    @keyframes posa-libro{from{transform:translateY(64px) scale(.9);opacity:.5}to{transform:none;opacity:1}}
     .piena .quadro img{animation:assesta linear both;animation-timeline:view();animation-range:entry 0% cover 55%}
     @keyframes assesta{from{transform:scale(1.14)}to{transform:scale(1)}}
     .piena .anno{animation:sale linear both;animation-timeline:view();animation-range:entry 20% cover 50%}
@@ -242,11 +250,11 @@ footer{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-columns
   .capitolo .tavola,.capitolo .citazione{margin-top:0!important}
   .tappe-lista{grid-template-columns:1fr;gap:var(--s5)}
   .tappa-citta{font-size:40px}
-  .chiusura .oggetto img{max-width:220px}
+  .volume{padding:var(--s5) var(--pad) var(--s3)}
+  .volume figure{width:78vw}
   .tavole .testa{grid-template-columns:1fr}
   .tappe-nota{margin-top:var(--s4)}
   .chiusura{padding:var(--s6) var(--pad)}
-  .chiusura>div:last-child{order:-1}
 }
 @media print{.barra{display:none}.piena{height:auto}}
 </style>
@@ -267,6 +275,13 @@ footer{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-columns
     </div>
   </div>
 </header>
+
+<section class="volume" id="volume" aria-label="Il libro">
+  <figure>
+    <div class="volume-quadro"><img class="" src="img/copertina-1500.webp" srcset="img/copertina-750.webp 750w, img/copertina-1500.webp 1500w" sizes="(max-width:900px) 72vw, 34vw" width="1500" height="1921" alt="La copertina del libro: Maura Gancitano, La fabbrica della bellezza, Rizzoli" loading="lazy" decoding="async"></div>
+    <figcaption>Rizzoli, Saggi italiani, 320 pagine con 169 immagini, 25 euro. In libreria dal 3 novembre 2026.</figcaption>
+  </figure>
+</section>
 
 <section class="frase" aria-label="Dall’introduzione">
   <p class="g grande">La fotografia ha cambiato tutto,</p>
@@ -457,10 +472,9 @@ footer{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-columns
 
 <section class="chiusura" id="prenota">
   <div>
-    <blockquote class="posa">Con la bellezza davanti a me cammino, con la bellezza dietro di me cammino, con la bellezza sopra di me cammino, con la bellezza tutto intorno a me cammino.</blockquote>
+    <blockquote class="posa">Con la bellezza davanti a me cammino,<br>con la bellezza dietro di me cammino,<br>con la bellezza sopra di me cammino,<br>con la bellezza tutto intorno a me cammino.</blockquote>
     <p class="fonte posa" style="--i:1">La preghiera tradizionale dei diné, con cui si chiude il libro: una bellezza in cui si cammina, invece di una da fissare in un’immagine.</p>
   </div>
-  <figure class="oggetto posa" style="--i:1"><img class="" src="img/copertina-1500.webp" srcset="img/copertina-750.webp 750w, img/copertina-1500.webp 1500w" sizes="(max-width:900px) 60vw, 25vw" width="1500" height="1921" alt="La copertina del libro: Maura Gancitano, La fabbrica della bellezza, Rizzoli" loading="lazy" decoding="async"></figure>
   <div>
     <h2 class="posa">In libreria dal 3 novembre</h2>
     <p class="posa" style="--i:1">Le copie ordinate dalla Libreria Tlon arrivano autografate da Maura e partono il giorno dell’uscita. Il libro è in tutte le librerie dallo stesso giorno.</p>
