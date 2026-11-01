@@ -1,0 +1,695 @@
+# -*- coding: utf-8 -*-
+"""Genera fabbricabellezza/index.html (La fabbrica della bellezza, Maura Gancitano, Rizzoli 2026).
+Le tappe sono nella lista TAPPE; i link .ics e le dimensioni delle immagini sono calcolati qui.
+Uso: python3 tools/genera-fabbricabellezza.py (richiede ImageMagick per le dimensioni)."""
+import urllib.parse, html, datetime, pathlib, subprocess, json
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent / "fabbricabellezza"
+OUT = ROOT / "index.html"
+SHOP = "https://shop.tlon.it/prodotto/la-fabbrica-della-bellezza-linvenzione-del-corpo-perfetto-dalla-fotografia-allintelligenza-artificiale-maura-gancitano-autografato/"
+e = html.escape
+
+def dims(name):
+    out = subprocess.run(["identify", "-format", "%w %h", str(ROOT / "img" / name)], capture_output=True, text=True).stdout.split()
+    return int(out[0]), int(out[1])
+
+def img(base, alt, cls="", sizes="100vw", lazy=True):
+    big = next(f"{base}-{t}.webp" for t in ("1800", "1600", "900") if (ROOT / "img" / f"{base}-{t}.webp").exists())
+    w, h = dims(big)
+    srcset = f' srcset="img/{base}-900.webp 900w, img/{big} {w}w" sizes="{sizes}"' if big != f"{base}-900.webp" else ""
+    return (f'<img class="{cls}" src="img/{big}"{srcset} '
+            f'width="{w}" height="{h}" alt="{e(alt)}"{" loading=\"lazy\"" if lazy else ""} decoding="async">')
+
+# ---------- Le tappe ----------
+TAPPE = [
+    dict(key="milano", day="mercoledì", d="4", mon="nov", time="18:30", city="Milano",
+         venue="Libreria Rizzoli, Galleria Vittorio Emanuele II", with_="Dialoga con Giulia Cavaliere",
+         maps="Libreria Rizzoli Galleria Vittorio Emanuele II Milano", start="2026-11-04T18:30", end="2026-11-04T19:30",
+         img="milano", alt="La cupola di vetro della Galleria Vittorio Emanuele II a Milano"),
+    dict(key="firenze", day="giovedì", d="5", mon="nov", time="18:15", city="Firenze",
+         venue="Libraccio, via de’ Cerretani", with_="Dialoga con Alessia Dulbecco; a seguire firmacopie",
+         maps="Libraccio via de' Cerretani Firenze", start="2026-11-05T18:15", end="2026-11-05T19:15",
+         img="firenze", alt="La cattedrale di Santa Maria del Fiore a Firenze"),
+    dict(key="prato", day="giovedì", d="5", mon="nov", time="21:30", city="Prato",
+         venue="Centro per l’arte contemporanea Luigi Pecci", with_="Pecci Books Festival",
+         maps="Centro Pecci Prato", start="2026-11-05T21:30", end="2026-11-05T22:30",
+         img="prato", alt="L’ingresso del Centro Pecci di Prato"),
+    dict(key="pescara", day="venerdì", d="6", mon="nov", time="17:30", city="Pescara",
+         venue="FLA, Festival di Libri e altrecose", with_="Il luogo è indicato nel programma del festival",
+         maps="FLA Festival di Libri e altrecose Pescara", start="2026-11-06T17:30", end="2026-11-06T18:30",
+         img="pescara", alt="Il Ponte del Mare di Pescara"),
+    dict(key="roma", day="domenica", d="8", mon="nov", time="18:30", city="Roma",
+         venue="Libreria Spazio Sette, via dei Barbieri 7", with_="Dialoga con Sabina Minardi",
+         maps="Libreria Spazio Sette via dei Barbieri 7 Roma", start="2026-11-08T18:30", end="2026-11-08T19:30",
+         img="roma", alt="Largo di Torre Argentina a Roma"),
+    dict(key="bologna", day="sabato", d="21", mon="nov", time="16:45", city="Bologna",
+         venue="L’Eredità delle Donne, Libreria Zanichelli", with_="Nel programma del festival",
+         maps="Libreria Zanichelli Bologna", start="2026-11-21T16:45", end="2026-11-21T17:30",
+         img="bologna", alt="La sala del Teatro Comunale di Bologna"),
+]
+
+def ics(t):
+    def z(s):
+        dt = datetime.datetime.fromisoformat(s) - datetime.timedelta(hours=1)  # Roma in novembre: UTC+1
+        return dt.strftime("%Y%m%dT%H%M%SZ")
+    body = "\r\n".join([
+        "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Tlon//La fabbrica della bellezza//IT", "BEGIN:VEVENT",
+        f"UID:fabbricabellezza-{t['key']}@tlon.it", f"DTSTAMP:{z('2026-11-01T12:00')}",
+        f"DTSTART:{z(t['start'])}", f"DTEND:{z(t['end'])}",
+        f"SUMMARY:Maura Gancitano presenta La fabbrica della bellezza, {t['city']}",
+        f"LOCATION:{t['venue']}, {t['city']}",
+        "DESCRIPTION:Presentazione di La fabbrica della bellezza (Rizzoli). https://www.tlon.it/fabbricabellezza/",
+        "URL:https://www.tlon.it/fabbricabellezza/", "END:VEVENT", "END:VCALENDAR"])
+    return "data:text/calendar;charset=utf-8," + urllib.parse.quote(body)
+
+def maps(q):
+    return "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(q)
+
+ROWS = "".join(f'''
+      <li class="tappa reveal" style="--i:{i}">
+        <p class="tappa-data"><span class="tappa-num">{t['d']}</span> <span class="tappa-mese">{t['mon']}</span></p>
+        <div class="tappa-corpo">
+          <h3>{e(t['city'])}</h3>
+          <p class="tappa-quando">{t['day']}, ore {t['time']}</p>
+          <p class="tappa-luogo">{e(t['venue'])}</p>
+          <p class="tappa-con">{e(t['with_'])}</p>
+          <p class="tappa-azioni"><a class="link" href="{ics(t)}" download="fabbrica-della-bellezza-{t['key']}.ics">Aggiungi al calendario</a><a class="link" href="{maps(t['maps'])}" target="_blank" rel="noopener">Indicazioni</a></p>
+        </div>
+        <figure class="tappa-foto">{img(t['img'], t['alt'], sizes="(max-width:900px) 100vw, 26vw")}</figure>
+      </li>''' for i, t in enumerate(TAPPE))
+
+# ---------- Le tavole del libro (tutte di dominio pubblico) ----------
+def tav(base, alt, cap, cls="", sizes="(max-width:900px) 100vw, 50vw", anno=None):
+    if anno:
+        return (f'<figure class="tavola {cls}"><div class="quadro">{img(base, alt, sizes=sizes)}<p class="anno" aria-hidden="true">{anno}</p></div>'
+                f'<figcaption class="sotto-anno">{cap}</figcaption></figure>')
+    return f'<figure class="tavola {cls}">{img(base, alt, sizes=sizes)}<figcaption>{cap}</figcaption></figure>'
+
+# le didascalie delle immagini del libro che non possiamo mostrare: una riga che scorre
+MARQUEE = " · ".join([
+    "La schermata iniziale di Adobe Photoshop 1.0, 1990", "L’interno di una cabina purikura a Tokyo",
+    "Il filtro Bold Glamour di TikTok", "Cindy Sherman, Untitled Film Still #21, 1978",
+    "Francesca Woodman, Space², 1976-1977", "Yoko Ono, Cut Piece, 1964", "Marina Abramović, Rhythm 0, 1974",
+    "New Look, la prima collezione di Christian Dior, 1947", "ORLAN, Omniprésence, 1993",
+    "Manifesto della campagna Dove Real Beauty, 2004", "Trevor Paglen, Faces of ImageNet, 2022",
+    "Shudu Gram, la prima top model digitale", "Lil Miquela", "Adam Harvey, CV Dazzle, 2010-2017",
+    "Zach Blas, Fag Face Mask, 2012", "Heather Dewey-Hagborg, Stranger Visions, 2012-13",
+    "Il Dazzle Club a Soho, aprile 2021", "Lygia Clark, Caminhando, 1963",
+    "Marina Abramović, The Artist is Present, 2010", "Paul Cézanne, La montagna Sainte-Victoire, 1902-1906",
+    "Pina Bausch, Kontakthof, con donne e uomini over 65, 2010", "Steve Paxton e Nancy Stark Smith, Contact Improvisation",
+    "Una rudbeckia come la vediamo noi e come la vede un’ape", "Silvia Giambrone, Mirror n.12",
+])
+
+CREDITS = ('Le tavole in questa pagina fanno parte delle 169 immagini del libro e sono opere di dominio pubblico; la fotografia dello Spinario è del Metropolitan Museum of Art (CC0). '
+           'Le fotografie delle città vengono da Wikimedia Commons: '
+           '<a href="https://commons.wikimedia.org/wiki/File:Glass_fome_of_the_Galleria_Vittorio_Emanuele_II_in_Milan.JPG">Galleria Vittorio Emanuele II</a> di High Contrast, <a href="https://creativecommons.org/licenses/by/3.0/de/deed.en">CC BY 3.0</a>; '
+           '<a href="https://commons.wikimedia.org/wiki/File:Cattedrale_di_Santa_Maria_del_Fiore_Florenz_M%C3%A4rz_2014.jpg">Santa Maria del Fiore</a> di Felix König, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>; '
+           '<a href="https://commons.wikimedia.org/wiki/File:Pecci_ingresso.jpg">Centro Pecci</a> di Michela.osteri, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>; '
+           '<a href="https://commons.wikimedia.org/wiki/File:Ponte_del_Mare_di_Pescara_2011.jpg">Ponte del Mare</a> di Exephyo, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>; '
+           '<a href="https://commons.wikimedia.org/wiki/File:The_Largo_di_Torre_Argentina_is_a_historic_square_in_Rome.jpg">Largo di Torre Argentina</a> di Wilfredor, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>; '
+           '<a href="https://commons.wikimedia.org/wiki/File:Teatro_Comunale_di_Bologna.jpg">Teatro Comunale di Bologna</a> di San2Kan, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>. '
+           'La copertina e il progetto grafico del libro sono di Rizzoli (Francesca Zucchi).')
+
+HTML = f'''<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La fabbrica della bellezza — Maura Gancitano</title>
+<meta name="description" content="La fabbrica della bellezza, il nuovo libro di Maura Gancitano (Rizzoli, dal 3 novembre 2026): l’invenzione del corpo perfetto dalla fotografia all’intelligenza artificiale, in 320 pagine e 169 immagini. Le presentazioni a Milano, Firenze, Prato, Pescara, Roma e Bologna.">
+<link rel="canonical" href="https://www.tlon.it/fabbricabellezza/">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#0a0a0b">
+<meta property="og:type" content="book">
+<meta property="og:site_name" content="Tlon">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="La fabbrica della bellezza — Maura Gancitano">
+<meta property="og:description" content="L’invenzione del corpo perfetto dalla fotografia all’intelligenza artificiale. Rizzoli, in libreria dal 3 novembre 2026. Le presentazioni in sei città.">
+<meta property="og:url" content="https://www.tlon.it/fabbricabellezza/">
+<meta property="og:image" content="https://www.tlon.it/fabbricabellezza/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="La fabbrica della bellezza — Maura Gancitano">
+<meta name="twitter:description" content="Il nuovo libro di Maura Gancitano, Rizzoli, dal 3 novembre 2026. Le presentazioni in sei città.">
+<meta name="twitter:image" content="https://www.tlon.it/fabbricabellezza/img/og.jpg">
+<link rel="preload" as="image" href="img/cover-900.webp">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<script type="application/ld+json">
+{{"@context":"https://schema.org","@type":"Book","name":"La fabbrica della bellezza. L'invenzione del corpo perfetto dalla fotografia all'intelligenza artificiale","author":{{"@type":"Person","name":"Maura Gancitano","url":"https://www.tlon.it/maura-gancitano/"}},"publisher":{{"@type":"Organization","name":"Rizzoli"}},"datePublished":"2026-11-03","isbn":"9788817197076","numberOfPages":320,"inLanguage":"it","image":"https://www.tlon.it/fabbricabellezza/img/cover-900.webp","url":"https://www.tlon.it/fabbricabellezza/"}}
+</script>
+<style>
+:root{{
+  --nero:#0a0a0b; --nero-2:#141416; --carta:#e9e7e2; --carta-2:#dedbd4; --inchiostro:#111113; --soffice:#5a564f;
+  --seppia:#d9cdb4; --seppia-soffice:#a79c86; --sasso:#2d5be0; --sasso-forte:#2449b8;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  --pad:clamp(20px,4vw,64px);
+  --ease-out:cubic-bezier(.16,1,.3,1); --ease-in-out:cubic-bezier(.65,0,.35,1); --ease-soft:cubic-bezier(.22,.61,.36,1);
+}}
+*,*::before,*::after{{box-sizing:border-box}}
+html{{scroll-behavior:smooth;-webkit-text-size-adjust:100%}}
+body{{margin:0;background:var(--nero);color:var(--carta);font-family:var(--sans);font-size:18px;line-height:1.55;font-feature-settings:"tnum" 1}}
+img{{display:block;max-width:100%;height:auto}}
+a{{color:inherit}}
+h1,h2,h3{{font-family:var(--serif);font-weight:400;margin:0;letter-spacing:-.01em;text-wrap:balance}}
+p,figcaption{{margin:0;text-wrap:pretty}}
+em{{font-family:inherit}}
+::selection{{background:var(--sasso);color:#fff}}
+:focus-visible{{outline:3px solid var(--sasso);outline-offset:3px}}
+.skip{{position:absolute;left:-999px;top:8px;background:var(--carta);color:var(--nero);padding:8px 14px}}
+.skip:focus{{left:8px;z-index:200}}
+.wrap{{padding-inline:var(--pad)}}
+.reveal{{}}
+
+/* barra */
+.barra{{display:flex;justify-content:space-between;align-items:center;padding:22px var(--pad) 0}}
+.wordmark{{font-family:var(--serif);font-size:32px;line-height:1;text-decoration:none;letter-spacing:-.02em}}
+.barra nav{{display:flex;gap:26px;font-size:16px}}
+.barra nav a{{text-decoration:none}}
+@media(hover:hover) and (pointer:fine){{.barra nav a:hover{{text-decoration:underline;text-underline-offset:.25em}}}}
+
+/* apertura: il titolo come monumento, la copertina come oggetto */
+.apertura{{min-height:calc(100svh - 70px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);grid-template-rows:1fr auto;padding:64px var(--pad) 56px;gap:0 48px;position:relative;overflow:hidden}}
+.autrice-nome{{grid-column:1;align-self:start;font-family:var(--serif);font-size:32px;line-height:1.1;margin-bottom:32px}}
+.apertura h1{{grid-column:1;grid-row:2;font-style:italic;font-size:clamp(64px,8.8vw,140px);line-height:.9;letter-spacing:-.025em;margin:0 0 34px -0.03em}}
+.apertura .sotto{{grid-column:1;grid-row:3;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px 40px;align-items:end}}
+.sottotitolo{{font-family:var(--serif);font-size:32px;line-height:1.12;max-width:26ch}}
+.uscita{{font-size:18px;max-width:46ch;margin-top:18px;color:var(--seppia)}}
+.uscita strong{{color:var(--carta);font-weight:600}}
+.copertina{{grid-column:2;grid-row:1/4;align-self:center;justify-self:end;width:min(100%,420px);margin:0}}
+.copertina img{{width:100%;height:auto}}
+.sguardo{{font-size:18px;color:var(--seppia);max-width:46ch;margin-top:28px}}
+.sguardo strong{{color:var(--carta);font-weight:600;font-variant-numeric:tabular-nums}}
+.button{{display:inline-block;background:var(--sasso);color:#fff;text-decoration:none;font-weight:600;font-size:18px;padding:18px 28px;transition:transform 120ms var(--ease-out),background-color 160ms ease;white-space:nowrap}}
+.button:active{{transform:scale(.97)}}
+.link{{text-decoration:underline;text-underline-offset:.22em;text-decoration-thickness:.07em;text-decoration-color:rgba(255,255,255,.35);transition:text-decoration-color 160ms ease}}
+.carta .link{{text-decoration-color:rgba(17,17,19,.35)}}
+@media(hover:hover) and (pointer:fine){{
+  .button:hover{{background:var(--sasso-forte)}}
+  .link:hover{{text-decoration-color:currentColor}}
+}}
+
+/* la posa: il dagherrotipo di chi visita */
+.posa{{padding:150px var(--pad) 0;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px 72px;align-items:center}}
+.posa h2{{font-size:72px;line-height:.98;letter-spacing:-.02em;margin-bottom:30px}}
+.posa p{{max-width:46ch;color:var(--seppia);margin-bottom:1.1em}}
+.posa p strong{{color:var(--carta);font-weight:500}}
+.posa .azioni{{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center;margin-top:28px}}
+.posa .nota{{font-size:16px;color:var(--seppia-soffice);max-width:44ch;margin-top:20px}}
+.lastra{{position:relative;aspect-ratio:4/5;background:var(--nero-2);overflow:hidden;max-width:620px;justify-self:end;width:100%}}
+.lastra canvas,.lastra video,.lastra img{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}}
+.lastra video{{opacity:0;pointer-events:none}}
+.lastra .conto{{position:absolute;left:0;right:0;bottom:0;padding:18px 22px;font-family:var(--serif);font-size:32px;line-height:1;color:var(--carta);background:rgba(10,10,11,.72)}}
+.lastra .conto small{{display:block;font-family:var(--sans);font-size:16px;color:var(--seppia-soffice);margin-top:8px}}
+.lastra .conto .n{{font-variant-numeric:tabular-nums}}
+.lastra[hidden]{{display:none}}
+.lastra-did{{font-size:16px;color:var(--seppia-soffice);margin-top:12px;max-width:52ch;justify-self:end;width:100%;max-width:620px}}
+.button.secondo{{background:var(--carta);color:var(--nero)}}
+@media(hover:hover) and (pointer:fine){{.button.secondo:hover{{background:#fff}}}}
+[hidden]{{display:none!important}}
+
+/* la frase */
+.frase{{margin:-16px 0 72px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px 64px;align-items:end}}
+.frase blockquote{{grid-column:2;margin:0;font-family:var(--serif);font-size:32px;line-height:1.15;max-width:34ch;text-wrap:balance}}
+.frase .fonte{{grid-column:2;font-size:16px;color:var(--soffice)}}
+
+/* sezioni su carta: il libro, l'indice, le tappe */
+.carta{{background:var(--carta);color:var(--inchiostro)}}
+.carta .soffice,.carta figcaption{{color:var(--soffice)}}
+section.blocco{{padding:150px var(--pad)}}
+.titolone{{font-size:72px;line-height:.98;margin-bottom:56px;letter-spacing:-.02em}}
+.libro-griglia{{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px 64px;align-items:start}}
+.libro-testo p{{max-width:62ch;margin-bottom:1.15em;font-size:18px}}
+.libro-testo p:first-child{{font-size:24px;line-height:1.4;font-weight:500}}
+.libro-lato{{position:sticky;top:110px}}
+.libro-lato p{{font-size:18px;max-width:34ch;margin-bottom:1em}}
+.libro-lato .dato{{font-family:var(--serif);font-size:72px;line-height:.95;display:block;margin-top:40px}}
+.libro-lato .dato + p{{margin-top:8px;color:var(--soffice)}}
+
+.indice{{padding-top:0}}
+.indice h2{{font-size:32px;margin-bottom:40px}}
+.parti{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 40px}}
+.parte h3{{font-size:32px;line-height:1.1;margin-bottom:22px}}
+.parte ol{{list-style:none;margin:0;padding:0}}
+.parte li{{padding:14px 0 16px;font-size:16px}}
+.parte li strong{{display:block;font-family:var(--serif);font-size:24px;font-weight:400;line-height:1.15;margin-bottom:4px}}
+.parte li span{{color:var(--soffice);font-size:16px}}
+
+/* le tavole: le pagine nere del libro */
+.tavole{{padding:150px 0 0}}
+.tavole .intro{{padding:0 var(--pad);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:96px}}
+.tavole .intro p{{max-width:46ch;color:var(--seppia);font-size:18px}}
+.anno{{font-family:var(--serif);font-size:200px;line-height:.85;letter-spacing:-.04em;color:var(--seppia);margin:0;position:relative;z-index:1;pointer-events:none}}
+.capitolo{{padding:0 var(--pad);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 48px;align-items:end;margin-bottom:120px}}
+.capitolo.piena{{display:block}}
+.tavola{{margin:0;position:relative}}
+.quadro{{position:relative}}
+.quadro .anno{{position:absolute;left:-0.02em;bottom:-0.3em}}
+.sotto-anno{{padding-top:76px}}
+.tavola img{{width:100%;height:auto;background:var(--nero-2)}}
+.tavola figcaption{{font-size:16px;color:var(--seppia-soffice);margin-top:12px;max-width:52ch}}
+
+.tavola.stretta{{max-width:420px}}
+.tavola.media{{max-width:640px}}
+.dalibro{{font-family:var(--serif);font-size:24px;line-height:1.25;max-width:40ch;color:var(--carta);margin:0;text-wrap:balance}}
+.dalibro small{{display:block;font-family:var(--sans);font-size:16px;color:var(--seppia-soffice);margin-top:14px}}
+.cap-testo{{align-self:start;padding-top:12px}}
+.trio{{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:28px;align-items:end}}
+.coppia{{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:end}}
+.fila{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;align-items:start}}
+.nastro{{overflow:hidden;padding:40px 0;margin:40px 0 120px;background:var(--nero-2)}}
+.nastro-traccia{{display:flex;width:max-content;gap:0;font-family:var(--serif);font-style:italic;font-size:48px;line-height:1;white-space:nowrap;color:var(--seppia)}}
+.nastro-traccia span{{padding-right:1.2em}}
+.nastro-nota{{padding:0 var(--pad);font-size:16px;color:var(--seppia-soffice);margin-top:-96px;margin-bottom:120px;max-width:60ch}}
+
+/* le tappe */
+.tappe h2{{margin-bottom:40px}}
+.tappe-lista{{list-style:none;margin:0;padding:0}}
+.tappa{{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,5fr) minmax(0,3fr);gap:24px 40px;padding:44px 0;align-items:start}}
+.tappa+.tappa{{background:var(--carta)}}
+.tappa-data{{font-family:var(--serif);line-height:.85;letter-spacing:-.03em}}
+.tappa-num{{font-size:72px}}
+.tappa-mese{{font-size:32px}}
+.tappa h3{{font-size:48px;line-height:1}}
+.tappa-quando{{font-size:18px;font-weight:600;margin-top:12px}}
+.tappa-luogo{{font-size:18px;margin-top:4px}}
+.tappa-con{{font-size:16px;color:var(--soffice);margin-top:6px}}
+.tappa-azioni{{font-size:16px;margin-top:16px;display:flex;gap:22px;flex-wrap:wrap}}
+.tappa-foto{{margin:0}}
+.tappa-foto img{{width:100%;aspect-ratio:4/3;object-fit:cover}}
+.tappa-extra{{padding:44px 0 0;max-width:62ch}}
+.tappa-extra h3{{font-size:32px;line-height:1.1}}
+.tappa-extra p{{margin-top:12px;font-size:18px}}
+.tappe-nota{{margin-top:48px;font-size:16px;color:var(--soffice)}}
+
+/* l'autrice */
+.autrice{{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px 72px;align-items:center;padding:150px var(--pad)}}
+.autrice figure{{margin:0}}
+.autrice figure img{{width:100%;height:auto}}
+.autrice h2{{font-size:72px;line-height:.98;margin-bottom:34px;letter-spacing:-.02em}}
+.autrice p{{max-width:54ch;margin-bottom:1.1em;color:var(--seppia)}}
+.autrice p strong{{color:var(--carta);font-weight:500}}
+.autrice blockquote{{margin:40px 0 0;font-family:var(--serif);font-size:24px;line-height:1.3;max-width:40ch;color:var(--carta)}}
+.autrice blockquote small{{display:block;font-family:var(--sans);font-size:16px;color:var(--seppia-soffice);margin-top:12px}}
+
+/* la preghiera e la chiusura */
+.cammino{{padding:150px var(--pad);background:var(--sasso);color:var(--carta)}}
+.cammino blockquote{{margin:0;font-family:var(--serif);font-size:24px;line-height:1.35;max-width:30ch}}
+.cammino .fonte{{margin-top:22px;font-size:16px;max-width:44ch;color:var(--carta-2)}}
+.cammino-griglia{{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:end;margin-top:72px}}
+.cammino h2{{font-size:72px;line-height:.98;letter-spacing:-.02em}}
+.cammino .button{{background:var(--carta);color:var(--nero)}}
+@media(hover:hover) and (pointer:fine){{.cammino .button:hover{{background:#fff}}}}
+.cammino .prenota p{{font-size:18px;max-width:40ch;margin-bottom:28px}}
+
+/* piede */
+footer{{padding:96px var(--pad) 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px}}
+footer .wordmark{{display:inline-block;margin-bottom:40px}}
+.menu-grande{{list-style:none;margin:0;padding:0}}
+.menu-grande li{{margin-bottom:16px}}
+.menu-grande a{{font-family:var(--serif);font-size:32px;line-height:1;text-decoration:none;display:inline-block;transition:transform 220ms var(--ease-out),opacity 220ms ease}}
+@media(hover:hover) and (pointer:fine){{.menu-grande:hover a{{opacity:.5}}.menu-grande a:hover{{opacity:1;transform:translateX(12px)}}}}
+.piede-blocchi{{display:grid;grid-template-columns:1fr 1fr;gap:24px;font-size:16px;margin-top:40px}}
+.piede-blocchi p{{margin-bottom:6px}}
+.piede-blocchi a{{text-decoration:none}}
+@media(hover:hover) and (pointer:fine){{.piede-blocchi a:hover{{text-decoration:underline}}}}
+.crediti{{font-size:16px;line-height:1.5;color:var(--seppia-soffice);max-width:70ch}}
+.crediti a{{color:inherit}}
+.legale{{font-size:16px;color:var(--seppia-soffice);margin-top:24px}}
+
+/* movimento */
+@media(prefers-reduced-motion:no-preference){{
+  .js .copertina{{clip-path:inset(0 0 100% 0);transition:clip-path 1100ms var(--ease-in-out)}}
+  .js .copertina img{{transform:scale(1.12);transition:transform 1500ms var(--ease-soft)}}
+  .js .copertina.is-in{{clip-path:inset(0)}}
+  .js .copertina.is-in img{{transform:none}}
+  .js .reveal{{opacity:0;transform:translateY(26px);transition:opacity 800ms var(--ease-out),transform 800ms var(--ease-out);transition-delay:calc(var(--i,0)*90ms)}}
+  .js .reveal.is-in{{opacity:1;transform:none}}
+  .js .anno{{opacity:0;transform:translateX(-24px);transition:opacity 900ms var(--ease-out),transform 900ms var(--ease-out)}}
+  .js .anno.is-in{{opacity:1;transform:none}}
+  .nastro-traccia{{animation:scorri 70s linear infinite}}
+  .nastro:hover .nastro-traccia{{animation-play-state:paused}}
+  @keyframes scorri{{from{{transform:translateX(0)}}to{{transform:translateX(-50%)}}}}
+  .js .autrice figure img{{animation:respiro 24s ease-in-out infinite alternate}}
+  @keyframes respiro{{from{{transform:scale(1)}}to{{transform:scale(1.04)}}}}
+  .autrice figure{{overflow:hidden}}
+}}
+
+/* telefono e tablet */
+@media(max-width:900px){{
+  .barra nav a:not(:last-child){{display:none}}
+  .apertura{{display:flex;flex-direction:column;padding-top:92px;gap:0}}
+  .autrice-nome{{font-size:24px;margin-bottom:28px}}
+  .apertura h1{{font-size:clamp(56px,15.5vw,96px);margin-bottom:28px}}
+  .copertina{{width:min(72%,340px);justify-self:start;margin:8px 0 36px}}
+  .apertura .sotto{{display:block}}
+  .sottotitolo{{font-size:24px}}
+  .frase{{grid-template-columns:1fr;margin-bottom:48px}}
+  .frase blockquote,.frase .fonte{{grid-column:1}}
+  .anno{{font-size:96px}}
+  .sotto-anno{{padding-top:44px}}
+  .frase blockquote{{font-size:24px}}
+  .titolone,.autrice h2,.cammino h2,.posa h2{{font-size:48px}}
+  .libro-lato .dato{{font-size:48px}}
+  .nastro-traccia{{font-size:32px}}
+  .uscita{{margin-bottom:28px}}
+  .sguardo{{margin-top:40px}}
+  .posa{{grid-template-columns:1fr;padding-top:96px;gap:36px}}
+  .lastra,.lastra-did{{justify-self:start;max-width:none}}
+  section.blocco,.autrice,.cammino{{padding:96px var(--pad)}}
+  .libro-griglia,.parti,.autrice,.cammino-griglia,.tavole .intro,footer{{grid-template-columns:1fr}}
+  .libro-lato{{position:static}}
+  .libro-testo p:first-child{{font-size:24px}}
+  .tavole{{padding-top:96px}}
+  .tavole .intro{{margin-bottom:64px}}
+  .capitolo{{grid-template-columns:1fr;margin-bottom:80px}}
+  .trio,.coppia,.fila{{grid-template-columns:1fr 1fr}}
+  .fila{{grid-template-columns:1fr}}
+  .trio .tavola:has(.anno),.coppia .tavola:has(.anno){{grid-column:1/-1}}
+  .tavola.stretta,.tavola.media{{max-width:none}}
+  .nastro{{margin-bottom:80px}}
+  .nastro-nota{{margin-top:-56px;margin-bottom:80px}}
+  .tappa{{grid-template-columns:minmax(0,1fr);gap:16px;padding:36px 0}}
+  .tappa-num{{font-size:72px}}
+  .tappa h3{{font-size:32px}}
+  .tappa-foto{{order:-1}}
+  .cammino-griglia{{margin-top:48px}}
+  footer{{padding-top:64px}}
+}}
+@media print{{.barra{{display:none}}.nastro{{display:none}}}}
+</style>
+</head>
+<body>
+<a class="skip" href="#libro">Vai al contenuto</a>
+<div class="barra"><a class="wordmark" href="https://www.tlon.it/">tlon</a><nav aria-label="Sezioni"><a href="#posa">La posa</a><a href="#libro">Il libro</a><a href="#tavole">Le immagini</a><a href="#tappe">Le tappe</a><a href="{SHOP}">Prenota</a></nav></div>
+
+<header class="apertura" id="inizio">
+  <p class="autrice-nome">Maura Gancitano</p>
+  <h1>La fabbrica<br>della bellezza</h1>
+  <div class="sotto">
+    <div>
+      <p class="sottotitolo">L’invenzione del corpo perfetto dalla fotografia all’intelligenza artificiale</p>
+      <p class="uscita">Rizzoli, in libreria dal <strong>3 novembre 2026</strong>. 320 pagine, 169 immagini. Le presentazioni a Milano, Firenze, Prato, Pescara, Roma e Bologna.</p>
+    </div>
+    <a class="button" href="#posa">Mettiti in posa</a>
+  </div>
+  <figure class="copertina" id="copertina">{img("cover", "La copertina: un ritratto settecentesco di donna con turbante, il volto coperto da una fascia di stoffa, uno specchio in mano", sizes="(max-width:900px) 72vw, 420px", lazy=False)}</figure>
+</header>
+
+<section class="posa" id="posa" aria-labelledby="posa-titolo">
+  <div>
+    <h2 id="posa-titolo" class="reveal">Mettiti in posa</h2>
+    <p class="reveal" style="--i:1">Nel 1839 un ritratto chiedeva <strong>quindici, venti minuti di assoluta immobilità</strong>. Chi si muoveva compariva sulla lastra come una macchia, un fantasma, oppure non compariva affatto: per questo il Boulevard du Temple di Daguerre è deserto, e i due uomini fermi del lustrascarpe sono i primi esseri umani mai fotografati.</p>
+    <p class="reveal" style="--i:2">Qui bastano <strong>venti secondi</strong>. La lastra raccoglie la luce per tutto il tempo: resta fermo e il tuo volto affiora, muoviti e sparisci. Come il dagherrotipo, l’immagine <strong>non è specchiata</strong>: è il volto che vedono gli altri, non quello che ti mostra lo specchio.</p>
+    <div class="azioni reveal" style="--i:3"><button class="button" id="posa-avvia" type="button">Apri la camera e mettiti in posa</button><button class="button secondo" id="posa-salva" type="button" hidden>Conserva la lastra</button><button class="button secondo" id="posa-rifai" type="button" hidden>Un’altra posa</button></div>
+    <p class="nota reveal" style="--i:4">La camera resta nel tuo dispositivo: l’immagine si forma nel browser e nessuno la riceve, né Tlon né altri. Se la camera manca o preferisci non usarla, resta la lastra di Daguerre.</p>
+    <p class="sguardo reveal" style="--i:5">Nel frattempo, da quando sei su questa pagina, una videocall ti avrebbe già fotografato <strong id="fotogrammi">0</strong> volte.</p>
+  </div>
+  <div>
+    <div class="lastra" id="lastra">
+      <img id="lastra-fallback" src="img/boulevard-du-temple-1838-1800.webp" width="1526" height="1084" alt="Il Boulevard du Temple fotografato da Daguerre nel 1838: la strada vuota e due figure ferme" loading="lazy" decoding="async">
+      <video id="posa-video" playsinline muted autoplay poster="img/boulevard-du-temple-1838-900.webp"></video>
+      <canvas id="posa-canvas" width="720" height="900" hidden></canvas>
+      <p class="conto" id="posa-conto" hidden><span class="n" id="posa-n">20</span><small id="posa-stato">Resta immobile</small></p>
+    </div>
+    <p class="lastra-did" id="lastra-did">Louis Daguerre, <em>Boulevard du Temple</em>, 1838. Esposizione: almeno dieci minuti.</p>
+  </div>
+</section>
+
+<section class="carta blocco" id="libro">
+  <h2 class="titolone reveal">Il libro</h2>
+  <div class="frase">
+    <blockquote class="reveal">La fotografia ha cambiato tutto, e ciò che è venuto dopo la fotografia ha cambiato tutto ancora una volta.</blockquote>
+    <p class="fonte reveal" style="--i:1">Dall’introduzione, <em>Quando abbiamo smesso di riconoscerci</em></p>
+  </div>
+  <div class="libro-griglia">
+    <aside class="libro-lato">
+      <p class="reveal" style="--i:1">Quattro anni dopo <em>Specchio delle mie brame</em>, il saggio con cui ha vinto il Premio Rapallo, Maura Gancitano torna sulla bellezza e ne ricostruisce la fabbrica: due secoli di immagini che hanno insegnato ai corpi come apparire.</p>
+      <span class="dato reveal" style="--i:2">169</span>
+      <p class="reveal" style="--i:3">immagini, dal primo dagherrotipo del 1838 ai filtri e alle modelle generate dall’intelligenza artificiale</p>
+      <span class="dato reveal" style="--i:4">12</span>
+      <p class="reveal" style="--i:5">capitoli in tre parti: come l’immagine è diventata più vera del corpo, perché sapere non basta, e le bellezze che sfuggono</p>
+    </aside>
+    <div class="libro-testo">
+      <p class="reveal" style="--i:1">Quasi duecento anni fa nessuno viveva così, perché nessuno aveva mai visto il proprio volto fissato dalla luce su una superficie, e dunque permanente, giudicabile e confrontabile con quello di chiunque altro.</p>
+      <p class="reveal" style="--i:2">Nessun essere umano nella storia è stato così tanto fotografato e costretto a vedersi, allo specchio, nei selfie, nei quadratini delle videocall, come accade a noi. «Ma io sono davvero questo insieme di elementi che vedo impressi in una foto?», ci chiediamo sempre prima e sempre più spesso. Questa frattura tra il nostro corpo e la sua rappresentazione è la condizione strutturale dell’esperienza moderna della bellezza.</p>
+      <p class="reveal" style="--i:3">Dall’invenzione della fotografia, che ha fissato i volti su una pellicola e li ha resi confrontabili, fino a oggi, l’immagine è diventata via via più vera del corpo, e ci ha fatto credere di doverci conformare a un certo ideale per corrispondere a una sua versione ogni volta più perfetta. La bellezza si è trasformata in un dispositivo di potere che ci sorveglia, ci misura, ci giudica secondo criteri che non abbiamo scelto, e questa sorveglianza si è installata in noi, come uno specchio che ci portiamo dentro.</p>
+      <p class="reveal" style="--i:4">Maura Gancitano racconta la storia del rapporto tra corpo e immagine dagli inizi dell’Ottocento a oggi, per comprendere il modo in cui la fotografia, la pubblicità, la moda, il cinema, la statistica, i social, i media digitali e in ultimo l’intelligenza artificiale ci abbiano cambiati, inventando corpi sempre più perfetti e sempre meno reali. Ma se è vero che non possiamo più vederci e vedere senza i filtri, possiamo però imparare a riconoscerli e a muoverci al loro interno, per liberarci dal mito della bellezza perfetta: cercando nuovi modi di apparire e di esistere in relazione con gli altri, abitando il corpo che abbiamo, sentendolo dall’interno, qui e ora, con tutto ciò che porta scritto su di sé.</p>
+    </div>
+  </div>
+</section>
+
+<section class="carta blocco indice" aria-labelledby="indice-titolo">
+  <h2 id="indice-titolo" class="reveal">Indice</h2>
+  <div class="parti">
+    <div class="parte reveal" style="--i:0">
+      <h3>Quando l’immagine diventò più vera del corpo</h3>
+      <ol>
+        <li><strong>Il terzo sguardo</strong><span>La nascita della fotografia e l’oggettivazione del corpo</span></li>
+        <li><strong>Misurare la bellezza</strong><span>Normalizzazione statistica e controllo sociale</span></li>
+        <li><strong>Tutti fotografabili</strong><span>Democratizzazione, schedatura e controllo dell’immagine</span></li>
+        <li><strong>Il corpo nell’epoca della riproducibilità</strong><span>Fotografia di moda, pubblicità e la costruzione del perfetto impossibile</span></li>
+      </ol>
+    </div>
+    <div class="parte reveal" style="--i:1">
+      <h3>Perché sapere non basta</h3>
+      <ol>
+        <li><strong>Il corpo esposto</strong><span>Televisione, diete e l’industria della magrezza</span></li>
+        <li><strong>So che i filtri mentono (ma li uso lo stesso)</strong><span>Il paradosso della consapevolezza</span></li>
+        <li><strong>La tua immagine è più vera di te</strong><span>Quando il corpo insegue l’immagine</span></li>
+        <li><strong>Quando anche il rifiuto diventa un mercato</strong><span>Corpi grassi, body positivity e modelle virtuali</span></li>
+      </ol>
+    </div>
+    <div class="parte reveal" style="--i:2">
+      <h3>Bellezze che sfuggono</h3>
+      <ol>
+        <li><strong>Corpi che si sottraggono</strong><span>Riconoscimento facciale, maschere e diritto all’opacità</span></li>
+        <li><strong>Ciò che non si lascia fotografare</strong><span>La bellezza del gesto e del tempo vissuto</span></li>
+        <li><strong>Abitare il corpo</strong><span>Postura, danza e percezione del corpo dall’interno</span></li>
+        <li><strong>Bellezze altre</strong><span>Mondi animali, oltre l’Occidente, bellezze fuori norma</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="tavole" id="tavole">
+  <div class="intro">
+    <h2 class="titolone reveal" style="margin-bottom:0">Le immagini<br>del libro</h2>
+    <p class="reveal" style="--i:1">Il libro è anche un atlante: 169 immagini accompagnano il racconto, su pagine nere come queste. Ne mostriamo alcune, quelle ormai di dominio pubblico, nell’ordine in cui il libro le incontra.</p>
+  </div>
+
+  <div class="capitolo piena">
+    {tav("boulevard-du-temple-1838", "Il Boulevard du Temple a Parigi fotografato da Daguerre: la strada appare deserta, solo due figure ferme in basso a sinistra", "Il primo dagherrotipo: Louis Daguerre, <em>Boulevard du Temple</em>, 1838.", sizes="100vw", anno="1838")}
+    <p class="dalibro reveal" style="margin-top:40px">«Due sconosciuti dei quali non sapremo mai il nome, immortalati per caso perché erano rimasti fermi mentre il resto del mondo si muoveva, sono stati i primi esseri umani mai fotografati.»<small>Dal primo capitolo, <em>Il terzo sguardo</em></small></p>
+  </div>
+
+  <div class="capitolo">
+    <div class="trio" style="grid-column:1/-1">
+      {tav("arago-1839", "Incisione: François Arago parla davanti all’Accademia delle scienze gremita", "François Arago annuncia la scoperta di Jacques Daguerre, 1839.", sizes="(max-width:900px) 50vw, 40vw", anno="1839")}
+      {tav("daguerreotypomanie-1839", "Caricatura con folle che corrono a farsi fotografare, mongolfiere e cavalletti", "Théodore Maurisset, <em>La Daguerréotypomanie</em>, 1839.", sizes="(max-width:900px) 50vw, 28vw")}
+      {tav("figurini-1839", "Tavola di moda con otto acconciature femminili dell’epoca", "Figurini di moda femminile, 1839.", sizes="(max-width:900px) 50vw, 28vw")}
+    </div>
+    <p class="dalibro reveal" style="grid-column:1/-1;margin-top:12px">«Nei mesi successivi, Parigi fu percorsa da quella che i giornali chiamarono daguerréotypomanie.»<small>Dall’introduzione</small></p>
+  </div>
+
+  <div class="capitolo">
+    {tav("berthe-1862", "Sei pose della stessa donna in abito scuro accanto a una statua, su una lastra per carte de visite", "André-Adolphe-Eugène Disdéri, <em>Berthe</em>, 1862, carte de visite.", sizes="(max-width:900px) 100vw, 50vw", anno="1862")}
+    <div class="cap-testo">
+      {tav("lobkowitz-1858", "Sei pose di un uomo in redingote, in piedi e seduto, sulla stessa lastra", "André-Adolphe-Eugène Disdéri, <em>Prince Lobkowitz</em>, 1858, carte de visite.", cls="media", sizes="(max-width:900px) 100vw, 40vw")}
+      <p class="dalibro reveal" style="margin-top:40px">«Il proprio volto diventava qualcosa che si poteva tenere in mano, mostrare ad altri, conservare in un cassetto. Qualcosa da tirare fuori anni dopo e confrontare con la propria faccia ormai invecchiata.»<small>Dall’introduzione</small></p>
+    </div>
+  </div>
+
+  <div class="capitolo">
+    <div class="fila" style="grid-column:1/-1">
+      {tav("bernhardt-1864", "Ritratto fotografico di Sarah Bernhardt giovane, in abito bianco di pizzo", "Nadar, <em>Madame Sarah Bernhardt</em>, 1864 circa.", sizes="(max-width:900px) 100vw, 30vw", anno="1864")}
+      {tav("karr-1877", "Ritratto di spalle di un uomo con mantello drappeggiato, il volto di profilo", "Samuel Adam-Salomon, <em>Alphonse Karr</em>, 1877 circa.", sizes="(max-width:900px) 100vw, 30vw")}
+      {tav("isenring-1860", "Dagherrotipo ovale colorato a mano di un giovane uomo seduto", "Johann Baptist Isenring, dagherrotipo colorato a mano, 1860 circa.", sizes="(max-width:900px) 100vw, 30vw")}
+    </div>
+  </div>
+
+  <div class="capitolo">
+    <div class="cap-testo">
+      {tav("quetelet", "Diagramma a campana con la popolazione media, tra «nain» e «géant»", "Diagramma tratto da Adolphe Quetelet, <em>Anthropométrie</em>.", cls="media", sizes="(max-width:900px) 100vw, 40vw", anno="1884")}
+      <p class="dalibro reveal" style="margin-top:40px">«Non sapeva niente dell’uomo medio di Quetelet, né dei ritratti compositi di Galton, né del fatto che la taglia dei suoi jeans discendeva da un corpo astratto mai esistito.»<small>Dalle conclusioni</small></p>
+    </div>
+    <div class="coppia">
+      {tav("galton-compositi", "Frontespizio con specimen di ritratti compositi: famiglia, salute, malattia, criminalità", "Francis Galton, ritratti compositi dal frontespizio di <em>Inquiries into Human Faculty</em>.", sizes="(max-width:900px) 50vw, 24vw")}
+      {tav("galton-criminali", "Tavola di volti sovrapposti ottenuti da fotografie segnaletiche", "Francis Galton, ritratto composito realizzato a partire da fotografie di criminali.", sizes="(max-width:900px) 50vw, 24vw")}
+    </div>
+    <div class="coppia" style="grid-column:1/-1">
+      {tav("bertillon-orecchie-1894", "Tavola di orecchie fotografate e classificate per forma", "Sistema antropometrico di Bertillon: forme comparative dell’orecchio, 1894.", sizes="(max-width:900px) 50vw, 48vw")}
+      {tav("cartellino-segnaletico", "Cartellino segnaletico con due fotografie, di fronte e di profilo, e misure antropometriche", "Cartellino con fotografia segnaletica e dati antropometrici di un ricercato.", sizes="(max-width:900px) 50vw, 48vw")}
+    </div>
+  </div>
+
+  <div class="capitolo">
+    <div class="coppia">
+      {tav("kodak-1893", "Pubblicità Kodak: «The Camera that takes the World!», prezzo da 1 sterlina e 6 scellini", "Pubblicità della Kodak su «The Illustrated London News», 16 settembre 1893.", sizes="(max-width:900px) 50vw, 24vw", anno="1893")}
+      {tav("kodak-natale", "Illustrazione a colori: una famiglia apre una Kodak sotto l’albero di Natale", "Pubblicità natalizia della Kodak, illustrazione di Edward Penfield.", sizes="(max-width:900px) 50vw, 24vw")}
+    </div>
+    <div class="cap-testo">
+      {tav("cheret-jardin-de-paris", "Manifesto colorato di Jules Chéret per il Jardin de Paris, con una ballerina che danza", "Manifesto Art Nouveau di Jules Chéret per il Jardin de Paris.", cls="media", sizes="(max-width:900px) 100vw, 40vw")}
+      <p class="dalibro reveal" style="margin-top:40px">Tutti fotografabili, e tutti davanti a un modello: con la Kodak la macchina entra in casa, con i manifesti e i grandi magazzini il corpo da imitare entra per strada.<small>I capitoli <em>Tutti fotografabili</em> e <em>Il corpo nell’epoca della riproducibilità</em></small></p>
+    </div>
+    {tav("grande-magazzino", "Illustrazione a colori dell’interno di un grande magazzino ottocentesco affollato di clienti", "Illustrazione a colori di uno dei primi grandi magazzini di New York.", sizes="100vw")}
+  </div>
+
+  <div class="nastro" aria-hidden="true"><div class="nastro-traccia"><span>{MARQUEE} · </span><span>{MARQUEE} · </span></div></div>
+  <p class="nastro-nota">Le immagini del Novecento e di oggi, da Photoshop 1.0 ai filtri di TikTok, dalle performance di Yoko Ono e Marina Abramović alle modelle digitali, sono nel libro: qui scorrono solo i loro nomi.</p>
+
+  
+  <div class="capitolo">
+    {tav("bosch-superbia-1500", "Dettaglio della Superbia di Bosch: una donna di spalle si specchia in uno specchio retto da un demone", "Hieronymus Bosch, <em>Tavola dei sette peccati capitali</em>, dettaglio della Superbia, 1500 circa.", sizes="(max-width:900px) 100vw, 50vw", anno="1500")}
+    <div class="cap-testo">
+      {tav("spinario", "Statuetta di bronzo di un ragazzo seduto che si toglie una spina dal piede", "Lo Spinario, fine XV secolo, New York, The Metropolitan Museum of Art.", cls="stretta", sizes="(max-width:900px) 70vw, 28vw")}
+      <p class="dalibro reveal" style="margin-top:40px">L’ultima parte del libro va a cercare le bellezze che sfuggono: il gesto, il tempo vissuto, il corpo sentito dall’interno. Lo specchio della copertina è già in mano alla Superbia di Bosch, cinque secoli fa.<small>La terza parte, <em>Bellezze che sfuggono</em></small></p>
+    </div>
+  </div>
+</section>
+
+<section class="carta blocco tappe" id="tappe">
+  <h2 class="titolone reveal">Le tappe</h2>
+  <ul class="tappe-lista">{ROWS}
+    <li class="tappa-extra reveal">
+      <h3>Roma, in dicembre</h3>
+      <p>Un party letterario alla Libreria Teatro Tlon, a Ostiense, nei giorni di Più Libri Più Liberi, dal 4 all’8 dicembre. La data arriva qui appena è fissata.</p>
+    </li>
+  </ul>
+  <p class="tappe-nota">Per informazioni sulle singole presentazioni: <a class="link" href="mailto:eventi@tlon.it">eventi@tlon.it</a></p>
+</section>
+
+<section class="autrice" id="autrice">
+  <figure class="reveal">{img("maura", "Maura Gancitano, ritratto", sizes="(max-width:900px) 100vw, 40vw")}</figure>
+  <div>
+    <h2 class="reveal">L’autrice</h2>
+    <p class="reveal" style="--i:1"><strong>Maura Gancitano</strong> è filosofa, pedagogista e scrittrice. Nel 2015 ha fondato Tlon insieme ad Andrea Colamedici. È direttrice filosofica del Festival del Pensare Contemporaneo, insegna allo IED di Roma ed è editorialista di Vanity Fair.</p>
+    <p class="reveal" style="--i:2">I suoi libri sono tradotti in nove lingue. Con <em>Specchio delle mie brame. La prigione della bellezza</em> (Einaudi 2022) ha vinto il Premio Rapallo. Tra i più recenti: <em>Erotica dei sentimenti</em> (Einaudi 2024), <em>Animali narrativi</em> (Marsilio 2026) e, con Andrea Colamedici, <em>Botanica della meraviglia</em> (HarperCollins 2025). <a class="link" href="https://www.tlon.it/maura-gancitano/">La sua pagina su tlon.it</a>.</p>
+    <blockquote class="reveal" style="--i:3">«Io credo che la tenerezza che proviamo davanti alle fotografie del passato sia una delle esperienze più istruttive che possiamo regalarci, perché è la prova che lo sguardo cambia, che è già cambiato una volta e che tra dieci anni guarderemo la faccia di oggi con la stessa sorpresa.»<small>Dalle conclusioni</small></blockquote>
+  </div>
+</section>
+
+<section class="cammino" id="prenota">
+  <h2 class="reveal">In libreria dal<br>3 novembre</h2>
+  <div class="cammino-griglia">
+    <div>
+      <blockquote class="reveal" style="--i:1">Con la bellezza davanti a me cammino,<br>con la bellezza dietro di me cammino,<br>con la bellezza sopra di me cammino,<br>con la bellezza tutto intorno a me cammino.</blockquote>
+      <p class="fonte reveal" style="--i:2">La preghiera tradizionale dei diné, con cui si chiude il libro: una bellezza in cui si cammina, invece di una da fissare in un’immagine.</p>
+    </div>
+    <div class="prenota">
+      <p class="reveal" style="--i:1">Le copie ordinate dalla Libreria Tlon arrivano autografate da Maura e partono il giorno dell’uscita. Il libro è in tutte le librerie dallo stesso giorno.</p>
+      <p class="reveal" style="--i:2"><a class="button" href="{SHOP}">Prenota la copia autografata</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <a class="wordmark" href="https://www.tlon.it/">tlon</a>
+    <ul class="menu-grande">
+      <li><a href="#libro">Il libro</a></li>
+      <li><a href="#tavole">Le immagini</a></li>
+      <li><a href="#tappe">Le tappe</a></li>
+      <li><a href="#autrice">L’autrice</a></li>
+      <li><a href="https://www.tlon.it/maura-gancitano/">Maura Gancitano</a></li>
+      <li><a href="https://www.tlon.it/">Tlon</a></li>
+    </ul>
+    <div class="piede-blocchi">
+      <div><p><a href="mailto:eventi@tlon.it">eventi@tlon.it</a></p><p><a href="mailto:info@tlon.it">info@tlon.it</a></p></div>
+      <div><p><a href="https://www.instagram.com/tlon.it/">Instagram</a></p><p><a href="https://www.facebook.com/associazionetlon">Facebook</a></p><p><a href="https://www.youtube.com/c/AssociazioneTlon">YouTube</a></p></div>
+    </div>
+  </div>
+  <div>
+    <p class="crediti">{CREDITS}</p>
+    <p class="legale">© 2026 Tlon Srl · Sede legale: Via Nicolò da Pistoia, 12 — 00154 Roma · P.IVA 13583341006</p>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+(function(){{
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var t0=Date.now(), n=document.getElementById('fotogrammi');
+  function tick(){{ if(document.hidden) return; n.textContent=Math.floor((Date.now()-t0)/1000*30).toLocaleString('it-IT'); }}
+  setInterval(tick,1000);
+  /* La posa: venti secondi di esposizione, media dei fotogrammi, niente lascia il dispositivo */
+  var avvia=document.getElementById('posa-avvia'), salva=document.getElementById('posa-salva'), rifai=document.getElementById('posa-rifai');
+  var video=document.getElementById('posa-video'), canvas=document.getElementById('posa-canvas'), fallback=document.getElementById('lastra-fallback');
+  var conto=document.getElementById('posa-conto'), contoN=document.getElementById('posa-n'), stato=document.getElementById('posa-stato'), did=document.getElementById('lastra-did');
+  var W=canvas.width, H=canvas.height, ctx=canvas.getContext('2d',{{willReadFrequently:true}});
+  var stream=null, somma=null, frames=0, inizio=0, DURATA=20000, attivo=false, raf=0;
+  function ferma(){{ attivo=false; if(raf) cancelAnimationFrame(raf); if(stream){{ stream.getTracks().forEach(function(t){{t.stop();}}); stream=null; }} }}
+  function sviluppa(finale){{
+    var out=ctx.createImageData(W,H), d=out.data, cx=W/2, cy=H/2, rmax=Math.sqrt(cx*cx+cy*cy);
+    for(var i=0,p=0;i<d.length;i+=4,p++){{
+      var r=somma[i]/frames, g=somma[i+1]/frames, b=somma[i+2]/frames;
+      var l=0.299*r+0.587*g+0.114*b;
+      var x=p%W, y=(p-x)/W, dx=x-cx, dy=y-cy, v=1-0.55*Math.pow(Math.sqrt(dx*dx+dy*dy)/rmax,2.2);
+      l=l*v; l=(l-128)*1.08+128; if(l<0)l=0; if(l>255)l=255;
+      d[i]=Math.min(255,l*1.07+10); d[i+1]=Math.min(255,l*0.96+6); d[i+2]=Math.min(255,l*0.80); d[i+3]=255;
+    }}
+    ctx.putImageData(out,0,0);
+    if(finale){{
+      var g2=ctx.getImageData(0,0,W,H), q=g2.data;
+      for(var j=0;j<q.length;j+=4){{ var n=(Math.random()-0.5)*14; q[j]+=n; q[j+1]+=n; q[j+2]+=n; }}
+      ctx.putImageData(g2,0,0);
+    }}
+  }}
+  function passo(ts){{
+    if(!attivo) return;
+    var sw=video.videoWidth, sh=video.videoHeight; if(!sw){{ raf=requestAnimationFrame(passo); return; }}
+    var sc=Math.max(W/sw,H/sh), dw=sw*sc, dh=sh*sc;
+    ctx.drawImage(video,(W-dw)/2,(H-dh)/2,dw,dh);
+    var px=ctx.getImageData(0,0,W,H).data;
+    for(var i=0;i<px.length;i+=4){{ somma[i]+=px[i]; somma[i+1]+=px[i+1]; somma[i+2]+=px[i+2]; }}
+    frames++;
+    var t=performance.now()-inizio, resta=Math.max(0,Math.ceil((DURATA-t)/1000));
+    contoN.textContent=resta;
+    if(frames%3===0) sviluppa(false);
+    if(t>=DURATA){{ attivo=false; sviluppa(true); ferma(); conto.hidden=true; salva.hidden=false; rifai.hidden=false; did.innerHTML='Tu, '+new Date().getFullYear()+'. Esposizione: venti secondi, '+frames.toLocaleString('it-IT')+' fotogrammi sommati. La lastra non è specchiata.'; avvia.hidden=true; return; }}
+    raf=requestAnimationFrame(passo);
+  }}
+  avvia.addEventListener('click',function(){{
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){{ stato.textContent='Questo browser non dà accesso alla camera'; conto.hidden=false; contoN.textContent=''; return; }}
+    avvia.disabled=true; stato.textContent='Apertura della camera…'; contoN.textContent=''; conto.hidden=false;
+    navigator.mediaDevices.getUserMedia({{video:{{facingMode:'user',width:{{ideal:1280}},height:{{ideal:960}}}},audio:false}}).then(function(s){{
+      stream=s; video.srcObject=s; return video.play();
+    }}).then(function(){{
+      somma=new Float32Array(W*H*4); frames=0; fallback.hidden=true; canvas.hidden=false;
+      stato.textContent='Resta immobile'; contoN.textContent='20'; inizio=performance.now(); attivo=true; raf=requestAnimationFrame(passo);
+    }}).catch(function(){{
+      avvia.disabled=false; stato.textContent='La camera non è disponibile: resta la lastra di Daguerre'; contoN.textContent='';
+      setTimeout(function(){{ conto.hidden=true; }},4000);
+    }});
+  }});
+  rifai.addEventListener('click',function(){{ salva.hidden=true; rifai.hidden=true; avvia.hidden=false; avvia.disabled=false; canvas.hidden=true; fallback.hidden=false; did.innerHTML='Louis Daguerre, <em>Boulevard du Temple</em>, 1838. Esposizione: almeno dieci minuti.'; }});
+  salva.addEventListener('click',function(){{ var a=document.createElement('a'); a.download='la-mia-lastra-'+Date.now()+'.png'; a.href=canvas.toDataURL('image/png'); a.click(); }});
+  window.addEventListener('pagehide',ferma);
+
+  var els=document.querySelectorAll('.reveal,.anno');
+  if('IntersectionObserver' in window){{
+    var ro=new IntersectionObserver(function(es){{
+      es.forEach(function(e){{ if(e.isIntersecting){{ e.target.classList.add('is-in'); ro.unobserve(e.target); }} }});
+    }},{{rootMargin:'0px 0px -6% 0px',threshold:0.02}});
+    els.forEach(function(el){{ ro.observe(el); }});
+  }} else {{ els.forEach(function(el){{ el.classList.add('is-in'); }}); }}
+  setTimeout(function(){{ els.forEach(function(el){{ el.classList.add('is-in'); }}); }},6000);
+  requestAnimationFrame(function(){{ setTimeout(function(){{ document.getElementById('copertina').classList.add('is-in'); }}, reduce?0:150); }});
+}})();
+</script>
+</body>
+</html>
+'''
+OUT.write_text(HTML, encoding="utf-8")
+
+# credits.json: via le immagini d'archivio che non usiamo più
+cj = ROOT / "assets" / "credits.json"
+if cj.exists():
+    data = json.loads(cj.read_text(encoding="utf-8"))
+    if isinstance(data, list):
+        data = [c for c in data if not any(k in json.dumps(c) for k in ("galton", "daguerreotype"))]
+        cj.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+print("scritto", OUT, len(HTML), "byte")
