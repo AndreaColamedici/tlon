@@ -4,7 +4,9 @@ Pagina di lancio di «La fabbrica della bellezza» di Maura Gancitano (Rizzoli, 
 
 ## Tesi visiva (validata, con la nota «vive poco»)
 
-Un solo mondo, il blu profondo del vestito in copertina, su tutta la pagina. Dentro quel blu la copertina ingrandita a tutto schermo (ricostruita a 1500 pixel con la Super Resolution di Pixelmator Pro dal file a 500 pixel dello shop) e le fotografie d'epoca del libro a tutto schermo, nei loro toni seppia, che sul blu diventano calde. Titoli, anni e nomi in Gloock, un serif da manifesto con forti contrasti ma massiccio, un solo peso, a misure da cinema; il testo in Epilogue, un sans sottile che non gli fa ombra. L'arancione della fascia sugli occhi come unico accento, solo sul bottone. Nessuna card, nessun bordo, nessuna ombra, nessuna carta.
+Quarta versione, 1 novembre 2026, sera: il dipinto di copertina (Ewa Juszkiewicz, *Lady with a Mirror (after Elisabeth Vigée Le Brun)*, 2026) viene dal PDF di stampa Rizzoli, intero e senza scritte (2023×2584), e sostituisce la ricostruzione; le sedi delle tappe sono immagini sempre visibili, nel blu, a colori in hover.
+
+Un solo mondo, il blu profondo del vestito in copertina, su tutta la pagina. Dentro quel blu la copertina ingrandita a tutto schermo (dal PDF di stampa, il solo dipinto senza le scritte) e le fotografie d'epoca del libro a tutto schermo, nei loro toni seppia, che sul blu diventano calde. Titoli, anni e nomi in Gloock, un serif da manifesto con forti contrasti ma massiccio, un solo peso, a misure da cinema; il testo in Epilogue, un sans sottile che non gli fa ombra. L'arancione della fascia sugli occhi come unico accento, solo sul bottone. Nessuna card, nessun bordo, nessuna ombra, nessuna carta.
 
 ## Tesi di interazione (validata)
 
@@ -41,7 +43,7 @@ Nessuno. Spigoli vivi ovunque. Le superfici si distinguono per un passo di blu.
 
 ## Componenti
 
-Bottone: rettangolo pieno arancione, testo inchiostro 600, 18 px, padding 18/28; stati: default, hover (arancio-2), focus (contorno arancione 3 px), active (scala 0,97), disabled non previsto. Variante perla sulla chiusura. Link: sottolineato a 0,25 em, colore della riga che si rafforza in hover. Tappa: riga a tre colonne cliccabile che porta alle indicazioni stradali, con la fotografia della città che appare a destra in hover (sul telefono la fotografia sta sopra la riga).
+Bottone: rettangolo pieno arancione, testo inchiostro 600, 18 px, padding 18/28; stati: default, hover (arancio-2), focus (contorno arancione 3 px), active (scala 0,97), disabled non previsto. Variante perla sulla chiusura. Link: sottolineato a 0,25 em, colore della riga che si rafforza in hover. Tappa: la fotografia della sede (3:2, griglia a tre colonne, due a 1100 px, una sul telefono), tinta nel blu della pagina con un filtro CSS (grayscale, sepia, hue-rotate 190°) e a colori pieni in hover con una scala a 1,04; sotto, la città in Gloock, la data in Epilogue 600, la sede, chi accompagna, e i due link Indicazioni e Aggiungi al calendario. La fotografia porta alle indicazioni stradali. Chiusura: tre colonne, preghiera diné, la copertina stampata (resa dal PDF di stampa Rizzoli a 300 dpi), invito e bottone perla.
 
 ## Movimento
 

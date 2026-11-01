@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Genera fabbricabellezza/index.html (La fabbrica della bellezza, Maura Gancitano, Rizzoli 2026).
 
-Terza versione, 1 novembre 2026: un solo mondo blu, la copertina a tutto schermo, le tavole del libro
+Quarta versione, 1 novembre 2026 (dipinto e copertina dal PDF di stampa Rizzoli, sedi delle tappe come immagini). Terza versione: un solo mondo blu, la copertina a tutto schermo, le tavole del libro
 come cinema legato allo scorrimento, Gloock per i titoli ed Epilogue per il testo. I token sono in
 fabbricabellezza/MASTER.md. Le tappe sono nella lista TAPPE; i link .ics e le dimensioni delle immagini
 sono calcolati qui. Uso: python3 tools/genera-fabbricabellezza.py (richiede ImageMagick per le dimensioni).
@@ -31,11 +31,11 @@ TAPPE = [
     dict(key="milano", day="mercoledì", d="4", mon="novembre", time="18:30", city="Milano",
          venue="Libreria Rizzoli, Galleria Vittorio Emanuele II", with_="con Giulia Cavaliere",
          maps="Libreria Rizzoli Galleria Vittorio Emanuele II Milano", start="2026-11-04T18:30", end="2026-11-04T19:30",
-         img="milano", alt="La cupola di vetro della Galleria Vittorio Emanuele II a Milano"),
+         img="milano", alt="L’Ottagono della Galleria Vittorio Emanuele II, su cui si affaccia la Libreria Rizzoli"),
     dict(key="firenze", day="giovedì", d="5", mon="novembre", time="18:15", city="Firenze",
          venue="Libraccio, via de’ Cerretani", with_="con Alessia Dulbecco, a seguire firmacopie",
          maps="Libraccio via de' Cerretani Firenze", start="2026-11-05T18:15", end="2026-11-05T19:15",
-         img="firenze", alt="La cattedrale di Santa Maria del Fiore a Firenze"),
+         img="firenze", alt="Via de’ Cerretani, la strada del Libraccio, con la cupola del Duomo in fondo"),
     dict(key="prato", day="giovedì", d="5", mon="novembre", time="21:30", city="Prato",
          venue="Centro per l’arte contemporanea Luigi Pecci", with_="Pecci Books Festival",
          maps="Centro Pecci Prato", start="2026-11-05T21:30", end="2026-11-05T22:30",
@@ -47,11 +47,11 @@ TAPPE = [
     dict(key="roma", day="domenica", d="8", mon="novembre", time="18:30", city="Roma",
          venue="Libreria Spazio Sette, via dei Barbieri 7", with_="con Sabina Minardi",
          maps="Libreria Spazio Sette via dei Barbieri 7 Roma", start="2026-11-08T18:30", end="2026-11-08T19:30",
-         img="roma", alt="Largo di Torre Argentina a Roma"),
+         img="roma", alt="Largo di Torre Argentina, a pochi passi da via dei Barbieri"),
     dict(key="bologna", day="sabato", d="21", mon="novembre", time="16:45", city="Bologna",
          venue="L’Eredità delle Donne, Libreria Zanichelli", with_="nel programma del festival",
          maps="Libreria Zanichelli Bologna", start="2026-11-21T16:45", end="2026-11-21T17:30",
-         img="bologna", alt="La sala del Teatro Comunale di Bologna"),
+         img="bologna", alt="Piazza Galvani, su cui si affaccia la Libreria Zanichelli, con l’Archiginnasio"),
 ]
 
 def ics(t):
@@ -72,14 +72,15 @@ def maps(q):
     return "https://www.google.com/maps/search/?api=1&query=" + urllib.parse.quote(q)
 
 ROWS = "".join(f'''
-    <li class="tappa" style="--i:{i}">
-      <a class="tappa-link" href="{maps(t['maps'])}" target="_blank" rel="noopener">
-        <span class="tappa-citta g">{e(t['city'])}</span>
-        <span class="tappa-data"><span class="g tappa-num">{t['d']}</span><span class="tappa-mese">{t['mon']}</span></span>
-        <span class="tappa-info"><span class="quando">{t['day']}, ore {t['time']}</span><span class="dove">{e(t['venue'])}</span><span class="con">{e(t['with_'])}</span></span>
-        <span class="tappa-foto">{img(t['img'], t['alt'], sizes="(max-width:900px) 100vw, 30vw")}</span>
-      </a>
-      <span class="tappa-azioni"><a class="link" href="{ics(t)}" download="fabbrica-della-bellezza-{t['key']}.ics">Aggiungi al calendario</a></span>
+    <li class="tappa posa" style="--i:{i%3}">
+      <a class="tappa-foto" href="{maps(t['maps'])}" target="_blank" rel="noopener" aria-label="Indicazioni per {e(t['venue'])}, {t['city']}">{img(t['img'], t['alt'], sizes="(max-width:700px) 100vw, (max-width:1100px) 50vw, 33vw")}</a>
+      <div class="tappa-testo">
+        <p class="tappa-citta g">{e(t['city'])}</p>
+        <p class="tappa-quando">{t['day'].capitalize()} {t['d']} {t['mon']}, ore {t['time']}</p>
+        <p class="tappa-dove">{e(t['venue'])}</p>
+        <p class="tappa-con">{e(t['with_'])}</p>
+        <p class="tappa-azioni"><a class="link" href="{maps(t['maps'])}" target="_blank" rel="noopener">Indicazioni</a><a class="link" href="{ics(t)}" download="fabbrica-della-bellezza-{t['key']}.ics">Aggiungi al calendario</a></p>
+      </div>
     </li>''' for i, t in enumerate(TAPPE))
 
 # ---------- Le tavole ----------
@@ -105,13 +106,13 @@ NEL_LIBRO_HTML = ", ".join(e(x) for x in NEL_LIBRO)
 
 CREDITS = ('Le tavole fanno parte delle 169 immagini del libro e sono opere di dominio pubblico; la fotografia dello Spinario è del Metropolitan Museum of Art (CC0). '
            'Le fotografie delle città vengono da Wikimedia Commons: '
-           '<a href="https://commons.wikimedia.org/wiki/File:Glass_fome_of_the_Galleria_Vittorio_Emanuele_II_in_Milan.JPG">Galleria Vittorio Emanuele II</a> di High Contrast (<a href="https://creativecommons.org/licenses/by/3.0/de/deed.en">CC BY 3.0</a>), '
-           '<a href="https://commons.wikimedia.org/wiki/File:Cattedrale_di_Santa_Maria_del_Fiore_Florenz_M%C3%A4rz_2014.jpg">Santa Maria del Fiore</a> di Felix König (<a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>), '
+           '<a href="https://commons.wikimedia.org/wiki/File:Galleria_Vittorio_Emanuele_IIa.jpg">Galleria Vittorio Emanuele II</a> di Dave Cameron (<a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>), '
+           '<a href="https://commons.wikimedia.org/wiki/File:Via_de%27_Cerretani_06.JPG">Via de’ Cerretani</a> di Freepenguin (<a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>), '
            '<a href="https://commons.wikimedia.org/wiki/File:Pecci_ingresso.jpg">Centro Pecci</a> di Michela.osteri (<a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>), '
            '<a href="https://commons.wikimedia.org/wiki/File:Ponte_del_Mare_di_Pescara_2011.jpg">Ponte del Mare</a> di Exephyo (<a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>), '
            '<a href="https://commons.wikimedia.org/wiki/File:The_Largo_di_Torre_Argentina_is_a_historic_square_in_Rome.jpg">Largo di Torre Argentina</a> di Wilfredor (<a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>), '
-           '<a href="https://commons.wikimedia.org/wiki/File:Teatro_Comunale_di_Bologna.jpg">Teatro Comunale di Bologna</a> di San2Kan (<a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>). '
-           'La copertina e il progetto grafico del libro sono di Rizzoli (Francesca Zucchi). Caratteri Gloock ed Epilogue, licenza OFL.')
+           '<a href="https://commons.wikimedia.org/wiki/File:Piazza_galvani_bologna.JPG">Piazza Galvani</a> di Lorenzov79 (<a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>). '
+           'In copertina: Ewa Juszkiewicz, <em>Lady with a Mirror (after Elisabeth Vigée Le Brun)</em>, olio su tela, 170×120 cm, 2026; progetto grafico di Francesca Zucchi per Rizzoli. Caratteri Gloock ed Epilogue, licenza OFL.')
 
 HTML = f'''<!DOCTYPE html>
 <html lang="it">
@@ -138,7 +139,7 @@ HTML = f'''<!DOCTYPE html>
 <meta name="twitter:title" content="La fabbrica della bellezza, il libro di Maura Gancitano">
 <meta name="twitter:description" content="Rizzoli, dal 3 novembre 2026. Le presentazioni in sei città.">
 <meta name="twitter:image" content="https://www.tlon.it/fabbricabellezza/img/og.jpg">
-<link rel="preload" as="image" href="img/dipinto-1180.webp">
+<link rel="preload" as="image" href="img/dipinto-1800.webp">
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Gloock-400-normal-latin.woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fonts/fabbrica.css">
 <script type="application/ld+json">
@@ -179,7 +180,7 @@ p,figcaption{{margin:0;text-wrap:pretty}}
 /* apertura: il dipinto a tutto schermo */
 .apertura{{position:relative;height:100svh;min-height:640px;overflow:hidden;isolation:isolate}}
 .apertura .quadro{{position:absolute;inset:0 42% 0 0;z-index:0;overflow:hidden}}
-.apertura .quadro img{{width:100%;height:100%;object-fit:cover;object-position:50% 8%;transform-origin:50% 30%}}
+.apertura .quadro img{{width:100%;height:100%;object-fit:cover;object-position:50% 18%;transform-origin:50% 30%}}
 .apertura .quadro::after{{content:"";position:absolute;inset:0 0 0 auto;width:28%;background:var(--blu);opacity:.0}}
 .apertura .velo{{position:absolute;inset:auto 42% 0 0;height:58%;z-index:1;background:var(--blu);opacity:.72;mask-image:linear-gradient(to top,#000 40%,transparent)}} /* taste-skill-ignore: scrim neutro sotto il titolo */
 .apertura .testo{{position:absolute;left:var(--pad);right:var(--pad);bottom:var(--s5);z-index:2}}
@@ -250,25 +251,26 @@ p,figcaption{{margin:0;text-wrap:pretty}}
 .nellibro p{{font-size:18px;line-height:1.5;color:var(--perla-2)}}
 .nellibro p em{{color:var(--perla);font-style:normal}}
 
-/* le tappe: indice con anteprima */
+/* le tappe: le sedi come immagini, nel blu della pagina, a colori quando ci si posa sopra */
 .tappe{{padding:0 var(--pad) var(--s8)}}
-.tappe h2{{font-size:clamp(48px,7vw,96px);line-height:.92;margin-bottom:var(--s4)}}
-.tappe-lista{{list-style:none;margin:0;padding:0;position:relative}}
-.tappa{{position:relative}}
-.tappa-link{{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,4fr) minmax(0,5fr);gap:var(--s2) var(--s4);align-items:baseline;padding:var(--s4) 0 var(--s2);text-decoration:none;color:inherit}}
-.tappa-data{{display:flex;align-items:baseline;gap:var(--s2);order:-1}} .tappa-num{{font-size:clamp(56px,6vw,72px);line-height:.85}} .tappa-mese{{font-size:18px;color:var(--perla-2)}}
-.tappa-citta{{font-size:clamp(40px,5vw,72px);line-height:.9;transition:transform 400ms var(--expo)}}
-.tappa-info{{display:grid;gap:4px;font-size:18px}} .tappa-info .quando{{font-weight:600}} .tappa-info .con{{color:var(--perla-2)}}
-.tappa-foto{{position:absolute;right:var(--pad);top:50%;width:min(30vw,420px);aspect-ratio:4/3;transform:translateY(-50%) scale(.96);opacity:0;pointer-events:none;transition:opacity 400ms var(--expo),transform 600ms var(--expo);z-index:3}}
-.tappa-foto img{{width:100%;height:100%;object-fit:cover}}
-.tappa-azioni{{display:block;padding:0 0 var(--s4);font-size:18px}}
-@media(hover:hover) and (min-width:901px){{
-  .tappa-link:hover .tappa-citta{{transform:translateX(16px)}}
-  .tappa-link:hover .tappa-foto{{opacity:1;transform:translateY(-50%) scale(1)}}
+.tappe h2{{font-size:clamp(48px,7vw,96px);line-height:.92;margin-bottom:var(--s5)}}
+.tappe-lista{{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s6) var(--s4);align-items:start}}
+.tappa-foto{{display:block;aspect-ratio:3/2;overflow:hidden;background:var(--blu-2)}}
+.tappa-foto img{{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) sepia(1) hue-rotate(190deg) saturate(1.3) brightness(.92);transition:filter 700ms var(--expo),transform 1200ms var(--expo)}}
+.tappa-testo{{padding-top:var(--s3)}}
+.tappa-testo p{{margin:0}}
+.tappa-citta{{font-size:clamp(40px,4vw,56px);line-height:.9;transition:transform 400ms var(--expo)}}
+.tappa-quando{{margin-top:var(--s3);font-size:18px;font-weight:600;line-height:1.3}}
+.tappa-dove{{margin-top:var(--s2);font-size:18px}}
+.tappa-con{{color:var(--perla-2);font-size:18px}}
+.tappa-azioni{{margin-top:var(--s3);display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);font-size:18px}}
+@media(hover:hover){{
+  .tappa:hover .tappa-foto img{{filter:none;transform:scale(1.04)}}
+  .tappa:hover .tappa-citta{{transform:translateX(12px)}}
 }}
-.tappa-extra{{padding:var(--s4) 0 0;max-width:60ch}}
-.tappa-extra .g{{font-size:40px;line-height:1;display:block;margin-bottom:var(--s2)}}
-.tappe-nota{{margin-top:var(--s5);font-size:16px;color:var(--perla-2)}}
+.tappa-extra{{grid-column:1/-1;max-width:60ch;padding-top:var(--s3);font-size:20px;line-height:1.45}}
+.tappa-extra p{{margin:0}}
+.tappe-nota{{margin-top:var(--s6);font-size:16px;color:var(--perla-2)}}
 
 /* l'autrice */
 .autrice{{padding:0 var(--pad) var(--s8);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s5) var(--s6);align-items:end}}
@@ -281,11 +283,12 @@ p,figcaption{{margin:0;text-wrap:pretty}}
 .autrice .fonte{{font-size:16px;color:var(--perla-2);margin-top:var(--s2)}}
 
 /* la chiusura */
-.chiusura{{padding:var(--s7) var(--pad);background:var(--blu-2);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--s5) var(--s6);align-items:end}}
-.chiusura blockquote{{margin:0;font-family:var(--g);font-size:clamp(28px,3vw,40px);line-height:1.1;letter-spacing:-.015em}}
+.chiusura{{padding:var(--s7) var(--pad);background:var(--blu-2);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,4fr);gap:var(--s5) var(--s6);align-items:end}}
+.chiusura blockquote{{margin:0;font-family:var(--g);font-size:clamp(24px,2.2vw,32px);line-height:1.2;letter-spacing:-.01em;max-width:22ch}}
 .chiusura .fonte{{margin-top:var(--s3);font-size:16px;color:var(--perla-2);max-width:48ch}}
-.chiusura h2{{font-size:clamp(40px,5vw,72px);line-height:.95;margin-bottom:var(--s3)}}
+.chiusura h2{{font-size:clamp(40px,3.9vw,56px);line-height:.95;margin-bottom:var(--s3)}}
 .chiusura p{{max-width:38ch;margin-bottom:var(--s4)}}
+.chiusura .oggetto{{margin:0}} .chiusura .oggetto img{{display:block;width:100%;height:auto;max-width:360px}}
 
 /* piede */
 footer{{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s5)}}
@@ -324,12 +327,15 @@ footer{{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-column
 }}
 
 /* telefono e tablet */
+@media(max-width:1100px){{
+  .tappe-lista{{grid-template-columns:repeat(2,minmax(0,1fr))}}
+}}
 @media(max-width:900px){{
   .barra nav a:not(:last-child){{display:none}}
   .apertura{{min-height:0;height:100svh}}
   .apertura .quadro{{inset:0}}
   .apertura .velo{{inset:auto 0 0 0}}
-  .apertura .quadro img{{object-position:50% 10%}}
+  .apertura .quadro img{{object-position:50% 12%}}
   .apertura .velo{{height:70%}}
   .apertura .testo{{bottom:var(--s4)}}
   .apertura h1{{font-size:clamp(44px,12.5vw,72px);letter-spacing:-.03em}}
@@ -338,7 +344,6 @@ footer{{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-column
   .frase{{grid-template-columns:1fr;padding:var(--s6) var(--pad)}}
   .frase .grande{{font-size:clamp(36px,10vw,48px);grid-row:auto}}
   .parte h3{{font-size:26px}}
-  .tappa-data{{order:0}}
   .frase .seguito{{font-size:22px}}
   .dalibro{{font-size:22px}}
   .libro,.autrice,.chiusura,footer,.parte{{grid-template-columns:1fr}}
@@ -351,13 +356,13 @@ footer{{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-column
   .piena figcaption{{left:var(--pad);right:var(--pad);top:var(--s3);bottom:auto;max-width:none}}
   .capitolo{{padding:var(--s6) var(--pad);display:flex;flex-direction:column;gap:var(--s5)}}
   .capitolo .tavola,.capitolo .citazione{{margin-top:0!important}}
-  .tappa-link{{grid-template-columns:1fr;gap:var(--s2);padding-top:var(--s4)}}
-  .tappa-foto{{position:static;width:100%;aspect-ratio:3/2;opacity:1;transform:none;order:-1}}
+  .tappe-lista{{grid-template-columns:1fr;gap:var(--s5)}}
   .tappa-citta{{font-size:40px}}
+  .chiusura .oggetto img{{max-width:220px}}
   .tavole .testa{{grid-template-columns:1fr}}
-  .tappa-num{{font-size:56px}}
   .tappe-nota{{margin-top:var(--s4)}}
   .chiusura{{padding:var(--s6) var(--pad)}}
+  .chiusura>div:last-child{{order:-1}}
 }}
 @media print{{.barra{{display:none}}.piena{{height:auto}}}}
 </style>
@@ -367,7 +372,7 @@ footer{{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-column
 
 <header class="apertura" id="inizio">
   <div class="barra"><a class="wordmark" href="https://www.tlon.it/">tlon</a><nav aria-label="Sezioni"><a href="#libro">Il libro</a><a href="#tavole">Le immagini</a><a href="#autrice">L’autrice</a><a href="#tappe">Le tappe</a><a href="{SHOP}">Prenota</a></nav></div>
-  <div class="quadro">{img("dipinto", "Il dipinto della copertina: una donna con turbante azzurro e fascia arancione sugli occhi, perle al collo, uno specchio in mano", lazy=False, sizes="100vw")}</div>
+  <div class="quadro">{img("dipinto", "Il dipinto della copertina, Lady with a Mirror di Ewa Juszkiewicz: una donna con turbante azzurro e fascia arancione sugli occhi, perle al collo, uno specchio in mano", lazy=False, sizes="100vw")}</div>
   <div class="velo" aria-hidden="true"></div>
   <div class="testo">
     <p class="autrice-nome posa" style="--i:0">Maura Gancitano</p>
@@ -489,11 +494,10 @@ footer{{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-column
   <h2 class="posa">Le tappe</h2>
   <ul class="tappe-lista">{ROWS}
     <li class="tappa-extra posa">
-      <span class="g">Roma, in dicembre</span>
-      <p>Un party letterario alla Libreria Teatro Tlon, a Ostiense, nei giorni di Più Libri Più Liberi, dal 4 all’8 dicembre. La data arriva qui appena è fissata.</p>
+      <p>A Roma, in dicembre, un party letterario alla Libreria Teatro Tlon, a Ostiense, nei giorni di Più Libri Più Liberi, dal 4 all’8 dicembre. La data arriva qui appena è fissata.</p>
     </li>
   </ul>
-  <p class="tappe-nota">Il nome della città porta alle indicazioni stradali. Per informazioni sulle singole presentazioni: <a class="link" href="mailto:eventi@tlon.it">eventi@tlon.it</a></p>
+  <p class="tappe-nota">La fotografia di ogni sede porta alle indicazioni stradali. Per informazioni sulle singole presentazioni: <a class="link" href="mailto:eventi@tlon.it">eventi@tlon.it</a></p>
 </section>
 
 <section class="autrice" id="autrice">
@@ -509,9 +513,10 @@ footer{{padding:var(--s6) var(--pad) var(--s4);display:grid;grid-template-column
 
 <section class="chiusura" id="prenota">
   <div>
-    <blockquote class="posa">Con la bellezza davanti a me cammino,<br>con la bellezza dietro di me cammino,<br>con la bellezza sopra di me cammino,<br>con la bellezza tutto intorno a me cammino.</blockquote>
+    <blockquote class="posa">Con la bellezza davanti a me cammino, con la bellezza dietro di me cammino, con la bellezza sopra di me cammino, con la bellezza tutto intorno a me cammino.</blockquote>
     <p class="fonte posa" style="--i:1">La preghiera tradizionale dei diné, con cui si chiude il libro: una bellezza in cui si cammina, invece di una da fissare in un’immagine.</p>
   </div>
+  <figure class="oggetto posa" style="--i:1">{img("copertina", "La copertina del libro: Maura Gancitano, La fabbrica della bellezza, Rizzoli", sizes="(max-width:900px) 60vw, 25vw")}</figure>
   <div>
     <h2 class="posa">In libreria dal 3 novembre</h2>
     <p class="posa" style="--i:1">Le copie ordinate dalla Libreria Tlon arrivano autografate da Maura e partono il giorno dell’uscita. Il libro è in tutte le librerie dallo stesso giorno.</p>
