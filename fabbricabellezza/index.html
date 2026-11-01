@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La fabbrica della bellezza — Maura Gancitano</title>
+<meta name="description" content="La fabbrica della bellezza, il nuovo libro di Maura Gancitano (Rizzoli, dal 3 novembre 2026): l’invenzione del corpo perfetto dalla fotografia all’intelligenza artificiale. Le tappe delle presentazioni a Milano, Firenze, Prato, Pescara, Roma e Bologna.">
+<link rel="canonical" href="https://www.tlon.it/fabbricabellezza/">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#0f1726">
+<meta property="og:type" content="book">
+<meta property="og:site_name" content="Tlon">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="La fabbrica della bellezza — Maura Gancitano">
+<meta property="og:description" content="L’invenzione del corpo perfetto dalla fotografia all’intelligenza artificiale. Rizzoli, in libreria dal 3 novembre 2026. Le tappe delle presentazioni.">
+<meta property="og:url" content="https://www.tlon.it/fabbricabellezza/">
+<meta property="og:image" content="https://www.tlon.it/fabbricabellezza/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="La fabbrica della bellezza — Maura Gancitano">
+<meta name="twitter:description" content="Il nuovo libro di Maura Gancitano, Rizzoli, dal 3 novembre 2026. Le tappe delle presentazioni.">
+<meta name="twitter:image" content="https://www.tlon.it/fabbricabellezza/img/og.jpg">
+<link rel="preload" as="image" href="img/cover-900.webp">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Book","name":"La fabbrica della bellezza. L'invenzione del corpo perfetto dalla fotografia all'intelligenza artificiale","author":{"@type":"Person","name":"Maura Gancitano","url":"https://www.tlon.it/maura-gancitano/"},"publisher":{"@type":"Organization","name":"Rizzoli"},"datePublished":"2026-11-03","isbn":"9788817197076","numberOfPages":320,"inLanguage":"it","image":"https://www.tlon.it/fabbricabellezza/img/cover-900.webp","url":"https://www.tlon.it/fabbricabellezza/"}
+</script>
+<style>
+:root{
+  --paper:#e8e6e1; --paper-2:#dedbd4; --sheet:#f2f2f0;
+  --ink:#15171c; --ink-soft:#4e525b;
+  --accent:#1d44b8; --accent-strong:#163592;
+  --field:#0f1726; --blue:#17306e;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  --pad:clamp(24px,5vw,72px);
+  --ease-out:cubic-bezier(.16,1,.3,1); --ease-in-out:cubic-bezier(.65,0,.35,1); --ease-soft:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.55;font-feature-settings:"tnum" 1}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;letter-spacing:-.01em;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
+::selection{background:var(--accent);color:#fff}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--paper);padding:8px 14px}
+.skip:focus{left:8px;z-index:200}
+
+/* Lo stage diviso */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.stage{position:sticky;top:0;height:100svh;background:var(--field);overflow:hidden;isolation:isolate}
+.stage-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 900ms var(--ease-in-out)}
+.stage-img.fit-contain{object-fit:contain;padding:clamp(24px,3.5vh,48px) 0 96px}
+.stage-img.is-on{opacity:1}
+.sguardo{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:16px var(--pad) 18px;background:rgba(15,23,38,.82);color:var(--paper);font-size:15px;line-height:1.45}
+.sguardo strong{font-weight:600;color:#fff}
+.sguardo .n{font-variant-numeric:tabular-nums}
+.shutter{overflow:hidden}
+
+/* La colonna che scorre */
+.colonna{background:var(--paper);min-width:0}
+.inner{padding:0 var(--pad);max-width:640px}
+.topbar{display:flex;justify-content:space-between;align-items:baseline;padding:28px var(--pad) 0;max-width:640px}
+.wordmark{font-family:var(--serif);font-size:26px;line-height:1;text-decoration:none;letter-spacing:-.02em}
+.topnav{display:flex;gap:22px;font-size:15px}
+.topnav a{text-decoration:none}
+
+.apertura{min-height:calc(100svh - 58px);display:flex;flex-direction:column;justify-content:flex-end;padding-top:64px;padding-bottom:64px}
+.apertura h1{font-size:clamp(48px,5.4vw,84px);line-height:.96;max-width:11ch;margin-bottom:28px}
+.sottotitolo{font-family:var(--serif);font-size:26px;line-height:1.2;max-width:30ch;margin-bottom:28px}
+.uscita{font-size:18px;max-width:46ch;margin-bottom:40px}
+.uscita strong{font-weight:600}
+.azioni{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
+.button{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:600;font-size:18px;padding:16px 26px;transition:transform 120ms var(--ease-out),background-color 160ms ease}
+.button:active{transform:scale(.97)}
+.link{text-decoration:underline;text-underline-offset:.2em;text-decoration-thickness:.07em;text-decoration-color:rgba(21,23,28,.35);transition:text-decoration-color 160ms ease}
+@media(hover:hover) and (pointer:fine){
+  .button:hover{background:var(--accent-strong)}
+  .link:hover{text-decoration-color:currentColor}
+  .topnav a:hover{text-decoration:underline;text-underline-offset:.2em}
+}
+
+
+.colonna section{padding-top:150px}
+section h2{font-size:44px;line-height:1.08;margin-bottom:34px}
+.libro p{margin-bottom:1.1em;max-width:46ch}
+.libro p:first-of-type{font-weight:500}
+.libro p:last-of-type{margin-bottom:0}
+.libro .sorgente{margin-top:36px;color:var(--ink-soft);font-size:15px;max-width:46ch}
+
+.storia p{max-width:46ch;margin-bottom:1.1em}
+.storia figure{margin:48px 0 0}
+.storia figure img{width:100%;height:auto}
+.storia figcaption{font-size:15px;color:var(--ink-soft);margin-top:12px;max-width:46ch}
+.storia .cifra{font-family:var(--serif);font-size:34px;line-height:1.2;max-width:26ch;margin:56px 0 0}
+
+/* Il foglio stampato delle tappe */
+.tappe{padding-top:150px}
+.tappe .inner{max-width:none;padding:0}
+.tappe h2{padding:0 var(--pad);max-width:640px}
+.foglio-campo{background:var(--blue);padding:56px var(--pad) 72px}
+.foglio{background:var(--sheet);color:var(--ink);max-width:560px;padding:52px 40px 44px;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),98% 100%,96% calc(100% - 10px),94% 100%,92% calc(100% - 10px),90% 100%,88% calc(100% - 10px),86% 100%,84% calc(100% - 10px),82% 100%,80% calc(100% - 10px),78% 100%,76% calc(100% - 10px),74% 100%,72% calc(100% - 10px),70% 100%,68% calc(100% - 10px),66% 100%,64% calc(100% - 10px),62% 100%,60% calc(100% - 10px),58% 100%,56% calc(100% - 10px),54% 100%,52% calc(100% - 10px),50% 100%,48% calc(100% - 10px),46% 100%,44% calc(100% - 10px),42% 100%,40% calc(100% - 10px),38% 100%,36% calc(100% - 10px),34% 100%,32% calc(100% - 10px),30% 100%,28% calc(100% - 10px),26% 100%,24% calc(100% - 10px),22% 100%,20% calc(100% - 10px),18% 100%,16% calc(100% - 10px),14% 100%,12% calc(100% - 10px),10% 100%,8% calc(100% - 10px),6% 100%,4% calc(100% - 10px),2% 100%,0 calc(100% - 10px))}
+.foglio-testa{text-align:center;margin-bottom:40px}
+.foglio-testa .titolo{font-family:var(--serif);font-size:44px;line-height:1.05}
+.foglio-testa .nota{font-size:15px;color:var(--ink-soft);margin-top:10px}
+.tappe-lista{list-style:none;margin:0;padding:0}
+.tappa{display:grid;grid-template-columns:96px minmax(0,1fr);gap:0 22px;padding:22px 0}
+.tappa-data{font-family:var(--serif);line-height:1}
+.tappa-giorno{display:block;font-size:34px}
+.tappa-mese{display:block;font-size:15px;margin-top:6px;color:var(--ink-soft);font-family:var(--sans)}
+.tappa-ora{display:block;font-size:15px;margin-top:4px;font-family:var(--sans);font-weight:600}
+.tappa h3{font-size:26px;line-height:1.1;font-family:var(--serif)}
+.tappa-luogo{font-size:18px;margin-top:4px;font-weight:500;text-wrap:pretty}
+.tappa-con{font-size:15px;color:var(--ink-soft);margin-top:4px}
+.tappa-azioni{font-size:15px;margin-top:10px;display:flex;gap:18px;flex-wrap:wrap}
+.tappa-foto{display:none;margin:0}
+.tappa-extra{padding:28px 0 0;text-align:center}
+.tappa-extra h3{font-size:26px;line-height:1.1}
+.tappa-extra p{font-size:15px;color:var(--ink-soft);margin-top:8px;max-width:40ch;margin-inline:auto}
+.foglio-piede{text-align:center;font-size:15px;margin-top:40px;color:var(--ink-soft)}
+
+/* L'autrice: la lettera */
+.autrice .ritratto{width:56px;height:56px;border-radius:50%;object-fit:cover;object-position:50% 30%;margin-bottom:26px}
+.autrice p{max-width:46ch;margin-bottom:1.1em}
+.autrice .firma{font-family:var(--serif);font-style:italic;font-size:26px;line-height:1.1;margin-top:34px}
+.autrice .ruolo{font-size:15px;color:var(--ink-soft);margin-top:6px}
+.fine-colonna{height:150px}
+
+/* Ultima fotografia, testo a fianco */
+.finale{position:relative;background:var(--ink);color:var(--paper);min-height:90svh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:1fr auto auto;overflow:hidden;isolation:isolate;padding:0}
+.finale-titolo{grid-column:2;grid-row:2;position:relative;z-index:1;padding:0 var(--pad);max-width:640px;font-size:44px;line-height:1.04;margin-bottom:22px}
+.finale-foto{position:absolute;inset:0;z-index:0;margin:0}
+.finale-foto img{width:100%;height:100%;object-fit:cover;object-position:28% 22%;filter:brightness(.78)}
+.finale-testo{grid-column:2;grid-row:3;position:relative;z-index:1;padding:0 var(--pad) 72px;max-width:640px}
+.finale p{font-size:18px;max-width:40ch;margin-bottom:30px}
+.finale .button{background:var(--paper);color:var(--ink)}
+@media(hover:hover) and (pointer:fine){.finale .button:hover{background:#fff}}
+
+/* Fondo: fotografia e menu */
+footer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);background:var(--blue);color:var(--paper);min-height:100svh}
+.piede-foto{margin:0;overflow:hidden}
+.piede-foto img{width:100%;height:100%;object-fit:cover;object-position:50% 60%}
+.piede-menu{padding:64px var(--pad) 28px;display:flex;flex-direction:column}
+.piede-menu .wordmark{color:var(--paper);margin-bottom:56px;display:inline-block}
+.menu-grande{list-style:none;margin:0;padding:0}
+.menu-grande li{margin-bottom:22px}
+.menu-grande a{font-family:var(--serif);font-size:44px;line-height:1;text-decoration:none;display:inline-block;transition:transform 220ms var(--ease-out),opacity 220ms ease}
+@media(hover:hover) and (pointer:fine){
+  .menu-grande:hover a{opacity:.55}
+  .menu-grande a:hover{opacity:1;transform:translateX(12px)}
+}
+.piede-blocchi{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:auto;padding-top:64px;font-size:15px}
+.piede-blocchi p{margin-bottom:6px}
+.piede-blocchi a{text-decoration:none}
+@media(hover:hover) and (pointer:fine){.piede-blocchi a:hover{text-decoration:underline}}
+.crediti{font-size:15px;line-height:1.5;color:rgba(232,230,225,.85);margin-top:36px;max-width:72ch}
+.crediti a{color:inherit}
+.legale{font-size:15px;color:rgba(232,230,225,.85);margin-top:18px}
+
+/* Movimento */
+@media(prefers-reduced-motion:no-preference){
+  .js .shutter .stage-img.is-on{transform:scale(1.12);transition:opacity 900ms var(--ease-in-out),transform 1500ms var(--ease-soft)}
+  .js .shutter.is-in .stage-img.is-on{transform:none}
+  .js .stage::before{content:"";position:absolute;inset:0;background:var(--field);z-index:3;transform-origin:top;transition:transform 1100ms var(--ease-in-out)}
+  .js .stage.is-in::before{transform:scaleY(0)}
+  .js .stage.is-in .stage-img.is-on{animation:respiro 22s ease-in-out infinite alternate}
+  @keyframes respiro{from{transform:scale(1)}to{transform:scale(1.045)}}
+  .js .reveal{opacity:0;transform:translateY(22px);transition:opacity 700ms var(--ease-out),transform 700ms var(--ease-out);transition-delay:calc(var(--i,0)*80ms)}
+  .js .reveal.is-in{opacity:1;transform:none}
+  .js .reveal-line{clip-path:inset(0 0 100% 0);transition:clip-path 900ms var(--ease-in-out)}
+  .js .reveal-line.is-in{clip-path:inset(0)}
+}
+
+/* Telefono e tablet */
+@media(max-width:900px){
+  .split{display:block}
+  .stage{height:60svh;position:sticky;top:0;z-index:0}
+  .stage-img.fit-contain{padding:14px 0 84px}
+  .sguardo{padding:12px 20px 14px}
+  .colonna{position:relative;z-index:1}
+  .inner,.topbar{max-width:none}
+  .topbar{padding-top:22px}
+  .topnav a:not(:last-child){display:none}
+  .apertura{min-height:0;padding-top:44px;padding-bottom:64px}
+  .apertura h1{font-size:44px}
+  section h2,.finale-titolo,.foglio-testa .titolo{font-size:34px}
+  .storia .cifra{font-size:26px}
+  .colonna section,.tappe{padding-top:96px}
+  .foglio-campo{padding:40px 10px 56px}
+  .foglio{padding:36px 22px 36px;max-width:none}
+  .tappa{grid-template-columns:72px minmax(0,1fr);grid-template-rows:auto auto;gap:14px 16px}
+  .tappa-giorno{font-size:28px}
+  .tappa-foto{display:block;grid-column:1/-1}
+  .tappa-foto img{width:100%;aspect-ratio:3/2;object-fit:cover}
+  .fine-colonna{height:96px}
+  .finale{display:block;min-height:0}
+  .finale-foto{position:relative;height:70svh}
+  .finale-foto img{filter:none}
+  .finale-titolo{padding:56px 20px 28px;max-width:none;margin:0}
+  .finale-testo{padding:36px 20px 56px;max-width:none}
+  footer{display:block;min-height:0}
+  .piede-foto{height:50svh}
+  .piede-menu{padding:40px 20px 24px}
+  .menu-grande a{font-size:8.5vw}
+  .piede-blocchi{grid-template-columns:1fr;padding-top:40px}
+}
+@media(min-width:600px) and (max-width:900px){
+  .apertura{display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;align-items:end}
+  .apertura h1{grid-column:1;grid-row:1;margin-bottom:0}
+  .sottotitolo{grid-column:1;grid-row:2;margin-bottom:0}
+  .uscita{grid-column:2;grid-row:1;align-self:end;margin-bottom:0}
+  .azioni{grid-column:2;grid-row:2}
+}
+@media print{.stage,.sguardo{position:static;height:auto}.finale-foto,.piede-foto{display:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#libro">Vai al contenuto</a>
+
+<div class="split">
+  <figure class="stage shutter" aria-label="Immagine che cambia con la lettura" id="stage">
+    <img class="stage-img is-on fit-contain" data-key="cover" src="img/cover-900.webp" width="900" height="1348" alt="La copertina del libro: un ritratto settecentesco di donna con turbante, il volto coperto da una fascia di stoffa, uno specchio in mano" decoding="async"><img class="stage-img fit-cover" data-key="dagherrotipo" src="img/dagherrotipo-1600.webp" srcset="img/dagherrotipo-900.webp 900w, img/dagherrotipo-1600.webp 1600w" sizes="(max-width:900px) 100vw, 50vw" width="1267" height="1600" alt="Dagherrotipo di una donna di profilo, Boston, 1850 circa" loading="lazy" decoding="async"><img class="stage-img fit-cover" data-key="galton" src="img/galton-famiglia-1600.webp" srcset="img/galton-famiglia-900.webp 900w, img/galton-famiglia-1600.webp 1600w" sizes="(max-width:900px) 100vw, 50vw" width="1600" height="1376" alt="Tavola di ritratti compositi di una famiglia, dal metodo di Francis Galton" loading="lazy" decoding="async"><img class="stage-img fit-cover" data-key="milano" src="img/milano-1600.webp" srcset="img/milano-900.webp 900w, img/milano-1600.webp 1600w" sizes="(max-width:900px) 100vw, 50vw" width="1600" height="1200" alt="La cupola di vetro della Galleria Vittorio Emanuele II a Milano" loading="lazy" decoding="async"><img class="stage-img fit-cover" data-key="firenze" src="img/firenze-1600.webp" srcset="img/firenze-900.webp 900w, img/firenze-1600.webp 1600w" sizes="(max-width:900px) 100vw, 50vw" width="1600" height="743" alt="La cattedrale di Santa Maria del Fiore a Firenze" loading="lazy" decoding="async"><img class="stage-img fit-cover" data-key="prato" src="img/prato-1600.webp" srcset="img/prato-900.webp 900w, img/prato-1600.webp 1600w" sizes="(max-width:900px) 100vw, 50vw" width="1600" height="1094" alt="L&#x27;ingresso del Centro Pecci di Prato" loading="lazy" decoding="async"><img class="stage-img fit-cover" data-key="pescara" src="img/pescara-1600.webp" srcset="img/pescara-900.webp 900w, img/pescara-1600.webp 1600w" sizes="(max-width:900px) 100vw, 50vw" width="1600" height="633" alt="Il Ponte del Mare di Pescara" loading="lazy" decoding="async"><img class="stage-img fit-cover" data-key="roma" src="img/roma-1600.webp" srcset="img/roma-900.webp 900w, img/roma-1600.webp 1600w" sizes="(max-width:900px) 100vw, 50vw" width="1600" height="1067" alt="Largo di Torre Argentina a Roma" loading="lazy" decoding="async"><img class="stage-img fit-cover" data-key="bologna" src="img/bologna-1600.webp" srcset="img/bologna-900.webp 900w, img/bologna-1600.webp 1600w" sizes="(max-width:900px) 100vw, 50vw" width="1600" height="950" alt="La sala del Teatro Comunale di Bologna" loading="lazy" decoding="async"><img class="stage-img fit-cover" data-key="maura" src="img/maura-1600.webp" srcset="img/maura-900.webp 900w, img/maura-1600.webp 1600w" sizes="(max-width:900px) 100vw, 50vw" width="1066" height="1600" alt="Maura Gancitano" loading="lazy" decoding="async">
+    <p class="sguardo" id="sguardo" aria-live="off">Lei ha il volto coperto e lo specchio in mano. Tu, da quando sei qui, in una videocall saresti già stato fotografato <strong class="n" id="fotogrammi">0</strong> volte.</p>
+  </figure>
+
+  <div class="colonna">
+    <div class="topbar">
+      <a class="wordmark" href="https://www.tlon.it/">tlon</a>
+      <nav class="topnav" aria-label="Sezioni della pagina"><a href="#libro">Il libro</a><a href="#autrice">L’autrice</a><a href="#tappe">Le tappe</a></nav>
+    </div>
+
+    <header class="inner apertura" data-stage="cover">
+      <h1 class="reveal" style="--i:0">La fabbrica della bellezza</h1>
+      <p class="sottotitolo reveal" style="--i:1">L’invenzione del corpo perfetto dalla fotografia all’intelligenza artificiale</p>
+      <p class="uscita reveal" style="--i:2">Il nuovo libro di <strong>Maura Gancitano</strong>. Rizzoli, in libreria dal <strong>3 novembre 2026</strong>: 320 pagine e 169 illustrazioni.</p>
+      <p class="azioni reveal" style="--i:3"><a class="button" href="https://shop.tlon.it/prodotto/la-fabbrica-della-bellezza-linvenzione-del-corpo-perfetto-dalla-fotografia-allintelligenza-artificiale-maura-gancitano-autografato/">Prenota la copia autografata</a></p>
+    </header>
+
+    <section class="inner libro" id="libro" data-stage="cover">
+      <h2 class="reveal" style="--i:0">Il libro</h2>
+      <p class="reveal" style="--i:1">Nessun essere umano nella storia è stato così tanto fotografato e costretto a vedersi, allo specchio, nei selfie, nei quadratini delle videocall, come accade a noi. «Ma io sono davvero questo insieme di elementi che vedo impressi in una foto?», ci chiediamo sempre prima e sempre più spesso. Questa frattura tra il nostro corpo e la sua rappresentazione è la condizione strutturale dell’esperienza moderna della bellezza.</p>
+      <p class="reveal" style="--i:2">Dall’invenzione della fotografia, che ha fissato i volti su una pellicola e li ha resi confrontabili, fino a oggi, l’immagine è diventata via via più vera del corpo, e ci ha fatto credere di doverci conformare a un certo ideale per corrispondere a una sua versione ogni volta più perfetta. La bellezza si è trasformata in un dispositivo di potere che ci sorveglia, ci misura, ci giudica secondo criteri che non abbiamo scelto, e questa sorveglianza si è installata in noi, come uno specchio che ci portiamo dentro. E più ci guardiamo, più siamo spinti a lavorare instancabilmente sulla nostra immagine, a concepire la bellezza come una proprietà da costruire giorno dopo giorno perché duri in eterno, a investire sul corpo come un progetto che non finisce mai.</p>
+      <p class="reveal" style="--i:3">Maura Gancitano racconta, anche attraverso un ricchissimo apparato iconografico, la storia del rapporto tra corpo e immagine dagli inizi dell’Ottocento a oggi, per comprendere il modo in cui la fotografia, la pubblicità, la moda, il cinema, la statistica, i social, i media digitali e in ultimo l’intelligenza artificiale ci abbiano cambiati, inventando corpi sempre più perfetti e sempre meno reali. Ma se è vero che non possiamo più vederci e vedere senza i filtri, possiamo però imparare a riconoscerli e a muoverci al loro interno, per liberarci dal mito della bellezza perfetta: cercando nuovi modi di apparire e di esistere in relazione con gli altri, abitando il corpo che abbiamo, sentendolo dall’interno, qui e ora, con tutto ciò che porta scritto su di sé.</p>
+      <p class="sorgente reveal" style="--i:4">Quattro anni dopo <em>Specchio delle mie brame</em> (Einaudi 2022, Premio Rapallo), Maura Gancitano torna sulla bellezza e ne ricostruisce la fabbrica: due secoli di immagini che hanno insegnato ai corpi come apparire.</p>
+    </section>
+
+    <section class="inner storia" id="storia">
+      <h2 class="reveal" style="--i:0">Due secoli di sguardi</h2>
+      <p class="reveal" style="--i:1">Il libro parte dagli inizi dell’Ottocento, quando un volto per la prima volta può essere fissato su una lastra e messo accanto a un altro, e arriva ai filtri e ai modelli generativi di oggi. In mezzo stanno la pubblicità, la moda, il cinema, la statistica, i social: ognuno ha aggiunto un pezzo alla macchina che produce il corpo perfetto.</p>
+      <figure class="reveal" style="--i:2" data-stage="galton">
+        <img src="img/dagherrotipo-900.webp" width="1267" height="1600" alt="Dagherrotipo di una donna di profilo, con colletto di pizzo e scialle ricamato, Boston, 1850 circa" loading="lazy" decoding="async">
+        <figcaption>Un dagherrotipo dello studio Southworth &amp; Hawes, Boston, 1850 circa. La prima generazione di persone che ha potuto guardare la propria immagine come un oggetto.</figcaption>
+      </figure>
+      <figure class="reveal" style="--i:0" data-stage="dagherrotipo">
+        <img src="img/galton-sorelle-900.webp" width="1184" height="1600" alt="Tavola di fine Ottocento con i ritratti di tre sorelle di fronte e di profilo e, al centro, i due ritratti compositi ottenuti sovrapponendoli" loading="lazy" decoding="async">
+        <figcaption>Tre sorelle, di fronte e di profilo, e al centro il loro ritratto composito: Francis Galton sovrapponeva più volti su una stessa lastra per ottenere una faccia media. La statistica entra nella bellezza.</figcaption>
+      </figure>
+      <p class="cifra reveal" style="--i:1">Centosessantanove immagini per vedere come siamo stati guardati.</p>
+    </section>
+
+    <section class="tappe" id="tappe">
+      <h2 class="reveal" style="--i:0">Le tappe</h2>
+      <div class="foglio-campo">
+        <article class="foglio reveal" style="--i:1">
+          <div class="foglio-testa">
+            <p class="titolo">Novembre 2026</p>
+            <p class="nota">Le presentazioni con Maura Gancitano: dove, a che ora, con chi</p>
+          </div>
+          <ul class="tappe-lista">
+      <li class="tappa reveal" data-stage="milano" style="--i:0">
+        <div class="tappa-data"><span class="tappa-giorno">mer 4</span><span class="tappa-mese">novembre</span><span class="tappa-ora">ore 18:30</span></div>
+        <div class="tappa-corpo">
+          <h3>Milano</h3>
+          <p class="tappa-luogo">Libreria Rizzoli, Galleria Vittorio Emanuele II</p>
+          <p class="tappa-con">con Giulia Cavaliere</p>
+          <p class="tappa-azioni"><a class="link" href="data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-//Tlon//La%20fabbrica%20della%20bellezza//IT%0D%0ABEGIN%3AVEVENT%0D%0AUID%3Afabbricabellezza-milano%40tlon.it%0D%0ADTSTAMP%3A20261101T110000Z%0D%0ADTSTART%3A20261104T173000Z%0D%0ADTEND%3A20261104T183000Z%0D%0ASUMMARY%3AMaura%20Gancitano%20presenta%20La%20fabbrica%20della%20bellezza%2C%20Milano%0D%0ALOCATION%3ALibreria%20Rizzoli%2C%20Galleria%20Vittorio%20Emanuele%20II%2C%20Milano%0D%0ADESCRIPTION%3APresentazione%20di%20La%20fabbrica%20della%20bellezza%20%28Rizzoli%29.%20https%3A//www.tlon.it/fabbricabellezza/%0D%0AURL%3Ahttps%3A//www.tlon.it/fabbricabellezza/%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR" download="fabbrica-della-bellezza-milano.ics">Aggiungi al calendario</a> <a class="link" href="https://www.google.com/maps/search/?api=1&query=Libreria%20Rizzoli%20Galleria%20Vittorio%20Emanuele%20II%20Milano" target="_blank" rel="noopener">Indicazioni</a></p>
+        </div>
+        <figure class="tappa-foto"><img src="img/milano-900.webp" width="1600" height="1200" alt="La cupola di vetro della Galleria Vittorio Emanuele II a Milano, vista dall&#x27;alto" loading="lazy" decoding="async"></figure>
+      </li>
+      <li class="tappa reveal" data-stage="firenze" style="--i:1">
+        <div class="tappa-data"><span class="tappa-giorno">gio 5</span><span class="tappa-mese">novembre</span><span class="tappa-ora">ore 18:15</span></div>
+        <div class="tappa-corpo">
+          <h3>Firenze</h3>
+          <p class="tappa-luogo">Libraccio, via de&#x27; Cerretani</p>
+          <p class="tappa-con">con Alessia Dulbecco, a seguire firmacopie</p>
+          <p class="tappa-azioni"><a class="link" href="data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-//Tlon//La%20fabbrica%20della%20bellezza//IT%0D%0ABEGIN%3AVEVENT%0D%0AUID%3Afabbricabellezza-firenze%40tlon.it%0D%0ADTSTAMP%3A20261101T110000Z%0D%0ADTSTART%3A20261105T171500Z%0D%0ADTEND%3A20261105T181500Z%0D%0ASUMMARY%3AMaura%20Gancitano%20presenta%20La%20fabbrica%20della%20bellezza%2C%20Firenze%0D%0ALOCATION%3ALibraccio%2C%20via%20de%27%20Cerretani%2C%20Firenze%0D%0ADESCRIPTION%3APresentazione%20di%20La%20fabbrica%20della%20bellezza%20%28Rizzoli%29.%20https%3A//www.tlon.it/fabbricabellezza/%0D%0AURL%3Ahttps%3A//www.tlon.it/fabbricabellezza/%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR" download="fabbrica-della-bellezza-firenze.ics">Aggiungi al calendario</a> <a class="link" href="https://www.google.com/maps/search/?api=1&query=Libraccio%20via%20de%27%20Cerretani%20Firenze" target="_blank" rel="noopener">Indicazioni</a></p>
+        </div>
+        <figure class="tappa-foto"><img src="img/firenze-900.webp" width="1600" height="743" alt="La cattedrale di Santa Maria del Fiore a Firenze" loading="lazy" decoding="async"></figure>
+      </li>
+      <li class="tappa reveal" data-stage="prato" style="--i:2">
+        <div class="tappa-data"><span class="tappa-giorno">gio 5</span><span class="tappa-mese">novembre</span><span class="tappa-ora">ore 21:30</span></div>
+        <div class="tappa-corpo">
+          <h3>Prato</h3>
+          <p class="tappa-luogo">Centro per l&#x27;arte contemporanea Luigi Pecci</p>
+          <p class="tappa-con">Pecci Books Festival</p>
+          <p class="tappa-azioni"><a class="link" href="data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-//Tlon//La%20fabbrica%20della%20bellezza//IT%0D%0ABEGIN%3AVEVENT%0D%0AUID%3Afabbricabellezza-prato%40tlon.it%0D%0ADTSTAMP%3A20261101T110000Z%0D%0ADTSTART%3A20261105T203000Z%0D%0ADTEND%3A20261105T213000Z%0D%0ASUMMARY%3AMaura%20Gancitano%20presenta%20La%20fabbrica%20della%20bellezza%2C%20Prato%0D%0ALOCATION%3ACentro%20per%20l%27arte%20contemporanea%20Luigi%20Pecci%2C%20Prato%0D%0ADESCRIPTION%3APresentazione%20di%20La%20fabbrica%20della%20bellezza%20%28Rizzoli%29.%20https%3A//www.tlon.it/fabbricabellezza/%0D%0AURL%3Ahttps%3A//www.tlon.it/fabbricabellezza/%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR" download="fabbrica-della-bellezza-prato.ics">Aggiungi al calendario</a> <a class="link" href="https://www.google.com/maps/search/?api=1&query=Centro%20Pecci%20Prato" target="_blank" rel="noopener">Indicazioni</a></p>
+        </div>
+        <figure class="tappa-foto"><img src="img/prato-900.webp" width="1600" height="1094" alt="L&#x27;ingresso del Centro Pecci di Prato, con la facciata dorata" loading="lazy" decoding="async"></figure>
+      </li>
+      <li class="tappa reveal" data-stage="pescara" style="--i:3">
+        <div class="tappa-data"><span class="tappa-giorno">ven 6</span><span class="tappa-mese">novembre</span><span class="tappa-ora">ore 17:30</span></div>
+        <div class="tappa-corpo">
+          <h3>Pescara</h3>
+          <p class="tappa-luogo">FLA, Festival di Libri e altrecose</p>
+          <p class="tappa-con">il luogo è indicato nel programma del festival</p>
+          <p class="tappa-azioni"><a class="link" href="data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-//Tlon//La%20fabbrica%20della%20bellezza//IT%0D%0ABEGIN%3AVEVENT%0D%0AUID%3Afabbricabellezza-pescara%40tlon.it%0D%0ADTSTAMP%3A20261101T110000Z%0D%0ADTSTART%3A20261106T163000Z%0D%0ADTEND%3A20261106T173000Z%0D%0ASUMMARY%3AMaura%20Gancitano%20presenta%20La%20fabbrica%20della%20bellezza%2C%20Pescara%0D%0ALOCATION%3AFLA%2C%20Festival%20di%20Libri%20e%20altrecose%2C%20Pescara%0D%0ADESCRIPTION%3APresentazione%20di%20La%20fabbrica%20della%20bellezza%20%28Rizzoli%29.%20https%3A//www.tlon.it/fabbricabellezza/%0D%0AURL%3Ahttps%3A//www.tlon.it/fabbricabellezza/%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR" download="fabbrica-della-bellezza-pescara.ics">Aggiungi al calendario</a> <a class="link" href="https://www.google.com/maps/search/?api=1&query=FLA%20Festival%20di%20Libri%20e%20altrecose%20Pescara" target="_blank" rel="noopener">Indicazioni</a></p>
+        </div>
+        <figure class="tappa-foto"><img src="img/pescara-900.webp" width="1600" height="633" alt="Il Ponte del Mare di Pescara sul porto canale" loading="lazy" decoding="async"></figure>
+      </li>
+      <li class="tappa reveal" data-stage="roma" style="--i:4">
+        <div class="tappa-data"><span class="tappa-giorno">dom 8</span><span class="tappa-mese">novembre</span><span class="tappa-ora">ore 18:30</span></div>
+        <div class="tappa-corpo">
+          <h3>Roma</h3>
+          <p class="tappa-luogo">Libreria Spazio Sette, via dei Barbieri 7</p>
+          <p class="tappa-con">con Sabina Minardi</p>
+          <p class="tappa-azioni"><a class="link" href="data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-//Tlon//La%20fabbrica%20della%20bellezza//IT%0D%0ABEGIN%3AVEVENT%0D%0AUID%3Afabbricabellezza-roma%40tlon.it%0D%0ADTSTAMP%3A20261101T110000Z%0D%0ADTSTART%3A20261108T173000Z%0D%0ADTEND%3A20261108T183000Z%0D%0ASUMMARY%3AMaura%20Gancitano%20presenta%20La%20fabbrica%20della%20bellezza%2C%20Roma%0D%0ALOCATION%3ALibreria%20Spazio%20Sette%2C%20via%20dei%20Barbieri%207%2C%20Roma%0D%0ADESCRIPTION%3APresentazione%20di%20La%20fabbrica%20della%20bellezza%20%28Rizzoli%29.%20https%3A//www.tlon.it/fabbricabellezza/%0D%0AURL%3Ahttps%3A//www.tlon.it/fabbricabellezza/%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR" download="fabbrica-della-bellezza-roma.ics">Aggiungi al calendario</a> <a class="link" href="https://www.google.com/maps/search/?api=1&query=Libreria%20Spazio%20Sette%20via%20dei%20Barbieri%207%20Roma" target="_blank" rel="noopener">Indicazioni</a></p>
+        </div>
+        <figure class="tappa-foto"><img src="img/roma-900.webp" width="1600" height="1067" alt="L&#x27;area sacra di Largo di Torre Argentina a Roma" loading="lazy" decoding="async"></figure>
+      </li>
+      <li class="tappa reveal" data-stage="bologna" style="--i:5">
+        <div class="tappa-data"><span class="tappa-giorno">sab 21</span><span class="tappa-mese">novembre</span><span class="tappa-ora">ore 16:45</span></div>
+        <div class="tappa-corpo">
+          <h3>Bologna</h3>
+          <p class="tappa-luogo">L&#x27;Eredità delle Donne, Libreria Zanichelli</p>
+          <p class="tappa-con">nel programma del festival</p>
+          <p class="tappa-azioni"><a class="link" href="data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-//Tlon//La%20fabbrica%20della%20bellezza//IT%0D%0ABEGIN%3AVEVENT%0D%0AUID%3Afabbricabellezza-bologna%40tlon.it%0D%0ADTSTAMP%3A20261101T110000Z%0D%0ADTSTART%3A20261121T154500Z%0D%0ADTEND%3A20261121T163000Z%0D%0ASUMMARY%3AMaura%20Gancitano%20presenta%20La%20fabbrica%20della%20bellezza%2C%20Bologna%0D%0ALOCATION%3AL%27Eredit%C3%A0%20delle%20Donne%2C%20Libreria%20Zanichelli%2C%20Bologna%0D%0ADESCRIPTION%3APresentazione%20di%20La%20fabbrica%20della%20bellezza%20%28Rizzoli%29.%20https%3A//www.tlon.it/fabbricabellezza/%0D%0AURL%3Ahttps%3A//www.tlon.it/fabbricabellezza/%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR" download="fabbrica-della-bellezza-bologna.ics">Aggiungi al calendario</a> <a class="link" href="https://www.google.com/maps/search/?api=1&query=Libreria%20Zanichelli%20Bologna" target="_blank" rel="noopener">Indicazioni</a></p>
+        </div>
+        <figure class="tappa-foto"><img src="img/bologna-900.webp" width="1600" height="950" alt="La sala del Teatro Comunale di Bologna" loading="lazy" decoding="async"></figure>
+      </li>
+            <li class="tappa-extra reveal" data-stage="roma" style="--i:6">
+              <h3>Roma, in dicembre</h3>
+              <p>Un party letterario alla Libreria Teatro Tlon, a Ostiense, nei giorni di Più Libri Più Liberi (4–8 dicembre). La data arriva qui appena è fissata.</p>
+            </li>
+          </ul>
+          <p class="foglio-piede">Per informazioni sulle singole presentazioni: <a class="link" href="mailto:eventi@tlon.it">eventi@tlon.it</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="inner autrice" id="autrice" data-stage="maura">
+      <h2 class="reveal" style="--i:0">L’autrice</h2>
+      <img class="ritratto reveal" style="--i:1" src="img/maura-900.webp" width="600" height="900" alt="Maura Gancitano" loading="lazy" decoding="async">
+      <p class="reveal" style="--i:2">Maura Gancitano è filosofa, pedagogista e scrittrice. Nel 2015 ha fondato Tlon insieme ad Andrea Colamedici. È direttrice filosofica del Festival del Pensare Contemporaneo, insegna allo IED di Roma ed è editorialista di Vanity Fair.</p>
+      <p class="reveal" style="--i:3">I suoi libri sono tradotti in nove lingue. Con <em>Specchio delle mie brame. La prigione della bellezza</em> (Einaudi 2022) ha vinto il Premio Rapallo. Tra i più recenti: <em>Erotica dei sentimenti</em> (Einaudi 2024), <em>Animali narrativi</em> (Marsilio 2026) e, insieme ad Andrea Colamedici, <em>Botanica della meraviglia</em> (HarperCollins 2025).</p>
+      <p class="firma reveal" style="--i:4">Maura Gancitano</p>
+      <p class="ruolo reveal" style="--i:5"><a class="link" href="https://www.tlon.it/maura-gancitano/">La sua pagina su tlon.it</a></p>
+      <div class="fine-colonna"></div>
+    </section>
+  </div>
+</div>
+
+<section class="finale" id="prenota">
+  <h2 class="finale-titolo">Abitare il corpo che abbiamo</h2>
+  <figure class="finale-foto">
+    <img src="img/dagherrotipo-1600.webp" width="1267" height="1600" alt="Dagherrotipo di una donna di profilo, Boston, 1850 circa" loading="lazy" decoding="async">
+  </figure>
+  <div class="finale-testo">
+    <p class="reveal" style="--i:1">Le copie ordinate dalla Libreria Tlon arrivano autografate da Maura e partono dal 3 novembre. Il libro è in tutte le librerie dallo stesso giorno.</p>
+    <p class="reveal" style="--i:2"><a class="button" href="https://shop.tlon.it/prodotto/la-fabbrica-della-bellezza-linvenzione-del-corpo-perfetto-dalla-fotografia-allintelligenza-artificiale-maura-gancitano-autografato/">Prenota la copia autografata</a></p>
+  </div>
+</section>
+
+<footer>
+  <figure class="piede-foto">
+    <img src="img/libreria-tlon-900.webp" width="800" height="800" alt="La Libreria Teatro Tlon a Roma Ostiense: scaffali di legno, un tavolo di libri, le sedie colorate" loading="lazy" decoding="async">
+  </figure>
+  <div class="piede-menu">
+    <a class="wordmark" href="https://www.tlon.it/">tlon</a>
+    <ul class="menu-grande">
+      <li><a href="#libro">Il libro</a></li>
+      <li><a href="#tappe">Le tappe</a></li>
+      <li><a href="#autrice">L’autrice</a></li>
+      <li><a href="https://www.tlon.it/maura-gancitano/">Maura Gancitano</a></li>
+      <li><a href="https://www.tlon.it/">Tlon</a></li>
+    </ul>
+    <div class="piede-blocchi">
+      <div>
+        <p><a href="mailto:eventi@tlon.it">eventi@tlon.it</a></p>
+        <p><a href="mailto:info@tlon.it">info@tlon.it</a></p>
+      </div>
+      <div>
+        <p><a href="https://www.instagram.com/tlon.it/">Instagram</a></p>
+        <p><a href="https://www.facebook.com/associazionetlon">Facebook</a></p>
+        <p><a href="https://www.youtube.com/c/AssociazioneTlon">YouTube</a></p>
+      </div>
+    </div>
+    <p class="crediti">Le fotografie dei luoghi e le immagini d’archivio vengono da Wikimedia Commons: <a href="https://commons.wikimedia.org/wiki/File:Unidentified_woman_c1850_daguerreotype_by_Southworth_%26_Hawes.jpg">dagherrotipo di Southworth &amp; Hawes</a>, pubblico dominio; <a href="https://commons.wikimedia.org/wiki/File:Galton_composite_photography_of_sisters.jpg">ritratti compositi di tre sorelle</a> e <a href="https://commons.wikimedia.org/wiki/File:Galton_Composite_Photograph_of_Family.jpg">di una famiglia</a> di Francis Galton, pubblico dominio; <a href="https://commons.wikimedia.org/wiki/File:Glass_fome_of_the_Galleria_Vittorio_Emanuele_II_in_Milan.JPG">Galleria Vittorio Emanuele II</a> di High Contrast, <a href="https://creativecommons.org/licenses/by/3.0/de/deed.en">CC BY 3.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Cattedrale_di_Santa_Maria_del_Fiore_Florenz_M%C3%A4rz_2014.jpg">Santa Maria del Fiore</a> di Felix König, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Pecci_ingresso.jpg">Centro Pecci</a> di Michela.osteri, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Ponte_del_Mare_di_Pescara_2011.jpg">Ponte del Mare</a> di Exephyo, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>; <a href="https://commons.wikimedia.org/wiki/File:The_Largo_di_Torre_Argentina_is_a_historic_square_in_Rome.jpg">Largo di Torre Argentina</a> di Wilfredor, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>; <a href="https://commons.wikimedia.org/wiki/File:Teatro_Comunale_di_Bologna.jpg">Teatro Comunale di Bologna</a> di San2Kan, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>. La copertina è di Rizzoli.</p>
+    <p class="legale">© 2026 Tlon Srl · Sede legale: Via Nicolò da Pistoia, 12 — 00154 Roma · P.IVA 13583341006</p>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Lo sguardo: da quando sei qui, quante volte una videocall ti avrebbe fotografato (30 fotogrammi al secondo) */
+  var t0=Date.now(), n=document.getElementById('fotogrammi');
+  function tick(){ if(document.hidden) return; var s=(Date.now()-t0)/1000; n.textContent=Math.floor(s*30).toLocaleString('it-IT'); }
+  setInterval(tick,1000);
+
+  /* L'immagine fissa cambia con la sezione che stai leggendo */
+  var stage=document.getElementById('stage');
+  var imgs={};
+  stage.querySelectorAll('.stage-img').forEach(function(i){ imgs[i.dataset.key]=i; });
+  var current='cover';
+  function show(k){ if(!imgs[k]||k===current) return; imgs[current].classList.remove('is-on'); imgs[k].classList.add('is-on'); current=k; }
+  var targets=document.querySelectorAll('[data-stage]');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) show(e.target.dataset.stage); });
+    },{rootMargin:'-45% 0px -45% 0px',threshold:0});
+    targets.forEach(function(t){ io.observe(t); });
+
+    /* Entrate */
+    var ro=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-in'); ro.unobserve(e.target); } });
+    },{rootMargin:'0px 0px -8% 0px',threshold:0.05});
+    document.querySelectorAll('.reveal,.reveal-line').forEach(function(el){ ro.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal,.reveal-line').forEach(function(el){ el.classList.add('is-in'); });
+  }
+
+  /* La copertina si apre all'arrivo */
+  requestAnimationFrame(function(){ setTimeout(function(){ stage.classList.add('is-in'); }, reduce?0:120); });
+})();
+</script>
+</body>
+</html>
