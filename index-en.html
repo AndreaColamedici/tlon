@@ -368,11 +368,19 @@
             position: relative;
             z-index: 1;
             display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            grid-template-columns: minmax(0, 1fr);
             gap: var(--s4, 40px) var(--s5, 64px);
+            justify-items: center;
             align-items: center;
         }
-        .cost-intro, .cost-didascalia { grid-column: 1 / -1; }
+        .cost-intro, .cost-didascalia { grid-column: 1 / -1; width: 100%; }
+        .cost-scena { max-width: 980px; }
+        .mappa-colonna { max-width: 760px; width: 100%; }
+        @media (min-width: 1200px) {
+            .cost-wrap { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); justify-items: stretch; }
+            .cost-scena, .mappa-colonna { max-width: none; }
+            .cost-scena { padding-right: 40px; }
+        }
         .cost-nodo.acceso { color: var(--segnale); border-color: var(--inchiostro); }
         .cost-nodo.acceso .cost-punto { background: var(--segnale); }
 
@@ -501,7 +509,6 @@
 
         @media (max-width: 900px) {
             .costellazione { padding: 4rem 1.25rem 6rem; }
-            .cost-wrap { grid-template-columns: 1fr; }
             .cost-scena { aspect-ratio: 1 / 1; }
             .cost-etichetta { font-size: 0.62rem; letter-spacing: 0.1em; }
             .cost-nodo { gap: 0.4rem; padding: 0.25rem 0.45rem 0.25rem 0.25rem; }
@@ -647,11 +654,19 @@
             position: relative;
             z-index: 1;
             display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            grid-template-columns: minmax(0, 1fr);
             gap: var(--s4, 40px) var(--s5, 64px);
+            justify-items: center;
             align-items: center;
         }
-        .cost-intro, .cost-didascalia { grid-column: 1 / -1; }
+        .cost-intro, .cost-didascalia { grid-column: 1 / -1; width: 100%; }
+        .cost-scena { max-width: 980px; }
+        .mappa-colonna { max-width: 760px; width: 100%; }
+        @media (min-width: 1200px) {
+            .cost-wrap { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); justify-items: stretch; }
+            .cost-scena, .mappa-colonna { max-width: none; }
+            .cost-scena { padding-right: 40px; }
+        }
         .cost-nodo.acceso { color: var(--segnale); border-color: var(--inchiostro); }
         .cost-nodo.acceso .cost-punto { background: var(--segnale); }
 
@@ -780,7 +795,6 @@
 
         @media (max-width: 900px) {
             .costellazione { padding: 4rem 1.25rem 6rem; }
-            .cost-wrap { grid-template-columns: 1fr; }
             .cost-scena { aspect-ratio: 1 / 1; }
             .cost-etichetta { font-size: 0.62rem; letter-spacing: 0.1em; }
             .cost-nodo { gap: 0.4rem; padding: 0.25rem 0.45rem 0.25rem 0.25rem; }
@@ -1168,7 +1182,7 @@
                         <ul class="mappa-nomi" aria-label="The heights of Tlon"><li><a class="mappa-nome" href="./edizioni-en.html">Publishing</a></li><li><a class="mappa-nome" href="./librerie-en.html">Bookstores</a></li><li><a class="mappa-nome" href="./eventi-festival-en.html">Events</a></li><li><a class="mappa-nome" href="./ilpod-en.html">IlPod</a></li><li><a class="mappa-nome" href="./formazione-en.html">Education</a></li><li><a class="mappa-nome" href="./ipnocrazia-en.html">Hypnocracy</a></li><li><a class="mappa-nome" href="./press-en.html">Press</a></li><li><a class="mappa-nome" href="./il-progetto-en.html">The Project</a></li><li><a class="mappa-nome" href="#tlonletter">Tlonletter</a></li><li><a class="mappa-nome" href="./contatti/en.html">Contact</a></li></ul>
                         <span class="mappa-coord mono" aria-hidden="true"></span>
                     </div>
-                    <p class="mappa-didascalia">The chart of the same planet, drawn by its own formula: the ten dimensions are its heights. The lit half is the one the globe shows right now.</p>
+                    <p class="mappa-didascalia">The chart records what the globe has shown: with each turn the plate fills in. The ten dimensions are its heights.</p>
                 </div>
                 <p class="cost-didascalia">The same planet, as globe and as chart: the chart follows the globe.</p>
             </div>
@@ -2254,8 +2268,8 @@
             return fbm(x * SCALA, y * SCALA, z * SCALA);
         }
 
-        var W = 0, H = 0, dpr = 1, PASSO = 3, cols = 0, rows = 0, campo = null, terra = null, comp = null, aree = [], off = null, pronto = false;
-        var rivelato = 0, avviato = false, t0 = 0, DURATA = 2400;
+        var W = 0, H = 0, dpr = 1, PASSO = 3, cols = 0, rows = 0, campo = null, terra = null, comp = null, aree = [], off = null, offGrat = null, pronto = false;
+        var inciso = null, incise = 0, avviato = false, t0 = 0, DURATA = 2400, xMeridiano = -1, rivelato = 0;
 
         function misura() {
             var r = box.getBoundingClientRect();
@@ -2358,7 +2372,17 @@
                 for (var sg = 0; sg < seg.length; sg++) { c.moveTo(seg[sg][0][0], seg[sg][0][1]); c.lineTo(seg[sg][1][0], seg[sg][1][1]); }
             }
             c.stroke();
-            // reticolo: meridiani e paralleli ogni 30 gradi; equatore e meridiano zero più scuri
+            reticolo(c);
+            offGrat = document.createElement('canvas'); offGrat.width = W * dpr; offGrat.height = H * dpr;
+            var cg = offGrat.getContext('2d'); cg.scale(dpr, dpr);
+            cg.fillStyle = '#FFFFFF'; cg.fillRect(0, 0, W, H); reticolo(cg);
+            inciso = new Uint8Array(W); incise = 0;
+            pronto = true;
+        }
+
+        var cime = [];
+        function reticolo(c) {
+            // meridiani e paralleli ogni 30 gradi; equatore e meridiano zero più scuri
             c.lineWidth = 1;
             for (var g = 0; g <= 12; g++) {
                 var x = (g / 12) * W; c.strokeStyle = 'rgba(' + INK + ',' + (g === 6 ? 0.35 : 0.14) + ')';
@@ -2368,10 +2392,8 @@
                 var yy = (p / 6) * H; c.strokeStyle = 'rgba(' + INK + ',' + (p === 3 ? 0.35 : 0.14) + ')';
                 c.beginPath(); c.moveTo(0, yy); c.lineTo(W, yy); c.stroke();
             }
-            pronto = true;
         }
 
-        var cime = [];
         function battezza() {
             // le dieci dimensioni sono le dieci alture di Tlon: i punti più alti del rilievo, mai due a ridosso
             // zone vietate: i margini della tavola, il cartiglio in alto a sinistra, le coordinate in basso a sinistra
@@ -2416,56 +2438,81 @@
         }
 
         var lonGlobo = null;   // longitudine che il globo mostra allo spettatore, in radianti
-        function mostra(frazione) {
+        function colonna(lon) { var fx = ((0.5 - lon / (2 * Math.PI)) % 1 + 1) % 1; return Math.floor(fx * W) % W; }
+        function marcaArco(centro, raggio) {
+            // incide l'arco di colonne attorno a un meridiano: l'emisfero che il globo mostra è ampio W/2
+            for (var i = -raggio; i <= raggio; i++) marca(((centro + i) % W + W) % W);
+        }
+        function marca(x) { if (!inciso[x]) { inciso[x] = 1; incise++; } }
+        function mostra() {
+            if (!pronto) return;
             ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height);
-            var h = Math.round(H * frazione);
-            if (h > 0) ctx.drawImage(off, 0, 0, W * dpr, h * dpr, 0, 0, W * dpr, h * dpr);
-            if (frazione < 1) { ctx.fillStyle = 'rgba(' + SEGNALE + ',0.9)'; ctx.fillRect(0, h * dpr, W * dpr, Math.max(1, dpr)); }
-            if (frazione >= 1 && lonGlobo !== null) {
-                // la metà che il globo non mostra resta velata; il meridiano centrale è rosso
-                var fx = ((0.5 - lonGlobo / (2 * Math.PI)) % 1 + 1) % 1;
-                var x = fx * W * dpr, mezzo = W * dpr / 2;
-                // velo sulla metà nascosta: da x+mezzo a x-mezzo+W, ciclicamente
-                ctx.fillStyle = 'rgba(242,244,243,0.68)';
-                var s0 = x + mezzo, s1 = x - mezzo + W * dpr;
-                if (s0 >= W * dpr) s0 -= W * dpr;
-                if (s1 > W * dpr) { ctx.fillRect(s0, 0, W * dpr - s0, H * dpr); ctx.fillRect(0, 0, s1 - W * dpr, H * dpr); }
-                else ctx.fillRect(s0, 0, Math.max(0, s1 - s0), H * dpr);
-                ctx.fillStyle = 'rgba(' + SEGNALE + ',0.9)';
-                ctx.fillRect(x - dpr / 2, 0, dpr, H * dpr);
+            ctx.drawImage(offGrat, 0, 0);
+            // le colonne incise, a tratti contigui
+            var x = 0;
+            while (x < W) {
+                if (!inciso[x]) { x++; continue; }
+                var x0 = x; while (x < W && inciso[x]) x++;
+                ctx.drawImage(off, x0 * dpr, 0, (x - x0) * dpr, H * dpr, x0 * dpr, 0, (x - x0) * dpr, H * dpr);
             }
+            if (xMeridiano >= 0 && incise < W) {
+                ctx.fillStyle = 'rgba(' + SEGNALE + ',0.9)';
+                ctx.fillRect(xMeridiano * dpr - dpr / 2, 0, dpr, H * dpr);
+                ctx.beginPath(); ctx.moveTo(xMeridiano * dpr - 4 * dpr, 0); ctx.lineTo(xMeridiano * dpr + 4 * dpr, 0); ctx.lineTo(xMeridiano * dpr, 6 * dpr); ctx.closePath(); ctx.fill();
+            } else if (xMeridiano >= 0) {
+                ctx.fillStyle = 'rgba(' + SEGNALE + ',0.55)';
+                ctx.fillRect(xMeridiano * dpr - dpr / 2, 0, dpr, H * dpr);
+            }
+            rivelato = incise >= W ? 1 : incise / W;
             for (var n = 0; n < nomi.length; n++) {
-                var top = parseFloat(nomi[n].style.top || '200');
-                nomi[n].classList.toggle('visibile', frazione >= 1 || top / 100 < frazione);
+                var fx = parseFloat(nomi[n].style.left || '-1') / 100;
+                nomi[n].classList.toggle('visibile', fx >= 0 && !!inciso[Math.min(W - 1, Math.max(0, Math.floor(fx * W)))]);
             }
         }
-
+        // prima apertura: in due secondi e mezzo la carta si apre dal meridiano in luce fino ai due lembi del globo
         function passo(ts) {
             if (!t0) t0 = ts;
-            var t = Math.min(1, (ts - t0) / DURATA); var e = 1 - Math.pow(1 - t, 3);
-            rivelato = e; mostra(e);
+            var t = Math.min(1, (ts - t0) / DURATA), e = 1 - Math.pow(1 - t, 3);
+            var centro = lonGlobo === null ? Math.floor(W / 2) : colonna(lonGlobo);
+            marcaArco(centro, Math.floor(e * W / 4)); xMeridiano = centro;
+            mostra();
             if (t < 1) requestAnimationFrame(passo);
         }
-
-        function prepara() { misura(); calcola(); incidi(); battezza(); }
         function avvia() {
             if (avviato) return; avviato = true;
-            if (menoMoto.matches) { mostra(1); rivelato = 1; return; }
+            if (menoMoto.matches || !pronto) { for (var i = 0; i < W; i++) inciso[i] = 1; incise = W; xMeridiano = lonGlobo === null ? -1 : colonna(lonGlobo); mostra(); return; }
             requestAnimationFrame(passo);
         }
+        // poi la carta registra quel che il globo mostra: a ogni fotogramma l'emisfero in vista resta inciso,
+        // e girando (o trascinando) il globo i due lembi incidono terre nuove
+        window.tlonPianeta = window.tlonPianeta || {};
+        window.tlonPianeta.onFrame = function (lon) {
+            lonGlobo = lon;
+            if (!pronto || !avviato || (t0 && (performance.now() - t0) < DURATA)) return;
+            var c = colonna(lon);
+            if (incise < W) marcaArco(c, Math.floor(W / 4));
+            xMeridiano = c;
+            mostra();
+        };
 
-        prepara();
+        function prepara() { misura(); calcola(); incidi(); battezza(); }
+        prepara(); mostra();
         if ('ResizeObserver' in window) {
             var largo = W;
-            new ResizeObserver(function () { var r = box.getBoundingClientRect(); if (Math.abs(r.width - largo) < 2) return; largo = r.width; t0 = 0; prepara(); mostra(avviato ? 1 : 0); }).observe(box);
+            new ResizeObserver(function () {
+                var r = box.getBoundingClientRect(); if (Math.abs(r.width - largo) < 2) return; largo = r.width;
+                var tutto = incise >= W, quota = rivelato; prepara();
+                if (avviato) { for (var i = 0; i < W; i++) inciso[i] = tutto ? 1 : 0; incise = tutto ? W : 0; if (!tutto && lonGlobo !== null) marcaArco(colonna(lonGlobo), Math.floor(W / 4)); }
+                mostra();
+            }).observe(box);
         }
         if ('IntersectionObserver' in window) {
             new IntersectionObserver(function (voci) { voci.forEach(function (v) { if (v.isIntersecting) avvia(); }); }, { threshold: 0.35 }).observe(box);
         } else avvia();
 
-        // il puntatore legge coordinate e terra
+        // il puntatore legge coordinate e altura più vicina
         box.addEventListener('pointermove', function (ev) {
-            if (!pronto || rivelato < 1) return;
+            if (!pronto) return;
             var r = box.getBoundingClientRect();
             var fx = (ev.clientX - r.left) / r.width, fy = (ev.clientY - r.top) / r.height;
             if (fx < 0 || fx > 1 || fy < 0 || fy > 1) return;
@@ -2478,7 +2525,7 @@
                 var d = Math.sqrt(dx * dx * 4 + dy * dy);
                 if (d < dmin) { dmin = d; vicino = n; }
             }
-            if (dmin > 0.16) vicino = -1;
+            if (dmin > 0.16 || (vicino >= 0 && !nomi[vicino].classList.contains('visibile'))) vicino = -1;
             for (var n2 = 0; n2 < nomi.length; n2++) { var acc = n2 === vicino; nomi[n2].classList.toggle('acceso', acc); if (acc) nome = nomi[n2].textContent; }
             if (coord) {
                 coord.textContent = Math.abs(lat).toFixed(1) + '°' + (lat >= 0 ? 'N' : 'S') + ' ' + Math.abs(lon).toFixed(1) + '°' + (lon >= 0 ? 'E' : 'W') + (nome ? ' · ' + nome : '');
@@ -2490,12 +2537,6 @@
             if (coord) coord.classList.remove('visibile');
         });
 
-        // il globo accanto: a ogni fotogramma dice quale longitudine mostra
-        window.tlonPianeta = window.tlonPianeta || {};
-        window.tlonPianeta.onFrame = function (lon) {
-            lonGlobo = lon;
-            if (pronto && rivelato >= 1) mostra(1);
-        };
         // nodi in orbita e alture sulla carta si accendono a vicenda (stesso ordine delle dimensioni)
         var nodiGlobo = [].slice.call(document.querySelectorAll('.cost-nodo'));
         nodiGlobo.forEach(function (nodo, i) {

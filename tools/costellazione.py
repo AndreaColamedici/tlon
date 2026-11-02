@@ -29,11 +29,19 @@ CSS = """
             position: relative;
             z-index: 1;
             display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            grid-template-columns: minmax(0, 1fr);
             gap: var(--s4, 40px) var(--s5, 64px);
+            justify-items: center;
             align-items: center;
         }
-        .cost-intro, .cost-didascalia { grid-column: 1 / -1; }
+        .cost-intro, .cost-didascalia { grid-column: 1 / -1; width: 100%; }
+        .cost-scena { max-width: 980px; }
+        .mappa-colonna { max-width: 760px; width: 100%; }
+        @media (min-width: 1200px) {
+            .cost-wrap { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); justify-items: stretch; }
+            .cost-scena, .mappa-colonna { max-width: none; }
+            .cost-scena { padding-right: 40px; }
+        }
         .cost-nodo.acceso { color: var(--segnale); border-color: var(--inchiostro); }
         .cost-nodo.acceso .cost-punto { background: var(--segnale); }
 
@@ -162,7 +170,6 @@ CSS = """
 
         @media (max-width: 900px) {
             .costellazione { padding: 4rem 1.25rem 6rem; }
-            .cost-wrap { grid-template-columns: 1fr; }
             .cost-scena { aspect-ratio: 1 / 1; }
             .cost-etichetta { font-size: 0.62rem; letter-spacing: 0.1em; }
             .cost-nodo { gap: 0.4rem; padding: 0.25rem 0.45rem 0.25rem 0.25rem; }
