@@ -100,14 +100,16 @@ def main():
         blocco_passati = ''.join(voce(e, lang) for e in in_home_passati)
 
         # i blocchi finiscono al </div> che precede, rispettivamente, l'etichetta dei passati e il blocco CTA
-        s, n1 = re.subn(r'(<div class="news-preview" id="news-prossimi" data-totale=")\d+(">\n).*?(\n\s*</div>)(?=\s*\n\s*<p class="news-gruppo">)',
+        # dal 19 ott 2026 l'etichetta «In programma» sta in una colonna PRIMA del blocco (con «Il prossimo appuntamento»)
+        # e quella dei passati in una colonna con la figura: i blocchi finiscono al </div> che precede la colonna seguente
+        s, n1 = re.subn(r'(<div class="news-preview" id="news-prossimi" data-totale=")\d+(">\n).*?(\n\s*</div>)(?=\s*\n\s*(?:<p class="news-gruppo">|<div class="news-gruppo-col">))',
                         lambda m: m.group(1) + str(totale) + m.group(2) + blocco_prossimi.rstrip('\n') + '\n                    </div>', s, count=1, flags=re.S)
         s, n2 = re.subn(r'(<div class="news-preview" id="news-recenti">\n).*?(\n\s*</div>)(?=\s*\n\s*<div class="news-cta-block)',
                         lambda m: m.group(1) + blocco_passati.rstrip('\n') + '\n                    </div>', s, count=1, flags=re.S)
         s, n3 = re.subn(r'<span class="news-stat-number">\d+</span>', '<span class="news-stat-number">%d</span>' % totale, s, count=1)
         s, n4 = re.subn(r'<p class="news-gruppo">[^<]*<a class="news-gruppo-link" href="./news.html">[^<]*</a></p>',
                         '<p class="news-gruppo">%s <a class="news-gruppo-link" href="./news.html">%s</a></p>' % (T['prossimi'], T['link'] % totale), s, count=1)
-        s, n5 = re.subn(r'<p class="news-gruppo">[^<]*</p>\n(\s*<div class="news-preview" id="news-recenti">)', '<p class="news-gruppo">%s</p>\n\\1' % T['passati'], s, count=1)
+        s, n5 = re.subn(r'<p class="news-gruppo">[^<]*</p>(?=(?:(?!news-preview).)*?<div class="news-preview" id="news-recenti">)', '<p class="news-gruppo">%s</p>' % T['passati'], s, count=1, flags=re.S)
         s, n6 = re.subn(r'<p class="news-label">[^<]*</p>', '<p class="news-label">%s</p>' % stagione(lang, oggi), s, count=1)
         assert n1 == n2 == n3 == n4 == n5 == n6 == 1, (nome, n1, n2, n3, n4, n5, n6)
         io.open(path, 'w', encoding='utf-8').write(s)

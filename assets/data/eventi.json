@@ -13,6 +13,49 @@
  },
  {
   "categoria": "Festival",
+  "data_testo": "23–27 settembre 2027",
+  "inizio": "2027-09-23",
+  "fine": "2027-09-27",
+  "titolo": "Festival del Pensare Contemporaneo 2027 · Piacenza",
+  "testo": "Quinta edizione del festival diretto da Andrea Colamedici.",
+  "url": "https://www.pensarecontemporaneo.it/",
+  "url_label": "Pensare Contemporaneo",
+  "home": true,
+  "testo_en": "Fifth edition of the festival under Andrea Colamedici's philosophical direction.",
+  "testo_es": "Quinta edición del festival bajo la dirección filosófica de Andrea Colamedici."
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "26 maggio 2027",
+  "inizio": "2027-05-26",
+  "fine": "2027-05-26",
+  "titolo": "Intellettuali e potere · L'Asino d'oro, Roma",
+  "testo": "Maura Gancitano all'incontro «Intellettuali e potere» de L'Asino d'oro, Roma. Ore 21.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "26–28 maggio 2027 · da confermare",
+  "inizio": "2027-05-26",
+  "fine": "2027-05-28",
+  "titolo": "Festival Cubit · Madrid",
+  "testo": "Maura Gancitano e Andrea Colamedici al Festival Cubit di Madrid, su invito di Jorge Carrión. Giorno da confermare.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Festival",
+  "data_testo": "13–17 maggio 2027",
+  "inizio": "2027-05-13",
+  "fine": "2027-05-17",
+  "titolo": "Salone Internazionale del Libro · Torino",
+  "testo": "Tlon al Salone Internazionale del Libro di Torino 2027.",
+  "url": "https://www.salonelibro.it/",
+  "url_label": "Salone del Libro"
+ },
+ {
+  "categoria": "Festival",
   "data_testo": "25 febbraio 2027",
   "inizio": "2027-02-25",
   "fine": "2027-02-25",
@@ -49,6 +92,16 @@
  },
  {
   "categoria": "Conferenza",
+  "data_testo": "13 gennaio 2027 · da confermare",
+  "inizio": "2027-01-13",
+  "fine": "2027-01-13",
+  "titolo": "Día VINCI · Valparaíso",
+  "testo": "Andrea Colamedici invitato alla quinta edizione del Día VINCI a Valparaíso, Cile, nei giorni del Congreso Futuro. Da confermare.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
   "data_testo": "11–18 gennaio 2027",
   "inizio": "2027-01-11",
   "fine": "2027-01-18",
@@ -61,16 +114,59 @@
   "home": true
  },
  {
+  "categoria": "Festival",
+  "data_testo": "4–8 dicembre 2026",
+  "inizio": "2026-12-04",
+  "fine": "2026-12-08",
+  "titolo": "Più Libri Più Liberi · Roma",
+  "testo": "Tlon alla fiera della piccola e media editoria, La Nuvola, Roma. Gli incontri di Maura Gancitano: 4 dicembre, ore 18, Sala Aurora, la Tlonletter raccontata con Substack; 5 dicembre, ore 15, presentazione di «L'alfabeto muto dei Tarocchi»; 5 dicembre, ore 17.30, Sala Vega, incontro dedicato a Deledda; 7 dicembre, ore 14.30, Sala Aldus, «Cittadini formati con l'IA» con AIE; 7 dicembre, ore 16.30, dialogo con Raffaella Scarpa su «La grammatica della menzogna».",
+  "url": "https://plpl.it/",
+  "url_label": "Più Libri Più Liberi",
+  "home": true,
+  "testo_en": "Tlon at Rome's independent publishing fair, La Nuvola: five talks with Maura Gancitano, from the Tlonletter with Substack to «Cittadini formati con l'IA» with AIE.",
+  "testo_es": "Tlon en la feria de la pequeña y mediana editorial de Roma, La Nuvola: cinco encuentros con Maura Gancitano, de la Tlonletter con Substack a «Cittadini formati con l'IA» con AIE."
+ },
+ {
   "categoria": "Presentazione",
-  "data_testo": "Dicembre 2026 · data da confermare",
-  "inizio": "2026-12-01",
-  "fine": "2026-12-04",
+  "data_testo": "Dicembre 2026 · data da fissare",
+  "inizio": "2026-12-04",
+  "fine": "2026-12-08",
+  "titolo": "Party letterario «La fabbrica della bellezza» · Libreria Tlon, Roma",
+  "testo": "Festa per «La fabbrica della bellezza» di Maura Gancitano (Rizzoli) nella libreria Tlon di Roma, nei giorni di Più Libri Più Liberi. Data da fissare.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "3 dicembre 2026",
+  "inizio": "2026-12-03",
+  "fine": "2026-12-03",
+  "titolo": "Casa Circondariale di Prato",
+  "testo": "Maura Gancitano incontra la comunità della Casa Circondariale di Prato.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "2 dicembre 2026 · orario da confermare",
+  "inizio": "2026-12-02",
+  "fine": "2026-12-02",
   "titolo": "Beautiful Minds · Roma",
   "testo": "Andrea Colamedici presenta «Arcipelago delle realtà» al festival di Riccardo Luna ed Eleonora Chioda.",
   "url": "",
   "url_label": "",
   "testo_en": "Andrea Colamedici presents “Arcipelago delle realtà” at the festival curated by Riccardo Luna and Eleonora Chioda.",
   "testo_es": "Andrea Colamedici presenta «Arcipelago delle realtà» en el festival de Riccardo Luna y Eleonora Chioda."
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "2 dicembre 2026",
+  "inizio": "2026-12-02",
+  "fine": "2026-12-02",
+  "titolo": "Il sentiero della trasformazione · ATS Bergamo",
+  "testo": "Intervento di Maura Gancitano al convegno territoriale «Il sentiero della trasformazione» di ATS Bergamo, da remoto. Orario da confermare.",
+  "url": "",
+  "url_label": ""
  },
  {
   "categoria": "Conferenza",
@@ -182,6 +278,26 @@
   "testo_es": "Maura Gancitano presenta «La fabbrica della bellezza» (Rizzoli) en el festival L'Eredità delle Donne."
  },
  {
+  "categoria": "Conferenza",
+  "data_testo": "18 novembre 2026",
+  "inizio": "2026-11-18",
+  "fine": "2026-11-18",
+  "titolo": "Scuola Holden · Torino",
+  "testo": "Andrea Colamedici alla Scuola Holden di Torino. Ore 18.30.",
+  "url": "https://scuolaholden.it/",
+  "url_label": "Scuola Holden"
+ },
+ {
+  "categoria": "Conferenza",
+  "data_testo": "18 novembre 2026",
+  "inizio": "2026-11-18",
+  "fine": "2026-11-18",
+  "titolo": "Convention CSI Piemonte · Torino",
+  "testo": "Maura Gancitano e Andrea Colamedici alla convention «Condivisioni» di CSI Piemonte, Auditorium Giovanni Agnelli: la relazione con l'altro, il senso del lavoro, la sovranità cognitiva. Evento riservato.",
+  "url": "",
+  "url_label": ""
+ },
+ {
   "categoria": "Festival",
   "data_testo": "17 novembre 2026",
   "inizio": "2026-11-17",
@@ -291,6 +407,26 @@
   "testo_es": "Maura Gancitano en el Da Grande Festival, BASE Milano."
  },
  {
+  "categoria": "Media",
+  "data_testo": "7 novembre 2026",
+  "inizio": "2026-11-07",
+  "fine": "2026-11-07",
+  "titolo": "Maura Gancitano ospite di Massimo Gramellini",
+  "testo": "Maura Gancitano ospite in diretta nel programma televisivo di Massimo Gramellini.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "6 novembre 2026",
+  "inizio": "2026-11-06",
+  "fine": "2026-11-06",
+  "titolo": "La fabbrica della bellezza · FLA, Pescara",
+  "testo": "Maura Gancitano presenta «La fabbrica della bellezza» (Rizzoli) al Festival FLA di Pescara. Orario da confermare.",
+  "url": "",
+  "url_label": ""
+ },
+ {
   "categoria": "Conferenza",
   "data_testo": "5 novembre 2026",
   "inizio": "2026-11-05",
@@ -301,6 +437,26 @@
   "url_label": "",
   "testo_en": "Online talk by Andrea Colamedici for Médecins Sans Frontières: AI and critical thinking.",
   "testo_es": "Intervención en línea de Andrea Colamedici para Médicos Sin Fronteras: IA y pensamiento crítico."
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "5 novembre 2026",
+  "inizio": "2026-11-05",
+  "fine": "2026-11-05",
+  "titolo": "La fabbrica della bellezza · Firenze",
+  "testo": "Maura Gancitano presenta «La fabbrica della bellezza» (Rizzoli) alla libreria Libraccio di Firenze, con Alessia Dulbecco. Ore 18.15.",
+  "url": "",
+  "url_label": ""
+ },
+ {
+  "categoria": "Presentazione",
+  "data_testo": "5 novembre 2026",
+  "inizio": "2026-11-05",
+  "fine": "2026-11-05",
+  "titolo": "La fabbrica della bellezza · Prato",
+  "testo": "Maura Gancitano presenta «La fabbrica della bellezza» (Rizzoli) al Centro Pecci di Prato. Ore 21.",
+  "url": "",
+  "url_label": ""
  },
  {
   "categoria": "Presentazione",
