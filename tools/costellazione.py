@@ -15,7 +15,8 @@ CSS = """
         /* ============ COSTELLAZIONE ============ */
         .costellazione {
             padding: 7rem 3rem 8rem;
-            background: var(--bianco);
+            background: var(--fondo);
+            border-top: 1px solid var(--linea);
             display: flex;
             justify-content: center;
             position: relative;
@@ -38,17 +39,13 @@ CSS = """
         }
 
         .cost-eyebrow {
-            font-size: 0.68rem;
-            font-weight: 500;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--ottanio);
+            color: var(--nebbia);
         }
 
         .cost-hint {
-            font-size: 0.72rem;
-            letter-spacing: 0.06em;
-            color: var(--grigio);
+            font-family: var(--testo);
+            font-size: 0.8rem;
+            color: var(--nebbia);
             white-space: nowrap;
         }
 
@@ -81,21 +78,16 @@ CSS = """
             align-items: center;
             gap: 0.6rem;
             padding: 0.32rem 0.62rem 0.32rem 0.32rem;
-            border-radius: 100px;
+            border-radius: 0;
+            border: 1px solid var(--linea);
             white-space: nowrap;
             transform: translate3d(0, -50%, 0);
             transform-origin: 14px 50%;
             will-change: transform, opacity;
-            transition: color 0.35s ease, background-color 0.35s ease, box-shadow 0.35s ease;
-            color: var(--nero);
-            background: color-mix(in srgb, var(--bianco) 82%, transparent);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            transition: color var(--t-micro) linear, border-color var(--t-micro) linear;
+            color: var(--inchiostro);
+            background: var(--foglio);
             text-decoration: none;
-        }
-
-        @supports not (background: color-mix(in srgb, white 50%, transparent)) {
-            .cost-nodo { background: rgba(255,255,255,0.84); }
         }
 
         .cost-nodo--sinistra {
@@ -109,31 +101,22 @@ CSS = """
             height: 10px;
             border-radius: 50%;
             flex: none;
-            background: var(--bianco);
-            border: 1.5px solid var(--ottanio);
-            box-shadow: 0 0 0 0 rgba(42,107,107,0.35);
-            transition: box-shadow 0.45s cubic-bezier(0.16,1,0.3,1),
-                        background-color 0.35s ease, border-color 0.35s ease;
+            background: var(--foglio);
+            border: 1.5px solid var(--segnale);
+            transition: background-color var(--t-micro) linear;
         }
 
-        .cost-etichetta {
-            font-size: 0.72rem;
-            font-weight: 500;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-        }
+        .cost-etichetta { }
 
         .cost-nodo:hover,
         .cost-nodo:focus-visible {
-            color: var(--ottanio);
-            background: color-mix(in srgb, var(--bianco) 96%, transparent);
-            box-shadow: 0 10px 30px -14px rgba(42,107,107,0.45);
+            color: var(--segnale);
+            border-color: var(--inchiostro);
         }
 
         .cost-nodo:hover .cost-punto,
         .cost-nodo:focus-visible .cost-punto {
-            background: var(--ottanio);
-            box-shadow: 0 0 0 7px rgba(42,107,107,0.12);
+            background: var(--segnale);
         }
 
         .cost-nome {
@@ -149,26 +132,25 @@ CSS = """
             padding-left: 0.9rem;
         }
         .cost-nome strong {
-            font-family: 'Instrument Serif', serif;
-            font-weight: 400;
+            font-family: var(--display);
+            font-weight: 500;
             font-size: clamp(1.35rem, 2vw, 1.7rem);
-            letter-spacing: 0.08em;
+            letter-spacing: -0.01em;
             line-height: 1;
-            color: var(--nero);
+            color: var(--inchiostro);
         }
         .cost-nome em {
-            font-family: 'Instrument Serif', serif;
-            font-style: italic;
-            font-size: 0.92rem;
-            color: var(--grigio);
+            font-family: var(--testo);
+            font-style: normal;
+            font-size: 0.85rem;
+            color: var(--nebbia);
         }
 
         .cost-didascalia {
             margin-top: 2.5rem;
             text-align: center;
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-            color: var(--grigio);
+            font-size: 0.9rem;
+            color: var(--nebbia);
         }
 
         @media (max-width: 900px) {
@@ -213,7 +195,7 @@ JS = r"""
 
         var menoMoto = window.matchMedia('(prefers-reduced-motion: reduce)');
         var compatto = window.matchMedia('(max-width: 640px)');
-        var TEAL = '42,107,107', NERO = '10,10,10';
+        var TEAL = '91,107,122', NERO = '14,17,22', SEGNALE = '199,43,44';
 
         // ---- rumore 3D a seme fisso: la geografia di Tlon è sempre la stessa
         var SEME = 1940;
@@ -479,14 +461,14 @@ JS = r"""
                 if (!coperto && d > R * 1.1) {
                     var g = ctx.createLinearGradient(sx, sy, n.x, n.y);
                     var forza = 0.04 + prof * 0.10 + n.luce * 0.35;
-                    g.addColorStop(0, 'rgba(' + TEAL + ',' + forza + ')');
-                    g.addColorStop(1, 'rgba(' + TEAL + ',' + (forza * 0.25) + ')');
+                    g.addColorStop(0, 'rgba(' + SEGNALE + ',' + + forza + ')');
+                    g.addColorStop(1, 'rgba(' + SEGNALE + ',' + + (forza * 0.25) + ')');
                     ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(n.x, n.y);
                     ctx.strokeStyle = g; ctx.lineWidth = 0.8 + n.luce; ctx.setLineDash([]); ctx.stroke();
                 }
                 if (n.luce > 0.01) {
                     var al = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 46);
-                    al.addColorStop(0, 'rgba(' + TEAL + ',' + (0.22 * n.luce) + ')');
+                    al.addColorStop(0, 'rgba(' + SEGNALE + ',' + + (0.22 * n.luce) + ')');
                     al.addColorStop(1, 'rgba(' + TEAL + ',0)');
                     ctx.beginPath(); ctx.arc(n.x, n.y, 46, 0, Math.PI * 2); ctx.fillStyle = al; ctx.fill();
                 }
@@ -494,7 +476,7 @@ JS = r"""
                 if (compatto.matches) {
                     ctx.beginPath(); ctx.arc(n.x, n.y, coperto ? 2 : 3.2 + prof * 1.4, 0, Math.PI * 2);
                     ctx.fillStyle = 'rgba(255,255,255,1)'; ctx.fill();
-                    ctx.strokeStyle = 'rgba(' + TEAL + ',' + (coperto ? 0.25 : 0.55 + prof * 0.45) + ')'; ctx.lineWidth = 1.5; ctx.stroke();
+                    ctx.strokeStyle = 'rgba(' + SEGNALE + ',' + + (coperto ? 0.25 : 0.55 + prof * 0.45) + ')'; ctx.lineWidth = 1.5; ctx.stroke();
                     continue;
                 }
                 var sinistra = n.x < cx;

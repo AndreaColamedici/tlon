@@ -10,41 +10,35 @@ viceversa. Niente animazioni oltre al respiro del punto del prossimo evento.
 
 CSS = """
         /* ============ PROSSIMO APPUNTAMENTO ============ */
-        .prossimo { margin: 0.5rem 0 0; }
-        .prossimo-label { display: block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
-            color: rgba(255,255,255,0.45); margin-bottom: 1.6rem; }
-        .prossimo-data { display: flex; align-items: flex-end; gap: 1rem; line-height: 0.85; margin-bottom: 1.4rem; }
-        .prossimo-giorno { font-family: 'Instrument Serif', serif; font-size: clamp(5rem, 9vw, 8.5rem); font-weight: 400; color: var(--bianco); letter-spacing: -0.03em; }
-        .prossimo-mese { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(1.3rem, 1.9vw, 1.7rem); color: rgba(255,255,255,0.8); line-height: 1.15; padding-bottom: 0.6rem; }
-        .prossimo-titolo { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: clamp(1.5rem, 2.4vw, 2.1rem); line-height: 1.2; color: var(--bianco); margin: 0 0 0.8rem; }
-        .prossimo-titolo a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.25); transition: border-color 0.3s ease; }
-        .prossimo-titolo a:hover { border-bottom-color: var(--ottanio, #2a6b6b); }
-        .prossimo-meta { font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(95,176,176,0.95); margin: 0; }
-        .prossimo-meta .prossimo-punto { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #5fb0b0; margin-right: 0.6rem; vertical-align: middle;
-            box-shadow: 0 0 0 0 rgba(95,176,176,0.5); animation: prossimoRespiro 2.8s ease-out infinite; }
-        @keyframes prossimoRespiro { 0% { box-shadow: 0 0 0 0 rgba(95,176,176,0.55); } 70% { box-shadow: 0 0 0 10px rgba(95,176,176,0); } 100% { box-shadow: 0 0 0 0 rgba(95,176,176,0); } }
-        .prossimo-nota { font-size: 0.9rem; line-height: 1.6; color: rgba(255,255,255,0.6); margin: 1rem 0 0; max-width: 34ch; }
+        .prossimo { margin: 0; }
+        .prossimo-label { display: block; color: var(--notte-testo); margin-bottom: var(--s3); }
+        .prossimo-data { display: flex; align-items: baseline; gap: var(--s2); line-height: 0.85; margin-bottom: var(--s2); }
+        .prossimo-giorno { font-family: var(--display); font-size: clamp(5rem, 9vw, 8.5rem); font-variation-settings: 'opsz' 96, 'wght' 300; color: var(--fondo); letter-spacing: -0.04em; line-height: 0.85; }
+        .prossimo-mese { font-family: var(--display); font-size: clamp(1.3rem, 1.9vw, 1.7rem); font-weight: 400; color: var(--notte-testo); line-height: 1; }
+        .prossimo-titolo { font-family: var(--display); font-weight: 500; font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.15; letter-spacing: -0.015em; font-variation-settings: 'opsz' 40; color: var(--fondo); margin: 0 0 var(--s2); max-width: 24ch; }
+        .prossimo-titolo a { color: inherit; }
+        .prossimo-meta { font-size: 0.85rem; color: var(--segnale); margin: 0; display: flex; align-items: center; gap: 0.6rem; }
+        .prossimo-meta .prossimo-punto { display: inline-block; width: 8px; height: 8px; background: var(--segnale); flex: none; }
+        .prossimo-nota { font-size: 0.9rem; line-height: 1.6; color: var(--notte-testo); margin: var(--s2) 0 0; max-width: 34ch; }
 
-        .lt { position: relative; margin-top: 3.2rem; padding-top: 1.6rem; height: 5.4rem; }
-        .lt-titolo { position: absolute; top: 0; left: 0; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
-        .lt-asse { position: absolute; left: 0; right: 0; top: 3.1rem; height: 1px; background: rgba(255,255,255,0.18); }
-        .lt-mese { position: absolute; top: 3.5rem; transform: translateX(-50%); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); white-space: nowrap; }
-        .lt-mese::before { content: ''; position: absolute; left: 50%; top: -0.55rem; width: 1px; height: 0.45rem; background: rgba(255,255,255,0.3); }
-        .lt-oggi { position: absolute; top: 2.2rem; transform: translateX(-50%); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #5fb0b0; }
-        .lt-oggi::after { content: ''; position: absolute; left: 50%; top: 1.05rem; width: 1px; height: 0.85rem; background: #5fb0b0; }
-        .lt-evento { position: absolute; top: 3.1rem; width: 11px; height: 11px; transform: translate(-50%, -50%); border-radius: 50%;
-            background: var(--nero, #0a0a0a); border: 1.5px solid #5fb0b0; cursor: pointer; transition: transform 0.25s ease, background-color 0.25s ease; }
-        .lt-evento:hover, .lt-evento.acceso { background: #5fb0b0; transform: translate(-50%, -50%) scale(1.35); }
-        .lt-evento:first-of-type { background: #5fb0b0; }
-        .lt-evento .lt-tip { position: absolute; bottom: 1.3rem; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 0.72rem; letter-spacing: 0.02em; text-transform: none;
-            color: var(--bianco); background: rgba(10,10,10,0.92); border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.6rem; border-radius: 3px;
-            opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+        .lt { position: relative; margin-top: var(--s3); padding-top: 1.6rem; height: 5.6rem; }
+        .lt-titolo { position: absolute; top: 0; left: 0; color: var(--notte-testo); }
+        .lt-asse { position: absolute; left: 0; right: 0; top: 3.1rem; height: 1px; background: var(--notte-linea); }
+        .lt-mese { position: absolute; top: 3.5rem; transform: translateX(-50%); font-size: 0.72rem; color: var(--notte-testo); white-space: nowrap; }
+        .lt-mese::before { content: ''; position: absolute; left: 50%; top: -0.55rem; width: 1px; height: 0.45rem; background: var(--notte-linea); }
+        .lt-oggi { position: absolute; top: 2.1rem; transform: translateX(-50%); font-size: 0.62rem; color: var(--segnale); white-space: nowrap; }
+        .lt-oggi::after { content: ''; position: absolute; left: 50%; top: 1.05rem; width: 1px; height: 0.85rem; background: var(--segnale); }
+        .lt-evento { position: absolute; top: 3.1rem; width: 11px; height: 11px; transform: translate(-50%, -50%);
+            background: var(--notte); border: 1.5px solid var(--segnale); cursor: pointer; transition: background-color var(--t-micro) linear; }
+        .lt-evento:hover, .lt-evento.acceso { background: var(--segnale); }
+        .lt-evento:first-of-type { background: var(--segnale); }
+        .lt-evento .lt-tip { position: absolute; bottom: 1.3rem; left: 50%; transform: translateX(-50%); white-space: nowrap; font-family: var(--testo); font-size: 0.78rem;
+            color: var(--fondo); background: var(--inchiostro); border: 1px solid var(--notte-linea); padding: 0.4rem 0.6rem;
+            opacity: 0; pointer-events: none; transition: opacity var(--t-micro) linear; }
         .lt-evento:hover .lt-tip, .lt-evento.acceso .lt-tip { opacity: 1; }
         .lt-evento.lt-sinistra .lt-tip { left: 0; transform: none; }
         .lt-evento.lt-destra .lt-tip { left: auto; right: 0; transform: none; }
-        .news-item.acceso { background: rgba(95,176,176,0.08); }
-        @media (max-width: 900px) { .prossimo { margin-top: 0; } .lt { height: 5.8rem; } }
-        @media (prefers-reduced-motion: reduce) { .prossimo-meta .prossimo-punto { animation: none; } }
+        @media (max-width: 900px) { .lt { height: 5.8rem; } }
 """
 
 JS = r"""
