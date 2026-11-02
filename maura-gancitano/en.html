@@ -29,6 +29,7 @@
     <meta name="twitter:description" content="Philosopher, pedagogue and writer. Co-founder of Tlon, she works on gender equality, emotional education, digital public spaces, communication and cultural planning.">
     <meta name="twitter:image" content="https://www.tlon.it/assets/images/maura-gancitano.jpg">
     <link rel="stylesheet" href="/assets/fonts/fonts.css">
+    <link rel="stylesheet" href="/assets/fonts/fabbrica.css">
     <link rel="stylesheet" href="/tlonletter.css">
     <style>
         :root {
@@ -379,8 +380,36 @@
         }
         .skip-link:focus { left: 0; }
         :focus-visible { outline: 2px solid #2a6b6b; outline-offset: 3px; }
-</style></style>
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</noscript>
+    </style>
+    <style>
+        /* ============ LA FABBRICA DELLA BELLEZZA ============ */
+        .fb { background: #15327a; color: #f3ecdf; position: relative; overflow: hidden; }
+        .fb-inner { max-width: 1400px; margin: 0 auto; padding: 6rem 3rem; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 5rem; align-items: center; }
+        .fb-quadro { margin: 0; position: relative; perspective: 1400px; }
+        .fb-quadro img { display: block; width: 100%; height: auto; transform: rotateY(var(--ry, 0deg)) rotateX(var(--rx, 0deg)); transition: transform 600ms cubic-bezier(.16,1,.3,1); will-change: transform; }
+        .fb-quadro figcaption { margin-top: 1rem; font-family: 'Epilogue', 'Inter', sans-serif; font-size: 0.8rem; line-height: 1.5; color: #c9c4d8; }
+        .fb-eti { font-family: 'Epilogue', 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #c9c4d8; display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .fb-eti::before { content: ''; width: 30px; height: 1px; background: #e2772c; }
+        .fb-titolo { font-family: 'Gloock', 'Instrument Serif', serif; font-weight: 400; font-size: clamp(2.6rem, 5.2vw, 4.6rem); line-height: 0.98; letter-spacing: -0.01em; margin: 0 0 1rem; }
+        .fb-sotto { font-family: 'Epilogue', 'Inter', sans-serif; font-size: clamp(1.1rem, 1.6vw, 1.35rem); line-height: 1.35; color: #f3ecdf; max-width: 32ch; margin: 0 0 1.5rem; }
+        .fb-sotto strong { font-weight: 600; }
+        .fb-testo { font-family: 'Epilogue', 'Inter', sans-serif; font-size: 1.05rem; line-height: 1.75; color: #c9c4d8; max-width: 56ch; margin: 0 0 2.5rem; }
+        .fb-tappe-eti { font-family: 'Epilogue', 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #c9c4d8; margin: 0 0 0.75rem; }
+        .fb-tappe { list-style: none; margin: 0 0 2.5rem; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem 1.5rem; }
+        .fb-tappa { border-top: 1px solid rgba(243,236,223,0.25); padding-top: 0.6rem; }
+        .fb-citta { display: block; font-family: 'Gloock', 'Instrument Serif', serif; font-size: 1.5rem; line-height: 1.1; }
+        .fb-data { display: block; font-family: 'Epilogue', 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; margin-top: 0.2rem; }
+        .fb-sede { display: block; font-family: 'Epilogue', 'Inter', sans-serif; font-size: 0.8rem; color: #c9c4d8; }
+        .fb-cta { display: inline-flex; align-items: center; gap: 0.75rem; padding: 1.1rem 1.75rem; background: #e2772c; color: #1a1612; font-family: 'Epilogue', 'Inter', sans-serif; font-size: 1rem; font-weight: 600; transition: background-color 160ms linear, transform 160ms linear; }
+        .fb-cta:hover { background: #c9651f; }
+        .fb-cta:active { transform: scale(0.97); }
+        .fb-cta:focus-visible { outline: 3px solid #e2772c; outline-offset: 3px; }
+        .fb-cta svg { width: 18px; height: 18px; }
+        @media (max-width: 1024px) { .fb-inner { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; } .fb-quadro { max-width: 460px; } .fb-tappe { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 560px) { .fb-tappe { grid-template-columns: 1fr; } }
+        @media (prefers-reduced-motion: reduce) { .fb-quadro img { transform: none !important; transition: none; } }
+    </style>
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
 
     <script type="application/ld+json">
     {
@@ -451,6 +480,27 @@
             </div>
         </section>
 
+
+
+        <!-- LA FABBRICA DELLA BELLEZZA -->
+        <section class="fb reveal" aria-labelledby="fb-titolo">
+            <div class="fb-inner">
+                <figure class="fb-quadro">
+                    <img src="../fabbricabellezza/img/dipinto-900.webp" alt="Il dipinto di copertina: una dama con lo specchio, il volto coperto da una fascia arancione" width="900" height="1150" loading="lazy" decoding="async">
+                    <figcaption>Cover: Ewa Juszkiewicz, Lady with a Mirror (after Elisabeth Vigée Le Brun), 2026</figcaption>
+                </figure>
+                <div class="fb-corpo">
+                    <p class="fb-eti">The new book</p>
+                    <h2 class="fb-titolo" id="fb-titolo">La fabbrica della bellezza</h2>
+                    <p class="fb-sotto">The invention of the perfect body, from photography to artificial intelligence. <strong>Rizzoli, 2026.</strong></p>
+                    <p class="fb-testo">Three hundred and twenty pages and one hundred and sixty-nine images: a century and a half of gazes, from the daguerreotype to generated images, and the question of when we stopped recognising ourselves. In bookshops from 3 November 2026, with launches in six cities.</p>
+                    <p class="fb-tappe-eti">Launches</p>
+                    <ul class="fb-tappe"><li class="fb-tappa"><span class="fb-citta">Milano</span><span class="fb-data">4 nov</span><span class="fb-sede">Libreria Rizzoli, Galleria</span></li><li class="fb-tappa"><span class="fb-citta">Firenze</span><span class="fb-data">5 nov</span><span class="fb-sede">Libraccio</span></li><li class="fb-tappa"><span class="fb-citta">Prato</span><span class="fb-data">5 nov</span><span class="fb-sede">Centro Pecci</span></li><li class="fb-tappa"><span class="fb-citta">Pescara</span><span class="fb-data">6 nov</span><span class="fb-sede">FLA</span></li><li class="fb-tappa"><span class="fb-citta">Roma</span><span class="fb-data">8 nov</span><span class="fb-sede">Spazio Sette</span></li><li class="fb-tappa"><span class="fb-citta">Bologna</span><span class="fb-data">21 nov</span><span class="fb-sede">L’Eredità delle Donne</span></li></ul>
+                    <a class="fb-cta" href="../fabbricabellezza/">The book and the dates <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                </div>
+            </div>
+        </section>
+
         <div class="bio-content">
             <section class="bio-section reveal">
                 <div class="section-header">
@@ -471,6 +521,7 @@
                 </div>
                 <div class="libro-categoria">
                     <div class="categoria-title">Individual works</div>
+                    <div class="libro"><span class="libro-anno">2026</span><div class="libro-info"><span class="libro-titolo">La fabbrica della bellezza</span><span class="libro-sottotitolo">The invention of the perfect body, from photography to artificial intelligence</span></div><span class="libro-editore">Rizzoli</span></div>
                     <div class="libro"><span class="libro-anno">2026</span><div class="libro-info"><span class="libro-titolo">Animali narrativi</span><span class="libro-sottotitolo">Why We Cannot Stop Believing in Stories</span></div><span class="libro-editore">Marsilio</span></div>
                     <div class="libro"><span class="libro-anno">2024</span><div class="libro-info"><span class="libro-titolo">Erotica dei sentimenti</span><span class="libro-sottotitolo">For a New Emotional Education</span></div><span class="libro-editore">Einaudi</span></div>
                     <div class="libro"><span class="libro-anno">2024</span><div class="libro-info"><span class="libro-titolo">Perché studiare filosofia (non) è noioso</span><span class="libro-sottotitolo">Why Studying Philosophy Is (Not) Boring</span></div><span class="libro-editore">Mondadori</span></div>
@@ -702,6 +753,19 @@
                 document.body.style.overflow = '';
             });
         });
+    </script>
+    <script>
+    // il quadro si inclina sotto la mano, come nel minisito
+    (function () {
+        var q = document.querySelector('.fb-quadro'); if (!q) return;
+        var img = q.querySelector('img');
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.matchMedia('(hover: hover)').matches) return;
+        q.addEventListener('pointermove', function (e) {
+            var r = q.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+            img.style.setProperty('--ry', (x * 10).toFixed(2) + 'deg'); img.style.setProperty('--rx', (-y * 8).toFixed(2) + 'deg');
+        });
+        q.addEventListener('pointerleave', function () { img.style.setProperty('--ry', '0deg'); img.style.setProperty('--rx', '0deg'); });
+    })();
     </script>
 </body>
 </html>
