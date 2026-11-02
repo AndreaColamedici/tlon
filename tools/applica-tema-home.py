@@ -21,6 +21,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from tema_laboratorio import CSS_BASE, CSS_DOPO, JS_CAMPO
 from costellazione import CSS as CSS_COST
 from prossimo_news import CSS as CSS_PROSSIMO
+from mappa_tlon import CSS as CSS_MAPPA, JS as JS_MAPPA
 
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FILE = ['index.html', 'index-en.html', 'index-es.html']
@@ -31,7 +32,7 @@ def foglio():
     cost = CSS_COST.strip('\n')
     assert cost.startswith('        /* ============ COSTELLAZIONE ============ */')
     return (CSS_BASE.strip('\n') + '\n\n' + CSS_PROSSIMO.strip('\n') + '\n\n' + cost + '\n\n'
-            + CSS_DOPO.strip('\n') + '\n')
+            + CSS_MAPPA.strip('\n') + '\n\n' + CSS_DOPO.strip('\n') + '\n')
 
 
 def main():
@@ -65,6 +66,15 @@ def main():
         else:
             k = s.rfind('</script>')
             s = s[:k] + JS_CAMPO.rstrip('\n') + '\n\n    ' + s[k:]
+
+        # script della mappa di Tlon, dopo il campo gravitazionale
+        i = s.find('    // Mappa di Tlon:')
+        if i >= 0:
+            j = s.index('})();', i) + len('})();')
+            s = s[:i] + JS_MAPPA.strip('\n') + s[j:]
+        else:
+            k = s.rfind('</script>')
+            s = s[:k] + JS_MAPPA.rstrip('\n') + '\n\n    ' + s[k:]
 
         io.open(path, 'w', encoding='utf-8').write(s)
         print(f, 'tema applicato')
