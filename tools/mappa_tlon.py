@@ -27,7 +27,9 @@ CSS = """
         .mappa-titolo span { font-size: 0.62rem; color: var(--nebbia); }
         .mappa-coord { position: absolute; left: 10px; bottom: 8px; min-width: 14ch; font-size: 0.7rem; color: var(--segnale); pointer-events: none; opacity: 0; transition: opacity var(--t-micro) linear; }
         .mappa-coord.visibile { opacity: 1; }
-        .statement-figura figcaption { max-width: 48ch; }
+        .mappa-colonna { display: flex; flex-direction: column; gap: var(--s2); align-self: center; }
+        .mappa-didascalia { font-size: 0.85rem; line-height: 1.5; color: var(--nebbia); max-width: 44ch; margin: 0; }
+        .mappa-meridiano { font-family: var(--mono); font-size: 0.7rem; color: var(--segnale); }
         @media (max-width: 640px) { .mappa-nome { font-size: 0.52rem; padding: 2px 4px; } .mappa-titolo strong { font-size: 0.85rem; } }
 """
 
@@ -87,7 +89,7 @@ JS = r"""
             for (var j = 0; j < rows; j++) {
                 var lat = (0.5 - j / (rows - 1)) * Math.PI;
                 for (var i = 0; i < cols; i++) {
-                    var lon = (i / (cols - 1) - 0.5) * 2 * Math.PI;
+                    var lon = (0.5 - i / (cols - 1)) * 2 * Math.PI;   // est a sinistra, come sul globo accanto
                     var n = quota(lon, lat); campo[j * cols + i] = n; terra[j * cols + i] = n > SOGLIA ? 1 : 0;
                 }
             }
@@ -232,11 +234,25 @@ JS = r"""
             }
         }
 
+        var lonGlobo = null;   // longitudine che il globo mostra allo spettatore, in radianti
         function mostra(frazione) {
             ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height);
             var h = Math.round(H * frazione);
             if (h > 0) ctx.drawImage(off, 0, 0, W * dpr, h * dpr, 0, 0, W * dpr, h * dpr);
             if (frazione < 1) { ctx.fillStyle = 'rgba(' + SEGNALE + ',0.9)'; ctx.fillRect(0, h * dpr, W * dpr, Math.max(1, dpr)); }
+            if (frazione >= 1 && lonGlobo !== null) {
+                // la metà che il globo non mostra resta velata; il meridiano centrale è rosso
+                var fx = ((0.5 - lonGlobo / (2 * Math.PI)) % 1 + 1) % 1;
+                var x = fx * W * dpr, mezzo = W * dpr / 2;
+                // velo sulla metà nascosta: da x+mezzo a x-mezzo+W, ciclicamente
+                ctx.fillStyle = 'rgba(242,244,243,0.68)';
+                var s0 = x + mezzo, s1 = x - mezzo + W * dpr;
+                if (s0 >= W * dpr) s0 -= W * dpr;
+                if (s1 > W * dpr) { ctx.fillRect(s0, 0, W * dpr - s0, H * dpr); ctx.fillRect(0, 0, s1 - W * dpr, H * dpr); }
+                else ctx.fillRect(s0, 0, Math.max(0, s1 - s0), H * dpr);
+                ctx.fillStyle = 'rgba(' + SEGNALE + ',0.9)';
+                ctx.fillRect(x - dpr / 2, 0, dpr, H * dpr);
+            }
             for (var n = 0; n < nomi.length; n++) {
                 var top = parseFloat(nomi[n].style.top || '200');
                 nomi[n].classList.toggle('visibile', frazione >= 1 || top / 100 < frazione);
@@ -272,7 +288,7 @@ JS = r"""
             var r = box.getBoundingClientRect();
             var fx = (ev.clientX - r.left) / r.width, fy = (ev.clientY - r.top) / r.height;
             if (fx < 0 || fx > 1 || fy < 0 || fy > 1) return;
-            var lon = (fx - 0.5) * 360, lat = (0.5 - fy) * 180;
+            var lon = (0.5 - fx) * 360, lat = (0.5 - fy) * 180;
             var i = Math.min(cols - 1, Math.max(0, Math.round(fx * (cols - 1)))), j = Math.min(rows - 1, Math.max(0, Math.round(fy * (rows - 1))));
             var nome = null, vicino = -1, dmin = 1e9;
             for (var n = 0; n < cime.length; n++) {
@@ -292,5 +308,49 @@ JS = r"""
             for (var n = 0; n < nomi.length; n++) nomi[n].classList.remove('acceso');
             if (coord) coord.classList.remove('visibile');
         });
+
+        // il globo accanto: a ogni fotogramma dice quale longitudine mostra
+        window.tlonPianeta = window.tlonPianeta || {};
+        window.tlonPianeta.onFrame = function (lon) {
+            lonGlobo = lon;
+            if (pronto && rivelato >= 1) mostra(1);
+        };
+        // nodi in orbita e alture sulla carta si accendono a vicenda (stesso ordine delle dimensioni)
+        var nodiGlobo = [].slice.call(document.querySelectorAll('.cost-nodo'));
+        nodiGlobo.forEach(function (nodo, i) {
+            nodo.addEventListener('mouseenter', function () { if (nomi[i]) nomi[i].classList.add('acceso'); });
+            nodo.addEventListener('mouseleave', function () { if (nomi[i]) nomi[i].classList.remove('acceso'); });
+        });
+        nomi.forEach(function (nome, i) {
+            nome.addEventListener('mouseenter', function () { if (nodiGlobo[i]) nodiGlobo[i].classList.add('acceso'); });
+            nome.addEventListener('mouseleave', function () { if (nodiGlobo[i]) nodiGlobo[i].classList.remove('acceso'); });
+        });
     })();
 """
+
+TESTI = {
+    'it': dict(titolo='Tlon', sotto='Tavola I · la geografia del pianeta', lista='Le alture di Tlon',
+               did='La carta dello stesso pianeta, disegnata dalla sua formula: le dieci dimensioni sono le sue alture. La metà in luce è quella che il globo mostra adesso.'),
+    'en': dict(titolo='Tlon', sotto='Plate I · the geography of the planet', lista='The heights of Tlon',
+               did='The chart of the same planet, drawn by its own formula: the ten dimensions are its heights. The lit half is the one the globe shows right now.'),
+    'es': dict(titolo='Tlon', sotto='Lámina I · la geografía del planeta', lista='Las alturas de Tlon',
+               did='La carta del mismo planeta, trazada con su propia fórmula: las diez dimensiones son sus alturas. La mitad iluminada es la que el globo muestra ahora.'),
+}
+
+
+def markup(lang, nodi):
+    """La colonna della carta: tavola, nomi delle alture (stesse dimensioni e stessi link dei nodi), didascalia."""
+    import html
+    T = TESTI[lang]
+    voci = ''.join('<li><a class="mappa-nome" href="%s"%s>%s</a></li>' % (
+        html.escape(h[lang], quote=True), ' target="_blank" rel="noopener"' if h[lang].startswith('http') else '', html.escape(e[lang]))
+        for _, _, e, h in nodi)
+    return ('                <div class="mappa-colonna">\n'
+            '                    <div class="mappa" id="mappaTlon">\n'
+            '                        <canvas class="mappa-canvas" id="mappaCanvas" aria-hidden="true"></canvas>\n'
+            '                        <div class="mappa-titolo" aria-hidden="true"><strong>%s</strong><span>%s</span></div>\n'
+            '                        <ul class="mappa-nomi" aria-label="%s">%s</ul>\n'
+            '                        <span class="mappa-coord mono" aria-hidden="true"></span>\n'
+            '                    </div>\n'
+            '                    <p class="mappa-didascalia">%s</p>\n'
+            '                </div>\n') % (html.escape(T['titolo']), html.escape(T['sotto']), html.escape(T['lista'], quote=True), voci, html.escape(T['did']))

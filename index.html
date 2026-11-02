@@ -254,19 +254,16 @@
             background: var(--foglio);
             border-top: 1px solid var(--linea);
             padding: var(--s6) var(--pad);
-            display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-            gap: var(--s5); align-items: center;
+            display: grid; grid-template-columns: minmax(0, 1fr);
             max-width: none;
         }
         .statement-text {
             font-family: var(--display);
-            font-size: clamp(1.5rem, 2.6vw, 2.3rem);
-            font-weight: 400; line-height: 1.25; letter-spacing: -0.015em;
-            max-width: 26ch;
-            margin-left: auto;
+            font-size: clamp(1.6rem, 3vw, 2.7rem);
+            font-weight: 400; line-height: 1.22; letter-spacing: -0.02em;
             width: 100%;
-            max-width: min(26ch, calc(var(--max) * 0.5));
-            justify-self: end;
+            max-width: min(34ch, var(--max));
+            margin: 0 auto;
         }
         .statement-text em { font-style: normal; color: var(--segnale); }
         .statement-figura { margin: 0; justify-self: start; max-width: 560px; width: 100%; }
@@ -367,10 +364,17 @@
 
         .cost-wrap {
             width: 100%;
-            max-width: 980px;
+            max-width: var(--max, 1400px);
             position: relative;
             z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            gap: var(--s4, 40px) var(--s5, 64px);
+            align-items: center;
         }
+        .cost-intro, .cost-didascalia { grid-column: 1 / -1; }
+        .cost-nodo.acceso { color: var(--segnale); border-color: var(--inchiostro); }
+        .cost-nodo.acceso .cost-punto { background: var(--segnale); }
 
         .cost-intro {
             display: flex;
@@ -497,6 +501,7 @@
 
         @media (max-width: 900px) {
             .costellazione { padding: 4rem 1.25rem 6rem; }
+            .cost-wrap { grid-template-columns: 1fr; }
             .cost-scena { aspect-ratio: 1 / 1; }
             .cost-etichetta { font-size: 0.62rem; letter-spacing: 0.1em; }
             .cost-nodo { gap: 0.4rem; padding: 0.25rem 0.45rem 0.25rem 0.25rem; }
@@ -528,19 +533,16 @@
             background: var(--foglio);
             border-top: 1px solid var(--linea);
             padding: var(--s6) var(--pad);
-            display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-            gap: var(--s5); align-items: center;
+            display: grid; grid-template-columns: minmax(0, 1fr);
             max-width: none;
         }
         .statement-text {
             font-family: var(--display);
-            font-size: clamp(1.5rem, 2.6vw, 2.3rem);
-            font-weight: 400; line-height: 1.25; letter-spacing: -0.015em;
-            max-width: 26ch;
-            margin-left: auto;
+            font-size: clamp(1.6rem, 3vw, 2.7rem);
+            font-weight: 400; line-height: 1.22; letter-spacing: -0.02em;
             width: 100%;
-            max-width: min(26ch, calc(var(--max) * 0.5));
-            justify-self: end;
+            max-width: min(34ch, var(--max));
+            margin: 0 auto;
         }
         .statement-text em { font-style: normal; color: var(--segnale); }
         .statement-figura { margin: 0; justify-self: start; max-width: 560px; width: 100%; }
@@ -641,10 +643,17 @@
 
         .cost-wrap {
             width: 100%;
-            max-width: 980px;
+            max-width: var(--max, 1400px);
             position: relative;
             z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            gap: var(--s4, 40px) var(--s5, 64px);
+            align-items: center;
         }
+        .cost-intro, .cost-didascalia { grid-column: 1 / -1; }
+        .cost-nodo.acceso { color: var(--segnale); border-color: var(--inchiostro); }
+        .cost-nodo.acceso .cost-punto { background: var(--segnale); }
 
         .cost-intro {
             display: flex;
@@ -771,6 +780,7 @@
 
         @media (max-width: 900px) {
             .costellazione { padding: 4rem 1.25rem 6rem; }
+            .cost-wrap { grid-template-columns: 1fr; }
             .cost-scena { aspect-ratio: 1 / 1; }
             .cost-etichetta { font-size: 0.62rem; letter-spacing: 0.1em; }
             .cost-nodo { gap: 0.4rem; padding: 0.25rem 0.45rem 0.25rem 0.25rem; }
@@ -815,7 +825,9 @@
         .mappa-titolo span { font-size: 0.62rem; color: var(--nebbia); }
         .mappa-coord { position: absolute; left: 10px; bottom: 8px; min-width: 14ch; font-size: 0.7rem; color: var(--segnale); pointer-events: none; opacity: 0; transition: opacity var(--t-micro) linear; }
         .mappa-coord.visibile { opacity: 1; }
-        .statement-figura figcaption { max-width: 48ch; }
+        .mappa-colonna { display: flex; flex-direction: column; gap: var(--s2); align-self: center; }
+        .mappa-didascalia { font-size: 0.85rem; line-height: 1.5; color: var(--nebbia); max-width: 44ch; margin: 0; }
+        .mappa-meridiano { font-family: var(--mono); font-size: 0.7rem; color: var(--segnale); }
         @media (max-width: 640px) { .mappa-nome { font-size: 0.52rem; padding: 2px 4px; } .mappa-titolo strong { font-size: 0.85rem; } }
 
         /* ============ TLONLETTER ============ */
@@ -995,8 +1007,7 @@
             .hero-content { grid-template-columns: 1fr; }
             .hero-founders { flex-direction: row; }
             .founder { flex: 1; }
-            .statement { grid-template-columns: 1fr; gap: var(--s4); padding: var(--s5) var(--pad); }
-            .statement-text { max-width: 26ch; justify-self: start; }
+            .statement { padding: var(--s5) var(--pad); }
             .news-section, .tl-rivista, .dimensioni, .evidenza, .luoghi { padding: var(--s5) var(--pad); }
             .news-header { grid-template-columns: 1fr; }
             .news-stats { align-items: flex-start; text-align: left; }
@@ -1139,15 +1150,6 @@
             <p class="statement-text reveal">
                 Un pianeta immaginario raccontato da Borges. Un nuovo mondo creato attraverso lo sforzo comune dell'immaginazione. Dal 2015 siamo un'istituzione culturale indipendente — filosofia pubblica, editoria, media — e costruiamo <em>ponti tra le idee e le azioni</em>.
             </p>
-            <figure class="statement-figura reveal">
-                <div class="mappa" id="mappaTlon">
-                    <canvas class="mappa-canvas" id="mappaCanvas" aria-hidden="true"></canvas>
-                    <div class="mappa-titolo" aria-hidden="true"><strong>Tlon</strong><span>Tavola I · la geografia del pianeta</span></div>
-                    <ul class="mappa-nomi" aria-label="Le terre di Tlon"><li><a class="mappa-nome" href="./edizioni.html">Edizioni</a></li><li><a class="mappa-nome" href="./librerie.html">Librerie</a></li><li><a class="mappa-nome" href="./eventi-festival.html">Eventi</a></li><li><a class="mappa-nome" href="./ilpod.html">IlPod</a></li><li><a class="mappa-nome" href="./formazione.html">Formazione</a></li><li><a class="mappa-nome" href="./ipnocrazia.html">Ipnocrazia</a></li><li><a class="mappa-nome" href="./press.html">Press</a></li><li><a class="mappa-nome" href="./il-progetto.html">Il Progetto</a></li><li><a class="mappa-nome" href="#tlonletter">Tlonletter</a></li><li><a class="mappa-nome" href="./contatti/">Contatti</a></li></ul>
-                    <span class="mappa-coord mono" aria-hidden="true"></span>
-                </div>
-                <figcaption>La geografia di Tlon, disegnata dalla stessa formula del pianeta che gira più sotto: ogni dimensione è una terra.</figcaption>
-            </figure>
         </section>
 
         <!-- COSTELLAZIONE -->
@@ -1159,7 +1161,16 @@
                     <div class="cost-nome" id="costNome"><strong>Tlon</strong><em>un pianeta immaginario, che esiste</em></div>
                     <ul class="cost-nodi" aria-label="Le dimensioni di Tlon"><li><a class="cost-nodo" data-orbita="2" data-fase="0.0" href="./edizioni.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Edizioni</span></a></li><li><a class="cost-nodo" data-orbita="2" data-fase="0.25" href="./librerie.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Librerie</span></a></li><li><a class="cost-nodo" data-orbita="2" data-fase="0.5" href="./eventi-festival.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Eventi</span></a></li><li><a class="cost-nodo" data-orbita="2" data-fase="0.75" href="./ilpod.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">IlPod</span></a></li><li><a class="cost-nodo" data-orbita="1" data-fase="0.1" href="./formazione.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Formazione</span></a></li><li><a class="cost-nodo" data-orbita="1" data-fase="0.43" href="./ipnocrazia.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Ipnocrazia</span></a></li><li><a class="cost-nodo" data-orbita="1" data-fase="0.76" href="./press.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Press</span></a></li><li><a class="cost-nodo" data-orbita="0" data-fase="0.2" href="./il-progetto.html"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Il Progetto</span></a></li><li><a class="cost-nodo" data-orbita="0" data-fase="0.53" href="#tlonletter"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Tlonletter</span></a></li><li><a class="cost-nodo" data-orbita="0" data-fase="0.86" href="./contatti/"><span class="cost-punto" aria-hidden="true"></span><span class="cost-etichetta">Contatti</span></a></li></ul>
                 </div>
-                <p class="cost-didascalia">Un ecosistema in cui ogni dimensione si intreccia con le altre</p>
+                <div class="mappa-colonna">
+                    <div class="mappa" id="mappaTlon">
+                        <canvas class="mappa-canvas" id="mappaCanvas" aria-hidden="true"></canvas>
+                        <div class="mappa-titolo" aria-hidden="true"><strong>Tlon</strong><span>Tavola I · la geografia del pianeta</span></div>
+                        <ul class="mappa-nomi" aria-label="Le alture di Tlon"><li><a class="mappa-nome" href="./edizioni.html">Edizioni</a></li><li><a class="mappa-nome" href="./librerie.html">Librerie</a></li><li><a class="mappa-nome" href="./eventi-festival.html">Eventi</a></li><li><a class="mappa-nome" href="./ilpod.html">IlPod</a></li><li><a class="mappa-nome" href="./formazione.html">Formazione</a></li><li><a class="mappa-nome" href="./ipnocrazia.html">Ipnocrazia</a></li><li><a class="mappa-nome" href="./press.html">Press</a></li><li><a class="mappa-nome" href="./il-progetto.html">Il Progetto</a></li><li><a class="mappa-nome" href="#tlonletter">Tlonletter</a></li><li><a class="mappa-nome" href="./contatti/">Contatti</a></li></ul>
+                        <span class="mappa-coord mono" aria-hidden="true"></span>
+                    </div>
+                    <p class="mappa-didascalia">La carta dello stesso pianeta, disegnata dalla sua formula: le dieci dimensioni sono le sue alture. La metà in luce è quella che il globo mostra adesso.</p>
+                </div>
+                <p class="cost-didascalia">Lo stesso pianeta, come globo e come carta: la carta segue il globo.</p>
             </div>
         </section>
 
@@ -1831,6 +1842,7 @@
         function disegna(t) {
             ctx.clearRect(0, 0, W, H);
             var ang = t * 0.11 + giro;
+            if (window.tlonPianeta && window.tlonPianeta.onFrame) window.tlonPianeta.onFrame(ang + Math.PI / 2);
 
             // atmosfera
             var atm = ctx.createRadialGradient(cx, cy, R * 0.96, cx, cy, R * 1.34);
@@ -2235,7 +2247,7 @@
             for (var j = 0; j < rows; j++) {
                 var lat = (0.5 - j / (rows - 1)) * Math.PI;
                 for (var i = 0; i < cols; i++) {
-                    var lon = (i / (cols - 1) - 0.5) * 2 * Math.PI;
+                    var lon = (0.5 - i / (cols - 1)) * 2 * Math.PI;   // est a sinistra, come sul globo accanto
                     var n = quota(lon, lat); campo[j * cols + i] = n; terra[j * cols + i] = n > SOGLIA ? 1 : 0;
                 }
             }
@@ -2380,11 +2392,25 @@
             }
         }
 
+        var lonGlobo = null;   // longitudine che il globo mostra allo spettatore, in radianti
         function mostra(frazione) {
             ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height);
             var h = Math.round(H * frazione);
             if (h > 0) ctx.drawImage(off, 0, 0, W * dpr, h * dpr, 0, 0, W * dpr, h * dpr);
             if (frazione < 1) { ctx.fillStyle = 'rgba(' + SEGNALE + ',0.9)'; ctx.fillRect(0, h * dpr, W * dpr, Math.max(1, dpr)); }
+            if (frazione >= 1 && lonGlobo !== null) {
+                // la metà che il globo non mostra resta velata; il meridiano centrale è rosso
+                var fx = ((0.5 - lonGlobo / (2 * Math.PI)) % 1 + 1) % 1;
+                var x = fx * W * dpr, mezzo = W * dpr / 2;
+                // velo sulla metà nascosta: da x+mezzo a x-mezzo+W, ciclicamente
+                ctx.fillStyle = 'rgba(242,244,243,0.68)';
+                var s0 = x + mezzo, s1 = x - mezzo + W * dpr;
+                if (s0 >= W * dpr) s0 -= W * dpr;
+                if (s1 > W * dpr) { ctx.fillRect(s0, 0, W * dpr - s0, H * dpr); ctx.fillRect(0, 0, s1 - W * dpr, H * dpr); }
+                else ctx.fillRect(s0, 0, Math.max(0, s1 - s0), H * dpr);
+                ctx.fillStyle = 'rgba(' + SEGNALE + ',0.9)';
+                ctx.fillRect(x - dpr / 2, 0, dpr, H * dpr);
+            }
             for (var n = 0; n < nomi.length; n++) {
                 var top = parseFloat(nomi[n].style.top || '200');
                 nomi[n].classList.toggle('visibile', frazione >= 1 || top / 100 < frazione);
@@ -2420,7 +2446,7 @@
             var r = box.getBoundingClientRect();
             var fx = (ev.clientX - r.left) / r.width, fy = (ev.clientY - r.top) / r.height;
             if (fx < 0 || fx > 1 || fy < 0 || fy > 1) return;
-            var lon = (fx - 0.5) * 360, lat = (0.5 - fy) * 180;
+            var lon = (0.5 - fx) * 360, lat = (0.5 - fy) * 180;
             var i = Math.min(cols - 1, Math.max(0, Math.round(fx * (cols - 1)))), j = Math.min(rows - 1, Math.max(0, Math.round(fy * (rows - 1))));
             var nome = null, vicino = -1, dmin = 1e9;
             for (var n = 0; n < cime.length; n++) {
@@ -2439,6 +2465,23 @@
         box.addEventListener('pointerleave', function () {
             for (var n = 0; n < nomi.length; n++) nomi[n].classList.remove('acceso');
             if (coord) coord.classList.remove('visibile');
+        });
+
+        // il globo accanto: a ogni fotogramma dice quale longitudine mostra
+        window.tlonPianeta = window.tlonPianeta || {};
+        window.tlonPianeta.onFrame = function (lon) {
+            lonGlobo = lon;
+            if (pronto && rivelato >= 1) mostra(1);
+        };
+        // nodi in orbita e alture sulla carta si accendono a vicenda (stesso ordine delle dimensioni)
+        var nodiGlobo = [].slice.call(document.querySelectorAll('.cost-nodo'));
+        nodiGlobo.forEach(function (nodo, i) {
+            nodo.addEventListener('mouseenter', function () { if (nomi[i]) nomi[i].classList.add('acceso'); });
+            nodo.addEventListener('mouseleave', function () { if (nomi[i]) nomi[i].classList.remove('acceso'); });
+        });
+        nomi.forEach(function (nome, i) {
+            nome.addEventListener('mouseenter', function () { if (nodiGlobo[i]) nodiGlobo[i].classList.add('acceso'); });
+            nome.addEventListener('mouseleave', function () { if (nodiGlobo[i]) nodiGlobo[i].classList.remove('acceso'); });
         });
     })();
 

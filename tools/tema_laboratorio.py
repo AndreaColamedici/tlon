@@ -230,19 +230,16 @@ CSS_BASE = """
             background: var(--foglio);
             border-top: 1px solid var(--linea);
             padding: var(--s6) var(--pad);
-            display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-            gap: var(--s5); align-items: center;
+            display: grid; grid-template-columns: minmax(0, 1fr);
             max-width: none;
         }
         .statement-text {
             font-family: var(--display);
-            font-size: clamp(1.5rem, 2.6vw, 2.3rem);
-            font-weight: 400; line-height: 1.25; letter-spacing: -0.015em;
-            max-width: 26ch;
-            margin-left: auto;
+            font-size: clamp(1.6rem, 3vw, 2.7rem);
+            font-weight: 400; line-height: 1.22; letter-spacing: -0.02em;
             width: 100%;
-            max-width: min(26ch, calc(var(--max) * 0.5));
-            justify-self: end;
+            max-width: min(34ch, var(--max));
+            margin: 0 auto;
         }
         .statement-text em { font-style: normal; color: var(--segnale); }
         .statement-figura { margin: 0; justify-self: start; max-width: 560px; width: 100%; }
@@ -478,8 +475,7 @@ CSS_DOPO = """
             .hero-content { grid-template-columns: 1fr; }
             .hero-founders { flex-direction: row; }
             .founder { flex: 1; }
-            .statement { grid-template-columns: 1fr; gap: var(--s4); padding: var(--s5) var(--pad); }
-            .statement-text { max-width: 26ch; justify-self: start; }
+            .statement { padding: var(--s5) var(--pad); }
             .news-section, .tl-rivista, .dimensioni, .evidenza, .luoghi { padding: var(--s5) var(--pad); }
             .news-header { grid-template-columns: 1fr; }
             .news-stats { align-items: flex-start; text-align: left; }

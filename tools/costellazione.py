@@ -25,10 +25,17 @@ CSS = """
 
         .cost-wrap {
             width: 100%;
-            max-width: 980px;
+            max-width: var(--max, 1400px);
             position: relative;
             z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            gap: var(--s4, 40px) var(--s5, 64px);
+            align-items: center;
         }
+        .cost-intro, .cost-didascalia { grid-column: 1 / -1; }
+        .cost-nodo.acceso { color: var(--segnale); border-color: var(--inchiostro); }
+        .cost-nodo.acceso .cost-punto { background: var(--segnale); }
 
         .cost-intro {
             display: flex;
@@ -155,6 +162,7 @@ CSS = """
 
         @media (max-width: 900px) {
             .costellazione { padding: 4rem 1.25rem 6rem; }
+            .cost-wrap { grid-template-columns: 1fr; }
             .cost-scena { aspect-ratio: 1 / 1; }
             .cost-etichetta { font-size: 0.62rem; letter-spacing: 0.1em; }
             .cost-nodo { gap: 0.4rem; padding: 0.25rem 0.45rem 0.25rem 0.25rem; }
@@ -320,6 +328,7 @@ JS = r"""
         function disegna(t) {
             ctx.clearRect(0, 0, W, H);
             var ang = t * 0.11 + giro;
+            if (window.tlonPianeta && window.tlonPianeta.onFrame) window.tlonPianeta.onFrame(ang + Math.PI / 2);
 
             // atmosfera
             var atm = ctx.createRadialGradient(cx, cy, R * 0.96, cx, cy, R * 1.34);

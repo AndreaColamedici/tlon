@@ -13,6 +13,7 @@ Uso:  python3 tools/applica-costellazione.py
 import re, io, sys, os, html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from costellazione import CSS, JS
+from mappa_tlon import markup as mappa_markup
 
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -44,15 +45,15 @@ TESTI = {
     'it': dict(eyebrow='Il pianeta', hint='Trascina per farlo girare',
                nome='Tlon', sotto='un pianeta immaginario, che esiste',
                lista='Le dimensioni di Tlon',
-               did='Un ecosistema in cui ogni dimensione si intreccia con le altre'),
+               did='Lo stesso pianeta, come globo e come carta: la carta segue il globo.'),
     'en': dict(eyebrow='The planet', hint='Drag to spin it',
                nome='Tlon', sotto='an imaginary planet that exists',
                lista='The dimensions of Tlon',
-               did='An ecosystem where every dimension interweaves with the others'),
+               did='The same planet, as globe and as chart: the chart follows the globe.'),
     'es': dict(eyebrow='El planeta', hint='Arrastra para girarlo',
                nome='Tlon', sotto='un planeta imaginario que existe',
                lista='Las dimensiones de Tlon',
-               did='Un ecosistema donde cada dimensión se entrelaza con las demás'),
+               did='El mismo planeta, como globo y como carta: la carta sigue al globo.'),
 }
 
 FILE = {'index.html': 'it', 'index-en.html': 'en', 'index-es.html': 'es'}
@@ -81,6 +82,7 @@ def sezione(lang):
         '                    <div class="cost-nome" id="costNome"><strong>{nome}</strong><em>{sotto}</em></div>\n'
         '                    <ul class="cost-nodi" aria-label="{lista}">' + ''.join(voci) + '</ul>\n'
         '                </div>\n'
+        + mappa_markup(lang, NODI) +
         '                <p class="cost-didascalia">{did}</p>\n'
         '            </div>\n'
         '        </section>\n'
