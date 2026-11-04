@@ -16,7 +16,14 @@ const ls = { get(k) { try { return JSON.parse(localStorage.getItem(k)) } catch (
 const PARAM = new URLSearchParams(location.search);
 const PROVA = PARAM.has("prova");
 const VEL = +PARAM.get("veloce") || 1;
-const LIBERO = PARAM.has("libero");      // da soli, senza aspettare il palco (prove, o dopo l'evento)    // per le prove: cammino accelerato         // per le prove: ?prova salta le attese
+/* l'evento: sabato 7 novembre 2026, BASE Milano. Prima e durante, i telefoni aspettano il palco;
+   dall'8 novembre il labirinto resta aperto e si attraversa da soli. ?libero forza il «da soli», ?sala forza il «dal vivo» (prove). */
+const EVENTO = { inizio: Date.parse("2026-11-07T00:00:00+01:00"), fine: Date.parse("2026-11-08T00:00:00+01:00") };
+const ORA = PARAM.get("oggi") ? Date.parse(PARAM.get("oggi")) : Date.now();   // ?oggi=2026-11-09 per vedere in anteprima il labirinto come sarà dopo l'evento
+const DOPO = ORA >= EVENTO.fine, PRIMA = ORA < EVENTO.inizio;
+const LIBERO = PARAM.has("libero") || (DOPO && !PARAM.has("sala"));   // da soli, senza aspettare il palco (prove, o dopo l'evento)
+const SEMPLICE = PARAM.has("semplice");  // senza bagliore e a risoluzione piena: per i telefoni che faticano
+// ?veloce=N accelera il cammino, ?prova salta le attese
 const SEME = PARAM.get("seme") || LV.dispositivo || String(Math.random());
 const pausa = ms => new Promise(r => setTimeout(r, PROVA ? Math.min(ms, 250) : ms));
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -25,7 +32,7 @@ const angolo = (a, b, k) => { let d = ((b - a + Math.PI) % (Math.PI * 2) + Math.
 /* ---------- motore ---------- */
 const tela = $("#c");
 const renderer = new THREE.WebGLRenderer({ canvas: tela, antialias: false, powerPreference: "high-performance" });
-let qualitaPR = Math.min(window.devicePixelRatio || 1, 1.75);
+let qualitaPR = SEMPLICE ? 1 : Math.min(window.devicePixelRatio || 1, 1.75);
 renderer.setPixelRatio(qualitaPR);
 renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
 const scena = new THREE.Scene();
@@ -40,7 +47,7 @@ composer.addPass(new ShaderPass({ uniforms: { tDiffuse: { value: null } }, verte
   fragmentShader: `uniform sampler2D tDiffuse;varying vec2 vUv;void main(){vec4 c=texture2D(tDiffuse,vUv);
     if(any(isnan(c.rgb))||any(isinf(c.rgb))||!(c.r==c.r)||c.r>6e4||c.g>6e4||c.b>6e4)c=vec4(0.,0.,0.,1.);gl_FragColor=vec4(min(c.rgb,vec3(64.)),c.a);}` }));
 const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .75, .5, .9); composer.addPass(bloom);
-if (PARAM.has("semplice")) bloom.enabled = false; // ?semplice: senza bagliore, per i telefoni che danno problemi
+if (SEMPLICE) bloom.enabled = false; // ?semplice: senza bagliore, per i telefoni che danno problemi
 composer.addPass(new OutputPass());
 const finitura = new ShaderPass({
   uniforms: { tDiffuse: { value: null }, t: { value: 0 }, vign: { value: .85 }, buio: { value: 0 }, ab: { value: 1 } },
@@ -526,7 +533,7 @@ async function capitolo5() {
   for (; ;) {
     const a = await UI.scegli([["spingi", "Spingi il muro"], ["segno", "Lascia un segno"], ["torna", "Torna indietro"]]);
     if (a === "spingi") { spinte++; invia("vicolo", "spinte", spinte); await spinta(f); UI.dici(spinte > 1 ? "Non si muove. Hai spinto " + spinte + " volte." : "Non si muove."); continue }
-    if (a === "segno") { segno = await disegna(f); if (segno) { invia("vicolo", "segno", "1"); try { LV.inviaSegno && LV.inviaSegno(segno) } catch (e) { } } UI.dici("Il segno resta qui, per chi passerà dopo di te."); await pausa(1800); }
+    if (a === "segno") { segno = await disegna(f); if (segno) { invia("vicolo", "segno", "1"); try { LV.inviaSegno && Promise.resolve(LV.inviaSegno(segno)).catch(() => { }) } catch (e) { } } UI.dici("Il segno resta qui, per chi passerà dopo di te."); await pausa(1800); }
     break;
   }
   Object.assign(S.scelte, { spinte, segno: !!segno }); salva(); invia("vicolo", "azione", segno ? "segno" : spinte ? "spinto" : "indietro");
@@ -664,6 +671,7 @@ function letteraAlBambino() {
 
 /* ---------- la carta finale ---------- */
 async function cartaFinale() {
+  UI.dici(""); // la frase «Il labirinto continua» non deve restare sopra la carta
   const s = S.scelte, righe = [];
   if (s.sogno) righe.push(["5 anni", s.sogno === "nonlo" ? "non sapevi cosa volevi fare" : "volevi " + s.sognoTesto]);
   if (s.strada) righe.push(["18 anni", (s.strada === "sogno" ? "hai riaperto la porta del sogno" : "hai scelto " + s.stradaTesto) + `, in ${s.secondi} secondi, tra ${s.gruppo} porte`]);
@@ -712,6 +720,12 @@ async function prepara() {
   await new Promise(res => { const ok = () => res(); THREE.DefaultLoadingManager.onLoad = ok; setTimeout(ok, 6000) });
   barra.style.width = "100%"; $("#entra").disabled = false; $("#entra").textContent = "Entra";
 }
+/* la nota sotto il bottone: la sala, prima; il labirinto aperto, dopo */
+{
+  const nota = $("#ingresso small");
+  if (nota && LIBERO && DOPO) nota.innerHTML = "Il labirinto è stato attraversato dal vivo al Da Grande Fest, il 7 novembre 2026. Da allora resta aperto: entri da solo, al tuo ritmo. Niente nomi, niente dati.";
+  else if (nota && LIBERO) nota.innerHTML = "Stai entrando da solo, senza aspettare il palco. Le tue scelte restano anonime.";
+}
 async function entra() {
   suono.avvia(); try { suono.ctx && suono.ctx.resume() } catch (e) { }
   try { if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) await DeviceOrientationEvent.requestPermission() } catch (e) { }
@@ -732,7 +746,7 @@ async function entra() {
   await pausa(3500);
   if (!PARAM.get("cap") || PARAM.get("cap") === "1") await disegnoIniziale();
   if (S.live && S.palco < 1) {
-    UI.dici("Aspetta: il primo capitolo si apre dal palco.");
+    UI.dici(PRIMA ? "Il labirinto si apre dal vivo sabato 7 novembre, al Da Grande Fest. Il primo capitolo parte dal palco." : "Aspetta: il primo capitolo si apre dal palco.");
     let senzaRete = 0; const guardia = setInterval(() => { senzaRete = window.DGLive && DGLive.ascolta && DGLive.ascolta.ok === false ? senzaRete + 5 : 0; if (senzaRete >= 180) { clearInterval(guardia); S.sblocca && S.sblocca(true) } }, 5000);
     const forzato = await new Promise(res => { S.sblocca = (forza) => { if (forza || S.palco >= 1) { S.sblocca = null; res(!!forza) } } });
     clearInterval(guardia); UI.dici("");
@@ -745,6 +759,6 @@ async function entra() {
   for (const cap of capitoli.slice(da - 1)) await cap();
 }
 $("#entra").onclick = entra;
-prepara().catch(e => { console.error(e); $("#entra").textContent = "Il telefono non regge il 3D"; });
+prepara().catch(e => { console.error(e); window.__dgFallito ? window.__dgFallito(e) : ($("#entra").textContent = "Il telefono non regge il 3D") });
 requestAnimationFrame(ciclo);
 window.__dg = { S, cam, UI, M, scena, camera, renderer, salta: k => S.palco = k, oltre, finitura, emisfero, luna, get oscurita() { return oscurita } };

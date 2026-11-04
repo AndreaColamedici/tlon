@@ -166,8 +166,61 @@ function disegnaDati() {
 }
 function disegnaSegni() { $$(".segni canvas").forEach(c => { const g = c.getContext("2d"); g.fillStyle = "#1a1714"; g.fillRect(0, 0, 160, 120); let tr = []; try { tr = JSON.parse(c.dataset.punti) } catch (e) { } g.strokeStyle = "rgba(245,240,230,.9)"; g.lineWidth = 2.4; g.lineCap = "round"; for (const t of tr) { g.beginPath(); t.forEach(([x, y], i) => i ? g.lineTo(x * 1.6, y * 1.2) : g.moveTo(x * 1.6, y * 1.2)); g.stroke() } }) }
 
+/* ---------- suono di sala ----------
+   Lo stesso impasto dei telefoni, ma dalle casse: un fondo per ogni età, un rintocco quando si apre un capitolo.
+   Spento all'apertura; S lo accende. Non sostituisce la voce: sta sotto. */
+const suonoPalco = (() => {
+  let ctx = null, master, riverbero, umido, rumore, zonaAtt = null, acceso = false; const ambienti = {};
+  const ZONA_DI = ["soglia", "cameretta", "scuola", "notte", "oracolo", "vicolo", "centro", "fine"];
+  function avvia() {
+    if (ctx) return; const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; ctx = new AC();
+    master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
+    riverbero = ctx.createConvolver(); const n = ctx.sampleRate * 3.2, ir = ctx.createBuffer(2, n, ctx.sampleRate);
+    for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3) }
+    riverbero.buffer = ir; umido = ctx.createGain(); umido.gain.value = .3; riverbero.connect(umido); umido.connect(master);
+    rumore = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate); const d = rumore.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    const out = (g, wet = .5) => { g.connect(master); const w = ctx.createGain(); w.gain.value = wet; g.connect(w); w.connect(riverbero) };
+    const pad = (freqs, tipo, taglio, vol) => { const g = ctx.createGain(); g.gain.value = 0; const f = ctx.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = taglio; f.connect(g); out(g, .6);
+      freqs.forEach((fr, i) => { const o = ctx.createOscillator(); o.type = tipo; o.frequency.value = fr; o.detune.value = (i - 1) * 6; const og = ctx.createGain(); og.gain.value = vol / freqs.length; const lfo = ctx.createOscillator(); lfo.frequency.value = .05 + i * .03; const lg = ctx.createGain(); lg.gain.value = vol / freqs.length * .5; lfo.connect(lg); lg.connect(og.gain); o.connect(og); og.connect(f); o.start(); lfo.start() }); return g };
+    const fruscio = (filtro, freq, q, vol) => { const sr = ctx.createBufferSource(); sr.buffer = rumore; sr.loop = true; const f = ctx.createBiquadFilter(); f.type = filtro; f.frequency.value = freq; f.Q.value = q; const g = ctx.createGain(); g.gain.value = vol; sr.connect(f); f.connect(g); sr.start(); return g };
+    const mix = (...pezzi) => { const g = ctx.createGain(); g.gain.value = 0; pezzi.forEach(p => { if (p.gain && p.gain.value === 0 && p !== g) p.gain.value = 1; p.connect(g) }); g.connect(master); return g };
+    ambienti.soglia = mix(pad([73.4, 110, 146.8], "triangle", 500, .05));
+    ambienti.cameretta = mix(pad([174.6, 220, 261.6], "triangle", 900, .05));
+    ambienti.scuola = mix(pad([100, 200, 300], "sawtooth", 420, .012), fruscio("bandpass", 3000, .6, .006));
+    ambienti.notte = mix(pad([73.4, 110, 146.8], "sine", 400, .06), fruscio("lowpass", 180, .7, .05));
+    ambienti.oracolo = mix(pad([392, 587.3, 880, 1174.7], "sine", 2400, .028), pad([98, 147], "sine", 300, .04));
+    ambienti.vicolo = mix(fruscio("bandpass", 2400, .5, .05), fruscio("lowpass", 700, .5, .04), pad([65.4, 98], "sine", 250, .04));
+    ambienti.centro = mix(pad([73.4, 110, 146.8, 220, 277.2], "triangle", 700, .05), fruscio("bandpass", 900, .4, .01));
+    ambienti.fine = mix(pad([73.4, 110, 146.8, 220, 293.7, 440], "sine", 1200, .045));
+    // il carillon della cameretta, ogni tanto
+    const sc = [523.3, 587.3, 659.3, 784, 880, 1046.5];
+    setInterval(() => { if (acceso && zonaAtt === "cameretta") ton(sc[Math.floor(Math.random() * sc.length)], 1.6, .035, "sine", .7) }, 2600);
+  }
+  function ton(freq, durata, vol, tipo = "sine", wet = .5, quando = 0, a = .01) {
+    const t = ctx.currentTime + quando, o = ctx.createOscillator(); o.type = tipo; o.frequency.value = freq; const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + durata); o.connect(g); g.connect(master); const w = ctx.createGain(); w.gain.value = wet; g.connect(w); w.connect(riverbero); o.start(t); o.stop(t + durata + .05);
+  }
+  return {
+    get acceso() { return acceso },
+    accendi(si) {
+      acceso = si; const e = $("#suono"); e.textContent = si ? "suono acceso" : "suono spento"; e.classList.toggle("acceso", si);
+      if (si) { avvia(); if (!ctx) return; ctx.resume(); master.gain.setTargetAtTime(.9, ctx.currentTime, .8); zonaAtt = null; this.capitolo(cur) }
+      else if (ctx) master.gain.setTargetAtTime(0, ctx.currentTime, .6);
+    },
+    capitolo(s) {
+      if (!ctx || !acceso) return; const z = ZONA_DI[s] || "centro"; if (z === zonaAtt) return; zonaAtt = z;
+      for (const [k, g] of Object.entries(ambienti)) g.gain.setTargetAtTime(k === z ? 1 : 0, ctx.currentTime, 1.6);
+      // il rintocco dell'apertura: più grave a ogni età
+      const base = [261.6, 261.6, 220, 196, 174.6, 146.8, 130.8, 110][s] || 130.8;
+      [1, 1.5, 2].forEach((m, i) => ton(base * m, 4 - i, .05 / (i + 1), "triangle", .8, i * .12, .02));
+      if (s === 7) [73.4, 110, 146.8, 220, 293.7, 440, 587.3].forEach((f, i) => ton(f, 9, .04, "sine", .9, i * .55, 1.5));
+    }
+  };
+})();
+
 /* ---------- capitoli ---------- */
-// ogni apertura della pagina riparte dall'inizio: un valore rimasto dalle prove non deve aprire i telefoni
+// all'apertura si riparte dall'inizio; poi, se c'è il collegamento, si riprende il capitolo che è già sul server
+// (una ricarica durante l'evento non deve riportare i telefoni all'inizio; prima dell'evento la regia azzera tutto)
 let cur = 0;
 function vai(s, daRemoto) {
   cur = Math.max(0, Math.min(CAPITOLI.length - 1, s)); ls.set("dg3-cap", cur);
@@ -177,6 +230,8 @@ function vai(s, daRemoto) {
   $("#pannello").classList.remove("entra"); void $("#pannello").offsetWidth; $("#pannello").classList.add("entra");
   if (lab) puntaA(cur);
   if (infinito) infinito.userData.k = cur === 7 ? 1 : 0;
+  $("#qr-sopra").hidden = cur !== 7; $("#qr p:not(#qr-sopra)").textContent = cur === 7 ? "tlon.it/dagrande" : "tlon.it/dagrande/tu";
+  suonoPalco.capitolo(cur);
   disegnaDati(); if (cur === 5) { segniT = 0; prendiSegni().then(disegnaDati) }
   if (!daRemoto) manda({ t: "vai", s: cur });
   if (!REGIA && lab) sincronizza(); // solo la finestra del palco parla con i telefoni, anche quando il comando arriva dalla regia
@@ -222,6 +277,7 @@ addEventListener("keydown", e => {
   if (k === "ArrowRight" || k === "PageDown" || k === " ") { e.preventDefault(); vai(cur + 1) }
   else if (k === "ArrowLeft" || k === "PageUp") { e.preventDefault(); vai(cur - 1) }
   else if (k === "x" || k === "X") simula();
+  else if (k === "s" || k === "S") suonoPalco.accendi(!suonoPalco.acceso);
   else if (k === "r" || k === "R") window.open(location.pathname + "#regia", "dg-regia", "width=520,height=820");
   else if (k === "p" || k === "P") { const v = prompt("Parola di regia", ls.get("dg-parola") || ""); if (v !== null) { ls.set("dg-parola", v.trim()); sincronizza() } }
   else if (k === "f" || k === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => { }) }
@@ -250,10 +306,11 @@ async function avvia() {
   adatta();
   lab = M.genera("palco"); mondo = await M.costruisci(scena, lab, { base: "./", env });
   for (const so of mondo.soffitti || []) so.visible = false;
+  if (LV.attivo) { try { const st = await Promise.race([LV.stato(), new Promise((_, no) => setTimeout(() => no(new Error("tempo scaduto")), 3000))]); cur = Math.max(0, Math.min(CAPITOLI.length - 1, +st.s || 0)) } catch (e) { } }
   creaLuci(); creaInfinito(); vai(cur, true); vista.t.copy(vista.bersaglio); vista.r = vista.raggio; vista.a = vista.alt;
   requestAnimationFrame(ciclo);
   if (LV.attivo) { stato(ls.get("dg-parola") ? "collegamento…" : "manca la parola di regia (P)", "ko"); sincronizza(); interroga(); setInterval(interroga, 2000); setInterval(() => { if (cur === 5) prendiSegni().then(disegnaDati) }, 6000) }
   else stato("senza collegamento", "ko");
 }
 avvia();
-window.__palco = { vai, simula, get dati() { return dati } };
+window.__palco = { vai, simula, suono: suonoPalco, get dati() { return dati } };

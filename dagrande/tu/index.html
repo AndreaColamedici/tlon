@@ -6,6 +6,12 @@
 <meta name="theme-color" content="#0c0a08">
 <title>Da grande · il tuo labirinto</title>
 <meta name="description" content="Entri a cinque anni. Ogni scelta ti fa crescere. Da Grande Fest, BASE Milano.">
+<meta property="og:title" content="Da grande · il tuo labirinto">
+<meta property="og:description" content="Entri in un labirinto a cinque anni. Ogni scelta ti fa crescere. Tlon al Da Grande Fest, BASE Milano, 7 novembre 2026.">
+<meta property="og:image" content="https://tlon.it/dagrande/og.png">
+<meta property="og:url" content="https://tlon.it/dagrande/tu/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Permanent+Marker&family=DM+Mono:wght@400;500&family=Familjen+Grotesk:wght@400;500;600&family=Marcellus&display=swap" rel="stylesheet">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
@@ -63,6 +69,8 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
 #carta li b{font:500 11px/1.9 "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--robbia)}
 #carta .az{display:flex;gap:10px}#carta .az button{flex:1}
 #condividi{background:var(--ocra)!important;color:#120d08!important;border-color:var(--ocra)!important}
+#carta .coda{margin-top:16px;font-size:13px;line-height:1.45;color:rgba(239,230,210,.55);text-align:center}#carta .coda b{font-weight:500;color:rgba(239,230,210,.8)}
+#ripiego{display:block;margin-top:12px;font:500 16px "Familjen Grotesk",sans-serif;color:var(--ocra);text-decoration:none;border:1px solid rgba(220,166,69,.55);border-radius:12px;padding:13px;text-align:center}
 </style>
 </head>
 <body>
@@ -104,6 +112,7 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
   <h2>La tua strada</h2>
   <ul id="carta-righe"></ul>
   <div class="az"><button id="condividi">Passa il filo</button><button id="ancora">Guarda ancora</button></div>
+  <p class="coda">Il labirinto resta aperto su <b>tlon.it/dagrande</b>. Ogni telefono ne genera uno diverso: passalo a qualcuno.</p>
 </section>
 
 <script>
@@ -112,6 +121,27 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
 function arco(q,a,b){var n=Math.ceil(Math.abs(b-a)*q/2);for(var i=0;i<=n;i++){var p=P(a+(b-a)*i/n,q);d+=(d?"L":"M")+p[0]+" "+p[1]}}
 d="M0 "+(R+u*.9).toFixed(1);var seq=[[3,0,T-.42],[2,T-.42,.2],[1,.2,T-.2],[4,T-.2,.3],[7,.3,T-1],[6,T-1,.7],[5,.7,T-.3]];
 seq.forEach(function(s){arco(r(s[0]),s[1],s[2])});d+="L0 0";document.getElementById("cretese").setAttribute("d",d)})();
+</script>
+<script>
+/* se il 3D non parte (WebGL assente, memoria grafica esaurita, modulo che non si carica):
+   una volta si riprova in versione leggera, poi lo si dice chiaramente invece di lasciare il bottone grigio */
+(function(){
+  var q=new URLSearchParams(location.search), semplice=q.has("semplice"), fatto=false;
+  function fallito(e){
+    if(fatto)return;fatto=true;
+    var b=document.getElementById("entra"),box=document.getElementById("ingresso");if(!b||!box)return;
+    if(!semplice){q.set("semplice","1");b.textContent="Riprovo in versione leggera…";setTimeout(function(){location.replace(location.pathname+"?"+q.toString())},700);return}
+    b.textContent="Questo telefono non apre il labirinto 3D";b.disabled=true;
+    var a=document.createElement("a");a.id="ripiego";a.href="https://tlon.it/dagrande/";a.textContent="Vedi la sala dallo schermo del palco";
+    var s=box.querySelector("small");s.textContent="Non è colpa tua: serve WebGL e un po' di memoria grafica. In sala alza gli occhi verso lo schermo: le scelte di tutti passano di lì.";
+    b.insertAdjacentElement("afterend",a);
+  }
+  window.__dgFallito=fallito;
+  // solo errori di script (non immagini o font che non si caricano), e solo finché il modulo non è partito
+  addEventListener("error",function(ev){if(ev.target!==window||!ev.message)return;if(!window.__dg)fallito(ev)});
+  addEventListener("unhandledrejection",function(ev){if(!window.__dg)fallito(ev)});
+  setTimeout(function(){var b=document.getElementById("entra");if(!window.__dg&&b&&b.disabled)fallito("timeout")},25000);
+})();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" async></script>
 <script src="../live.js"></script>
