@@ -13,10 +13,10 @@ const OFF = N * C / 2;
 
 export const ZONE = {
   cameretta: { muro: "carta", pav: "legno", h: 2.7, colMuro: 0xffffff, colPav: 0xffffff, fog: 0x231b31, dens: .085, luce: 0xffc58a, int: 9, emi: 0x2b2340, eta: "5 anni", occhio: .95, passo: 1.35, ruv: .9 },
-  scuola: { muro: "intonaco", pav: "linoleum", h: 3.6, colMuro: 0xb7cbb6, colPav: 0x9fa496, fog: 0x1a2224, dens: .065, luce: 0xe9f3ff, int: 16, emi: 0x202a2c, eta: "18 anni", occhio: 1.6, passo: 1.6, ruv: .55 },
-  notte: { muro: "cemento", pav: "asfalto", h: 4.4, colMuro: 0x8d939d, colPav: 0x4a4d55, fog: 0x060912, dens: .075, luce: 0xffae66, int: 14, emi: 0x0a0e18, eta: "23 anni", occhio: 1.65, passo: 1.65, ruv: .42 },
-  oracolo: { muro: "vetro", pav: "asfalto", h: 5, colMuro: 0x0b1424, colPav: 0x1a1f2a, fog: 0x050a16, dens: .055, luce: 0x86bcff, int: 14, emi: 0x0a1426, eta: "28 anni", occhio: 1.68, passo: 1.7, ruv: .12 },
-  vicolo: { muro: "mattoni", pav: "ciottoli", h: 5.6, colMuro: 0xc0aa98, colPav: 0x8f8f96, fog: 0x0e1018, dens: .085, luce: 0xffa35a, int: 20, emi: 0x14161f, eta: "35 anni", occhio: 1.7, passo: 1.6, ruv: .35 },
+  scuola: { muro: "intonaco", pav: "linoleum", h: 3.6, colMuro: 0xb7cbb6, colPav: 0x9fa496, fog: 0x1a2224, dens: .065, luce: 0xe9f3ff, int: 8, emi: 0x202a2c, eta: "18 anni", occhio: 1.6, passo: 1.6, ruv: .55 },
+  notte: { muro: "cemento", pav: "asfalto", h: 4.4, colMuro: 0x8d939d, colPav: 0x4a4d55, fog: 0x060912, dens: .075, luce: 0xffc08a, int: 10, emi: 0x0a0e18, eta: "23 anni", occhio: 1.65, passo: 1.65, ruv: .5 },
+  oracolo: { muro: "vetro", pav: "asfalto", h: 5, colMuro: 0x0b1424, colPav: 0x1a1f2a, fog: 0x050a16, dens: .055, luce: 0x86bcff, int: 14, emi: 0x0a1426, eta: "28 anni", occhio: 1.68, passo: 1.7, ruv: .4 },
+  vicolo: { muro: "mattoni", pav: "ciottoli", h: 5.6, colMuro: 0xc0aa98, colPav: 0x8f8f96, fog: 0x0e1018, dens: .085, luce: 0xffb070, int: 13, emi: 0x14161f, eta: "35 anni", occhio: 1.7, passo: 1.6, ruv: .35 },
   ritorno: { muro: "arenaria", pav: "pavimento", h: 6, colMuro: 0xd8c8b0, colPav: 0xb8a690, fog: 0x17110b, dens: .07, luce: 0xffa850, int: 20, emi: 0x1d150d, eta: "35 anni", occhio: 1.7, passo: 1.7, ruv: .8 },
   antico: { muro: "arenaria", pav: "pavimento", h: 6, colMuro: 0xd0bfa6, colPav: 0xb0a088, fog: 0x17110b, dens: .07, luce: 0xffa850, int: 18, emi: 0x1d150d, eta: "", occhio: 1.7, passo: 1.7, ruv: .8 },
   centro: { muro: "marmo", pav: "pavimento", h: 6.6, colMuro: 0xf0e2c8, colPav: 0xc9b597, fog: 0x1c1208, dens: .05, luce: 0xffb158, int: 22, emi: 0x24180b, eta: "Da grande", occhio: 1.72, passo: 1.7, ruv: .7 },
@@ -163,7 +163,7 @@ export function tratto(g, punti, col, larg, r = Math.random) {
   g.restore();
 }
 function cartaDaParati(r) {
-  return tela(512, 512, (g, w, h) => {
+  const carta = tela(512, 512, (g, w, h) => {
     g.fillStyle = "#c9b8e6"; g.fillRect(0, 0, w, h);
     for (let x = 0; x < w; x += 128) { g.fillStyle = "rgba(255,255,255,.28)"; g.fillRect(x, 0, 52, h); g.fillStyle = "rgba(120,90,170,.18)"; g.fillRect(x + 56, 0, 6, h) }
     const stella = (x, y, s, c) => { g.fillStyle = c; g.beginPath(); for (let i = 0; i < 10; i++) { const a = i * Math.PI / 5 - Math.PI / 2, q = i % 2 ? s * .45 : s; g.lineTo(x + Math.cos(a) * q, y + Math.sin(a) * q) } g.fill() };
@@ -171,6 +171,7 @@ function cartaDaParati(r) {
     for (let i = 0; i < 2600; i++) { g.fillStyle = `rgba(80,60,110,${r() * .07})`; g.fillRect(r() * w, r() * h, 2, 2) }
     g.fillStyle = "rgba(255,250,240,.9)"; g.fillRect(0, h - 70, w, 70); g.fillStyle = "rgba(120,90,170,.35)"; g.fillRect(0, h - 74, w, 6);
   });
+  carta.wrapS = carta.wrapT = THREE.RepeatWrapping; return carta;
 }
 /* ---------- geometrie ---------- */
 function scatola(w, h, d, tile, ou = 0, ov = 0) {
@@ -184,12 +185,22 @@ function altezzaTra(...zone) { return Math.max(...zone.filter(Boolean).map(z => 
 /* ---------- costruzione ---------- */
 export async function costruisci(scena, lab, { base = "../", qualita = 1, env } = {}) {
   const r = caso(semeDa(lab.seme + "arredi"));
-  const mondo = { gruppi: {}, ancore: [], anima: [], porte: [], decalchi: [], muriZona: {}, materiali: {} };
+  const mondo = { gruppi: {}, ancore: [], anima: [], porte: [], decalchi: [], muriZona: {}, materiali: {}, lampade: [], luminosi: [] };
   // materiali
   const M = {};
-  const ombra = m => { m.onBeforeCompile = sh => {
-      sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nvarying float vY;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvY = (modelMatrix * vec4(transformed, 1.0)).y;");
-      sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vY;").replace("#include <lights_fragment_end>", "#include <lights_fragment_end>\nfloat ao = smoothstep(0.0, 1.1, vY);\nreflectedLight.indirectDiffuse *= mix(.25, 1., ao);\nreflectedLight.directDiffuse *= mix(.5, 1., smoothstep(0.0, .5, vY));");
+  // la vernice di ogni età: alla scuola lo zoccolo smaltato, in strada il piede dei muri bagnato
+  const VERNICE = {
+    scuola: `float zo=1.-smoothstep(1.3,1.31,vY);diffuseColor.rgb=mix(diffuseColor.rgb,diffuseColor.rgb*vec3(.4,.6,.48),zo);diffuseColor.rgb*=1.-.55*(smoothstep(1.3,1.31,vY)-smoothstep(1.36,1.37,vY));`,
+    notte: `float fl=fract(vY-.82),co=abs(sin(vS*2.3)*sin(vS*7.1+1.7)*sin(vS*19.+.7));diffuseColor.rgb*=mix(.55,1.,smoothstep(.0,.9,vY))*(1.-.5*(smoothstep(.0,.012,fl)-smoothstep(.03,.042,fl)))*(1.-.34*smoothstep(.25,.85,co)*smoothstep(.4,3.,vY));`,
+    vicolo: `float zo=1.-smoothstep(.05,1.,vY);diffuseColor.rgb*=mix(1.,.5,zo);`,
+    ritorno: `diffuseColor.rgb*=mix(.7,1.,smoothstep(.0,.8,vY));`,
+  };
+  const LUSTRO = { scuola: `roughnessFactor*=mix(1.,.42,zo);`, vicolo: `roughnessFactor*=mix(1.,.38,zo);` };
+  const ombra = (m, zona) => { m.customProgramCacheKey = () => "ombra-" + (zona || ""); m.onBeforeCompile = sh => {
+      if (VERNICE[zona]) sh.fragmentShader = sh.fragmentShader.replace("#include <color_fragment>", "#include <color_fragment>\n" + VERNICE[zona]);
+      if (LUSTRO[zona]) sh.fragmentShader = sh.fragmentShader.replace("#include <roughnessmap_fragment>", "#include <roughnessmap_fragment>\n" + LUSTRO[zona]);
+      sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nvarying float vY;varying float vS;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvec4 vW0 = modelMatrix * vec4(transformed, 1.0); vY = vW0.y; vS = vW0.x + vW0.z;");
+      sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vY;varying float vS;").replace("#include <lights_fragment_end>", "#include <lights_fragment_end>\nfloat ao = smoothstep(0.0, 1.1, vY);\nreflectedLight.indirectDiffuse *= mix(.25, 1., ao);\nreflectedLight.directDiffuse *= mix(.5, 1., smoothstep(0.0, .5, vY));");
     }; return m };
   mondo.ombra = ombra;
   const mat = (zona) => {
@@ -199,7 +210,7 @@ export async function costruisci(scena, lab, { base = "../", qualita = 1, env } 
     else if (Z.muro === "carta") muro = new THREE.MeshStandardMaterial({ map: cartaDaParati(r), normalMap: tex(base, "intonaco_n", false), normalScale: new THREE.Vector2(.6, .6), roughness: .92 });
     else muro = new THREE.MeshStandardMaterial({ color: Z.colMuro, map: tex(base, Z.muro + "_c"), normalMap: tex(base, Z.muro + "_n", false), roughness: .88 });
     const pav = new THREE.MeshStandardMaterial({ color: Z.colPav, map: tex(base, Z.pav + "_c"), normalMap: tex(base, Z.pav + "_n", false), roughness: Z.ruv, envMap: env, envMapIntensity: Z.ruv < .4 ? .55 : .2 });
-    ombra(muro); return M[zona] = { muro, pav };
+    ombra(muro, zona); return M[zona] = { muro, pav };
   };
   // muri, raggruppati per quartiere
   const perZona = {};
@@ -239,6 +250,7 @@ export async function costruisci(scena, lab, { base = "../", qualita = 1, env } 
       const sm = zona === "oracolo" ? new THREE.MeshStandardMaterial({ color: 0x060b14, metalness: .8, roughness: .2, envMap: env, envMapIntensity: .5 })
         : zona === "scuola" ? new THREE.MeshStandardMaterial({ map: tela(256, 256, (cx, w, h) => { cx.fillStyle = "#d9d6cc"; cx.fillRect(0, 0, w, h); for (let i = 0; i < 2500; i++) { cx.fillStyle = `rgba(80,70,60,${Math.random() * .25})`; cx.fillRect(Math.random() * w, Math.random() * h, 2, 2) } cx.strokeStyle = "#9a978d"; cx.lineWidth = 6; for (let i = 0; i <= 2; i++) { cx.beginPath(); cx.moveTo(i * w / 2, 0); cx.lineTo(i * w / 2, h); cx.moveTo(0, i * h / 2); cx.lineTo(w, i * h / 2); cx.stroke() } }), roughness: .95 })
         : new THREE.MeshStandardMaterial({ color: 0x5a4f78, normalMap: tex(base, "intonaco_n", false), roughness: .95 });
+      if (sm.map) sm.map.wrapS = sm.map.wrapT = THREE.RepeatWrapping;
       const so = new THREE.Mesh(sg, sm); so.position.set(p.position.x, ZONE[zona].h, p.position.z); scena.add(so); (mondo.soffitti = mondo.soffitti || []).push(so);
     }
   }
@@ -311,18 +323,25 @@ function arreda(scena, lab, mondo, r, base, env) {
     lume.position.copy(centroCella(0, 1)).add(new THREE.Vector3(.75, .55, -.4)); scena.add(lume); an(lume.position.clone().setY(.9), "cameretta", 0xffb060, 7);
     // stelle che brillano al buio, sui muri della cameretta
     const stellaG = new THREE.ShapeGeometry((() => { const s = new THREE.Shape(); for (let i = 0; i < 10; i++) { const a = i * Math.PI / 5 - Math.PI / 2, q = i % 2 ? .035 : .08; i ? s.lineTo(Math.cos(a) * q, Math.sin(a) * q) : s.moveTo(Math.cos(a) * q, Math.sin(a) * q) } return s })());
-    const stellaM = new THREE.MeshStandardMaterial({ color: 0xd8ffcf, emissive: 0xb6ff9e, emissiveIntensity: 2.2 });
+    const stellaM = new THREE.MeshStandardMaterial({ color: 0xd8ffcf, emissive: 0xb6ff9e, emissiveIntensity: 1.5 });
     const stelle = [];
     for (let z = 0; z < B; z++) for (let x = 0; x < B; x++) for (const lato of "NSEW") { if (r() > .22) continue; const f = facciaMuro(lab, x, z, lato); if (!f) continue; const s = new THREE.Object3D(); sulMuro(s, f, 1.3 + r() * 1.2); s.position.addScaledVector(new THREE.Vector3().crossVectors(f.n, new THREE.Vector3(0, 1, 0)), (r() - .5) * 1.6); s.rotateZ(r() * 3); stelle.push(s) }
+    // e sul soffitto, come in tutte le camerette
+    for (let z = 0; z < B; z++) for (let x = 0; x < B; x++) for (let i = 0; i < 3; i++) { const s = new THREE.Object3D(), c = centroCella(x, z, ZONE.cameretta.h - .012); s.position.copy(c).add(new THREE.Vector3((r() - .5) * C * .9, 0, (r() - .5) * C * .9)); s.rotation.set(Math.PI / 2, 0, r() * 6); const q = .7 + r() * .9; s.scale.set(q, q, 1); stelle.push(s) }
     istanze(scena, stellaG, stellaM, stelle);
+    // la lampada a luna della stanza delle porte
+    {
+      const sa = P.cameretta.sala, h = ZONE.cameretta.h, luna = new THREE.Mesh(new THREE.SphereGeometry(.24, 24, 16), new THREE.MeshStandardMaterial({ color: 0xfff2d8, emissive: 0xffd9a0, emissiveIntensity: 1.05, roughness: .9 })); luna.position.copy(sa).setY(h - .62); scena.add(luna); mondo.lunaCameretta = luna;
+      const filo = new THREE.Mesh(new THREE.CylinderGeometry(.006, .006, .4, 6), new THREE.MeshStandardMaterial({ color: 0x222222 })); filo.position.copy(sa).setY(h - .2); scena.add(filo);
+      an(luna.position.clone().setY(h - .75), "cameretta", 0xffcf9a, 15); mondo.lampade.push({ p: luna.position.clone(), zona: "cameretta", col: 0xffcf9a, alone: 2.4, pozza: 5.5, forza: .8 });
+    }
     // disegni di bambino
     const soggetti = [disegnoSole, disegnoCasa, disegnoFamiglia, disegnoArcobaleno, disegnoRazzo, disegnoAlbero];
     let k = 0; const celle = P.cameretta.andata.concat(P.cameretta.ritorno);
     lungoIlCammino(lab, celle, 2, ([x, z]) => {
       for (const lato of mescola([..."NSEW"], r)) { const f = facciaMuro(lab, x, z, lato); if (!f) continue; const d = new THREE.Mesh(new THREE.PlaneGeometry(.9, .7), new THREE.MeshStandardMaterial({ map: tela(360, 280, soggetti[k++ % soggetti.length]), transparent: true, roughness: 1 })); sulMuro(d, f, .7 + r() * .4); d.userData.ingombro = { w: .9, h: .7 }; scena.add(d); break }
     });
-    lungoIlCammino(lab, celle, 4, ([x, z]) => an(centroCella(x, z, 2.2), "cameretta"));
-    mondo.anima.push(pulviscolo(scena, centroCella(1, 1), 3, 160, 0xffe2b0));
+    lungoIlCammino(lab, celle, 4, ([x, z]) => { an(centroCella(x, z, 2.2), "cameretta"); mondo.lampade.push({ p: centroCella(x, z, 2.2), zona: "cameretta", pozza: 3.2, forza: .55 }) });
   }
   // --- scuola: armadietti e neon
   {
@@ -343,10 +362,10 @@ function arreda(scena, lab, mondo, r, base, env) {
     lungoIlCammino(lab, celle, 3, ([x, z], i) => {
       const p = centroCella(x, z, ZONE.scuola.h - .25), m = new THREE.Mesh(tubo, neon.clone()); m.position.copy(p); m.rotation.y = r() < .5 ? 0 : Math.PI / 2; scena.add(m);
       const tremula = r() < .3; if (tremula) mondo.anima.push(t => { const on = Math.sin(t * 23 + i) > -.6 || Math.sin(t * 3.1 + i) > .2; m.material.emissiveIntensity = on ? 4 : .2 });
-      an(p.clone().setY(ZONE.scuola.h - .5), "scuola");
+      an(p.clone().setY(ZONE.scuola.h - 1.1), "scuola"); mondo.lampade.push({ p: p.clone(), zona: "scuola", cono: [ZONE.scuola.h - .35, 1.05], pozza: 3.4, forza: .55 });
     });
-    const sala = P.scuola.sala; an(sala.clone().setY(3.1), "scuola", 0xe9f3ff, 26);
-    for (const [dx, dz] of [[-3, -3], [3, -3], [-3, 3], [3, 3], [0, 0]]) { const m = new THREE.Mesh(tubo, neon); m.position.copy(sala).add(new THREE.Vector3(dx, ZONE.scuola.h - .25, dz)); scena.add(m) }
+    const sala = P.scuola.sala; an(sala.clone().setY(2.4), "scuola", 0xe9f3ff, 13);
+    for (const [dx, dz] of [[-3, -3], [3, -3], [-3, 3], [3, 3], [0, 0]]) { const m = new THREE.Mesh(tubo, neon); m.position.copy(sala).add(new THREE.Vector3(dx, ZONE.scuola.h - .25, dz)); scena.add(m); mondo.lampade.push({ p: m.position.clone(), zona: "scuola", cono: [ZONE.scuola.h - .35, 1.2], pozza: 4, forza: .5 }) }
   }
   // --- notte: finestre accese in alto, lampioni
   {
@@ -357,14 +376,18 @@ function arreda(scena, lab, mondo, r, base, env) {
     const fin = [[], [], [], [], []];
     for (let z = 0; z < B; z++) for (let x = 18; x < 27; x++) for (const lato of "NSEW") {
       const f = facciaMuro(lab, x, z, lato); if (!f) continue;
-      for (let y = 2.9; y < ZONE.notte.h - .4; y += 1.0) for (const s of [-.6, .6]) { const w = new THREE.Object3D(); sulMuro(w, f, y); w.position.addScaledVector(new THREE.Vector3().crossVectors(f.n, new THREE.Vector3(0, 1, 0)), s); fin[r() < .3 ? Math.floor(r() * 4) : 4].push(w) }
+      for (let y = 2.9; y < ZONE.notte.h - .4; y += 1.0) for (const s of [-.6, .6]) { const w = new THREE.Object3D(); sulMuro(w, f, y); w.position.addScaledVector(new THREE.Vector3().crossVectors(f.n, new THREE.Vector3(0, 1, 0)), s); fin[r() < .42 ? Math.floor(r() * 4) : 4].push(w) }
     }
     fin.forEach((l, i) => istanze(scena, pannello, i < 4 ? finestre[i] : buie, l));
-    const celle = P.notte.andata.concat(P.notte.ritorno), testa = new THREE.Mesh(new THREE.SphereGeometry(.13, 16, 8), new THREE.MeshStandardMaterial({ color: 0xffe0b0, emissive: 0xffa64d, emissiveIntensity: 5 }));
+    const celle = P.notte.andata.concat(P.notte.ritorno), testa = new THREE.Mesh(new THREE.SphereGeometry(.13, 16, 8), new THREE.MeshStandardMaterial({ color: 0xffe0b0, emissive: 0xffa64d, emissiveIntensity: 2.6 })); testa.material.userData.pieno = 2.6; mondo.luminosi.push(testa.material);
     lungoIlCammino(lab, celle, 3, ([x, z]) => {
-      for (const lato of "NSEW") { const f = facciaMuro(lab, x, z, lato); if (!f) continue; const l = testa.clone(); sulMuro(l, f, 3.1); l.position.addScaledVector(f.n, .25); scena.add(l); an(l.position.clone().addScaledVector(f.n, .3), "notte"); break }
+      for (const lato of "NSEW") { const f = facciaMuro(lab, x, z, lato); if (!f) continue; const l = testa.clone(); sulMuro(l, f, 3.1); l.position.addScaledVector(f.n, .25); scena.add(l); an(l.position.clone().addScaledVector(f.n, .3), "notte"); mondo.lampade.push({ p: l.position.clone(), n: f.n, muro: f.p.clone(), zona: "notte", cono: [3.1, 1.25], alone: 1.5 }); break }
     });
-    an(P.notte.sala.clone().setY(3), "notte", 0xffae66, 10);
+    { // il lampione della piazza
+      const piede = P.notte.sala.clone().add(new THREE.Vector3(2.1, 0, -2.1)), palo = new THREE.Mesh(new THREE.CylinderGeometry(.045, .07, 3.6, 8), new THREE.MeshStandardMaterial({ color: 0x15171c, metalness: .7, roughness: .5 })); palo.position.copy(piede).setY(1.8); scena.add(palo);
+      const lume = testa.clone(); lume.scale.setScalar(1.5); lume.position.copy(piede).setY(3.7); scena.add(lume);
+      an(lume.position.clone().setY(3.3), "notte", 0xffae66, 16); mondo.lampade.push({ p: lume.position.clone(), zona: "notte", cono: [3.7, 2], alone: 2.2, pozza: 7, forza: 1.1 });
+    }
   }
   // --- oracolo: schermi che scorrono
   {
@@ -387,9 +410,9 @@ function arreda(scena, lab, mondo, r, base, env) {
     const pg = new THREE.PlaneGeometry(1.1, 4.3), schermi = new THREE.Group(); scena.add(schermi); mondo.schermi = schermi;
     const ss = [];
     for (let z = 9; z < 18; z++) for (let x = 18; x < 27; x++) for (const lato of "NSEW") { if (r() < .55) continue; const f = facciaMuro(lab, x, z, lato); if (!f) continue; const s = new THREE.Object3D(); sulMuro(s, f, 2.4); s.position.addScaledVector(f.n, .01); ss.push(s) }
-    istanze(scena, pg, sm, ss, schermi);
+    istanze(scena, pg, sm, ss, schermi); mondo.schermoPosti = ss; mondo.schermoTex = st;
     mondo.anima.push(t => { scorre = t * 38; if (t - ultimo > .09) { ultimo = t; disegnaSchermo() } });
-    const celle = P.oracolo.andata.concat(P.oracolo.ritorno); lungoIlCammino(lab, celle, 3, ([x, z]) => an(centroCella(x, z, 2.6), "oracolo", 0x5b8fd8, 9));
+    const celle = P.oracolo.andata.concat(P.oracolo.ritorno); lungoIlCammino(lab, celle, 3, ([x, z]) => an(centroCella(x, z, 3), "oracolo", 0x5b8fd8, 4.5));
     // la sfera
     const sfera = new THREE.Mesh(new THREE.IcosahedronGeometry(.55, 24), new THREE.ShaderMaterial({
       uniforms: { t: { value: 0 }, forza: { value: .62 } }, transparent: true,
@@ -397,13 +420,13 @@ function arreda(scena, lab, mondo, r, base, env) {
         void main(){vec3 p=position;float n=sin(p.x*7.+t*1.7)*sin(p.y*6.+t*1.3)*sin(p.z*8.+t*1.1);p+=normal*n*.05;vP=p;
         vec4 mv=modelViewMatrix*vec4(p,1.);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}`,
       fragmentShader: `uniform float t;uniform float forza;varying vec3 vN;varying vec3 vV;varying vec3 vP;
-        void main(){float f=pow(1.-max(dot(vN,vV),0.),2.2);float b=.5+.5*sin(vP.y*18.-t*3.+sin(vP.x*9.+t));
-        vec3 c=mix(vec3(.25,.55,1.),vec3(.95,.98,1.),f)*(1.2+b*.6);gl_FragColor=vec4(c*forza,.45+f*.55);}`
+        void main(){float f=pow(1.-max(dot(vN,vV),0.),2.6);float b=.5+.5*sin(vP.y*46.-t*2.2+sin(vP.x*13.+t*.7)*1.4);float g=smoothstep(.8,1.,b)*.55;
+        vec3 c=mix(vec3(.015,.05,.17),vec3(.28,.58,1.),f)+vec3(.12,.34,.75)*g*(1.-f)+vec3(.9,.96,1.)*f*f*f*1.5;gl_FragColor=vec4(c*forza/.62,.68+f*.32);}`
     }));
     sfera.position.copy(P.oracolo.sala).setY(2.2); scena.add(sfera); mondo.sfera = sfera; mondo.sferaY = 2.2;
-    const anello = new THREE.Mesh(new THREE.TorusGeometry(.95, .012, 8, 96), new THREE.MeshBasicMaterial({ color: 0xbfe0ff })); anello.position.copy(sfera.position); scena.add(anello);
+    const anello = new THREE.Mesh(new THREE.TorusGeometry(.95, .006, 6, 96), new THREE.MeshBasicMaterial({ color: 0xbfe0ff })); anello.position.copy(sfera.position); scena.add(anello);
     mondo.anima.push(t => { sfera.material.uniforms.t.value = t; sfera.position.y = mondo.sferaY + Math.sin(t * .9) * .08; anello.rotation.set(t * .3, t * .5, 0); anello.position.y = sfera.position.y });
-    an(sfera.position.clone(), "oracolo", 0x9cc8ff, 30);
+    an(sfera.position.clone().setY(3.4), "oracolo", 0x9cc8ff, 4.5); mondo.lampade.push({ p: sfera.position.clone(), zona: "oracolo", col: 0x6ea8ff, alone: 3, pozza: 5, forza: .22 });
   }
   // --- vicolo: lanterne
   {
@@ -411,7 +434,7 @@ function arreda(scena, lab, mondo, r, base, env) {
     const corpo = new THREE.Mesh(new THREE.BoxGeometry(.22, .34, .22), new THREE.MeshStandardMaterial({ color: 0x111111, metalness: .7, roughness: .4 }));
     const vetro = new THREE.Mesh(new THREE.BoxGeometry(.16, .24, .16), new THREE.MeshStandardMaterial({ color: 0xffd9a0, emissive: 0xff9a40, emissiveIntensity: 4 }));
     lungoIlCammino(lab, celle, 3, ([x, z]) => {
-      for (const lato of "NSEW") { const f = facciaMuro(lab, x, z, lato); if (!f) continue; const g = new THREE.Group(); g.add(corpo.clone()); g.add(vetro.clone()); sulMuro(g, f, 3); g.position.addScaledVector(f.n, .2); scena.add(g); an(g.position.clone().addScaledVector(f.n, .25), "vicolo"); break }
+      for (const lato of "NSEW") { const f = facciaMuro(lab, x, z, lato); if (!f) continue; const g = new THREE.Group(); g.add(corpo.clone()); g.add(vetro.clone()); sulMuro(g, f, 3); g.position.addScaledVector(f.n, .2); scena.add(g); an(g.position.clone().addScaledVector(f.n, .25), "vicolo"); mondo.lampade.push({ p: g.position.clone(), n: f.n, muro: f.p.clone(), zona: "vicolo", cono: [3, 1.2], alone: 1.5 }); break }
     });
   }
   // --- ritorno, antico e centro: torce
@@ -423,7 +446,7 @@ function arreda(scena, lab, mondo, r, base, env) {
       const g = new THREE.Group(); g.userData.torcia = true; const s = sost.clone(); s.rotation.x = .35; g.add(s); const sp = new THREE.Sprite(fm); sp.scale.set(.32, .62, 1); sp.position.set(0, .4, .08); g.add(sp);
       sulMuro(g, f, y); g.position.addScaledVector(f.n, .12); scena.add(g); const o = r() * 10;
       mondo.anima.push(t => { const k = 1 + Math.sin(t * 13 + o) * .08 + Math.sin(t * 7.3 + o) * .06; sp.scale.set(.32 * k, .62 * (2 - k), 1) });
-      an(g.position.clone().addScaledVector(f.n, .35).setY(y + .4), zona, null, null);
+      an(g.position.clone().addScaledVector(f.n, .35).setY(y + .4), zona, null, null); mondo.lampade.push({ p: g.position.clone().setY(y + .45), n: f.n, muro: f.p.clone(), zona, alone: 1.15, pozza: 3, forza: .8 });
     };
     const celle = P.vicolo.ritorno.filter(([x, z]) => zonaDi(x, z) === "ritorno").concat(P.centro.andata);
     lungoIlCammino(lab, celle, 3, ([x, z]) => { for (const lato of "NSEW") { const f = facciaMuro(lab, x, z, lato); if (!f) continue; torcia(f, 1.9, zonaDi(x, z)); break } });
@@ -436,25 +459,25 @@ function arreda(scena, lab, mondo, r, base, env) {
     const scritta = new THREE.Mesh(new THREE.PlaneGeometry(.62, .16), new THREE.MeshStandardMaterial({ map: tela(512, 128, (g, w, h) => { g.clearRect(0, 0, w, h); g.fillStyle = "#e8c06a"; g.font = "600 70px Marcellus, serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("HAI VINTO", w / 2, h / 2 + 4) }), transparent: true, metalness: .8, roughness: .3, envMap: env, emissive: 0x6a4a10, emissiveIntensity: .6 }));
     mondo.scrittaCoppa = scritta; scena.add(scritta);
     const profilo = [[0, 0], [.13, 0], [.13, .02], [.04, .05], [.035, .18], [.06, .22], [.15, .3], [.19, .42], [.2, .52], [.185, .52], [.17, .43], [.13, .32], [.05, .24], [0, .24]].map(([x, y]) => new THREE.Vector2(x, y));
-    const oro = new THREE.MeshStandardMaterial({ color: 0xf2c25a, metalness: 1, roughness: .22, envMap: env, envMapIntensity: 1.6, emissive: 0x3a2400, emissiveIntensity: .4 });
+    const oro = new THREE.MeshStandardMaterial({ color: 0xf2c25a, metalness: 1, roughness: .22, envMap: env, envMapIntensity: 1.05, emissive: 0x3a2400, emissiveIntensity: .15 });
     const coppa = new THREE.Group(); coppa.add(new THREE.Mesh(new THREE.LatheGeometry(profilo, 64), oro));
     for (const sgn of [-1, 1]) { const m = new THREE.Mesh(new THREE.TorusGeometry(.08, .015, 12, 32, Math.PI * 1.2), oro); m.position.set(sgn * .2, .36, 0); m.rotation.z = sgn > 0 ? -Math.PI * .6 : Math.PI * .4 + Math.PI; coppa.add(m) }
     coppa.position.copy(s).setY(1.05); scena.add(coppa); mondo.coppa = coppa; mondo.piedistallo = ped;
     // fascio di luce dall'alto
     const fascio = new THREE.Mesh(new THREE.CylinderGeometry(.35, 1.4, 9, 48, 1, true), new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, uniforms: { t: { value: 0 } },
-      vertexShader: `varying vec2 vU;void main(){vU=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-      fragmentShader: `uniform float t;varying vec2 vU;void main(){float a=pow(vU.y,1.6)*.22*(.85+.15*sin(vU.x*40.+t));gl_FragColor=vec4(1.,.82,.5,a);}` }));
+      vertexShader: `varying vec2 vU;varying vec3 vN;varying vec3 vV;void main(){vU=uv;vec4 mv=modelViewMatrix*vec4(position,1.);vN=normalMatrix*normal;vV=-mv.xyz;gl_Position=projectionMatrix*mv;}`,
+      fragmentShader: `uniform float t;varying vec2 vU;varying vec3 vN;varying vec3 vV;void main(){float e=abs(dot(normalize(vN),normalize(vV)));float a=pow(vU.y,1.6)*.2*e*e*(.85+.15*sin(vU.x*40.+t));gl_FragColor=vec4(1.,.82,.5,a);}` }));
     fascio.position.copy(s).setY(4.5); scena.add(fascio); mondo.anima.push(t => fascio.material.uniforms.t.value = t);
-    an(s.clone().setY(3.4), "centro", 0xffc070, 40);
-    mondo.anima.push(pulviscolo(scena, s, 2.2, 260, 0xffd28a));
+    an(s.clone().setY(3.8), "centro", 0xffc070, 15);
+    mondo.anima.push(pulviscolo(scena, s, 2.2, 260, 0xffd28a, .028));
   }
 }
 
-export function pulviscolo(scena, centro, raggio, quanti, colore) {
+export function pulviscolo(scena, centro, raggio, quanti, colore, size = .045) {
   const p = new Float32Array(quanti * 3); for (let i = 0; i < quanti; i++) p.set([centro.x + (Math.random() - .5) * raggio * 2, Math.random() * 3.2, centro.z + (Math.random() - .5) * raggio * 2], i * 3);
   const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.BufferAttribute(p, 3));
   const punto = tela(32, 32, (c, w, h) => { const gr = c.createRadialGradient(16, 16, 0, 16, 16, 16); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(.4, "rgba(255,255,255,.35)"); gr.addColorStop(1, "rgba(255,255,255,0)"); c.fillStyle = gr; c.fillRect(0, 0, w, h) });
-  const m = new THREE.Points(g, new THREE.PointsMaterial({ color: colore, map: punto, size: .045, transparent: true, opacity: .55, depthWrite: false, blending: THREE.AdditiveBlending }));
+  const m = new THREE.Points(g, new THREE.PointsMaterial({ color: colore, map: punto, size, transparent: true, opacity: .55, depthWrite: false, blending: THREE.AdditiveBlending }));
   scena.add(m); return t => { const a = g.attributes.position; for (let i = 0; i < quanti; i++) { a.array[i * 3 + 1] += Math.sin(t * .5 + i) * .0009; a.array[i * 3] += Math.cos(t * .3 + i * 1.7) * .0007 } a.needsUpdate = true };
 }
 

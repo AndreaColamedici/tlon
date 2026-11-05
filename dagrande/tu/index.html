@@ -28,6 +28,8 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
 @keyframes eta{0%{opacity:0;transform:translateY(8px);filter:blur(6px)}30%{opacity:1;transform:none;filter:none;font-size:34px}100%{opacity:.92;font-size:26px}}
 #vivo{font:500 10px/1 "DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase;padding:6px 9px;border-radius:99px;background:var(--vetro);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:rgba(239,230,210,.7)}
 #vivo.vivo{color:#9be3a8}
+header .dx{display:flex;gap:6px;align-items:center}
+#muto{font:500 10px/1 "DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase;padding:6px 9px;border-radius:99px;border:0;background:var(--vetro);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:rgba(239,230,210,.7);pointer-events:auto;cursor:pointer}#muto.spento{color:var(--robbia)}
 #sotto{position:fixed;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom) + 132px);text-align:center;z-index:6;pointer-events:none;opacity:0;transform:translateY(10px);transition:opacity .7s,transform .7s}
 #sotto.on{opacity:1;transform:none}
 #sotto span{display:inline-block;font-family:Marcellus,serif;font-size:21px;line-height:1.35;padding:10px 16px;border-radius:14px;background:rgba(10,8,6,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);text-shadow:0 1px 10px rgba(0,0,0,.6);max-width:30em}
@@ -60,7 +62,10 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
 #fine h2{font-family:Marcellus,serif;font-weight:400;font-size:84px;letter-spacing:.08em}
 #fine p{font-size:19px;margin:10px 0 34px}
 #fine button,#carta button{font:500 17px "Familjen Grotesk",sans-serif;border-radius:14px;padding:15px 20px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer}
-#carta{position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;justify-content:flex-end;padding:calc(env(safe-area-inset-top) + 20px) 22px calc(env(safe-area-inset-bottom) + 22px);background:linear-gradient(rgba(12,10,8,0) 0%,rgba(12,10,8,0) 40%,rgba(12,10,8,.9) 60%,rgba(12,10,8,.97) 100%);opacity:0;pointer-events:none;transition:opacity 1.6s}
+#carta{position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;overflow-y:auto;touch-action:pan-y;padding:calc(env(safe-area-inset-top) + 20px) 22px calc(env(safe-area-inset-bottom) + 22px);background:linear-gradient(rgba(12,10,8,.05) 0%,rgba(12,10,8,.2) 16%,rgba(12,10,8,.93) 38%,rgba(12,10,8,.98) 100%);opacity:0;pointer-events:none;transition:opacity 1.6s}
+#carta .k{margin-top:auto}
+#rivedi{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 22px);z-index:8;font:500 16px "Familjen Grotesk",sans-serif;color:var(--intonaco);background:rgba(18,14,10,.7);border:1px solid var(--ocra);border-radius:14px;padding:13px 20px;cursor:pointer}
+@media (max-height:720px){#carta h2{font-size:34px;margin:4px 0 8px}#carta ul{gap:7px;margin-bottom:14px}#carta li{font-size:14px;grid-template-columns:78px 1fr}#carta .coda{margin-top:10px}}
 #carta.on{opacity:1;pointer-events:auto}
 #carta .k{font:500 11px "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ocra)}
 #carta h2{font-family:Marcellus,serif;font-weight:400;font-size:44px;margin:6px 0 14px}
@@ -70,7 +75,9 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
 #carta .az{display:flex;gap:10px}#carta .az button{flex:1}
 #condividi{background:var(--ocra)!important;color:#120d08!important;border-color:var(--ocra)!important}
 #carta .coda{margin-top:16px;font-size:13px;line-height:1.45;color:rgba(239,230,210,.55);text-align:center}#carta .coda b{font-weight:500;color:rgba(239,230,210,.8)}
-#ripiego{display:block;margin-top:12px;font:500 16px "Familjen Grotesk",sans-serif;color:var(--ocra);text-decoration:none;border:1px solid rgba(220,166,69,.55);border-radius:12px;padding:13px;text-align:center}
+#dacapo{display:block;width:100%;background:transparent;margin-top:10px;font:500 15px "Familjen Grotesk",sans-serif;color:rgba(239,230,210,.75);border:0;padding:8px;cursor:pointer}
+@media (max-height:700px){#ingresso svg{display:none}#ingresso h1{font-size:44px}}
+#ripiego{display:block;width:100%;background:transparent;margin-top:12px;font:500 16px "Familjen Grotesk",sans-serif;color:var(--ocra);text-decoration:none;border:1px solid rgba(220,166,69,.55);border-radius:12px;padding:13px;text-align:center}
 </style>
 </head>
 <body>
@@ -78,7 +85,7 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
 <div id="velo"></div>
 <div id="mirino"></div>
 <div id="nome"></div>
-<header><div id="eta"></div><div id="vivo">da solo</div></header>
+<header><div id="eta"></div><div class="dx"><button id="muto" type="button">suono</button><div id="vivo">senza palco</div></div></header>
 <div id="sala"></div>
 <div id="sotto"></div>
 <div id="scelte"></div>
@@ -88,9 +95,10 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
   <svg viewBox="-60 -60 120 120" aria-hidden="true"><g fill="none" stroke="#DCA645" stroke-width="2.2" stroke-linecap="round" opacity=".85"><path id="cretese"/></g><circle r="2.6" fill="#E2523F"><animate attributeName="r" values="2.2;3.4;2.2" dur="2.6s" repeatCount="indefinite"/></circle></svg>
   <h1>Da grande</h1>
   <p>Entri in un labirinto a cinque anni. Ogni scelta ti fa crescere. Tieni il telefono davanti a te, come una finestra.</p>
-  <label id="nome-box"><span>Come ti chiamavano da bambino? <em>Facoltativo. Resta sul tuo telefono.</em></span><input id="nome-bimbo" maxlength="14" autocomplete="off" autocapitalize="words" placeholder="un soprannome, un nome"></label>
+  <label id="nome-box"><span>Come ti chiamavano a cinque anni? <em>Facoltativo. Resta sul tuo telefono.</em></span><input id="nome-bimbo" maxlength="14" autocomplete="off" autocapitalize="words" placeholder="un soprannome, un nome"></label>
   <div id="barra"><i></i></div>
   <button id="entra" disabled>Sto preparando il labirinto…</button>
+  <button id="dacapo" type="button" hidden>Ricomincia da capo</button>
   <small>Le tue scelte arrivano allo schermo del palco in forma anonima, insieme a quelle di tutta la sala. Non chiediamo nomi né dati.</small>
 </section>
 
@@ -114,6 +122,7 @@ header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-be
   <div class="az"><button id="condividi">Passa il filo</button><button id="ancora">Guarda ancora</button></div>
   <p class="coda">Il labirinto resta aperto su <b>tlon.it/dagrande</b>. Ogni telefono ne genera uno diverso: passalo a qualcuno.</p>
 </section>
+<button id="rivedi" type="button" hidden>La tua strada</button>
 
 <script>
 /* il labirinto cretese nel frontespizio */
@@ -123,8 +132,8 @@ d="M0 "+(R+u*.9).toFixed(1);var seq=[[3,0,T-.42],[2,T-.42,.2],[1,.2,T-.2],[4,T-.
 seq.forEach(function(s){arco(r(s[0]),s[1],s[2])});d+="L0 0";document.getElementById("cretese").setAttribute("d",d)})();
 </script>
 <script>
-/* se il 3D non parte (WebGL assente, memoria grafica esaurita, modulo che non si carica):
-   una volta si riprova in versione leggera, poi lo si dice chiaramente invece di lasciare il bottone grigio */
+/* se il 3D non parte (WebGL assente, memoria grafica esaurita): una volta si riprova in versione leggera, poi lo si dice chiaramente.
+   Una rete lenta è un'altra cosa: in una sala piena il telefono funziona, deve solo aspettare, e non va dichiarato rotto. */
 (function(){
   var q=new URLSearchParams(location.search), semplice=q.has("semplice"), fatto=false;
   function fallito(e){
@@ -132,15 +141,17 @@ seq.forEach(function(s){arco(r(s[0]),s[1],s[2])});d+="L0 0";document.getElementB
     var b=document.getElementById("entra"),box=document.getElementById("ingresso");if(!b||!box)return;
     if(!semplice){q.set("semplice","1");b.textContent="Riprovo in versione leggera…";setTimeout(function(){location.replace(location.pathname+"?"+q.toString())},700);return}
     b.textContent="Questo telefono non apre il labirinto 3D";b.disabled=true;
-    var a=document.createElement("a");a.id="ripiego";a.href="https://tlon.it/dagrande/";a.textContent="Vedi la sala dallo schermo del palco";
-    var s=box.querySelector("small");s.textContent="Non è colpa tua: serve WebGL e un po' di memoria grafica. In sala alza gli occhi verso lo schermo: le scelte di tutti passano di lì.";
-    b.insertAdjacentElement("afterend",a);
+    var dal_vivo=Date.now()<Date.parse("2026-11-07T17:00:00+01:00");
+    box.querySelector("small").textContent="Non è colpa tua: serve WebGL e un po' di memoria grafica."+(dal_vivo?" In sala alza gli occhi verso lo schermo: le scelte di tutti passano di lì.":" Prova da un altro telefono o da un computer.");
   }
   window.__dgFallito=fallito;
   // solo errori di script (non immagini o font che non si caricano), e solo finché il modulo non è partito
   addEventListener("error",function(ev){if(ev.target!==window||!ev.message)return;if(!window.__dg)fallito(ev)});
   addEventListener("unhandledrejection",function(ev){if(!window.__dg)fallito(ev)});
-  setTimeout(function(){var b=document.getElementById("entra");if(!window.__dg&&b&&b.disabled)fallito("timeout")},25000);
+  // la rete lenta: si avvisa, poi si offre di ricaricare, senza mai togliere la possibilità di entrare
+  var entra=function(){return document.getElementById("entra")};
+  setTimeout(function(){var b=entra();if(b&&b.disabled&&!fatto)b.textContent="La rete è lenta, ancora un momento…"},20000);
+  setTimeout(function(){var b=entra();if(!b||!b.disabled||fatto)return;var a=document.createElement("button");a.id="ripiego";a.textContent="Ricarica la pagina";a.onclick=function(){location.reload()};b.insertAdjacentElement("afterend",a)},60000);
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" async></script>

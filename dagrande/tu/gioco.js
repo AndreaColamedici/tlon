@@ -8,6 +8,7 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import * as M from "../mondo.js";
+import { atmosfera } from "./atmosfera.js";
 import { decoraMuri, tabellaAltezza } from "./voci.js";
 
 const $ = s => document.querySelector(s);
@@ -16,12 +17,15 @@ const ls = { get(k) { try { return JSON.parse(localStorage.getItem(k)) } catch (
 const PARAM = new URLSearchParams(location.search);
 const PROVA = PARAM.has("prova");
 const VEL = +PARAM.get("veloce") || 1;
-/* l'evento: sabato 7 novembre 2026, BASE Milano. Prima e durante, i telefoni aspettano il palco;
-   dall'8 novembre il labirinto resta aperto e si attraversa da soli. ?libero forza il «da soli», ?sala forza il «dal vivo» (prove). */
-const EVENTO = { inizio: Date.parse("2026-11-07T00:00:00+01:00"), fine: Date.parse("2026-11-08T00:00:00+01:00") };
+/* l'evento: sabato 7 novembre 2026 alle 14:50, BASE Milano. Prima delle 14 il labirinto è aperto, per provarlo, e ignora la scena del server;
+   durante i telefoni seguono il palco; dalle 17 resta aperto e si attraversa quando si vuole. ?libero forza l'aperto, ?sala forza il dal vivo (prove). */
+const EVENTO = { inizio: Date.parse("2026-11-07T14:00:00+01:00"), fine: Date.parse("2026-11-07T17:00:00+01:00") };
+const SALA = PARAM.has("sala");
 const ORA = PARAM.get("oggi") ? Date.parse(PARAM.get("oggi")) : Date.now();   // ?oggi=2026-11-09 per vedere in anteprima il labirinto come sarà dopo l'evento
-const DOPO = ORA >= EVENTO.fine, PRIMA = ORA < EVENTO.inizio;
-const LIBERO = PARAM.has("libero") || (DOPO && !PARAM.has("sala"));   // da soli, senza aspettare il palco (prove, o dopo l'evento)
+const DOPO = ORA >= EVENTO.fine, prima = () => !SALA && (PARAM.get("oggi") ? ORA : Date.now()) < EVENTO.inizio;   // si valuta ogni volta: una pagina aperta alle 13:50 deve seguire il palco alle 14:50 (vedi entra)
+const LIBERO = PARAM.has("libero") || ((DOPO || ORA < EVENTO.inizio) && !SALA);   // senza aspettare il palco (prove, o fuori dall'evento)
+const CALMO = matchMedia("(prefers-reduced-motion: reduce)").matches;   // niente oscillazione del passo per chi ne soffre
+const DITO = matchMedia("(pointer: coarse)").matches;
 const SEMPLICE = PARAM.has("semplice");  // senza bagliore e a risoluzione piena: per i telefoni che faticano
 // ?veloce=N accelera il cammino, ?prova salta le attese
 const SEME = PARAM.get("seme") || LV.dispositivo || String(Math.random());
@@ -30,6 +34,8 @@ const lerp = (a, b, k) => a + (b - a) * k;
 const angolo = (a, b, k) => { let d = ((b - a + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI; return a + d * k };
 
 /* ---------- motore ---------- */
+// le lampade sono corpi larghi: vicino a una luce il muro si schiarisce senza bruciare (solo sul telefono, il palco ha il suo mondo)
+THREE.ShaderChunk.lights_pars_begin = THREE.ShaderChunk.lights_pars_begin.replace("1.0 / max( pow( lightDistance, decayExponent ), 0.01 )", "1.0 / ( pow( lightDistance, decayExponent ) + 1.6 )");
 const tela = $("#c");
 const renderer = new THREE.WebGLRenderer({ canvas: tela, antialias: false, powerPreference: "high-performance" });
 let qualitaPR = SEMPLICE ? 1 : Math.min(window.devicePixelRatio || 1, 1.75);
@@ -46,20 +52,21 @@ composer.addPass(new RenderPass(scena, camera));
 composer.addPass(new ShaderPass({ uniforms: { tDiffuse: { value: null } }, vertexShader: `varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
   fragmentShader: `uniform sampler2D tDiffuse;varying vec2 vUv;void main(){vec4 c=texture2D(tDiffuse,vUv);
     if(any(isnan(c.rgb))||any(isinf(c.rgb))||!(c.r==c.r)||c.r>6e4||c.g>6e4||c.b>6e4)c=vec4(0.,0.,0.,1.);gl_FragColor=vec4(min(c.rgb,vec3(64.)),c.a);}` }));
-const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .75, .5, .9); composer.addPass(bloom);
+const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .55, .55, 1); composer.addPass(bloom);
 if (SEMPLICE) bloom.enabled = false; // ?semplice: senza bagliore, per i telefoni che danno problemi
 composer.addPass(new OutputPass());
 const finitura = new ShaderPass({
-  uniforms: { tDiffuse: { value: null }, t: { value: 0 }, vign: { value: .85 }, buio: { value: 0 }, ab: { value: 1 } },
+  uniforms: { tDiffuse: { value: null }, t: { value: 0 }, vign: { value: .85 }, buio: { value: 0 }, ab: { value: 1 }, sat: { value: 1 }, contr: { value: 1 }, lift: { value: new THREE.Vector3() }, gain: { value: new THREE.Vector3(1, 1, 1) } },
   vertexShader: `varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-  fragmentShader: `uniform sampler2D tDiffuse;uniform float t;uniform float vign;uniform float buio;uniform float ab;varying vec2 vUv;
+  fragmentShader: `uniform sampler2D tDiffuse;uniform float t;uniform float vign;uniform float buio;uniform float ab;uniform float sat;uniform float contr;uniform vec3 lift;uniform vec3 gain;varying vec2 vUv;
     float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
     void main(){vec2 d=vUv-.5;float r=length(d);vec2 o=d*r*.012*ab;
     vec3 c=vec3(texture2D(tDiffuse,vUv+o).r,texture2D(tDiffuse,vUv).g,texture2D(tDiffuse,vUv-o).b);
+    float l=dot(c,vec3(.2126,.7152,.0722));c=mix(vec3(l),c,sat);c=max((c-.2)*contr+.2,0.);c=c*gain+lift*(1.-l)*(1.-l);
     c*=1.-smoothstep(.3,.95,r)*vign;c*=1.-buio*smoothstep(.12,.7,r);c+=(h(vUv*937.+t)-.5)*.045;gl_FragColor=vec4(c,1.);}`
 });
 composer.addPass(finitura);
-function adatta() { const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); composer.setSize(w, h); composer.setPixelRatio(qualitaPR); bloom.resolution.set(w * qualitaPR / 2, h * qualitaPR / 2); camera.aspect = w / h; camera.fov = w > h ? 62 : 74; camera.updateProjectionMatrix() }
+function adatta() { const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); composer.setSize(w, h); composer.setPixelRatio(qualitaPR); bloom.resolution.set(w * qualitaPR / 2, h * qualitaPR / 2); camera.aspect = w / h; camera.fov = w > h ? 62 : 90; camera.updateProjectionMatrix() }
 addEventListener("resize", adatta); adatta();
 
 /* luci: un piccolo gruppo di luci che segue il cammino, più una torcia per il buio */
@@ -101,7 +108,7 @@ function zonaQui() { const x = Math.floor((cam.pos.x + M.N * M.C / 2) / M.C), z 
 function animaCamera(dt, t) {
   const Z = M.ZONE[zonaQui()];
   if (cam.giro) {
-    const g = cam.giro, v = Math.max(g.v || Z.passo, g.vmin || 0) * VEL * rallenta(); g.s = Math.min(g.L, g.s + v * dt);
+    const g = cam.giro, v = Math.max(g.v || Z.passo, g.vmin || 0) * VEL * rallenta() * fretta(); g.s = Math.min(g.L, g.s + v * dt);
     const p = g.curva.getPointAt(g.s / g.L), a = g.curva.getPointAt(Math.min(1, (g.s + g.guarda) / g.L));
     cam.pos.copy(p); filo.aggiungi(p); const d = g.mira ? g.mira.clone().sub(p) : a.sub(p); if (d.lengthSq() > .0004) cam.yawT = Math.atan2(-d.x, -d.z); // con una mira si cammina guardandola
     const prima = Math.sin(cam.passi); cam.passi += dt * v * 3.7; if (prima > 0 && Math.sin(cam.passi) <= 0 || prima < 0 && Math.sin(cam.passi) >= 0) suono.passo(zonaQui());
@@ -112,7 +119,7 @@ function animaCamera(dt, t) {
   if (cam.script) cam.script(dt, t);
   if (cam.occhioFisso != null) cam.occhio = cam.occhioFisso; else { const passo = Math.min(.35, dt * .45); cam.occhio += Math.max(-passo, Math.min(passo, Z.occhio - cam.occhio)) }
   cam.yaw = angolo(cam.yaw, cam.yawT, 1 - Math.exp(-dt * (cam.giro ? 3.2 : 2.4)));
-  const ampiezza = cam.giro ? 1 : 0, bobY = Math.abs(Math.sin(cam.passi)) * .045 * ampiezza * (cam.occhio < 1.2 ? .8 : 1), bobX = Math.sin(cam.passi) * .022 * ampiezza;
+  const ampiezza = cam.giro && !CALMO ? 1 : 0, bobY = Math.abs(Math.sin(cam.passi)) * .045 * ampiezza * (cam.occhio < 1.2 ? .8 : 1), bobX = Math.sin(cam.passi) * .022 * ampiezza;
   const respiro = Math.sin(t * 1.3) * .006;
   camera.position.set(cam.pos.x + Math.cos(cam.yaw) * bobX, cam.pos.y + cam.occhio + bobY + respiro, cam.pos.z - Math.sin(cam.yaw) * bobX);
   let gy = 0, gp = 0, gr = 0;
@@ -121,7 +128,25 @@ function animaCamera(dt, t) {
 }
 
 /* le voci di un'età si scrivono sui muri quando quell'età comincia: poche tele vive alla volta */
-function vociPer(...zone) { try { decoraMuri(scena, S.lab, M, S.nome, M.caso(M.semeDa(SEME + "voci" + zone[0])), zone); S.voci = []; scena.traverse(o => { if (o.userData.voce) S.voci.push(o) }) } catch (e) { console.warn(e) } }
+function vociPer(...zone) { try { decoraMuri(scena, S.lab, M, S.nome, M.caso(M.semeDa(SEME + "voci" + zone[0])), zone, Object.fromEntries(zone.map(z => [z, vociMie(z)]))); S.voci = []; scena.traverse(o => { if (o.userData.voce) S.voci.push(o) }) } catch (e) { console.warn(e) } }
+/* il labirinto si ricorda di te: quello che hai scelto torna sui muri delle età successive */
+function vociMie(zona) {
+  const s = S.scelte, sogno = s.sogno && s.sogno !== "nonlo" ? s.sognoTesto : null, x = [];
+  const su = t => t.charAt(0).toUpperCase() + t.slice(1);
+  if (zona === "scuola" && s.sogno) x.push({ s: "pastello", testo: "IO DA GRANDE: " + (sogno ? sogno.toUpperCase() : "?"), w: 1.45, h: .3, y: .62, colore: "#d0462f" });
+  if (zona === "notte" && s.stradaTesto && s.stradaTesto !== "?") x.push({ s: "bolla", testo: `${su(s.stradaTesto)}? E poi cosa ci fai?`, w: 1, h: .24, y: 1.72 });
+  if (zona === "oracolo") {
+    if (s.secondi != null) x.push({ s: "bolla", testo: `Scelto in ${s.secondi === 1 ? "1 secondo" : s.secondi + " secondi"}. Puoi fare di meglio`, w: 1.1, h: .26, y: 1.68 });
+    if (s.speranza) x.push({ s: "bolla", testo: `Speravi ${s.speranza}. Altre cose da sperare per te`, w: 1.1, h: .26, y: 1.64 });
+  }
+  if (zona === "vicolo") {
+    if (sogno) x.push({ s: "postit", testo: `A cinque anni volevi ${sogno}`, w: .32, h: .32, y: 1.5, colore: "#a9cff2" });
+    if (s.sicurezza) x.push({ s: "graffito", testo: { 1: "poca, dicevi", 2: "abbastanza, dicevi", 3: "tutta, dicevi" }[s.sicurezza], w: 1.3, h: .42, y: 2.25, colore: "#e8e3d8" });
+    if (s.oracolo === "strada") x.push({ s: "bolla", testo: "Sei dove arrivano quasi tutti", w: 1.05, h: .26, y: 1.7 });
+    if (s.domanda && !s.domanda.startsWith("A cinque")) x.push({ s: "postit", testo: s.domanda, w: .36, h: .36, y: 1.48, colore: "#f6e27a" });
+  }
+  return x;
+}
 /* si rallenta passando davanti alle voci sui muri, per avere il tempo di leggerle */
 let _rall = 1, _rallT = 0;
 function rallenta() {
@@ -129,6 +154,8 @@ function rallenta() {
   let vicina = 9; for (const v of S.voci || []) { if (!v.parent) continue; const d = v.position.distanceTo(camera.position); if (d < vicina) vicina = d }
   const meta = vicina < 3.2 ? .5 : 1; _rall += (meta - _rall) * .35; return _rall;
 }
+/* chi è rimasto indietro raggiunge la sala: se il palco ha già chiuso il tuo movimento, si cammina più svelti */
+function fretta() { return S.live && S.cap && S.palco >= (S.cap <= 2 ? 3 : S.cap <= 4 ? 5 : 7) ? 1.9 : 1 }
 /* tocchi e trascinamenti */
 {
   let giu = null;
@@ -161,15 +188,18 @@ const UI = {
     const sotto = $("#sotto"); const p = new Promise(res => opzioni.forEach(([k, testo]) => { const b = document.createElement("button"); b.innerHTML = testo; b.onclick = () => { suono.tocco(); box.className = ""; box.innerHTML = ""; sotto.style.bottom = ""; res(k) }; box.appendChild(b) }));
     requestAnimationFrame(() => { sotto.style.bottom = (box.offsetHeight + 34) + "px" }); return p;
   },
+  togli() { const box = $("#scelte"); box.className = ""; box.innerHTML = ""; $("#sotto").style.bottom = "" },
   velo(colore, opacita, ms = 900) { const v = $("#velo"); v.style.transition = `opacity ${ms}ms ease`; v.style.background = colore; v.style.opacity = opacita; return pausa(ms) },
 };
 
 /* ---------- suono ---------- */
 const suono = (() => {
-  let ctx = null, master, riverbero, umido, rumore, zonaAtt = null; const ambienti = {};
+  let ctx = null, master, riverbero, umido, rumore, zonaAtt = null, piano = false, muto = ls.get("dg3-muto") === true; const ambienti = {};
+  // trecento telefoni sommati coprono qualsiasi voce: dal vivo si sta bassi, e nelle attese quasi a zero
+  const volume = () => muto ? 0 : piano ? .03 : LIBERO ? .9 : .5, applica = () => { if (ctx) master.gain.setTargetAtTime(volume(), ctx.currentTime, .7) };
   function avvia() {
     if (ctx) return; const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; ctx = new AC();
-    master = ctx.createGain(); master.gain.value = .9; master.connect(ctx.destination);
+    master = ctx.createGain(); master.gain.value = volume(); master.connect(ctx.destination);
     riverbero = ctx.createConvolver(); const n = ctx.sampleRate * 2.6, ir = ctx.createBuffer(2, n, ctx.sampleRate);
     for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3.2) }
     riverbero.buffer = ir; umido = ctx.createGain(); umido.gain.value = .25; riverbero.connect(umido); umido.connect(master);
@@ -202,7 +232,12 @@ const suono = (() => {
   }
   let carillon = 0;
   return {
-    avvia, get ctx() { return ctx },
+    avvia, get ctx() { return ctx }, get muto() { return muto },
+    // mentre si aspetta il palco i telefoni restano sotto la voce di chi parla
+    piano(si) { piano = si; applica() },
+    muta(si) { muto = si; ls.set("dg3-muto", si); applica() },
+    // quando il palco riapre, tutti i telefoni della sala suonano insieme
+    rintocco() { if (!ctx) return; master.gain.setTargetAtTime(volume(), ctx.currentTime, .05);[110, 165, 220, 330].forEach((f, i) => ton(f, 4.2 - i * .5, .12 / (i + 1), "triangle", .9, i * .06, .02)); try { navigator.vibrate && navigator.vibrate([70, 90, 70]) } catch (e) { } },
     zona(z, t) {
       if (!ctx) return; if (z !== zonaAtt) { zonaAtt = z; for (const [k, g] of Object.entries(ambienti)) g.gain.setTargetAtTime(k === z || (z === "antico" && k === "ritorno") ? 1 : 0, ctx.currentTime, 1.2); const s = SUOLI[z]; umido.gain.setTargetAtTime(s ? s[3] : .3, ctx.currentTime, .8) }
       if (z === "cameretta" && t > carillon) { carillon = t + 1.8 + Math.random() * 3.5; const sc = [523.3, 587.3, 659.3, 784, 880, 1046.5]; ton(sc[Math.floor(Math.random() * sc.length)], 1.6, .035, "sine", .7) }
@@ -281,11 +316,11 @@ function ciclo() {
     if (t - tMira > .12) { tMira = t; aggiornaMira() }
     const z = zonaQui(); suono.zona(z, t);
     if (pioggia) { const vis = z === "vicolo"; pioggia.visible = vis; if (vis) { pioggia.position.set(camera.position.x, 0, camera.position.z); pioggia.position.y = -((t * 9) % 9) + 0 ; pioggia.material.opacity = .3 } }
-    finitura.uniforms.t.value = t;
+    finitura.uniforms.t.value = t; S.atmos.aggiorna(dt, t, z, oscurita, scena.fog.density);
     for (const f of S.extra || []) f(dt, t);
     if (!S.sblocca || t - (S._ultimoRender || 0) > .08) { S._ultimoRender = t; composer.render(dt) }
     // qualità adattiva
-    tAcc += dt; frames++; if (tAcc > 2.5) { const fps = frames / tAcc; tAcc = 0; frames = 0; if (fps < 32 && qualitaPR > .85) { qualitaPR = Math.max(.85, qualitaPR - .3); renderer.setPixelRatio(qualitaPR); adatta() } else if (fps < 24 && bloom.enabled) bloom.enabled = false }
+    tAcc += dt; frames++; if (tAcc > 2.5 && !PARAM.has("fisso")) { const fps = frames / tAcc; tAcc = 0; frames = 0; if (fps < 32 && qualitaPR > .85) { qualitaPR = Math.max(.85, qualitaPR - .3); renderer.setPixelRatio(qualitaPR); adatta() } else if (fps < 24 && bloom.enabled) { bloom.enabled = false; S.atmos.alleggerisci() } }
   }
   requestAnimationFrame(ciclo);
 }
@@ -294,6 +329,56 @@ function ciclo() {
 /* a cinque anni si risponde con un verbo: quello che si vuole fare, prima del nome del mestiere */
 export const SOGNI = { luna: "andare sulla luna", animali: "curare gli animali", gol: "fare gol", ballare: "ballare", incendi: "spegnere gli incendi", scoprire: "scoprire cose nuove", dipingere: "dipingere", insegnare: "insegnare", cantare: "cantare", cucinare: "cucinare", volare: "pilotare gli aerei", misteri: "risolvere misteri", curare: "curare le persone", inventare: "inventare macchine", esplorare: "esplorare il mondo", scavare: "scavare tesori antichi" };
 export const STRADE = ["Medicina", "Giurisprudenza", "Ingegneria", "Economia", "Lettere", "Filosofia", "Psicologia", "Architettura", "Design", "Informatica", "Biologia", "Lingue", "Scienze politiche", "Belle Arti", "Conservatorio", "Fisica", "Matematica", "Infermieristica", "Scienze della formazione", "Cinema", "Agraria", "Lavorare subito", "Un anno all'estero", "Servizio civile"];
+
+/* ---------- il tetto ----------
+   A ogni attesa il tetto si apre e sopra di te si vede chi cammina. Il numero delle luci è vero, e ciascuna sta nella direzione del quartiere in cui è arrivata quella persona;
+   l'altezza e la distanza no: dai corridoi si vede soltanto il cielo. */
+const tondo = (() => { let t = null; return () => { if (t) return t; const c = document.createElement("canvas"); c.width = c.height = 64; const x = c.getContext("2d"), gr = x.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,248,225,1)"); gr.addColorStop(.25, "rgba(255,205,120,.9)"); gr.addColorStop(1, "rgba(255,140,40,0)"); x.fillStyle = gr; x.fillRect(0, 0, 64, 64); return t = new THREE.CanvasTexture(c) } })();
+async function leggiSala() {
+  if (!LV.conteggi) return {};
+  if (!S._dati || Date.now() - S._dati.t > 4000) S._dati = { t: Date.now(), p: LV.conteggi(DOPO ? EVENTO.inizio : Date.now() - 3 * 3600e3) };
+  const D = {}; for (const r0 of await S._dati.p) { ((D[r0.stanza] = D[r0.stanza] || {})[r0.chiave] = D[r0.stanza][r0.chiave] || {})[r0.valore] = Number(r0.n) } return D;
+}
+const tetto = (() => {
+  const MAX = 400, NOMI = ["", "cameretta", "scuola", "notte", "oracolo", "vicolo", "centro"]; let punti = null, per = [], k = 0, meta = 0, spento = false, giro = 0, yaw0 = null; const tmpV = new THREE.Vector3();
+  function crea() {
+    punti = new THREE.Points(new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(new Float32Array(MAX * 3), 3)), new THREE.PointsMaterial({ size: 9, sizeAttenuation: false, map: tondo(), color: 0xffd9a0, transparent: true, opacity: 0, depthWrite: false, depthTest: false, fog: false, blending: THREE.AdditiveBlending })); // tutte uguali, vicine e lontane: nessuna persona conta più di un'altra, e nessun muro ne nasconde una
+    punti.frustumCulled = false; punti.visible = false; scena.add(punti); S.extra.push(anima);
+  }
+  function anima(dt, t) {
+    if (spento) return;
+    k += (meta - k) * (1 - Math.exp(-dt * 1.3)); if (k < .004 && !meta) { if (punti.visible) { punti.visible = false; for (const so of S.mondo.soffitti || []) so.visible = true; cielo = 0; S.nebbiaX = 1; cam.pitchExtra = 0 } return }
+    punti.visible = true; punti.material.opacity = k; cielo = k * .07; S.nebbiaX = 1 - k * .5; cam.pitchExtra = k * 1.28;
+    const a = punti.geometry.attributes.position; per.forEach((o, i) => { o.p.lerp(o.q, 1 - Math.exp(-dt * .5)); const d = o.p.clone().sub(cam.pos).setY(0), lung = d.length() || 1, rag = 3 + o.seme * 13; a.array[i * 3] = cam.pos.x + d.x / lung * rag + Math.sin(t * .3 + o.seme * 20) * .8; a.array[i * 3 + 1] = o.y + Math.sin(t * .9 + o.seme * 9) * .4; a.array[i * 3 + 2] = cam.pos.z + d.z / lung * rag + Math.cos(t * .25 + o.seme * 13) * .8 }); a.needsUpdate = true;
+  }
+  function dove(cap, seme) {
+    const P = S.lab.percorsi[NOMI[cap]], cs = P ? P.andata.concat(P.ritorno || []) : [[13, 13]], c = cs[Math.floor(seme * 997) % cs.length], v = M.centroCella(...c);
+    return v.add(new THREE.Vector3((seme * 31 % 1 - .5) * 1.8, 0, (seme * 57 % 1 - .5) * 1.8));
+  }
+  // quante persone ci sono e dove sono arrivate: un capitolo a testa, sottraendo me
+  async function aggiorna() {
+    const D = await leggiSala(), prog = D.progresso?.capitolo || {}, voluti = [];
+    for (const [v, n] of Object.entries(prog)) { const c = +v.split(".")[0]; for (let i = 0; i < n; i++) voluti.push(c) }
+    const entrati = Object.values(D.ingresso?.entrato || {}).reduce((a, b) => a + b, 0); while (voluti.length < entrati) voluti.push(1);
+    const n = Math.max(voluti.length, 1); voluti.length = Math.min(Math.max(0, n - 1), MAX);
+    while (per.length < voluti.length) { const seme = Math.random(), c = voluti[per.length]; per.push({ seme, c, p: dove(c, seme), q: dove(c, seme), y: 0 }) }
+    per.length = voluti.length; per.forEach((o, i) => { o.c = voluti[i]; o.q.copy(dove(LIBERO ? 1 + Math.floor(o.seme * 6) : o.c, o.seme)); o.y = 20 + o.seme * 16 });
+    punti.geometry.setDrawRange(0, per.length);
+    // lo sguardo si volta verso dove la sala è davvero: la folla sta al centro dello schermo, fuori dai riquadri di testo
+    if (meta && per.length && !cam.giro) { const v = new THREE.Vector3(); for (const o of per) v.add(tmpV.copy(o.q).sub(cam.pos).setY(0).normalize()); v.divideScalar(per.length); if (v.length() > .15) { if (yaw0 === null) yaw0 = cam.yawT; cam.yawT = Math.atan2(-v.x, -v.z) } }
+    return S.quanti = n;
+  }
+  return {
+    // si apre sempre, anche senza rete: con nessun altro in vista resta il cielo
+    async apri() {
+      if (spento) return 1; if (!punti) crea(); meta = 1; for (const so of S.mondo.soffitti || []) so.visible = false;
+      clearInterval(giro); giro = setInterval(() => { aggiorna().catch(() => { }) }, 60000 + Math.random() * 40000); // una lettura al minuto per telefono: con trecento telefoni sono già cinque al secondo
+      try { return await Promise.race([aggiorna(), pausa(3500).then(() => 1)]) } catch (e) { return 1 }
+    },
+    chiudi() { meta = 0; clearInterval(giro); if (yaw0 !== null) { cam.yawT = yaw0; yaw0 = null } },
+    spegni() { clearInterval(giro); spento = true; if (punti) punti.visible = false; cam.pitchExtra = 0; cielo = 0; S.nebbiaX = 1 }
+  };
+})();
 
 /* ---------- capitoli ---------- */
 const r = M.caso(M.semeDa(SEME + "scelte"));
@@ -307,15 +392,20 @@ async function attendi(k, prossimo = k + 1) {
   if (S.palco >= prossimo) return;
   if (LV.attivo && S.live && !LIBERO) {
     // durante l'evento si va avanti solo quando il capitolo si apre dal palco
-    UI.dici(prossimo === 7 ? "Resta qui. Tra poco si sale tutti insieme." : "Alza gli occhi verso il palco.");
-    raccontaSala(k);
+    const frase = prossimo === 7 ? "Resta qui. Tra poco si sale tutti insieme." : "Alza gli occhi verso il palco.";
+    UI.dici(frase); suono.piano(true); setTimeout(() => { if (S.sblocca) raccontaSala(k) }, PROVA ? 300 : 7000); // prima si guardano le luci, poi si leggono i numeri
+    tetto.apri().then(n => { if (n > 1 && S.sblocca && prossimo !== 7) UI.dici(`Il tetto si è aperto. Ogni luce è una persona di questa sala.<br>${frase}`) });
     let senzaRete = 0; const guardia = setInterval(() => { senzaRete = window.DGLive && DGLive.ascolta && DGLive.ascolta.ok === false ? senzaRete + 5 : 0; if (senzaRete >= 180) { clearInterval(guardia); S.sblocca && S.sblocca(true) } }, 5000);
     const forzato = await new Promise(res => { S.sblocca = (forza) => { if (forza || S.palco >= prossimo) { S.sblocca = null; res(!!forza) } } });
-    clearInterval(guardia); UI.dici(""); $("#sala").classList.remove("on");
-    if (forzato) { UI.dici("Il collegamento con il palco si è interrotto: prosegui da solo."); await UI.scegli([["vai", "Prosegui"]], "una"); UI.dici("") }
+    clearInterval(guardia); UI.dici(""); $("#sala").classList.remove("on"); tetto.chiudi(); suono.piano(false);
+    if (forzato) { UI.dici("Il collegamento con il palco si è interrotto: puoi proseguire."); await UI.scegli([["vai", "Prosegui"]], "una"); UI.dici("") }
+    else suono.rintocco();
     return;
   }
-  await pausa(900); await UI.scegli([["vai", prossimo === 7 ? "Sali" : "Prosegui"]], "una");
+  await pausa(900);
+  const n = await tetto.apri();
+  if (n > 1) UI.dici(DOPO ? `Il tetto si è aperto. Ogni luce è una delle ${n} persone passate di qui.` : "Il tetto si è aperto. Ogni luce è un'altra persona.");
+  await UI.scegli([["vai", prossimo === 7 ? "Sali" : "Prosegui"]], "una"); UI.dici(""); tetto.chiudi();
 }
 /* anche le voci sui muri di un'età passata si tolgono */
 function liberaVoci(...zone) { const via = []; scena.traverse(o => { if (o.userData.voce && zone.includes(o.userData.voce)) via.push(o) }); for (const o of via) { o.geometry.dispose(); if (o.material.map) o.material.map.dispose(); o.material.dispose(); scena.remove(o) } }
@@ -328,10 +418,10 @@ async function raccontaSala(k) {
 }
 async function raccontaSala1(k, soloSalva, aggiungi) {
   if (!LV.conteggi) return; let D = {};
-  try { if (!S._dati || Date.now() - S._dati.t > 4000) S._dati = { t: Date.now(), p: LV.conteggi(Date.now() - 3 * 3600e3) }; for (const r0 of await S._dati.p) { ((D[r0.stanza] = D[r0.stanza] || {})[r0.chiave] = D[r0.stanza][r0.chiave] || {})[r0.valore] = Number(r0.n) } } catch (e) { return }
+  try { D = await leggiSala() } catch (e) { return }
   const som = o => o ? Object.values(o).reduce((a, b) => a + b, 0) : 0, pc = (a, b) => b ? Math.round(a / b * 100) : 0, sc = S.scelte; let t = "";
   if (k === 1) { const so = D.cameretta?.sogno || {}, tot = som(so); if (tot > 1) t = sc.sogno === "nonlo" ? `Come te, ${so.nonlo || 1} ${so.nonlo === 1 ? "persona" : "persone"} su ${tot} ha${so.nonlo === 1 ? "" : "nno"} aperto la porta col punto interrogativo.` : `In questa sala ${so[sc.sogno] || 1} su ${tot} ${(so[sc.sogno] || 1) === 1 ? "vuole" : "vogliono"} ${sc.sognoTesto}. ${pc(so.nonlo || 0, tot)}% ha aperto la porta col punto interrogativo.` }
-  if (k === 2) { const se = D.scuola?.secondi || {}; let a = 0, n = 0; for (const [v, c] of Object.entries(se)) { a += v * c; n += c } if (n > 1) t = `Tu hai scelto in ${sc.secondi} secondi. La sala, in media, in ${Math.round(a / n)}.` }
+  if (k === 2) { const se = D.scuola?.secondi || {}; let a = 0, n = 0; for (const [v, c] of Object.entries(se)) { a += v * c; n += c } if (n > 1) t = `Tu hai scelto in ${sc.secondi === 1 ? "1 secondo" : sc.secondi + " secondi"}. La sala, in media, in ${Math.round(a / n)}.`; const ce = D.scuola?.sicurezza || {}, totC = som(ce), io = ce[sc.sicurezza] || 1; if (totC > 1 && sc.sicurezza) t += `<br>${io > 1 ? `Hanno risposto «${{ 1: "Poca", 2: "Abbastanza", 3: "Tutta" }[sc.sicurezza]}», come te, ${io} persone su ${totC}.` : `Soltanto tu, su ${totC}, hai risposto «${{ 1: "Poca", 2: "Abbastanza", 3: "Tutta" }[sc.sicurezza]}».`}` }
   if (k === 3) { const sg = D.notte?.seguito || {}, div = (sg.moneta || 0) + (sg.speranza || 0), tot = div + (sg.uguali || 0); if (tot > 1) t = `${pc(div, tot)}% della sala ha sperato il contrario di quello che è uscito. Di questi, ${pc(sg.speranza || 0, div)}% ha seguito la speranza.` }
   if (k === 4) { const o = D.oracolo?.scelta || {}, tot = som(o); if (tot > 1) t = `${pc(o.strada || 0, tot)}% della sala ha chiesto la strada all'oracolo.` }
   if (k === 5) { const a = D.vicolo?.azione || {}; if (som(a) > 1) t = `${a.segno || 0} persone hanno lasciato un segno nel vicolo cieco.` }
@@ -350,16 +440,20 @@ async function porte(lista, { zona, rett, doppie, stile, colori, larg = .95 }) {
 function scegliPorta(porte) {
   S.interattivi = porte.map(p => p.pannello); let vicina = null;
   return new Promise(res => {
+    const apri = p => { if (vicina !== p || !S.onTap) return; clearTimeout(aiuto); S.onTap = null; S.interattivi = []; nome(""); UI.togli(); res(p) };
+    // chi resta fermo davanti al muro sbagliato non deve credere che il gioco sia bloccato
+    const aiuto = setTimeout(() => { if (!vicina) UI.dici(DITO ? "Le porte sono tutte intorno a te. Trascina il dito per girarti, poi tocca quella che vuoi." : "Le porte sono tutte intorno a te. Trascina per girarti, poi clicca quella che vuoi.") }, 22000);
     S.onTap = async p => {
       if (!p.pannello) return;
-      if (p === vicina && !cam.giro) { S.onTap = null; S.interattivi = []; nome(""); res(p); return }
-      vicina = p; suono.tocco(); const n = new THREE.Vector3(); p.gruppo.getWorldDirection(n);
+      if (p === vicina && !cam.giro) { apri(p); return }
+      clearTimeout(aiuto); UI.togli(); vicina = p; suono.tocco(); const n = new THREE.Vector3(); p.gruppo.getWorldDirection(n);
       const meta = p.gruppo.position.clone().addScaledVector(n, 1.85).setY(0);
       UI.dici("");
       await cammina([meta], { velocita: 2.4, guarda: .3, mira: p.gruppo.position.clone().setY(0) });
       if (vicina !== p) return;
       guardaVerso(p.gruppo.position); cam.yawU = 0; cam.pitchU = 0;
-      UI.dici(`<b>${p.etichetta === "?" ? "La porta del punto interrogativo" : p.etichetta}</b><br>Tocca di nuovo la porta per aprirla, o scegline un'altra.`);
+      UI.dici(`<b>${p.etichetta === "?" ? "La porta del punto interrogativo" : p.etichetta}</b><br>Puoi aprirla, o toccarne un'altra.`);
+      UI.scegli([["apri", "Apri questa porta"]], "una").then(() => apri(p));
     };
   });
 }
@@ -383,7 +477,7 @@ async function disegnoIniziale() {
   const m = muroCameretta(); if (!m) return; const f = m.disegno;
   guardaVerso(f.p); await cammina([f.p.clone().addScaledVector(f.n, 1.25).setY(0)], { velocita: .9, guarda: .3, mira: f.p.clone().setY(0) });
   guardaVerso(f.p); await pausa(600);
-  const tratti = await disegna(f, { pastelli: true, invito: "Mentre aspetti: disegna sul muro come ti vedi da grande.", larg: 1.4, alt: 1.05, y: 1.05 });
+  const tratti = await disegna(f, { pastelli: true, invito: S.live && S.palco < 1 ? "Mentre aspetti: disegna sul muro come ti vedi da grande." : "Disegna sul muro come ti vedi da grande.", larg: 1.4, alt: 1.05, y: 1.05 });
   if (tratti) { S.scelte.disegno = tratti; salva(); UI.dici("Lo ritroverai.", 2600) }
   cam.yawT = cam.yaw + Math.PI * .6;
 }
@@ -446,7 +540,7 @@ async function capitolo3() {
   // si spegne la luce
   UI.dici("Si è spenta la luce."); suono.colpo();
   await animaValore(v => { oscurita = v; finitura.uniforms.buio.value = (1 - v) * .9 }, 1, .04, 1600);
-  torcia.intensity = 0; await pausa(600); await animaValore(v => torcia.intensity = v, 0, 9, 700);
+  torcia.intensity = 0; await pausa(600); await animaValore(v => torcia.intensity = v, 0, 13, 700);
   // la moneta
   const facce = ["TESTA", "CROCE"].map((t, i) => M.tela(256, 256, (g, w, h) => { const gr = g.createRadialGradient(w / 2, h / 2, 10, w / 2, h / 2, 128); gr.addColorStop(0, "#f7dc8c"); gr.addColorStop(1, "#b98a2e"); g.fillStyle = gr; g.fillRect(0, 0, w, h); g.strokeStyle = "#7a5512"; g.lineWidth = 8; g.beginPath(); g.arc(w / 2, h / 2, 112, 0, 7); g.stroke(); g.fillStyle = "#6b4a10"; g.font = "600 40px Marcellus, serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(t, w / 2, h / 2 + 52); if (i === 0) { g.beginPath(); g.arc(w / 2, h / 2 - 18, 34, 0, 7); g.lineWidth = 7; g.stroke(); g.beginPath(); g.arc(w / 2, h / 2 - 18, 14, 0, 7); g.stroke() } else { g.fillRect(w / 2 - 6, h / 2 - 60, 12, 80); g.fillRect(w / 2 - 34, h / 2 - 32, 68, 12) } }));
   const oro = new THREE.MeshStandardMaterial({ color: 0xe8b850, metalness: 1, roughness: .25, envMap: env });
@@ -512,7 +606,7 @@ async function capitolo4() {
   } else {
     const sogno = S.scelte.sognoTesto; const domande = ["Che cosa faresti anche se nessuno lo vedesse?", "Quando hai perso l'ultima volta la cognizione del tempo?", "Quale domanda eviti di farti?", "Chi saresti se non dovessi dimostrare niente?"];
     const q = sogno && S.scelte.sogno !== "nonlo" && r() < .6 ? `A cinque anni volevi ${sogno}. Che cosa ne resta?` : domande[Math.floor(r() * domande.length)];
-    suono.oracolo(); UI.dici(q);
+    S.scelte.domanda = q; salva(); suono.oracolo(); UI.dici(q);
     await pausa(1600); await UI.scegli([["ok", "Ci penso mentre cammino"]]); UI.dici("");
     await cammina(celle(P.ritorno).concat([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.vicolo.andata[0])]));
   }
@@ -605,7 +699,7 @@ async function capitolo6() {
 }
 async function oltre() {
   invia("progresso", "capitolo", "6.2");
-  UI.dici(""); UI.eta(""); suono.sali();
+  tetto.spegni(); UI.dici(""); UI.eta(""); suono.sali();
   // il filo: la strada che hai fatto
   const tratti = [[]]; for (const p of S.cammino) { if (!p) { tratti.push([]); continue } const t = tratti[tratti.length - 1]; if (!t.length || p.distanceTo(t[t.length - 1]) > .4) t.push(p.clone().setY(.5)) }
   const filoM = new THREE.MeshBasicMaterial({ color: 0xff3a22, transparent: true, opacity: 0, fog: false }), filo = { material: filoM };
@@ -619,8 +713,10 @@ async function oltre() {
       float fade=exp(-max(0.,dist-lato)*.012)*k;vec3 col=mix(vec3(.08,.05,.03),vec3(.95,.66,.27),m);gl_FragColor=vec4(col,fade*(.35+m*.65));}` }));
   infinito.rotation.x = -Math.PI / 2; infinito.position.y = .02; scena.add(infinito);
   // le luci degli altri
-  let n = 1; try { if (LV.presenti) n = Math.max(1, await Promise.race([LV.presenti(), pausa(2000).then(() => 1)])) } catch (e) { }
-  const luci = new THREE.Points(new THREE.BufferGeometry().setAttribute("position", new THREE.Float32BufferAttribute(Array.from({ length: Math.min(n - 1, 600) * 3 }, (_, i) => i % 3 === 1 ? 1.2 : (Math.floor(Math.random() * M.N) + .5) * M.C - M.N * M.C / 2), 3)), new THREE.PointsMaterial({ color: 0xffd58a, size: 1.4, sizeAttenuation: true, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending }));
+  // tutta la sala sale nello stesso istante: niente lettura simultanea, vale l'ultimo numero noto
+  let n = S.quanti || 1; if (!S.quanti) try { if (LV.presenti) n = Math.max(1, await Promise.race([LV.presenti(), pausa(2000).then(() => 1)])) } catch (e) { }
+  S.presenti = n;
+  const luci = new THREE.Points(new THREE.BufferGeometry().setAttribute("position", new THREE.Float32BufferAttribute(Array.from({ length: Math.min(n - 1, 600) * 3 }, (_, i) => i % 3 === 1 ? 1.2 : (Math.floor(Math.random() * M.N) + .5) * M.C - M.N * M.C / 2), 3)), new THREE.PointsMaterial({ map: tondo(), size: 2.6, sizeAttenuation: true, transparent: true, opacity: 0, depthWrite: false, fog: false, blending: THREE.AdditiveBlending }));
   scena.add(luci);
   const da = cam.pos.clone(), occhio0 = cam.occhio; cam.occhioFisso = cam.occhio; S.nebbiaX = 1;
   const meta = new THREE.Vector3(Math.sin(cam.yaw) * 17, 0, Math.cos(cam.yaw) * 17); // indietro rispetto allo sguardo: il labirinto resta nella metà alta dello schermo
@@ -674,12 +770,13 @@ async function cartaFinale() {
   UI.dici(""); // la frase «Il labirinto continua» non deve restare sopra la carta
   const s = S.scelte, righe = [];
   if (s.sogno) righe.push(["5 anni", s.sogno === "nonlo" ? "non sapevi cosa volevi fare" : "volevi " + s.sognoTesto]);
-  if (s.strada) righe.push(["18 anni", (s.strada === "sogno" ? "hai riaperto la porta del sogno" : "hai scelto " + s.stradaTesto) + `, in ${s.secondi} secondi, tra ${s.gruppo} porte`]);
+  if (s.strada) righe.push(["18 anni", (s.strada === "sogno" ? "hai riaperto la porta del sogno" : "hai scelto " + s.stradaTesto) + `, in ${s.secondi === 1 ? "1 secondo" : s.secondi + " secondi"}, tra ${s.gruppo} porte`]);
   if (s.esito) righe.push(["23 anni", s.speranza === s.esito ? "la moneta ha detto quello che speravi" : (s.seguito === "speranza" ? "hai seguito la speranza, contro la moneta" : "hai seguito la moneta, contro la speranza")]);
   if (s.oracolo) righe.push(["28 anni", s.oracolo === "strada" ? "hai chiesto la strada all'oracolo" : "hai chiesto all'oracolo di farti una domanda"]);
   if (s.segno !== undefined) righe.push(["35 anni", s.segno ? "hai lasciato un segno nel vicolo cieco" : s.spinte ? "hai spinto il muro " + s.spinte + (s.spinte > 1 ? " volte" : " volta") : "hai girato le spalle al muro"]);
   if (s.centro) righe.push(["Da grande", s.centro === "coppa" ? "hai preso la coppa, poi l'hai rimessa a posto" : "hai superato la coppa e hai continuato"]);
   if (s.messaggio) righe.push([S.nome ? "A " + S.nome : "A te, a 5 anni", "«" + s.messaggio + "»"]);
+  if (S.presenti > 1 && !LIBERO) righe.push(["In sala", `altre ${S.presenti - 1} ${S.presenti === 2 ? "persona" : "persone"}, nello stesso momento, ciascuna nel suo labirinto`.replace("altre 1 persona", "un'altra persona")]);
   $("#carta-righe").innerHTML = righe.map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join("");
   // istantanea dall'alto
   composer.render(); let foto = null; try { foto = tela.toDataURL("image/jpeg", .9) } catch (e) { }
@@ -706,9 +803,25 @@ $("#condividi").onclick = async () => {
   try { if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "Da grande", text: "Il mio labirinto" }); return } } catch (e) { if (e.name === "AbortError") return }
   const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "da-grande.png"; a.click();
 };
-$("#ancora").onclick = () => { $("#carta").classList.remove("on") };
+$("#ancora").onclick = () => { $("#carta").classList.remove("on"); $("#rivedi").hidden = false };
+$("#rivedi").onclick = () => { $("#carta").classList.add("on"); $("#rivedi").hidden = true };
 
 /* ---------- avvio ---------- */
+/* un telefono che riceve una chiamata o ricarica la pagina non deve ricominciare da cinque anni: si riprende dal capitolo in corso */
+const ETICHETTE = ["5 anni", "18 anni", "23 anni", "28 anni", "35 anni", "il centro"];
+let ripresa = (() => { const p = ls.get("dg3-passo"); return p && p.cap >= 2 && p.cap <= 6 && Date.now() - p.t < 4 * 3600e3 && !PARAM.get("cap") ? p : null })();
+if (ripresa) $("#nome-bimbo").value = ls.get("dg3-nome") || "";
+$("#dacapo").onclick = () => { ripresa = null; ls.set("dg3-passo", null); $("#dacapo").hidden = true; $("#entra").textContent = "Entra" };
+function segnaPasso(cap) { ls.set("dg3-passo", { cap, t: Date.now(), cammino: S.cammino.slice(-1500).map(p => p && [+p.x.toFixed(1), +p.z.toFixed(1)]) }) }
+/* un errore in un capitolo non deve fermare il telefono: si passa al capitolo dopo */
+async function recupera(i, e) {
+  console.error(e); S.onTap = null; S.interattivi = []; S.disegno = null; S.sblocca = null; cam.giro = null; cam.occhioFisso = null; cam.pitchExtra = 0; oscurita = 1; torcia.intensity = 0; finitura.uniforms.buio.value = 0; luceMoneta.intensity = 0;
+  UI.togli(); UI.dici(""); tetto.chiudi(); suono.piano(false); $("#fine").classList.remove("on"); $("#lettera").classList.remove("on");
+  const nomi = ["cameretta", "scuola", "notte", "oracolo", "vicolo", "centro"], P = S.lab.percorsi; if (i < 5) cam.pos.copy(puntoAttesa(P[nomi[i]].ritorno.at(-1), P[nomi[i + 1]].andata[0]));
+  await UI.velo("#000", 0, 300);
+}
+/* contesto grafico perso (succede su iPhone tornando alla pagina): si ricarica e si riprende */
+tela.addEventListener("webglcontextlost", e => { e.preventDefault(); setTimeout(() => location.reload(), 900) });
 async function prepara() {
   const barra = $("#barra i");
   THREE.DefaultLoadingManager.onProgress = (u, a, b) => { barra.style.width = Math.round(a / b * 100) + "%" };
@@ -716,17 +829,26 @@ async function prepara() {
   S.lab = M.genera(SEME);
   S.mondo = await M.costruisci(scena, S.lab, { base: "../", env });
   S.extra = []; creaPioggia();
+  try { S.atmos = atmosfera({ scena, mondo: S.mondo, M, camera, finitura, pr: qualitaPR, semplice: SEMPLICE }) } catch (e) { console.warn(e); S.atmos = { aggiorna() { }, alleggerisci() { } } }
   cam.pos.copy(M.centroCella(1, 1)).add(new THREE.Vector3(.55, 0, .55)); guardaVerso(M.centroCella(0, 0).add(new THREE.Vector3(-.2, 0, .4)), true); cam.pitchU = -.18;
   await new Promise(res => { const ok = () => res(); THREE.DefaultLoadingManager.onLoad = ok; setTimeout(ok, 6000) });
-  barra.style.width = "100%"; $("#entra").disabled = false; $("#entra").textContent = "Entra";
+  // gli shader si preparano qui: meglio un secondo in più adesso che uno scatto entrando in una zona nuova
+  try { await Promise.race([renderer.compileAsync(scena, camera), pausa(4000)]) } catch (e) { }
+  barra.style.width = "100%"; $("#entra").disabled = false; $("#entra").textContent = ripresa ? `Riprendi da ${ETICHETTE[ripresa.cap - 1]}` : "Entra";
+  if (ripresa) $("#dacapo").hidden = false;
 }
 /* la nota sotto il bottone: la sala, prima; il labirinto aperto, dopo */
 {
   const nota = $("#ingresso small");
-  if (nota && LIBERO && DOPO) nota.innerHTML = "Il labirinto è stato attraversato dal vivo al Da Grande Fest, il 7 novembre 2026. Da allora resta aperto: entri da solo, al tuo ritmo. Niente nomi, niente dati.";
-  else if (nota && LIBERO) nota.innerHTML = "Stai entrando da solo, senza aspettare il palco. Le tue scelte restano anonime.";
+  if (nota && LIBERO && DOPO) nota.innerHTML = "Il labirinto è stato attraversato dal vivo al Da Grande Fest, il 7 novembre 2026. Da allora resta aperto: entri quando vuoi, al tuo ritmo. Niente nomi, niente dati.";
+  else if (nota && LIBERO) nota.innerHTML = "Stai entrando senza aspettare il palco. Le tue scelte restano anonime.";
 }
 async function entra() {
+  // pagina aperta prima delle 14 e usata durante l'evento: ricaricandola segue il palco
+  if (LIBERO && !DOPO && !PARAM.has("libero") && !prima()) { location.reload(); return }
+  if (S.entrato) return; S.entrato = true; $("#entra").disabled = true; // un doppio tocco non deve far partire due volte il gioco
+  if (ripresa) S.cammino = (ripresa.cammino || []).map(p => p && new THREE.Vector3(p[0], 0, p[1]));
+  else { S.scelte = {}; salva() } // le scelte di una partita precedente non devono finire sulla carta di questa
   suono.avvia(); try { suono.ctx && suono.ctx.resume() } catch (e) { }
   try { if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) await DeviceOrientationEvent.requestPermission() } catch (e) { }
   const sveglia = async () => { try { if (navigator.wakeLock && !(S.blocco && !S.blocco.released)) S.blocco = await navigator.wakeLock.request("screen") } catch (e) { } };
@@ -738,27 +860,41 @@ async function entra() {
   vociPer("cameretta");
   $("#ingresso").classList.add("via"); setTimeout(() => $("#ingresso").remove(), 1500);
   UI.eta("5 anni"); await pausa(1200);
-  UI.dici("Hai cinque anni. Muovi il telefono, o trascina il dito, per guardarti intorno.", 5200);
+  UI.dici(DITO ? "Hai cinque anni. Muovi il telefono, o trascina il dito, per guardarti intorno." : "Hai cinque anni. Trascina per guardarti intorno.", 5200);
   if (LV.attivo && !LIBERO) {
     S.live = true;
-    LV.ascolta(st => { S.palco = +st.s || 0; $("#vivo").textContent = "dal vivo"; $("#vivo").className = "vivo"; S.sblocca && S.sblocca() });
+    LV.ascolta(st => {
+      $("#vivo").textContent = "dal vivo"; $("#vivo").className = "vivo";
+      // il palco fissa un istante di atterraggio: tutta la sala riparte nello stesso momento, chi riceve prima aspetta chi riceve dopo
+      const s = +st.s || 0, tra = st.atterra ? Date.parse(st.atterra) - LV.oraServer() : 0, applica = () => { S.palco = s; S.sblocca && S.sblocca() };
+      clearTimeout(S._atterra); if (tra > 30 && tra < 15000) S._atterra = setTimeout(applica, tra); else applica();
+    });
   }
   await pausa(3500);
-  if (!PARAM.get("cap") || PARAM.get("cap") === "1") await disegnoIniziale();
+  if (!ripresa && (!PARAM.get("cap") || PARAM.get("cap") === "1")) await disegnoIniziale();
   if (S.live && S.palco < 1) {
-    UI.dici(PRIMA ? "Il labirinto si apre dal vivo sabato 7 novembre, al Da Grande Fest. Il primo capitolo parte dal palco." : "Aspetta: il primo capitolo si apre dal palco.");
+    suono.piano(true); UI.dici("Aspetta: il primo capitolo si apre dal palco.");
+    // mentre la sala entra, ci si vede crescere
+    const conta = async () => { try { const n = await LV.presenti(); if (n > 1 && S.sblocca) { $("#sala").innerHTML = `<b>La sala</b>Siete già in ${n}.`; $("#sala").classList.add("on") } } catch (e) { } };
+    const contaGiro = setInterval(conta, 40000 + Math.random() * 30000); setTimeout(conta, 1200 + Math.random() * 6000);
     let senzaRete = 0; const guardia = setInterval(() => { senzaRete = window.DGLive && DGLive.ascolta && DGLive.ascolta.ok === false ? senzaRete + 5 : 0; if (senzaRete >= 180) { clearInterval(guardia); S.sblocca && S.sblocca(true) } }, 5000);
     const forzato = await new Promise(res => { S.sblocca = (forza) => { if (forza || S.palco >= 1) { S.sblocca = null; res(!!forza) } } });
-    clearInterval(guardia); UI.dici("");
-    if (forzato) { UI.dici("Il collegamento con il palco si è interrotto: entra da solo."); await UI.scegli([["vai", "Entra nel labirinto"]], "una"); UI.dici("") }
+    clearInterval(guardia); clearInterval(contaGiro); UI.dici(""); $("#sala").classList.remove("on"); suono.piano(false);
+    if (forzato) { UI.dici("Il collegamento con il palco si è interrotto: puoi entrare."); await UI.scegli([["vai", "Entra nel labirinto"]], "una"); UI.dici("") }
+    else suono.rintocco();
   }
   const capitoli = [capitolo1, capitolo2, capitolo3, capitolo4, capitolo5, capitolo6];
   // per le prove: ?cap=N parte dal capitolo N
-  const da = Math.max(1, Math.min(6, +PARAM.get("cap") || 1));
+  const da = ripresa ? ripresa.cap : Math.max(1, Math.min(6, +PARAM.get("cap") || 1));
   if (da > 1) { const nomi = ["cameretta", "scuola", "notte", "oracolo", "vicolo", "centro"], P = S.lab.percorsi, prima = P[nomi[da - 2]]; cam.pos.copy(puntoAttesa(prima.ritorno.at(-1), P[nomi[da - 1]].andata[0])); cam.occhio = M.ZONE[nomi[da - 2]].occhio }
-  for (const cap of capitoli.slice(da - 1)) await cap();
+  for (let i = da - 1; i < capitoli.length; i++) {
+    segnaPasso(i + 1);
+    try { await capitoli[i]() } catch (e) { await recupera(i, e); if (i === capitoli.length - 1) await cartaFinale().catch(console.error) }
+  }
+  ls.set("dg3-passo", null);
 }
 $("#entra").onclick = entra;
+{ const b = $("#muto"), mostra = () => { b.textContent = suono.muto ? "suono spento" : "suono"; b.classList.toggle("spento", suono.muto) }; mostra(); b.onclick = () => { suono.muta(!suono.muto); mostra() } }
 prepara().catch(e => { console.error(e); window.__dgFallito ? window.__dgFallito(e) : ($("#entra").textContent = "Il telefono non regge il 3D") });
 requestAnimationFrame(ciclo);
 window.__dg = { S, cam, UI, M, scena, camera, renderer, salta: k => S.palco = k, oltre, finitura, emisfero, luna, get oscurita() { return oscurita } };

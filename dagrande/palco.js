@@ -18,9 +18,9 @@ const canale = "BroadcastChannel" in window ? new BroadcastChannel("tlon-dagrand
 const manda = m => { try { canale && canale.postMessage(m) } catch (e) { } };
 
 export const CAPITOLI = [
-  { k: "soglia", eta: "", titolo: "Da grande", sotto: "Inquadra il codice ed entra nel labirinto", zona: null, nota: "Il codice resta sullo schermo mentre la sala entra: i telefoni aspettano nella cameretta. Quando le luci sono abbastanza, la freccia apre il primo movimento (cinque e diciotto anni, di seguito)." },
+  { k: "soglia", eta: "", titolo: "Da grande", sotto: "Inquadra il codice ed entra nel labirinto", zona: null, nota: "Prima di far entrare la sala: Azzera qui sotto (doppio clic), che riporta la scena a zero. Il codice resta sullo schermo mentre la sala entra: i telefoni aspettano nella cameretta. Quando le luci sono abbastanza, la freccia apre il primo movimento (cinque e diciotto anni, di seguito)." },
   { k: "cameretta", eta: "5 anni", titolo: "Cosa vuoi fare da grande?", zona: [0, 0], nota: "Primo movimento, in corso: i telefoni passano da soli ai diciotto anni. Qui guardi il punto interrogativo. Quando il contatore dice che quasi tutti hanno finito, freccia: dati delle porte." },
-  { k: "scuola", eta: "18 anni", titolo: "Le porte", zona: [1, 0], nota: "Fine del primo movimento: i telefoni sono fermi. Scegliere <i>di</i> e scegliere <i>tra</i>. Poi la freccia apre il secondo movimento (ventitré e ventotto anni)." },
+  { k: "scuola", eta: "18 anni", titolo: "Le porte", zona: [1, 0], nota: "Fine del primo movimento: i telefoni sono fermi, abbassano il suono, si apre il tetto e chi guarda vede le luci degli altri. Scegliere <i>di</i> e scegliere <i>tra</i>. Poi la freccia apre il secondo movimento (ventitré e ventotto anni)." },
   { k: "notte", eta: "23 anni", titolo: "La moneta", zona: [2, 0], nota: "Secondo movimento, in corso: dopo la moneta i telefoni vanno da soli all'oracolo. Quando il contatore sale, freccia: dati dell'oracolo." },
   { k: "oracolo", eta: "28 anni", titolo: "L'oracolo", zona: [2, 1], nota: "Fine del secondo movimento: i telefoni sono fermi. La pancia e la delega, due modi di non decidere da soli. Poi la freccia apre il terzo movimento (il vicolo e il centro)." },
   { k: "vicolo", eta: "35 anni", titolo: "Il vicolo cieco", zona: [2, 2], nota: "Terzo movimento, in corso: dal vicolo i telefoni arrivano al centro e si fermano davanti alla coppa. Intanto si riempie la galleria dei segni." },
@@ -104,12 +104,12 @@ const somma = o => o ? Object.values(o).reduce((s, n) => s + n, 0) : 0;
 function indicizza(righe) { const d = {}; for (const r of righe || []) { ((d[r.stanza] = d[r.stanza] || {})[r.chiave] = d[r.stanza][r.chiave] || {})[r.valore] = Number(r.n) } return d }
 async function interroga() {
   if (!LV.attivo || demo || REGIA || document.hidden) return;
-  try { dati = indicizza(await LV.conteggi(liveDal)); stato("dal vivo", "vivo") } catch (e) { stato("collegamento perso", "ko") }
+  try { dati = indicizza(await LV.conteggi(liveDal)); if (linea === "ko") { linea = ""; mostraComando() } } catch (e) { linea = "ko"; stato("collegamento perso", "ko") }
   disegnaDati();
 }
 let segniCache = [], segniT = 0;
 async function prendiSegni() { if (demo) return; if (!LV.attivo || Date.now() - segniT < 6000) return; segniT = Date.now(); try { segniCache = await LV.segni(24) || [] } catch (e) { } }
-function stato(t, c) { const s = $("#stato"); s.textContent = t; s.className = "stato " + c; manda({ t: "stato", testo: t, c }); if (REGIA) { const r = $("#r-stato"); r.textContent = t; r.className = "stato " + c } }
+function stato(t, c) { const s = $("#stato"); if (s.textContent === t && s.className === "stato " + c) return; s.textContent = t; s.className = "stato " + c; manda({ t: "stato", testo: t, c }); if (REGIA) { const r = $("#r-stato"); r.textContent = t; r.className = "stato " + c } }
 
 /* simulazione per le prove: numeri inventati, sempre dichiarati come tali */
 function simula() {
@@ -219,11 +219,14 @@ const suonoPalco = (() => {
 })();
 
 /* ---------- capitoli ---------- */
-// all'apertura si riparte dall'inizio; poi, se c'è il collegamento, si riprende il capitolo che è già sul server
-// (una ricarica durante l'evento non deve riportare i telefoni all'inizio; prima dell'evento la regia azzera tutto)
+// una finestra nuova riparte dall'inizio: un valore rimasto dalle prove non deve aprire i telefoni.
+// Una ricarica della stessa finestra riprende il capitolo: durante l'evento non deve riportare tutti all'inizio.
 let cur = 0;
-function vai(s, daRemoto) {
-  cur = Math.max(0, Math.min(CAPITOLI.length - 1, s)); ls.set("dg3-cap", cur);
+if (!REGIA) { try { cur = Math.max(0, Math.min(CAPITOLI.length - 1, +sessionStorage.getItem("dg3-cap") || 0)) } catch (e) { } }
+const APERTURE = [1, 3, 5, 7], ATTESA = 7000; // la scena arriva ai telefoni entro cinque secondi e mezzo, anche a chi non ha il tempo reale
+let ultimoS = cur, daAprire = false;
+function vai(s, daRemoto, avvio) {
+  cur = Math.max(0, Math.min(CAPITOLI.length - 1, s)); ls.set("dg3-cap", cur); try { if (!REGIA) sessionStorage.setItem("dg3-cap", cur) } catch (e) { }
   const c = CAPITOLI[cur];
   document.body.dataset.s = cur;
   $("#eta").textContent = c.eta; $("#titolo").textContent = c.titolo; $("#sottotitolo").textContent = c.sotto || ""; $("#numero").textContent = cur >= 1 && cur <= 6 ? ["", "I", "II", "III", "IV", "V", "VI"][cur] : "";
@@ -231,18 +234,32 @@ function vai(s, daRemoto) {
   if (lab) puntaA(cur);
   if (infinito) infinito.userData.k = cur === 7 ? 1 : 0;
   $("#qr-sopra").hidden = cur !== 7; $("#qr p:not(#qr-sopra)").textContent = cur === 7 ? "tlon.it/dagrande" : "tlon.it/dagrande/tu";
-  suonoPalco.capitolo(cur);
+  // le aperture atterrano sui telefoni dopo qualche secondo: il rintocco del palco cade con il loro
+  const apre = !avvio && APERTURE.includes(cur) && cur > ultimoS; ultimoS = cur; if (apre) { daAprire = true; setTimeout(() => suonoPalco.capitolo(cur), ATTESA) } else suonoPalco.capitolo(cur);
   disegnaDati(); if (cur === 5) { segniT = 0; prendiSegni().then(disegnaDati) }
   if (!daRemoto) manda({ t: "vai", s: cur });
-  if (!REGIA && lab) sincronizza(); // solo la finestra del palco parla con i telefoni, anche quando il comando arriva dalla regia
+  // solo la finestra del palco parla con i telefoni, anche quando il comando arriva dalla regia; una finestra appena aperta li lascia dove sono
+  if (!REGIA && lab && !avvio) { prendiComando(); sincronizza() }
   aggiornaRegia();
 }
-/* il comando arriva ai telefoni anche se la rete perde un colpo: si ritenta, e si ripete ogni dieci secondi */
-let sincro = 0, inviato = -1;
+/* il comando arriva ai telefoni anche se la rete perde un colpo: si ritenta finché non passa, poi si controlla ogni dieci secondi.
+   I telefoni li comanda una finestra sola: quella in cui si è premuto l'ultimo tasto. Una finestra appena aperta non scrive niente finché non si preme un tasto,
+   una finestra dimenticata che trova la scena cambiata da un'altra smette di comandare. Scrive solo quando la scena cambia: ogni scrittura raggiunge trecento telefoni. */
+let sincro = 0, inviato = -1, comando = false, linea = "";
+try { comando = !REGIA && sessionStorage.getItem("dg3-comando") === "1" } catch (e) { }
+function prendiComando() { comando = true; inviato = -1; try { sessionStorage.setItem("dg3-comando", "1") } catch (e) { } }
+async function mostraComando() {
+  if (!LV.attivo || REGIA) return;
+  if (!ls.get("dg-parola")) return stato("manca la parola di regia (P): i telefoni non ti seguono", "ko");
+  if (comando) return stato("dal vivo · capitolo " + cur + " aperto", "vivo");
+  try { const st = await LV.stato(), s = +st.s || 0; if (comando) return; stato(s === cur ? "pronto · i telefoni sono al capitolo " + s : "i telefoni sono al capitolo " + s + " · premi un tasto per prendere il comando", s === cur ? "vivo" : "ko") } catch (e) { stato("collegamento perso", "ko") }
+}
 async function sincronizza() {
-  clearTimeout(sincro); const p = ls.get("dg-parola"); if (!LV.attivo || !p || REGIA) return;
+  clearTimeout(sincro); const p = ls.get("dg-parola"); if (!LV.attivo || !p || REGIA || !comando) { mostraComando(); if (!REGIA && !comando) sincro = setTimeout(sincronizza, 10000); return }
   const s = cur;
-  try { await LV.vai(p, s, 0); inviato = s; stato("dal vivo · capitolo " + s + " aperto", "vivo"); sincro = setTimeout(sincronizza, 10000) }
+  // un'altra finestra ha cambiato la scena dopo l'ultimo invio di questa: cede
+  if (inviato === s) { try { const st = await LV.stato(); if (!comando || cur !== s) return; if (+st.s !== inviato) { comando = false; try { sessionStorage.removeItem("dg3-comando") } catch (e) { } return sincronizza() } } catch (e) { } sincro = setTimeout(sincronizza, 10000); return }
+  try { const apri = daAprire; await LV.vai(p, s, 0, apri ? "apri" : null, null, apri ? ATTESA : 0); daAprire = false; inviato = s; linea = ""; mostraComando(); sincro = setTimeout(sincronizza, 10000) }
   catch (e) { const parola = String(e.message).includes("parola"); stato(parola ? "parola di regia errata (P)" : "comando non arrivato, ritento…", "ko"); if (!parola) sincro = setTimeout(sincronizza, 2500) }
 }
 
@@ -268,7 +285,7 @@ if (REGIA) {
 }
 canale && (canale.onmessage = e => { const m = e.data; if (m.t === "finiti" && REGIA) $("#r-finiti").textContent = m.testo; if (m.t === "chiedi" && !REGIA) manda({ t: "vai", s: cur }); if (m.t === "stato" && REGIA) { const r = $("#r-stato"); r.textContent = m.testo; r.className = "stato " + m.c } if (m.t === "vai" && m.s !== cur) vai(m.s, true); if (m.t === "azzera" && !REGIA) { liveDal = Date.now(); ls.set("dg3-dal", liveDal); dati = {}; disegnaDati() } });
 
-addEventListener("storage", e => { if (e.key === "dg-parola" && !REGIA) sincronizza() }); // parola inserita nella finestra di regia
+addEventListener("storage", e => { if (e.key === "dg-parola" && !REGIA) sincronizza() }); // parola inserita nella finestra di regia: il comando resta da prendere con un tasto
 
 /* ---------- tasti ---------- */
 addEventListener("keydown", e => {
@@ -304,12 +321,11 @@ async function avvia() {
   if (REGIA) { vai(cur, true); manda({ t: "chiedi" }); return }
   try { await Promise.race([Promise.all(["48px Caveat", "48px Marcellus"].map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 2000))]) } catch (e) { }
   adatta();
-  lab = M.genera("palco"); mondo = await M.costruisci(scena, lab, { base: "./", env });
+  lab = M.genera("palco"); mondo = await M.costruisci(scena, lab, { base: "./", env }); mondo.lunaCameretta.material.emissiveIntensity = .25; // vista dall'alto abbaglierebbe tutta la mappa
   for (const so of mondo.soffitti || []) so.visible = false;
-  if (LV.attivo) { try { const st = await Promise.race([LV.stato(), new Promise((_, no) => setTimeout(() => no(new Error("tempo scaduto")), 3000))]); cur = Math.max(0, Math.min(CAPITOLI.length - 1, +st.s || 0)) } catch (e) { } }
-  creaLuci(); creaInfinito(); vai(cur, true); vista.t.copy(vista.bersaglio); vista.r = vista.raggio; vista.a = vista.alt;
+  creaLuci(); creaInfinito(); vai(cur, true, true); vista.t.copy(vista.bersaglio); vista.r = vista.raggio; vista.a = vista.alt;
   requestAnimationFrame(ciclo);
-  if (LV.attivo) { stato(ls.get("dg-parola") ? "collegamento…" : "manca la parola di regia (P)", "ko"); sincronizza(); interroga(); setInterval(interroga, 2000); setInterval(() => { if (cur === 5) prendiSegni().then(disegnaDati) }, 6000) }
+  if (LV.attivo) { stato(ls.get("dg-parola") ? "collegamento…" : "manca la parola di regia (P): i telefoni non ti seguono", "ko"); sincronizza(); interroga(); setInterval(interroga, 2000); setInterval(() => { if (cur === 5) prendiSegni().then(disegnaDati) }, 6000) }
   else stato("senza collegamento", "ko");
 }
 avvia();

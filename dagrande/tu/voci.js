@@ -141,7 +141,7 @@ const VOCI = {
   ],
 };
 
-export function decoraMuri(scena, lab, M, nome, r = Math.random, soloZone = null) {
+export function decoraMuri(scena, lab, M, nome, r = Math.random, soloZone = null, mie = {}) {
   const n = (nome || "").trim();
   const sost = t => {
     if (!t) return t;
@@ -149,7 +149,7 @@ export function decoraMuri(scena, lab, M, nome, r = Math.random, soloZone = null
     t = t.replace(/\{N\}/g, n.toUpperCase()).replace(/\{n\}/g, n);
     return t.charAt(0).toUpperCase() + t.slice(1);
   };
-  const voci = {}; for (const [z, l] of Object.entries(VOCI)) voci[z] = l.map(v => ({ ...v, testo: v.s === "graffito" || v.s === "pastello" ? (v.testo ? sost(v.testo).replace(/^./, c => v.s === "graffito" && /^[a-z]/.test(v.testo) ? c.toLowerCase() : c) : v.testo) : sost(v.testo) }));
+  const voci = {}; for (const [z, l] of Object.entries(VOCI)) voci[z] = [...(mie[z] || []), ...l].map(v => ({ ...v, testo: v.s === "graffito" || v.s === "pastello" ? (v.testo ? sost(v.testo).replace(/^./, c => v.s === "graffito" && /^[a-z]/.test(v.testo) ? c.toLowerCase() : c) : v.testo) : sost(v.testo) }));
   const P = lab.percorsi, stanze = ["cameretta", "scuola", "notte", "oracolo", "centro"].filter(z => P[z] && P[z].rett).map(z => ({ c: P[z].sala, mezzo: (P[z].rett[2] - P[z].rett[0] + 1) * M.C / 2 + .2 }));
   const inStanza = (x, z) => { const c = M.centroCella(x, z); return stanze.some(s => Math.abs(c.x - s.c.x) < s.mezzo && Math.abs(c.z - s.c.z) < s.mezzo) };
   const percorsiZona = { cameretta: P.cameretta.andata.concat(P.cameretta.ritorno), scuola: P.scuola.andata.concat(P.scuola.ritorno), notte: P.notte.andata.concat(P.notte.ritorno), oracolo: P.oracolo.andata.concat(P.oracolo.ritorno), vicolo: P.vicolo.andata.concat(P.vicolo.ritorno), centro: P.centro.andata };
