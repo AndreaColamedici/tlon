@@ -8,57 +8,57 @@ const avvolgi = (g, testo, larg) => { const parole = String(testo).split(" "), r
 const sporco = (g, w, h, n = 900, a = .06) => { for (let i = 0; i < n; i++) { g.fillStyle = `rgba(60,40,20,${Math.random() * a})`; g.fillRect(Math.random() * w, Math.random() * h, 2, 2) } };
 const nastro = (g, x, y, r) => { g.save(); g.translate(x, y); g.rotate(r); g.fillStyle = "rgba(235,225,190,.75)"; g.fillRect(-22, -8, 44, 16); g.restore() };
 
+/* il testo riempie lo spazio che ha: si parte grande e si scende finché non ci sta, andando a capo */
+const adatta = (g, testo, larg, alt, smax, smin, font, inter = 1.1) => {
+  for (let s = smax; ; s -= 2) { g.font = font(s); const righe = avvolgi(g, testo, larg); if ((righe.length * s * inter <= alt && Math.max(...righe.map(r => g.measureText(r).width)) <= larg) || s <= smin) return { s, righe } }
+};
+const GROTESK = (peso) => s => `${peso} ${s}px "Familjen Grotesk", sans-serif`, CAVEAT = s => `600 ${s}px Caveat, cursive`;
 /* stili: ognuno disegna su una tela e restituisce le sue proporzioni */
 const STILI = {
   // manifesto stampato: fascia di colore, titolo grande, testo
   manifesto: (g, w, h, { testa, corpo, colore = "#E2523F" }) => {
     g.fillStyle = CARTA; g.fillRect(0, 0, w, h); sporco(g, w, h, 1400, .07);
-    g.fillStyle = colore; g.fillRect(0, 0, w, h * .34);
-    g.fillStyle = "#fff"; g.textAlign = "left"; g.textBaseline = "top"; let s = 46; g.font = `700 ${s}px "Familjen Grotesk", sans-serif`;
-    while (g.measureText(testa).width > w - 40 && s > 20) { s -= 2; g.font = `700 ${s}px "Familjen Grotesk", sans-serif` }
-    avvolgi(g, testa, w - 40).slice(0, 2).forEach((r, i) => g.fillText(r, 20, 22 + i * s * 1.05));
-    g.fillStyle = "#24201c"; g.font = `500 26px "Familjen Grotesk", sans-serif`; avvolgi(g, corpo || "", w - 40).slice(0, 5).forEach((r, i) => g.fillText(r, 20, h * .4 + i * 34));
+    g.fillStyle = colore; g.fillRect(0, 0, w, h * .36);
+    g.fillStyle = "#fff"; g.textAlign = "left"; g.textBaseline = "top";
+    const T = adatta(g, testa, w - 40, h * .36 - 34, 104, 30, GROTESK(700), 1.02); T.righe.forEach((r, i) => g.fillText(r, 20, 18 + i * T.s * 1.02));
+    g.fillStyle = "#24201c"; if (corpo) { const C = adatta(g, corpo, w - 40, h * .6 - 26, 66, 26, GROTESK(500), 1.18); C.righe.forEach((r, i) => g.fillText(r, 20, h * .39 + i * C.s * 1.18)) }
     nastro(g, 24, 10, -.4); nastro(g, w - 24, 10, .4);
   },
   // post-it scritto a mano
   postit: (g, w, h, { testo, colore = "#f6e27a" }) => {
     g.fillStyle = colore; g.fillRect(6, 6, w - 12, h - 12); g.fillStyle = "rgba(0,0,0,.08)"; g.fillRect(6, h - 30, w - 12, 24);
-    g.fillStyle = "#1f2a5a"; g.textAlign = "center"; g.textBaseline = "middle"; let s = 50; g.font = `600 ${s}px Caveat, cursive`;
-    let righe = avvolgi(g, testo, w - 40); while (righe.length * s * 1.05 > h - 40 && s > 24) { s -= 2; g.font = `600 ${s}px Caveat, cursive`; righe = avvolgi(g, testo, w - 40) }
-    righe.forEach((r, i) => g.fillText(r, w / 2, h / 2 + (i - (righe.length - 1) / 2) * s * 1.05));
+    g.fillStyle = "#1f2a5a"; g.textAlign = "center"; g.textBaseline = "middle"; const { s, righe } = adatta(g, testo, w - 44, h - 50, 130, 28, CAVEAT, 1);
+    righe.forEach((r, i) => g.fillText(r, w / 2, h / 2 + (i - (righe.length - 1) / 2) * s));
   },
   // foglio appeso dagli adulti, a pennarello blu
   foglio: (g, w, h, { testo }) => {
     g.fillStyle = "#fbf8f0"; g.fillRect(0, 0, w, h); g.strokeStyle = "rgba(90,120,200,.35)"; g.lineWidth = 2; for (let y = 60; y < h; y += 38) { g.beginPath(); g.moveTo(10, y); g.lineTo(w - 10, y); g.stroke() }
-    g.fillStyle = "#1d3c8f"; g.textAlign = "center"; g.textBaseline = "middle"; let s = 54; g.font = `600 ${s}px Caveat, cursive`;
-    let righe = avvolgi(g, testo, w - 50); while (righe.length * s * 1.1 > h - 50 && s > 26) { s -= 2; g.font = `600 ${s}px Caveat, cursive`; righe = avvolgi(g, testo, w - 50) }
-    righe.forEach((r, i) => g.fillText(r, w / 2, h / 2 + (i - (righe.length - 1) / 2) * s * 1.1)); nastro(g, w / 2, 8, 0);
+    g.fillStyle = "#1d3c8f"; g.textAlign = "center"; g.textBaseline = "middle"; const { s, righe } = adatta(g, testo, w - 50, h - 44, 130, 30, CAVEAT, 1.02);
+    righe.forEach((r, i) => g.fillText(r, w / 2, h / 2 + (i - (righe.length - 1) / 2) * s * 1.02)); nastro(g, w / 2, 8, 0);
   },
   // scritta a pennarello o a bomboletta, su fondo trasparente
   graffito: (g, w, h, { testo, colore = "#1b1b1b" }) => {
-    g.clearRect(0, 0, w, h); g.fillStyle = colore; g.textAlign = "center"; g.textBaseline = "middle"; let s = 120; g.font = `${s}px "Permanent Marker", "Caveat", cursive`;
-    while (g.measureText(testo).width > w - 30 && s > 30) { s -= 4; g.font = `${s}px "Permanent Marker", "Caveat", cursive` }
-    g.save(); g.translate(w / 2, h / 2); g.rotate((Math.random() - .5) * .12); g.globalAlpha = .9; g.fillText(testo, 0, 0); g.restore();
-    for (let i = 0; i < 4; i++) { const x = w / 2 + (Math.random() - .5) * g.measureText(testo).width * .8; g.fillRect(x, h / 2 + s * .3, 3, 20 + Math.random() * 40) }
+    g.clearRect(0, 0, w, h); g.fillStyle = colore; g.textAlign = "center"; g.textBaseline = "middle"; const { s, righe } = adatta(g, testo, w - 30, h - 16, 170, 34, s => `${s}px "Permanent Marker", "Caveat", cursive`, 1.04);
+    g.save(); g.translate(w / 2, h / 2); g.rotate((Math.random() - .5) * .08); g.globalAlpha = .92; righe.forEach((r, i) => g.fillText(r, 0, (i - (righe.length - 1) / 2) * s * 1.04)); g.restore();
+    for (let i = 0; i < 4; i++) { const x = w / 2 + (Math.random() - .5) * w * .7; g.fillRect(x, h / 2 + righe.length * s * .4, 3, 14 + Math.random() * 24) }
   },
   // scritta a pastello del bambino
-  pastello: (g, w, h, { testo, colore = "#d0462f" }, P) => { g.clearRect(0, 0, w, h); let s = Math.min(h * .7, w * 1.5 / Math.max(3, testo.length)); P.pastello(g, testo, w / 2, h / 2, s, colore) },
+  pastello: (g, w, h, { testo, colore = "#d0462f" }, P) => { g.clearRect(0, 0, w, h); const { s, righe } = adatta(g, testo, w - 20, h - 8, Math.floor(h * .8), 26, s => `${s}px Caveat, "Comic Sans MS", cursive`, .95); righe.forEach((r, i) => P.pastello(g, r, w / 2, h / 2 + (i - (righe.length - 1) / 2) * s * .95, s, colore)) },
   // lettera dattiloscritta
   lettera: (g, w, h, { testo, firma }) => {
-    g.fillStyle = "#fdfcf8"; g.fillRect(0, 0, w, h); sporco(g, w, h, 600, .05); g.fillStyle = "#222"; g.font = `400 22px "DM Mono", monospace`; g.textAlign = "left"; g.textBaseline = "top";
-    avvolgi(g, testo, w - 60).slice(0, 12).forEach((r, i) => g.fillText(r, 30, 40 + i * 32)); if (firma) { g.font = `500 20px "DM Mono", monospace`; g.fillText(firma, 30, h - 60) }
+    g.fillStyle = "#fdfcf8"; g.fillRect(0, 0, w, h); sporco(g, w, h, 600, .05); g.fillStyle = "#222"; g.textAlign = "left"; g.textBaseline = "top"; const { s, righe } = adatta(g, testo, w - 50, h - 120, 48, 20, s => `400 ${s}px "DM Mono", monospace`, 1.3);
+    righe.forEach((r, i) => g.fillText(r, 25, 30 + i * s * 1.3)); if (firma) { g.font = `500 24px "DM Mono", monospace`; g.fillText(firma, 25, h - 58, w - 50) }
   },
   // notifica, come su un telefono
   bolla: (g, w, h, { testo }) => {
-    g.fillStyle = "rgba(20,28,40,.92)"; const r = 30; g.beginPath(); g.roundRect ? g.roundRect(4, 4, w - 8, h - 8, r) : g.rect(4, 4, w - 8, h - 8); g.fill();
-    g.fillStyle = "#7fb8d9"; g.beginPath(); g.arc(50, h / 2, 22, 0, 7); g.fill();
-    g.fillStyle = "#eef3fa"; g.textAlign = "left"; g.textBaseline = "middle"; let s = 32; g.font = `500 ${s}px "Familjen Grotesk", sans-serif`;
-    while (g.measureText(testo).width > w - 110 && s > 18) { s -= 1; g.font = `500 ${s}px "Familjen Grotesk", sans-serif` } g.fillText(testo, 86, h / 2);
+    g.fillStyle = "rgba(20,28,40,.94)"; const r = 30; g.beginPath(); g.roundRect ? g.roundRect(4, 4, w - 8, h - 8, r) : g.rect(4, 4, w - 8, h - 8); g.fill();
+    g.fillStyle = "#7fb8d9"; g.beginPath(); g.arc(40, h / 2, 16, 0, 7); g.fill();
+    g.fillStyle = "#eef3fa"; g.textAlign = "left"; g.textBaseline = "middle"; const { s, righe } = adatta(g, testo, w - 88, h - 20, 72, 22, GROTESK(500), 1.1); righe.forEach((t, i) => g.fillText(t, 70, h / 2 + (i - (righe.length - 1) / 2) * s * 1.1));
   },
   // incisione nella pietra
   inciso: (g, w, h, { testo }) => {
-    g.clearRect(0, 0, w, h); g.textAlign = "center"; g.textBaseline = "middle"; let s = 96; g.font = `${s}px Marcellus, serif`; while (g.measureText(testo).width > w - 40 && s > 30) { s -= 3; g.font = `${s}px Marcellus, serif` }
-    g.fillStyle = "rgba(255,240,210,.35)"; g.fillText(testo, w / 2 + 2, h / 2 + 2); g.fillStyle = "rgba(40,25,10,.8)"; g.fillText(testo, w / 2, h / 2);
+    g.clearRect(0, 0, w, h); g.textAlign = "center"; g.textBaseline = "middle"; const { s } = adatta(g, testo, w - 30, h - 10, 170, 34, s => `${s}px Marcellus, serif`, 1); g.font = `${s}px Marcellus, serif`;
+    g.fillStyle = "rgba(255,240,210,.45)"; g.fillText(testo, w / 2 + 3, h / 2 + 3); g.fillStyle = "rgba(30,18,6,.92)"; g.fillText(testo, w / 2, h / 2);
   },
 };
 
@@ -141,6 +141,8 @@ const VOCI = {
   ],
 };
 
+export const LUCE_VOCI = .34;
+const SCALA = { foglio: [3, 3], postit: [3, 3], manifesto: [2.4, 2.4], lettera: [3, 3], bolla: [2.2, 3], graffito: [2.2, 2.2], pastello: [2.2, 2.4], inciso: [1.6, 2] };
 export function decoraMuri(scena, lab, M, nome, r = Math.random, soloZone = null, mie = {}) {
   const n = (nome || "").trim();
   const sost = t => {
@@ -158,13 +160,19 @@ export function decoraMuri(scena, lab, M, nome, r = Math.random, soloZone = null
   for (const [zona, lista] of Object.entries(voci)) {
     if (soloZone && !soloZone.includes(zona)) continue;
     const celle = (zona === "ritorno" ? P.vicolo.ritorno : percorsiZona[zona] || []).filter(([x, z]) => M.zonaDi(x, z) === zona && (zona === "centro" || !inStanza(x, z)));
-    const facce = []; celle.forEach(([x, z], i) => { if (i < 1) return; for (const l of "NSEW") { const f = M.facciaMuro(lab, x, z, l); if (f) facce.push({ f, i }) } });
+    const facce = []; celle.forEach(([x, z], i) => { if (i < 3 || (P.vicolo.cieco && x === P.vicolo.cieco[0] && z === P.vicolo.cieco[1])) return; /* dove ci si ferma a disegnare o a spingere il muro, il muro resta libero */ const [px, pz] = celle[i - 1], dx = x - px, dz = z - pz, unita = Math.abs(dx) + Math.abs(dz) === 1; for (const l of "NSEW") { const f = M.facciaMuro(lab, x, z, l); if (f) facce.push({ f, i, fronte: unita && f.n.x * dx + f.n.z * dz < -.5 }) } });
     if (!facce.length) continue;
+    // sul telefono in verticale un muro di lato resta tagliato finché non ci sei accanto: prima i muri che si hanno di fronte camminando
+    const difronte = facce.filter(c => c.fronte); let dopo = 0;
     const passo = facce.length / lista.length;
-    lista.forEach((v0, k) => { const v = { ...v0, w: Math.min(M.C - .3, v0.w * 1.6), h: v0.h * 1.6, y: v0.s === "pastello" ? v0.y + .1 : v0.y + (v0.y > 2 ? 0 : .05) }; // più grandi: si leggono camminando
+    lista.forEach((v0, k) => {
+      // grandi, perché si leggono camminando; alla scuola sopra gli armadietti, che altrimenti li coprirebbero
+      const [sw, sh] = SCALA[v0.s] || [2, 2], fondo = zona === "scuola" ? 1.92 : .18, cima = M.ZONE[zona].h - .12, largo = M.C - M.T - .16;
+      let vw = Math.min(largo, v0.w * sw), vh = v0.h * sh; if (vh > cima - fondo) { const q = (cima - fondo) / vh; vh *= q; vw *= q }
+      const v = { ...v0, w: vw, h: vh, y: Math.min(cima - vh / 2, Math.max(fondo + vh / 2, v0.y)) };
       for (let t = 0; t < 14; t++) {
-        const c = facce[Math.floor((k * passo + t * 1.7 + r() * passo) % facce.length)], lat = new THREE.Vector3().crossVectors(c.f.n, su);
-        const gioco = Math.max(0, (M.C - v.w) / 2 - .12), off = (r() - .5) * 2 * gioco;
+        const c = t < 6 && dopo < difronte.length ? difronte[(dopo + t) % difronte.length] : facce[Math.floor((k * passo + t * 1.7 + r() * passo) % facce.length)], lat = new THREE.Vector3().crossVectors(c.f.n, su);
+        const gioco = Math.max(0, (M.C - M.T - v.w) / 2 - .02), off = (r() - .5) * 2 * gioco;
         const pos = c.f.p.clone().addScaledVector(lat, off).setY(v.y);
         // niente sovrapposizioni: si confrontano i rettangoli, non solo i centri
         if (usati.some(u => Math.hypot(u.p.x - pos.x, u.p.z - pos.z) < (u.w + v.w) / 2 + .08 && Math.abs(u.p.y - pos.y) < (u.h + v.h) / 2 + .05)) continue;
@@ -172,11 +180,12 @@ export function decoraMuri(scena, lab, M, nome, r = Math.random, soloZone = null
         // tele piccole: sono decine, e la memoria grafica dei telefoni è poca
         const cw = { postit: 240, foglio: 320, manifesto: 400, lettera: 400, bolla: 480, graffito: 480, pastello: 480, inciso: 480 }[v.s] || 320;
         const ch = Math.max(48, Math.round(cw * v.h / v.w / 4) * 4), sc = cw / 512;
-        const tx = M.tela(cw, ch, (g, w, h) => { g.scale(sc, sc); STILI[v.s](g, 512, h / sc, v, M) }); tx.anisotropy = 4;
-        const mat = new THREE.MeshStandardMaterial({ map: tx, transparent: true, roughness: .9, polygonOffset: true, polygonOffsetFactor: -2 });
+        const tx = M.tela(cw, ch, (g, w, h) => { g.scale(sc, sc); STILI[v.s](g, 512, h / sc, v, M) }); tx.anisotropy = 8;
+        // una luce propria appena accennata: anche dove le lampade non arrivano si deve poter leggere
+        const mat = new THREE.MeshStandardMaterial({ map: tx, transparent: true, roughness: .9, polygonOffset: true, polygonOffsetFactor: -2, emissive: 0xffffff, emissiveMap: tx, emissiveIntensity: LUCE_VOCI });
         const m = new THREE.Mesh(new THREE.PlaneGeometry(v.w, v.h), mat);
-        M.sulMuro(m, c.f, v.y); m.position.addScaledVector(lat, off).addScaledVector(c.f.n, .006 + (usati.length % 20) * .0004); m.rotateZ((r() - .5) * (v.s === "postit" || v.s === "foglio" ? .12 : .03));
-        m.userData.voce = zona; scena.add(m); break;
+        M.sulMuro(m, c.f, v.y); m.position.addScaledVector(lat, off).addScaledVector(c.f.n, .014 + (usati.length % 20) * .0004); m.rotateZ((r() - .5) * (v.s === "postit" || v.s === "foglio" ? .12 : .03));
+        m.userData.voce = zona; scena.add(m); if (t < 6) dopo += t + 1; break;
       }
     });
   }

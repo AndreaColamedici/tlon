@@ -57,11 +57,7 @@ header .dx{display:flex;gap:6px;align-items:center}
 #lettera h2{font-family:Marcellus,serif;font-weight:400;font-size:26px;line-height:1.2;margin-top:30px}#lettera p{font-size:14px;color:rgba(239,230,210,.6);margin:6px 0 12px}
 #lettera textarea{width:100%;font:400 18px/1.4 "Familjen Grotesk",sans-serif;color:var(--intonaco);background:rgba(239,230,210,.08);border:1px solid rgba(220,166,69,.5);border-radius:12px;padding:12px;resize:none;outline:none}
 #lettera .az{display:flex;gap:10px;margin-top:12px}#lettera button{flex:1;font:500 16px "Familjen Grotesk",sans-serif;border-radius:12px;padding:14px;border:1px solid var(--ocra);background:transparent;color:var(--intonaco)}#lettera-fatto{background:var(--ocra)!important;color:#120d08!important}
-#fine{position:fixed;inset:0;z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;color:#3a2610;opacity:0;pointer-events:none;transition:opacity 1.2s}
-#fine.on{opacity:1;pointer-events:auto}
-#fine h2{font-family:Marcellus,serif;font-weight:400;font-size:84px;letter-spacing:.08em}
-#fine p{font-size:19px;margin:10px 0 34px}
-#fine button,#carta button{font:500 17px "Familjen Grotesk",sans-serif;border-radius:14px;padding:15px 20px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer}
+#carta button{font:500 17px "Familjen Grotesk",sans-serif;border-radius:14px;padding:15px 20px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer}
 #carta{position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;overflow-y:auto;touch-action:pan-y;padding:calc(env(safe-area-inset-top) + 20px) 22px calc(env(safe-area-inset-bottom) + 22px);background:linear-gradient(rgba(12,10,8,.05) 0%,rgba(12,10,8,.2) 16%,rgba(12,10,8,.93) 38%,rgba(12,10,8,.98) 100%);opacity:0;pointer-events:none;transition:opacity 1.6s}
 #carta .k{margin-top:auto}
 #rivedi{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 22px);z-index:8;font:500 16px "Familjen Grotesk",sans-serif;color:var(--intonaco);background:rgba(18,14,10,.7);border:1px solid var(--ocra);border-radius:14px;padding:13px 20px;cursor:pointer}
@@ -107,12 +103,6 @@ header .dx{display:flex;gap:6px;align-items:center}
   <p>Resta solo sul tuo telefono. Lo ritrovi alla fine.</p>
   <textarea id="lettera-testo" maxlength="160" rows="3" placeholder="Scrivi qui"></textarea>
   <div class="az"><button id="lettera-fatto">Fatto</button><button id="lettera-salta">Preferisco di no</button></div>
-</section>
-
-<section id="fine">
-  <h2>FINE</h2>
-  <p>Hai vinto. Il gioco è finito.</p>
-  <button id="rimetti">Rimetti la coppa e continua</button>
 </section>
 
 <section id="carta">

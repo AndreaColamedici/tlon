@@ -20,14 +20,16 @@ const manda = m => { try { canale && canale.postMessage(m) } catch (e) { } };
 export const CAPITOLI = [
   { k: "soglia", eta: "", titolo: "Da grande", sotto: "Inquadra il codice ed entra nel labirinto", zona: null, nota: "Prima di far entrare la sala: Azzera qui sotto (doppio clic), che riporta la scena a zero. Il codice resta sullo schermo mentre la sala entra: i telefoni aspettano nella cameretta. Quando le luci sono abbastanza, la freccia apre il primo movimento (cinque e diciotto anni, di seguito)." },
   { k: "cameretta", eta: "5 anni", titolo: "Cosa vuoi fare da grande?", zona: [0, 0], nota: "Primo movimento, in corso: i telefoni passano da soli ai diciotto anni. Qui guardi il punto interrogativo. Quando il contatore dice che quasi tutti hanno finito, freccia: dati delle porte." },
-  { k: "scuola", eta: "18 anni", titolo: "Le porte", zona: [1, 0], nota: "Fine del primo movimento: i telefoni sono fermi, abbassano il suono, si apre il tetto e chi guarda vede le luci degli altri. Scegliere <i>di</i> e scegliere <i>tra</i>. Poi la freccia apre il secondo movimento (ventitré e ventotto anni)." },
+  { k: "scuola", eta: "18 anni", titolo: "Le porte", zona: [1, 0], nota: "Fine del primo movimento: i telefoni sono fermi, abbassano il suono, si apre il tetto e chi guarda vede le luci degli altri. Scegliere <i>di</i> e scegliere <i>tra</i>; sullo schermo anche la porta che alla sala mancherà di più, che ciascuno ha visto chiudersi e ritroverà ai ventotto anni. Poi la freccia apre il secondo movimento (ventitré e ventotto anni)." },
   { k: "notte", eta: "23 anni", titolo: "La moneta", zona: [2, 0], nota: "Secondo movimento, in corso: dopo la moneta i telefoni vanno da soli all'oracolo. Quando il contatore sale, freccia: dati dell'oracolo." },
-  { k: "oracolo", eta: "28 anni", titolo: "L'oracolo", zona: [2, 1], nota: "Fine del secondo movimento: i telefoni sono fermi. La pancia e la delega, due modi di non decidere da soli. Poi la freccia apre il terzo movimento (il vicolo e il centro)." },
-  { k: "vicolo", eta: "35 anni", titolo: "Il vicolo cieco", zona: [2, 2], nota: "Terzo movimento, in corso: dal vicolo i telefoni arrivano al centro e si fermano davanti alla coppa. Intanto si riempie la galleria dei segni." },
-  { k: "centro", eta: "Da grande", titolo: "Il centro", zona: [1, 1], nota: "I telefoni sono fermi al centro, dopo la scelta della coppa. Giochi finiti e infiniti. Quando sei pronto, la freccia fa salire tutta la sala sopra i muri nello stesso momento." },
-  { k: "fine", eta: "", titolo: "Il labirinto continua", sotto: "Grazie", zona: null, nota: "Tutti i telefoni salgono sopra i muri: ognuno vede il suo filo rosso e il labirinto che continua. Congedo." },
+  { k: "oracolo", eta: "28 anni", titolo: "L'oracolo", zona: [2, 1], nota: "Fine del secondo movimento: i telefoni sono fermi. Ognuno ha ritrovato la porta che ha lasciato: lo schermo mostra chi ha voluto sapere che vita avrebbe avuto e chi no. Poi la freccia apre il terzo movimento (il vicolo e il centro)." },
+  { k: "vicolo", eta: "35 anni", titolo: "Il vicolo cieco", zona: [2, 2], nota: "Terzo movimento, in corso: nel vicolo i telefoni chiedono su che cosa ci si sente in ritardo, poi arrivano al centro, scrivono a chi erano a cinque anni e si fermano. Intanto si riempie la galleria dei segni." },
+  { k: "centro", eta: "Da grande", titolo: "Il centro", zona: [1, 1], nota: "I telefoni sono fermi al centro con il tetto aperto: sopra le luci ognuno legge quanti, in questa sala, sono in ritardo sulla stessa cosa, e lo schermo mostra il conto intero. Quando sei pronto, la freccia fa salire tutta la sala sopra i muri nello stesso momento." },
+  { k: "fine", eta: "", titolo: "Il labirinto continua", sotto: "Grazie", zona: null, nota: "Tutti i telefoni salgono sopra i muri: ognuno vede il suo filo rosso e il labirinto che continua. Dopo circa quindici secondi il telefono dice che il labirinto era uno spiazzo per ballare, tenendosi per i polsi; otto secondi dopo chiede di posarlo e di cercare il polso di chi si ha accanto. Quel gesto lo reggi tu dal palco. Poi la carta, sul telefono di ciascuno. Congedo." },
 ];
 const SOGNI = { luna: "andare sulla luna", animali: "curare gli animali", gol: "fare gol", ballare: "ballare", incendi: "spegnere gli incendi", scoprire: "scoprire cose nuove", dipingere: "dipingere", insegnare: "insegnare", cantare: "cantare", cucinare: "cucinare", volare: "pilotare gli aerei", misteri: "risolvere misteri", curare: "curare le persone", inventare: "inventare macchine", esplorare: "esplorare il mondo", scavare: "scavare tesori antichi" };
+const RITARDI = { lavoro: "Sul lavoro", casa: "Sulla casa", soldi: "Sui soldi", amore: "Sull'amore", figli: "Sui figli", niente: "Su niente" };
+const nomePorta = k => k === "sogno" ? "La porta del sogno" : STRADE[+String(k).slice(1)] || k;
 const STRADE = ["Medicina", "Giurisprudenza", "Ingegneria", "Economia", "Lettere", "Filosofia", "Psicologia", "Architettura", "Design", "Informatica", "Biologia", "Lingue", "Scienze politiche", "Belle Arti", "Conservatorio", "Fisica", "Matematica", "Infermieristica", "Scienze della formazione", "Cinema", "Agraria", "Lavorare subito", "Un anno all'estero", "Servizio civile"];
 
 /* ---------- scena ---------- */
@@ -117,11 +119,10 @@ function simula() {
   if (!demo) { dati = {}; segniCache = []; disegnaDati(); interroga(); return }
   const n = 240, sogni = { luna: 31, animali: 24, gol: 19, ballare: 14, incendi: 9, scoprire: 22, dipingere: 11, insegnare: 13, cantare: 17, cucinare: 7, volare: 12, misteri: 8, curare: 15, inventare: 6, esplorare: 5, scavare: 4, nonlo: 23 };
   dati = { ingresso: { entrato: { 1: n } }, cameretta: { sogno: sogni },
-    scuola: { gruppo: { 24: 118, 6: 113 }, porta: { s5: 14, s0: 21, sogno: 26, s21: 18, s3: 17, s8: 15, s9: 22 }, secondi: { 4: 20, 7: 30, 11: 25, 16: 30, 23: 26, 31: 22, 45: 18, 62: 11 }, sicurezza: { 1: 71, 2: 104, 3: 52 } },
+    scuola: { gruppo: { 24: 118, 6: 113 }, porta: { s5: 14, s0: 21, sogno: 26, s21: 18, s3: 17, s8: 15, s9: 22 }, secondi: { 4: 20, 7: 30, 11: 25, 16: 30, 23: 26, 31: 22, 45: 18, 62: 11 }, sicurezza: { 1: 71, 2: 104, 3: 52 }, lasciata: { s19: 38, s4: 31, sogno: 27, s5: 19, nessuna: 22 } },
     notte: { speranza: { testa: 118, croce: 104 }, esito: { testa: 109, croce: 113 }, seguito: { uguali: 104, moneta: 41, speranza: 77 } },
-    oracolo: { scelta: { strada: 84, domanda: 131 } },
-    vicolo: { azione: { segno: 96, spinto: 61, indietro: 52 }, spinte: { 1: 40, 2: 15, 3: 6 } },
-    centro: { scelta: { coppa: 88, oltre: 117 }, continua: { 1: 79 } },
+    oracolo: { scelta: { racconta: 84, no: 131 } },
+    vicolo: { azione: { segno: 96, spinto: 61, indietro: 52 }, spinte: { 1: 40, 2: 15, 3: 6 }, ritardo: { lavoro: 72, casa: 41, soldi: 38, amore: 29, figli: 17, niente: 12 } },
     progresso: { capitolo: { "1.0": 20, "2.0": 30, "3.0": 40, "4.0": 40, "5.2": 50, "6.0": 40 } } };
   segniCache = Array.from({ length: 18 }, () => ({ punti: JSON.stringify(scarabocchio()) }));
   disegnaDati();
@@ -143,23 +144,23 @@ function disegnaDati() {
     const so = Object.entries(D.cameretta?.sogno || {}).filter(([k]) => k !== "nonlo").sort((a, b) => b[1] - a[1]).slice(0, 5), nl = D.cameretta?.sogno?.nonlo || 0, tot = somma(D.cameretta?.sogno);
     h = `<div class="cifra"><b>${pct(nl, tot)}%</b><span>ha aperto la porta col punto interrogativo</span></div>${barre(so.map(([k, n]) => [SOGNI[k] || k, n]), so[0]?.[1] || 1)}`;
   } else if (s === 2) {
-    const g = D.scuola?.gruppo || {}, sic = D.scuola?.sicurezza || {}, sec = D.scuola?.secondi || {}, porte = D.scuola?.porta || {}, tot = somma(porte);
+    const g = D.scuola?.gruppo || {}, sec = D.scuola?.secondi || {}, porte = D.scuola?.porta || {}, tot = somma(porte);
     h = `<div class="due"><div class="cifra"><b>${Math.round(media(sec))}<small>s</small></b><span>per scegliere una porta</span></div><div class="cifra"><b>${pct(porte.sogno || 0, tot)}%</b><span>ha riaperto la porta del sogno</span></div></div>
-      <div class="sotto-t">Quanta certezza, dopo</div>${barre([["Poca", sic[1] || 0], ["Abbastanza", sic[2] || 0], ["Tutta", sic[3] || 0]], Math.max(1, ...Object.values(sic)))}
+      <div class="sotto-t">La porta che mancherà</div>${barre(Object.entries(D.scuola?.lasciata || {}).filter(([k]) => k !== "nessuna").sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k, n]) => [nomePorta(k), n]), Math.max(1, ...Object.entries(D.scuola?.lasciata || {}).filter(([k]) => k !== "nessuna").map(([, n]) => n)))}
       <div class="piccolo">${fmt(g[24] || 0)} persone avevano 24 porte, ${fmt(g[6] || 0)} ne avevano 6.</div>`;
   } else if (s === 3) {
     const sg = D.notte?.seguito || {}, div = (sg.moneta || 0) + (sg.speranza || 0), tot = div + (sg.uguali || 0);
     h = `<div class="cifra"><b>${pct(div, tot)}%</b><span>ha sperato il contrario di quello che è uscito</span></div>
       <div class="sotto-t">E poi, davanti al bivio</div>${barre([["ha seguito la speranza", sg.speranza || 0, "rosso"], ["ha seguito la moneta", sg.moneta || 0]], Math.max(1, sg.speranza || 0, sg.moneta || 0))}`;
   } else if (s === 4) {
-    const o = D.oracolo?.scelta || {}, tot = somma(o);
-    h = `<div class="due"><div class="cifra"><b>${pct(o.strada || 0, tot)}%</b><span>ha chiesto la strada</span></div><div class="cifra"><b>${pct(o.domanda || 0, tot)}%</b><span>ha voluto una domanda</span></div></div>`;
+    const o = D.oracolo?.scelta || {}, tot = (o.racconta || 0) + (o.no || 0);
+    h = `<div class="due"><div class="cifra"><b>${pct(o.racconta || 0, tot)}%</b><span>ha voluto sapere che vita avrebbe avuto</span></div><div class="cifra"><b>${pct(o.no || 0, tot)}%</b><span>ha preferito non saperlo</span></div></div>`;
   } else if (s === 5) {
     const a = D.vicolo?.azione || {};
     h = `${barre([["ha lasciato un segno", a.segno || 0, "rosso"], ["ha spinto il muro", a.spinto || 0], ["ha girato le spalle al muro", a.indietro || 0]], Math.max(1, ...Object.values(a)))}<div class="segni">${segniCache.slice(0, 12).map(sg => `<canvas data-punti='${typeof sg.punti === "string" ? sg.punti.replace(/'/g, "") : JSON.stringify(sg.punti)}' width="160" height="120"></canvas>`).join("")}</div>`;
   } else if (s === 6) {
-    const c = D.centro?.scelta || {}, tot = somma(c), cont = somma(D.centro?.continua);
-    h = `<div class="due"><div class="cifra"><b>${pct(c.coppa || 0, tot)}%</b><span>ha preso la coppa</span></div><div class="cifra"><b>${pct(c.oltre || 0, tot)}%</b><span>ha superato la coppa</span></div></div><div class="piccolo">Di chi ha preso la coppa, ${fmt(cont)} ${cont === 1 ? "ha" : "hanno"} deciso di rimetterla a posto e continuare.</div>`;
+    const ri = Object.entries(D.vicolo?.ritardo || {}).filter(([k]) => RITARDI[k] && k !== "niente").sort((a, b) => b[1] - a[1]), inr = ri.reduce((a, [, n]) => a + n, 0), niente = D.vicolo?.ritardo?.niente || 0;
+    h = `<div class="cifra riga"><b>${fmt(inr)}</b><span>${inr === 1 ? "persona si sente" : "persone si sentono"} in ritardo su qualcosa. Ciascuna crede di essere l'unica.${niente ? ` Su niente: ${fmt(niente)}.` : ""}</span></div>${barre(ri.map(([k, n]) => [RITARDI[k], n, k === ri[0][0] ? "rosso" : ""]), ri[0]?.[1] || 1)}`;
   }
   if (box.dataset.s !== String(s) || box.dataset.h !== h) { box.dataset.s = s; box.dataset.h = h; box.innerHTML = h; disegnaSegni() }
   if (luci) aggiornaPersone();

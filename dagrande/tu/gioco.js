@@ -9,7 +9,7 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import * as M from "../mondo.js";
 import { atmosfera } from "./atmosfera.js";
-import { decoraMuri, tabellaAltezza } from "./voci.js";
+import { decoraMuri, tabellaAltezza, LUCE_VOCI } from "./voci.js";
 
 const $ = s => document.querySelector(s);
 const LV = window.DGLive || { attivo: false, invia() { }, ascolta() { return () => { } }, dispositivo: "x" };
@@ -138,12 +138,13 @@ function vociMie(zona) {
   if (zona === "oracolo") {
     if (s.secondi != null) x.push({ s: "bolla", testo: `Scelto in ${s.secondi === 1 ? "1 secondo" : s.secondi + " secondi"}. Puoi fare di meglio`, w: 1.1, h: .26, y: 1.68 });
     if (s.speranza) x.push({ s: "bolla", testo: `Speravi ${s.speranza}. Altre cose da sperare per te`, w: 1.1, h: .26, y: 1.64 });
+    if (s.lasciataTesto && s.lasciataTesto !== "?") x.push({ s: "postit", testo: `${su(s.lasciataTesto)}. Ti manca già?`, w: .36, h: .36, y: 1.48, colore: "#f6e27a" });
   }
   if (zona === "vicolo") {
     if (sogno) x.push({ s: "postit", testo: `A cinque anni volevi ${sogno}`, w: .32, h: .32, y: 1.5, colore: "#a9cff2" });
     if (s.sicurezza) x.push({ s: "graffito", testo: { 1: "poca, dicevi", 2: "abbastanza, dicevi", 3: "tutta, dicevi" }[s.sicurezza], w: 1.3, h: .42, y: 2.25, colore: "#e8e3d8" });
-    if (s.oracolo === "strada") x.push({ s: "bolla", testo: "Sei dove arrivano quasi tutti", w: 1.05, h: .26, y: 1.7 });
-    if (s.domanda && !s.domanda.startsWith("A cinque")) x.push({ s: "postit", testo: s.domanda, w: .36, h: .36, y: 1.48, colore: "#f6e27a" });
+    if (s.oracolo === "racconta") x.push({ s: "bolla", testo: "Saresti qui. Con un altro rimpianto", w: 1.05, h: .26, y: 1.7 });
+    if (s.oracolo === "no") x.push({ s: "bolla", testo: s.lasciataTesto ? "Resterà migliore di questa" : "Resteranno migliori di questa", w: 1.05, h: .26, y: 1.7 });
   }
   return x;
 }
@@ -328,6 +329,8 @@ function ciclo() {
 /* ---------- etichette ---------- */
 /* a cinque anni si risponde con un verbo: quello che si vuole fare, prima del nome del mestiere */
 export const SOGNI = { luna: "andare sulla luna", animali: "curare gli animali", gol: "fare gol", ballare: "ballare", incendi: "spegnere gli incendi", scoprire: "scoprire cose nuove", dipingere: "dipingere", insegnare: "insegnare", cantare: "cantare", cucinare: "cucinare", volare: "pilotare gli aerei", misteri: "risolvere misteri", curare: "curare le persone", inventare: "inventare macchine", esplorare: "esplorare il mondo", scavare: "scavare tesori antichi" };
+/* il ritardo: la voce del bottone e come la si dice in una frase */
+const RITARDI = { casa: { voce: "La casa", su: "Sulla casa" }, lavoro: { voce: "Il lavoro", su: "Sul lavoro" }, soldi: { voce: "I soldi", su: "Sui soldi" }, amore: { voce: "L'amore", su: "Sull'amore" }, figli: { voce: "I figli", su: "Sui figli" }, niente: { voce: "Su niente", su: "Su niente" } };
 export const STRADE = ["Medicina", "Giurisprudenza", "Ingegneria", "Economia", "Lettere", "Filosofia", "Psicologia", "Architettura", "Design", "Informatica", "Biologia", "Lingue", "Scienze politiche", "Belle Arti", "Conservatorio", "Fisica", "Matematica", "Infermieristica", "Scienze della formazione", "Cinema", "Agraria", "Lavorare subito", "Un anno all'estero", "Servizio civile"];
 
 /* ---------- il tetto ----------
@@ -395,9 +398,10 @@ async function attendi(k, prossimo = k + 1) {
     const frase = prossimo === 7 ? "Resta qui. Tra poco si sale tutti insieme." : "Alza gli occhi verso il palco.";
     UI.dici(frase); suono.piano(true); setTimeout(() => { if (S.sblocca) raccontaSala(k) }, PROVA ? 300 : 7000); // prima si guardano le luci, poi si leggono i numeri
     tetto.apri().then(n => { if (n > 1 && S.sblocca && prossimo !== 7) UI.dici(`Il tetto si è aperto. Ogni luce è una persona di questa sala.<br>${frase}`) });
+    const numeri = k === 6 ? setInterval(() => { if (S.sblocca) raccontaSala(6) }, PROVA ? 1500 : 30000 + Math.random() * 15000) : 0;
     let senzaRete = 0; const guardia = setInterval(() => { senzaRete = window.DGLive && DGLive.ascolta && DGLive.ascolta.ok === false ? senzaRete + 5 : 0; if (senzaRete >= 180) { clearInterval(guardia); S.sblocca && S.sblocca(true) } }, 5000);
     const forzato = await new Promise(res => { S.sblocca = (forza) => { if (forza || S.palco >= prossimo) { S.sblocca = null; res(!!forza) } } });
-    clearInterval(guardia); UI.dici(""); $("#sala").classList.remove("on"); tetto.chiudi(); suono.piano(false);
+    clearInterval(guardia); clearInterval(numeri); UI.dici(""); $("#sala").classList.remove("on"); tetto.chiudi(); suono.piano(false);
     if (forzato) { UI.dici("Il collegamento con il palco si è interrotto: puoi proseguire."); await UI.scegli([["vai", "Prosegui"]], "una"); UI.dici("") }
     else suono.rintocco();
     return;
@@ -405,7 +409,8 @@ async function attendi(k, prossimo = k + 1) {
   await pausa(900);
   const n = await tetto.apri();
   if (n > 1) UI.dici(DOPO ? `Il tetto si è aperto. Ogni luce è una delle ${n} persone passate di qui.` : "Il tetto si è aperto. Ogni luce è un'altra persona.");
-  await UI.scegli([["vai", prossimo === 7 ? "Sali" : "Prosegui"]], "una"); UI.dici(""); tetto.chiudi();
+  if (k === 6) raccontaSala(6);
+  await UI.scegli([["vai", prossimo === 7 ? "Sali" : "Prosegui"]], "una"); UI.dici(""); $("#sala").classList.remove("on"); tetto.chiudi();
 }
 /* anche le voci sui muri di un'età passata si tolgono */
 function liberaVoci(...zone) { const via = []; scena.traverse(o => { if (o.userData.voce && zone.includes(o.userData.voce)) via.push(o) }); for (const o of via) { o.geometry.dispose(); if (o.material.map) o.material.map.dispose(); o.material.dispose(); scena.remove(o) } }
@@ -423,9 +428,10 @@ async function raccontaSala1(k, soloSalva, aggiungi) {
   if (k === 1) { const so = D.cameretta?.sogno || {}, tot = som(so); if (tot > 1) t = sc.sogno === "nonlo" ? `Come te, ${so.nonlo || 1} ${so.nonlo === 1 ? "persona" : "persone"} su ${tot} ha${so.nonlo === 1 ? "" : "nno"} aperto la porta col punto interrogativo.` : `In questa sala ${so[sc.sogno] || 1} su ${tot} ${(so[sc.sogno] || 1) === 1 ? "vuole" : "vogliono"} ${sc.sognoTesto}. ${pc(so.nonlo || 0, tot)}% ha aperto la porta col punto interrogativo.` }
   if (k === 2) { const se = D.scuola?.secondi || {}; let a = 0, n = 0; for (const [v, c] of Object.entries(se)) { a += v * c; n += c } if (n > 1) t = `Tu hai scelto in ${sc.secondi === 1 ? "1 secondo" : sc.secondi + " secondi"}. La sala, in media, in ${Math.round(a / n)}.`; const ce = D.scuola?.sicurezza || {}, totC = som(ce), io = ce[sc.sicurezza] || 1; if (totC > 1 && sc.sicurezza) t += `<br>${io > 1 ? `Hanno risposto «${{ 1: "Poca", 2: "Abbastanza", 3: "Tutta" }[sc.sicurezza]}», come te, ${io} persone su ${totC}.` : `Soltanto tu, su ${totC}, hai risposto «${{ 1: "Poca", 2: "Abbastanza", 3: "Tutta" }[sc.sicurezza]}».`}` }
   if (k === 3) { const sg = D.notte?.seguito || {}, div = (sg.moneta || 0) + (sg.speranza || 0), tot = div + (sg.uguali || 0); if (tot > 1) t = `${pc(div, tot)}% della sala ha sperato il contrario di quello che è uscito. Di questi, ${pc(sg.speranza || 0, div)}% ha seguito la speranza.` }
-  if (k === 4) { const o = D.oracolo?.scelta || {}, tot = som(o); if (tot > 1) t = `${pc(o.strada || 0, tot)}% della sala ha chiesto la strada all'oracolo.` }
+  if (k === 4) { const o = D.oracolo?.scelta || {}, tot = (o.racconta || 0) + (o.no || 0); if (tot > 1) t = `${pc(o.racconta || 0, tot)}% della sala ha voluto sapere che vita avrebbe avuto. Gli altri hanno preferito di no.` }
   if (k === 5) { const a = D.vicolo?.azione || {}; if (som(a) > 1) t = `${a.segno || 0} persone hanno lasciato un segno nel vicolo cieco.` }
-  if (k === 6) { const c = D.centro?.scelta || {}, tot = som(c); if (tot > 1) t = `${pc(c.coppa || 0, tot)}% della sala ha preso la coppa. ${pc(c.oltre || 0, tot)}% ha superato la coppa.` }
+  if (k === 6) { const ri = D.vicolo?.ritardo || {}, voci = Object.entries(ri).filter(([v]) => RITARDI[v]), tot = voci.reduce((a, [, c]) => a + c, 0), io = sc.ritardo, n = ri[io] || 1, qui = S.live && !LIBERO ? "in questa sala" : "tra chi è passato di qui", altri = tot - (ri.niente || 0);
+    if (tot > 1) { if (io && io !== "niente") t = n > 1 ? `${RITARDI[io].su}, ${n} persone ${qui}. Ciascuna crede di essere l'unica.` : `${RITARDI[io].su}, per ora, soltanto tu.`; else if (altri > 1) t = `${altri} persone ${qui} si sentono in ritardo su qualcosa. Ciascuna crede di essere l'unica.`; t += `${t ? "<br><br>" : ""}${voci.sort((a, b) => b[1] - a[1]).map(([v, c]) => `${RITARDI[v].su} ${c}`).join(" · ")}` } }
   if (soloSalva) { S._sala = t; return }
   const tutto = [aggiungi ? S._sala : "", t].filter(Boolean).join("<br><br>"); S._sala = "";
   if (tutto) { $("#sala").innerHTML = `<b>La sala</b>${tutto}`; $("#sala").classList.add("on") }
@@ -456,6 +462,22 @@ function scegliPorta(porte) {
       UI.scegli([["apri", "Apri questa porta"]], "una").then(() => apri(p));
     };
   });
+}
+/* tra quelle che non apri, una la nomini: un tocco basta, e sprofonda davanti a te */
+function lasciaPorta(ps, scelta) {
+  const altre = ps.filter(p => p !== scelta); if (!altre.length) return Promise.resolve(null);
+  cam.yawT = cam.yaw + Math.PI; cam.yawU = 0; cam.pitchU = 0; S.interattivi = altre.map(p => p.pannello);
+  UI.dici("Da qui non si torna.<br>Tra quelle che lasci, quale ti mancherà?");
+  return new Promise(res => {
+    const fine = p => { S.onTap = null; S.interattivi = []; nome(""); UI.togli(); UI.dici(""); res(p) };
+    S.onTap = p => { if (altre.includes(p)) { suono.tocco(); fine(p) } };
+    UI.scegli([["nessuna", "Nessuna"]], "una").then(() => { if (S.onTap) fine(null) });
+  });
+}
+async function chiudiPorta(p) {
+  guardaVerso(p.gruppo.position); cam.yawU = 0; cam.pitchU = 0; await pausa(700); suono.colpo(); const y = p.gruppo.position.y;
+  UI.dici(`<b>${p.etichetta === "?" ? "La porta del punto interrogativo" : p.etichetta}</b><br>Si è chiusa.`);
+  await animaValore(v => p.gruppo.position.y = y - v * 3, 0, 1, 1700); await pausa(1500); UI.dici("");
 }
 async function attraversa(p) {
   suono.porta(); const n = new THREE.Vector3(); p.gruppo.getWorldDirection(n);
@@ -523,6 +545,9 @@ async function capitolo2() {
   const p = await scegliPorta(ps); UI.dici(""); const sec = Math.round((performance.now() - t0) / 1000); S.extra.splice(S.extra.indexOf(ticchettio), 1);
   Object.assign(S.scelte, { strada: p.codice, stradaTesto: p.etichetta, secondi: sec, gruppo }); salva();
   invia("scuola", "gruppo", gruppo); invia("scuola", "porta", p.codice); invia("scuola", "secondi", Math.min(sec, 600));
+  const lasciata = await lasciaPorta(ps, p);
+  if (lasciata) { Object.assign(S.scelte, { lasciata: lasciata.codice, lasciataTesto: lasciata.etichetta }); salva(); await chiudiPorta(lasciata) }
+  invia("scuola", "lasciata", lasciata ? lasciata.codice : "nessuna");
   await attraversa(p);
   UI.dici("Quanta certezza hai, adesso?");
   const sic = await UI.scegli([["1", "Poca"], ["2", "Abbastanza"], ["3", "Tutta"]]); S.scelte.sicurezza = sic; salva(); invia("scuola", "sicurezza", sic); UI.dici("");
@@ -539,7 +564,7 @@ async function capitolo3() {
   await cammina(celle(P.andata).concat([P.sala])); liberaVoci("scuola");
   // si spegne la luce
   UI.dici("Si è spenta la luce."); suono.colpo();
-  await animaValore(v => { oscurita = v; finitura.uniforms.buio.value = (1 - v) * .9 }, 1, .04, 1600);
+  await animaValore(v => { oscurita = v; finitura.uniforms.buio.value = (1 - v) * .9; for (const o of S.voci || []) o.material.emissiveIntensity = LUCE_VOCI * v }, 1, .04, 1600);
   torcia.intensity = 0; await pausa(600); await animaValore(v => torcia.intensity = v, 0, 13, 700);
   // la moneta
   const facce = ["TESTA", "CROCE"].map((t, i) => M.tela(256, 256, (g, w, h) => { const gr = g.createRadialGradient(w / 2, h / 2, 10, w / 2, h / 2, 128); gr.addColorStop(0, "#f7dc8c"); gr.addColorStop(1, "#b98a2e"); g.fillStyle = gr; g.fillRect(0, 0, w, h); g.strokeStyle = "#7a5512"; g.lineWidth = 8; g.beginPath(); g.arc(w / 2, h / 2, 112, 0, 7); g.stroke(); g.fillStyle = "#6b4a10"; g.font = "600 40px Marcellus, serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(t, w / 2, h / 2 + 52); if (i === 0) { g.beginPath(); g.arc(w / 2, h / 2 - 18, 34, 0, 7); g.lineWidth = 7; g.stroke(); g.beginPath(); g.arc(w / 2, h / 2 - 18, 14, 0, 7); g.stroke() } else { g.fillRect(w / 2 - 6, h / 2 - 60, 12, 80); g.fillRect(w / 2 - 34, h / 2 - 32, 68, 12) } }));
@@ -577,7 +602,7 @@ async function capitolo3() {
   camera.remove(moneta); luceMoneta.intensity = 0;
   cam.yawT = cam.yaw + (dir === "sinistra" ? Math.PI / 2 : -Math.PI / 2); await pausa(900);
   const avanti = new THREE.Vector3(-Math.sin(cam.yawT), 0, -Math.cos(cam.yawT)); await cammina([cam.pos.clone().addScaledVector(avanti, 2.4)], { velocita: 1.2 });
-  await UI.velo("#000", 1, 900); torcia.intensity = 0; oscurita = 1; finitura.uniforms.buio.value = 0;
+  await UI.velo("#000", 1, 900); torcia.intensity = 0; oscurita = 1; finitura.uniforms.buio.value = 0; for (const o of S.voci || []) o.material.emissiveIntensity = LUCE_VOCI;
   filo.stacca(); cam.pos.copy(M.centroCella(...P.ritorno[0])); await UI.velo("#000", 0, 1200);
   await cammina(celle(P.ritorno).concat([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.oracolo.andata[0])]));
   await attendi(3);
@@ -591,23 +616,21 @@ async function capitolo4() {
   const ultima = M.centroCella(...P.andata.at(-1)), dir = P.sala.clone().sub(ultima).setY(0); const stop = P.sala.clone().sub(dir.lengthSq() > .01 ? dir.normalize().multiplyScalar(2.3) : new THREE.Vector3(0, 0, -2.3));
   await cammina(celle(P.andata).concat([stop])); liberaVoci("notte");
   guardaVerso(sfera.position); suono.oracolo(); cam.pitchExtra = .12;
-  UI.dici("Conosco ogni strada di questo labirinto. Vuoi che ti dica qual è la tua?");
-  const sc = await UI.scegli([["strada", "Dimmi la strada"], ["domanda", "Fammi una domanda"]]);
+  const lasciata = S.scelte.lasciataTesto, quale = lasciata === "?" ? "col punto interrogativo" : `«${lasciata}»`;
+  UI.dici(lasciata ? `Conosco la vita che avresti avuto dietro la porta ${quale}. Vuoi che te la racconti?` : "Conosco le vite che avresti avuto dietro le porte che non hai aperto. Vuoi che te le racconti?");
+  const sc = await UI.scegli([["racconta", lasciata ? "Raccontamela" : "Raccontamele"], ["no", "Preferisco non saperlo"]]);
   S.scelte.oracolo = sc; salva(); invia("oracolo", "scelta", sc); cam.pitchExtra = 0;
-  if (sc === "strada") {
-    UI.dici("Eccola. È la strada più percorsa."); suono.fruscia(false);
+  if (sc === "racconta") {
+    UI.dici(lasciata ? "Eccola." : "Eccole."); suono.fruscia(false);
     const muri = S.mondo.muriZona.oracolo, schermi = S.mondo.schermi, h = M.ZONE.oracolo.h;
     await animaValore(v => { muri.position.y = -v * (h - .02); schermi.position.y = -v * (h - .02); S.mondo.sferaY = 2.2 + v * 4 }, 0, 1, 3000);
     const linea = new THREE.Mesh(new THREE.PlaneGeometry(.12, 1), new THREE.MeshBasicMaterial({ color: 0xbfe0ff })); const a = cam.pos.clone(), b = M.centroCella(...P.ritorno.at(-1)); linea.scale.y = a.distanceTo(b); linea.rotation.x = -Math.PI / 2; linea.rotation.z = Math.atan2(b.x - a.x, b.z - a.z); linea.position.copy(a).lerp(b, .5).setY(.02); scena.add(linea);
     await cammina([b], { velocita: 3.2, guarda: 3 });
-    UI.dici("Sei dove arrivano quasi tutti.", 3200);
+    UI.dici("Saresti qui. Con un altro rimpianto.", 4600); await pausa(1800);
     await animaValore(v => { muri.position.y = -v * (h - .02); schermi.position.y = -v * (h - .02) }, 1, 0, 2600); scena.remove(linea); S.mondo.sferaY = 2.2;
     await cammina([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.vicolo.andata[0])]);
   } else {
-    const sogno = S.scelte.sognoTesto; const domande = ["Che cosa faresti anche se nessuno lo vedesse?", "Quando hai perso l'ultima volta la cognizione del tempo?", "Quale domanda eviti di farti?", "Chi saresti se non dovessi dimostrare niente?"];
-    const q = sogno && S.scelte.sogno !== "nonlo" && r() < .6 ? `A cinque anni volevi ${sogno}. Che cosa ne resta?` : domande[Math.floor(r() * domande.length)];
-    S.scelte.domanda = q; salva(); suono.oracolo(); UI.dici(q);
-    await pausa(1600); await UI.scegli([["ok", "Ci penso mentre cammino"]]); UI.dici("");
+    suono.oracolo(); UI.dici(lasciata ? "Allora resterà per sempre migliore di questa." : "Allora resteranno per sempre migliori di questa.", 5400); await pausa(2800);
     await cammina(celle(P.ritorno).concat([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.vicolo.andata[0])]));
   }
   await attendi(4);
@@ -630,7 +653,9 @@ async function capitolo5() {
     if (a === "segno") { segno = await disegna(f); if (segno) { invia("vicolo", "segno", "1"); try { LV.inviaSegno && Promise.resolve(LV.inviaSegno(segno)).catch(() => { }) } catch (e) { } } UI.dici("Il segno resta qui, per chi passerà dopo di te."); await pausa(1800); }
     break;
   }
-  Object.assign(S.scelte, { spinte, segno: !!segno }); salva(); invia("vicolo", "azione", segno ? "segno" : spinte ? "spinto" : "indietro");
+  UI.dici("Su che cosa ti senti in ritardo?<br>Nessuno saprà che sei tu.");
+  const ritardo = await UI.scegli(Object.entries(RITARDI).map(([k, v]) => [k, v.voce]));
+  Object.assign(S.scelte, { spinte, segno: !!segno, ritardo }); salva(); invia("vicolo", "azione", segno ? "segno" : spinte ? "spinto" : "indietro"); invia("vicolo", "ritardo", ritardo);
   UI.dici(""); cam.yawT = cam.yaw + Math.PI; await pausa(1100);
   // i segni degli altri lungo la strada del ritorno
   const ritornoV = P.ritorno.filter(([x, z]) => M.zonaDi(x, z) === "vicolo"); let messi = 0;
@@ -680,19 +705,7 @@ async function capitolo6() {
   if (quadro) { guardaVerso(quadro.position); cam.pitchExtra = .16; UI.dici("L'hai disegnato a cinque anni."); await pausa(4200) }
   guardaVerso(coppa.position); cam.pitchExtra = -.1; suono.vittoria();
   UI.dici("Sei al centro.");
-  await pausa(1400);
-  const sc = await UI.scegli([["coppa", "Prendi la coppa"], ["oltre", "Vai oltre"]]);
-  S.scelte.centro = sc; salva(); invia("centro", "scelta", sc); cam.pitchExtra = 0; UI.dici("");
-  if (sc === "coppa") {
-    const da = coppa.position.clone(); const a = () => camera.localToWorld(new THREE.Vector3(0, -.38, -1.05));
-    await animaValore(v => coppa.position.copy(da).lerp(a(), v), 0, 1, 1800); suono.vittoria();
-    await UI.velo("#fff3d6", 1, 1200);
-    $("#fine").classList.add("on");
-    await pausa(1200);
-    await new Promise(res => $("#rimetti").onclick = () => { suono.tocco(); res() });
-    invia("centro", "continua", "1"); S.scelte.continua = true; salva();
-    $("#fine").classList.remove("on"); coppa.position.copy(da); await UI.velo("#fff3d6", 0, 1400);
-  }
+  await pausa(4200); cam.pitchExtra = 0; UI.dici("");
   await letteraAlBambino();
   await attendi(6, 7);
   await oltre();
@@ -728,7 +741,15 @@ async function oltre() {
   }, 0, 1, 11000);
   UI.dici("Il labirinto continua.", 5000);
   await pausa(3000);
+  await polso();
   await cartaFinale();
+}
+/* senza tetto il labirinto torna quello che era. Il gesto lo regge chi conduce, dal palco. */
+async function polso() {
+  UI.dici("Questo labirinto, prima che lo coprissero, era uno spiazzo per ballare.<br>Si stava in tanti, tenendosi per i polsi.");
+  await pausa(8000); suono.piano(true);
+  UI.dici(S.live && !LIBERO ? "Posa il telefono.<br>Se vuoi, cerca il polso di chi hai accanto." : "Posa il telefono.<br>Se c'è qualcuno accanto a te, cerca il suo polso.");
+  await pausa(4000); await UI.scegli([["carta", "La mia strada"]], "una"); suono.piano(false);
 }
 
 /* il disegno dei cinque anni, incorniciato sul muro dietro la coppa */
@@ -770,11 +791,10 @@ async function cartaFinale() {
   UI.dici(""); // la frase «Il labirinto continua» non deve restare sopra la carta
   const s = S.scelte, righe = [];
   if (s.sogno) righe.push(["5 anni", s.sogno === "nonlo" ? "non sapevi cosa volevi fare" : "volevi " + s.sognoTesto]);
-  if (s.strada) righe.push(["18 anni", (s.strada === "sogno" ? "hai riaperto la porta del sogno" : "hai scelto " + s.stradaTesto) + `, in ${s.secondi === 1 ? "1 secondo" : s.secondi + " secondi"}, tra ${s.gruppo} porte`]);
+  if (s.strada) righe.push(["18 anni", (s.strada === "sogno" ? "hai riaperto la porta del sogno" : "hai scelto " + s.stradaTesto) + `, in ${s.secondi === 1 ? "1 secondo" : s.secondi + " secondi"}, tra ${s.gruppo} porte` + (s.lasciataTesto ? (s.lasciataTesto === "?" ? "; ti mancherà quella col punto interrogativo" : `; ti mancherà ${s.lasciataTesto}`) : "")]);
   if (s.esito) righe.push(["23 anni", s.speranza === s.esito ? "la moneta ha detto quello che speravi" : (s.seguito === "speranza" ? "hai seguito la speranza, contro la moneta" : "hai seguito la moneta, contro la speranza")]);
-  if (s.oracolo) righe.push(["28 anni", s.oracolo === "strada" ? "hai chiesto la strada all'oracolo" : "hai chiesto all'oracolo di farti una domanda"]);
+  if (s.oracolo === "racconta" || s.oracolo === "no") righe.push(["28 anni", s.oracolo === "racconta" ? "hai voluto sapere che vita avresti avuto" : "hai preferito non sapere che vita avresti avuto"]);
   if (s.segno !== undefined) righe.push(["35 anni", s.segno ? "hai lasciato un segno nel vicolo cieco" : s.spinte ? "hai spinto il muro " + s.spinte + (s.spinte > 1 ? " volte" : " volta") : "hai girato le spalle al muro"]);
-  if (s.centro) righe.push(["Da grande", s.centro === "coppa" ? "hai preso la coppa, poi l'hai rimessa a posto" : "hai superato la coppa e hai continuato"]);
   if (s.messaggio) righe.push([S.nome ? "A " + S.nome : "A te, a 5 anni", "«" + s.messaggio + "»"]);
   if (S.presenti > 1 && !LIBERO) righe.push(["In sala", `altre ${S.presenti - 1} ${S.presenti === 2 ? "persona" : "persone"}, nello stesso momento, ciascuna nel suo labirinto`.replace("altre 1 persona", "un'altra persona")]);
   $("#carta-righe").innerHTML = righe.map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join("");
@@ -816,7 +836,7 @@ function segnaPasso(cap) { ls.set("dg3-passo", { cap, t: Date.now(), cammino: S.
 /* un errore in un capitolo non deve fermare il telefono: si passa al capitolo dopo */
 async function recupera(i, e) {
   console.error(e); S.onTap = null; S.interattivi = []; S.disegno = null; S.sblocca = null; cam.giro = null; cam.occhioFisso = null; cam.pitchExtra = 0; oscurita = 1; torcia.intensity = 0; finitura.uniforms.buio.value = 0; luceMoneta.intensity = 0;
-  UI.togli(); UI.dici(""); tetto.chiudi(); suono.piano(false); $("#fine").classList.remove("on"); $("#lettera").classList.remove("on");
+  UI.togli(); UI.dici(""); tetto.chiudi(); suono.piano(false); $("#lettera").classList.remove("on");
   const nomi = ["cameretta", "scuola", "notte", "oracolo", "vicolo", "centro"], P = S.lab.percorsi; if (i < 5) cam.pos.copy(puntoAttesa(P[nomi[i]].ritorno.at(-1), P[nomi[i + 1]].andata[0]));
   await UI.velo("#000", 0, 300);
 }
@@ -897,4 +917,4 @@ $("#entra").onclick = entra;
 { const b = $("#muto"), mostra = () => { b.textContent = suono.muto ? "suono spento" : "suono"; b.classList.toggle("spento", suono.muto) }; mostra(); b.onclick = () => { suono.muta(!suono.muto); mostra() } }
 prepara().catch(e => { console.error(e); window.__dgFallito ? window.__dgFallito(e) : ($("#entra").textContent = "Il telefono non regge il 3D") });
 requestAnimationFrame(ciclo);
-window.__dg = { S, cam, UI, M, scena, camera, renderer, salta: k => S.palco = k, oltre, finitura, emisfero, luna, get oscurita() { return oscurita } };
+window.__dg = { S, cam, UI, M, scena, camera, renderer, vociPer, salta: k => S.palco = k, oltre, finitura, emisfero, luna, get oscurita() { return oscurita } };
