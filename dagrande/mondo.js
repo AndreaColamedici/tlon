@@ -276,7 +276,99 @@ export async function costruisci(scena, lab, { base = "../", qualita = 1, env } 
     if (gz.length) { scena.add(new THREE.Mesh(mergeGeometries(gz), rosso)); scena.add(new THREE.Mesh(mergeGeometries(go), ocra)) }
   }
   arreda(scena, lab, mondo, r, base, env);
+  oggetti(scena, lab);
   return mondo;
+}
+
+/* ---------- oggetti a terra lungo i corridoi ----------
+   Contro i muri, fuori dalla linea su cui cammina la camera; mai nelle stanze delle porte.
+   Ogni tipo è una sola geometria ripetuta, colorata copia per copia: poche chiamate di disegno, nessuna texture nuova.
+   Un caso a parte, così gli arredi di prima restano dove erano. */
+function oggetti(scena, lab) {
+  const r = caso(semeDa("oggetti:" + lab.seme)), P = lab.percorsi, su = new THREE.Vector3(0, 1, 0);
+  const tipi = new Map(), mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .8 });
+  const tipo = (nome, geo) => { if (!tipi.has(nome)) tipi.set(nome, { geo, pezzi: [] }); return tipi.get(nome) };
+  // mette un pezzo in coordinate del muro: lungo (lungo il muro), fuori (verso il corridoio), y, giro sul posto
+  const metti = (nome, geo, f, lungo, fuori, y, colore, giro = 0, scala) => {
+    const o = new THREE.Object3D(), t = new THREE.Vector3().crossVectors(f.n, su);
+    o.position.copy(f.p).addScaledVector(f.n, fuori).addScaledVector(t, lungo).setY(y);
+    o.rotation.y = Math.atan2(f.n.x, f.n.z) + giro; if (scala) o.scale.copy(scala);
+    tipo(nome, geo).pezzi.push([o, new THREE.Color(colore)]);
+  };
+  const sale = Object.keys(P).filter(k => P[k].rett).map(k => inRett(k, P[k].rett)), inSala = c => sale.some(f => f(...c));
+  const celleDi = zona => { const out = []; for (const k in P) for (const lista of [P[k].andata, P[k].ritorno]) for (const c of lista || []) if (zonaDi(...c) === zona && !inSala(c)) out.push(c); return out };
+  const faccia = ([x, z]) => { for (const lato of mescola([..."NSEW"], r)) { if (lab.occupate?.has(x + "," + z + lato)) continue; const f = facciaMuro(lab, x, z, lato); if (f) return f } return null };
+  const ogni = (zona, passo, fn) => { const celle = celleDi(zona), visti = new Set(); celle.forEach((c, i) => { if (i < 1 || i % passo !== 0 || visti.has(c.join())) return; visti.add(c.join()); const f = faccia(c); if (f) fn(f) }) };
+  const sc = (x, y, z) => new THREE.Vector3(x, y, z), tra = (a, b) => a + r() * (b - a), di = a => a[Math.floor(r() * a.length)];
+  const G = {
+    cubo: new THREE.BoxGeometry(.16, .16, .16), libro: new THREE.BoxGeometry(.24, .05, .32), pastello: new THREE.CylinderGeometry(.012, .012, .16, 6),
+    piano: new THREE.BoxGeometry(.9, .04, .55), gamba: new THREE.BoxGeometry(.04, .72, .04), seduta: new THREE.BoxGeometry(.4, .04, .4), schienale: new THREE.BoxGeometry(.4, .38, .03), gambina: new THREE.BoxGeometry(.03, .44, .03), zaino: new THREE.BoxGeometry(.3, .42, .18),
+    bidone: new THREE.CylinderGeometry(.27, .24, .9, 14), asse: new THREE.BoxGeometry(1.3, .06, .38), fianco: new THREE.BoxGeometry(.07, .44, .36), scatola: new THREE.BoxGeometry(1, 1, 1),
+    bottiglia: new THREE.CylinderGeometry(.035, .04, .28, 8),
+    anfora: new THREE.LatheGeometry([[0, 0], [.09, 0], [.17, .12], [.2, .3], [.16, .48], [.07, .56], [.06, .66], [.1, .7], [0, .7]].map(([x, y]) => new THREE.Vector2(x, y)), 14),
+    colonna: new THREE.CylinderGeometry(.21, .24, 1, 16),
+  };
+  const VIVI = [0xe2523f, 0x3d7fd9, 0xf2c94c, 0x55b07a, 0x9b6fd0, 0xf29a32], CARTONE = [0xa47b4f, 0x9a7048, 0xb08a5c];
+  // come si riempie una parete in ciascuna zona
+  const riempi = {
+  // cameretta: costruzioni, libri, pastelli per terra
+  cameretta: f => {
+    const l0 = tra(-.45, .45);
+    for (let i = 0; i < 3 + Math.floor(r() * 3); i++) metti("cubo", G.cubo, f, l0 + tra(-.25, .25), tra(.12, .35), .08 + (r() < .25 ? .16 : 0), di(VIVI), r() * 3);
+    if (r() < .6) for (let i = 0, n = 2 + Math.floor(r() * 3); i < n; i++) metti("libro", G.libro, f, l0 + .45 + tra(-.02, .02), .2, .025 + i * .05, di(VIVI), tra(-.3, .3));
+    for (let i = 0; i < 4; i++) metti("pastello", G.pastello, f, l0 - .4 + tra(-.15, .15), tra(.15, .4), .012, di(VIVI), Math.PI / 2 + r() * 3, sc(1, 1, 1)), tipo("pastello").pezzi.at(-1)[0].rotation.z = Math.PI / 2;
+  },
+  // scuola: banchi con la sedia, zaini lasciati a terra
+  scuola: f => {
+    const l0 = tra(-.3, .05), legno = 0xb88a58, ferro = 0x59626b, s0 = l0 + .72;
+    metti("piano", G.piano, f, l0, .32, .74, legno);
+    for (const [a, b] of [[-.4, .1], [.4, .1], [-.4, .54], [.4, .54]]) metti("gamba", G.gamba, f, l0 + a, b, .36, ferro);
+    metti("seduta", G.seduta, f, s0, .32, .45, legno); metti("schienale", G.schienale, f, s0, .13, .66, legno);
+    for (const [a, b] of [[-.17, .15], [.17, .15], [-.17, .49], [.17, .49]]) metti("gambina", G.gambina, f, s0 + a, b, .22, ferro);
+    if (r() < .7) metti("zaino", G.zaino, f, l0 - .2, .2, .21, di(VIVI), tra(-.4, .4));
+  },
+  // notte: bidoni, panchine, scatoloni accatastati
+  notte: f => {
+    const k = r(), l0 = k < .35 ? tra(-.5, 0) : k < .65 ? tra(-.3, .3) : tra(-.5, .5);
+    if (k < .35) { metti("bidone", G.bidone, f, l0, .3, .45, di([0x2f4a3a, 0x3a3f46, 0x4a3a2a])); if (r() < .5) metti("bidone", G.bidone, f, l0 + .6, .3, .45, di([0x2f4a3a, 0x3a3f46])) }
+    else if (k < .65) { metti("asse", G.asse, f, l0, .25, .45, 0x6b4a2b); for (const a of [-.55, .55]) metti("fianco", G.fianco, f, l0 + a, .25, .22, 0x1d1f24) }
+    else for (let i = 0, n = 2 + Math.floor(r() * 3); i < n; i++) { const w = tra(.35, .55), h = tra(.25, .4); metti("scatola", G.scatola, f, l0 + (i % 2) * .5 - .25, w / 2 + .03, i > 1 ? .4 + h / 2 : h / 2, di(CARTONE), tra(-.2, .2), sc(w, h, w * .9)) }
+  },
+  // oracolo: pacchi arrivati e mai aperti
+  oracolo: f => {
+    const l0 = tra(-.6, .6);
+    for (let i = 0, n = 2 + Math.floor(r() * 4), y = 0; i < n; i++) { const w = tra(.25, .5), h = tra(.15, .35); metti("scatola", G.scatola, f, l0 + tra(-.08, .08), .28, y + h / 2, di(CARTONE), tra(-.3, .3), sc(w, h, w * .8)); y += h }
+  },
+  // vicolo e ritorno: cassette di legno e bottiglie vuote
+  vicolo: f => {
+    const l0 = tra(-.6, .3);
+    metti("scatola", G.scatola, f, l0, .2, .15, 0x5a3d22, tra(-.2, .2), sc(.5, .3, .36));
+    if (r() < .5) metti("scatola", G.scatola, f, l0 + tra(-.05, .05), .2, .45, 0x6b4a2b, tra(-.3, .3), sc(.5, .3, .36));
+    for (let i = 0, n = Math.floor(r() * 4); i < n; i++) metti("bottiglia", G.bottiglia, f, l0 + .3 + i * .08, tra(.08, .3), .14, di([0x2f5a3a, 0x4a3a1a, 0x23402f]));
+  },
+  // centro: anfore e colonne spezzate di Cnosso
+  centro: f => {
+    const l0 = tra(-.55, .2);
+    if (r() < .55) { metti("anfora", G.anfora, f, l0, .24, 0, di([0xb5653a, 0xa65a33, 0xc0744a])); if (r() < .5) metti("anfora", G.anfora, f, l0 + .45, .2, 0, 0xb5653a, 0, sc(.8, .8, .8)) }
+    else { const h = tra(.35, 1.1); metti("colonna", G.colonna, f, l0, .3, h / 2, 0xe9dcc0, 0, sc(1, h, 1)) }
+  }
+  };
+  riempi.ritorno = riempi.vicolo;
+  // lungo il cammino, contro i muri, fuori dalla linea della camera
+  for (const [zona, passo] of [["cameretta", 2], ["scuola", 3], ["notte", 2], ["oracolo", 2], ["vicolo", 2], ["ritorno", 2], ["centro", 2]]) ogni(zona, passo, riempi[zona]);
+  // e nei corridoi dove il cammino non passa: si vedono passando e non intralciano nessuno
+  const cammino = new Set(); for (const k in P) for (const lista of [P[k].andata, P[k].ritorno]) for (const c of lista || []) cammino.add(c.join());
+  const letto = inRett("cameretta", PIANTA.cameretta.letto);
+  for (let z = 0; z < N; z++) for (let x = 0; x < N; x++) {
+    const zona = zonaDi(x, z); if (!riempi[zona] || cammino.has(x + "," + z) || inSala([x, z]) || letto(x, z) || r() > .4) continue;
+    const f = faccia([x, z]); if (f) riempi[zona](f);
+  }
+  for (const { geo, pezzi } of tipi.values()) {
+    if (!pezzi.length) continue;
+    const m = new THREE.InstancedMesh(geo, mat, pezzi.length);
+    pezzi.forEach(([o, c], i) => { o.updateMatrix(); m.setMatrixAt(i, o.matrix); m.setColorAt(i, c) });
+    m.instanceMatrix.needsUpdate = true; m.instanceColor.needsUpdate = true; scena.add(m);
+  }
 }
 
 /* ---------- le cose dentro il labirinto ---------- */
@@ -353,6 +445,7 @@ function arreda(scena, lab, mondo, r, base, env) {
       if (i < 1 || i > celle.length - 2) return;
       for (const lato of "NSEW") {
         const f = facciaMuro(lab, x, z, lato); if (!f || r() < .35) continue;
+        (lab.occupate ||= new Set()).add(x + "," + z + lato);
         const k0 = Math.floor(r() * cols.length);
         for (let k = -1; k <= 1; k++) { const a = new THREE.Object3D(); sulMuro(a, f, .925); a.position.addScaledVector(f.n, .21).addScaledVector(new THREE.Vector3().crossVectors(f.n, new THREE.Vector3(0, 1, 0)), k * .52); banchi[k0].push(a) }
       }
@@ -391,7 +484,7 @@ function arreda(scena, lab, mondo, r, base, env) {
   }
   // --- oracolo: schermi che scorrono
   {
-    const voci = ["Ti potrebbe interessare", "Percorso consigliato per te", "Chi ha scelto come te ha scelto anche", "Il 73% delle persone come te", "Continua da dove eri rimasto", "La strada più veloce", "Nuovo per te", "Perché hai scelto", "Altri hanno guardato anche", "Sei a 4 passi dalla meta", "Basato sulle tue scelte", "Più votato"];
+    const voci = ["Ti potrebbe interessare", "Percorso consigliato per te", "Chi ha scelto come te ha scelto anche", "Il 73% delle persone come te", "Continua da dove eri rimasto", "La strada più veloce", "Nuovo per te", "Perché hai scelto", "Altri hanno guardato anche", "Sei a 4 passi dalla meta", "Basato sulle tue scelte", "Più votato", "Per te: un secondo lavoro", "Meta a 4 passi (circa)", "Hai accettato le condizioni"];
     const larg = 256, alt = 1024, cnv = document.createElement("canvas"); cnv.width = larg; cnv.height = alt; const g = cnv.getContext("2d");
     const st = new THREE.CanvasTexture(cnv); st.colorSpace = THREE.SRGBColorSpace;
     let scorre = 0, ultimo = 0;

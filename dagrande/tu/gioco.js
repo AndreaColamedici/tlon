@@ -331,6 +331,8 @@ function ciclo() {
 export const SOGNI = { luna: "andare sulla luna", animali: "curare gli animali", gol: "fare gol", ballare: "ballare", incendi: "spegnere gli incendi", scoprire: "scoprire cose nuove", dipingere: "dipingere", insegnare: "insegnare", cantare: "cantare", cucinare: "cucinare", volare: "pilotare gli aerei", misteri: "risolvere misteri", curare: "curare le persone", inventare: "inventare macchine", esplorare: "esplorare il mondo", scavare: "scavare tesori antichi" };
 /* il ritardo: la voce del bottone e come la si dice in una frase */
 const RITARDI = { casa: { voce: "La casa", su: "Sulla casa" }, lavoro: { voce: "Il lavoro", su: "Sul lavoro" }, soldi: { voce: "I soldi", su: "Sui soldi" }, amore: { voce: "L'amore", su: "Sull'amore" }, figli: { voce: "I figli", su: "Sui figli" }, niente: { voce: "Su niente", su: "Su niente" } };
+/* a chi lo si è detto, il ritardo: la voce del bottone e come la si conta */
+const DETTI = { nessuno: { voce: "A nessuno", su: "A nessuno" }, persona: { voce: "A una persona cara", su: "A una persona cara" }, macchina: { voce: "A un'intelligenza artificiale", su: "A una macchina" }, telefono: { voce: "A questo telefono, adesso", su: "Solo a questo telefono" } };
 export const STRADE = ["Medicina", "Giurisprudenza", "Ingegneria", "Economia", "Lettere", "Filosofia", "Psicologia", "Architettura", "Design", "Informatica", "Biologia", "Lingue", "Scienze politiche", "Belle Arti", "Conservatorio", "Fisica", "Matematica", "Infermieristica", "Scienze della formazione", "Cinema", "Agraria", "Lavorare subito", "Un anno all'estero", "Servizio civile"];
 
 /* ---------- il tetto ----------
@@ -431,7 +433,8 @@ async function raccontaSala1(k, soloSalva, aggiungi) {
   if (k === 4) { const o = D.oracolo?.scelta || {}, tot = (o.racconta || 0) + (o.no || 0); if (tot > 1) t = `${pc(o.racconta || 0, tot)}% della sala ha voluto sapere che vita avrebbe avuto. Gli altri hanno preferito di no.` }
   if (k === 5) { const a = D.vicolo?.azione || {}; if (som(a) > 1) t = `${a.segno || 0} persone hanno lasciato un segno nel vicolo cieco.` }
   if (k === 6) { const ri = D.vicolo?.ritardo || {}, voci = Object.entries(ri).filter(([v]) => RITARDI[v]), tot = voci.reduce((a, [, c]) => a + c, 0), io = sc.ritardo, n = ri[io] || 1, qui = S.live && !LIBERO ? "in questa sala" : "tra chi è passato di qui", altri = tot - (ri.niente || 0);
-    if (tot > 1) { if (io && io !== "niente") t = n > 1 ? `${RITARDI[io].su}, ${n} persone ${qui}. Ciascuna crede di essere l'unica.` : `${RITARDI[io].su}, per ora, soltanto tu.`; else if (altri > 1) t = `${altri} persone ${qui} si sentono in ritardo su qualcosa. Ciascuna crede di essere l'unica.`; t += `${t ? "<br><br>" : ""}${voci.sort((a, b) => b[1] - a[1]).map(([v, c]) => `${RITARDI[v].su} ${c}`).join(" · ")}` } }
+    if (tot > 1) { if (io && io !== "niente") t = n > 1 ? `${RITARDI[io].su}, ${n} persone ${qui}. Ciascuna crede di essere l'unica.` : `${RITARDI[io].su}, per ora, soltanto tu.`; else if (altri > 1) t = `${altri} persone ${qui} si sentono in ritardo su qualcosa. Ciascuna crede di essere l'unica.`; t += `${t ? "<br><br>" : ""}${voci.sort((a, b) => b[1] - a[1]).map(([v, c]) => `${RITARDI[v].su} ${c}`).join(" · ")}` }
+    const de = D.vicolo?.detto || {}; if (som(de) > 1) t += `<br><br>L'hanno detto: ${Object.keys(DETTI).filter(v => de[v]).map(v => `${DETTI[v].su.toLowerCase()} ${de[v]}`).join(" · ")}` }
   if (soloSalva) { S._sala = t; return }
   const tutto = [aggiungi ? S._sala : "", t].filter(Boolean).join("<br><br>"); S._sala = "";
   if (tutto) { $("#sala").innerHTML = `<b>La sala</b>${tutto}`; $("#sala").classList.add("on") }
@@ -656,6 +659,7 @@ async function capitolo5() {
   UI.dici("Su che cosa ti senti in ritardo?<br>Nessuno saprà che sei tu.");
   const ritardo = await UI.scegli(Object.entries(RITARDI).map(([k, v]) => [k, v.voce]));
   Object.assign(S.scelte, { spinte, segno: !!segno, ritardo }); salva(); invia("vicolo", "azione", segno ? "segno" : spinte ? "spinto" : "indietro"); invia("vicolo", "ritardo", ritardo);
+  if (ritardo !== "niente") { UI.dici("A chi l'hai detto?"); const detto = await UI.scegli(Object.entries(DETTI).map(([k, v]) => [k, v.voce])); S.scelte.detto = detto; salva(); invia("vicolo", "detto", detto) }
   UI.dici(""); cam.yawT = cam.yaw + Math.PI; await pausa(1100);
   // i segni degli altri lungo la strada del ritorno
   const ritornoV = P.ritorno.filter(([x, z]) => M.zonaDi(x, z) === "vicolo"); let messi = 0;

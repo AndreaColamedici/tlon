@@ -23,12 +23,13 @@ export const CAPITOLI = [
   { k: "scuola", eta: "18 anni", titolo: "Le porte", zona: [1, 0], nota: "Fine del primo movimento: i telefoni sono fermi, abbassano il suono, si apre il tetto e chi guarda vede le luci degli altri. Scegliere <i>di</i> e scegliere <i>tra</i>; sullo schermo anche la porta che alla sala mancherà di più, che ciascuno ha visto chiudersi e ritroverà ai ventotto anni. Poi la freccia apre il secondo movimento (ventitré e ventotto anni)." },
   { k: "notte", eta: "23 anni", titolo: "La moneta", zona: [2, 0], nota: "Secondo movimento, in corso: dopo la moneta i telefoni vanno da soli all'oracolo. Quando il contatore sale, freccia: dati dell'oracolo." },
   { k: "oracolo", eta: "28 anni", titolo: "L'oracolo", zona: [2, 1], nota: "Fine del secondo movimento: i telefoni sono fermi. Ognuno ha ritrovato la porta che ha lasciato: lo schermo mostra chi ha voluto sapere che vita avrebbe avuto e chi no. Poi la freccia apre il terzo movimento (il vicolo e il centro)." },
-  { k: "vicolo", eta: "35 anni", titolo: "Il vicolo cieco", zona: [2, 2], nota: "Terzo movimento, in corso: nel vicolo i telefoni chiedono su che cosa ci si sente in ritardo, poi arrivano al centro, scrivono a chi erano a cinque anni e si fermano. Intanto si riempie la galleria dei segni." },
+  { k: "vicolo", eta: "35 anni", titolo: "Il vicolo cieco", zona: [2, 2], nota: "Terzo movimento, in corso: nel vicolo i telefoni chiedono su che cosa ci si sente in ritardo e a chi lo si è detto, poi arrivano al centro, scrivono a chi erano a cinque anni e si fermano. Intanto si riempie la galleria dei segni." },
   { k: "centro", eta: "Da grande", titolo: "Il centro", zona: [1, 1], nota: "I telefoni sono fermi al centro con il tetto aperto: sopra le luci ognuno legge quanti, in questa sala, sono in ritardo sulla stessa cosa, e lo schermo mostra il conto intero. Quando sei pronto, la freccia fa salire tutta la sala sopra i muri nello stesso momento." },
   { k: "fine", eta: "", titolo: "Il labirinto continua", sotto: "Grazie", zona: null, nota: "Tutti i telefoni salgono sopra i muri: ognuno vede il suo filo rosso e il labirinto che continua. Dopo circa quindici secondi il telefono dice che il labirinto era uno spiazzo per ballare, tenendosi per i polsi; otto secondi dopo chiede di posarlo e di cercare il polso di chi si ha accanto. Quel gesto lo reggi tu dal palco. Poi la carta, sul telefono di ciascuno. Un minuto dopo il tasto, a polso finito, lo schermo mostra il riepilogo di tutti i numeri della sala, con il totale del ritardo in rosso: si legge da lì, senza foglio. Per averlo subito, un'altra freccia avanti. Congedo." },
 ];
 const SOGNI = { luna: "andare sulla luna", animali: "curare gli animali", gol: "fare gol", ballare: "ballare", incendi: "spegnere gli incendi", scoprire: "scoprire cose nuove", dipingere: "dipingere", insegnare: "insegnare", cantare: "cantare", cucinare: "cucinare", volare: "pilotare gli aerei", misteri: "risolvere misteri", curare: "curare le persone", inventare: "inventare macchine", esplorare: "esplorare il mondo", scavare: "scavare tesori antichi" };
 const RITARDI = { lavoro: "Sul lavoro", casa: "Sulla casa", soldi: "Sui soldi", amore: "Sull'amore", figli: "Sui figli", niente: "Su niente" };
+const DETTI = { nessuno: "a nessuno", persona: "a una persona cara", macchina: "a una macchina", telefono: "solo a questo telefono" };
 const nomePorta = k => k === "sogno" ? "La porta del sogno" : STRADE[+String(k).slice(1)] || k;
 const STRADE = ["Medicina", "Giurisprudenza", "Ingegneria", "Economia", "Lettere", "Filosofia", "Psicologia", "Architettura", "Design", "Informatica", "Biologia", "Lingue", "Scienze politiche", "Belle Arti", "Conservatorio", "Fisica", "Matematica", "Infermieristica", "Scienze della formazione", "Cinema", "Agraria", "Lavorare subito", "Un anno all'estero", "Servizio civile"];
 
@@ -122,7 +123,7 @@ function simula() {
     scuola: { gruppo: { 24: 118, 6: 113 }, porta: { s5: 14, s0: 21, sogno: 26, s21: 18, s3: 17, s8: 15, s9: 22 }, secondi: { 4: 20, 7: 30, 11: 25, 16: 30, 23: 26, 31: 22, 45: 18, 62: 11 }, sicurezza: { 1: 71, 2: 104, 3: 52 }, lasciata: { s19: 38, s4: 31, sogno: 27, s5: 19, nessuna: 22 } },
     notte: { speranza: { testa: 118, croce: 104 }, esito: { testa: 109, croce: 113 }, seguito: { uguali: 104, moneta: 41, speranza: 77 } },
     oracolo: { scelta: { racconta: 84, no: 131 } },
-    vicolo: { azione: { segno: 96, spinto: 61, indietro: 52 }, spinte: { 1: 40, 2: 15, 3: 6 }, ritardo: { lavoro: 72, casa: 41, soldi: 38, amore: 29, figli: 17, niente: 12 } },
+    vicolo: { azione: { segno: 96, spinto: 61, indietro: 52 }, spinte: { 1: 40, 2: 15, 3: 6 }, ritardo: { lavoro: 72, casa: 41, soldi: 38, amore: 29, figli: 17, niente: 12 }, detto: { nessuno: 88, persona: 61, macchina: 19, telefono: 29 } },
     progresso: { capitolo: { "1.0": 20, "2.0": 30, "3.0": 40, "4.0": 40, "5.2": 50, "6.0": 40 } } };
   segniCache = Array.from({ length: 18 }, () => ({ punti: JSON.stringify(scarabocchio()) }));
   disegnaDati();
@@ -159,8 +160,8 @@ function disegnaDati() {
     const a = D.vicolo?.azione || {};
     h = `${barre([["ha lasciato un segno", a.segno || 0, "rosso"], ["ha spinto il muro", a.spinto || 0], ["ha girato le spalle al muro", a.indietro || 0]], Math.max(1, ...Object.values(a)))}<div class="segni">${segniCache.slice(0, 12).map(sg => `<canvas data-punti='${typeof sg.punti === "string" ? sg.punti.replace(/'/g, "") : JSON.stringify(sg.punti)}' width="160" height="120"></canvas>`).join("")}</div>`;
   } else if (s === 6) {
-    const ri = Object.entries(D.vicolo?.ritardo || {}).filter(([k]) => RITARDI[k] && k !== "niente").sort((a, b) => b[1] - a[1]), inr = ri.reduce((a, [, n]) => a + n, 0), niente = D.vicolo?.ritardo?.niente || 0;
-    h = `<div class="cifra riga"><b>${fmt(inr)}</b><span>${inr === 1 ? "persona si sente" : "persone si sentono"} in ritardo su qualcosa. Ciascuna crede di essere l'unica.${niente ? ` Su niente: ${fmt(niente)}.` : ""}</span></div>${barre(ri.map(([k, n]) => [RITARDI[k], n, k === ri[0][0] ? "rosso" : ""]), ri[0]?.[1] || 1)}`;
+    const ri = Object.entries(D.vicolo?.ritardo || {}).filter(([k]) => RITARDI[k] && k !== "niente").sort((a, b) => b[1] - a[1]), inr = ri.reduce((a, [, n]) => a + n, 0), niente = D.vicolo?.ritardo?.niente || 0, nessuno = D.vicolo?.detto?.nessuno || 0;
+    h = `<div class="cifra riga"><b>${fmt(inr)}</b><span>${inr === 1 ? "persona si sente" : "persone si sentono"} in ritardo su qualcosa. ${nessuno ? `${fmt(nessuno)} non l'${nessuno === 1 ? "ha" : "hanno"} detto a nessuno.` : "Ciascuna crede di essere l'unica."}${niente ? ` Su niente: ${fmt(niente)}.` : ""}</span></div>${barre(ri.map(([k, n]) => [RITARDI[k], n, k === ri[0][0] ? "rosso" : ""]), ri[0]?.[1] || 1)}`;
   }
   if (box.dataset.s !== String(s) || box.dataset.h !== h) { box.dataset.s = s; box.dataset.h = h; box.innerHTML = h; disegnaSegni() }
   riepilogo(s, D, presenti);
@@ -184,7 +185,7 @@ function riepilogo(s, D, presenti) {
       <div class="t" style="--i:3"><b class="nome" data-k="manca"></b><span>la porta che alla sala mancherà di più</span><em data-k="mancan"></em></div>
       <div class="t" style="--i:4"><b data-k="contrario"></b><span>ha sperato il contrario di quello che è uscito dalla moneta</span><em data-k="seguito"></em></div>
       <div class="t" style="--i:5"><b data-k="nosapere"></b><span>ha preferito non sapere che vita avrebbe avuto</span><em data-k="sapere"></em></div>
-      <div class="t ritardo" style="--i:6"><b data-k="ritardo"></b><div><span data-k="ritardot"></span><em data-k="ritardi"></em></div></div>`;
+      <div class="t ritardo" style="--i:6"><b data-k="ritardo"></b><div><span data-k="ritardot"></span><em data-k="ritardi"></em><em data-k="detti"></em></div></div>`;
   }
   const sogni = D.cameretta?.sogno || {}, totS = somma(sogni), top = Object.entries(sogni).filter(([k]) => k !== "nonlo").sort((a, b) => b[1] - a[1])[0];
   const g = D.scuola?.gruppo || {}, sec = D.scuola?.secondi;
@@ -200,8 +201,9 @@ function riepilogo(s, D, presenti) {
     manca: la ? nomePorta(la[0]) : "–", mancan: la ? `${fmt(la[1])} ${la[1] === 1 ? "persona" : "persone"}` : "",
     contrario: cento(div, totN), seguito: totN ? `Al bivio, ${fmt(sg.speranza || 0)} hanno seguito la speranza e ${fmt(sg.moneta || 0)} la moneta` : "",
     nosapere: cento(o.no || 0, totO), sapere: totO ? `${fmt(o.racconta || 0)} hanno voluto saperlo` : "",
-    ritardo: fmt(inr), ritardot: `${inr === 1 ? "persona si sente" : "persone si sentono"} in ritardo su qualcosa. Ciascuna crede di essere l'unica.`,
+    ritardo: fmt(inr), ritardot: `${inr === 1 ? "persona si sente" : "persone si sentono"} in ritardo su qualcosa.${somma(D.vicolo?.detto) ? "" : " Ciascuna crede di essere l'unica."}`,
     ritardi: ri.map(([k, n]) => `${RITARDI[k]} ${fmt(n)}`).concat(niente ? [`Su niente ${fmt(niente)}`] : []).join("  ·  "),
+    detti: somma(D.vicolo?.detto) ? "L'hanno detto " + Object.keys(DETTI).filter(k => D.vicolo.detto[k]).map(k => `${DETTI[k]} ${fmt(D.vicolo.detto[k])}`).join("  ·  ") : "",
   };
   for (const [k, t] of Object.entries(v)) { const el = box.querySelector(`[data-k="${k}"]`); if (el && el.textContent !== t) el.textContent = t }
 }
