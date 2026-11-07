@@ -58,12 +58,13 @@ body[data-s="0"] #angolo,body[data-s="7"] #angolo{opacity:0}
 #conta{font-size:calc(var(--u)*1.7);color:rgba(239,230,210,.8)}#conta b{font-family:Marcellus,serif;font-weight:400;font-size:calc(var(--u)*3);color:var(--ocra);margin-right:.15em}
 .stato{font:500 calc(var(--u)*1) "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,230,210,.45)}.stato.vivo{color:#9be3a8}
 #simulazione{font:500 calc(var(--u)*1) "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--robbia)}
-body[data-s="7"] #pannello{display:none}body[data-s="7"] .velo{background:linear-gradient(90deg,rgba(12,10,8,.93) 0%,rgba(12,10,8,.82) 62%,rgba(12,10,8,.35) 100%)}
+body[data-s="7"] #pannello{top:auto;bottom:calc(var(--u)*12);justify-content:flex-end}body[data-s="7"] .velo{background:linear-gradient(0deg,rgba(12,10,8,.85),rgba(12,10,8,0) 50%)}
+body.riep #pannello{display:none}body.riep .velo{background:linear-gradient(90deg,rgba(12,10,8,.93) 0%,rgba(12,10,8,.82) 62%,rgba(12,10,8,.35) 100%)}
 #riepilogo{position:fixed;left:calc(var(--u)*5);right:calc(var(--u)*22);top:calc(var(--u)*8);bottom:calc(var(--u)*7.5);display:none;grid-template-columns:repeat(3,1fr);align-content:start;gap:calc(var(--u)*1.3) calc(var(--u)*2.4);overflow:hidden}
-body[data-s="7"] #riepilogo{display:grid}
+body.riep #riepilogo{display:grid}
 /* durante il riepilogo il codice si fa piccolo nell'angolo e il contatore del piede è già nella prima scheda */
-body[data-s="7"] #qr{right:calc(var(--u)*3);bottom:calc(var(--u)*3);width:calc(var(--u)*16)}body[data-s="7"] #qr .q{width:calc(var(--u)*11);margin:0 auto;padding:calc(var(--u)*.7)}body[data-s="7"] #qr p{font-size:calc(var(--u)*1.1);margin-top:calc(var(--u)*.7)}body[data-s="7"] #qr #qr-sopra{font-size:calc(var(--u)*1.15);max-width:none;margin-bottom:calc(var(--u)*.8)}
-body[data-s="7"] #conta{display:none}
+body.riep #qr{right:calc(var(--u)*3);bottom:calc(var(--u)*3);width:calc(var(--u)*16)}body.riep #qr .q{width:calc(var(--u)*11);margin:0 auto;padding:calc(var(--u)*.7)}body.riep #qr p{font-size:calc(var(--u)*1.1);margin-top:calc(var(--u)*.7)}body.riep #qr #qr-sopra{font-size:calc(var(--u)*1.15);max-width:none;margin-bottom:calc(var(--u)*.8)}
+body.riep #conta{display:none}
 #riepilogo .capo{grid-column:1/-1;font:500 calc(var(--u)*1.25)/1 "DM Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--ocra);animation:entra 1.1s cubic-bezier(.2,.7,.2,1) both}
 #riepilogo .t{border-top:1px solid rgba(239,230,210,.18);padding-top:calc(var(--u)*1.1);animation:entra 1.1s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i)*.45s + .3s)}
 #riepilogo b{display:block;font-family:Marcellus,serif;font-weight:400;font-size:calc(var(--u)*4);line-height:1;color:var(--intonaco)}#riepilogo b i{font-style:normal}#riepilogo b small{font-size:.45em;color:var(--ocra);margin-left:.1em}
