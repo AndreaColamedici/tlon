@@ -19,7 +19,7 @@ const PROVA = PARAM.has("prova");
 const VEL = +PARAM.get("veloce") || 1;
 /* l'evento: sabato 7 novembre 2026 alle 14:50, BASE Milano. Prima delle 14 il labirinto è aperto, per provarlo, e ignora la scena del server;
    durante i telefoni seguono il palco; dalle 17 resta aperto e si attraversa quando si vuole. ?libero forza l'aperto, ?sala forza il dal vivo (prove). */
-const EVENTO = { inizio: Date.parse("2026-11-07T14:00:00+01:00"), fine: Date.parse("2026-11-07T17:00:00+01:00") };
+const EVENTO = { inizio: Date.parse("2026-11-07T12:00:00+01:00"), fine: Date.parse("2026-11-07T17:00:00+01:00") };
 const SALA = PARAM.has("sala");
 const ORA = PARAM.get("oggi") ? Date.parse(PARAM.get("oggi")) : Date.now();   // ?oggi=2026-11-09 per vedere in anteprima il labirinto come sarà dopo l'evento
 const DOPO = ORA >= EVENTO.fine, prima = () => !SALA && (PARAM.get("oggi") ? ORA : Date.now()) < EVENTO.inizio;   // si valuta ogni volta: una pagina aperta alle 13:50 deve seguire il palco alle 14:50 (vedi entra)
