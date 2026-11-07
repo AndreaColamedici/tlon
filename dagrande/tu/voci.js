@@ -131,6 +131,12 @@ const VOCI = {
     { s: "postit", testo: "Alla tua età io avevo già una casa", w: .32, h: .32, y: 1.5, colore: "#f7b9c4" },
     { s: "graffito", testo: "e adesso?", w: 1.1, h: .42, y: 2.1, colore: "#efe6d2" },
     { s: "graffito", testo: "non è tardi", w: 1.2, h: .42, y: 2.3, colore: "#f2c94c" },
+    { s: "manifesto", testa: "MUTUO 30 ANNI", corpo: "Tasso fisso. Rata costante. Fino ai 65.", w: .6, h: .84, y: 1.55, colore: "#1f4e79" },
+    { s: "bolla", testo: "Ma quindi tu cosa fai, di preciso?", w: 1.1, h: .26, y: 1.7 },
+    { s: "postit", testo: "Prenotare il check-up", w: .3, h: .3, y: 1.45, colore: "#f6e27a" },
+    { s: "manifesto", testa: "SPEED DATING OVER 35", corpo: "Giovedì. Aperitivo incluso.", w: .6, h: .84, y: 1.55, colore: "#a0306a" },
+    { s: "bolla", testo: "{n}, e i figli?", w: .9, h: .24, y: 1.74 },
+    { s: "graffito", testo: "ancora qui", w: 1.1, h: .42, y: 2.15, colore: "#9fd3c7" },
   ],
   ritorno: [
     { s: "inciso", testo: "ΜΗΔΕΝ ΑΓΑΝ", w: 1.6, h: .38, y: 2.6 },

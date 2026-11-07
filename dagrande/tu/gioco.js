@@ -94,13 +94,13 @@ const giroscopio = { on: false, yaw: 0, pitch: 0, roll: 0, cy: null, cp: 0 };
     if (giroscopio.cy === null) { giroscopio.cy = e2.y; giroscopio.cp = e2.x } giroscopio.on = true;
   });
 }
-function cammina(punti, { velocita, guarda = 1.6, mira = null } = {}) {
+function cammina(punti, { velocita, guarda = 1.6, mira = null, durata = 26 } = {}) {
   const pts = [cam.pos.clone().setY(0)];
   for (const p of punti) if (p.distanceTo(pts[pts.length - 1]) > .35) pts.push(p.clone().setY(0));
   if (pts.length < 2) return Promise.resolve();
   const curva = new THREE.CatmullRomCurve3(pts, false, "centripetal", .5), L = curva.getLength();
   S.cammino.push(...pts.slice(1));
-  return new Promise(res => { cam.giro = { curva, L, s: 0, v: velocita, vmin: L / 26, guarda, mira, res } }); // nessun tratto dura più di 26 secondi (più le soste davanti alle voci)
+  return new Promise(res => { cam.giro = { curva, L, s: 0, v: velocita, vmin: L / durata, guarda, mira, res } }); // nessun tratto dura più di 26 secondi (più le soste davanti alle voci)
 }
 const celle = cs => cs.map(([x, z]) => M.centroCella(x, z));
 function guardaVerso(p, subito) { const d = p.clone().sub(cam.pos); cam.yawT = Math.atan2(-d.x, -d.z); if (subito) cam.yaw = cam.yawT }
@@ -644,7 +644,10 @@ async function capitolo5() {
   S.cap = 5; const P = S.lab.percorsi.vicolo; invia("progresso", "capitolo", "5.0");
   suono.cresci(); UI.eta("35 anni"); UI.dici("Piove.", 2000);
   let altri = []; try { if (LV.segni) altri = (await LV.segni()) || [] } catch (e) { }
-  await cammina(celle(P.andata)); liberaVoci("oracolo");
+  // il vicolo è il tratto più lungo: intanto il telefono vibra di vita adulta
+  const notifiche = ["<b>Mamma</b><br>Hai mangiato?", "<b>Calcetto del giovedì</b><br>143 messaggi non letti", "<b>Banca</b><br>La tua rata è in scadenza", "<b>Zia</b><br>Allora, novità?", "<b>Promemoria</b><br>Richiamare il commercialista"];
+  let nk = 0; const vibra = setInterval(() => { if (nk < notifiche.length) UI.dici(notifiche[nk++], 3300) }, 4200);
+  await cammina(celle(P.andata), { durata: 21 }); clearInterval(vibra); UI.dici(""); liberaVoci("oracolo");
   const [cx, cz] = P.cieco, prima = P.andata.at(-2) || P.andata[0], lato = cx > prima[0] ? "E" : cx < prima[0] ? "W" : cz > prima[1] ? "S" : "N";
   const f = M.facciaMuro(S.lab, cx, cz, lato) || M.facciaMuro(S.lab, cx, cz, "NSEW".split("").find(l => M.facciaMuro(S.lab, cx, cz, l)));
   guardaVerso(f.p); await cammina([f.p.clone().addScaledVector(f.n, .95)], { velocita: .8, guarda: .3 });
@@ -665,7 +668,7 @@ async function capitolo5() {
   const ritornoV = P.ritorno.filter(([x, z]) => M.zonaDi(x, z) === "vicolo"); let messi = 0;
   for (const [i, [x, z]] of ritornoV.entries()) { if (messi >= altri.length || i % 2) continue; for (const l of "NSEW") { const ff = M.facciaMuro(S.lab, x, z, l); if (!ff || (x === cx && z === cz)) continue; posaSegno(ff, altri[messi++]); break } }
   if (altri.length) UI.dici(altri.length === 1 ? "Qualcun altro è passato di qui." : `Altre ${altri.length} persone sono passate di qui.`, 5000);
-  await cammina(celle(P.ritorno).concat([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.centro.andata[0])]));
+  await cammina(celle(P.ritorno).concat([puntoAttesa(P.ritorno.at(-1), S.lab.percorsi.centro.andata[0])]), { durata: 21 });
   await attendi(5);
 }
 async function spinta(f) { suono.colpo(); const b = cam.pos.clone(); await animaValore(v => cam.pos.copy(b).addScaledVector(f.n, -v * .35), 0, 1, 180); await animaValore(v => cam.pos.copy(b).addScaledVector(f.n, -v * .35), 1, 0, 420) }
